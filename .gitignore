@@ -1,0 +1,32 @@
+# Local tooling and Android build output
+.DS_Store
+.idea/
+.gradle/
+**/build/
+local.properties
+*.iml
+.kotlin/
+__pycache__/
+*.pyc
+# Credentials and signing
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+key.properties
+secrets.properties
+*.pem
+*.p12
+# Personal data and private execution evidence
+/evidence/
+/private/
+*.calibackup
+*.db
+*.db-shm
+*.db-wal
+*.apk
+*.aab
+# Research checkouts and archives, not source imports
+research-checkouts/
+*.zip

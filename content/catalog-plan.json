@@ -1,0 +1,96 @@
+{
+  "plan": "Starter catalog plan (DRAFT for G0)",
+  "status": "DRAFT — proposed at T02; no record below is REVIEWED. Per-variation sources, five tiers, media and licenses are filled during T02 research before G0 sign-off. Counts are PLANNED, not releasable.",
+  "companion": "docs/adr/0002-policies.md §F",
+  "starterPack": {
+    "packId": "starter-home-fullbody",
+    "displayName": "Starter: Home Full-Body",
+    "bundledWithApk": true,
+    "mediaStrategy": "Owner-approved 2026-09-28 (F3): original, lightweight, easy-to-generate demos; each demo a short loop that can run for the full duration of the exercise; muted, local MP4, no trackers; open license (proposed CC BY-SA 4.0, alternative CC0); no third-party clips until rights cleared per-record",
+    "audio": "offline English cue assets bundled in APK (F4)"
+  },
+  "families": [
+    {
+      "familyId": "push",
+      "label": "Push (chest/shoulders/triceps)",
+      "candidateVariations": [
+        { "id": "pushup-incline", "name": "Incline Push-Up", "kind": "REPS", "progressionPlanned": true, "tiersPlanned": 5, "note": "chair/step/low-surface; surface stability user-confirmed" },
+        { "id": "pushup-knee", "name": "Knee Push-Up", "kind": "REPS", "progressionPlanned": true, "tiersPlanned": 5 },
+        { "id": "pushup-standard", "name": "Standard Push-Up", "kind": "REPS", "progressionPlanned": true, "tiersPlanned": 5, "note": "successor of both above; 2x2.5kg hold variant possible (F2)" }
+      ]
+    },
+    {
+      "familyId": "pull",
+      "label": "Pull (back/biceps)",
+      "candidateVariations": [
+        { "id": "pullup-band-assisted", "name": "Band-Assisted Pull-Up", "kind": "REPS", "progressionPlanned": true, "tiersPlanned": 5, "note": "requires suitable anchor + band strength label; bar needed (expansion pack)" },
+        { "id": "row-band", "name": "Band Row (seated)", "kind": "REPS", "progressionPlanned": true, "tiersPlanned": 5, "note": "band anchor required; chair availability != anchor stability" }
+      ]
+    },
+    {
+      "familyId": "squat-lunge",
+      "label": "Squat / Lunge",
+      "candidateVariations": [
+        { "id": "squat-air", "name": "Air Squat", "kind": "REPS", "progressionPlanned": true, "tiersPlanned": 5 },
+        { "id": "split-squat", "name": "Split Squat (per side)", "kind": "REPS", "progressionPlanned": true, "tiersPlanned": 5, "unilateral": true }
+      ]
+    },
+    {
+      "familyId": "hip-hinge-posterior",
+      "label": "Hip Hinge / Posterior Chain",
+      "candidateVariations": [
+        { "id": "kettlebell-deadlift-12kg", "name": "Controlled Kettlebell Deadlift (12 kg home KB)", "kind": "REPS", "progressionPlanned": true, "tiersPlanned": 5, "note": "spec §2: Home kettlebell = 12000g; controlled tempo only — NO ballistic work (spec §8)" },
+        { "id": "glute-bridge", "name": "Glute Bridge", "kind": "REPS", "progressionPlanned": true, "tiersPlanned": 5 },
+        { "id": "superman-hold", "name": "Superman (hold)", "kind": "HOLD", "progressionPlanned": true, "tiersPlanned": 5 }
+      ]
+    },
+    {
+      "familyId": "core-holds",
+      "label": "Core / Holds",
+      "candidateVariations": [
+        { "id": "plank", "name": "Plank (hold)", "kind": "HOLD", "progressionPlanned": true, "tiersPlanned": 5 },
+        { "id": "side-plank", "name": "Side Plank (per side)", "kind": "HOLD", "progressionPlanned": true, "tiersPlanned": 5, "unilateral": true },
+        { "id": "dead-bug", "name": "Dead Bug", "kind": "REPS", "progressionPlanned": true, "tiersPlanned": 5 }
+      ]
+    },
+    {
+      "familyId": "stretch",
+      "label": "Stretches (recovery filler + stretch focus)",
+      "candidateVariations": [
+        { "id": "stretch-calf-wall", "name": "Calf Stretch (wall)", "kind": "STRETCH", "progressionPlanned": false },
+        { "id": "stretch-ankle-mobility", "name": "Ankle Mobility Series", "kind": "MOBILITY", "progressionPlanned": false },
+        { "id": "stretch-hip-flexor", "name": "Hip Flexor Lunge Stretch (per side)", "kind": "STRETCH", "progressionPlanned": false, "unilateral": true },
+        { "id": "stretch-hamstring", "name": "Hamstring Stretch (seated)", "kind": "STRETCH", "progressionPlanned": false },
+        { "id": "stretch-back", "name": "Back Stretch (cat-cow / child's pose family)", "kind": "STRETCH", "progressionPlanned": false },
+        { "id": "stretch-chest-door", "name": "Chest Stretch (doorway / wall)", "kind": "STRETCH", "progressionPlanned": false },
+        { "id": "stretch-shoulder", "name": "Shoulder Stretch (cross-body / overhead)", "kind": "STRETCH", "progressionPlanned": false }
+      ],
+      "note": "Stretches need compatibleStretchIds pairing data for the no-passive invariant; each stretch record carries discomfort-hold family mapping (C7). Stretch coverage is not strength mastery (spec §3)."
+    }
+  ],
+  "plannedCounts": {
+    "strengthVariationsPlanned": 14,
+    "stretchMobilityRecordsPlanned": 7,
+    "totalRecordsPlanned": 21,
+    "releasableRecordsApproved": 0,
+    "note": "releasableRecordsApproved is set by the owner at G0 from what T02 research can actually back with sources/tiers/media — never from this planned count (spec §8)."
+  },
+  "beginnerGoalPathsPlanned": [
+    { "goalId": "goal-first-pull", "name": "First Assisted Pull-Up", "note": "skill goal path; replaces at most one slot per round (B4); prerequisites explicit (equipment: bar + band)" },
+    { "goalId": "goal-10-standard-pushups", "name": "10 Standard Push-Ups", "note": "skill goal path over push family tiers" }
+  ],
+  "expansionPacksPlanned": [
+    { "packId": "exp-pullup-bar", "displayName": "Pull-Up Bar Pack", "trigger": "user confirms bar + suitable anchor" },
+    { "packId": "exp-weights-2x2-5kg", "displayName": "2x2.5 kg Weights Pack", "trigger": "user confirms weights; weighted push-up/row variations" }
+  ],
+  "excludedByDesign": [
+    "ballistic kettlebell work",
+    "advanced inversions",
+    "anything added 'merely to inflate breadth' (spec §8)"
+  ],
+  "openBlockers": [
+    "No licensed demo media exists yet (B-blocker per spec §8: missing licensed demos are blockers)",
+    "Per-variation credible sources for the five tiers must be found and recorded (T02 research step 2); guidance vs product-heuristic distinction recorded per policy",
+    "Early-completion stretch pairing (E1) must be resolved per strength variation or the variation cannot promise a fully occupied no-passive interval"
+  ]
+}

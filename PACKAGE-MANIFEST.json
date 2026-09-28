@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "path": ".gitignore",
+      "sha256": "f71558e5ad21293a81e6718201b49a6f1744e4ea1980fe4242a0ba781f0ac9e5",
+      "bytes": 439
+    },
+    {
+      "path": "LICENSE-NOT-SELECTED.md",
+      "sha256": "85f9602f83307bd3eb10fd09ca9f00b8d9fc57a3a26c228e6ca871f4d764f3c6",
+      "bytes": 586
+    },
+    {
+      "path": "README.md",
+      "sha256": "5fe28fc326e332984b51cb7da1d5d59384811545647c6fb32f49496bacf2c9f3",
+      "bytes": 3292
+    },
+    {
+      "path": "STATUS.md",
+      "sha256": "95b15fc4203a37c131734424c94af79595cfbb2035f784b512e1c43c08f326b5",
+      "bytes": 1643
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "6b7ea27df813a12e15bf5aafd2a957539e029a991fc342b67486d401fe3299bb",
+      "bytes": 673
+    },
+    {
+      "path": "docs/01-product-specification.md",
+      "sha256": "db767aedcb8af7c95cba86e442c43c680f357e53bbed09493394e7081d814d75",
+      "bytes": 16516
+    },
+    {
+      "path": "docs/02-coding-specification.md",
+      "sha256": "52486f0ed5434be08e8fbd5e7c591ceb0d2a731502acb1745477341232be0268",
+      "bytes": 26434
+    },
+    {
+      "path": "docs/03-workplan.md",
+      "sha256": "8456c651842b97361959d4af4b67939abfbdfe654a0972f21e49a6fb466b9dbc",
+      "bytes": 26874
+    },
+    {
+      "path": "docs/04-verification.md",
+      "sha256": "74a7402a5460479086a093dc4598e4bfc8303b0657a9f0947fb3ea068e1ebcfd",
+      "bytes": 12429
+    },
+    {
+      "path": "docs/05-local-model-prompt.md",
+      "sha256": "a4aef1a44f262b2c8887a536d820e9aac18645f8ac02a0c3e5db87953a24d040",
+      "bytes": 2382
+    },
+    {
+      "path": "docs/06-github-and-install.md",
+      "sha256": "527985cdea8f6868a17eb251d58b8ba6bf3f4a583d0afd1b4af2e2b2d412800e",
+      "bytes": 4352
+    },
+    {
+      "path": "docs/07-decisions-and-blockers.md",
+      "sha256": "dea440b791dae61594ebc30bf0bddd6b4e14b29c0f17afcdd8c84f319a6bdeee",
+      "bytes": 4019
+    },
+    {
+      "path": "docs/08-traceability.md",
+      "sha256": "f2305075828446a2ddb768133f2f4b85df56c82e8f78faf194cbb7cc7ec87086",
+      "bytes": 2794
+    },
+    {
+      "path": "docs/evidence/handoff-validation.md",
+      "sha256": "40cafa3d9564efc7e0e1f99f05b86d26a90cc49f09d0a9f0edf2a309f8e1644c",
+      "bytes": 2996
+    },
+    {
+      "path": "docs/research/landscape-survey.md",
+      "sha256": "1e494546c88c463ab4e8e787ed195271870531e79dc7ee56aa5fb8d459d34358",
+      "bytes": 10285
+    },
+    {
+      "path": "tasks.json",
+      "sha256": "b8129abbc3b8d3ca2fc877704f7ac5184dde1d1d1e159f23897436e3dc4b7faa",
+      "bytes": 33360
+    },
+    {
+      "path": "tests/test_handoff.py",
+      "sha256": "7142fcb730fe06e4720d5b2bd63682e06d40fb1dda2ea0f0c9338028af6233f5",
+      "bytes": 3062
+    },
+    {
+      "path": "tests/test_installer.py",
+      "sha256": "a30d27379be6a5a7837f691b909f516cf7a00b51dd6772842c2eae511a6111f2",
+      "bytes": 2925
+    },
+    {
+      "path": "tools/check_handoff.py",
+      "sha256": "f6ee44abedd3669a603ce1b0c774e2dc7a6a21d38c3a041105e4de9a91f8f0e2",
+      "bytes": 4772
+    },
+    {
+      "path": "tools/install_local.py",
+      "sha256": "4cb3a1cb5e3e9f0be79e0792860556378f5af171da97c0a5b0e48c8df91d21a1",
+      "bytes": 5885
+    }
+  ]
+}
