@@ -30,3 +30,6 @@ secrets.properties
 # Research checkouts and archives, not source imports
 research-checkouts/
 *.zip
+# Transient build logs (evidence lives in docs/evidence/, not these)
+verify-run.log
+build-gate.log

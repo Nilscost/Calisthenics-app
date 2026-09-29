@@ -100,11 +100,19 @@
       ],
       "manual_check": "Review foundation, policy defaults, named catalog and media strategy together. STOP until G0 accepted.",
       "human_gate": "G0",
-      "status": "verified",
+      "status": "accepted",
       "evidence": [
         "docs/adr/0002-policies.md",
-        "content/catalog-plan.json"
+        "content/catalog-plan.json",
+        "docs/adr/0001-foundation.md"
       ],
+      "owner_approval": {
+        "gate": "G0",
+        "accepted": true,
+        "date": "2026-09-28",
+        "by": "owner (project owner, via Hermes)",
+        "basis": "G0 CLOSED 2026-09-28 — owner accepted foundation (ADR 0001: fork CalisthenicsMemory 045b8577, GPL-3.0) + policy defaults (ADR 0002: A4 cues off, C5 baseline-vs-earned stars, F3 lightweight looping demos) + content scope (content/catalog-plan.json). See STATUS.md Gates section and commit f843e99."
+      },
       "note": "G0 CLOSED 2026-09-28. Deliverables: ADR 0002 (every G0 DEFAULT from docs/02 as a decision table with plain-language meaning; ACCEPTED with owner verbatim decisions — A4 cues off, C5 baseline-vs-earned stars, F3 lightweight easy-to-generate per-exercise looping demos) + content/catalog-plan.json (Starter: Home Full-Body, 21 planned records, 0 releasable-approved; open blockers: no licensed demo media yet, per-variation sources/tiers pending T02 research follow-through). Foundation part of G0: ADR 0001 ACCEPTED (fork CalisthenicsMemory 045b8577, GPL-3.0). Human approval given by owner, not synthesized."
     },
     {
@@ -139,8 +147,11 @@
       ],
       "manual_check": "APK opens without login/network dependency. Configuration/generated scaffold is not evidence of product functionality.",
       "human_gate": null,
-      "status": "pending",
-      "evidence": []
+      "status": "verified",
+      "evidence": [
+        "docs/evidence/t03-scaffold.md"
+      ],
+      "note": "Host-runnable T03 gate COMPLETE (2026-09-29, ARM64 Linux Docker sandbox): `bash scripts/verify.sh` exit 0. `:domain:test` 8/0, `:data:testDebugUnitTest` NO-SOURCE (Robolectric has no Linux/aarch64 native — host limit, not a code defect; Room is covered on-device by the instrumented MigrationTest), `:app:testDebugUnitTest` 209/0 (13 classes), `:app:lintDebug` 0 errors, `:app:assembleDebug` produced app-debug.apk (14,689,648 bytes, valid package app.calisthenics.personal v0.1.0-t03), content validation OK. Code fixes to reach green: 8 cross-module smart-cast sites (upstream single-module `x.prop` no longer smart-casts across :data properties) and 2 SuspiciousIndentation in ProgramExecutionUtils.kt (re-indented canonically); ~749 inherited MissingTranslation (values-ar 0/747, values-ru 107/747) downgraded to warning via app/lint.xml only (all other checks stay error) — NOT fabricated, with a follow-up to complete the catalogs. Environment-only fixes (no app/runtime impact): x86-64 glibc under qemu for AGP aapt2, and :data forcing sqlite-jdbc 3.45.3.0 (build-time only) for Room's KSP schema verifier. NOT run / not claimed: device tests and G1 (no authorized Galaxy S21). Next: T04/G1 on the S21 with owner observation. See docs/evidence/t03-scaffold.md."
     },
     {
       "id": "T04",

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  :app lint configuration.
+
+  ONLY MissingTranslation is downgraded to a warning, and only because the
+  ported app inherits PARTIAL translation catalogs from the upstream fork
+  (ADR 0001): values-ar/strings.xml has 0/747 strings (empty) and
+  values-ru/strings.xml has 107/747. Upstream never ran a lint gate, so this
+  shipped as-is. We deliberately do NOT fabricate ~1,300 Arabic/Russian
+  strings to silence the check — that would invent product content.
+
+  Every other lint check keeps its default (error) severity.
+
+  FOLLOW-UP: complete the values-ar (0) and values-ru (107) catalogs, then
+  delete this <issue> line so MissingTranslation is enforced as an error again.
+-->
+<lint>
+    <issue id="MissingTranslation" severity="warning" />
+</lint>

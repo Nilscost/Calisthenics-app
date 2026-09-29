@@ -26,14 +26,35 @@
 - All T01 substeps complete as of 2026-09-28 (build + tests re-run with network restored; see `docs/evidence/t01-build.md`). T01 is `verified`; the remaining action is the owner's G0 approval of the reuse strategy.
 
 ## Not completed
-- No Android application of **ours**, APK of ours, content review or Galaxy S21 test exists yet (the APK above is the unmodified upstream candidate build, used as T01 evidence only).
+- **T03 device gate not run** — no authorized Galaxy S21 is attached to the sandbox. The host-runnable gate is green (T03 `verified`), but `:data:connectedDebugAndroidTest` (MigrationTest/G5) and `:app:connectedDebugAndroidTest` (LaunchSmokeTest) have NOT run, so on-device Room and launch behavior are unverified.
+- **G1 not approved** — offline/locked-screen/audio/foreground-timer runtime feasibility still requires the Galaxy S21 + owner observation.
+- The APK at `app/build/outputs/apk/debug/app-debug.apk` is now **ours** (built from the `:domain`/`:data`/`:app` scaffold; v0.1.0-t03). It is a build artifact, NOT evidence of product functionality until G1 is observed.
 - No local Qwen model was launched; exact installed model/runner unverified (B6).
 - No GitHub remote was created, no push occurred, and host GitHub authentication is unverified (B5).
 - No protected AGENTS.md file was written because approval was not received.
 
 ## Next implementation task
-**T03** (G0 closed 2026-09-28): apply ADR 0001 path mapping — import CalisthenicsMemory @ 045b8577 as the `:app` base, add `:domain`/`:data` modules, pin toolchain in `toolchain.lock.md`, add first domain + Compose launch tests, create `scripts/verify.sh` per the command contract in `docs/04-verification.md`.
-Then T04 runtime spike on S21 (G1).
+**T03 host-runnable gate COMPLETE (2026-09-29).** `bash scripts/verify.sh` → exit 0:
+`:domain:test` 8/0, `:data:testDebugUnitTest` NO-SOURCE, `:app:testDebugUnitTest`
+209/0, `:app:lintDebug` 0 errors, `:app:assembleDebug` → `app-debug.apk`
+(14,689,648 bytes, valid package `app.calisthenics.personal` v0.1.0-t03), content
+validation OK. Details + code/env fixes: `docs/evidence/t03-scaffold.md`.
+
+**Next: T04 / G1** — runtime feasibility spike on the Galaxy S21 with owner
+observation (offline, locked screen, audio, foreground timer). Device tests
+(`:data:connectedDebugAndroidTest` = MigrationTest/G5,
+`:app:connectedDebugAndroidTest` = LaunchSmokeTest) run only after explicit
+device authorization. G1 is not approved by this build.
+
+### Owner update — 2026-09-28 (exercise video decision CONFIRMED)
+The owner **confirmed: go with the synthetic placeholder loops and swap them for real reviewed footage later.** This is the "light / easy to generate / loopable" route. Concretely:
+- `tools/make_sample_media.sh` generates deterministic, muted, seamless MP4 loops (ffmpeg lavfi, no footage/audio/trackers): `content/starter/media/pushup-demo.mp4` (0.5 Hz bar oscillation = 2 full cycles per 4 s → frame 0 ≈ last frame) and `plank-demo.mp4` (static hold + breathing marker). Both 640×360, 30 fps, 4.0 s, ~6 KB.
+- Wired into the starter pack contract (`exercises.json` + `media.json` + `pack.json`, all hashes/lengths pinned). `python3 tools/validate_content.py content/starter` → OK (structure + rights fields).
+- All demo media stay `reviewState=DRAFT` and are on-screen labeled "sample loop (not reviewed)" — they are placeholders, NOT reviewed training content. Swapping later = drop real clips into the same `media.json` contract; no app rework.
+- Green gates re-verified 2026-09-28: content validation OK; `:domain:test` → 8 tests / 0 failures / 0 errors.
+- Still outstanding (build-env only, unrelated to video): `:data` KSP + `:app` build need a native SQLite / aapt2 this sandbox blocks (see checkpoint).
+
+The owner authorized overnight work through **T03 and G1 evidence only**: complete the scaffold and harness, prepare/run the runtime feasibility checks where possible, and stop for the owner's Galaxy S21 review. This authorization does not waive G1, approve unobserved device behavior, or permit proceeding past G1 without the required owner/device evidence.
 
 ## Validation
 Package-level test results are recorded separately in `docs/evidence/handoff-validation.md` after execution. These must not be confused with Android/application acceptance.
@@ -50,14 +71,13 @@ G6 NOT RUN — personal pilot.
 ## Resume checkpoint template
 Task/substep; files changed; commands + actual exit codes; evidence; unresolved blocker; next exact action. A new model must reproduce key checks rather than trusting a prior model's summary.
 
-### Current checkpoint (2026-09-28)
-- Task: T00 `verified`; T01 `verified` (audit + ADR 0001 + real build of the preferred candidate, all exit codes recorded).
-- Files changed (2026-09-28): `tasks.json` (T01 → `verified`, evidence + note updated), `docs/research/reuse-audit.md` (build section updated with real results), `docs/evidence/t01-build.md` (new), `STATUS.md` (this file).
-- Commands + exit codes (2026-09-28, isolated faithful copy `/workspace/app/research-checkouts/cm-build-attempt/`, build script diff-verified identical to upstream):
-  - `./gradlew assembleDebug --no-daemon` → **exit 0**, `app-debug.apk` 14,673,181 bytes.
-  - `./gradlew testDebugUnitTest --no-daemon` → **exit 0**, 209 tests / 0 failures / 0 errors (13 classes).
-  - `./gradlew lintDebug --no-daemon` → exit 1, 749 pre-existing upstream style errors (not build-breaking; T24 will baseline lint).
-  - `python3 tools/check_handoff.py` → re-run after this update (see Validation below).
-- Environment fixes (sandbox-only, recorded in `docs/evidence/t01-build.md`): x86-64 glibc loader for AGP `aapt2` under qemu; aarch64 `libsqlitejdbc.so` for Room's KSP `DatabaseVerifier`. No candidate source changed.
-- Unresolved blocker: none for T01. Still outstanding project-wide: S21 not connected (G1), gh unverified (B5), local model runner unverified (B6), G0 not accepted.
-- Next exact action: **STOP at G0** — owner approves foundation (ADR 0001) + policy defaults/content scope (T02). After G0: T03 scaffold, T04 runtime spike on S21 (G1).
+### Current checkpoint (2026-09-29)
+- Task: T00 `verified`; T01 `verified`; **T03 `verified`** (host-runnable gate, 2026-09-29). T04 `pending` (needs S21).
+- Files changed (2026-09-29): `app/src/main/java/.../util/ProgramExecutionUtils.kt` (canonical re-indent, 2 SuspiciousIndentation fixed); `app/src/main/java/.../ui/components/program/ProgramIntervalComponents.kt`, `.../ui/screens/IntervalEditScreen.kt`, `.../ui/components/program/ProgramNavigationSheet.kt`, `.../ui/screens/view/GraphView.kt` (8 cross-module smart-cast fixes); `data/build.gradle.kts` (sqlite-jdbc 3.45.3.0 force, build-time only); `app/lint.xml` (new; MissingTranslation → warning only); `app/build.gradle.kts` (lint comment); `toolchain.lock.md` (host-native notes); `tasks.json` (T03 → verified); `docs/evidence/t03-scaffold.md` (rewritten to COMPLETE); `STATUS.md` (this file).
+- Commands + exit codes (2026-09-29, in `/workspace/app/calisthenics`):
+  - `bash scripts/verify.sh` → **exit 0** (full T03 contract: :domain:test 8/0, :data:testDebugUnitTest NO-SOURCE, :app:testDebugUnitTest 209/0, :app:lintDebug 0 errors, :app:assembleDebug, content validation OK).
+  - `./gradlew :app:clean :app:assembleDebug` → **exit 0**, `app-debug.apk` 14,689,648 bytes (fresh clean rebuild).
+  - `aapt dump badging app/build/outputs/apk/debug/app-debug.apk` → valid package `app.calisthenics.personal` v0.1.0-t03, minSdk 26 / target 35 / compile 35.
+- Environment fixes (sandbox-only, build-time, no app/runtime impact): x86-64 glibc under qemu for AGP `aapt2`; `:data` forces `sqlite-jdbc:3.45.3.0` for Room's KSP schema verifier; apt run with proxy vars unset (egress proxy was down).
+- Unresolved: **G1 not approved** (S21 offline/background/audio/timer needs owner observation); device tests not run (no authorized S21); lint `MissingTranslation` downgraded to warning (ar 0/747, ru 107/747 catalogs to complete); gh unverified (B5); local model runner unverified (B6).
+- Next exact action: **T04 / G1** — runtime feasibility spike on the Galaxy S21 with owner observation; run device tests only after explicit device authorization (`adb devices -l`; `./gradlew :data:connectedDebugAndroidTest :app:connectedDebugAndroidTest`).

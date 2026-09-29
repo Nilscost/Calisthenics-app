@@ -1,0 +1,32 @@
+[
+  {
+    "id": "pushup-standard",
+    "familyId": "pushup",
+    "name": "Push-Up (Standard)",
+    "kind": "REPS",
+    "equipmentAlternatives": ["incline push-up (easier)", "archer push-up (harder)"],
+    "instructions": [
+      "Start in a straight-line plank, hands slightly wider than shoulders.",
+      "Lower the chest to just above the floor, elbows ~45 degrees to the torso.",
+      "Press up to full lockout without flaring the hips.",
+      "Keep the core braced throughout; count only completed, full-range reps (spec §4 C1)."
+    ],
+    "sourceIds": ["synthetic-scaffold-2026-09-28"],
+    "reviewState": "DRAFT"
+  },
+  {
+    "id": "plank-standard",
+    "familyId": "plank",
+    "name": "Front Plank (Standard)",
+    "kind": "HOLD",
+    "equipmentAlternatives": ["knee plank (easier)", "plank with shoulder taps (harder)"],
+    "instructions": [
+      "Forearms on the floor, elbows under shoulders, body in one straight line.",
+      "Squeeze glutes and brace the core; do not let the hips sag or pike.",
+      "Hold the position for the prescribed duration.",
+      "A partial hold (hips visibly dropped) does not count toward the target (spec §4 C1)."
+    ],
+    "sourceIds": ["synthetic-scaffold-2026-09-28"],
+    "reviewState": "DRAFT"
+  }
+]

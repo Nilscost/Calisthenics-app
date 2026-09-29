@@ -1,0 +1,38 @@
+{
+  "packId": "starter",
+  "version": "0.1.0-t03",
+  "schemaVersion": 1,
+  "minAppVersion": "0.1.0",
+  "catalogVersion": 1,
+  "description": "Starter pack scaffold (T03): 2 DRAFT exercises + synthetic muted demo loops. NOT reviewed training content; replace via the T09/T10 review pipeline.",
+  "files": [
+    {
+      "name": "exercises.json",
+      "sha256": "d4381e7ab0dc0ac4bce780bb372458dbd2544d7076c5200ba7c96468a5bdfa8b",
+      "length": 1259
+    },
+    {
+      "name": "media.json",
+      "sha256": "0238d408c4cdaa8c040b69c2c7d253f89ad95002f7f05054f4f5f1935629bd9d",
+      "length": 1466
+    },
+    {
+      "name": "media/pushup-demo.mp4",
+      "sha256": "f757a08d8cd12606981e9a32659ba281e907e1ed811545553ab1695ecc22dc59",
+      "length": 6069
+    },
+    {
+      "name": "media/plank-demo.mp4",
+      "sha256": "efb8d63b8f26d723d4ec03dceb1e0aeeec1756d4e3e6851afb092d8a5fc4b158",
+      "length": 6128
+    }
+  ],
+  "licenses": [
+    {
+      "id": "cc0-synthetic",
+      "name": "CC0 1.0 (synthetic, self-generated)",
+      "url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "scope": "Synthetic placeholder media generated locally by tools/make_sample_media.sh; no third-party material."
+    }
+  ]
+}

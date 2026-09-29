@@ -25,7 +25,7 @@ Numeric defaults are product heuristics until reviewed. The content tiers and re
 | B01 | File tools access a Docker sandbox, not the Mac Apps folder | Project registration alone does not prove target files exist | Local installer or restored host access; verify hashes in target |
 | B02 | GitHub CLI/authentication on the Mac not accessible from this sandbox | No claim of authenticated create/push capability | Owner runs installer auth check or grants host tooling; T00/T26 |
 | B03 | Browser Use CLI unavailable; external source extraction backend unavailable in this session | Prior survey not upgraded to a code/content audit | T01/T02 with working network/source tools |
-| B04 | No JDK/SDK/device validation or actual app build performed | All Android commands and runtime gates remain planned | T00/T03/T04 |
+| B04 | Host-runnable build now done (2026-09-29); **device** validation still not performed | `:domain`/`:data`/`:app` unit tests, lint and `assembleDebug` pass in the sandbox (T03 verified), but on-device Room (MigrationTest) and launch (LaunchSmokeTest) + G1 offline/background/audio/timer remain unverified | T04 (S21 runtime spike + owner observation) |
 | B05 | Model name/local runner availability unverified | No Qwen delegation has occurred | T00: inventory exact installed model, no silent substitution |
 | B06 | No approved production media catalog or reusable media hosting endpoint | Broad library/optional packs not yet deliverable | T02/T06/T21 |
 | B07 | Protected AGENTS.md write lacked approval | No auto-loaded agent file exists; use explicit startup prompt | Owner may authorize a separate future write; do not retry/bypass denial |
