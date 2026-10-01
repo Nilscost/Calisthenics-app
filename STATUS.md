@@ -81,3 +81,10 @@ Task/substep; files changed; commands + actual exit codes; evidence; unresolved 
 - Environment fixes (sandbox-only, build-time, no app/runtime impact): x86-64 glibc under qemu for AGP `aapt2`; `:data` forces `sqlite-jdbc:3.45.3.0` for Room's KSP schema verifier; apt run with proxy vars unset (egress proxy was down).
 - Unresolved: **G1 not approved** (S21 offline/background/audio/timer needs owner observation); device tests not run (no authorized S21); lint `MissingTranslation` downgraded to warning (ar 0/747, ru 107/747 catalogs to complete); gh unverified (B5); local model runner unverified (B6).
 - Next exact action: **T04 / G1** — runtime feasibility spike on the Galaxy S21 with owner observation; run device tests only after explicit device authorization (`adb devices -l`; `./gradlew :data:connectedDebugAndroidTest :app:connectedDebugAndroidTest`).
+
+### Owner update — 2026-10-01
+- Review: `docs/evidence/review-2026-10-01.md`. Roadmap for the FULL version (owner choice): `docs/09-full-version-roadmap.md`.
+- Owner approved: G1 must also test offline spoken English + music ducking (added to M0 spike work).
+- Phone has NO working USB port: use Wireless debugging (adb pair/connect) or sideload APK; G1 test must be started and exported from an in-app debug screen (airplane mode drops Wi-Fi adb).
+- Folder consolidated to `/Users/nils/Documents/hermes/Apps/calisthenics` (old `Calsthenics V1/`, `pkg/`, zip deleted with owner approval; T04 APK kept in `../builds/`). Stale `local.properties` and duplicate `config/config` removed.
+- Next exact action: M0 (roadmap) — unify G1 thresholds, SoundPool load fix, spike exported=false, in-app G1 debug screen, TTS + ducking probe, shared debug keystore.
