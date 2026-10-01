@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
@@ -66,7 +67,15 @@ class WorkoutTimerService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> {
-                startForeground(NOTIFICATION_ID, createNotification())
+                // Pass the type explicitly: on targetSdk 34+ the 2-arg
+                // startForeground() throws MissingForegroundServiceTypeException
+                // when the manifest declares a foregroundServiceType, which would
+                // kill the timer the moment it starts (G1 blocker).
+                startForeground(
+                    NOTIFICATION_ID,
+                    createNotification(),
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                )
                 acquireWakeLock()
             }
             ACTION_STOP -> {

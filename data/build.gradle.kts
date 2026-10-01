@@ -48,8 +48,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("androidx.core:core-ktx:1.15.0")
 
-    // Instrumented tests (MigrationTest: MigrationTestHelper + FrameworkSQLiteOpenHelperFactory).
-    // This is the authoritative Room/migration coverage (G5) — runs on-device.
+    // Instrumented tests (DataLayerInstrumentedTest: on-device Room round-trip of
+    // the current v21 schema). The upstream-inherited MigrationTest was removed —
+    // it targeted Room v10 via MigrationTestHelper against schema JSON that does
+    // not exist (exportSchema = false), so it could never pass on-device.
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test:core:1.5.0")
     androidTestImplementation("androidx.room:room-testing:2.6.1")
