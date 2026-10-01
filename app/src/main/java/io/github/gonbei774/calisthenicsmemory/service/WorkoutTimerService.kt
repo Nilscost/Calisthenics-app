@@ -12,6 +12,7 @@ import android.os.Binder
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat
 import io.github.gonbei774.calisthenicsmemory.MainActivity
 import io.github.gonbei774.calisthenicsmemory.R
 
@@ -71,7 +72,13 @@ class WorkoutTimerService : Service() {
                 // startForeground() throws MissingForegroundServiceTypeException
                 // when the manifest declares a foregroundServiceType, which would
                 // kill the timer the moment it starts (G1 blocker).
-                startForeground(
+                // Pass the type via ServiceCompat (minSdk 26 < the API-29
+                // 3-arg overload): on targetSdk 34+ a missing/mismatched
+                // foregroundServiceType throws
+                // MissingForegroundServiceTypeException and would kill the
+                // timer the moment it starts (G1 blocker).
+                ServiceCompat.startForeground(
+                    this,
                     NOTIFICATION_ID,
                     createNotification(),
                     ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE

@@ -76,7 +76,13 @@ class SpikeSessionService : Service() {
                 val workMs = intent?.getLongExtra(EXTRA_WORK_MS, 3_000L) ?: 3_000L
                 val restMs = intent?.getLongExtra(EXTRA_REST_MS, 2_000L) ?: 2_000L
                 val tag = intent?.getStringExtra(EXTRA_TAG) ?: "auto"
-                startForeground(
+                // Pass the type via ServiceCompat (minSdk 26 < the API-29
+                // 3-arg overload): on targetSdk 34+ a missing/mismatched
+                // foregroundServiceType throws
+                // MissingForegroundServiceTypeException and would kill the
+                // timer the moment it starts (G1 blocker).
+                ServiceCompat.startForeground(
+                    this,
                     NOTIF_ID,
                     buildNotification(tag),
                     ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
@@ -161,14 +167,14 @@ class SpikeSessionService : Service() {
             "log=${f?.absolutePath}\ntotalPlannedMs=$totalMs\nobservedTotalMs=$observedTotal\ndone\n"
         )
         releaseAll()
-        stopForeground(ServiceCompat.STOP_FOREGROUND_REMOVE)
+        stopForeground(Service.STOP_FOREGROUND_REMOVE)
     }
 
     private fun stopRun() {
         pending.forEach { it.cancel(false) }
         pending.clear()
         releaseAll()
-        stopForeground(ServiceCompat.STOP_FOREGROUND_REMOVE)
+        stopForeground(Service.STOP_FOREGROUND_REMOVE)
     }
 
     private fun releaseAll() {
