@@ -51,3 +51,10 @@ Added: T10/T11 planner (`planner/Planner.kt`, 30 tests), T14 session reducer (`s
 
 ### Still open
 Starter catalog (`content/starter/catalog.json`) in the new model; Android side (M0 fixes, Room, UI, service); G1 phone test.
+
+## Update 2026-10-04 (3): starter catalog (DRAFT)
+- `tools/gen_starter_catalog.py` generates `content/starter/catalog.json` (13 strength + 7 stretch/mobility, 13 policies, 4 skill nodes), all DRAFT / PRODUCT_HEURISTIC.
+- `StarterCatalogTest` (8 tests) validates it with `validateCatalog`, incl. production mode rejecting DRAFT.
+- Result: 118 domain tests, 0 failures (`domain-tests-2026-10-04-catalog.log`).
+- Sources and their limits: `content/starter/SOURCES.md` (books were not read, only reviews/TOCs).
+- Plan said 14 strength records; its own list has 13.
