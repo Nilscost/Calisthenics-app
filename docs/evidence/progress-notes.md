@@ -52,9 +52,7 @@ Added: T10/T11 planner (`planner/Planner.kt`, 30 tests), T14 session reducer (`s
 ### Still open
 Starter catalog (`content/starter/catalog.json`) in the new model; Android side (M0 fixes, Room, UI, service); G1 phone test.
 
-## Update 2026-10-04 (5): T07 persistence (code done, device tests not run)
-- Room schema export on (`data/schemas/.../21.json` baseline, `22.json`); `fallbackToDestructiveMigration()` removed: a missing migration now fails instead of wiping history.
-- DB v22 adds append-only tables: plan_snapshots, workout_sessions, block_results, feedback_revisions, progression_events (+ HistoryDao with transactional save and revisioned feedback). MIGRATION_21_22 is purely additive.
-- `tools/check_migration_sql.py` proves the hand-written migration SQL equals Room's exported schema and that no v21 table changed (log in `t07-migration-sql-check.log`).
-- `HistoryAndMigrationTest` (androidTest, 6 tests) compiles but has NOT been run: needs a phone/emulator. Includes migration-with-data, plan immutability, duplicate session rejection, rollback on failed write, feedback revisions, delete-restrict.
-- Not done in T07: DataStore preferences port and repository interfaces (next to the domain wiring).
+## Update 2026-10-04 (6): T19/T20 domain logic
+- `history/History.kt`: weekly summary (Monday weeks in the user's zone; skipped = 0 s; unfinished sessions ignored).
+- `backup/Backup.kt`: versioned backup with SHA-256 checksum; import validates everything first and rejects damaged, edited, newer-format or inconsistent files. Checksum detects corruption, not forgery.
+- 8 new tests in `BackupHistoryTest`; log `domain-tests-2026-10-04-backup-history.log`. UI/file-picker/Room adapters for these are not built yet.
