@@ -23,7 +23,7 @@ private fun fmt(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodayScreen(onBack: () -> Unit) {
+fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit = {}) {
     val ctx = LocalContext.current
     val catalog = remember { ctx.assets.open("catalog.json").bufferedReader().use { parseCatalog(it.readText()) } }
     val saved = remember { PrefsStore.load(ctx) }
@@ -34,10 +34,11 @@ fun TodayScreen(onBack: () -> Unit) {
     val focus = focusNames.map { StrengthFocus.valueOf(it) }.toSet()
     val profile = SeedProfiles.all.first { it.id == profileId }
 
-    val result = remember(minutes, stretch, profileId, focusNames) {
+    val progress = remember { LevelStore.snapshot(catalog, LevelStore.load(ctx)) }
+    val result = remember(minutes, stretch, profileId, focusNames, progress) {
         val draft = SessionDraft.from(Preferences(defaultDurationSeconds = minutes * 60, stretchOn = stretch, selectedProfileId = profileId), StarterRoutine.routine)
             .copy(focus = focus)
-        generate(PlanInput("preview", System.currentTimeMillis(), 0, catalog, StarterRoutine.routine, draft, profile))
+        generate(PlanInput("preview", System.currentTimeMillis(), 0, catalog, StarterRoutine.routine, draft, profile, progress = progress))
     }
     val names = remember(catalog) { catalog.variations.associate { it.id to it.name } }
 
@@ -54,6 +55,7 @@ fun TodayScreen(onBack: () -> Unit) {
                 }
             }
             Row { Checkbox(stretch, { stretch = it }); Text("Stretch between sets", Modifier.padding(top = 12.dp)) }
+            OutlinedButton(onClick = onLevels) { Text("Set my starting level") }
             HorizontalDivider()
             when (val r = result) {
                 is PlanResult.Infeasible -> {

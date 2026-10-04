@@ -252,11 +252,15 @@ fun CalisthenicsMemoryApp(
                 )
                 is Screen.Today -> {
                     BackHandler { currentScreen = Screen.Home }
-                    io.github.gonbei774.calisthenicsmemory.ui.screens.TodayScreen(onBack = { currentScreen = Screen.Home })
+                    io.github.gonbei774.calisthenicsmemory.ui.screens.TodayScreen(onBack = { currentScreen = Screen.Home }, onLevels = { currentScreen = Screen.Onboarding })
                 }
                 is Screen.Library -> {
                     BackHandler { currentScreen = Screen.Home }
                     io.github.gonbei774.calisthenicsmemory.ui.screens.LibraryScreen(onBack = { currentScreen = Screen.Home })
+                }
+                is Screen.Onboarding -> {
+                    BackHandler { currentScreen = Screen.Today }
+                    io.github.gonbei774.calisthenicsmemory.ui.screens.OnboardingScreen(onBack = { currentScreen = Screen.Today })
                 }
                 is Screen.ToDo -> {
                     BackHandler { currentScreen = Screen.Home }
@@ -456,6 +460,7 @@ sealed class Screen {
     object Home : Screen()
     object Today : Screen()
     object Library : Screen()
+    object Onboarding : Screen()
     object ToDo : Screen()
     object Create : Screen()
     object Settings : Screen()
@@ -482,6 +487,7 @@ private val ScreenSaver = mapSaver(
                 Screen.Home -> put("type", "Home")
                 Screen.Today -> put("type", "Today")
                 Screen.Library -> put("type", "Library")
+                Screen.Onboarding -> put("type", "Onboarding")
                 Screen.ToDo -> put("type", "ToDo")
                 Screen.Create -> put("type", "Create")
                 Screen.Settings -> put("type", "Settings")
@@ -529,6 +535,7 @@ private val ScreenSaver = mapSaver(
         when (map["type"] as String) {
             "Today" -> Screen.Today
             "Library" -> Screen.Library
+            "Onboarding" -> Screen.Onboarding
             "ToDo" -> Screen.ToDo
             "Create" -> Screen.Create
             "Settings" -> Screen.Settings

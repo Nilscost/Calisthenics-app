@@ -52,7 +52,6 @@ Added: T10/T11 planner (`planner/Planner.kt`, 30 tests), T14 session reducer (`s
 ### Still open
 Starter catalog (`content/starter/catalog.json`) in the new model; Android side (M0 fixes, Room, UI, service); G1 phone test.
 
-## Update 2026-10-04 (8): T16/T18 slices
-- Today screen can "Remember these settings" (duration, stretch, profile only, per spec §3) in app-private storage; unreadable data falls back to defaults.
-- New Library screen: strength ladders by family, stretches/mobility, expandable instructions/cues/cautions/targets/equipment/sources, prerequisites vs recommended preparation. Draft warning shown. No demo videos yet.
-- Verified: unit tests + lint + assembleDebug (t18-slice1-verify log). Not device-tested.
+## Update 2026-10-04 (9): T16 slice 2 (starting level)
+- Onboarding screen: per-exercise starting step slider (default step 1, no max-effort test); stored as SelfAssessment actions replayed by the progression engine; Today plan now uses those tiers.
+- Verified: unit tests + lint + assembleDebug. Not device-tested.
