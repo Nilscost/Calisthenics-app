@@ -9,9 +9,10 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
-    entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class],
-    version = 21,
-    exportSchema = false
+    entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class,
+        PlanSnapshotEntity::class, WorkoutSessionEntity::class, BlockResultEntity::class, FeedbackRevisionEntity::class, ProgressionEventEntity::class],
+    version = 22,
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -25,6 +26,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun intervalProgramDao(): IntervalProgramDao
     abstract fun intervalProgramExerciseDao(): IntervalProgramExerciseDao
     abstract fun intervalRecordDao(): IntervalRecordDao
+    abstract fun historyDao(): HistoryDao
 
     companion object {
         @Volatile
@@ -37,8 +39,9 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "bodyweight_trainer_database"
                 )
-                    .addMigrations(MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18, MIGRATION_18_19, MIGRATION_19_20, MIGRATION_20_21)
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18, MIGRATION_18_19, MIGRATION_19_20, MIGRATION_20_21, MIGRATION_21_22)
+                    // T07 (DATA-01): NO destructive fallback. A missing migration must fail loudly
+                    // in tests, never silently wipe the user's history on update.
                     .build()
                 INSTANCE = instance
                 instance
@@ -46,6 +49,21 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         // マイグレーション 9 → 10: displayOrder, restInterval, repDuration を追加
+        // 21 -> 22 (T07): add append-only history tables. Purely additive; no existing table is touched.
+        val MIGRATION_21_22 = object : Migration(21, 22) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("CREATE TABLE IF NOT EXISTS `plan_snapshots` (`planId` TEXT NOT NULL, `createdAtEpochMs` INTEGER NOT NULL, `routineId` TEXT NOT NULL, `routineRevision` INTEGER NOT NULL, `catalogVersion` INTEGER NOT NULL, `profileId` TEXT NOT NULL, `planJson` TEXT NOT NULL, PRIMARY KEY(`planId`))")
+                db.execSQL("CREATE TABLE IF NOT EXISTS `workout_sessions` (`sessionId` TEXT NOT NULL, `planId` TEXT NOT NULL, `startedAtEpochMs` INTEGER NOT NULL, `endedAtEpochMs` INTEGER, `status` TEXT NOT NULL, PRIMARY KEY(`sessionId`), FOREIGN KEY(`planId`) REFERENCES `plan_snapshots`(`planId`) ON UPDATE NO ACTION ON DELETE RESTRICT )")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_workout_sessions_planId` ON `workout_sessions` (`planId`)")
+                db.execSQL("CREATE TABLE IF NOT EXISTS `block_results` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sessionId` TEXT NOT NULL, `blockId` TEXT NOT NULL, `outcome` TEXT NOT NULL, `actualSeconds` INTEGER NOT NULL, `achievedValue` INTEGER, FOREIGN KEY(`sessionId`) REFERENCES `workout_sessions`(`sessionId`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_block_results_sessionId_blockId` ON `block_results` (`sessionId`, `blockId`)")
+                db.execSQL("CREATE TABLE IF NOT EXISTS `feedback_revisions` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `sessionId` TEXT NOT NULL, `variationId` TEXT NOT NULL, `revision` INTEGER NOT NULL, `rating` TEXT NOT NULL, `discomfort` INTEGER NOT NULL, `assumedMet` INTEGER NOT NULL, `createdAtEpochMs` INTEGER NOT NULL, FOREIGN KEY(`sessionId`) REFERENCES `workout_sessions`(`sessionId`) ON UPDATE NO ACTION ON DELETE CASCADE )")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_feedback_revisions_sessionId_variationId_revision` ON `feedback_revisions` (`sessionId`, `variationId`, `revision`)")
+                db.execSQL("CREATE TABLE IF NOT EXISTS `progression_events` (`eventId` TEXT NOT NULL, `variationId` TEXT NOT NULL, `kind` TEXT NOT NULL, `fromTier` INTEGER NOT NULL, `toTier` INTEGER NOT NULL, `reason` TEXT NOT NULL, `atEpochMs` INTEGER NOT NULL, PRIMARY KEY(`eventId`))")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_progression_events_variationId` ON `progression_events` (`variationId`)")
+            }
+        }
+
         val MIGRATION_9_10 = object : Migration(9, 10) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 // 1. displayOrder フィールドを追加（並び替え機能用）

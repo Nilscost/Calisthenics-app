@@ -18,6 +18,10 @@ configurations.configureEach {
     }
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 android {
     namespace = "io.github.gonbei774.calisthenicsmemory.data"
     compileSdk = 35
@@ -33,6 +37,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
+    }
+    sourceSets {
+        // Exported schema JSON is committed and read by MigrationTestHelper.
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
     }
 }
 
