@@ -52,7 +52,7 @@ Added: T10/T11 planner (`planner/Planner.kt`, 30 tests), T14 session reducer (`s
 ### Still open
 Starter catalog (`content/starter/catalog.json`) in the new model; Android side (M0 fixes, Room, UI, service); G1 phone test.
 
-## Update 2026-10-04 (6): T19/T20 domain logic
-- `history/History.kt`: weekly summary (Monday weeks in the user's zone; skipped = 0 s; unfinished sessions ignored).
-- `backup/Backup.kt`: versioned backup with SHA-256 checksum; import validates everything first and rejects damaged, edited, newer-format or inconsistent files. Checksum detects corruption, not forgery.
-- 8 new tests in `BackupHistoryTest`; log `domain-tests-2026-10-04-backup-history.log`. UI/file-picker/Room adapters for these are not built yet.
+## Update 2026-10-04 (7): T16 first slice (Today/preview)
+- `StarterRoutine` (6 slots, 2 optional) + `StarterPlanTest`: real plans generated from the real catalog for 10-90 min on Home; Travel either plans without home gear or explains why.
+- App: catalog bundled as asset; new "Today's workout (new)" screen: length, profile, focus, stretch controls, live plan preview, constraint/draft warnings. Start button is DISABLED by design until M5 (needs G1).
+- Not done in T16: onboarding/assessment, swaps UI, explicit save-to-routine, persistence of preferences (DataStore), Room wiring.

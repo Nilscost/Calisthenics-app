@@ -250,6 +250,10 @@ fun CalisthenicsMemoryApp(
                 is Screen.Home -> HomeScreen(
                     onNavigate = { screen -> currentScreen = screen }
                 )
+                is Screen.Today -> {
+                    BackHandler { currentScreen = Screen.Home }
+                    io.github.gonbei774.calisthenicsmemory.ui.screens.TodayScreen(onBack = { currentScreen = Screen.Home })
+                }
                 is Screen.ToDo -> {
                     BackHandler { currentScreen = Screen.Home }
                     ToDoScreen(
@@ -446,6 +450,7 @@ fun CalisthenicsMemoryApp(
 
 sealed class Screen {
     object Home : Screen()
+    object Today : Screen()
     object ToDo : Screen()
     object Create : Screen()
     object Settings : Screen()
@@ -470,6 +475,7 @@ private val ScreenSaver = mapSaver(
         buildMap {
             when (screen) {
                 Screen.Home -> put("type", "Home")
+                Screen.Today -> put("type", "Today")
                 Screen.ToDo -> put("type", "ToDo")
                 Screen.Create -> put("type", "Create")
                 Screen.Settings -> put("type", "Settings")
@@ -515,6 +521,7 @@ private val ScreenSaver = mapSaver(
     },
     restore = { map ->
         when (map["type"] as String) {
+            "Today" -> Screen.Today
             "ToDo" -> Screen.ToDo
             "Create" -> Screen.Create
             "Settings" -> Screen.Settings

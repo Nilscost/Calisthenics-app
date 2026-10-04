@@ -71,6 +71,14 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(64.dp))
 
+            MainButton(
+                text = "Today's workout (new)",
+                color = appColors.cardBackground,
+                onClick = { onNavigate(Screen.Today) }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             // To Do Button
             MainButton(
                 text = stringResource(R.string.todo_title),
