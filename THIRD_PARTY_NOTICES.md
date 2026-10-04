@@ -1,5 +1,69 @@
 # Third-party inventory
 
-This handoff contains planning documents, a prior landscape survey and original project-support scripts. No third-party application code or exercise demo assets have been vendored. Links in the survey are research leads, not a license grant.
+Generated 2026-10-04 from `./gradlew :app:dependencies --configuration releaseRuntimeClasspath` (artifact names only, not versions).
+Licences below are from the publishers' well-known licensing, NOT re-verified artifact by artifact; "UNVERIFIED" blocks distribution until checked.
 
-Before adding code/data/media, add an entry containing: component/asset ID; upstream URL; exact revision/hash; author; license identifier/full text location; attribution requirements; modifications; redistribution/offline permission; reviewer; affected files. Unknown rights block distribution of that component. The Android framework/dependency inventory will be added after actual dependency selection.
+## Code foundation
+- CalisthenicsMemory (upstream commit 045b8577), **GPL-3.0**. Full text: `LICENSE-UPSTREAM-CALISTHENICSMEMORY`. This app is a derivative work, so it must be distributed under GPL-3.0-compatible terms (see `LICENSE-NOT-SELECTED.md`; owner decides final licence at T24/G6).
+
+## Original content
+- `content/starter/catalog.json`: original wording and heuristic numbers by this project. Five books are cited only for ladder order and movement choice; no book text copied (see `content/starter/SOURCES.md`). Status: DRAFT.
+- No exercise demo videos/images are included.
+
+## Runtime libraries (release classpath)
+| Group | Artifacts | Licence |
+|---|---|---|
+| androidx.activity | activity, activity-compose, activity-ktx | Apache-2.0 |
+| androidx.annotation | annotation, annotation-experimental, annotation-jvm | Apache-2.0 |
+| androidx.appcompat | appcompat, appcompat-resources | Apache-2.0 |
+| androidx.arch.core | core-common, core-runtime | Apache-2.0 |
+| androidx.autofill | autofill | Apache-2.0 |
+| androidx.collection | collection, collection-jvm, collection-ktx | Apache-2.0 |
+| androidx.compose | compose-bom | Apache-2.0 |
+| androidx.compose.animation | animation, animation-android, animation-core, animation-core-android | Apache-2.0 |
+| androidx.compose.foundation | foundation, foundation-android, foundation-layout, foundation-layout-android | Apache-2.0 |
+| androidx.compose.material | material-icons-core, material-icons-core-android, material-ripple, material-ripple-android | Apache-2.0 |
+| androidx.compose.material3 | material3, material3-android | Apache-2.0 |
+| androidx.compose.runtime | runtime, runtime-android, runtime-saveable, runtime-saveable-android | Apache-2.0 |
+| androidx.compose.ui | ui, ui-android, ui-geometry, ui-geometry-android, ui-graphics, ui-graphics-android, ui-text, ui-text-android, ui-tooling | Apache-2.0 |
+| androidx.concurrent | concurrent-futures | Apache-2.0 |
+| androidx.core | core, core-ktx | Apache-2.0 |
+| androidx.cursoradapter | cursoradapter | Apache-2.0 |
+| androidx.customview | customview, customview-poolingcontainer | Apache-2.0 |
+| androidx.drawerlayout | drawerlayout | Apache-2.0 |
+| androidx.emoji2 | emoji2, emoji2-views-helper | Apache-2.0 |
+| androidx.fragment | fragment | Apache-2.0 |
+| androidx.graphics | graphics-path | Apache-2.0 |
+| androidx.interpolator | interpolator | Apache-2.0 |
+| androidx.lifecycle | lifecycle-common, lifecycle-common-java8, lifecycle-common-jvm, lifecycle-livedata, lifecycle-livedata-core, lifecycle-l | Apache-2.0 |
+| androidx.loader | loader | Apache-2.0 |
+| androidx.profileinstaller | profileinstaller | Apache-2.0 |
+| androidx.resourceinspection | resourceinspection-annotation | Apache-2.0 |
+| androidx.room | room-common, room-ktx, room-runtime | Apache-2.0 |
+| androidx.savedstate | savedstate, savedstate-ktx | Apache-2.0 |
+| androidx.sqlite | sqlite, sqlite-framework | Apache-2.0 |
+| androidx.startup | startup-runtime | Apache-2.0 |
+| androidx.tracing | tracing | Apache-2.0 |
+| androidx.vectordrawable | vectordrawable, vectordrawable-animated | Apache-2.0 |
+| androidx.versionedparcelable | versionedparcelable | Apache-2.0 |
+| androidx.viewpager | viewpager | Apache-2.0 |
+| com.google.guava | listenablefuture | Apache-2.0 |
+| com.mikepenz | aboutlibraries-compose-m3, aboutlibraries-compose-m3-android, aboutlibraries-core, aboutlibraries-core-android | Apache-2.0 |
+| org.jetbrains | annotations | Apache-2.0 |
+| org.jetbrains.androidx.lifecycle | lifecycle-common, lifecycle-runtime, lifecycle-runtime-compose, lifecycle-viewmodel | Apache-2.0 |
+| org.jetbrains.compose.animation | animation, animation-core | Apache-2.0 |
+| org.jetbrains.compose.annotation-internal | annotation | Apache-2.0 |
+| org.jetbrains.compose.collection-internal | collection | Apache-2.0 |
+| org.jetbrains.compose.foundation | foundation, foundation-layout | Apache-2.0 |
+| org.jetbrains.compose.material3 | material3 | Apache-2.0 |
+| org.jetbrains.compose.runtime | runtime, runtime-saveable | Apache-2.0 |
+| org.jetbrains.compose.ui | ui, ui-geometry, ui-graphics, ui-text, ui-tooling-preview, ui-unit, ui-util | Apache-2.0 |
+| org.jetbrains.kotlin | kotlin-stdlib, kotlin-stdlib-common, kotlin-stdlib-jdk7, kotlin-stdlib-jdk8 | Apache-2.0 |
+| org.jetbrains.kotlinx | atomicfu, atomicfu-jvm, kotlinx-collections-immutable, kotlinx-collections-immutable-jvm, kotlinx-coroutines-android, ko | Apache-2.0 |
+| sh.calvin.reorderable | reorderable, reorderable-android | Apache-2.0 (to be confirmed from POM) |
+
+## Build/test only (not shipped)
+JUnit 4 (EPL-1.0), Gradle, Kotlin compiler, KSP, Android SDK (see its own terms).
+
+## Rule
+Before adding code/data/media: add an entry with upstream URL, revision, author, licence, attribution, modifications, redistribution permission.

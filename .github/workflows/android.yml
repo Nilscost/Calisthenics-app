@@ -1,0 +1,15 @@
+name: verify
+on: [push, pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
+      - uses: android-actions/setup-android@v3
+      - run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - run: python3 tools/preflight.py
+      - run: python3 tools/check_migration_sql.py
+      - run: bash scripts/verify.sh   # tests + lint + APK + content validation; fails on any error
+      # No signing keys, no user data, no upload steps.

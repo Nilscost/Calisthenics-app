@@ -51,7 +51,3 @@ Added: T10/T11 planner (`planner/Planner.kt`, 30 tests), T14 session reducer (`s
 
 ### Still open
 Starter catalog (`content/starter/catalog.json`) in the new model; Android side (M0 fixes, Room, UI, service); G1 phone test.
-
-## Update 2026-10-04 (9): T16 slice 2 (starting level)
-- Onboarding screen: per-exercise starting step slider (default step 1, no max-effort test); stored as SelfAssessment actions replayed by the progression engine; Today plan now uses those tiers.
-- Verified: unit tests + lint + assembleDebug. Not device-tested.
