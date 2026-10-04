@@ -95,6 +95,14 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            MainButton(
+                text = "Backup (new)",
+                color = appColors.cardBackground,
+                onClick = { onNavigate(Screen.Backup2) }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             // To Do Button
             MainButton(
                 text = stringResource(R.string.todo_title),
