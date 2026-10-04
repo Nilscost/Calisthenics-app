@@ -36,3 +36,18 @@ Compiled and tested the draft code in the sandbox. `./gradlew --offline :domain:
 Committed: T05 model, T06 catalog validator, T08 equipment, T09 routine/focus, T12 feedback, T13 progression engine (domain module only).
 Not started: starter `catalog.json`, planner (T10/T11), session engine (T14), M0 phone-test fixes (need Android SDK).
 Known gap: the engine's equipment prerequisites are left to the planner; the owner-review report task was removed until it exists.
+
+## Update 2026-10-04 (2) — planner + session reducer
+`./gradlew --offline :domain:test` → BUILD SUCCESSFUL, 110 tests, 0 failures. Log: `domain-tests-2026-10-04-planner-session.log`.
+Added: T10/T11 planner (`planner/Planner.kt`, 30 tests), T14 session reducer (`session/SessionReducer.kt`, 25 tests).
+
+### Choices I made that are NOT in the approved ADR (owner review at G2)
+- MAX_ROUNDS = 6 (cap on circuit repetitions).
+- Minimum stretch segment 10 s (constant defined, not yet enforced).
+- Unilateral stretches split the recovery window in two equal halves (L/R); a 20 s window gives 10 s per side.
+- Slots are dropped only if `optional`; optional slots are dropped from the END of the routine first.
+- Skill-goal planning (ADR B4) is NOT implemented: the planner warns and ignores a selected goal.
+- Equipment prerequisites for progression successors are not checked in the engine.
+
+### Still open
+Starter catalog (`content/starter/catalog.json`) in the new model; Android side (M0 fixes, Room, UI, service); G1 phone test.
