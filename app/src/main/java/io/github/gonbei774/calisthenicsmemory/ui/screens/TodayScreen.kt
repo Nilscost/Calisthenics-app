@@ -26,9 +26,10 @@ private fun fmt(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 fun TodayScreen(onBack: () -> Unit) {
     val ctx = LocalContext.current
     val catalog = remember { ctx.assets.open("catalog.json").bufferedReader().use { parseCatalog(it.readText()) } }
-    var minutes by rememberSaveable { mutableIntStateOf(45) }
-    var stretch by rememberSaveable { mutableStateOf(true) }
-    var profileId by rememberSaveable { mutableStateOf("home") }
+    val saved = remember { PrefsStore.load(ctx) }
+    var minutes by rememberSaveable { mutableIntStateOf(saved.defaultDurationSeconds / 60) }
+    var stretch by rememberSaveable { mutableStateOf(saved.stretchOn) }
+    var profileId by rememberSaveable { mutableStateOf(saved.selectedProfileId) }
     var focusNames by rememberSaveable { mutableStateOf(listOf("FULL_BODY")) }
     val focus = focusNames.map { StrengthFocus.valueOf(it) }.toSet()
     val profile = SeedProfiles.all.first { it.id == profileId }
@@ -73,6 +74,10 @@ fun TodayScreen(onBack: () -> Unit) {
                         Text("${fmt(b.durationSeconds)}  $name ${if (b.side != Side.NONE) "(${b.side.name.lowercase()})" else ""} $tgt".trim())
                     }
                     Spacer(Modifier.height(8.dp))
+                    OutlinedButton(onClick = {
+                        PrefsStore.save(ctx, app.calisthenics.domain.routine.rememberOnStart(saved,
+                            SessionDraft.from(saved, StarterRoutine.routine).copy(durationSeconds = minutes * 60, stretchOn = stretch, profileId = profileId)))
+                    }) { Text("Remember these settings") }
                     Button(onClick = {}, enabled = false) { Text("Start (needs the G1 phone test first)") }
                 }
             }

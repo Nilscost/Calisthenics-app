@@ -79,6 +79,14 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            MainButton(
+                text = "Exercise library (new)",
+                color = appColors.cardBackground,
+                onClick = { onNavigate(Screen.Library) }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             // To Do Button
             MainButton(
                 text = stringResource(R.string.todo_title),
