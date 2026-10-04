@@ -51,3 +51,8 @@ Added: T10/T11 planner (`planner/Planner.kt`, 30 tests), T14 session reducer (`s
 
 ### Still open
 Starter catalog (`content/starter/catalog.json`) in the new model; Android side (M0 fixes, Room, UI, service); G1 phone test.
+
+## Update 2026-10-04 (10): swaps + history screen
+- Today: per-slot swap chips (today only), Undo, explicit "Save swaps to my usual plan" -> new routine revision in app-private storage.
+- History screen reads Room history tables, weekly summaries; empty until real sessions exist (M5).
+- Verified: unit tests + lint + assembleDebug; not device-tested.

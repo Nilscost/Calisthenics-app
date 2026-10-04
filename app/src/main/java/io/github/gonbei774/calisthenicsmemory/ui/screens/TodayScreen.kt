@@ -16,7 +16,7 @@ import app.calisthenics.domain.equipment.SeedProfiles
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.planner.*
 import app.calisthenics.domain.routine.SessionDraft
-import app.calisthenics.domain.routine.StarterRoutine
+import app.calisthenics.domain.routine.saveSwapsToRoutine
 import app.calisthenics.domain.routine.toggleFocus
 
 private fun fmt(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
@@ -26,6 +26,8 @@ private fun fmt(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit = {}) {
     val ctx = LocalContext.current
     val catalog = remember { ctx.assets.open("catalog.json").bufferedReader().use { parseCatalog(it.readText()) } }
+    var routine by remember { mutableStateOf(RoutineStore.load(ctx)) }
+    var swaps by remember { mutableStateOf(emptyMap<String, String>()) }
     val saved = remember { PrefsStore.load(ctx) }
     var minutes by rememberSaveable { mutableIntStateOf(saved.defaultDurationSeconds / 60) }
     var stretch by rememberSaveable { mutableStateOf(saved.stretchOn) }
@@ -35,10 +37,10 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit = {}) {
     val profile = SeedProfiles.all.first { it.id == profileId }
 
     val progress = remember { LevelStore.snapshot(catalog, LevelStore.load(ctx)) }
-    val result = remember(minutes, stretch, profileId, focusNames, progress) {
-        val draft = SessionDraft.from(Preferences(defaultDurationSeconds = minutes * 60, stretchOn = stretch, selectedProfileId = profileId), StarterRoutine.routine)
-            .copy(focus = focus)
-        generate(PlanInput("preview", System.currentTimeMillis(), 0, catalog, StarterRoutine.routine, draft, profile, progress = progress))
+    val result = remember(minutes, stretch, profileId, focusNames, progress, routine, swaps) {
+        val draft = SessionDraft.from(Preferences(defaultDurationSeconds = minutes * 60, stretchOn = stretch, selectedProfileId = profileId), routine)
+            .copy(focus = focus, swaps = swaps)
+        generate(PlanInput("preview", System.currentTimeMillis(), 0, catalog, routine, draft, profile, progress = progress))
     }
     val names = remember(catalog) { catalog.variations.associate { it.id to it.name } }
 
@@ -75,10 +77,23 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit = {}) {
                         val tgt = b.target?.let { if (it.type == TargetType.REPS) "${it.value} reps" else "${it.value}s hold" } ?: ""
                         Text("${fmt(b.durationSeconds)}  $name ${if (b.side != Side.NONE) "(${b.side.name.lowercase()})" else ""} $tgt".trim())
                     }
+                    HorizontalDivider()
+                    Text("Swap an exercise (today only)", style = MaterialTheme.typography.titleSmall)
+                    routine.slots.forEach { slot ->
+                        val cur = swaps[slot.id] ?: slot.preferredVariationId
+                        val options = catalog.variations.filter { (it.kind == Kind.REPS || it.kind == Kind.HOLD) && slot.area in it.areas && slot.intent in it.patterns }
+                        if (options.size > 1) Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            options.forEach { o -> FilterChip(selected = o.id == cur, onClick = { swaps = swaps + (slot.id to o.id) }, label = { Text(o.name) }) }
+                        }
+                    }
+                    if (swaps.isNotEmpty()) {
+                        OutlinedButton(onClick = { swaps = emptyMap() }) { Text("Undo swaps") }
+                        OutlinedButton(onClick = { routine = saveSwapsToRoutine(routine, swaps); RoutineStore.save(ctx, routine); swaps = emptyMap() }) { Text("Save swaps to my usual plan") }
+                    }
                     Spacer(Modifier.height(8.dp))
                     OutlinedButton(onClick = {
                         PrefsStore.save(ctx, app.calisthenics.domain.routine.rememberOnStart(saved,
-                            SessionDraft.from(saved, StarterRoutine.routine).copy(durationSeconds = minutes * 60, stretchOn = stretch, profileId = profileId)))
+                            SessionDraft.from(saved, routine).copy(durationSeconds = minutes * 60, stretchOn = stretch, profileId = profileId)))
                     }) { Text("Remember these settings") }
                     Button(onClick = {}, enabled = false) { Text("Start (needs the G1 phone test first)") }
                 }
