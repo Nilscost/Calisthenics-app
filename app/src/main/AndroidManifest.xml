@@ -46,7 +46,7 @@
         <!-- T04 runtime-feasibility spike (disposable probe, not production content).
              Keeps a service-owned timer alive with a foreground notification so G1 can
              measure whether the foreground-service path survives a locked S21.
-             exported="true" so the S21 session can start it directly via adb
+             exported="false": started only from the in-app G1 screen (no adb needed)
              (`am start-foreground-service`) without depending on the androidTest
              APK (whose KSP build needs sqlite-jdbc natives unavailable in the
              sandbox). Disposable: the spike is deleted before T15, taking this
@@ -54,7 +54,7 @@
         <service
             android:name=".spike.SpikeSessionService"
             android:foregroundServiceType="specialUse"
-            android:exported="true">
+            android:exported="false">
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="T04 runtime-feasibility spike (disposable probe for G1): service-owned timer with foreground notification to test background/lock survival." />

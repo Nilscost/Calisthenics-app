@@ -86,7 +86,7 @@ service that:
   **Stop** action and a completion marker file (`spike_done.txt`).
 
 `SpikeRuntimeFeasibilityTest` (androidTest) starts it, waits for the marker
-(30 s budget), and asserts every planned cue fired with max |drift| < 4 s.
+(30 s budget), and asserts every planned cue fired with max |drift| <= 1 s.
 **A timeout is itself valid G1 evidence** (service not kept alive in that
 state). See `spikes/android-session-runtime/README.md` for the full runbook.
 
@@ -95,7 +95,7 @@ state). See `spikes/android-session-runtime/README.md` for the full runbook.
 | Check | Pass criterion | If it fails |
 |---|---|---|
 | A02 liveness (locked, other app FG, airplane) | Every cue fires; no missed boundary; total within schedule ± 60 s underfill tolerance | Runtime strategy does not hold → revise ADR (service type, wakelock, or move to a WorkManager/notification-alarm fallback) and re-spike |
-| Cue timing accuracy | Max |delta| per boundary < 5 s (the spec's transition budget) for the full synthetic run | Drift > 5 s → monotonic base is wrong or the timer thread is being throttled; inspect |
+| Cue timing accuracy | Max |delta| per cue <= 1 s and total <= 2 s (spec A02; unified in M0) for the full synthetic run | Drift > 5 s → monotonic base is wrong or the timer thread is being throttled; inspect |
 | A03 audio with music | Cue audible while music plays, no crash on focus loss/gain | Adjust `AudioAttributes` usage (USAGE_MEDIA) or cue scheduling |
 | Notification visibility | Foreground notification shown (POST_NOTIFICATIONS granted) and survives lock | Grant flow is wrong; Samsung may then kill the service — retest after grant |
 | No network used | Airplane mode throughout; nothing touches the network | N/A (spike is offline by construction) |

@@ -52,9 +52,9 @@ Added: T10/T11 planner (`planner/Planner.kt`, 30 tests), T14 session reducer (`s
 ### Still open
 Starter catalog (`content/starter/catalog.json`) in the new model; Android side (M0 fixes, Room, UI, service); G1 phone test.
 
-## Update 2026-10-04 (3): starter catalog (DRAFT)
-- `tools/gen_starter_catalog.py` generates `content/starter/catalog.json` (13 strength + 7 stretch/mobility, 13 policies, 4 skill nodes), all DRAFT / PRODUCT_HEURISTIC.
-- `StarterCatalogTest` (8 tests) validates it with `validateCatalog`, incl. production mode rejecting DRAFT.
-- Result: 118 domain tests, 0 failures (`domain-tests-2026-10-04-catalog.log`).
-- Sources and their limits: `content/starter/SOURCES.md` (books were not read, only reviews/TOCs).
-- Plan said 14 strength records; its own list has 13.
+## Update 2026-10-04 (4): Android SDK + M0 harness
+- SDK: sdkmanager cannot use the sandbox's proxy CA, so platform-35 and build-tools 35.0.0 were downloaded with curl and unpacked into /opt/android-sdk. Sandbox note: /tmp is noexec, so builds need `JAVA_TOOL_OPTIONS=-Dorg.sqlite.tmpdir=<exec dir>` for Room's KSP step.
+- Evidence: `m0-verify-2026-10-04.log` = domain + data + app unit tests, lintDebug, assembleDebug all BUILD SUCCESSFUL.
+- M0 done in code (NOT yet run on a phone): G1 thresholds unified (1 s per cue, 2 s total) in service, androidTest and ADR 0003; spike service exported=false; start waits for SoundPool load; offline-TTS preflight + per-cue speak result; audio-focus MAY_DUCK around cues; debug-only "G1 test" launcher (smoke 15 s / full 45:40 / stop / share CSV+summary); versionName 0.2.0-m0.
+- Shared debug key: `Apps/keys/calisthenics-debug.jks` (outside git). Each build machine needs `calisthenics.debugKeystore=<path>` in ~/.gradle/gradle.properties.
+- APK: `Apps/builds/app-debug-M0.apk`.

@@ -95,12 +95,11 @@ class SpikeRuntimeFeasibilityTest {
         val expectedCues = blocks + (blocks - 1)
         Assert.assertEquals("expected $expectedCues boundary cues", expectedCues, deltas.size)
 
-        // Loose liveness bound: a healthy service-owned timer should not drift
-        // more than a couple seconds per 1.5s boundary under normal conditions.
+        // G1 threshold (spec A02): each cue at most 1 s late.
         // A larger drift (or the timeout above) is the signal G1 records.
         Assert.assertTrue(
-            "maxAbsDeltaMs=$maxAbs exceeds loose liveness bound",
-            maxAbs < 4_000L
+            "maxAbsDeltaMs=$maxAbs exceeds the 1 s per-cue G1 threshold",
+            maxAbs <= SpikeSessionService.MAX_CUE_DELTA_MS
         )
     }
 }

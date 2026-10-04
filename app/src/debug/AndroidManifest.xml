@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- Debug-only second launcher icon: the G1 runtime test screen. -->
+        <activity
+            android:name="io.github.gonbei774.calisthenicsmemory.spike.G1TestActivity"
+            android:exported="true"
+            android:label="G1 test"
+            android:theme="@style/Theme.CalisthenicsMemory">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.g1share"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/g1_paths" />
+        </provider>
+    </application>
+</manifest>

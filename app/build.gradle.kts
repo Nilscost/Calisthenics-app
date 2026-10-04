@@ -28,7 +28,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 1
-        versionName = "0.1.0-t03"
+        versionName = "0.2.0-m0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,6 +42,18 @@ android {
 
     // 署名設定
     signingConfigs {
+        // One shared DEBUG key (not a secret: debug builds only) so APKs built in the sandbox
+        // and on the Mac can update each other without wiping data. Path comes from the Gradle
+        // property calisthenics.debugKeystore; absent = Android's default debug key.
+        val sharedDebug = (findProperty("calisthenics.debugKeystore") as String?)?.let { file(it) }
+        if (sharedDebug != null && sharedDebug.exists()) {
+            getByName("debug") {
+                storeFile = sharedDebug
+                storePassword = "android"
+                keyAlias = "calisthenicsdebug"
+                keyPassword = "android"
+            }
+        }
         create("release") {
             if (keystorePropertiesFile.exists()) {
                 storeFile = file(keystoreProperties["storeFile"].toString())
