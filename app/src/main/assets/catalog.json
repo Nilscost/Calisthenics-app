@@ -289,6 +289,14 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "ABS"
       ]
     },
     {
@@ -332,6 +340,13 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS"
       ]
     },
     {
@@ -377,6 +392,14 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "ABS"
       ]
     },
     {
@@ -428,6 +451,14 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "UPPER_BACK",
+        "LATS"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "REAR_DELTS"
       ]
     },
     {
@@ -481,6 +512,15 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "BICEPS"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK",
+        "FOREARMS",
+        "REAR_DELTS"
       ]
     },
     {
@@ -525,6 +565,14 @@
         "stretch-hip-flexor",
         "stretch-hamstring",
         "stretch-calf-wall"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "CALVES"
       ]
     },
     {
@@ -568,6 +616,14 @@
         "stretch-hip-flexor",
         "stretch-hamstring",
         "stretch-calf-wall"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "ADDUCTORS"
       ]
     },
     {
@@ -609,6 +665,13 @@
       "compatibleStretchIds": [
         "stretch-hip-flexor",
         "stretch-back"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK"
       ]
     },
     {
@@ -650,6 +713,14 @@
       "compatibleStretchIds": [
         "stretch-back",
         "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "LOWER_BACK",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "REAR_DELTS",
+        "HAMSTRINGS"
       ]
     },
     {
@@ -700,6 +771,14 @@
       "compatibleStretchIds": [
         "stretch-hamstring",
         "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK",
+        "FOREARMS"
       ]
     },
     {
@@ -742,6 +821,14 @@
       "compatibleStretchIds": [
         "stretch-back",
         "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "OBLIQUES",
+        "FRONT_DELTS",
+        "GLUTES"
       ]
     },
     {
@@ -782,6 +869,14 @@
       "compatibleStretchIds": [
         "stretch-back",
         "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "OBLIQUES"
+      ],
+      "secondaryMuscles": [
+        "ABS",
+        "GLUTES",
+        "SIDE_DELTS"
       ]
     },
     {
@@ -822,6 +917,13 @@
       "compatibleStretchIds": [
         "stretch-back",
         "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "HIP_FLEXORS",
+        "OBLIQUES"
       ]
     },
     {
@@ -874,6 +976,14 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "CHEST",
+        "FRONT_DELTS"
+      ],
+      "secondaryMuscles": [
+        "TRICEPS",
+        "ABS"
       ]
     },
     {
@@ -915,6 +1025,13 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "TRICEPS",
+        "CHEST"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS"
       ]
     },
     {
@@ -956,6 +1073,14 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "OBLIQUES"
       ]
     },
     {
@@ -998,6 +1123,15 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "ABS",
+        "OBLIQUES"
       ]
     },
     {
@@ -1039,6 +1173,15 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "ABS",
+        "OBLIQUES"
       ]
     },
     {
@@ -1081,6 +1224,14 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "SIDE_DELTS",
+        "UPPER_BACK"
       ]
     },
     {
@@ -1131,6 +1282,14 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "SIDE_DELTS",
+        "UPPER_BACK"
       ]
     },
     {
@@ -1178,6 +1337,14 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK",
+        "ABS"
       ]
     },
     {
@@ -1229,6 +1396,15 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "SIDE_DELTS",
+        "UPPER_BACK",
+        "ABS"
       ]
     },
     {
@@ -1280,6 +1456,15 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "SIDE_DELTS",
+        "UPPER_BACK",
+        "ABS"
       ]
     },
     {
@@ -1328,6 +1513,15 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "BICEPS"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK",
+        "FOREARMS",
+        "REAR_DELTS"
       ]
     },
     {
@@ -1375,6 +1569,15 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "BICEPS"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK",
+        "FOREARMS",
+        "REAR_DELTS"
       ]
     },
     {
@@ -1426,6 +1629,15 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "CHEST",
+        "BICEPS",
+        "FOREARMS"
       ]
     },
     {
@@ -1477,6 +1689,14 @@
         "stretch-hip-flexor",
         "stretch-hamstring",
         "stretch-calf-wall"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "HIP_FLEXORS"
       ]
     },
     {
@@ -1519,6 +1739,14 @@
         "stretch-hip-flexor",
         "stretch-hamstring",
         "stretch-calf-wall"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "HIP_FLEXORS"
       ]
     },
     {
@@ -1562,6 +1790,15 @@
         "stretch-hip-flexor",
         "stretch-hamstring",
         "stretch-calf-wall"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "ADDUCTORS",
+        "CALVES"
       ]
     },
     {
@@ -1605,6 +1842,15 @@
         "stretch-hip-flexor",
         "stretch-hamstring",
         "stretch-calf-wall"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "ADDUCTORS",
+        "CALVES"
       ]
     },
     {
@@ -1646,6 +1892,14 @@
       "compatibleStretchIds": [
         "stretch-hip-flexor",
         "stretch-back"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK",
+        "OBLIQUES"
       ]
     },
     {
@@ -1688,6 +1942,15 @@
       "compatibleStretchIds": [
         "stretch-hip-flexor",
         "stretch-back"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "LOWER_BACK"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "TRICEPS",
+        "QUADS"
       ]
     },
     {
@@ -1729,6 +1992,13 @@
       "compatibleStretchIds": [
         "stretch-back",
         "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "HIP_FLEXORS",
+        "QUADS"
       ]
     },
     {
@@ -1771,6 +2041,15 @@
       "compatibleStretchIds": [
         "stretch-back",
         "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "ABS",
+        "HIP_FLEXORS"
+      ],
+      "secondaryMuscles": [
+        "TRICEPS",
+        "QUADS",
+        "FRONT_DELTS"
       ]
     },
     {
@@ -1812,6 +2091,15 @@
       "compatibleStretchIds": [
         "stretch-back",
         "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "ABS",
+        "HIP_FLEXORS"
+      ],
+      "secondaryMuscles": [
+        "TRICEPS",
+        "QUADS",
+        "FRONT_DELTS"
       ]
     },
     {
@@ -1853,6 +2141,13 @@
       "compatibleStretchIds": [
         "stretch-back",
         "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "ABS",
+        "HIP_FLEXORS"
+      ],
+      "secondaryMuscles": [
+        "OBLIQUES"
       ]
     },
     {
@@ -1894,6 +2189,13 @@
       "compatibleStretchIds": [
         "stretch-back",
         "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "ABS",
+        "HIP_FLEXORS"
+      ],
+      "secondaryMuscles": [
+        "QUADS"
       ]
     },
     {
@@ -1946,6 +2248,16 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "FOREARMS",
+        "REAR_DELTS",
+        "UPPER_BACK"
       ]
     },
     {
@@ -1998,6 +2310,16 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "FOREARMS",
+        "REAR_DELTS",
+        "UPPER_BACK"
       ]
     },
     {
@@ -2050,6 +2372,16 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "FOREARMS",
+        "REAR_DELTS",
+        "UPPER_BACK"
       ]
     },
     {
@@ -2093,6 +2425,15 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS",
+        "CHEST"
+      ],
+      "secondaryMuscles": [
+        "TRICEPS",
+        "ABS",
+        "FOREARMS"
       ]
     },
     {
@@ -2136,6 +2477,15 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS",
+        "CHEST"
+      ],
+      "secondaryMuscles": [
+        "TRICEPS",
+        "ABS",
+        "FOREARMS"
       ]
     },
     {
@@ -2179,6 +2529,565 @@
       "compatibleStretchIds": [
         "stretch-chest-door",
         "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS",
+        "CHEST"
+      ],
+      "secondaryMuscles": [
+        "TRICEPS",
+        "ABS",
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "inverted-row-bent-knees",
+      "familyId": "row",
+      "name": "Inverted Row (knees bent)",
+      "patterns": [
+        "PULL_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "low-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Lie under a low bar or a sturdy table edge, hands on it a little wider than the shoulders, knees bent, heels on the floor.",
+        "Pull the chest to the bar, body in one line from the shoulders to the knees.",
+        "Lower slowly to straight arms.",
+        "Make sure the bar or table cannot slide or tip."
+      ],
+      "formCues": [
+        "Squeeze the shoulder blades",
+        "Hips stay up",
+        "Slow lowering"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the bar or table is stable before every set."
+      ],
+      "difficultyRank": 20,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-inverted-row-bent-knees",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "UPPER_BACK",
+        "LATS"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "REAR_DELTS",
+        "ABS"
+      ]
+    },
+    {
+      "id": "inverted-row",
+      "familyId": "row",
+      "name": "Inverted Row",
+      "patterns": [
+        "PULL_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "low-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Same set-up with straight legs, heels on the floor, body in a straight plank line.",
+        "Pull the chest to the bar.",
+        "Lower slowly to straight arms.",
+        "Keep the hips from sagging."
+      ],
+      "formCues": [
+        "Plank line",
+        "Chest to the bar",
+        "Slow lowering"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the bar or table is stable before every set."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren",
+        "convict-conditioning-wade"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-inverted-row",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "UPPER_BACK",
+        "LATS"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "REAR_DELTS",
+        "ABS"
+      ]
+    },
+    {
+      "id": "inverted-row-feet-elevated",
+      "familyId": "row",
+      "name": "Inverted Row (feet elevated)",
+      "patterns": [
+        "PULL_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "low-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Rest the heels on a stable step or chair so the body is level or higher than the bar.",
+        "Pull the chest to the bar.",
+        "Lower slowly; keep the body straight."
+      ],
+      "formCues": [
+        "Level body",
+        "Controlled lowering"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the bar and the step are stable before every set."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-inverted-row-feet-elevated",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "UPPER_BACK",
+        "LATS"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "REAR_DELTS",
+        "ABS",
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "archer-row",
+      "familyId": "row",
+      "name": "Archer Row (per side)",
+      "patterns": [
+        "PULL_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "low-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "hang",
+      "instructions": [
+        "Set up like an inverted row with a wide grip.",
+        "Pull toward one hand while the other arm stays straight and helps a little.",
+        "Lower slowly and alternate sides; count both sides as one rep."
+      ],
+      "formCues": [
+        "Straight assisting arm",
+        "Slow lowering"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the bar is stable; stop on elbow or shoulder pain."
+      ],
+      "difficultyRank": 50,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-archer-row",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "UPPER_BACK"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "FOREARMS",
+        "OBLIQUES"
+      ]
+    },
+    {
+      "id": "arch-hold-y",
+      "familyId": "superman",
+      "name": "Arch Hold (arms overhead, Y)",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY",
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "prone",
+      "instructions": [
+        "Lie face down, arms overhead in a Y, forehead near the floor.",
+        "Lift arms, chest and legs together a few centimetres.",
+        "Hold with a long neck and steady breathing, then lower with control."
+      ],
+      "formCues": [
+        "Squeeze the glutes",
+        "Long neck",
+        "Small lift"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on any pinching in the lower back."
+      ],
+      "difficultyRank": 20,
+      "sourceIds": [
+        "building-the-gymnastic-body-sommer",
+        "overcoming-gravity-2-low"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-arch-hold-y",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "LOWER_BACK",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK",
+        "REAR_DELTS"
+      ]
+    },
+    {
+      "id": "arch-rocks",
+      "familyId": "superman",
+      "name": "Arch Rocks",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY",
+        "CORE"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "prone",
+      "instructions": [
+        "Get into the arch hold position, arms overhead.",
+        "Rock slowly forward and back a few centimetres, keeping the lift.",
+        "Stay controlled; stop the set when the lift drops."
+      ],
+      "formCues": [
+        "Slow rocking",
+        "Keep the arch"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on any pinching in the lower back."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-arch-rocks",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "LOWER_BACK",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK"
+      ]
+    },
+    {
+      "id": "side-plank-leg-raise",
+      "familyId": "side-plank",
+      "name": "Side Plank with Leg Raise (per side)",
+      "patterns": [
+        "CORE_ANTI_LATERAL"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "floor",
+      "instructions": [
+        "Get into a side plank on the forearm.",
+        "Raise the top leg a little, lower it slowly.",
+        "Keep the hips high all the time; switch sides after the set."
+      ],
+      "formCues": [
+        "Hips high",
+        "Slow leg"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-side-plank-leg-raise",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "OBLIQUES",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "ABS",
+        "SIDE_DELTS"
+      ]
+    },
+    {
+      "id": "copenhagen-side-plank",
+      "familyId": "side-plank",
+      "name": "Copenhagen Side Plank (per side)",
+      "patterns": [
+        "CORE_ANTI_LATERAL"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "chair",
+              "suitability": [
+                "stable"
+              ]
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "floor",
+      "instructions": [
+        "Lie on your side, forearm on the floor, top leg resting on a stable chair seat.",
+        "Lift the hips so the body forms a line; the lower leg hangs free or tucks.",
+        "Hold, then switch sides."
+      ],
+      "formCues": [
+        "Straight line",
+        "Hips high"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on groin or inner-thigh pain; build up slowly."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-copenhagen-side-plank",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "ADDUCTORS",
+        "OBLIQUES"
+      ],
+      "secondaryMuscles": [
+        "ABS",
+        "GLUTES"
+      ]
+    },
+    {
+      "id": "kettlebell-single-leg-rdl",
+      "familyId": "deadlift",
+      "name": "Kettlebell Single-Leg RDL (per side)",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "kettlebell",
+              "minMassGrams": 8000
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Hold the kettlebell in the hand opposite the standing leg.",
+        "Hinge at the hip, back flat, the free leg reaching behind.",
+        "Stand tall again by squeezing the glute; do not twist."
+      ],
+      "formCues": [
+        "Flat back",
+        "Hips square",
+        "Controlled tempo"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Controlled tempo only; no ballistic or swinging work in this one."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-kettlebell-single-leg-rdl",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK",
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "kettlebell-swing",
+      "familyId": "deadlift",
+      "name": "Kettlebell Swing",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "kettlebell",
+              "minMassGrams": 8000
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Stand with feet a little wider than the hips, kettlebell in front of you.",
+        "Hike the bell back between the legs, then drive the hips forward so the bell floats to chest height.",
+        "Let it fall back and hinge again; the arms only guide it."
+      ],
+      "formCues": [
+        "Hips drive, arms guide",
+        "Flat back",
+        "Stop when the form slips"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Ballistic movement: only after the deadlift and the single-leg RDL feel easy; use a light bell; stop on any back pain."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-kettlebell-swing",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK",
+        "FRONT_DELTS",
+        "FOREARMS"
       ]
     }
   ],
@@ -2460,7 +3369,10 @@
         "never-gymless-enamait"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
-      "approved": false
+      "approved": false,
+      "nextVariationIds": [
+        "inverted-row-bent-knees"
+      ]
     },
     {
       "id": "pol-pullup-band-assisted",
@@ -2778,7 +3690,10 @@
         "you-are-your-own-gym-lauren"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
-      "approved": false
+      "approved": false,
+      "nextVariationIds": [
+        "arch-hold-y"
+      ]
     },
     {
       "id": "pol-kettlebell-deadlift",
@@ -2836,7 +3751,10 @@
         "you-are-your-own-gym-lauren"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
-      "approved": false
+      "approved": false,
+      "nextVariationIds": [
+        "kettlebell-single-leg-rdl"
+      ]
     },
     {
       "id": "pol-plank",
@@ -2956,7 +3874,10 @@
         "you-are-your-own-gym-lauren"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
-      "approved": false
+      "approved": false,
+      "nextVariationIds": [
+        "side-plank-leg-raise"
+      ]
     },
     {
       "id": "pol-dead-bug",
@@ -3014,7 +3935,10 @@
         "you-are-your-own-gym-lauren"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
-      "approved": false
+      "approved": false,
+      "nextVariationIds": [
+        "hollow-hold"
+      ]
     },
     {
       "id": "pol-pushup-feet-elevated",
@@ -4520,6 +5444,12 @@
                 "variationId": "plank",
                 "tier": 4
               }
+            },
+            {
+              "variationTierMet": {
+                "variationId": "dead-bug",
+                "tier": 5
+              }
             }
           ]
         ]
@@ -5257,6 +6187,732 @@
               "variationTierMet": {
                 "variationId": "planche-tuck",
                 "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-inverted-row-bent-knees",
+      "variationId": "inverted-row-bent-knees",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 7
+          },
+          "workWindowSeconds": 55,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 9
+          },
+          "workWindowSeconds": 70,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 11
+          },
+          "workWindowSeconds": 80,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 13
+          },
+          "workWindowSeconds": 95,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "inverted-row"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "row-band",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-inverted-row",
+      "variationId": "inverted-row",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren",
+        "convict-conditioning-wade"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "inverted-row-feet-elevated"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "inverted-row-bent-knees",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-inverted-row-feet-elevated",
+      "variationId": "inverted-row-feet-elevated",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "archer-row"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "inverted-row",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-archer-row",
+      "variationId": "archer-row",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "inverted-row-feet-elevated",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-arch-hold-y",
+      "variationId": "arch-hold-y",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 40
+          },
+          "workWindowSeconds": 43,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 50
+          },
+          "workWindowSeconds": 53,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "building-the-gymnastic-body-sommer",
+        "overcoming-gravity-2-low"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "arch-rocks"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "superman-hold",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-arch-rocks",
+      "variationId": "arch-rocks",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "arch-hold-y",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-side-plank-leg-raise",
+      "variationId": "side-plank-leg-raise",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "copenhagen-side-plank"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "side-plank",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-copenhagen-side-plank",
+      "variationId": "copenhagen-side-plank",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 8,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 8
+          },
+          "workWindowSeconds": 11,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 12
+          },
+          "workWindowSeconds": 15,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 16
+          },
+          "workWindowSeconds": 19,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "side-plank-leg-raise",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-kettlebell-single-leg-rdl",
+      "variationId": "kettlebell-single-leg-rdl",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "kettlebell-swing"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "kettlebell-deadlift",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-kettlebell-swing",
+      "variationId": "kettlebell-swing",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 20
+          },
+          "workWindowSeconds": 135,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "kettlebell-single-leg-rdl",
+                "tier": 3
+              }
+            }
+          ],
+          [
+            {
+              "variationTierMet": {
+                "variationId": "kettlebell-deadlift",
+                "tier": 5
               }
             }
           ]

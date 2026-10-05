@@ -53,6 +53,13 @@ class PreviewScreenTest {
         rule.onNodeWithTag("exercise_name_push").assertTextEquals("Incline Push-Up")
     }
 
+    @Test fun cardsShowTheMusclesWorked() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("muscles_push").assertExists()
+        rule.onNodeWithTag("muscles_push").assert(hasAnyDescendant(hasText("Chest")))
+        rule.onNodeWithTag("muscles_core").assert(hasAnyDescendant(hasText("Abs")))
+    }
+
     @Test fun swapChangesTheCardAndOffersOnlySameMovementOptions() {
         show(); rule.waitForIdle()
         openSwap("push")

@@ -29,6 +29,7 @@ import app.calisthenics.domain.planner.*
 import app.calisthenics.domain.routine.saveSwapsToRoutine
 import app.calisthenics.domain.session.CueText
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.ui.components.MuscleChips
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore
 import io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore
 import io.github.gonbei774.calisthenicsmemory.ui.session.startWorkout
@@ -45,18 +46,6 @@ data class CircuitEntry(val slotId: String, val variationId: String, val target:
 fun circuitOf(plan: WorkoutPlan): List<CircuitEntry> =
     plan.blocks.filter { it.type == BlockType.WORK && (it.roundIndex ?: 1) == 1 && it.slotId != null && it.variationId != null }
         .groupBy { it.slotId!! }.values.map { bs -> CircuitEntry(bs.first().slotId!!, bs.first().variationId!!, bs.first().target, bs.size > 1) }
-
-private fun patternLabel(p: Pattern) = when (p) {
-    Pattern.PUSH_HORIZONTAL -> R.string.pattern_push_horizontal
-    Pattern.PUSH_VERTICAL -> R.string.pattern_push_vertical
-    Pattern.PULL_HORIZONTAL -> R.string.pattern_pull_horizontal
-    Pattern.PULL_VERTICAL -> R.string.pattern_pull_vertical
-    Pattern.SQUAT -> R.string.pattern_squat
-    Pattern.LUNGE -> R.string.pattern_lunge
-    Pattern.HINGE -> R.string.pattern_hinge
-    Pattern.CORE_ANTI_EXTENSION, Pattern.CORE_ANTI_LATERAL -> R.string.pattern_core
-    else -> R.string.pattern_other
-}
 
 @Composable
 private fun targetText(t: Target?, perSide: Boolean): String {
@@ -169,11 +158,7 @@ private fun ExerciseCard(e: CircuitEntry, v: ExerciseVariation?, name: String, o
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                 Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("exercise_name_${e.slotId}"))
                 Text(targetText(e.target, e.perSide), style = MaterialTheme.typography.bodyLarge)
-                v?.patterns?.firstOrNull()?.let {
-                    Surface(shape = RoundedCornerShape(8.dp), color = MaterialTheme.colorScheme.surfaceVariant) {
-                        Text(stringResource(patternLabel(it)), Modifier.padding(horizontal = Spacing.s, vertical = 2.dp), style = MaterialTheme.typography.labelMedium)
-                    }
-                }
+                if (v != null && v.primaryMuscles.isNotEmpty()) MuscleChips(v.primaryMuscles, v.secondaryMuscles.take(2), Modifier.testTag("muscles_${e.slotId}"))
             }
             IconButton(onClick = onSwap, modifier = Modifier.testTag("swap_${e.slotId}")) { Icon(Icons.Filled.Refresh, stringResource(R.string.preview_swap, name)) }
         }

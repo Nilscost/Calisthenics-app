@@ -6,6 +6,11 @@ import kotlinx.serialization.Serializable
 
 // ---------- enums ----------
 
+@Serializable enum class Muscle {
+    CHEST, FRONT_DELTS, SIDE_DELTS, REAR_DELTS, TRICEPS, BICEPS, FOREARMS, LATS, UPPER_BACK, LOWER_BACK,
+    ABS, OBLIQUES, GLUTES, QUADS, HAMSTRINGS, CALVES, HIP_FLEXORS, ADDUCTORS,
+}
+
 @Serializable enum class Kind { REPS, HOLD, STRETCH, MOBILITY }
 
 /** Strength areas used by focus selection. */
@@ -154,6 +159,9 @@ data class ExerciseVariation(
     val compatibleStretchIds: List<String> = emptyList(),
     /** For STRETCH / MOBILITY: seconds per side (unilateral) or total. */
     val defaultSeconds: Int? = null,
+    /** U09 (F9): muscles worked. Primary = the main movers (clips colour them saturated), secondary = helpers (light). */
+    val primaryMuscles: List<Muscle> = emptyList(),
+    val secondaryMuscles: List<Muscle> = emptyList(),
 )
 
 @Serializable enum class EdgeRelation { PREREQUISITE, RECOMMENDED_PREPARATION }

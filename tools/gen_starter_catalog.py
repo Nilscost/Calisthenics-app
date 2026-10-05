@@ -308,6 +308,70 @@ ex("planche-adv-tuck", "Advanced Tuck Planche", "planche", "PUSH_HORIZONTAL", ["
    ["Open the hips so the back is flat and horizontal.", "Arms straight, shoulders forward.", "Hold."],
    hold_tiers([2, 3, 5, 8, 10], stretch="stretch-shoulder"), [S_OG, S_GB], UP, rank=60, prereq={"allOf": [[vt("planche-tuck", 4)]]},
    cautions=(CAUTION_STRENGTH, "Wrist-heavy: stop on wrist pain."))
+# ---------------- U09: new progression chains (owner OK on plan 4.1, 2026-10-05; DRAFT numbers) ----------------
+LOWBAR = [{"needs": [need("low-bar")]}]
+CHAIR_STABLE = [{"needs": [need("chair", suitability=["stable"])]}]
+KB = [{"needs": [need("kettlebell", minMassGrams=8000)]}]
+
+# horizontal pull: band row -> inverted rows -> archer row
+strength("inverted-row-bent-knees", "Inverted Row (knees bent)", "row", ["PULL_HORIZONTAL"], ["UPPER_BODY"], "REPS", "hang",
+         ["Lie under a low bar or a sturdy table edge, hands on it a little wider than the shoulders, knees bent, heels on the floor.", "Pull the chest to the bar, body in one line from the shoulders to the knees.",
+          "Lower slowly to straight arms.", "Make sure the bar or table cannot slide or tip."],
+         ["Squeeze the shoulder blades", "Hips stay up", "Slow lowering"],
+         reps_tiers([5, 7, 9, 11, 13]), [S_OG, S_YG], UP, eq=LOWBAR, rank=20, nxt=["inverted-row"], prereq={"allOf": [[vt("row-band", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Check that the bar or table is stable before every set."))
+strength("inverted-row", "Inverted Row", "row", ["PULL_HORIZONTAL"], ["UPPER_BODY"], "REPS", "hang",
+         ["Same set-up with straight legs, heels on the floor, body in a straight plank line.", "Pull the chest to the bar.", "Lower slowly to straight arms.", "Keep the hips from sagging."],
+         ["Plank line", "Chest to the bar", "Slow lowering"],
+         reps_tiers([4, 6, 8, 10, 12]), [S_OG, S_YG, S_CC], UP, eq=LOWBAR, rank=30, nxt=["inverted-row-feet-elevated"], prereq={"allOf": [[vt("inverted-row-bent-knees", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Check that the bar or table is stable before every set."))
+strength("inverted-row-feet-elevated", "Inverted Row (feet elevated)", "row", ["PULL_HORIZONTAL"], ["UPPER_BODY"], "REPS", "hang",
+         ["Rest the heels on a stable step or chair so the body is level or higher than the bar.", "Pull the chest to the bar.", "Lower slowly; keep the body straight."],
+         ["Level body", "Controlled lowering"],
+         reps_tiers([4, 6, 8, 10, 12]), [S_OG, S_YG], UP, eq=LOWBAR, rank=40, nxt=["archer-row"], prereq={"allOf": [[vt("inverted-row", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Check that the bar and the step are stable before every set."))
+strength("archer-row", "Archer Row (per side)", "row", ["PULL_HORIZONTAL"], ["UPPER_BODY"], "REPS", "hang",
+         ["Set up like an inverted row with a wide grip.", "Pull toward one hand while the other arm stays straight and helps a little.", "Lower slowly and alternate sides; count both sides as one rep."],
+         ["Straight assisting arm", "Slow lowering"],
+         reps_tiers([2, 3, 4, 6, 8]), [S_OG, S_GB], UP, eq=LOWBAR, unilateral=True, rank=50, prereq={"allOf": [[vt("inverted-row-feet-elevated", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Check that the bar is stable; stop on elbow or shoulder pain."))
+
+# back extension: superman -> Y arch hold -> arch rocks
+strength("arch-hold-y", "Arch Hold (arms overhead, Y)", "superman", ["HINGE"], ["LOWER_BODY", "CORE"], "HOLD", "prone",
+         ["Lie face down, arms overhead in a Y, forehead near the floor.", "Lift arms, chest and legs together a few centimetres.", "Hold with a long neck and steady breathing, then lower with control."],
+         ["Squeeze the glutes", "Long neck", "Small lift"],
+         hold_tiers([15, 20, 30, 40, 50]), [S_GB, S_OG], CORE_ST, rank=20, nxt=["arch-rocks"], prereq={"allOf": [[vt("superman-hold", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Stop on any pinching in the lower back."))
+strength("arch-rocks", "Arch Rocks", "superman", ["HINGE"], ["LOWER_BODY", "CORE"], "REPS", "prone",
+         ["Get into the arch hold position, arms overhead.", "Rock slowly forward and back a few centimetres, keeping the lift.", "Stay controlled; stop the set when the lift drops."],
+         ["Slow rocking", "Keep the arch"],
+         reps_tiers([6, 8, 10, 12, 15]), [S_GB], CORE_ST, rank=30, prereq={"allOf": [[vt("arch-hold-y", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Stop on any pinching in the lower back."))
+
+# side plank: plank -> leg raise -> Copenhagen
+strength("side-plank-leg-raise", "Side Plank with Leg Raise (per side)", "side-plank", ["CORE_ANTI_LATERAL"], ["CORE"], "REPS", "floor",
+         ["Get into a side plank on the forearm.", "Raise the top leg a little, lower it slowly.", "Keep the hips high all the time; switch sides after the set."],
+         ["Hips high", "Slow leg"],
+         reps_tiers([4, 6, 8, 10, 12]), [S_OG, S_YG], CORE_ST, unilateral=True, rank=30, nxt=["copenhagen-side-plank"], prereq={"allOf": [[vt("side-plank", 4)]]})
+strength("copenhagen-side-plank", "Copenhagen Side Plank (per side)", "side-plank", ["CORE_ANTI_LATERAL"], ["CORE"], "HOLD", "floor",
+         ["Lie on your side, forearm on the floor, top leg resting on a stable chair seat.", "Lift the hips so the body forms a line; the lower leg hangs free or tucks.", "Hold, then switch sides."],
+         ["Straight line", "Hips high"],
+         hold_tiers([5, 8, 12, 16, 20]), [S_OG, S_GB], CORE_ST, eq=CHAIR_STABLE, unilateral=True, rank=40, prereq={"allOf": [[vt("side-plank-leg-raise", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Stop on groin or inner-thigh pain; build up slowly."))
+
+# kettlebell hinge: deadlift -> single-leg RDL -> swing (ballistic: only after the two before)
+strength("kettlebell-single-leg-rdl", "Kettlebell Single-Leg RDL (per side)", "deadlift", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Hold the kettlebell in the hand opposite the standing leg.", "Hinge at the hip, back flat, the free leg reaching behind.", "Stand tall again by squeezing the glute; do not twist."],
+         ["Flat back", "Hips square", "Controlled tempo"],
+         reps_tiers([4, 6, 8, 10, 12]), [S_NG, S_YG], ["stretch-hamstring", "stretch-hip-flexor"], eq=KB, unilateral=True, rank=30, nxt=["kettlebell-swing"],
+         prereq={"allOf": [[vt("kettlebell-deadlift", 4)]]}, cautions=(CAUTION_STRENGTH, "Controlled tempo only; no ballistic or swinging work in this one."))
+strength("kettlebell-swing", "Kettlebell Swing", "deadlift", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Stand with feet a little wider than the hips, kettlebell in front of you.", "Hike the bell back between the legs, then drive the hips forward so the bell floats to chest height.", "Let it fall back and hinge again; the arms only guide it."],
+         ["Hips drive, arms guide", "Flat back", "Stop when the form slips"],
+         reps_tiers([8, 10, 12, 15, 20]), [S_NG, S_YG], ["stretch-hamstring", "stretch-hip-flexor"], eq=KB, rank=40,
+         prereq={"allOf": [[vt("kettlebell-single-leg-rdl", 3)], [vt("kettlebell-deadlift", 5)]]},
+         cautions=(CAUTION_STRENGTH, "Ballistic movement: only after the deadlift and the single-leg RDL feel easy; use a light bell; stop on any back pain."))
+
 # plank no longer a dead end: top of the plank ladder leads to the hollow hold
 for pol in policies:
     if pol["variationId"] == "plank": pol["nextVariationIds"] = ["hollow-hold"]
@@ -315,6 +379,75 @@ for pol in policies:
     if pol["variationId"] == "pushup-standard": pol["nextVariationIds"] = ["pushup-feet-elevated"]
     if pol["variationId"] == "split-squat": pol["nextVariationIds"] = ["split-squat-bulgarian"]
     if pol["variationId"] == "glute-bridge": pol["nextVariationIds"] = ["bridge-single-leg"]
+    if pol["variationId"] == "row-band": pol["nextVariationIds"] = ["inverted-row-bent-knees"]
+    if pol["variationId"] == "superman-hold": pol["nextVariationIds"] = ["arch-hold-y"]
+    if pol["variationId"] == "dead-bug": pol["nextVariationIds"] = ["hollow-hold"]
+    if pol["variationId"] == "side-plank": pol["nextVariationIds"] = ["side-plank-leg-raise"]
+    if pol["variationId"] == "kettlebell-deadlift": pol["nextVariationIds"] = ["kettlebell-single-leg-rdl"]
+    # dead bug top hands over to the hollow hold (alternative to a plank-4 prerequisite)
+    if pol["variationId"] == "hollow-hold": pol["prerequisiteRule"] = {"allOf": [[vt("plank", 4), vt("dead-bug", 5)]]}
+
+
+# ---------------- U09: muscles worked (F9). Drives the clip colouring, the preview chips and the tree sheet. ----------------
+M = {
+    "pushup-incline": (["CHEST", "TRICEPS"], ["FRONT_DELTS", "ABS"]),
+    "pushup-knee": (["CHEST", "TRICEPS"], ["FRONT_DELTS"]),
+    "pushup-standard": (["CHEST", "TRICEPS"], ["FRONT_DELTS", "ABS"]),
+    "pushup-feet-elevated": (["CHEST", "FRONT_DELTS"], ["TRICEPS", "ABS"]),
+    "pushup-diamond": (["TRICEPS", "CHEST"], ["FRONT_DELTS"]),
+    "pushup-archer": (["CHEST", "TRICEPS"], ["FRONT_DELTS", "OBLIQUES"]),
+    "pushup-one-arm-negative": (["CHEST", "TRICEPS"], ["FRONT_DELTS", "ABS", "OBLIQUES"]),
+    "pushup-one-arm": (["CHEST", "TRICEPS"], ["FRONT_DELTS", "ABS", "OBLIQUES"]),
+    "pike-pushup": (["FRONT_DELTS", "TRICEPS"], ["SIDE_DELTS", "UPPER_BACK"]),
+    "pike-pushup-elevated": (["FRONT_DELTS", "TRICEPS"], ["SIDE_DELTS", "UPPER_BACK"]),
+    "wall-handstand-hold": (["FRONT_DELTS", "TRICEPS"], ["UPPER_BACK", "ABS"]),
+    "hspu-wall-negative": (["FRONT_DELTS", "TRICEPS"], ["SIDE_DELTS", "UPPER_BACK", "ABS"]),
+    "hspu-wall": (["FRONT_DELTS", "TRICEPS"], ["SIDE_DELTS", "UPPER_BACK", "ABS"]),
+    "row-band": (["UPPER_BACK", "LATS"], ["BICEPS", "REAR_DELTS"]),
+    "inverted-row-bent-knees": (["UPPER_BACK", "LATS"], ["BICEPS", "REAR_DELTS", "ABS"]),
+    "inverted-row": (["UPPER_BACK", "LATS"], ["BICEPS", "REAR_DELTS", "ABS"]),
+    "inverted-row-feet-elevated": (["UPPER_BACK", "LATS"], ["BICEPS", "REAR_DELTS", "ABS", "FOREARMS"]),
+    "archer-row": (["LATS", "UPPER_BACK"], ["BICEPS", "FOREARMS", "OBLIQUES"]),
+    "pullup-band-assisted": (["LATS", "BICEPS"], ["UPPER_BACK", "FOREARMS", "REAR_DELTS"]),
+    "pullup-full": (["LATS", "BICEPS"], ["UPPER_BACK", "FOREARMS", "REAR_DELTS"]),
+    "pullup-chest-to-bar": (["LATS", "BICEPS"], ["UPPER_BACK", "FOREARMS", "REAR_DELTS"]),
+    "muscle-up-bar": (["LATS", "TRICEPS"], ["CHEST", "BICEPS", "FOREARMS"]),
+    "squat-air": (["QUADS", "GLUTES"], ["HAMSTRINGS", "CALVES"]),
+    "split-squat": (["QUADS", "GLUTES"], ["HAMSTRINGS", "ADDUCTORS"]),
+    "split-squat-bulgarian": (["QUADS", "GLUTES"], ["HAMSTRINGS", "HIP_FLEXORS"]),
+    "squat-shrimp": (["QUADS", "GLUTES"], ["HAMSTRINGS", "HIP_FLEXORS"]),
+    "squat-pistol-assisted": (["QUADS", "GLUTES"], ["HAMSTRINGS", "ADDUCTORS", "CALVES"]),
+    "squat-pistol": (["QUADS", "GLUTES"], ["HAMSTRINGS", "ADDUCTORS", "CALVES"]),
+    "glute-bridge": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK"]),
+    "bridge-single-leg": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK", "OBLIQUES"]),
+    "bridge-back": (["GLUTES", "LOWER_BACK"], ["FRONT_DELTS", "TRICEPS", "QUADS"]),
+    "superman-hold": (["LOWER_BACK", "GLUTES"], ["REAR_DELTS", "HAMSTRINGS"]),
+    "arch-hold-y": (["LOWER_BACK", "GLUTES"], ["UPPER_BACK", "REAR_DELTS"]),
+    "arch-rocks": (["LOWER_BACK", "GLUTES"], ["UPPER_BACK"]),
+    "kettlebell-deadlift": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK", "FOREARMS"]),
+    "kettlebell-single-leg-rdl": (["HAMSTRINGS", "GLUTES"], ["LOWER_BACK", "FOREARMS"]),
+    "kettlebell-swing": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK", "FRONT_DELTS", "FOREARMS"]),
+    "plank": (["ABS"], ["OBLIQUES", "FRONT_DELTS", "GLUTES"]),
+    "side-plank": (["OBLIQUES"], ["ABS", "GLUTES", "SIDE_DELTS"]),
+    "side-plank-leg-raise": (["OBLIQUES", "GLUTES"], ["ABS", "SIDE_DELTS"]),
+    "copenhagen-side-plank": (["ADDUCTORS", "OBLIQUES"], ["ABS", "GLUTES"]),
+    "dead-bug": (["ABS"], ["HIP_FLEXORS", "OBLIQUES"]),
+    "hollow-hold": (["ABS"], ["HIP_FLEXORS", "QUADS"]),
+    "l-sit-floor": (["ABS", "HIP_FLEXORS"], ["TRICEPS", "QUADS", "FRONT_DELTS"]),
+    "v-sit-floor": (["ABS", "HIP_FLEXORS"], ["TRICEPS", "QUADS", "FRONT_DELTS"]),
+    "leg-raise-lying": (["ABS", "HIP_FLEXORS"], ["OBLIQUES"]),
+    "v-up": (["ABS", "HIP_FLEXORS"], ["QUADS"]),
+    "front-lever-tuck": (["LATS", "ABS"], ["BICEPS", "FOREARMS", "REAR_DELTS", "UPPER_BACK"]),
+    "front-lever-adv-tuck": (["LATS", "ABS"], ["BICEPS", "FOREARMS", "REAR_DELTS", "UPPER_BACK"]),
+    "front-lever-straddle": (["LATS", "ABS"], ["BICEPS", "FOREARMS", "REAR_DELTS", "UPPER_BACK"]),
+    "planche-lean": (["FRONT_DELTS", "CHEST"], ["TRICEPS", "ABS", "FOREARMS"]),
+    "planche-tuck": (["FRONT_DELTS", "CHEST"], ["TRICEPS", "ABS", "FOREARMS"]),
+    "planche-adv-tuck": (["FRONT_DELTS", "CHEST"], ["TRICEPS", "ABS", "FOREARMS"]),
+}
+for v in variations:
+    if v["kind"] in ("REPS", "HOLD"):
+        p, sec = M[v["id"]]  # KeyError = an exercise without muscles: fix the table
+        v["primaryMuscles"], v["secondaryMuscles"] = p, sec
 
 # ---------------- skill graph (small, DRAFT) ----------------
 nodes = [

@@ -33,7 +33,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(43, strength.size) // M6b: chains toward HSPU, muscle-up, pistol, L-sit, front lever, planche
+        assertEquals(53, strength.size) // M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains
         assertEquals(7, stretches.size)
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
@@ -59,10 +59,43 @@ class StarterCatalogTest {
         }
     }
 
+    /** Only these may end a chain; every other exercise must lead somewhere (U09, F15). */
+    private val explicitTops = setOf("pushup-one-arm", "hspu-wall", "muscle-up-bar", "squat-pistol", "bridge-back", "v-sit-floor", "v-up",
+        "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing")
+
+    @Test fun noDeadEndsExceptExplicitTops() {
+        val deadEnds = catalog.policies.filter { it.nextVariationIds.isEmpty() }.map { it.variationId }.toSet()
+        assertEquals("a chain ends without being listed as a top (or a listed top now leads somewhere)", explicitTops, deadEnds)
+        // every hand-off points at a real exercise
+        for (p in catalog.policies) for (n in p.nextVariationIds) assertTrue("${p.variationId} -> $n", catalog.variation(n) != null)
+    }
+
+    @Test fun everyStrengthExerciseNamesItsPrimaryMuscles() {
+        for (v in catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }) {
+            assertTrue("${v.id} has no primary muscle", v.primaryMuscles.isNotEmpty())
+            assertTrue("${v.id}: a muscle is both primary and secondary", v.primaryMuscles.none { it in v.secondaryMuscles })
+        }
+    }
+
+    @Test fun newChainsAreInOrderAndNeedTheRightEquipment() {
+        fun chain(from: String): List<String> { val out = mutableListOf(from); var c = from
+            while (true) { c = catalog.policyForVariation(c)!!.nextVariationIds.firstOrNull() ?: break; out += c }; return out }
+        assertEquals(listOf("row-band", "inverted-row-bent-knees", "inverted-row", "inverted-row-feet-elevated", "archer-row"), chain("row-band"))
+        assertEquals(listOf("superman-hold", "arch-hold-y", "arch-rocks"), chain("superman-hold"))
+        assertEquals(listOf("side-plank", "side-plank-leg-raise", "copenhagen-side-plank"), chain("side-plank"))
+        assertEquals(listOf("kettlebell-deadlift", "kettlebell-single-leg-rdl", "kettlebell-swing"), chain("kettlebell-deadlift"))
+        assertEquals("hollow-hold", chain("dead-bug")[1]) // dead bug hands over to the hollow hold
+        for (id in listOf("inverted-row-bent-knees", "inverted-row", "inverted-row-feet-elevated", "archer-row"))
+            assertTrue(id, catalog.variation(id)!!.equipmentAlternatives.single().needs.single().equipmentId == "low-bar")
+        assertTrue(catalog.variation("copenhagen-side-plank")!!.equipmentAlternatives.single().needs.single().suitability == setOf("stable"))
+        assertTrue(catalog.variation("kettlebell-swing")!!.cautions.any { "Ballistic" in it })
+    }
+
     @Test fun noBallisticKettlebellWork() {
         val kb = catalog.variations.filter { v -> v.equipmentAlternatives.any { s -> s.needs.any { it.equipmentId == "kettlebell" } } }
         assertTrue(kb.isNotEmpty())
-        for (v in kb) assertTrue(v.id, v.cautions.any { "ballistic" in it })
+        // Owner OK 2026-10-05 added the swing: it is ballistic by nature, so it must say so; every other kettlebell exercise stays controlled.
+        for (v in kb) assertTrue(v.id, v.cautions.any { "ballistic" in it.lowercase() })
     }
 
     @Test fun plankAndEveryChainTopLeadsSomewhere() {
