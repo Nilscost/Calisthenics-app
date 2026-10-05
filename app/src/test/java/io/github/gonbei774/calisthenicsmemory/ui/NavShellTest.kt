@@ -56,3 +56,24 @@ class NavShellTest {
         }
     }
 }
+
+/** U01b: the old fork's screens and strings are deleted from the source tree, not just hidden. */
+class OldForkRemovedTest {
+    private val root = java.io.File(System.getProperty("user.dir"))
+
+    @org.junit.Test fun noOldForkStringsInResources() {
+        val banned = listOf("S'entraîner", "S\\'entraîner", "À faire", "Enregistrer")
+        val hits = java.io.File(root, "src/main/res").walkTopDown().filter { it.extension == "xml" }
+            .flatMap { f -> banned.filter { it in f.readText() }.map { "${f.path}: $it" } }.toList()
+        org.junit.Assert.assertTrue("old fork strings still present: $hits", hits.isEmpty())
+        org.junit.Assert.assertFalse(java.io.File(root, "src/main/res/values-fr").exists())
+    }
+
+    @org.junit.Test fun noOldForkClassesInSource() {
+        val banned = listOf("TrainingViewModel", "ToDoScreen", "RecordScreen", "WorkoutScreen", "CreateScreen", "ProgramListScreen",
+            "IntervalListScreen", "CommunityShare", "CsvDataManagementScreen", "ShareHubScreen", "SettingsScreenNew")
+        val hits = java.io.File(root, "src/main/java").walkTopDown().filter { it.extension == "kt" }
+            .flatMap { f -> banned.filter { it in f.readText() }.map { "${f.name}: $it" } }.toList()
+        org.junit.Assert.assertTrue("old fork code still referenced: $hits", hits.isEmpty())
+    }
+}

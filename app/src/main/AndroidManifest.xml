@@ -2,12 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
-    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
 
     <application
         android:name=".CalisthenicsMemoryApplication"
@@ -41,15 +39,6 @@
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="Hands-free workout timer with audio cues that must keep running with the screen locked (verified on S21, G1)." />
-        </service>
-
-        <service
-            android:name=".service.WorkoutTimerService"
-            android:foregroundServiceType="specialUse"
-            android:exported="false">
-            <property
-                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Calisthenics workout session timer: keeps the countdown, audio cues and visible progress notification alive while the app is backgrounded during an active workout (A02, docs/05-architecture.md)." />
         </service>
     </application>
 

@@ -99,16 +99,7 @@ android {
         unitTests.isIncludeAndroidResources = true
     }
 
-    // Lint: see app/lint.xml (auto-detected by AGP).
-    // Only MissingTranslation is downgraded to warning — the ported app
-    // inherits PARTIAL translation catalogs from upstream (ADR 0001):
-    //   values-ar/strings.xml -> 0/747 strings (empty)
-    //   values-ru/strings.xml -> 107/747 strings
-    // Upstream never ran a lint gate, so this partial state shipped as-is.
-    // We do NOT fabricate Arabic/Russian strings; all other lint checks
-    // keep their default (error) severity.
-    // FOLLOW-UP: complete values-ar (0) and values-ru (107), then remove the
-    // MissingTranslation <issue> line in app/lint.xml to re-enable enforcement.
+    // Lint: see app/lint.xml (auto-detected by AGP). U01b removed the fork's partial translations (English only, Q3).
 }
 
 dependencies {
@@ -149,16 +140,11 @@ dependencies {
     implementation("com.mikepenz:aboutlibraries-core:11.2.3")
     implementation("com.mikepenz:aboutlibraries-compose-m3:11.2.3")
 
-    // Reorderable (drag and drop)
-    implementation("sh.calvin.reorderable:reorderable:3.0.0")
-
     // Testing
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("androidx.room:room-testing:2.6.1")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation("org.mockito:mockito-core:5.7.0")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
     // U01: Compose UI tests on the JVM (Robolectric; android-all 14 / SDK 34 is the cached one, see @Config in the tests)
     testImplementation("org.robolectric:robolectric:4.13")
     testImplementation("androidx.compose.ui:ui-test-junit4")

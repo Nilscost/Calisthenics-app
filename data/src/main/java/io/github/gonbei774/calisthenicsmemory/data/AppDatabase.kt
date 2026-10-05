@@ -16,16 +16,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun exerciseDao(): ExerciseDao
-    abstract fun trainingRecordDao(): TrainingRecordDao
-    abstract fun exerciseGroupDao(): ExerciseGroupDao
-    abstract fun todoTaskDao(): TodoTaskDao
-    abstract fun programDao(): ProgramDao
-    abstract fun programExerciseDao(): ProgramExerciseDao
-    abstract fun programLoopDao(): ProgramLoopDao
-    abstract fun intervalProgramDao(): IntervalProgramDao
-    abstract fun intervalProgramExerciseDao(): IntervalProgramExerciseDao
-    abstract fun intervalRecordDao(): IntervalRecordDao
+    // U01b: the fork's DAOs were deleted with its screens; its entities/tables stay (never destructive) so installs keep their data.
     abstract fun historyDao(): HistoryDao
 
     companion object {
