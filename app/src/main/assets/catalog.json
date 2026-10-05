@@ -746,7 +746,7 @@
     },
     {
       "id": "side-plank",
-      "familyId": "plank",
+      "familyId": "side-plank",
       "name": "Side Plank (per side)",
       "patterns": [
         "CORE_ANTI_LATERAL"
@@ -822,6 +822,1299 @@
       "compatibleStretchIds": [
         "stretch-back",
         "stretch-hip-flexor"
+      ]
+    },
+    {
+      "id": "pushup-diamond",
+      "familyId": "pushup",
+      "name": "Diamond Push-Up",
+      "patterns": [
+        "PUSH_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "floor",
+      "instructions": [
+        "Plank position, hands together under the chest, thumbs and index fingers forming a diamond.",
+        "Lower the chest to the hands, elbows close to the body.",
+        "Press to full lockout."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pushup-diamond",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "pushup-archer",
+      "familyId": "pushup",
+      "name": "Archer Push-Up (per side)",
+      "patterns": [
+        "PUSH_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "floor",
+      "instructions": [
+        "Wide hand position, hands turned slightly out.",
+        "Lower toward one hand while the other arm stays straight.",
+        "Press back up, alternate sides. Count each side."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 50,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pushup-archer",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "pushup-one-arm-negative",
+      "familyId": "pushup",
+      "name": "One-Arm Push-Up Negative (per side)",
+      "patterns": [
+        "PUSH_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "floor",
+      "instructions": [
+        "Feet wide, one hand under the chest, other hand behind the back.",
+        "Lower slowly for about 4 seconds to just above the floor.",
+        "Reset with both hands; repeat, then switch sides."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop if the wrist or elbow hurts."
+      ],
+      "difficultyRank": 60,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pushup-one-arm-negative",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "pushup-one-arm",
+      "familyId": "pushup",
+      "name": "One-Arm Push-Up (per side)",
+      "patterns": [
+        "PUSH_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "floor",
+      "instructions": [
+        "Feet wide, one hand under the chest, other hand behind the back.",
+        "Lower with the body square to the floor.",
+        "Press up; finish a side, then switch."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 70,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pushup-one-arm",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "pike-pushup",
+      "familyId": "hspu",
+      "name": "Pike Push-Up",
+      "patterns": [
+        "PUSH_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "floor",
+      "instructions": [
+        "Hips high, body in an upside-down V, hands shoulder-width.",
+        "Bend the elbows and lower the top of the head toward the floor.",
+        "Press back to straight arms."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 10,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pike-pushup",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "pike-pushup-elevated",
+      "familyId": "hspu",
+      "name": "Elevated Pike Push-Up",
+      "patterns": [
+        "PUSH_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "chair",
+              "suitability": [
+                "stable"
+              ]
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "floor",
+      "instructions": [
+        "Feet on a stable chair or step, hips high, hands shoulder-width.",
+        "Lower the head between the hands.",
+        "Press up to straight arms."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 20,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pike-pushup-elevated",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "wall-handstand-hold",
+      "familyId": "hspu",
+      "name": "Wall Handstand Hold (chest to wall)",
+      "patterns": [
+        "PUSH_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "capabilities": [
+            "wall"
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "inverted",
+      "instructions": [
+        "Walk the feet up a wall from plank until the chest faces the wall.",
+        "Arms straight, shoulders pushed up toward the ears.",
+        "Hold with a tight body; walk back down to leave."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Inverted work: clear the space, build up gradually, stop if dizzy."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "convict-conditioning-wade"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-wall-handstand-hold",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "hspu-wall-negative",
+      "familyId": "hspu",
+      "name": "Wall Handstand Push-Up Negative",
+      "patterns": [
+        "PUSH_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "capabilities": [
+            "wall"
+          ],
+          "needs": [
+            {
+              "equipmentId": "mat"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "inverted",
+      "instructions": [
+        "Kick up to a wall handstand, belly to the wall.",
+        "Lower slowly (about 4 seconds) until the head touches a folded mat.",
+        "Come down safely and repeat."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Inverted work: use a mat under the head."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-hspu-wall-negative",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "hspu-wall",
+      "familyId": "hspu",
+      "name": "Wall Handstand Push-Up",
+      "patterns": [
+        "PUSH_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "capabilities": [
+            "wall"
+          ],
+          "needs": [
+            {
+              "equipmentId": "mat"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "inverted",
+      "instructions": [
+        "Wall handstand, belly to the wall, hands shoulder-width.",
+        "Lower the head to a folded mat.",
+        "Press back to full lockout."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Inverted work: use a mat under the head."
+      ],
+      "difficultyRank": 50,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-hspu-wall",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "pullup-full",
+      "familyId": "pullup",
+      "name": "Pull-Up",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Hang from the bar, hands just wider than the shoulders.",
+        "Pull until the chin clears the bar.",
+        "Lower under control to straight arms."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pullup-full",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "pullup-chest-to-bar",
+      "familyId": "pullup",
+      "name": "Chest-to-Bar Pull-Up",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Hang, then pull explosively but controlled so the chest reaches the bar.",
+        "Lean back slightly at the top.",
+        "Lower slowly."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pullup-chest-to-bar",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "muscle-up-bar",
+      "familyId": "pullup",
+      "name": "Bar Muscle-Up",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "False grip or strong overgrip, pull the bar to the lower chest.",
+        "Transition the elbows over the bar quickly.",
+        "Press to straight arms on top, then lower with control."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check the bar is secure; skill work, consider coaching."
+      ],
+      "difficultyRank": 50,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-muscle-up-bar",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "split-squat-bulgarian",
+      "familyId": "squat",
+      "name": "Bulgarian Split Squat (per side)",
+      "patterns": [
+        "LUNGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "chair",
+              "suitability": [
+                "stable"
+              ]
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Back foot on a stable chair behind you, front foot a stride ahead.",
+        "Lower until the front thigh is about parallel.",
+        "Drive up through the front heel; finish a side, then switch."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "you-are-your-own-gym-lauren",
+        "never-gymless-enamait"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-split-squat-bulgarian",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall"
+      ]
+    },
+    {
+      "id": "squat-shrimp",
+      "familyId": "squat",
+      "name": "Shrimp Squat (per side)",
+      "patterns": [
+        "LUNGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Stand on one leg, hold the other foot behind you.",
+        "Lower until the back knee touches the floor lightly.",
+        "Stand back up on the working leg."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-squat-shrimp",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall"
+      ]
+    },
+    {
+      "id": "squat-pistol-assisted",
+      "familyId": "squat",
+      "name": "Assisted Pistol Squat (per side)",
+      "patterns": [
+        "SQUAT"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Hold a door frame or post lightly for balance.",
+        "Lower on one leg with the other leg straight out in front.",
+        "Stand up using as little help as possible."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 50,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low",
+        "never-gymless-enamait"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-squat-pistol-assisted",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall"
+      ]
+    },
+    {
+      "id": "squat-pistol",
+      "familyId": "squat",
+      "name": "Pistol Squat (per side)",
+      "patterns": [
+        "SQUAT"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Stand on one leg, other leg straight in front.",
+        "Lower to full depth with the heel down.",
+        "Stand up with control; switch sides."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 60,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low",
+        "never-gymless-enamait"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-squat-pistol",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall"
+      ]
+    },
+    {
+      "id": "bridge-single-leg",
+      "familyId": "bridge",
+      "name": "Single-Leg Glute Bridge (per side)",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "supine",
+      "instructions": [
+        "Lie on your back, one foot flat, other leg straight up.",
+        "Press through the heel to lift the hips level.",
+        "Lower slowly; finish a side, then switch."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 20,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-bridge-single-leg",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-back"
+      ]
+    },
+    {
+      "id": "bridge-back",
+      "familyId": "bridge",
+      "name": "Full Back Bridge",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Lie on your back, hands by the ears, feet flat.",
+        "Press up so arms and legs straighten and the back arches evenly.",
+        "Hold, breathing steadily; lower slowly."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Needs shoulder and spine mobility; stop on any pinching."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-bridge-back",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-back"
+      ]
+    },
+    {
+      "id": "hollow-hold",
+      "familyId": "plank",
+      "name": "Hollow Body Hold",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Lie on your back, press the lower back into the floor.",
+        "Lift shoulders and straight legs a few centimetres, arms by the ears or sides.",
+        "Hold; make it easier by bending the knees."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 20,
+      "sourceIds": [
+        "building-the-gymnastic-body-sommer",
+        "overcoming-gravity-2-low"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-hollow-hold",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor"
+      ]
+    },
+    {
+      "id": "l-sit-floor",
+      "familyId": "plank",
+      "name": "L-Sit (floor)",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "seated",
+      "instructions": [
+        "Sit with straight legs, hands beside the hips.",
+        "Press down, lift the hips and legs off the floor.",
+        "Hold with legs straight and locked."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "convict-conditioning-wade"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-l-sit-floor",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor"
+      ]
+    },
+    {
+      "id": "v-sit-floor",
+      "familyId": "plank",
+      "name": "V-Sit (floor)",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "seated",
+      "instructions": [
+        "From an L-sit, lift the legs higher while leaning back slightly.",
+        "Keep the arms straight and the legs locked.",
+        "Hold; come down with control."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-v-sit-floor",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor"
+      ]
+    },
+    {
+      "id": "leg-raise-lying",
+      "familyId": "legraise",
+      "name": "Lying Leg Raise",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Lie flat, lower back pressed down, legs straight.",
+        "Raise legs to vertical, lower slowly without arching.",
+        "Keep the movement slow."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 20,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-leg-raise-lying",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor"
+      ]
+    },
+    {
+      "id": "v-up",
+      "familyId": "legraise",
+      "name": "V-Up",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Lie flat with arms overhead.",
+        "Lift legs and torso together, reaching hands toward the toes.",
+        "Lower slowly; keep control."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-v-up",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor"
+      ]
+    },
+    {
+      "id": "front-lever-tuck",
+      "familyId": "lever",
+      "name": "Tuck Front Lever",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY",
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Hang from a bar, pull the shoulders down and back.",
+        "Tuck the knees, raise the hips until the back is horizontal.",
+        "Hold with straight arms."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Hard skill: stop on any elbow or shoulder pain; consider coaching."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-front-lever-tuck",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "front-lever-adv-tuck",
+      "familyId": "lever",
+      "name": "Advanced Tuck Front Lever",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY",
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "As the tuck lever, but open the hips so the thighs are about 90 degrees from the torso.",
+        "Keep the back flat and horizontal.",
+        "Hold."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Hard skill: stop on any elbow or shoulder pain."
+      ],
+      "difficultyRank": 50,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-front-lever-adv-tuck",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "front-lever-straddle",
+      "familyId": "lever",
+      "name": "Straddle Front Lever",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY",
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Straddle the legs wide with the body horizontal.",
+        "Arms straight, shoulders depressed.",
+        "Hold."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Hard skill: stop on any elbow or shoulder pain."
+      ],
+      "difficultyRank": 60,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-front-lever-straddle",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "planche-lean",
+      "familyId": "planche",
+      "name": "Planche Lean",
+      "patterns": [
+        "PUSH_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY",
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "floor",
+      "instructions": [
+        "Push-up position, fingers turned slightly out.",
+        "Lean the shoulders forward past the hands, arms straight.",
+        "Hold with a rounded upper back and tight body."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Wrist-heavy: warm up the wrists, stop on wrist pain."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-planche-lean",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "planche-tuck",
+      "familyId": "planche",
+      "name": "Tuck Planche",
+      "patterns": [
+        "PUSH_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY",
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "floor",
+      "instructions": [
+        "From the lean, lift the feet with knees tucked to the chest.",
+        "Arms straight, hips level with the shoulders.",
+        "Hold."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Wrist-heavy: stop on wrist pain."
+      ],
+      "difficultyRank": 50,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-planche-tuck",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
+      ]
+    },
+    {
+      "id": "planche-adv-tuck",
+      "familyId": "planche",
+      "name": "Advanced Tuck Planche",
+      "patterns": [
+        "PUSH_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY",
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "floor",
+      "instructions": [
+        "Open the hips so the back is flat and horizontal.",
+        "Arms straight, shoulders forward.",
+        "Hold."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Wrist-heavy: stop on wrist pain."
+      ],
+      "difficultyRank": 60,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-planche-adv-tuck",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder"
       ]
     }
   ],
@@ -1041,7 +2334,10 @@
             }
           ]
         ]
-      }
+      },
+      "nextVariationIds": [
+        "pushup-diamond"
+      ]
     },
     {
       "id": "pol-row-band",
@@ -1159,7 +2455,10 @@
         "you-are-your-own-gym-lauren"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
-      "approved": false
+      "approved": false,
+      "nextVariationIds": [
+        "pullup-full"
+      ]
     },
     {
       "id": "pol-squat-air",
@@ -1292,7 +2591,10 @@
             }
           ]
         ]
-      }
+      },
+      "nextVariationIds": [
+        "split-squat-bulgarian"
+      ]
     },
     {
       "id": "pol-glute-bridge",
@@ -1351,7 +2653,10 @@
         "never-gymless-enamait"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
-      "approved": false
+      "approved": false,
+      "nextVariationIds": [
+        "bridge-single-leg"
+      ]
     },
     {
       "id": "pol-superman-hold",
@@ -1526,7 +2831,10 @@
         "you-are-your-own-gym-lauren"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
-      "approved": false
+      "approved": false,
+      "nextVariationIds": [
+        "hollow-hold"
+      ]
     },
     {
       "id": "pol-side-plank",
@@ -1643,6 +2951,2174 @@
       ],
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false
+    },
+    {
+      "id": "pol-pushup-diamond",
+      "variationId": "pushup-diamond",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pushup-archer"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pushup-standard",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-pushup-archer",
+      "variationId": "pushup-archer",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pushup-one-arm-negative"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pushup-diamond",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-pushup-one-arm-negative",
+      "variationId": "pushup-one-arm-negative",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pushup-one-arm"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pushup-archer",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-pushup-one-arm",
+      "variationId": "pushup-one-arm",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 1
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pushup-one-arm-negative",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-pike-pushup",
+      "variationId": "pike-pushup",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pike-pushup-elevated"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pushup-standard",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-pike-pushup-elevated",
+      "variationId": "pike-pushup-elevated",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 7
+          },
+          "workWindowSeconds": 55,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 9
+          },
+          "workWindowSeconds": 70,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "wall-handstand-hold"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pike-pushup",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-wall-handstand-hold",
+      "variationId": "wall-handstand-hold",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 55,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 45
+          },
+          "workWindowSeconds": 70,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 60
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "convict-conditioning-wade"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "hspu-wall-negative"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pike-pushup-elevated",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-hspu-wall-negative",
+      "variationId": "hspu-wall-negative",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "hspu-wall"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "wall-handstand-hold",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-hspu-wall",
+      "variationId": "hspu-wall",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 1
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "hspu-wall-negative",
+                "tier": 4
+              }
+            }
+          ],
+          [
+            {
+              "variationTierMet": {
+                "variationId": "wall-handstand-hold",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-pullup-full",
+      "variationId": "pullup-full",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 1
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 105
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 105
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 120
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pullup-chest-to-bar"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pullup-band-assisted",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-pullup-chest-to-bar",
+      "variationId": "pullup-chest-to-bar",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 1
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 105
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 105
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 120
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "muscle-up-bar"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pullup-full",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-muscle-up-bar",
+      "variationId": "muscle-up-bar",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 1
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 120
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 120
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 135
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 135
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 150
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pullup-chest-to-bar",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-split-squat-bulgarian",
+      "variationId": "split-squat-bulgarian",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "you-are-your-own-gym-lauren",
+        "never-gymless-enamait"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "squat-shrimp"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "split-squat",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-squat-shrimp",
+      "variationId": "squat-shrimp",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "squat-pistol-assisted"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "split-squat-bulgarian",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-squat-pistol-assisted",
+      "variationId": "squat-pistol-assisted",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low",
+        "never-gymless-enamait"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "squat-pistol"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "squat-shrimp",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-squat-pistol",
+      "variationId": "squat-pistol",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 1
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "overcoming-gravity-2-low",
+        "never-gymless-enamait"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "squat-pistol-assisted",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-bridge-single-leg",
+      "variationId": "bridge-single-leg",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "bridge-back"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "glute-bridge",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-bridge-back",
+      "variationId": "bridge-back",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 55,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "bridge-single-leg",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-hollow-hold",
+      "variationId": "hollow-hold",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 55,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 40
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "building-the-gymnastic-body-sommer",
+        "overcoming-gravity-2-low"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "l-sit-floor"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "plank",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-l-sit-floor",
+      "variationId": "l-sit-floor",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 55,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "convict-conditioning-wade"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "v-sit-floor"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "hollow-hold",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-v-sit-floor",
+      "variationId": "v-sit-floor",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 3
+          },
+          "workWindowSeconds": 28,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 8
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 12
+          },
+          "workWindowSeconds": 37,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "l-sit-floor",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-leg-raise-lying",
+      "variationId": "leg-raise-lying",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "v-up"
+      ]
+    },
+    {
+      "id": "pol-v-up",
+      "variationId": "v-up",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 7
+          },
+          "workWindowSeconds": 55,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 9
+          },
+          "workWindowSeconds": 70,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "leg-raise-lying",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-front-lever-tuck",
+      "variationId": "front-lever-tuck",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 3
+          },
+          "workWindowSeconds": 28,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 8
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "front-lever-adv-tuck"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pullup-full",
+                "tier": 3
+              }
+            }
+          ],
+          [
+            {
+              "variationTierMet": {
+                "variationId": "hollow-hold",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-front-lever-adv-tuck",
+      "variationId": "front-lever-adv-tuck",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 3
+          },
+          "workWindowSeconds": 28,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 8
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "front-lever-straddle"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "front-lever-tuck",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-front-lever-straddle",
+      "variationId": "front-lever-straddle",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 2
+          },
+          "workWindowSeconds": 27,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 3
+          },
+          "workWindowSeconds": 28,
+          "minRecoverySeconds": 75
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 8
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 90
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 105
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "front-lever-adv-tuck",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-planche-lean",
+      "variationId": "planche-lean",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 55,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "planche-tuck"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pushup-standard",
+                "tier": 4
+              }
+            }
+          ],
+          [
+            {
+              "variationTierMet": {
+                "variationId": "plank",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-planche-tuck",
+      "variationId": "planche-tuck",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 3
+          },
+          "workWindowSeconds": 28,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 8
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "planche-adv-tuck"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "planche-lean",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-planche-adv-tuck",
+      "variationId": "planche-adv-tuck",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 2
+          },
+          "workWindowSeconds": 27,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 3
+          },
+          "workWindowSeconds": 28,
+          "minRecoverySeconds": 75,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 8
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 90,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 105,
+          "earlyCompletionStretchId": "stretch-shoulder"
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "planche-tuck",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
     }
   ],
   "skillNodes": [

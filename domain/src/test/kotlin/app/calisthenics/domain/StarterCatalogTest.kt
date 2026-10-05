@@ -33,7 +33,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(13, strength.size) // plan said 14 but its own list sums to 13
+        assertEquals(42, strength.size) // M6b: chains toward HSPU, muscle-up, pistol, L-sit, front lever, planche
         assertEquals(7, stretches.size)
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
@@ -63,5 +63,26 @@ class StarterCatalogTest {
         val kb = catalog.variations.filter { v -> v.equipmentAlternatives.any { s -> s.needs.any { it.equipmentId == "kettlebell" } } }
         assertTrue(kb.isNotEmpty())
         for (v in kb) assertTrue(v.id, v.cautions.any { "ballistic" in it })
+    }
+
+    @Test fun plankAndEveryChainTopLeadsSomewhere() {
+        assertEquals(listOf("hollow-hold"), catalog.policyForVariation("plank")!!.nextVariationIds)
+        val succ = catalog.policies.flatMap { it.nextVariationIds }.toSet()
+        // every exercise with a prerequisite is reachable as someone's successor (no orphan tree nodes)
+        // Entry points of the skill chains are reached by choosing a goal, not by automatic progression.
+        val goalEntries = setOf("pike-pushup", "planche-lean", "front-lever-tuck")
+        for (p in catalog.policies.filter { it.prerequisiteRule.allOf.isNotEmpty() && it.variationId !in goalEntries })
+            assertTrue("${p.variationId} unreachable", p.variationId in succ)
+    }
+
+    @Test fun hardSkillChainsExistInOrder() {
+        fun chain(from: String): List<String> { val out = mutableListOf(from); var c = from
+            while (true) { c = catalog.policyForVariation(c)!!.nextVariationIds.firstOrNull() ?: break; out += c }; return out }
+        assertEquals(listOf("pike-pushup", "pike-pushup-elevated", "wall-handstand-hold", "hspu-wall-negative", "hspu-wall"), chain("pike-pushup"))
+        assertEquals("muscle-up-bar", chain("pullup-band-assisted").last())
+        assertEquals("squat-pistol", chain("squat-air").last())
+        assertEquals("v-sit-floor", chain("plank").last().let { chain("hollow-hold").last() })
+        assertEquals("planche-adv-tuck", chain("planche-lean").last())
+        assertEquals("front-lever-straddle", chain("front-lever-tuck").last())
     }
 }

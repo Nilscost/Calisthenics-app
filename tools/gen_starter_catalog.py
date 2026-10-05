@@ -176,7 +176,7 @@ strength("plank", "Front Plank", "plank", ["CORE_ANTI_EXTENSION"], ["CORE"], "HO
           "Hold without letting the hips sag or pike."],
          ["Ribs down", "Squeeze glutes", "Breathe steadily"],
          hold_tiers([15, 20, 30, 40, 50]), [S_OG, S_GB, S_YG], CORE_ST, rank=10)
-strength("side-plank", "Side Plank (per side)", "plank", ["CORE_ANTI_LATERAL"], ["CORE"], "HOLD", "floor",
+strength("side-plank", "Side Plank (per side)", "side-plank", ["CORE_ANTI_LATERAL"], ["CORE"], "HOLD", "floor",
          ["Lie on one side, forearm under the shoulder, legs stacked (or feet staggered).", "Lift the hips so the body forms a straight line.",
           "Hold, then switch sides."],
          ["Hips high", "Body in one line"],
@@ -186,6 +186,128 @@ strength("dead-bug", "Dead Bug", "dead-bug", ["CORE_ANTI_EXTENSION"], ["CORE"], 
           "Return and alternate sides. One rep = both sides."],
          ["Lower back stays flat", "Slow and controlled"],
          reps_tiers([6, 8, 10, 12, 14]), [S_OG, S_YG], CORE_ST, rank=10)
+
+# ---------------- progression chains toward the hard skills (DRAFT numbers) ----------------
+BAR = [{"needs": [need("pullup-bar")]}]
+WALL = [{"capabilities": ["wall"]}]
+def ex(id, name, fam, pat, area, kind, pos, steps, tiers, src, st, eq=NO_EQ, rank=0, nxt=(), prereq=None, uni=False, cues=None, cautions=(CAUTION_STRENGTH,)):
+    strength(id, name, fam, [pat], area, kind, pos, steps, cues or ["Controlled tempo", "Full range or clean position", "Stop if form breaks"],
+             tiers, src, st, eq=eq, unilateral=uni, rank=rank, nxt=nxt, prereq=prereq, cautions=cautions)
+U, L, C = ["UPPER_BODY"], ["LOWER_BODY"], ["CORE"]
+# push (horizontal)
+ex("pushup-diamond", "Diamond Push-Up", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
+   ["Plank position, hands together under the chest, thumbs and index fingers forming a diamond.", "Lower the chest to the hands, elbows close to the body.", "Press to full lockout."],
+   reps_tiers([4, 6, 8, 10, 12], stretch="stretch-chest-door"), [S_CC, S_YG], UP, rank=40, nxt=["pushup-archer"], prereq={"allOf": [[vt("pushup-standard", 4)]]})
+ex("pushup-archer", "Archer Push-Up (per side)", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
+   ["Wide hand position, hands turned slightly out.", "Lower toward one hand while the other arm stays straight.", "Press back up, alternate sides. Count each side."],
+   reps_tiers([3, 4, 6, 8, 10], stretch="stretch-chest-door"), [S_CC, S_OG], UP, rank=50, nxt=["pushup-one-arm-negative"], prereq={"allOf": [[vt("pushup-diamond", 3)]]})
+ex("pushup-one-arm-negative", "One-Arm Push-Up Negative (per side)", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
+   ["Feet wide, one hand under the chest, other hand behind the back.", "Lower slowly for about 4 seconds to just above the floor.", "Reset with both hands; repeat, then switch sides."],
+   reps_tiers([2, 3, 4, 5, 6], stretch="stretch-chest-door"), [S_CC, S_OG], UP, uni=True, rank=60, nxt=["pushup-one-arm"], prereq={"allOf": [[vt("pushup-archer", 3)]]},
+   cautions=(CAUTION_STRENGTH, "Stop if the wrist or elbow hurts."))
+ex("pushup-one-arm", "One-Arm Push-Up (per side)", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
+   ["Feet wide, one hand under the chest, other hand behind the back.", "Lower with the body square to the floor.", "Press up; finish a side, then switch."],
+   reps_tiers([1, 2, 3, 4, 5], stretch="stretch-chest-door"), [S_CC, S_OG], UP, uni=True, rank=70, prereq={"allOf": [[vt("pushup-one-arm-negative", 4)]]})
+# vertical push -> handstand push-up
+ex("pike-pushup", "Pike Push-Up", "hspu", "PUSH_VERTICAL", U, "REPS", "floor",
+   ["Hips high, body in an upside-down V, hands shoulder-width.", "Bend the elbows and lower the top of the head toward the floor.", "Press back to straight arms."],
+   reps_tiers([4, 6, 8, 10, 12], stretch="stretch-shoulder"), [S_CC, S_OG, S_YG], UP, rank=10, nxt=["pike-pushup-elevated"], prereq={"allOf": [[vt("pushup-standard", 3)]]})
+ex("pike-pushup-elevated", "Elevated Pike Push-Up", "hspu", "PUSH_VERTICAL", U, "REPS", "floor",
+   ["Feet on a stable chair or step, hips high, hands shoulder-width.", "Lower the head between the hands.", "Press up to straight arms."],
+   reps_tiers([3, 5, 7, 9, 12], stretch="stretch-shoulder"), [S_CC, S_OG], UP, eq=[{"needs": [need("chair", suitability=["stable"])]}], rank=20, nxt=["wall-handstand-hold"], prereq={"allOf": [[vt("pike-pushup", 4)]]})
+ex("wall-handstand-hold", "Wall Handstand Hold (chest to wall)", "hspu", "PUSH_VERTICAL", U, "HOLD", "inverted",
+   ["Walk the feet up a wall from plank until the chest faces the wall.", "Arms straight, shoulders pushed up toward the ears.", "Hold with a tight body; walk back down to leave."],
+   hold_tiers([10, 20, 30, 45, 60], stretch="stretch-shoulder"), [S_OG, S_GB, S_CC], UP, eq=WALL, rank=30, nxt=["hspu-wall-negative"], prereq={"allOf": [[vt("pike-pushup-elevated", 3)]]},
+   cautions=(CAUTION_STRENGTH, "Inverted work: clear the space, build up gradually, stop if dizzy."))
+ex("hspu-wall-negative", "Wall Handstand Push-Up Negative", "hspu", "PUSH_VERTICAL", U, "REPS", "inverted",
+   ["Kick up to a wall handstand, belly to the wall.", "Lower slowly (about 4 seconds) until the head touches a folded mat.", "Come down safely and repeat."],
+   reps_tiers([2, 3, 4, 5, 6], stretch="stretch-shoulder"), [S_CC, S_OG], UP, eq=[{"capabilities": ["wall"], "needs": [need("mat")]}], rank=40, nxt=["hspu-wall"], prereq={"allOf": [[vt("wall-handstand-hold", 3)]]},
+   cautions=(CAUTION_STRENGTH, "Inverted work: use a mat under the head."))
+ex("hspu-wall", "Wall Handstand Push-Up", "hspu", "PUSH_VERTICAL", U, "REPS", "inverted",
+   ["Wall handstand, belly to the wall, hands shoulder-width.", "Lower the head to a folded mat.", "Press back to full lockout."],
+   reps_tiers([1, 2, 3, 5, 8], stretch="stretch-shoulder"), [S_CC, S_OG], UP, eq=[{"capabilities": ["wall"], "needs": [need("mat")]}], rank=50,
+   prereq={"allOf": [[vt("hspu-wall-negative", 4)], [vt("wall-handstand-hold", 4)]]}, cautions=(CAUTION_STRENGTH, "Inverted work: use a mat under the head."))
+# pull -> muscle-up
+ex("pullup-full", "Pull-Up", "pullup", "PULL_VERTICAL", U, "REPS", "hang",
+   ["Hang from the bar, hands just wider than the shoulders.", "Pull until the chin clears the bar.", "Lower under control to straight arms."],
+   reps_tiers([1, 3, 5, 8, 10], rec=(90, 90, 105, 105, 120)), [S_CC, S_OG, S_YG], UP, eq=BAR, rank=30, nxt=["pullup-chest-to-bar"], prereq={"allOf": [[vt("pullup-band-assisted", 4)]]})
+ex("pullup-chest-to-bar", "Chest-to-Bar Pull-Up", "pullup", "PULL_VERTICAL", U, "REPS", "hang",
+   ["Hang, then pull explosively but controlled so the chest reaches the bar.", "Lean back slightly at the top.", "Lower slowly."],
+   reps_tiers([1, 3, 5, 6, 8], rec=(90, 90, 105, 105, 120)), [S_OG, S_GB], UP, eq=BAR, rank=40, nxt=["muscle-up-bar"], prereq={"allOf": [[vt("pullup-full", 4)]]})
+ex("muscle-up-bar", "Bar Muscle-Up", "pullup", "PULL_VERTICAL", U, "REPS", "hang",
+   ["False grip or strong overgrip, pull the bar to the lower chest.", "Transition the elbows over the bar quickly.", "Press to straight arms on top, then lower with control."],
+   reps_tiers([1, 2, 3, 4, 5], rec=(120, 120, 135, 135, 150)), [S_OG, S_GB], UP, eq=BAR, rank=50, prereq={"allOf": [[vt("pullup-chest-to-bar", 4)]]},
+   cautions=(CAUTION_STRENGTH, "Check the bar is secure; skill work, consider coaching."))
+# squat -> pistol
+ex("split-squat-bulgarian", "Bulgarian Split Squat (per side)", "squat", "LUNGE", L, "REPS", "standing",
+   ["Back foot on a stable chair behind you, front foot a stride ahead.", "Lower until the front thigh is about parallel.", "Drive up through the front heel; finish a side, then switch."],
+   reps_tiers([5, 6, 8, 10, 12]), [S_YG, S_NG], LOW, eq=[{"needs": [need("chair", suitability=["stable"])]}], uni=True, rank=30, nxt=["squat-shrimp"], prereq={"allOf": [[vt("split-squat", 3)]]})
+ex("squat-shrimp", "Shrimp Squat (per side)", "squat", "LUNGE", L, "REPS", "standing",
+   ["Stand on one leg, hold the other foot behind you.", "Lower until the back knee touches the floor lightly.", "Stand back up on the working leg."],
+   reps_tiers([2, 3, 5, 6, 8]), [S_OG, S_YG], LOW, uni=True, rank=40, nxt=["squat-pistol-assisted"], prereq={"allOf": [[vt("split-squat-bulgarian", 4)]]})
+ex("squat-pistol-assisted", "Assisted Pistol Squat (per side)", "squat", "SQUAT", L, "REPS", "standing",
+   ["Hold a door frame or post lightly for balance.", "Lower on one leg with the other leg straight out in front.", "Stand up using as little help as possible."],
+   reps_tiers([2, 3, 5, 6, 8]), [S_CC, S_OG, S_NG], LOW, uni=True, rank=50, nxt=["squat-pistol"], prereq={"allOf": [[vt("squat-shrimp", 3)]]})
+ex("squat-pistol", "Pistol Squat (per side)", "squat", "SQUAT", L, "REPS", "standing",
+   ["Stand on one leg, other leg straight in front.", "Lower to full depth with the heel down.", "Stand up with control; switch sides."],
+   reps_tiers([1, 2, 3, 5, 6]), [S_CC, S_OG, S_NG], LOW, uni=True, rank=60, prereq={"allOf": [[vt("squat-pistol-assisted", 4)]]})
+# bridge
+ex("bridge-single-leg", "Single-Leg Glute Bridge (per side)", "bridge", "HINGE", L, "REPS", "supine",
+   ["Lie on your back, one foot flat, other leg straight up.", "Press through the heel to lift the hips level.", "Lower slowly; finish a side, then switch."],
+   reps_tiers([5, 6, 8, 10, 12]), [S_CC, S_YG], ["stretch-hip-flexor", "stretch-back"], uni=True, rank=20, nxt=["bridge-back"], prereq={"allOf": [[vt("glute-bridge", 4)]]})
+ex("bridge-back", "Full Back Bridge", "bridge", "HINGE", L, "HOLD", "supine",
+   ["Lie on your back, hands by the ears, feet flat.", "Press up so arms and legs straighten and the back arches evenly.", "Hold, breathing steadily; lower slowly."],
+   hold_tiers([5, 10, 15, 20, 30]), [S_CC, S_GB], ["stretch-hip-flexor", "stretch-back"], rank=30, prereq={"allOf": [[vt("bridge-single-leg", 3)]]},
+   cautions=(CAUTION_STRENGTH, "Needs shoulder and spine mobility; stop on any pinching."))
+# core
+ex("hollow-hold", "Hollow Body Hold", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "supine",
+   ["Lie on your back, press the lower back into the floor.", "Lift shoulders and straight legs a few centimetres, arms by the ears or sides.", "Hold; make it easier by bending the knees."],
+   hold_tiers([10, 15, 20, 30, 40]), [S_GB, S_OG], CORE_ST, rank=20, prereq={"allOf": [[vt("plank", 4)]]}, nxt=["l-sit-floor"])
+ex("l-sit-floor", "L-Sit (floor)", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "seated",
+   ["Sit with straight legs, hands beside the hips.", "Press down, lift the hips and legs off the floor.", "Hold with legs straight and locked."],
+   hold_tiers([5, 10, 15, 20, 30]), [S_OG, S_GB, S_CC], CORE_ST, rank=30, nxt=["v-sit-floor"], prereq={"allOf": [[vt("hollow-hold", 3)]]})
+ex("v-sit-floor", "V-Sit (floor)", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "seated",
+   ["From an L-sit, lift the legs higher while leaning back slightly.", "Keep the arms straight and the legs locked.", "Hold; come down with control."],
+   hold_tiers([3, 5, 8, 12, 15]), [S_OG, S_GB], CORE_ST, rank=40, prereq={"allOf": [[vt("l-sit-floor", 4)]]})
+ex("leg-raise-lying", "Lying Leg Raise", "legraise", "CORE_ANTI_EXTENSION", C, "REPS", "supine",
+   ["Lie flat, lower back pressed down, legs straight.", "Raise legs to vertical, lower slowly without arching.", "Keep the movement slow."],
+   reps_tiers([6, 8, 10, 12, 15]), [S_CC, S_YG], CORE_ST, rank=20, nxt=["v-up"])
+ex("v-up", "V-Up", "legraise", "CORE_ANTI_EXTENSION", C, "REPS", "supine",
+   ["Lie flat with arms overhead.", "Lift legs and torso together, reaching hands toward the toes.", "Lower slowly; keep control."],
+   reps_tiers([5, 7, 9, 12, 15]), [S_OG, S_YG], CORE_ST, rank=30, prereq={"allOf": [[vt("leg-raise-lying", 3)]]})
+# front lever
+ex("front-lever-tuck", "Tuck Front Lever", "lever", "PULL_VERTICAL", ["UPPER_BODY", "CORE"], "HOLD", "hang",
+   ["Hang from a bar, pull the shoulders down and back.", "Tuck the knees, raise the hips until the back is horizontal.", "Hold with straight arms."],
+   hold_tiers([3, 5, 8, 10, 15]), [S_OG, S_GB], UP, eq=BAR, rank=40, nxt=["front-lever-adv-tuck"], prereq={"allOf": [[vt("pullup-full", 3)], [vt("hollow-hold", 3)]]},
+   cautions=(CAUTION_STRENGTH, "Hard skill: stop on any elbow or shoulder pain; consider coaching."))
+ex("front-lever-adv-tuck", "Advanced Tuck Front Lever", "lever", "PULL_VERTICAL", ["UPPER_BODY", "CORE"], "HOLD", "hang",
+   ["As the tuck lever, but open the hips so the thighs are about 90 degrees from the torso.", "Keep the back flat and horizontal.", "Hold."],
+   hold_tiers([3, 5, 8, 10, 15]), [S_OG, S_GB], UP, eq=BAR, rank=50, nxt=["front-lever-straddle"], prereq={"allOf": [[vt("front-lever-tuck", 4)]]},
+   cautions=(CAUTION_STRENGTH, "Hard skill: stop on any elbow or shoulder pain."))
+ex("front-lever-straddle", "Straddle Front Lever", "lever", "PULL_VERTICAL", ["UPPER_BODY", "CORE"], "HOLD", "hang",
+   ["Straddle the legs wide with the body horizontal.", "Arms straight, shoulders depressed.", "Hold."],
+   hold_tiers([2, 3, 5, 8, 10]), [S_OG, S_GB], UP, eq=BAR, rank=60, prereq={"allOf": [[vt("front-lever-adv-tuck", 4)]]},
+   cautions=(CAUTION_STRENGTH, "Hard skill: stop on any elbow or shoulder pain."))
+# planche
+ex("planche-lean", "Planche Lean", "planche", "PUSH_HORIZONTAL", ["UPPER_BODY", "CORE"], "HOLD", "floor",
+   ["Push-up position, fingers turned slightly out.", "Lean the shoulders forward past the hands, arms straight.", "Hold with a rounded upper back and tight body."],
+   hold_tiers([5, 10, 15, 20, 30], stretch="stretch-shoulder"), [S_OG, S_GB], UP, rank=40, nxt=["planche-tuck"], prereq={"allOf": [[vt("pushup-standard", 4)], [vt("plank", 4)]]},
+   cautions=(CAUTION_STRENGTH, "Wrist-heavy: warm up the wrists, stop on wrist pain."))
+ex("planche-tuck", "Tuck Planche", "planche", "PUSH_HORIZONTAL", ["UPPER_BODY", "CORE"], "HOLD", "floor",
+   ["From the lean, lift the feet with knees tucked to the chest.", "Arms straight, hips level with the shoulders.", "Hold."],
+   hold_tiers([3, 5, 8, 10, 15], stretch="stretch-shoulder"), [S_OG, S_GB], UP, rank=50, nxt=["planche-adv-tuck"], prereq={"allOf": [[vt("planche-lean", 4)]]},
+   cautions=(CAUTION_STRENGTH, "Wrist-heavy: stop on wrist pain."))
+ex("planche-adv-tuck", "Advanced Tuck Planche", "planche", "PUSH_HORIZONTAL", ["UPPER_BODY", "CORE"], "HOLD", "floor",
+   ["Open the hips so the back is flat and horizontal.", "Arms straight, shoulders forward.", "Hold."],
+   hold_tiers([2, 3, 5, 8, 10], stretch="stretch-shoulder"), [S_OG, S_GB], UP, rank=60, prereq={"allOf": [[vt("planche-tuck", 4)]]},
+   cautions=(CAUTION_STRENGTH, "Wrist-heavy: stop on wrist pain."))
+# plank no longer a dead end: top of the plank ladder leads to the hollow hold
+for pol in policies:
+    if pol["variationId"] == "plank": pol["nextVariationIds"] = ["hollow-hold"]
+    if pol["variationId"] == "pullup-band-assisted": pol["nextVariationIds"] = ["pullup-full"]
+    if pol["variationId"] == "pushup-standard": pol["nextVariationIds"] = ["pushup-diamond"]
+    if pol["variationId"] == "split-squat": pol["nextVariationIds"] = ["split-squat-bulgarian"]
+    if pol["variationId"] == "glute-bridge": pol["nextVariationIds"] = ["bridge-single-leg"]
 
 # ---------------- skill graph (small, DRAFT) ----------------
 nodes = [
