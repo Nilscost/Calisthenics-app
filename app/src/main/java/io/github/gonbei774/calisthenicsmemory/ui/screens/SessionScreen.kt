@@ -37,7 +37,8 @@ fun SessionScreen(onExit: () -> Unit) {
         if (st.isTerminal) {
             Text(if (st.phase == Phase.COMPLETED) "Workout complete" else "Workout finished early", style = MaterialTheme.typography.headlineMedium)
             Text("Saved to your history (blocks done: ${st.executions.values.count { it.name == "COMPLETED" }}).")
-            FeedbackForm(st.sessionId, st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null && st.executions[it.id]?.name == "COMPLETED" }.mapNotNull { it.variationId }.distinct(), waitSaved = true)
+            FeedbackForm(st.sessionId, st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null && st.executions[it.id]?.name == "COMPLETED" }.mapNotNull { it.variationId }.distinct(), waitSaved = true,
+                targets = st.plan.blocks.filter { it.type == BlockType.WORK && it.target?.type == TargetType.REPS && it.variationId != null }.associate { it.variationId!! to it.target!!.value })
             Button(onClick = { SessionBus.clear(); onExit() }) { Text("Done") }
             return@Column
         }
@@ -73,24 +74,36 @@ fun startWorkout(ctx: Context, planJson: String, sessionId: String, speak: Boole
 
 /** Optional feedback per exercise. Untouched rows stay "assumed met" (no row written). Each tap adds a new revision. */
 @Composable
-fun FeedbackForm(sessionId: String, vids: List<String>, waitSaved: Boolean) {
+fun FeedbackForm(sessionId: String, vids: List<String>, waitSaved: Boolean, targets: Map<String, Int> = emptyMap()) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     if (vids.isEmpty()) return
     var rating by remember { mutableStateOf(mapOf<String, String>()) }
     var pain by remember { mutableStateOf(setOf<String>()) }
-    fun save(v: String, r: String, d: Boolean) {
+    var reps by remember { mutableStateOf(mapOf<String, Int>()) }
+    fun save(v: String, r: String, d: Boolean, n: Int? = reps[v]) {
         scope.launch {
             val deadline = System.currentTimeMillis() + 5000
             while (waitSaved && !SessionBus.saved && System.currentTimeMillis() < deadline) delay(100)
             io.github.gonbei774.calisthenicsmemory.data.AppDatabase.getDatabase(ctx).historyDao()
-                .reviseFeedback(sessionId, v, r, d, false, System.currentTimeMillis())
+                .reviseFeedback(sessionId, v, r, d, false, System.currentTimeMillis(), n)
         }
     }
     Text("How did it go? (optional — skipping counts as met)", style = MaterialTheme.typography.titleSmall)
     vids.forEach { v ->
         Column {
             Text(SessionBus.names[v] ?: v)
+            targets[v]?.let { target ->
+                val n = reps[v] ?: target
+                fun set(x: Int) { val c = x.coerceIn(0, 999); reps = reps + (v to c); val r = if (c < target) "BELOW" else (rating[v]?.takeIf { it != "BELOW" } ?: "MET"); rating = rating + (v to r); save(v, r, v in pain, c) }
+                Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text("Reps done", style = MaterialTheme.typography.bodyMedium)
+                    OutlinedButton(onClick = { set(n - 1) }) { Text("−") }
+                    Text("$n", style = MaterialTheme.typography.titleLarge, modifier = Modifier.semantics { contentDescription = "$n reps done, target $target" })
+                    OutlinedButton(onClick = { set(n + 1) }) { Text("+") }
+                    Text("(target $target)", style = MaterialTheme.typography.bodySmall)
+                }
+            }
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 listOf("BELOW" to "Too hard", "MET" to "As planned", "ABOVE" to "Easy").forEach { (k, label) ->
                     FilterChip(selected = rating[v] == k, onClick = { rating = rating + (v to k); save(v, k, v in pain) }, label = { Text(label) })

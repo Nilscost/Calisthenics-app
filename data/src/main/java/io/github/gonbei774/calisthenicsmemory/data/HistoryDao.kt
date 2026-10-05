@@ -68,10 +68,10 @@ abstract class HistoryDao {
 
     /** Editing old feedback adds a NEW revision; the earlier one is kept. */
     @Transaction
-    open suspend fun reviseFeedback(sessionId: String, variationId: String, rating: String, discomfort: Boolean, assumedMet: Boolean, now: Long): Int {
+    open suspend fun reviseFeedback(sessionId: String, variationId: String, rating: String, discomfort: Boolean, assumedMet: Boolean, now: Long, actualReps: Int? = null): Int {
         val next = latestRevision(sessionId, variationId) + 1
         insertFeedback(FeedbackRevisionEntity(sessionId = sessionId, variationId = variationId, revision = next,
-            rating = rating, discomfort = discomfort, assumedMet = assumedMet, createdAtEpochMs = now))
+            rating = rating, discomfort = discomfort, assumedMet = assumedMet, createdAtEpochMs = now, actualReps = actualReps))
         return next
     }
 }

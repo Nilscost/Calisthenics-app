@@ -39,6 +39,7 @@ fun HistoryScreen(onBack: () -> Unit) {
                     list.forEach { sr ->
                         var open by remember { mutableStateOf(false) }
                         var vids by remember { mutableStateOf<List<String>>(emptyList()) }
+                        var targets by remember { mutableStateOf<Map<String, Int>>(emptyMap()) }
                         val label = java.time.Instant.ofEpochMilli(sr.startedAtEpochMs).atZone(zone).toLocalDate().toString()
                         OutlinedButton(onClick = {
                             open = !open
@@ -49,8 +50,9 @@ fun HistoryScreen(onBack: () -> Unit) {
                                 val plan = dao.plan(sr.planId)?.let { runCatching { kotlinx.serialization.json.Json { ignoreUnknownKeys = true }.decodeFromString(app.calisthenics.domain.model.WorkoutPlan.serializer(), it.planJson) }.getOrNull() }
                                 val done = dao.blockResults(sr.sessionId).filter { it.outcome == "MET" }.map { it.blockId }.toSet()
                                 vids = plan?.blocks?.filter { it.id in done && it.variationId != null && it.type == app.calisthenics.domain.model.BlockType.WORK }?.mapNotNull { it.variationId }?.distinct().orEmpty()
+                                targets = plan?.blocks?.filter { it.type == app.calisthenics.domain.model.BlockType.WORK && it.target?.type == app.calisthenics.domain.model.TargetType.REPS && it.variationId != null }?.associate { it.variationId!! to it.target!!.value }.orEmpty()
                             }
-                            FeedbackForm(sr.sessionId, vids, waitSaved = false)
+                            FeedbackForm(sr.sessionId, vids, waitSaved = false, targets = targets)
                         }
                     }
                     HorizontalDivider()

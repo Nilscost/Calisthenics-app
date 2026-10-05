@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 @Database(
     entities = [Exercise::class, TrainingRecord::class, ExerciseGroup::class, TodoTask::class, Program::class, ProgramExercise::class, ProgramLoop::class, IntervalProgram::class, IntervalProgramExercise::class, IntervalRecord::class,
         PlanSnapshotEntity::class, WorkoutSessionEntity::class, BlockResultEntity::class, FeedbackRevisionEntity::class, ProgressionEventEntity::class],
-    version = 22,
+    version = 23,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -39,7 +39,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "bodyweight_trainer_database"
                 )
-                    .addMigrations(MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18, MIGRATION_18_19, MIGRATION_19_20, MIGRATION_20_21, MIGRATION_21_22)
+                    .addMigrations(MIGRATION_9_10, MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16, MIGRATION_16_17, MIGRATION_17_18, MIGRATION_18_19, MIGRATION_19_20, MIGRATION_20_21, MIGRATION_21_22, MIGRATION_22_23)
                     // T07 (DATA-01): NO destructive fallback. A missing migration must fail loudly
                     // in tests, never silently wipe the user's history on update.
                     .build()
@@ -50,6 +50,13 @@ abstract class AppDatabase : RoomDatabase() {
 
         // マイグレーション 9 → 10: displayOrder, restInterval, repDuration を追加
         // 21 -> 22 (T07): add append-only history tables. Purely additive; no existing table is touched.
+        /** Additive only: nullable reps column on feedback; existing rows untouched. */
+        val MIGRATION_22_23 = object : Migration(22, 23) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE feedback_revisions ADD COLUMN actualReps INTEGER")
+            }
+        }
+
         val MIGRATION_21_22 = object : Migration(21, 22) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("CREATE TABLE IF NOT EXISTS `plan_snapshots` (`planId` TEXT NOT NULL, `createdAtEpochMs` INTEGER NOT NULL, `routineId` TEXT NOT NULL, `routineRevision` INTEGER NOT NULL, `catalogVersion` INTEGER NOT NULL, `profileId` TEXT NOT NULL, `planJson` TEXT NOT NULL, PRIMARY KEY(`planId`))")

@@ -64,6 +64,8 @@ data class FeedbackRevisionEntity(
     val discomfort: Boolean,
     val assumedMet: Boolean,
     val createdAtEpochMs: Long,
+    /** Reps the user entered (fewest in any round); null = not entered. */
+    val actualReps: Int? = null,
 )
 
 @Entity(tableName = "progression_events", indices = [Index("variationId")])

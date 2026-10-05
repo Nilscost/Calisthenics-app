@@ -12,7 +12,8 @@ const val BACKUP_FORMAT_VERSION = 1
 
 @Serializable
 data class FeedbackRecord(val sessionId: String, val variationId: String, val revision: Int, val rating: String,
-                          val discomfort: Boolean, val assumedMet: Boolean, val createdAtEpochMs: Long)
+                          val discomfort: Boolean, val assumedMet: Boolean, val createdAtEpochMs: Long,
+                          val actualReps: Int? = null)
 
 @Serializable
 data class ProgressionEventRecord(val eventId: String, val variationId: String, val kind: String,

@@ -92,3 +92,14 @@ class ExplicitRoundsTest {
     }
     @Test fun printThreeRoundLength() { println("ROUNDS3=" + plan(3).plan.plannedDurationSeconds + " ROUNDS4=" + plan(4).plan.plannedDurationSeconds + " SLOTS=" + StarterRoutine.routine.slots.size) }
 }
+
+class RepsFeedbackTest {
+    @Test fun repsBelowTargetCountAsBelowAndAtTargetAsMet() {
+        val blk = TimelineBlock("b", BlockType.WORK, 60, 1, "s", "pushup-standard", Side.NONE, Target(TargetType.REPS, 8), 3)
+        val plan = WorkoutPlan("p", "r", 1, 1, 0L, "home", 0, 60, emptySet(), false, null, 1, emptyList(), emptyList(), false, false, listOf(blk))
+        fun rate(n: Int) = app.calisthenics.domain.feedback.resolveFeedback(plan, mapOf("b" to app.calisthenics.domain.feedback.Execution.COMPLETED), emptyMap(),
+            mapOf("pushup-standard" to app.calisthenics.domain.feedback.Feedback(rating = app.calisthenics.domain.feedback.Rating.MET, actualReps = n))).single().rating
+        assertEquals(app.calisthenics.domain.feedback.Rating.BELOW, rate(7))
+        assertEquals(app.calisthenics.domain.feedback.Rating.MET, rate(8))
+    }
+}

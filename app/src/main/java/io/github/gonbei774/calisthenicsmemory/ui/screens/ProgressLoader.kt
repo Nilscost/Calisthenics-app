@@ -27,7 +27,7 @@ object ProgressLoader {
             val vids = plan.blocks.mapNotNull { it.variationId }.distinct()
             val rows = vids.mapNotNull { v ->
                 dao.feedbackHistory(s.sessionId, v).lastOrNull()?.let { f ->
-                    v to Feedback(rating = runCatching { Rating.valueOf(f.rating) }.getOrNull(), discomfort = f.discomfort, revision = f.revision)
+                    v to Feedback(rating = runCatching { Rating.valueOf(f.rating) }.getOrNull(), discomfort = f.discomfort, revision = f.revision, actualReps = f.actualReps)
                 }
             }.toMap()
             val day = Instant.ofEpochMilli(s.startedAtEpochMs).atZone(zone).toLocalDate().toEpochDay().toInt()
