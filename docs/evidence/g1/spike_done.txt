@@ -1,0 +1,13 @@
+tag=full46min
+blocks=110
+workMs=15000
+restMs=10000
+log=/storage/emulated/0/Android/data/app.calisthenics.personal/files/spike/spike_773088476_full46min.csv
+totalPlannedMs=2740000
+observedTotalMs=2740003
+cues=219/219
+maxAbsDeltaMs=17
+cuesLateOver1s=0
+ttsSpoken=219 ttsFailed=0 focusDenied=0
+timingVerdict=PASS (owner decides G1)
+done
