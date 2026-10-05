@@ -27,7 +27,7 @@ import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.screens.BackupScreen2
 import io.github.gonbei774.calisthenicsmemory.ui.screens.HistoryScreen
-import io.github.gonbei774.calisthenicsmemory.ui.screens.LibraryScreen
+import io.github.gonbei774.calisthenicsmemory.ui.progress.ProgressScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.LicensesScreen
 import io.github.gonbei774.calisthenicsmemory.ui.onboarding.OnboardingScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.OnboardingStore
@@ -94,7 +94,7 @@ fun AppNav() {
             Route.TRAIN -> TrainScreen(m, onPreview = { go(Route.PREVIEW) }, onStarted = { go(Route.SESSION) },
                 onEditProfile = { id -> editId = id; editFrom = Route.TRAIN.route; go(Route.PROFILE_EDIT) })
             Route.PREVIEW -> { BackHandler { go(Route.TRAIN) }; PreviewScreen(m, onBack = { go(Route.TRAIN) }, onStarted = { go(Route.SESSION) }) }
-            Route.PROGRESS -> LibraryScreen(m)
+            Route.PROGRESS -> ProgressScreen(m)
             Route.HISTORY -> HistoryScreen(m)
             Route.SETTINGS -> SettingsScreen(m, onLevels = { go(Route.ONBOARDING) }, onBackup = { go(Route.BACKUP) }, onLicenses = { go(Route.LICENSES) }, onProfiles = { go(Route.PROFILES) })
             Route.SESSION -> { BackHandler { go(Route.TRAIN) }; SessionScreen(m, onExit = { go(Route.TRAIN) }) }

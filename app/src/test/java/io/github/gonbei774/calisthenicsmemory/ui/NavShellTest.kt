@@ -40,7 +40,7 @@ class NavShellTest {
         rule.onNodeWithText("Backup and restore").assertIsDisplayed()
         // The History tab reads Room; Robolectric's native SQLite is not available on linux-aarch64 (sandbox), so it is not opened here.
         rule.onNodeWithTag("tab_progress").performClick()
-        rule.onNodeWithText("Exercise library").assertIsDisplayed()
+        rule.onNodeWithTag("tab_chip_push").assertIsDisplayed()
     }
 
     @Test fun firstRunHidesTheTabBar() {

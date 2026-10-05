@@ -68,6 +68,8 @@ private fun equipmentSummary(p: EquipmentProfile): String {
     return if (labels.isEmpty()) stringResource(R.string.profile_no_equipment) else labels.joinToString(", ")
 }
 
+fun equipmentLabelShortPublic(id: String): Int = equipmentLabelShort(id)
+
 private fun equipmentLabelShort(id: String): Int = when (id) {
     "pullup-bar" -> R.string.eq_pullup_bar_short
     "high-bar" -> R.string.eq_high_bar_short

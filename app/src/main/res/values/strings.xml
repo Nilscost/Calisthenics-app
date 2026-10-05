@@ -171,4 +171,27 @@
     <string name="muscle_calves">Calves</string>
     <string name="muscle_hip_flexors">Hip flexors</string>
     <string name="muscle_adductors">Inner thighs</string>
+    <string name="node_mastered">Mastered</string>
+    <string name="node_current">Training now</string>
+    <string name="node_available">Ready to start</string>
+    <string name="node_locked">Locked</string>
+    <string name="node_needs_equipment">Needs equipment</string>
+    <string name="node_training_now">Training now</string>
+    <string name="node_description">%1$s, %2$d of %3$d stars, %4$s</string>
+    <string name="progress_goal">Goal: %1$s</string>
+    <string name="numbered_item">%1$d. %2$s</string>
+    <string name="sheet_how">How to</string>
+    <string name="sheet_cues">Form cues</string>
+    <string name="sheet_steps">The five steps</string>
+    <string name="sheet_step">Step %1$d: %2$s</string>
+    <string name="sheet_step_here">Step %1$d: %2$s  ← you are here</string>
+    <string name="sheet_step_name">%1$s step %2$d</string>
+    <string name="sheet_needs_first">Unlocks after: %1$s</string>
+    <string name="sheet_equipment">Equipment</string>
+    <string name="sheet_or"> or </string>
+    <string name="sheet_no_equipment">No equipment</string>
+    <string name="sheet_missing">Missing in this profile: %1$s</string>
+    <string name="sheet_cautions">Cautions</string>
+    <string name="sheet_sources">Ladder order from: %1$s</string>
+    <string name="sheet_draft">Numbers are an unreviewed draft, not medical advice.</string>
 </resources>
