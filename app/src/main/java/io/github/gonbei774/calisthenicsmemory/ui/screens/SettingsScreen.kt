@@ -13,9 +13,10 @@ import io.github.gonbei774.calisthenicsmemory.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier, onLevels: () -> Unit, onBackup: () -> Unit, onLicenses: () -> Unit) {
+fun SettingsScreen(modifier: Modifier = Modifier, onLevels: () -> Unit, onBackup: () -> Unit, onLicenses: () -> Unit, onProfiles: () -> Unit = {}) {
     Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text(stringResource(R.string.tab_settings)) }) }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            OutlinedButton(onClick = onProfiles, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.settings_profiles)) }
             OutlinedButton(onClick = onLevels, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.settings_levels)) }
             OutlinedButton(onClick = onBackup, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.settings_backup)) }
             OutlinedButton(onClick = onLicenses, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.settings_licenses)) }

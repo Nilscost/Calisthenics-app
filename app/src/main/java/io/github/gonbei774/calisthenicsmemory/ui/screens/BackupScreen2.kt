@@ -36,7 +36,7 @@ fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
             sessions = sessions.map { s -> SessionRecord(s.sessionId, s.planId, s.startedAtEpochMs, s.endedAtEpochMs, s.status,
                 dao.blockResults(s.sessionId).map { BlockRecord(it.blockId, null, "WORK", it.outcome, it.actualSeconds, it.achievedValue) }) },
             feedback = dao.allFeedback().map { FeedbackRecord(it.sessionId, it.variationId, it.revision, it.rating, it.discomfort, it.assumedMet, it.createdAtEpochMs, it.actualReps) },
-            events = dao.allEvents().map { ProgressionEventRecord(it.eventId, it.variationId, it.kind, it.fromTier, it.toTier, it.reason, it.atEpochMs) })
+            events = dao.allEvents().map { ProgressionEventRecord(it.eventId, it.variationId, it.kind, it.fromTier, it.toTier, it.reason, it.atEpochMs) }, profiles = ProfileStore.load(ctx))
     }
     val exporter = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
@@ -84,6 +84,7 @@ fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
                             val ev = p.events.map { ProgressionEventEntity(it.eventId, it.variationId, it.kind, it.fromTier, it.toTier, it.reason, it.atEpochMs) }
                             val added = dao.restoreMerge(plans, sessions, blocks, fb, ev)
                             PrefsStore.save(ctx, p.preferences); p.routines.firstOrNull()?.let { RoutineStore.save(ctx, it) }
+                            if (p.profiles.isNotEmpty()) ProfileStore.save(ctx, p.profiles)
                             pending = null
                             status = "Restored. $added new workout(s) added; ${p.sessions.size - added} already on this phone. Safety copy: ${safety.name} (in the app's private storage)."
                         } catch (e: Exception) { status = "Restore failed, nothing half-applied: ${e.message}" }

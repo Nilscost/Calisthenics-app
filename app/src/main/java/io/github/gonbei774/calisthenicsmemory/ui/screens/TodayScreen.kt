@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import app.calisthenics.domain.content.parseCatalog
-import app.calisthenics.domain.equipment.SeedProfiles
+import androidx.compose.ui.platform.testTag
 import app.calisthenics.domain.goals.*
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.planner.*
@@ -27,7 +27,7 @@ private fun fmt(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodayScreen(modifier: Modifier = Modifier, onLevels: () -> Unit, onStarted: () -> Unit = {}) {
+fun TodayScreen(modifier: Modifier = Modifier, onLevels: () -> Unit, onStarted: () -> Unit = {}, onEditProfile: (String?) -> Unit = {}) {
     val ctx = LocalContext.current
     val catalog = remember { ctx.assets.open("catalog.json").bufferedReader().use { parseCatalog(it.readText()) } }
     var baseRoutine by remember { mutableStateOf(RoutineStore.load(ctx)) }
@@ -37,20 +37,19 @@ fun TodayScreen(modifier: Modifier = Modifier, onLevels: () -> Unit, onStarted: 
     var minutes by rememberSaveable { mutableIntStateOf(saved.defaultDurationSeconds / 60) }
     var roundsSel by rememberSaveable { mutableIntStateOf(0) } // 0 = auto from minutes
     var timed by rememberSaveable { mutableStateOf(ModeStore.timed(ctx)) }
-    var highBar by rememberSaveable { mutableStateOf(ModeStore.highBar(ctx)) }
     var stretch by rememberSaveable { mutableStateOf(saved.stretchOn) }
     var profileId by rememberSaveable { mutableStateOf(saved.selectedProfileId) }
     var focusNames by rememberSaveable { mutableStateOf(listOf("FULL_BODY")) }
     val focus = focusNames.map { StrengthFocus.valueOf(it) }.toSet()
-    val baseProfile = SeedProfiles.all.first { it.id == profileId }
-    val profile = if (highBar) baseProfile.copy(items = baseProfile.items + app.calisthenics.domain.model.EquipmentItem("high-bar")) else baseProfile
+    val profiles = remember { ProfileStore.load(ctx) }
+    val profile = profiles.firstOrNull { it.id == profileId } ?: profiles.first()
 
     var progress by remember { mutableStateOf(LevelStore.snapshot(catalog, LevelStore.load(ctx))) }
     // History unreadable (or no SQLite, as in JVM UI tests) -> keep self-assessed levels.
     LaunchedEffect(Unit) { progress = try { ProgressLoader.load(ctx, catalog) } catch (_: Throwable) { progress } }
     val routine = remember(baseRoutine, goalId, progress) { Goals.routineFor(catalog, baseRoutine, goalId, progress) }
     var showTree by rememberSaveable { mutableStateOf(false) }
-    val result = remember(minutes, roundsSel, timed, highBar, stretch, profileId, focusNames, progress, routine, swaps) {
+    val result = remember(minutes, roundsSel, timed, stretch, profileId, focusNames, progress, routine, swaps) {
         val draft = SessionDraft.from(Preferences(defaultDurationSeconds = minutes * 60, stretchOn = stretch, selectedProfileId = profileId), routine)
             .copy(focus = if (focusNames == listOf("FULL_BODY")) Goals.focusFor(goalId) else focus, swaps = swaps, rounds = roundsSel.takeIf { it > 0 }, timed = timed)
         generate(PlanInput("preview", System.currentTimeMillis(), 0, catalog, routine, draft, profile, progress = progress))
@@ -82,13 +81,12 @@ fun TodayScreen(modifier: Modifier = Modifier, onLevels: () -> Unit, onStarted: 
                 FilterChip(selected = timed, onClick = { timed = !timed; ModeStore.setTimed(ctx, timed) }, label = { Text("Timed rounds: 60 s work / 60 s rest") })
             }
             if (timed) Text("Each exercise runs 60 s: do as many clean reps as you can. Reaching the reps shown within 60 s counts as hitting the target.", style = MaterialTheme.typography.bodySmall)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilterChip(selected = highBar, onClick = { highBar = !highBar; ModeStore.setHighBar(ctx, highBar) }, label = { Text("I have a high bar (hang with feet clear)") })
-            }
             Slider(value = minutes.toFloat(), onValueChange = { minutes = (it / 5).toInt() * 5 }, valueRange = 10f..90f)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                SeedProfiles.all.forEach { p -> FilterChip(selected = profileId == p.id, onClick = { profileId = p.id }, label = { Text(p.name) }) }
+            Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                profiles.forEach { p -> FilterChip(selected = profile.id == p.id, onClick = { profileId = p.id; ProfileStore.select(ctx, p.id) }, label = { Text(p.name) }) }
+                AssistChip(onClick = { onEditProfile(null) }, label = { Text("+") }, modifier = Modifier.testTag("profile_plus"))
             }
+            TextButton(onClick = { onEditProfile(profile.id) }) { Text("Edit \"${profile.name}\" equipment") }
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 StrengthFocus.values().forEach { f ->
                     FilterChip(selected = f in focus, onClick = { focusNames = toggleFocus(focus, f).map { it.name } }, label = { Text(f.name.lowercase().replace('_', ' ')) })
@@ -142,7 +140,7 @@ fun TodayScreen(modifier: Modifier = Modifier, onLevels: () -> Unit, onStarted: 
                     Spacer(Modifier.height(8.dp))
                     OutlinedButton(onClick = {
                         PrefsStore.save(ctx, app.calisthenics.domain.routine.rememberOnStart(saved,
-                            SessionDraft.from(saved, routine).copy(durationSeconds = minutes * 60, stretchOn = stretch, profileId = profileId)))
+                            SessionDraft.from(saved, routine).copy(durationSeconds = minutes * 60, stretchOn = stretch, profileId = profile.id)))
                     }) { Text("Remember these settings") }
                     Button(onClick = {
                         val pj = kotlinx.serialization.json.Json { encodeDefaults = true }.encodeToString(app.calisthenics.domain.model.WorkoutPlan.serializer(), p)

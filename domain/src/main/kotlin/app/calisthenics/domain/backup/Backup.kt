@@ -2,6 +2,7 @@
 package app.calisthenics.domain.backup
 
 import app.calisthenics.domain.history.SessionRecord
+import app.calisthenics.domain.model.EquipmentProfile
 import app.calisthenics.domain.model.Preferences
 import app.calisthenics.domain.model.Routine
 import kotlinx.serialization.Serializable
@@ -30,6 +31,8 @@ data class BackupPayload(
     val sessions: List<SessionRecord>,
     val feedback: List<FeedbackRecord>,
     val events: List<ProgressionEventRecord>,
+    /** U04: equipment profiles. Appended last with a default so older backup files still import. */
+    val profiles: List<EquipmentProfile> = emptyList(),
 )
 
 @Serializable
