@@ -38,7 +38,7 @@ fun SessionScreen(onExit: () -> Unit) {
             Text(if (st.phase == Phase.COMPLETED) "Workout complete" else "Workout finished early", style = MaterialTheme.typography.headlineMedium)
             Text("Saved to your history (blocks done: ${st.executions.values.count { it.name == "COMPLETED" }}).")
             FeedbackForm(st.sessionId, st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null && st.executions[it.id]?.name == "COMPLETED" }.mapNotNull { it.variationId }.distinct(), waitSaved = true,
-                targets = st.plan.blocks.filter { it.type == BlockType.WORK && it.target?.type == TargetType.REPS && it.variationId != null }.associate { it.variationId!! to it.target!!.value })
+                targets = st.plan.blocks.filter { it.type == BlockType.WORK && it.target != null && it.variationId != null }.associate { it.variationId!! to it.target!! })
             Button(onClick = { SessionBus.clear(); onExit() }) { Text("Done") }
             return@Column
         }
@@ -74,7 +74,7 @@ fun startWorkout(ctx: Context, planJson: String, sessionId: String, speak: Boole
 
 /** Optional feedback per exercise. Untouched rows stay "assumed met" (no row written). Each tap adds a new revision. */
 @Composable
-fun FeedbackForm(sessionId: String, vids: List<String>, waitSaved: Boolean, targets: Map<String, Int> = emptyMap()) {
+fun FeedbackForm(sessionId: String, vids: List<String>, waitSaved: Boolean, targets: Map<String, app.calisthenics.domain.model.Target> = emptyMap()) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     if (vids.isEmpty()) return
@@ -93,15 +93,18 @@ fun FeedbackForm(sessionId: String, vids: List<String>, waitSaved: Boolean, targ
     vids.forEach { v ->
         Column {
             Text(SessionBus.names[v] ?: v)
-            targets[v]?.let { target ->
+            targets[v]?.let { tg ->
+                val target = tg.value; val hold = tg.type == TargetType.HOLD_SECONDS
+                val step = if (hold && target >= 30) 5 else 1
+                val unit = if (hold) "s" else ""
                 val n = reps[v] ?: target
                 fun set(x: Int) { val c = x.coerceIn(0, 999); reps = reps + (v to c); val r = if (c < target) "BELOW" else (rating[v]?.takeIf { it != "BELOW" } ?: "MET"); rating = rating + (v to r); save(v, r, v in pain, c) }
                 Row(verticalAlignment = androidx.compose.ui.Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text("Reps done", style = MaterialTheme.typography.bodyMedium)
-                    OutlinedButton(onClick = { set(n - 1) }) { Text("−") }
-                    Text("$n", style = MaterialTheme.typography.titleLarge, modifier = Modifier.semantics { contentDescription = "$n reps done, target $target" })
-                    OutlinedButton(onClick = { set(n + 1) }) { Text("+") }
-                    Text("(target $target)", style = MaterialTheme.typography.bodySmall)
+                    Text(if (hold) "Hold time" else "Reps done", style = MaterialTheme.typography.bodyMedium)
+                    OutlinedButton(onClick = { set(n - step) }) { Text("−") }
+                    Text("$n$unit", style = MaterialTheme.typography.titleLarge, modifier = Modifier.semantics { contentDescription = "$n ${if (hold) "seconds held" else "reps done"}, target $target" })
+                    OutlinedButton(onClick = { set(n + step) }) { Text("+") }
+                    Text("(target $target$unit)", style = MaterialTheme.typography.bodySmall)
                 }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {

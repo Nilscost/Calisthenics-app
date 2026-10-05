@@ -1,0 +1,156 @@
+Picked up JAVA_TOOL_OPTIONS: -Dorg.sqlite.tmpdir=/root/sqlitetmp -Djava.io.tmpdir=/root/sqlitetmp
+[=========                              ] 25%                                   WARNING: platform-tools package is not installed.
+> Task :domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :domain:compileKotlin UP-TO-DATE
+> Task :domain:compileJava NO-SOURCE
+> Task :domain:processResources NO-SOURCE
+> Task :domain:classes UP-TO-DATE
+> Task :domain:jar UP-TO-DATE
+> Task :domain:compileTestKotlin
+> Task :domain:compileTestJava NO-SOURCE
+> Task :domain:processTestResources NO-SOURCE
+> Task :domain:testClasses UP-TO-DATE
+
+> Task :domain:test
+Picked up JAVA_TOOL_OPTIONS: -Dorg.sqlite.tmpdir=/root/sqlitetmp -Djava.io.tmpdir=/root/sqlitetmp
+
+> Task :data:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources UP-TO-DATE
+> Task :data:processDebugNavigationResources UP-TO-DATE
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:kspDebugKotlin UP-TO-DATE
+> Task :data:compileDebugKotlin UP-TO-DATE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:preDebugUnitTestBuild UP-TO-DATE
+> Task :data:generateDebugUnitTestStubRFile UP-TO-DATE
+> Task :data:kspDebugUnitTestKotlin NO-SOURCE
+> Task :data:compileDebugUnitTestKotlin NO-SOURCE
+> Task :data:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :data:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:processDebugJavaRes UP-TO-DATE
+> Task :data:processDebugUnitTestJavaRes NO-SOURCE
+> Task :data:testDebugUnitTest NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :data:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:processDebugNavigationResources UP-TO-DATE
+> Task :app:compileDebugNavigationResources UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:collectDependencies UP-TO-DATE
+> Task :app:prepareLibraryDefinitionsDebug UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :data:extractDeepLinksDebug UP-TO-DATE
+> Task :data:processDebugManifest UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :data:compileDebugLibraryResources UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:kspDebugKotlin
+
+> Task :app:compileDebugKotlin
+w: file:///workspace/cal/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/HistoryScreen.kt:50:85 Redundant creation of Json format. Creating instances for each usage can be slow.
+
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:kspDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processDebugJavaRes UP-TO-DATE
+> Task :app:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :app:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dorg.sqlite.tmpdir=/root/sqlitetmp -Djava.io.tmpdir=/root/sqlitetmp
+
+> Task :data:checkDebugAarMetadata UP-TO-DATE
+> Task :data:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:stripDebugDebugSymbols NO-SOURCE
+> Task :data:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :data:extractDebugAnnotations UP-TO-DATE
+> Task :data:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :data:mergeDebugShaders UP-TO-DATE
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:mergeDebugAssets UP-TO-DATE
+> Task :data:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :data:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :data:prepareDebugArtProfile UP-TO-DATE
+> Task :data:prepareLintJarForPublish UP-TO-DATE
+> Task :data:mergeDebugJavaResource UP-TO-DATE
+> Task :data:syncDebugLibJars UP-TO-DATE
+> Task :data:bundleDebugLocalLintAar UP-TO-DATE
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :data:createFullJarDebug UP-TO-DATE
+> Task :data:writeDebugLintModelMetadata UP-TO-DATE
+> Task :app:generateDebugAndroidTestLintModel
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :data:extractProguardFiles UP-TO-DATE
+> Task :data:generateDebugLintModel UP-TO-DATE
+> Task :app:generateDebugLintReportModel
+> Task :app:generateDebugUnitTestLintModel
+> Task :data:lintAnalyzeDebug UP-TO-DATE
+> Task :app:lintAnalyzeDebug
+> Task :app:lintAnalyzeDebugAndroidTest
+> Task :app:lintAnalyzeDebugUnitTest
+> Task :data:preDebugAndroidTestBuild UP-TO-DATE
+> Task :data:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :data:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :data:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :data:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :data:lintAnalyzeDebugUnitTest UP-TO-DATE
+
+> Task :app:lintReportDebug
+Wrote HTML report to file:///workspace/cal/app/build/reports/lint-results-debug.html
+
+> Task :app:lintDebug
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :data:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :data:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :app:mergeDebugNativeLibs UP-TO-DATE
+> Task :app:stripDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:assembleDebug
+
+BUILD SUCCESSFUL in 33s
+108 actionable tasks: 20 executed, 88 up-to-date

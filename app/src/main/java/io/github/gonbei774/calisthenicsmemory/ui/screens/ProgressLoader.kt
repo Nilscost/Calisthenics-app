@@ -27,7 +27,8 @@ object ProgressLoader {
             val vids = plan.blocks.mapNotNull { it.variationId }.distinct()
             val rows = vids.mapNotNull { v ->
                 dao.feedbackHistory(s.sessionId, v).lastOrNull()?.let { f ->
-                    v to Feedback(rating = runCatching { Rating.valueOf(f.rating) }.getOrNull(), discomfort = f.discomfort, revision = f.revision, actualReps = f.actualReps)
+                    v to Feedback(rating = runCatching { Rating.valueOf(f.rating) }.getOrNull(), discomfort = f.discomfort, revision = f.revision,
+                        actualReps = if (isHold(plan, v)) null else f.actualReps, actualHoldSeconds = if (isHold(plan, v)) f.actualReps else null)
                 }
             }.toMap()
             val day = Instant.ofEpochMilli(s.startedAtEpochMs).atZone(zone).toLocalDate().toEpochDay().toInt()
@@ -38,4 +39,5 @@ object ProgressLoader {
         val actions = LevelStore.load(ctx).map { (v, t) -> UserAction.SelfAssessment(0, v, t) }
         return ProgressionEngine(catalog).replay(evidence, actions)
     }
+    private fun isHold(plan: WorkoutPlan, v: String) = plan.blocks.any { it.variationId == v && it.target?.type == app.calisthenics.domain.model.TargetType.HOLD_SECONDS }
 }

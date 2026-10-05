@@ -103,3 +103,14 @@ class RepsFeedbackTest {
         assertEquals(app.calisthenics.domain.feedback.Rating.MET, rate(8))
     }
 }
+
+class HoldFeedbackTest {
+    @Test fun holdBelowTargetCountsAsBelow() {
+        val blk = TimelineBlock("b", BlockType.WORK, 60, 1, "s", "plank", Side.NONE, Target(TargetType.HOLD_SECONDS, 30), 3)
+        val plan = WorkoutPlan("p", "r", 1, 1, 0L, "home", 0, 60, emptySet(), false, null, 1, emptyList(), emptyList(), false, false, listOf(blk))
+        fun rate(n: Int) = app.calisthenics.domain.feedback.resolveFeedback(plan, mapOf("b" to app.calisthenics.domain.feedback.Execution.COMPLETED), emptyMap(),
+            mapOf("plank" to app.calisthenics.domain.feedback.Feedback(rating = app.calisthenics.domain.feedback.Rating.MET, actualHoldSeconds = n))).single().rating
+        assertEquals(app.calisthenics.domain.feedback.Rating.BELOW, rate(25))
+        assertEquals(app.calisthenics.domain.feedback.Rating.MET, rate(30))
+    }
+}
