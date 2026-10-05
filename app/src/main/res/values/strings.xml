@@ -10,4 +10,7 @@
     <string name="settings_levels">Redo the starting questionnaire</string>
     <string name="settings_backup">Backup and restore</string>
     <string name="settings_licenses">Open-source licences</string>
+    <string name="stepper_decrease">Decrease</string>
+    <string name="stepper_increase">Increase</string>
+    <string name="demo_clip_description">Looping demonstration animation of the exercise</string>
 </resources>

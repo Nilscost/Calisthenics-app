@@ -93,3 +93,11 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - Tests: `OldForkRemovedTest` scans resources and sources for the old strings/classes. Verify exit 0 (see log).
 - NOT done: `data/schemas` JSON files untouched; `docs/` older documents still mention the fork screens; `THIRD_PARTY_NOTICES.md` still lists the fork's libraries (reorderable) — needs a tidy in U13.
 - Choice not in the plan: `ThemePreferences`/`AppTheme` kept (theme choice still read by `MainActivity`).
+
+### U02 — design system (2026-10-05)
+- `ui/theme/`: Material 3 theme with dynamic colour on Android 12+ (`dynamicColor = true`), fallback palette (deep teal primary, orange accent) for light and dark, `AppTypography` (M3 scale only), `Spacing` (4/8/12/16/24 + 48 dp touch), `Radius` (card 16, button 28), `AppShapes`, `AppAccentTheme` (orange for muscles and stars, kept constant under dynamic colour), `AppIcons` (icons not in material-icons-core; Apache-2.0 note added to THIRD_PARTY_NOTICES.md).
+- `ui/components/Stepper.kt`: − value + with haptic tick, 48 dp targets, content descriptions (used by U05/U08).
+- Old `AppColors`/`LocalAppColors`/Slate palette removed; `LicensesScreen` now uses `MaterialTheme`.
+- Tests: `DesignSystemTest` — palette per theme, light/dark compose, stepper clamp/enable state, and a source scan failing on hard-coded `Text("…")`/`contentDescription = "…"` outside a named legacy list (Today, Library, Onboarding, Session, History, Backup2, SkillTree: each leaves the list when its task rewrites it). Verify exit 0.
+- NOT done: no font-scale 1.3 check yet (U13); French strings (Q3); `HardcodedText` Android lint does not look at Compose, hence the source-scan test.
+- Choices not in the plan: dark/light selection still follows `ThemePreferences` (system by default); no Settings control yet.

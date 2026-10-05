@@ -7,29 +7,24 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibraryDefaults
 import io.github.gonbei774.calisthenicsmemory.R
-import io.github.gonbei774.calisthenicsmemory.ui.theme.LocalAppColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LicensesScreen(
     onNavigateBack: () -> Unit
 ) {
-    val appColors = LocalAppColors.current
     Scaffold(
         topBar = {
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                color = appColors.border
+                color = MaterialTheme.colorScheme.surfaceVariant
             ) {
                 Row(
                     modifier = Modifier
@@ -41,14 +36,13 @@ fun LicensesScreen(
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.back),
-                            tint = appColors.textPrimary
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                     Text(
                         text = stringResource(R.string.open_source_licenses),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = appColors.textPrimary
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -59,10 +53,10 @@ fun LicensesScreen(
                 .fillMaxSize()
                 .padding(paddingValues),
             colors = LibraryDefaults.libraryColors(
-                backgroundColor = appColors.background,
-                contentColor = appColors.textPrimary,
-                badgeBackgroundColor = Color(0xFF9333EA), // Purple600
-                badgeContentColor = appColors.textPrimary
+                backgroundColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onBackground,
+                badgeBackgroundColor = MaterialTheme.colorScheme.primaryContainer,
+                badgeContentColor = MaterialTheme.colorScheme.onPrimaryContainer
             )
         )
     }

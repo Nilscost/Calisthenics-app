@@ -67,3 +67,6 @@ JUnit 4 (EPL-1.0), Gradle, Kotlin compiler, KSP, Android SDK (see its own terms)
 
 ## Rule
 Before adding code/data/media: add an entry with upstream URL, revision, author, licence, attribution, modifications, redistribution permission.
+
+## Material Symbols (icon paths)
+`ui/theme/AppIcons.kt` contains vector paths copied from Google's Material Symbols/Icons (Apache License 2.0). Further icons are added there as screens need them.
