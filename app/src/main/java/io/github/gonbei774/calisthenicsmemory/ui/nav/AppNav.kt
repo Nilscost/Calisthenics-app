@@ -35,7 +35,8 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileEditScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfilesScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.SessionScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.SettingsScreen
-import io.github.gonbei774.calisthenicsmemory.ui.screens.TodayScreen
+import io.github.gonbei774.calisthenicsmemory.ui.train.PreviewScreen
+import io.github.gonbei774.calisthenicsmemory.ui.train.TrainScreen
 
 enum class Tab(val route: String, val labelRes: Int, val icon: ImageVector) {
     TRAIN("train", R.string.tab_train, Icons.Filled.PlayArrow),
@@ -48,7 +49,7 @@ enum class Tab(val route: String, val labelRes: Int, val icon: ImageVector) {
 enum class Route(val route: String) {
     TRAIN("train"), PROGRESS("progress"), HISTORY("history"), SETTINGS("settings"),
     SESSION("session"), ONBOARDING("onboarding"), FIRST_RUN("first_run"), BACKUP("backup"), LICENSES("licenses"),
-    PROFILES("profiles"), PROFILE_EDIT("profile_edit");
+    PROFILES("profiles"), PROFILE_EDIT("profile_edit"), PREVIEW("preview");
 
     val tab: Tab? get() = Tab.entries.firstOrNull { it.route == route }
 
@@ -90,8 +91,9 @@ fun AppNav() {
     ) { pad ->
         val m = Modifier.padding(pad)
         when (current) {
-            Route.TRAIN -> TodayScreen(m, onLevels = { go(Route.ONBOARDING) }, onStarted = { go(Route.SESSION) },
+            Route.TRAIN -> TrainScreen(m, onPreview = { go(Route.PREVIEW) }, onStarted = { go(Route.SESSION) },
                 onEditProfile = { id -> editId = id; editFrom = Route.TRAIN.route; go(Route.PROFILE_EDIT) })
+            Route.PREVIEW -> { BackHandler { go(Route.TRAIN) }; PreviewScreen(m, onBack = { go(Route.TRAIN) }, onStarted = { go(Route.SESSION) }) }
             Route.PROGRESS -> LibraryScreen(m)
             Route.HISTORY -> HistoryScreen(m)
             Route.SETTINGS -> SettingsScreen(m, onLevels = { go(Route.ONBOARDING) }, onBackup = { go(Route.BACKUP) }, onLicenses = { go(Route.LICENSES) }, onProfiles = { go(Route.PROFILES) })

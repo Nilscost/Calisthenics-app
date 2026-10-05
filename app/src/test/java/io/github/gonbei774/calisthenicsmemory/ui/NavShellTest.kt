@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -27,8 +28,9 @@ class NavShellTest {
 
     @Test fun fourTabsExistAfterOnboarding() {
         launch(true)
-        listOf("Train", "Progress", "History", "Settings").forEach { rule.onNodeWithText(it).assertIsDisplayed() }
-        listOf("train", "progress", "history", "settings").forEach { rule.onNodeWithTag("tab_$it").assertIsDisplayed() }
+        listOf("train" to "Train", "progress" to "Progress", "history" to "History", "settings" to "Settings").forEach { (tag, label) ->
+            rule.onNodeWithTag("tab_$tag").assertIsDisplayed().assertTextContains(label)
+        }
     }
 
     @Test fun tabsSwitchScreens() {

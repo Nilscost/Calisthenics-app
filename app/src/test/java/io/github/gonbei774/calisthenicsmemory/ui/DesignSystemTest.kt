@@ -69,7 +69,7 @@ class DesignSystemTest {
     }
 
     /** Screens being rewritten in U05–U12 still carry literals; the list only ever shrinks. Everything else must use string resources. */
-    private val legacyUntilRewritten = setOf("TodayScreen.kt", "LibraryScreen.kt", "OnboardingScreen.kt", "SessionScreen.kt", "HistoryScreen.kt", "BackupScreen2.kt", "SkillTree.kt")
+    private val legacyUntilRewritten = setOf("LibraryScreen.kt", "OnboardingScreen.kt", "SessionScreen.kt", "HistoryScreen.kt", "BackupScreen2.kt", "SkillTree.kt")
 
     @Test fun noHardCodedUiStringsOutsideLegacyScreens() {
         val src = File(System.getProperty("user.dir"), "src/main/java")

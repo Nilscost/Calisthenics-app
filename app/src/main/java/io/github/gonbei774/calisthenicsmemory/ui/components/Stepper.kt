@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.theme.AppIcons
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
@@ -40,13 +41,13 @@ fun Stepper(
         val c = v.coerceIn(range)
         if (c != value) { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); onValueChange(c) }
     }
-    Row(modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+    Row(modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.xs)) {
         FilledTonalIconButton(onClick = { set(value - step) }, enabled = value > range.first, modifier = Modifier.size(Spacing.touch).testTag("${tag}_minus")) {
             Icon(AppIcons.Remove, contentDescription = stringResource(R.string.stepper_decrease))
         }
         Text(
             valueText(value), style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center,
-            modifier = Modifier.defaultMinSize(minWidth = Spacing.xl * 2).semantics { contentDescription = valueText(value) }.testTag("${tag}_value"),
+            modifier = Modifier.defaultMinSize(minWidth = 40.dp).semantics { contentDescription = valueText(value) }.testTag("${tag}_value"),
         )
         FilledTonalIconButton(onClick = { set(value + step) }, enabled = value < range.last, modifier = Modifier.size(Spacing.touch).testTag("${tag}_plus")) {
             Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.stepper_increase))
