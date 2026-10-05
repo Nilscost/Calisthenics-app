@@ -58,6 +58,17 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
             }
             Row { Checkbox(stretch, { stretch = it }); Text("Stretch between sets", Modifier.padding(top = 12.dp)) }
             OutlinedButton(onClick = onLevels) { Text("Set my starting level") }
+            val unfinished = remember { io.github.gonbei774.calisthenicsmemory.session.CheckpointStore.read(ctx) }
+            val live by io.github.gonbei774.calisthenicsmemory.session.SessionBus.state.collectAsState()
+            if (live != null && !live!!.isTerminal) {
+                Card { Column(Modifier.padding(12.dp)) { Text("A workout is running."); Button(onClick = onStarted) { Text("Open it") } } }
+            } else if (unfinished != null) {
+                Card { Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text("Unfinished workout found (the app was closed or crashed). Up to a second of work after the last save may be missing.")
+                    Button(onClick = { recoverWorkout(ctx, true); onStarted() }) { Text("Continue it (paused)") }
+                    OutlinedButton(onClick = { recoverWorkout(ctx, false); onStarted() }) { Text("Save what was done and end") }
+                } }
+            }
             HorizontalDivider()
             when (val r = result) {
                 is PlanResult.Infeasible -> {

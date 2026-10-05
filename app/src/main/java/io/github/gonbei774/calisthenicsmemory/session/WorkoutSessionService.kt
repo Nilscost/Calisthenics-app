@@ -39,6 +39,8 @@ class WorkoutSessionService : Service() {
         const val ACTION_RESUME = "wss.RESUME"
         const val ACTION_SKIP = "wss.SKIP"
         const val ACTION_FINISH = "wss.FINISH"
+        const val ACTION_RECOVER = "wss.RECOVER"
+        const val EXTRA_RESUME = "resume"
         const val EXTRA_PLAN = "plan_json"
         const val EXTRA_SESSION_ID = "session_id"
         const val EXTRA_SPEAK = "speak"
@@ -66,6 +68,7 @@ class WorkoutSessionService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_START -> start(intent)
+            ACTION_RECOVER -> recover(intent)
             ACTION_PAUSE -> send(SessionEvent.Pause(now()))
             ACTION_RESUME -> send(SessionEvent.Resume(now()))
             ACTION_SKIP -> send(SessionEvent.Skip(now()))
@@ -77,11 +80,27 @@ class WorkoutSessionService : Service() {
 
     private fun now() = SystemClock.elapsedRealtime()
 
+    private fun recover(intent: Intent) {
+        if (state != null) return
+        val c = CheckpointStore.read(this)
+        if (c == null) { stopSelf(); return }
+        val resume = intent.getBooleanExtra(EXTRA_RESUME, true)
+        speak = true
+        startedAt = c.startedAtEpochMs
+        val rec = reduce(CheckpointCodec.toState(c), SessionEvent.ProcessRecovered).state
+        val chosen = reduce(rec, SessionEvent.RecoveryChoice(resume)).state
+        boot(c.plan, c.sessionId, chosen)
+    }
+
     private fun start(intent: Intent) {
         if (state != null) return // one session at a time
         val plan = json.decodeFromString(WorkoutPlan.serializer(), intent.getStringExtra(EXTRA_PLAN)!!)
         val sid = intent.getStringExtra(EXTRA_SESSION_ID)!!
         speak = intent.getBooleanExtra(EXTRA_SPEAK, true)
+        boot(plan, sid, null)
+    }
+
+    private fun boot(plan: WorkoutPlan, sid: String, restored: SessionState?) {
         createChannel()
         ServiceCompat.startForeground(this, NOTIF, notification("Starting…", false), ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         SessionBus.clear()
@@ -109,9 +128,16 @@ class WorkoutSessionService : Service() {
         exec = Executors.newSingleThreadScheduledExecutor()
         exec!!.execute {
             loaded.await(5, TimeUnit.SECONDS) // t=0 only after sounds are ready (G1 lesson)
-            startedAt = System.currentTimeMillis()
-            synchronized(lock) { state = newSession(sid, plan) }
-            send(SessionEvent.Start(now()))
+            if (restored == null) {
+                startedAt = System.currentTimeMillis()
+                synchronized(lock) { state = newSession(sid, plan) }
+                send(SessionEvent.Start(now()))
+            } else {
+                synchronized(lock) { state = restored }
+                SessionBus.publish(restored)
+                updateNotification(restored)
+                if (restored.isTerminal) finish(restored)
+            }
             exec!!.scheduleWithFixedDelay({ send(SessionEvent.Tick(now())) }, TICK_MS, TICK_MS, TimeUnit.MILLISECONDS)
         }
     }
@@ -131,8 +157,18 @@ class WorkoutSessionService : Service() {
         }
         SessionBus.publish(s)
         fx.forEach { perform(it, s) }
+        checkpoint(s, force = fx.any { it is SessionEffect.Persist })
         if (fx.any { it is SessionEffect.ShowBlock } || e is SessionEvent.Pause || e is SessionEvent.Resume) updateNotification(s)
         if (s.isTerminal) finish(s)
+    }
+
+    private var lastCkptMs = 0L
+    private fun checkpoint(s: SessionState, force: Boolean) {
+        if (s.isTerminal) return
+        val n = now()
+        if (!force && n - lastCkptMs < 5_000) return
+        lastCkptMs = n
+        try { CheckpointStore.write(this, CheckpointCodec.encode(s, startedAt, n, System.currentTimeMillis())) } catch (e: Exception) { android.util.Log.e("WorkoutSession", "checkpoint failed", e) }
     }
 
     private fun label(blockId: String, s: SessionState): String {
@@ -192,6 +228,7 @@ class WorkoutSessionService : Service() {
                     PlanSnapshotEntity(s.plan.id, s.plan.createdAtEpochMs, s.plan.routineId, s.plan.routineRevision, s.plan.catalogVersion, s.plan.profileId, planJson),
                     WorkoutSessionEntity(s.sessionId, s.plan.id, startedAt, System.currentTimeMillis(), status), blocks)
             }
+            CheckpointStore.clear(this) // only after the session row is safely in Room
         } catch (e: Exception) { SessionBus.saved = false; android.util.Log.e("WorkoutSession", "save failed", e) }
         exec?.shutdown()
         releaseAll()

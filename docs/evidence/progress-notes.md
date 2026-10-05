@@ -56,3 +56,9 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - G1 approved with the Spotify no-ducking limit accepted (ADR 0003 updated).
 - New `session/WorkoutSessionService` (foreground, service-owned monotonic timer driving the pure reducer; SoundPool + offline TTS; focus MAY_DUCK, refusal ignored; saves finished session to Room) and `SessionScreen` (pause/resume/skip/finish). Start on Today is enabled.
 - NOT built yet: mid-session checkpoint persistence/crash recovery (Persist effects ignored), feedback prompts after blocks, late feedback edits, reopening the live session from Home after leaving the app, audio-interruption pause, removing the spike/G1-test code. Not device-tested.
+
+## Update 2026-10-05 (2): M5 slice 2 — crash-safe checkpoints + feedback
+- Service writes a checkpoint (SharedPreferences, commit()) at every reducer Persist effect and at least every 5 s; cleared only after the session row is in Room.
+- Today offers "Continue it (paused)" / "Save what was done and end" for an unfinished checkpoint; recovery uses reducer ProcessRecovered + RecoveryChoice (old deadlines never trusted).
+- End screen: optional per-exercise rating (Too hard / As planned / Easy) + Discomfort; each tap adds a new feedback revision; untouched = assumed met.
+- Verified: unit tests (CheckpointTest round-trip + recovery), lint, assembleDebug. NOT tested: real process kill on the phone; feedback revisions are stored but do not yet feed the progression engine at the next plan; late edit from History not built.
