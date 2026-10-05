@@ -58,6 +58,8 @@ data class SessionDraft(
     val goalId: String? = null,
     /** Explicit round count; null = derive rounds from durationSeconds. */
     val rounds: Int? = null,
+    /** Timed-rounds mode: every exercise is 60 s of work + 60 s rest; target reps = benchmark to reach in 60 s. */
+    val timed: Boolean = false,
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(

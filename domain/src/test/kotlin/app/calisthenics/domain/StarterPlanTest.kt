@@ -2,6 +2,7 @@ package app.calisthenics.domain
 
 import app.calisthenics.domain.content.parseCatalog
 import app.calisthenics.domain.equipment.SeedProfiles
+import app.calisthenics.domain.equipment.isAvailable
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.planner.*
 import app.calisthenics.domain.routine.SessionDraft
@@ -66,6 +67,28 @@ class ExplicitRoundsTest {
         // Owner 2026-10-05: ~1 min work + 1 min rest per exercise; 4 rounds of 5-6 exercises = ~45 min.
         val m = plan(4).plan.plannedDurationSeconds / 60.0
         assertTrue("4 rounds = $m min", m in 40.0..50.0)
+    }
+    @Test fun timedRoundsAreSixtyWorkSixtyRest() {
+        val r = generate(PlanInput("p", 0L, 0, catalog, StarterRoutine.routine,
+            SessionDraft.from(Preferences(), StarterRoutine.routine).copy(rounds = 4, timed = true), SeedProfiles.home)) as PlanResult.Ready
+        assertTrue(r.plan.timed)
+        val work = r.plan.blocks.filter { it.type == BlockType.WORK }
+        assertTrue(work.all { it.durationSeconds == TIMED_WORK_SECONDS || (it.side != Side.NONE && it.durationSeconds == TIMED_WORK_SECONDS / 2) })
+        assertTrue(r.plan.blocks.filter { it.type == BlockType.PASSIVE_RECOVERY || it.type == BlockType.STRETCH }.all { it.durationSeconds == TIMED_REST_SECONDS || it.durationSeconds == (TIMED_REST_SECONDS + 1) / 2 })
+        val m = r.plan.plannedDurationSeconds / 60.0
+        val by = r.plan.blocks.groupBy { it.type }.mapValues { (_, b) -> b.size to b.sumOf { it.durationSeconds } }
+        println("TIMED4 total=${r.plan.plannedDurationSeconds} by=$by slots=" + r.plan.blocks.filter { it.type == BlockType.WORK && it.roundIndex == 1 }.map { it.variationId + "/" + it.side })
+        assertTrue("4 timed rounds = $m min", m in 40.0..50.0)
+    }
+    @Test fun muscleUpAndLeversNeedAHighBar() {
+        val ids = listOf("muscle-up-bar", "front-lever-tuck", "front-lever-adv-tuck", "front-lever-straddle")
+        for (id in ids) {
+            val v = catalog.variation(id)!!
+            assertTrue(id, !isAvailable(v, SeedProfiles.home))
+            val withBar = SeedProfiles.home.copy(items = SeedProfiles.home.items + EquipmentItem("high-bar"))
+            assertTrue(id, isAvailable(v, withBar))
+        }
+        assertTrue(isAvailable(catalog.variation("pullup-full")!!, SeedProfiles.home))
     }
     @Test fun printThreeRoundLength() { println("ROUNDS3=" + plan(3).plan.plannedDurationSeconds + " ROUNDS4=" + plan(4).plan.plannedDurationSeconds + " SLOTS=" + StarterRoutine.routine.slots.size) }
 }

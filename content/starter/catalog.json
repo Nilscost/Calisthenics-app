@@ -1393,6 +1393,9 @@
           "needs": [
             {
               "equipmentId": "pullup-bar"
+            },
+            {
+              "equipmentId": "high-bar"
             }
           ]
         }
@@ -1910,6 +1913,9 @@
           "needs": [
             {
               "equipmentId": "pullup-bar"
+            },
+            {
+              "equipmentId": "high-bar"
             }
           ]
         }
@@ -1959,6 +1965,9 @@
           "needs": [
             {
               "equipmentId": "pullup-bar"
+            },
+            {
+              "equipmentId": "high-bar"
             }
           ]
         }
@@ -2008,6 +2017,9 @@
           "needs": [
             {
               "equipmentId": "pullup-bar"
+            },
+            {
+              "equipmentId": "high-bar"
             }
           ]
         }

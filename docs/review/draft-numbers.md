@@ -29,7 +29,7 @@ All numbers are the assistant's unreviewed draft. Per level: target / work windo
 | Wall Handstand Push-Up | mat + wall | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 8 / 65 / 60 | - |
 | Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Chest-to-Bar Pull-Up |
 | Chest-to-Bar Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bar Muscle-Up |
-| Bar Muscle-Up | pullup-bar | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | - |
+| Bar Muscle-Up | pullup-bar + high-bar | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | - |
 | Bulgarian Split Squat (per side) | chair | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Shrimp Squat (per side) |
 | Shrimp Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Assisted Pistol Squat (per side) |
 | Assisted Pistol Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Pistol Squat (per side) |
@@ -41,9 +41,9 @@ All numbers are the assistant's unreviewed draft. Per level: target / work windo
 | V-Sit (floor) | none | 3s / 28 / 60 | 5s / 30 / 60 | 8s / 33 / 60 | 12s / 37 / 60 | 15s / 40 / 60 | - |
 | Lying Leg Raise | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | V-Up |
 | V-Up | none | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - |
-| Tuck Front Lever | pullup-bar | 3s / 28 / 60 | 5s / 30 / 60 | 8s / 33 / 60 | 10s / 35 / 60 | 15s / 40 / 60 | Advanced Tuck Front Lever |
-| Advanced Tuck Front Lever | pullup-bar | 3s / 28 / 60 | 5s / 30 / 60 | 8s / 33 / 60 | 10s / 35 / 60 | 15s / 40 / 60 | Straddle Front Lever |
-| Straddle Front Lever | pullup-bar | 2s / 27 / 60 | 3s / 28 / 60 | 5s / 30 / 60 | 8s / 33 / 60 | 10s / 35 / 60 | - |
+| Tuck Front Lever | pullup-bar + high-bar | 3s / 28 / 60 | 5s / 30 / 60 | 8s / 33 / 60 | 10s / 35 / 60 | 15s / 40 / 60 | Advanced Tuck Front Lever |
+| Advanced Tuck Front Lever | pullup-bar + high-bar | 3s / 28 / 60 | 5s / 30 / 60 | 8s / 33 / 60 | 10s / 35 / 60 | 15s / 40 / 60 | Straddle Front Lever |
+| Straddle Front Lever | pullup-bar + high-bar | 2s / 27 / 60 | 3s / 28 / 60 | 5s / 30 / 60 | 8s / 33 / 60 | 10s / 35 / 60 | - |
 | Planche Lean | none | 5s / 30 / 60 | 10s / 35 / 60 | 15s / 40 / 60 | 20s / 45 / 60 | 30s / 55 / 60 | Tuck Planche |
 | Tuck Planche | none | 3s / 28 / 60 | 5s / 30 / 60 | 8s / 33 / 60 | 10s / 35 / 60 | 15s / 40 / 60 | Advanced Tuck Planche |
 | Advanced Tuck Planche | none | 2s / 27 / 60 | 3s / 28 / 60 | 5s / 30 / 60 | 8s / 33 / 60 | 10s / 35 / 60 | - |

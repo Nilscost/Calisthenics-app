@@ -20,6 +20,9 @@ const val TRANSITION_SECONDS = 5
 const val MAX_ROUNDS = 6
 /** Owner decision 2026-10-05: no minimum rounds; an explicit rounds setting may go up to this. */
 const val MAX_EXPLICIT_ROUNDS = 10
+const val TIMED_WORK_SECONDS = 60
+/** Rest block length; the 5 s transition that follows is inside the 60 s a user experiences. */
+const val TIMED_REST_SECONDS = 55
 /** NOT in the ADR: shortest stretch segment worth announcing. Needs owner review at G2. */
 const val MIN_STRETCH_SEGMENT_SECONDS = 10
 
@@ -153,7 +156,7 @@ private class Planner(val input: PlanInput) {
             id = input.planId, routineId = input.routine.id, routineRevision = input.routine.revision,
             catalogVersion = cat.catalogVersion, createdAtEpochMs = input.createdAtEpochMs, profileId = input.profile.id,
             requestedDurationSeconds = budget, plannedDurationSeconds = pick.total, focus = draft.focus,
-            stretchOn = draft.stretchOn, goalId = draft.goalId, rounds = pick.rounds,
+            stretchOn = draft.stretchOn, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed,
             changesExplained = explain.distinct(), warnings = warn.distinct(), needsAcceptance = needsAcceptance,
             usesDraftContent = usesDraft, blocks = blocks,
         ))
@@ -242,12 +245,12 @@ private class Planner(val input: PlanInput) {
             for (side in sides) {
                 val id = "r$r-${c.slot.id}-work" + if (side == Side.NONE) "" else "-${side.name.first()}"
                 workIds += id
-                out += TimelineBlock(id, BlockType.WORK, t.workWindowSeconds, r, c.slot.id, v.id, side, t.target, t.index,
+                out += TimelineBlock(id, BlockType.WORK, if (draft.timed) (if (side == Side.NONE) TIMED_WORK_SECONDS else TIMED_WORK_SECONDS / 2) else t.workWindowSeconds, r, c.slot.id, v.id, side, t.target, t.index,
                     mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId)
             }
             val isLast = r == rounds && si == sl.lastIndex
             if (isLast || t.minRecoverySeconds <= 0) continue
-            val window = t.minRecoverySeconds
+            val window = if (draft.timed) TIMED_REST_SECONDS else t.minRecoverySeconds
             if (!draft.stretchOn) {
                 out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.PASSIVE_RECOVERY, window, r, c.slot.id, recoveryForBlockIds = workIds)
             } else {

@@ -190,6 +190,7 @@ strength("dead-bug", "Dead Bug", "dead-bug", ["CORE_ANTI_EXTENSION"], ["CORE"], 
 # ---------------- progression chains toward the hard skills (DRAFT numbers) ----------------
 BAR = [{"needs": [need("pullup-bar")]}]
 WALL = [{"capabilities": ["wall"]}]
+HIGH_BAR = [{"needs": [need("pullup-bar"), need("high-bar")]}]  # hang with feet clear and get above it
 def ex(id, name, fam, pat, area, kind, pos, steps, tiers, src, st, eq=NO_EQ, rank=0, nxt=(), prereq=None, uni=False, cues=None, cautions=(CAUTION_STRENGTH,)):
     strength(id, name, fam, [pat], area, kind, pos, steps, cues or ["Controlled tempo", "Full range or clean position", "Stop if form breaks"],
              tiers, src, st, eq=eq, unilateral=uni, rank=rank, nxt=nxt, prereq=prereq, cautions=cautions)
@@ -239,7 +240,7 @@ ex("pullup-chest-to-bar", "Chest-to-Bar Pull-Up", "pullup", "PULL_VERTICAL", U, 
    reps_tiers([1, 3, 5, 6, 8], rec=(60, 60, 60, 60, 60)), [S_OG, S_GB], UP, eq=BAR, rank=40, nxt=["muscle-up-bar"], prereq={"allOf": [[vt("pullup-full", 4)]]})
 ex("muscle-up-bar", "Bar Muscle-Up", "pullup", "PULL_VERTICAL", U, "REPS", "hang",
    ["False grip or strong overgrip, pull the bar to the lower chest.", "Transition the elbows over the bar quickly.", "Press to straight arms on top, then lower with control."],
-   reps_tiers([1, 2, 3, 4, 5], rec=(60, 60, 60, 60, 60)), [S_OG, S_GB], UP, eq=BAR, rank=50, prereq={"allOf": [[vt("pullup-chest-to-bar", 4)]]},
+   reps_tiers([1, 2, 3, 4, 5], rec=(60, 60, 60, 60, 60)), [S_OG, S_GB], UP, eq=HIGH_BAR, rank=50, prereq={"allOf": [[vt("pullup-chest-to-bar", 4)]]},
    cautions=(CAUTION_STRENGTH, "Check the bar is secure; skill work, consider coaching."))
 # squat -> pistol
 ex("split-squat-bulgarian", "Bulgarian Split Squat (per side)", "squat", "LUNGE", L, "REPS", "standing",
@@ -281,15 +282,15 @@ ex("v-up", "V-Up", "legraise", "CORE_ANTI_EXTENSION", C, "REPS", "supine",
 # front lever
 ex("front-lever-tuck", "Tuck Front Lever", "lever", "PULL_VERTICAL", ["UPPER_BODY", "CORE"], "HOLD", "hang",
    ["Hang from a bar, pull the shoulders down and back.", "Tuck the knees, raise the hips until the back is horizontal.", "Hold with straight arms."],
-   hold_tiers([3, 5, 8, 10, 15]), [S_OG, S_GB], UP, eq=BAR, rank=40, nxt=["front-lever-adv-tuck"], prereq={"allOf": [[vt("pullup-full", 3)], [vt("hollow-hold", 3)]]},
+   hold_tiers([3, 5, 8, 10, 15]), [S_OG, S_GB], UP, eq=HIGH_BAR, rank=40, nxt=["front-lever-adv-tuck"], prereq={"allOf": [[vt("pullup-full", 3)], [vt("hollow-hold", 3)]]},
    cautions=(CAUTION_STRENGTH, "Hard skill: stop on any elbow or shoulder pain; consider coaching."))
 ex("front-lever-adv-tuck", "Advanced Tuck Front Lever", "lever", "PULL_VERTICAL", ["UPPER_BODY", "CORE"], "HOLD", "hang",
    ["As the tuck lever, but open the hips so the thighs are about 90 degrees from the torso.", "Keep the back flat and horizontal.", "Hold."],
-   hold_tiers([3, 5, 8, 10, 15]), [S_OG, S_GB], UP, eq=BAR, rank=50, nxt=["front-lever-straddle"], prereq={"allOf": [[vt("front-lever-tuck", 4)]]},
+   hold_tiers([3, 5, 8, 10, 15]), [S_OG, S_GB], UP, eq=HIGH_BAR, rank=50, nxt=["front-lever-straddle"], prereq={"allOf": [[vt("front-lever-tuck", 4)]]},
    cautions=(CAUTION_STRENGTH, "Hard skill: stop on any elbow or shoulder pain."))
 ex("front-lever-straddle", "Straddle Front Lever", "lever", "PULL_VERTICAL", ["UPPER_BODY", "CORE"], "HOLD", "hang",
    ["Straddle the legs wide with the body horizontal.", "Arms straight, shoulders depressed.", "Hold."],
-   hold_tiers([2, 3, 5, 8, 10]), [S_OG, S_GB], UP, eq=BAR, rank=60, prereq={"allOf": [[vt("front-lever-adv-tuck", 4)]]},
+   hold_tiers([2, 3, 5, 8, 10]), [S_OG, S_GB], UP, eq=HIGH_BAR, rank=60, prereq={"allOf": [[vt("front-lever-adv-tuck", 4)]]},
    cautions=(CAUTION_STRENGTH, "Hard skill: stop on any elbow or shoulder pain."))
 # planche
 ex("planche-lean", "Planche Lean", "planche", "PUSH_HORIZONTAL", ["UPPER_BODY", "CORE"], "HOLD", "floor",

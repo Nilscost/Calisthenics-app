@@ -273,4 +273,6 @@ data class WorkoutPlan(
     val needsAcceptance: Boolean,
     val usesDraftContent: Boolean,
     val blocks: List<TimelineBlock>,
+    /** Timed-rounds mode: 60 s work / 60 s rest per exercise. */
+    val timed: Boolean = false,
 )

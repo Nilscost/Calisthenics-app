@@ -36,19 +36,22 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
     val saved = remember { PrefsStore.load(ctx) }
     var minutes by rememberSaveable { mutableIntStateOf(saved.defaultDurationSeconds / 60) }
     var roundsSel by rememberSaveable { mutableIntStateOf(0) } // 0 = auto from minutes
+    var timed by rememberSaveable { mutableStateOf(ModeStore.timed(ctx)) }
+    var highBar by rememberSaveable { mutableStateOf(ModeStore.highBar(ctx)) }
     var stretch by rememberSaveable { mutableStateOf(saved.stretchOn) }
     var profileId by rememberSaveable { mutableStateOf(saved.selectedProfileId) }
     var focusNames by rememberSaveable { mutableStateOf(listOf("FULL_BODY")) }
     val focus = focusNames.map { StrengthFocus.valueOf(it) }.toSet()
-    val profile = SeedProfiles.all.first { it.id == profileId }
+    val baseProfile = SeedProfiles.all.first { it.id == profileId }
+    val profile = if (highBar) baseProfile.copy(items = baseProfile.items + app.calisthenics.domain.model.EquipmentItem("high-bar")) else baseProfile
 
     var progress by remember { mutableStateOf(LevelStore.snapshot(catalog, LevelStore.load(ctx))) }
     LaunchedEffect(Unit) { progress = try { ProgressLoader.load(ctx, catalog) } catch (_: Exception) { progress } }
     val routine = remember(baseRoutine, goalId, progress) { Goals.routineFor(catalog, baseRoutine, goalId, progress) }
     var showTree by rememberSaveable { mutableStateOf(false) }
-    val result = remember(minutes, roundsSel, stretch, profileId, focusNames, progress, routine, swaps) {
+    val result = remember(minutes, roundsSel, timed, highBar, stretch, profileId, focusNames, progress, routine, swaps) {
         val draft = SessionDraft.from(Preferences(defaultDurationSeconds = minutes * 60, stretchOn = stretch, selectedProfileId = profileId), routine)
-            .copy(focus = if (focusNames == listOf("FULL_BODY")) Goals.focusFor(goalId) else focus, swaps = swaps, rounds = roundsSel.takeIf { it > 0 })
+            .copy(focus = if (focusNames == listOf("FULL_BODY")) Goals.focusFor(goalId) else focus, swaps = swaps, rounds = roundsSel.takeIf { it > 0 }, timed = timed)
         generate(PlanInput("preview", System.currentTimeMillis(), 0, catalog, routine, draft, profile, progress = progress))
     }
     val names = remember(catalog) { catalog.variations.associate { it.id to it.name } }
@@ -74,6 +77,13 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
                 (0..5).forEach { n -> FilterChip(selected = roundsSel == n, onClick = { roundsSel = n }, label = { Text(if (n == 0) "Auto" else "$n") }) }
             }
             if (roundsSel > 0) Text("Length follows from the rounds; the minutes slider is ignored.", style = MaterialTheme.typography.bodySmall)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FilterChip(selected = timed, onClick = { timed = !timed; ModeStore.setTimed(ctx, timed) }, label = { Text("Timed rounds: 60 s work / 60 s rest") })
+            }
+            if (timed) Text("Each exercise runs 60 s: do as many clean reps as you can. Reaching the reps shown within 60 s counts as hitting the target.", style = MaterialTheme.typography.bodySmall)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                FilterChip(selected = highBar, onClick = { highBar = !highBar; ModeStore.setHighBar(ctx, highBar) }, label = { Text("I have a high bar (hang with feet clear)") })
+            }
             Slider(value = minutes.toFloat(), onValueChange = { minutes = (it / 5).toInt() * 5 }, valueRange = 10f..90f)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 SeedProfiles.all.forEach { p -> FilterChip(selected = profileId == p.id, onClick = { profileId = p.id }, label = { Text(p.name) }) }
