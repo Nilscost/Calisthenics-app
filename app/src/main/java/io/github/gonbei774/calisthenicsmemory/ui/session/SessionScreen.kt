@@ -19,7 +19,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -91,6 +93,7 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
     var menu by remember { mutableStateOf(false) }
     var confirmEnd by remember { mutableStateOf(false) }
     val logFor = loggerBlock(st)
+    val haptic = LocalHapticFeedback.current
 
     Column(modifier.fillMaxSize().statusBarsPadding().padding(horizontal = Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -137,11 +140,11 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
         CueText.nextLabel(st.plan, b.id, names)?.let { Text(stringResource(R.string.session_next, it), Modifier.fillMaxWidth().testTag("session_next"), style = MaterialTheme.typography.bodyLarge, textAlign = TextAlign.Center) }
 
         Row(Modifier.fillMaxWidth().padding(bottom = Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
-            if (paused) FilledTonalButton(onClick = { sessionCommand(ctx, WorkoutSessionService.ACTION_RESUME) }, Modifier.weight(1f).height(52.dp).testTag("session_resume")) { Text(stringResource(R.string.session_resume)) }
-            else FilledTonalButton(onClick = { sessionCommand(ctx, WorkoutSessionService.ACTION_PAUSE) }, Modifier.weight(1f).height(52.dp).testTag("session_pause")) { Text(stringResource(R.string.session_pause)) }
-            OutlinedButton(onClick = { sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, Modifier.weight(1f).height(52.dp).testTag("session_skip")) { Text(stringResource(R.string.session_skip)) }
+            if (paused) FilledTonalButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_RESUME) }, Modifier.weight(1f).height(52.dp).testTag("session_resume")) { Text(stringResource(R.string.session_resume)) }
+            else FilledTonalButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_PAUSE) }, Modifier.weight(1f).height(52.dp).testTag("session_pause")) { Text(stringResource(R.string.session_pause)) }
+            OutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, Modifier.weight(1f).height(52.dp).testTag("session_skip")) { Text(stringResource(R.string.session_skip)) }
             if (b.type == BlockType.WORK) Button(
-                onClick = { sessionCommand(ctx, WorkoutSessionService.ACTION_DONE) }, enabled = st.phase == Phase.RUNNING,
+                onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_DONE) }, enabled = st.phase == Phase.RUNNING,
                 modifier = Modifier.weight(1f).height(52.dp).testTag("session_done"), shape = RoundedCornerShape(Radius.button),
             ) { Text(stringResource(R.string.session_done)) }
         }

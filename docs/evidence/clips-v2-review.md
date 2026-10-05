@@ -13,12 +13,12 @@ Done by the implementing model from the eight contact sheets (3 frames per clip)
 
 (a) Correct movement — judged by eye on the three frames:
 - Read as intended: push-up family (incline bench, knee, standard, feet-elevated, diamond, archer, one-arm), pike push-ups, pull-ups and chest-to-bar, muscle-up, squat family (air, split, Bulgarian, shrimp, pistols), glute bridges, bridge, planks, side planks, leg raise, V-up, L/V-sit, planche lean/tuck, kettlebell deadlift, single-leg RDL and swing, inverted rows (all four), Copenhagen, arch hold/rocks, stretches.
-- Weakest: wall handstand clips (figure is thin and small next to the wall slab; the pose is right but hard to read), cat-cow (the spine curve is crude), the three front-lever clips (figure small), arch rocks (small movement), dead bug (limbs overlap at some angles).
+- Weakest: wall handstand clips (still thin even with a 62° yaw, the pose is right), cat-cow (the spine curve is crude), arch rocks (small movement), dead bug (limbs overlap at some angles). The handstand and front-lever clips use a wider yaw (62° / 55°) because at 30° they were almost edge-on; that improved the lever clips clearly and the handstand clips somewhat.
 
 (b) Only the listed muscles coloured: checked on every sheet — no colour on the head, hands, feet, equipment or floor. Orange appears on the regions of the catalog muscles only (arms for triceps/biceps/delts, torso bands for chest/lats/abs/obliques, thighs for quads/hamstrings/adductors, shins for calves). Known approximation: a muscle is a band on one side of a capsule, not an anatomical shape; secondary muscles of the far limb are drawn too.
 
-(c) Readable depth: the near/far limb split, the floor grid and the shadow give the 3/4 impression on all clips except the handstand and lever clips, where the pose is almost edge-on.
+(c) Readable depth: the near/far limb split, the floor grid and the shadow give the 3/4 impression on all clips; the handstands remain the least readable.
 
 ## Open items
-- Handstand and front-lever clips need a better camera (closer framing); noted for the owner's rating in U13.
+- Handstand clips could use a closer, hand-tuned camera; for the owner's rating.
 - No real video was used; any `<id>.mp4` can be replaced later.

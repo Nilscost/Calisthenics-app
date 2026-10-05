@@ -1,5 +1,10 @@
 # Actual project status
 
+## Current state (2026-10-05, UX overhaul U01–U13)
+The app is now one product with four tabs (Train · Progress · History · Settings): first-run questionnaire, equipment profiles, one-screen Train setup, draft Preview, redesigned live session with in-workout rep logging, skill tree with stars, history with corrections, settings, 3/4-view demo clips with muscle colouring, 10 new exercises. The old fork screens are deleted (data tables kept). Everything was verified with the offline Gradle gate (see `docs/evidence/uNN-verify-*.log`) and Robolectric UI tests; **nothing was tested on a phone**. The owner device test is the open gate; all exercise content stays an unreviewed DRAFT. Details per task: `docs/evidence/progress-notes.md`; plan: `docs/10-ux-overhaul-plan.md`; owner checklist: `docs/evidence/owner-check-u13.md`.
+
+(The sections below are the older history of the project and are kept as written.)
+
 ## Completed for this handoff
 - Product behavior consolidated and approved by the owner.
 - Coding specification, task queue, verification scenarios and local-model prompt written.

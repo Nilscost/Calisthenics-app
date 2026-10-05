@@ -3,6 +3,13 @@
 package io.github.gonbei774.calisthenicsmemory.ui.nav
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -55,6 +62,8 @@ enum class Route(val route: String) {
     PROFILES("profiles"), PROFILE_EDIT("profile_edit"), PREVIEW("preview"), HISTORY_DETAIL("history_detail"), PRIVACY("privacy");
 
     val tab: Tab? get() = Tab.entries.firstOrNull { it.route == route }
+    /** How deep in a flow the screen is: tabs 0, their sub-screens 1, the running workout 2 (drives the slide direction). */
+    val depth: Int get() = when (this) { TRAIN, PROGRESS, HISTORY, SETTINGS, FIRST_RUN -> 0; SESSION -> 2; else -> 1 }
 
     companion object {
         fun of(route: String?) = entries.firstOrNull { it.route == route }
@@ -94,7 +103,22 @@ fun AppNav(theme: AppTheme = AppTheme.SYSTEM, onTheme: (AppTheme) -> Unit = {}) 
         },
     ) { pad ->
         val m = Modifier.padding(pad)
-        when (current) {
+        // Shared-axis motion (plan §6): going deeper (Train → Preview → Session, Settings → a sub-screen) slides in from the right,
+        // going back slides in from the left, switching tabs cross-fades.
+        AnimatedContent(
+            targetState = current,
+            transitionSpec = {
+                val deeper = targetState.depth > initialState.depth
+                val shallower = targetState.depth < initialState.depth
+                when {
+                    deeper -> (slideInHorizontally(tween(260)) { it / 4 } + fadeIn(tween(260))) togetherWith (slideOutHorizontally(tween(260)) { -it / 4 } + fadeOut(tween(160)))
+                    shallower -> (slideInHorizontally(tween(260)) { -it / 4 } + fadeIn(tween(260))) togetherWith (slideOutHorizontally(tween(260)) { it / 4 } + fadeOut(tween(160)))
+                    else -> fadeIn(tween(180)) togetherWith fadeOut(tween(120))
+                }
+            },
+            label = "route",
+        ) { r ->
+        when (r) {
             Route.TRAIN -> TrainScreen(m, onPreview = { go(Route.PREVIEW) }, onStarted = { go(Route.SESSION) },
                 onEditProfile = { id -> editId = id; editFrom = Route.TRAIN.route; go(Route.PROFILE_EDIT) })
             Route.PREVIEW -> { BackHandler { go(Route.TRAIN) }; PreviewScreen(m, onBack = { go(Route.TRAIN) }, onStarted = { go(Route.SESSION) }) }
@@ -112,6 +136,7 @@ fun AppNav(theme: AppTheme = AppTheme.SYSTEM, onTheme: (AppTheme) -> Unit = {}) 
             Route.PROFILE_EDIT -> { val back = Route.of(editFrom) ?: Route.TRAIN; BackHandler { go(back) }
                 ProfileEditScreen(m, profileId = editId, onDone = { go(back) }) }
             Route.LICENSES -> { BackHandler { go(Route.SETTINGS) }; LicensesScreen(onNavigateBack = { go(Route.SETTINGS) }) }
+        }
         }
     }
 }

@@ -23,3 +23,7 @@ val AccentLight = Color(0xFFFFB27A)     // secondary muscles
 val AccentOnDark = Color(0xFFFF8A3D)
 val ErrorLight = Color(0xFFBA1A1A)
 val ErrorDark = Color(0xFFFFB4AB)
+
+/** Text on the accent colour: near-black, because white on orange is only about 3.7:1. */
+val ACCENT_TEXT_LIGHT = Color(0xFF1A1A1A)
+val ACCENT_TEXT_DARK = Color(0xFF1A1A1A)

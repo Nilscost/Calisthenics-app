@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 private val LightFallback = lightColorScheme(
     primary = Teal40, onPrimary = Color.White, primaryContainer = Teal90, onPrimaryContainer = Teal10,
     secondary = Teal30, onSecondary = Color.White, secondaryContainer = Teal95, onSecondaryContainer = Teal10,
-    tertiary = Accent, onTertiary = Color.White,
+    tertiary = Accent, onTertiary = ACCENT_TEXT_LIGHT,
     background = Slate99, onBackground = Slate10, surface = Slate99, onSurface = Slate10,
     surfaceVariant = Slate95, onSurfaceVariant = Slate20, error = ErrorLight,
 )
@@ -36,7 +36,7 @@ private val DarkFallback = darkColorScheme(
 @Immutable
 data class AppAccent(val accent: Color, val accentLight: Color, val onAccent: Color)
 
-val LocalAppAccent = staticCompositionLocalOf { AppAccent(Accent, AccentLight, Color.White) }
+val LocalAppAccent = staticCompositionLocalOf { AppAccent(Accent, AccentLight, ACCENT_TEXT_LIGHT) }
 
 /** Accent for muscles and stars: `AppTheme.accent`. */
 object AppAccentTheme {
@@ -55,7 +55,7 @@ fun CalisthenicsMemoryTheme(
     val dynamic = if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         if (darkTheme) dynamicDarkColorScheme(ctx) else dynamicLightColorScheme(ctx)
     } else null
-    val accent = if (darkTheme) AppAccent(AccentOnDark, AccentLight, Color.Black) else AppAccent(Accent, AccentLight, Color.White)
+    val accent = if (darkTheme) AppAccent(AccentOnDark, AccentLight, ACCENT_TEXT_DARK) else AppAccent(Accent, AccentLight, ACCENT_TEXT_LIGHT)
     CompositionLocalProvider(LocalAppAccent provides accent) {
         MaterialTheme(colorScheme = appColorScheme(darkTheme, dynamic), typography = AppTypography, shapes = AppShapes, content = content)
     }

@@ -9,6 +9,8 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -282,9 +284,9 @@ private fun Dots(current: Int, total: Int, modifier: Modifier) {
         Text(stringResource(R.string.onb_default_rounds), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
         Stepper(form.effectiveRounds(), { form.rounds = it }, 1..MAX_EXPLICIT_ROUNDS, tag = "onb_default_rounds")
     }
-    Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
+    Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch).toggleable(form.stretch, role = Role.Switch) { form.stretch = it }.testTag("onb_stretch"), verticalAlignment = Alignment.CenterVertically) {
         Text(stringResource(R.string.train_stretch), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-        Switch(checked = form.stretch, onCheckedChange = { form.stretch = it }, modifier = Modifier.testTag("onb_stretch"))
+        Switch(checked = form.stretch, onCheckedChange = null)
     }
 }
 

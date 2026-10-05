@@ -18,7 +18,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -58,6 +60,7 @@ private fun targetText(t: Target?, perSide: Boolean): String {
 @Composable
 fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: () -> Unit) {
     val ctx = LocalContext.current
+    val haptic = LocalHapticFeedback.current
     val data by rememberTrainData()
     val settings = remember { TrainSettingsStore.load(ctx) }
     val profile = remember { ProfileStore.selected(ctx) }
@@ -77,6 +80,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
             Surface(tonalElevation = 3.dp) {
                 Button(
                     onClick = {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                         val plan = (result as PlanResult.Ready).plan.copy(id = UUID.randomUUID().toString()) // one history snapshot per workout
                         val json = Json { encodeDefaults = true }.encodeToString(WorkoutPlan.serializer(), plan)
                         startWorkout(ctx, json, UUID.randomUUID().toString(), io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.load(ctx).audioEnabled)

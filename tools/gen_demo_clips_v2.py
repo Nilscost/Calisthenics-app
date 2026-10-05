@@ -144,6 +144,12 @@ def add(a, b): return tuple(x + y for x, y in zip(a, b))
 def mul(a, k): return tuple(x * k for x in a)
 def lerp3(a, b, t): return tuple(x + (y - x) * t for x, y in zip(a, b))
 TO_VIEWER = (math.sin(THETA) * math.cos(PHI), math.sin(PHI), math.cos(THETA) * math.cos(PHI))
+# Poses that are almost edge-on at 30 degrees (the figure is a thin line seen from the side) get a wider yaw so the depth reads.
+YAW_OVERRIDE = {"wall-handstand-hold": 62, "hspu-wall-negative": 62, "hspu-wall": 62, "front-lever-tuck": 55, "front-lever-adv-tuck": 55, "front-lever-straddle": 55}
+def set_view(yaw_deg):
+    global THETA, TO_VIEWER
+    THETA = math.radians(yaw_deg)
+    TO_VIEWER = (math.sin(THETA) * math.cos(PHI), math.sin(PHI), math.cos(THETA) * math.cos(PHI))
 
 def proj(p):
     x, y, z = p
@@ -353,6 +359,7 @@ def main():
     ids = args or list(byid)
     thumbs = []
     for vid in ids:
+        set_view(YAW_OVERRIDE.get(vid, 30))
         fn0, kind = POSES[vid]; fn = loop_fn(vid, fn0, kind)
         v = byid[vid]
         muscles = [(m, SECONDARY) for m in v.get("secondaryMuscles", [])] + [(m, PRIMARY) for m in v.get("primaryMuscles", [])]

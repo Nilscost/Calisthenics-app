@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import io.github.gonbei774.calisthenicsmemory.BuildConfig
 import io.github.gonbei774.calisthenicsmemory.R
 import androidx.compose.ui.unit.dp
 import app.calisthenics.domain.backup.*
@@ -45,7 +46,7 @@ fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
         scope.launch {
             try {
                 val payload = buildPayload()
-                val text = exportBackup(payload, "0.2.0-m5", System.currentTimeMillis())
+                val text = exportBackup(payload, BuildConfig.VERSION_NAME, System.currentTimeMillis())
                 ctx.contentResolver.openOutputStream(uri)?.use { it.write(text.toByteArray()) }
                 status = ctx.getString(R.string.backup_exported, payload.sessions.size)
             } catch (e: Exception) { status = ctx.getString(R.string.backup_export_failed, e.message.orEmpty()) }
@@ -73,7 +74,7 @@ fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
                         try {
                             val dir = java.io.File(ctx.filesDir, "backups").apply { mkdirs() }
                             val safety = java.io.File(dir, "before-restore-${System.currentTimeMillis()}.json")
-                            safety.writeText(exportBackup(buildPayload(), "0.2.0-m5", System.currentTimeMillis()))
+                            safety.writeText(exportBackup(buildPayload(), BuildConfig.VERSION_NAME, System.currentTimeMillis()))
                             val dao = AppDatabase.getDatabase(ctx).historyDao()
                             val pj = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
                             val plans = p.plans.map { pr ->

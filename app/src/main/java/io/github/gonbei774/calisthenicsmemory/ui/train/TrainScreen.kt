@@ -2,6 +2,8 @@
 package io.github.gonbei774.calisthenicsmemory.ui.train
 
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -115,9 +117,12 @@ fun TrainScreen(
                 }
             }
 
-            Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                Modifier.fillMaxWidth().heightIn(min = Spacing.touch).toggleable(settings.stretchOn, role = Role.Switch) { change(settings.copy(stretchOn = it)) }.testTag("stretch_switch"),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 Text(stringResource(R.string.train_stretch), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                Switch(checked = settings.stretchOn, onCheckedChange = { change(settings.copy(stretchOn = it)) }, modifier = Modifier.testTag("stretch_switch"))
+                Switch(checked = settings.stretchOn, onCheckedChange = null)
             }
 
             if (result is PlanResult.Infeasible) {
