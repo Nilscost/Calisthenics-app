@@ -36,6 +36,26 @@ abstract class HistoryDao {
     @Query("SELECT * FROM progression_events WHERE variationId = :vid ORDER BY atEpochMs")
     abstract suspend fun events(vid: String): List<ProgressionEventEntity>
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE) abstract suspend fun insertSessionIfNew(s: WorkoutSessionEntity): Long
+    @Insert(onConflict = OnConflictStrategy.IGNORE) abstract suspend fun insertBlockResultsIfNew(r: List<BlockResultEntity>)
+    @Insert(onConflict = OnConflictStrategy.IGNORE) abstract suspend fun insertFeedbackIfNew(f: FeedbackRevisionEntity): Long
+    @Query("SELECT * FROM feedback_revisions ORDER BY sessionId, variationId, revision") abstract suspend fun allFeedback(): List<FeedbackRevisionEntity>
+    @Query("SELECT * FROM progression_events ORDER BY atEpochMs") abstract suspend fun allEvents(): List<ProgressionEventEntity>
+
+    /** Merge restore: nothing existing is overwritten or deleted. Returns the number of sessions that were new. One transaction. */
+    @Transaction
+    open suspend fun restoreMerge(plans: List<PlanSnapshotEntity>, sessions: List<WorkoutSessionEntity>, blocks: List<BlockResultEntity>,
+                                  feedback: List<FeedbackRevisionEntity>, events: List<ProgressionEventEntity>): Int {
+        plans.forEach { insertPlan(it) }
+        var added = 0
+        val fresh = HashSet<String>()
+        sessions.forEach { if (insertSessionIfNew(it) != -1L) { added++; fresh += it.sessionId } }
+        insertBlockResultsIfNew(blocks.filter { it.sessionId in fresh })
+        feedback.filter { it.sessionId in fresh }.forEach { insertFeedbackIfNew(it) }
+        events.forEach { insertEvent(it) }
+        return added
+    }
+
     /** All-or-nothing: plan + session + block results land together or not at all. */
     @Transaction
     open suspend fun saveFinishedSession(

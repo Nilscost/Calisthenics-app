@@ -17,6 +17,8 @@ data class BlockRecord(
     /** MET, PARTIAL, SKIPPED, REPLACED */
     val outcome: String,
     val actualSeconds: Int,
+    /** Reps or seconds achieved; added after format 1 shipped, so it defaults to null for old files. */
+    val achievedValue: Int? = null,
 )
 
 @Serializable

@@ -89,11 +89,11 @@ class ContentEquipmentTest {
         assertFalse(isAvailable(three, SeedProfiles.home))
     }
 
-    @Test fun `chair needs confirmed stability and travel profile does not invent it`() {
+    @Test fun `chair exercises need a stable chair and the travel chair is flagged stable by owner decision`() {
         val dips = Fx.strength("dip", alts = listOf(RequirementSet(needs = listOf(EquipmentNeed("chair", suitability = setOf("stable"))))))
-        assertFalse(isAvailable(dips, SeedProfiles.travel))
-        val confirmed = SeedProfiles.travel.copy(items = listOf(EquipmentItem("chair", suitability = setOf("stable"))))
-        assertTrue(isAvailable(dips, confirmed))
+        assertTrue(isAvailable(dips, SeedProfiles.travel))
+        val unconfirmed = SeedProfiles.travel.copy(items = listOf(EquipmentItem("chair")))
+        assertFalse(isAvailable(dips, unconfirmed))
     }
 
     @Test fun `session overlay never edits the saved profile`() {

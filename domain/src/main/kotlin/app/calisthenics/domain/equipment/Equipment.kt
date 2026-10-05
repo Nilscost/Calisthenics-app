@@ -8,7 +8,7 @@ import app.calisthenics.domain.model.ExerciseVariation
 import app.calisthenics.domain.model.RequirementSet
 
 /** Seed profiles exactly as approved (EQ-01). Suitability flags are NOT invented:
- *  e.g. the Travel chair starts without "stable" until the user confirms it. */
+ *  the Travel chair is flagged "stable" (owner decision 2026-10-05: most chairs are). */
 object SeedProfiles {
     val home = EquipmentProfile(
         id = "home",
@@ -25,7 +25,7 @@ object SeedProfiles {
     val travel = EquipmentProfile(
         id = "travel",
         name = "Travel",
-        items = listOf(EquipmentItem("chair")),
+        items = listOf(EquipmentItem("chair", suitability = setOf("stable"))),
         capabilities = setOf("floor-space", "wall"),
     )
     val all = listOf(home, travel)
