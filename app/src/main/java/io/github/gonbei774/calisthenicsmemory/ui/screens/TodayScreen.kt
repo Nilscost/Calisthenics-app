@@ -3,7 +3,10 @@
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
+import app.calisthenics.domain.equipment.isAvailable
+import app.calisthenics.domain.equipment.missingFor
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -13,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import app.calisthenics.domain.content.parseCatalog
 import app.calisthenics.domain.equipment.SeedProfiles
+import app.calisthenics.domain.goals.*
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.planner.*
 import app.calisthenics.domain.routine.SessionDraft
@@ -26,7 +30,8 @@ private fun fmt(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit = {}) {
     val ctx = LocalContext.current
     val catalog = remember { ctx.assets.open("catalog.json").bufferedReader().use { parseCatalog(it.readText()) } }
-    var routine by remember { mutableStateOf(RoutineStore.load(ctx)) }
+    var baseRoutine by remember { mutableStateOf(RoutineStore.load(ctx)) }
+    var goalId by remember { mutableStateOf(GoalStore.load(ctx)) }
     var swaps by remember { mutableStateOf(emptyMap<String, String>()) }
     val saved = remember { PrefsStore.load(ctx) }
     var minutes by rememberSaveable { mutableIntStateOf(saved.defaultDurationSeconds / 60) }
@@ -39,9 +44,11 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
 
     var progress by remember { mutableStateOf(LevelStore.snapshot(catalog, LevelStore.load(ctx))) }
     LaunchedEffect(Unit) { progress = try { ProgressLoader.load(ctx, catalog) } catch (_: Exception) { progress } }
+    val routine = remember(baseRoutine, goalId, progress) { Goals.routineFor(catalog, baseRoutine, goalId, progress) }
+    var showTree by rememberSaveable { mutableStateOf(false) }
     val result = remember(minutes, roundsSel, stretch, profileId, focusNames, progress, routine, swaps) {
         val draft = SessionDraft.from(Preferences(defaultDurationSeconds = minutes * 60, stretchOn = stretch, selectedProfileId = profileId), routine)
-            .copy(focus = focus, swaps = swaps, rounds = roundsSel.takeIf { it > 0 })
+            .copy(focus = if (focusNames == listOf("FULL_BODY")) Goals.focusFor(goalId) else focus, swaps = swaps, rounds = roundsSel.takeIf { it > 0 })
         generate(PlanInput("preview", System.currentTimeMillis(), 0, catalog, routine, draft, profile, progress = progress))
     }
     val names = remember(catalog) { catalog.variations.associate { it.id to it.name } }
@@ -49,6 +56,23 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
     Scaffold(topBar = { TopAppBar(title = { Text("Today's workout") }, navigationIcon = { TextButton(onClick = onBack) { Text("Back") } }) }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text("Length: $minutes min", style = MaterialTheme.typography.titleMedium)
+            Text("Goal (stays until you change it)", style = MaterialTheme.typography.titleSmall)
+            Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Goals.all.forEach { g -> FilterChip(selected = goalId == g.id, onClick = { goalId = g.id; GoalStore.save(ctx, g.id) }, label = { Text(g.name) }) }
+            }
+            Goals.byId(goalId)?.let { g ->
+                Text(g.description, style = MaterialTheme.typography.bodySmall)
+                if (g.entryVariationId != null) {
+                    OutlinedButton(onClick = { showTree = !showTree }) { Text(if (showTree) "Hide skill tree" else "Show skill tree") }
+                    if (showTree) {
+                        val nm = catalog.variations.associate { it.id to it.name }
+                        Goals.treeStates(catalog, g, progress).forEach { (v, st) ->
+                            val missing = catalog.variation(v)?.let { vv -> if (isAvailable(vv, profile)) "" else " – needs equipment: ${missingFor(vv, profile)}" } ?: ""
+                            Text("${when (st) { NodeState.MASTERED -> "★"; NodeState.AVAILABLE -> "▶"; NodeState.LOCKED -> "🔒" }} ${nm[v] ?: v}$missing")
+                        }
+                    }
+                }
+            }
             Text("Rounds", style = MaterialTheme.typography.titleSmall)
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 (0..5).forEach { n -> FilterChip(selected = roundsSel == n, onClick = { roundsSel = n }, label = { Text(if (n == 0) "Auto" else "$n") }) }
@@ -106,7 +130,7 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
                     }
                     if (swaps.isNotEmpty()) {
                         OutlinedButton(onClick = { swaps = emptyMap() }) { Text("Undo swaps") }
-                        OutlinedButton(onClick = { routine = saveSwapsToRoutine(routine, swaps); RoutineStore.save(ctx, routine); swaps = emptyMap() }) { Text("Save swaps to my usual plan") }
+                        OutlinedButton(onClick = { baseRoutine = saveSwapsToRoutine(baseRoutine, swaps); RoutineStore.save(ctx, baseRoutine); swaps = emptyMap() }) { Text("Save swaps to my usual plan") }
                     }
                     Spacer(Modifier.height(8.dp))
                     OutlinedButton(onClick = {
