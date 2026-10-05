@@ -176,23 +176,14 @@ class WorkoutSessionService : Service() {
         try { CheckpointStore.write(this, CheckpointCodec.encode(s, startedAt, n, System.currentTimeMillis())) } catch (e: Exception) { android.util.Log.e("WorkoutSession", "checkpoint failed", e) }
     }
 
-    private fun label(blockId: String, s: SessionState): String {
-        val b = s.plan.blocks.firstOrNull { it.id == blockId } ?: return ""
-        val name = b.variationId?.let { SessionBus.names[it] ?: it }
-        return when (b.type) {
-            BlockType.PASSIVE_RECOVERY, BlockType.TRANSITION -> "Rest"
-            BlockType.STRETCH -> "Stretch. " + (name ?: "")
-            else -> name ?: "Go"
-        }
-    }
+    private fun label(blockId: String, s: SessionState): String = CueText.label(s.plan, blockId, SessionBus.names)
 
     private fun perform(f: SessionEffect, s: SessionState) {
         when (f) {
             is SessionEffect.Cue -> when (f.kind) {
                 CueKind.START, CueKind.ROUND -> { sound?.play(sStart, 1f, 1f, 1, 0, 1f); say(label(f.blockId, s)) }
                 CueKind.PREVIEW_NEXT -> {
-                    val idx = s.plan.blocks.indexOfFirst { it.id == f.blockId }
-                    s.plan.blocks.getOrNull(idx + 1)?.let { say("Next: " + label(it.id, s)) }
+                    CueText.nextLabel(s.plan, f.blockId, SessionBus.names)?.let { say("Next: $it") }
                 }
                 CueKind.COUNTDOWN_3, CueKind.COUNTDOWN_2, CueKind.COUNTDOWN_1 -> sound?.play(sBeep, 1f, 1f, 1, 0, 1f)
                 CueKind.FINISHED -> { sound?.play(sDone, 1f, 1f, 1, 0, 1f); say("Workout complete") }

@@ -17,6 +17,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import app.calisthenics.domain.model.BlockType
 import app.calisthenics.domain.model.TargetType
+import app.calisthenics.domain.session.CueText
 import app.calisthenics.domain.session.Phase
 import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
@@ -43,15 +44,15 @@ fun SessionScreen(modifier: Modifier = Modifier, onExit: () -> Unit) {
             return@Column
         }
         if (b != null) {
-            val name = b.variationId?.let { SessionBus.names[it] ?: it } ?: when (b.type) { BlockType.PASSIVE_RECOVERY, BlockType.TRANSITION -> "Rest"; else -> b.type.name.lowercase() }
+            val name = CueText.label(st.plan, b.id, SessionBus.names)
             Text("Block ${st.blockIndex + 1} of ${st.plan.blocks.size}", style = MaterialTheme.typography.labelLarge)
             Text(name, style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center)
             b.target?.let { Text(if (it.type == TargetType.REPS) "${it.value} reps" else "${it.value}s hold", style = MaterialTheme.typography.titleLarge) }
             b.variationId?.let { v -> DemoClips.file(ctx, v)?.let { DemoPlayer(it) } }
             val rem = (st.remainingAt(nowTick) + 999) / 1000
             Text("%d:%02d".format(rem / 60, rem % 60), style = MaterialTheme.typography.displayLarge, maxLines = 1, modifier = Modifier.semantics { contentDescription = "$name, ${rem / 60} minutes ${rem % 60} seconds remaining" })
-            st.plan.blocks.getOrNull(st.blockIndex + 1)?.let { n ->
-                Text("Next: " + (n.variationId?.let { SessionBus.names[it] ?: it } ?: "Rest"), style = MaterialTheme.typography.bodyMedium)
+            CueText.nextLabel(st.plan, b.id, SessionBus.names)?.let { n ->
+                Text("Next: $n", style = MaterialTheme.typography.bodyMedium)
             }
             if (st.phase == Phase.PAUSED) Text("Paused", color = MaterialTheme.colorScheme.error)
         }

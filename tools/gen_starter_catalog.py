@@ -27,11 +27,14 @@ def reps_tiers(targets, rec=(60, 60, 60, 60, 60), stretch=None):
         tiers.append(d)
     return tiers
 
+# F13/Q4: a hold block lasts the target plus a 3 s get-ready, nothing more.
+HOLD_SETUP_SECONDS = 3
+
 def hold_tiers(targets, rec=(60, 60, 60, 60, 60), stretch=None):
     tiers = []
     for i, t in enumerate(targets, 1):
         d = {"index": i, "target": {"type": "HOLD_SECONDS", "value": t},
-             "workWindowSeconds": t + 25, "minRecoverySeconds": rec[i - 1]}
+             "workWindowSeconds": t + HOLD_SETUP_SECONDS, "minRecoverySeconds": rec[i - 1]}
         if stretch: d["earlyCompletionStretchId"] = stretch
         tiers.append(d)
     return tiers

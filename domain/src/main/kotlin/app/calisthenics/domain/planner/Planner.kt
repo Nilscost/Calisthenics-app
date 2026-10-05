@@ -242,15 +242,21 @@ private class Planner(val input: PlanInput) {
             val v = c.variation; val t = c.tier
             val sides = if (v.unilateral) listOf(Side.LEFT, Side.RIGHT) else listOf(Side.NONE)
             val workIds = mutableListOf<String>()
+            // F13/Q4: a hold lasts its target plus a short get-ready (tier.workWindowSeconds), also in timed mode. Only rep work fills the 60 s.
+            val isHold = t.target.type == TargetType.HOLD_SECONDS
+            var workTotal = 0
             for (side in sides) {
                 val id = "r$r-${c.slot.id}-work" + if (side == Side.NONE) "" else "-${side.name.first()}"
                 workIds += id
-                out += TimelineBlock(id, BlockType.WORK, if (draft.timed) (if (side == Side.NONE) TIMED_WORK_SECONDS else TIMED_WORK_SECONDS / 2) else t.workWindowSeconds, r, c.slot.id, v.id, side, t.target, t.index,
+                val secs = if (draft.timed && !isHold) (if (side == Side.NONE) TIMED_WORK_SECONDS else TIMED_WORK_SECONDS / 2) else t.workWindowSeconds
+                workTotal += secs
+                out += TimelineBlock(id, BlockType.WORK, secs, r, c.slot.id, v.id, side, t.target, t.index,
                     mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId)
             }
             val isLast = r == rounds && si == sl.lastIndex
             if (isLast || t.minRecoverySeconds <= 0) continue
-            val window = if (draft.timed) TIMED_REST_SECONDS else t.minRecoverySeconds
+            // Timed mode keeps one 60 s cycle per exercise: the time a short hold does not use goes to the recovery (the stretch when stretch is on).
+            val window = if (draft.timed) TIMED_REST_SECONDS + (TIMED_WORK_SECONDS - workTotal).coerceAtLeast(0) else t.minRecoverySeconds
             if (!draft.stretchOn) {
                 out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.PASSIVE_RECOVERY, window, r, c.slot.id, recoveryForBlockIds = workIds)
             } else {

@@ -73,8 +73,10 @@ class ExplicitRoundsTest {
             SessionDraft.from(Preferences(), StarterRoutine.routine).copy(rounds = 4, timed = true), SeedProfiles.home)) as PlanResult.Ready
         assertTrue(r.plan.timed)
         val work = r.plan.blocks.filter { it.type == BlockType.WORK }
-        assertTrue(work.all { it.durationSeconds == TIMED_WORK_SECONDS || (it.side != Side.NONE && it.durationSeconds == TIMED_WORK_SECONDS / 2) })
-        assertTrue(r.plan.blocks.filter { it.type == BlockType.PASSIVE_RECOVERY || it.type == BlockType.STRETCH }.all { it.durationSeconds == TIMED_REST_SECONDS || it.durationSeconds == (TIMED_REST_SECONDS + 1) / 2 })
+        // U03: rep work fills 60 s; a hold lasts target + 3 s (never padded) and its unused time goes to the recovery after it.
+        assertTrue(work.filter { it.target?.type == TargetType.REPS }.all { it.durationSeconds == TIMED_WORK_SECONDS || (it.side != Side.NONE && it.durationSeconds == TIMED_WORK_SECONDS / 2) })
+        assertTrue(work.filter { it.target?.type == TargetType.HOLD_SECONDS }.all { it.durationSeconds == it.target!!.value + 3 })
+        assertTrue(r.plan.blocks.filter { it.type == BlockType.PASSIVE_RECOVERY || it.type == BlockType.STRETCH }.all { it.durationSeconds >= (TIMED_REST_SECONDS + 1) / 2 })
         val m = r.plan.plannedDurationSeconds / 60.0
         val by = r.plan.blocks.groupBy { it.type }.mapValues { (_, b) -> b.size to b.sumOf { it.durationSeconds } }
         println("TIMED4 total=${r.plan.plannedDurationSeconds} by=$by slots=" + r.plan.blocks.filter { it.type == BlockType.WORK && it.roundIndex == 1 }.map { it.variationId + "/" + it.side })

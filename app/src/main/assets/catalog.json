@@ -2733,7 +2733,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60
         },
         {
@@ -2742,7 +2742,7 @@
             "type": "HOLD_SECONDS",
             "value": 15
           },
-          "workWindowSeconds": 40,
+          "workWindowSeconds": 18,
           "minRecoverySeconds": 60
         },
         {
@@ -2751,7 +2751,7 @@
             "type": "HOLD_SECONDS",
             "value": 20
           },
-          "workWindowSeconds": 45,
+          "workWindowSeconds": 23,
           "minRecoverySeconds": 60
         },
         {
@@ -2760,7 +2760,7 @@
             "type": "HOLD_SECONDS",
             "value": 25
           },
-          "workWindowSeconds": 50,
+          "workWindowSeconds": 28,
           "minRecoverySeconds": 60
         },
         {
@@ -2769,7 +2769,7 @@
             "type": "HOLD_SECONDS",
             "value": 30
           },
-          "workWindowSeconds": 55,
+          "workWindowSeconds": 33,
           "minRecoverySeconds": 60
         }
       ],
@@ -2849,7 +2849,7 @@
             "type": "HOLD_SECONDS",
             "value": 15
           },
-          "workWindowSeconds": 40,
+          "workWindowSeconds": 18,
           "minRecoverySeconds": 60
         },
         {
@@ -2858,7 +2858,7 @@
             "type": "HOLD_SECONDS",
             "value": 20
           },
-          "workWindowSeconds": 45,
+          "workWindowSeconds": 23,
           "minRecoverySeconds": 60
         },
         {
@@ -2867,7 +2867,7 @@
             "type": "HOLD_SECONDS",
             "value": 30
           },
-          "workWindowSeconds": 55,
+          "workWindowSeconds": 33,
           "minRecoverySeconds": 60
         },
         {
@@ -2876,7 +2876,7 @@
             "type": "HOLD_SECONDS",
             "value": 40
           },
-          "workWindowSeconds": 65,
+          "workWindowSeconds": 43,
           "minRecoverySeconds": 60
         },
         {
@@ -2885,7 +2885,7 @@
             "type": "HOLD_SECONDS",
             "value": 50
           },
-          "workWindowSeconds": 75,
+          "workWindowSeconds": 53,
           "minRecoverySeconds": 60
         }
       ],
@@ -2911,7 +2911,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60
         },
         {
@@ -2920,7 +2920,7 @@
             "type": "HOLD_SECONDS",
             "value": 15
           },
-          "workWindowSeconds": 40,
+          "workWindowSeconds": 18,
           "minRecoverySeconds": 60
         },
         {
@@ -2929,7 +2929,7 @@
             "type": "HOLD_SECONDS",
             "value": 20
           },
-          "workWindowSeconds": 45,
+          "workWindowSeconds": 23,
           "minRecoverySeconds": 60
         },
         {
@@ -2938,7 +2938,7 @@
             "type": "HOLD_SECONDS",
             "value": 30
           },
-          "workWindowSeconds": 55,
+          "workWindowSeconds": 33,
           "minRecoverySeconds": 60
         },
         {
@@ -2947,7 +2947,7 @@
             "type": "HOLD_SECONDS",
             "value": 40
           },
-          "workWindowSeconds": 65,
+          "workWindowSeconds": 43,
           "minRecoverySeconds": 60
         }
       ],
@@ -3572,7 +3572,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -3582,7 +3582,7 @@
             "type": "HOLD_SECONDS",
             "value": 20
           },
-          "workWindowSeconds": 45,
+          "workWindowSeconds": 23,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -3592,7 +3592,7 @@
             "type": "HOLD_SECONDS",
             "value": 30
           },
-          "workWindowSeconds": 55,
+          "workWindowSeconds": 33,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -3602,7 +3602,7 @@
             "type": "HOLD_SECONDS",
             "value": 45
           },
-          "workWindowSeconds": 70,
+          "workWindowSeconds": 48,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -3612,7 +3612,7 @@
             "type": "HOLD_SECONDS",
             "value": 60
           },
-          "workWindowSeconds": 85,
+          "workWindowSeconds": 63,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         }
@@ -4393,7 +4393,7 @@
             "type": "HOLD_SECONDS",
             "value": 5
           },
-          "workWindowSeconds": 30,
+          "workWindowSeconds": 8,
           "minRecoverySeconds": 60
         },
         {
@@ -4402,7 +4402,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60
         },
         {
@@ -4411,7 +4411,7 @@
             "type": "HOLD_SECONDS",
             "value": 15
           },
-          "workWindowSeconds": 40,
+          "workWindowSeconds": 18,
           "minRecoverySeconds": 60
         },
         {
@@ -4420,7 +4420,7 @@
             "type": "HOLD_SECONDS",
             "value": 20
           },
-          "workWindowSeconds": 45,
+          "workWindowSeconds": 23,
           "minRecoverySeconds": 60
         },
         {
@@ -4429,7 +4429,7 @@
             "type": "HOLD_SECONDS",
             "value": 30
           },
-          "workWindowSeconds": 55,
+          "workWindowSeconds": 33,
           "minRecoverySeconds": 60
         }
       ],
@@ -4463,7 +4463,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60
         },
         {
@@ -4472,7 +4472,7 @@
             "type": "HOLD_SECONDS",
             "value": 15
           },
-          "workWindowSeconds": 40,
+          "workWindowSeconds": 18,
           "minRecoverySeconds": 60
         },
         {
@@ -4481,7 +4481,7 @@
             "type": "HOLD_SECONDS",
             "value": 20
           },
-          "workWindowSeconds": 45,
+          "workWindowSeconds": 23,
           "minRecoverySeconds": 60
         },
         {
@@ -4490,7 +4490,7 @@
             "type": "HOLD_SECONDS",
             "value": 30
           },
-          "workWindowSeconds": 55,
+          "workWindowSeconds": 33,
           "minRecoverySeconds": 60
         },
         {
@@ -4499,7 +4499,7 @@
             "type": "HOLD_SECONDS",
             "value": 40
           },
-          "workWindowSeconds": 65,
+          "workWindowSeconds": 43,
           "minRecoverySeconds": 60
         }
       ],
@@ -4536,7 +4536,7 @@
             "type": "HOLD_SECONDS",
             "value": 5
           },
-          "workWindowSeconds": 30,
+          "workWindowSeconds": 8,
           "minRecoverySeconds": 60
         },
         {
@@ -4545,7 +4545,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60
         },
         {
@@ -4554,7 +4554,7 @@
             "type": "HOLD_SECONDS",
             "value": 15
           },
-          "workWindowSeconds": 40,
+          "workWindowSeconds": 18,
           "minRecoverySeconds": 60
         },
         {
@@ -4563,7 +4563,7 @@
             "type": "HOLD_SECONDS",
             "value": 20
           },
-          "workWindowSeconds": 45,
+          "workWindowSeconds": 23,
           "minRecoverySeconds": 60
         },
         {
@@ -4572,7 +4572,7 @@
             "type": "HOLD_SECONDS",
             "value": 30
           },
-          "workWindowSeconds": 55,
+          "workWindowSeconds": 33,
           "minRecoverySeconds": 60
         }
       ],
@@ -4610,7 +4610,7 @@
             "type": "HOLD_SECONDS",
             "value": 3
           },
-          "workWindowSeconds": 28,
+          "workWindowSeconds": 6,
           "minRecoverySeconds": 60
         },
         {
@@ -4619,7 +4619,7 @@
             "type": "HOLD_SECONDS",
             "value": 5
           },
-          "workWindowSeconds": 30,
+          "workWindowSeconds": 8,
           "minRecoverySeconds": 60
         },
         {
@@ -4628,7 +4628,7 @@
             "type": "HOLD_SECONDS",
             "value": 8
           },
-          "workWindowSeconds": 33,
+          "workWindowSeconds": 11,
           "minRecoverySeconds": 60
         },
         {
@@ -4637,7 +4637,7 @@
             "type": "HOLD_SECONDS",
             "value": 12
           },
-          "workWindowSeconds": 37,
+          "workWindowSeconds": 15,
           "minRecoverySeconds": 60
         },
         {
@@ -4646,7 +4646,7 @@
             "type": "HOLD_SECONDS",
             "value": 15
           },
-          "workWindowSeconds": 40,
+          "workWindowSeconds": 18,
           "minRecoverySeconds": 60
         }
       ],
@@ -4811,7 +4811,7 @@
             "type": "HOLD_SECONDS",
             "value": 3
           },
-          "workWindowSeconds": 28,
+          "workWindowSeconds": 6,
           "minRecoverySeconds": 60
         },
         {
@@ -4820,7 +4820,7 @@
             "type": "HOLD_SECONDS",
             "value": 5
           },
-          "workWindowSeconds": 30,
+          "workWindowSeconds": 8,
           "minRecoverySeconds": 60
         },
         {
@@ -4829,7 +4829,7 @@
             "type": "HOLD_SECONDS",
             "value": 8
           },
-          "workWindowSeconds": 33,
+          "workWindowSeconds": 11,
           "minRecoverySeconds": 60
         },
         {
@@ -4838,7 +4838,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60
         },
         {
@@ -4847,7 +4847,7 @@
             "type": "HOLD_SECONDS",
             "value": 15
           },
-          "workWindowSeconds": 40,
+          "workWindowSeconds": 18,
           "minRecoverySeconds": 60
         }
       ],
@@ -4892,7 +4892,7 @@
             "type": "HOLD_SECONDS",
             "value": 3
           },
-          "workWindowSeconds": 28,
+          "workWindowSeconds": 6,
           "minRecoverySeconds": 60
         },
         {
@@ -4901,7 +4901,7 @@
             "type": "HOLD_SECONDS",
             "value": 5
           },
-          "workWindowSeconds": 30,
+          "workWindowSeconds": 8,
           "minRecoverySeconds": 60
         },
         {
@@ -4910,7 +4910,7 @@
             "type": "HOLD_SECONDS",
             "value": 8
           },
-          "workWindowSeconds": 33,
+          "workWindowSeconds": 11,
           "minRecoverySeconds": 60
         },
         {
@@ -4919,7 +4919,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60
         },
         {
@@ -4928,7 +4928,7 @@
             "type": "HOLD_SECONDS",
             "value": 15
           },
-          "workWindowSeconds": 40,
+          "workWindowSeconds": 18,
           "minRecoverySeconds": 60
         }
       ],
@@ -4965,7 +4965,7 @@
             "type": "HOLD_SECONDS",
             "value": 2
           },
-          "workWindowSeconds": 27,
+          "workWindowSeconds": 5,
           "minRecoverySeconds": 60
         },
         {
@@ -4974,7 +4974,7 @@
             "type": "HOLD_SECONDS",
             "value": 3
           },
-          "workWindowSeconds": 28,
+          "workWindowSeconds": 6,
           "minRecoverySeconds": 60
         },
         {
@@ -4983,7 +4983,7 @@
             "type": "HOLD_SECONDS",
             "value": 5
           },
-          "workWindowSeconds": 30,
+          "workWindowSeconds": 8,
           "minRecoverySeconds": 60
         },
         {
@@ -4992,7 +4992,7 @@
             "type": "HOLD_SECONDS",
             "value": 8
           },
-          "workWindowSeconds": 33,
+          "workWindowSeconds": 11,
           "minRecoverySeconds": 60
         },
         {
@@ -5001,7 +5001,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60
         }
       ],
@@ -5035,7 +5035,7 @@
             "type": "HOLD_SECONDS",
             "value": 5
           },
-          "workWindowSeconds": 30,
+          "workWindowSeconds": 8,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5045,7 +5045,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5055,7 +5055,7 @@
             "type": "HOLD_SECONDS",
             "value": 15
           },
-          "workWindowSeconds": 40,
+          "workWindowSeconds": 18,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5065,7 +5065,7 @@
             "type": "HOLD_SECONDS",
             "value": 20
           },
-          "workWindowSeconds": 45,
+          "workWindowSeconds": 23,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5075,7 +5075,7 @@
             "type": "HOLD_SECONDS",
             "value": 30
           },
-          "workWindowSeconds": 55,
+          "workWindowSeconds": 33,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         }
@@ -5121,7 +5121,7 @@
             "type": "HOLD_SECONDS",
             "value": 3
           },
-          "workWindowSeconds": 28,
+          "workWindowSeconds": 6,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5131,7 +5131,7 @@
             "type": "HOLD_SECONDS",
             "value": 5
           },
-          "workWindowSeconds": 30,
+          "workWindowSeconds": 8,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5141,7 +5141,7 @@
             "type": "HOLD_SECONDS",
             "value": 8
           },
-          "workWindowSeconds": 33,
+          "workWindowSeconds": 11,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5151,7 +5151,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5161,7 +5161,7 @@
             "type": "HOLD_SECONDS",
             "value": 15
           },
-          "workWindowSeconds": 40,
+          "workWindowSeconds": 18,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         }
@@ -5199,7 +5199,7 @@
             "type": "HOLD_SECONDS",
             "value": 2
           },
-          "workWindowSeconds": 27,
+          "workWindowSeconds": 5,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5209,7 +5209,7 @@
             "type": "HOLD_SECONDS",
             "value": 3
           },
-          "workWindowSeconds": 28,
+          "workWindowSeconds": 6,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5219,7 +5219,7 @@
             "type": "HOLD_SECONDS",
             "value": 5
           },
-          "workWindowSeconds": 30,
+          "workWindowSeconds": 8,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5229,7 +5229,7 @@
             "type": "HOLD_SECONDS",
             "value": 8
           },
-          "workWindowSeconds": 33,
+          "workWindowSeconds": 11,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         },
@@ -5239,7 +5239,7 @@
             "type": "HOLD_SECONDS",
             "value": 10
           },
-          "workWindowSeconds": 35,
+          "workWindowSeconds": 13,
           "minRecoverySeconds": 60,
           "earlyCompletionStretchId": "stretch-shoulder"
         }
