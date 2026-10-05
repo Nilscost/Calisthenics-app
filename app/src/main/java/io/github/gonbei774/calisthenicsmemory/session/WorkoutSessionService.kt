@@ -39,6 +39,12 @@ class WorkoutSessionService : Service() {
         const val ACTION_RESUME = "wss.RESUME"
         const val ACTION_SKIP = "wss.SKIP"
         const val ACTION_FINISH = "wss.FINISH"
+        const val ACTION_DONE = "wss.DONE"
+        const val ACTION_LOG = "wss.LOG"
+        const val EXTRA_BLOCK_ID = "block_id"
+        const val EXTRA_REPS = "reps"      // -1 = not typed
+        const val EXTRA_TOO_HARD = "too_hard"
+        const val EXTRA_PAIN = "pain"
         const val ACTION_RECOVER = "wss.RECOVER"
         const val EXTRA_RESUME = "resume"
         const val EXTRA_PLAN = "plan_json"
@@ -73,6 +79,11 @@ class WorkoutSessionService : Service() {
             ACTION_RESUME -> send(SessionEvent.Resume(now()))
             ACTION_SKIP -> send(SessionEvent.Skip(now()))
             ACTION_FINISH -> send(SessionEvent.FinishEarly(now()))
+            ACTION_DONE -> send(SessionEvent.EarlyDone(now()))
+            ACTION_LOG -> intent.getStringExtra(EXTRA_BLOCK_ID)?.let { id ->
+                send(SessionEvent.LogBlock(id, BlockLog(intent.getIntExtra(EXTRA_REPS, -1).takeIf { it >= 0 },
+                    intent.getBooleanExtra(EXTRA_TOO_HARD, false), intent.getBooleanExtra(EXTRA_PAIN, false))))
+            }
             else -> if (state == null) stopSelf()
         }
         return START_NOT_STICKY
@@ -216,13 +227,19 @@ class WorkoutSessionService : Service() {
                 val ex = s.executions[b.id] ?: Execution.NOT_STARTED
                 BlockResultEntity(sessionId = s.sessionId, blockId = b.id,
                     outcome = when (ex) { Execution.COMPLETED -> "MET"; Execution.PARTIAL -> "PARTIAL"; else -> "SKIPPED" },
-                    actualSeconds = ((s.activeMs[b.id] ?: 0L) / 1000L).toInt(), achievedValue = null)
+                    actualSeconds = ((s.activeMs[b.id] ?: 0L) / 1000L).toInt(), achievedValue = s.logged[b.id]?.reps)
+            }
+            // What the user logged during the workout becomes the first feedback revision of each exercise, in the same transaction.
+            val now = System.currentTimeMillis()
+            val feedback = rowLogsFrom(s.plan, s.logged).map { r ->
+                FeedbackRevisionEntity(sessionId = s.sessionId, variationId = r.variationId, revision = 1, rating = r.rating.name,
+                    discomfort = r.discomfort, assumedMet = false, createdAtEpochMs = now, actualReps = r.actualReps)
             }
             val status = if (s.phase == Phase.COMPLETED) "COMPLETED" else "PARTIAL_FINISHED"
             runBlocking {
                 db.historyDao().saveFinishedSession(
                     PlanSnapshotEntity(s.plan.id, s.plan.createdAtEpochMs, s.plan.routineId, s.plan.routineRevision, s.plan.catalogVersion, s.plan.profileId, planJson),
-                    WorkoutSessionEntity(s.sessionId, s.plan.id, startedAt, System.currentTimeMillis(), status), blocks)
+                    WorkoutSessionEntity(s.sessionId, s.plan.id, startedAt, System.currentTimeMillis(), status), blocks, feedback)
             }
             CheckpointStore.clear(this) // only after the session row is safely in Room
         } catch (e: Exception) { SessionBus.saved = false; android.util.Log.e("WorkoutSession", "save failed", e) }

@@ -15,6 +15,8 @@ data class Checkpoint(
     val executions: Map<String, Execution>, val activeMs: Map<String, Long>, val activeElapsedMs: Long,
     val eventSequence: Long, val replacements: Map<String, String>, val appliedCueIds: Set<String>,
     val pauseReason: PauseReason?, val startedAtEpochMs: Long, val savedAtEpochMs: Long,
+    /** U07: per-block logs, so a crash never loses what the user typed. Appended last; older checkpoints decode with none. */
+    val logged: Map<String, BlockLog> = emptyMap(),
 )
 
 object CheckpointCodec {
@@ -23,13 +25,13 @@ object CheckpointCodec {
     /** [nowMs] is the monotonic clock, used to freeze the remaining time of a RUNNING block. */
     fun encode(s: SessionState, startedAt: Long, nowMs: Long, wallMs: Long): String = json.encodeToString(Checkpoint.serializer(),
         Checkpoint(s.sessionId, s.plan, s.phase, s.blockIndex, s.remainingAt(nowMs), s.executions, s.activeMs, s.activeElapsedMs,
-            s.eventSequence, s.replacements, s.appliedCueIds, s.pauseReason, startedAt, wallMs))
+            s.eventSequence, s.replacements, s.appliedCueIds, s.pauseReason, startedAt, wallMs, s.logged))
 
     fun decode(text: String): Checkpoint? = try { json.decodeFromString(Checkpoint.serializer(), text) } catch (_: Exception) { null }
 
     /** Rebuilds a state in its pre-crash phase; the caller then feeds ProcessRecovered (never trusts old deadlines). */
     fun toState(c: Checkpoint) = SessionState(c.sessionId, c.plan, c.phase, c.blockIndex, 0, c.remainingMs, c.pauseReason,
-        c.executions, c.activeMs, c.activeElapsedMs, c.eventSequence, null, c.replacements, 0, -1, 0, c.appliedCueIds)
+        c.executions, c.activeMs, c.activeElapsedMs, c.eventSequence, null, c.replacements, 0, -1, 0, c.appliedCueIds, c.logged)
 }
 
 object CheckpointStore {

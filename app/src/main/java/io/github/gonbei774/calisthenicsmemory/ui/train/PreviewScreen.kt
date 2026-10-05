@@ -31,7 +31,7 @@ import app.calisthenics.domain.session.CueText
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore
 import io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore
-import io.github.gonbei774.calisthenicsmemory.ui.screens.startWorkout
+import io.github.gonbei774.calisthenicsmemory.ui.session.startWorkout
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Radius
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import kotlinx.serialization.json.Json

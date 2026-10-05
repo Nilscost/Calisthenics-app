@@ -28,7 +28,7 @@ import io.github.gonbei774.calisthenicsmemory.session.CheckpointStore
 import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import io.github.gonbei774.calisthenicsmemory.ui.components.Stepper
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore
-import io.github.gonbei774.calisthenicsmemory.ui.screens.recoverWorkout
+import io.github.gonbei774.calisthenicsmemory.ui.session.recoverWorkout
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Radius
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 

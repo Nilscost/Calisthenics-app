@@ -56,14 +56,16 @@ abstract class HistoryDao {
         return added
     }
 
-    /** All-or-nothing: plan + session + block results land together or not at all. */
+    /** All-or-nothing: plan + session + block results (+ feedback logged during the workout) land together or not at all. */
     @Transaction
     open suspend fun saveFinishedSession(
         plan: PlanSnapshotEntity, session: WorkoutSessionEntity, blocks: List<BlockResultEntity>,
+        feedback: List<FeedbackRevisionEntity> = emptyList(),
     ) {
         insertPlan(plan)
         insertSession(session)
         insertBlockResults(blocks)
+        feedback.forEach { insertFeedback(it) }
     }
 
     /** Editing old feedback adds a NEW revision; the earlier one is kept. */

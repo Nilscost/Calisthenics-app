@@ -37,6 +37,8 @@ data class SessionState(
     val lastCheckpointSeq: Long = -1,
     val lastTickMs: Long = 0,
     val appliedCueIds: Set<String> = emptySet(),
+    /** U07: what the user logged per work block while training (blockId -> log). Appended last with a default. */
+    val logged: Map<String, BlockLog> = emptyMap(),
 ) {
     val currentBlock get() = plan.blocks.getOrNull(blockIndex)
     val isTerminal get() = phase == Phase.COMPLETED || phase == Phase.PARTIAL_FINISHED
@@ -53,6 +55,8 @@ sealed interface SessionEvent {
     /** [replacement] is the easier compatible block, supplied by the planner layer. */
     data class EasierAlternative(val nowMs: Long, val replacement: app.calisthenics.domain.model.TimelineBlock) : SessionEvent
     data class FinishEarly(val nowMs: Long) : SessionEvent
+    /** Reps/seconds, "too hard" and discomfort for a work block that has started. Latest entry for a block wins. */
+    data class LogBlock(val blockId: String, val log: BlockLog) : SessionEvent
     data class AudioInterrupted(val nowMs: Long) : SessionEvent
     data class PersistCheckpoint(val nowMs: Long) : SessionEvent
     /** Process restarted: old monotonic times are meaningless; [lastCheckpoint] is the stored state. */
@@ -92,6 +96,7 @@ fun reduce(s: SessionState, e: SessionEvent): Reduced {
         is SessionEvent.EarlyDone -> earlyDone(s, e.nowMs)
         is SessionEvent.EasierAlternative -> easier(s, e)
         is SessionEvent.FinishEarly -> finishEarly(s, e.nowMs)
+        is SessionEvent.LogBlock -> logBlock(s, e)
         is SessionEvent.PersistCheckpoint -> if (s.phase == Phase.RUNNING && e.nowMs - s.lastTickMs < 0) Reduced(s)
             else persistOnly(s)
         SessionEvent.ProcessRecovered -> recover(s)
@@ -205,14 +210,26 @@ private fun skip(s: SessionState, now: Long): Reduced {
     return moveOn(t.copy(executions = t.executions + (b.id to exec)), now)
 }
 
+/**
+ * "Done": the user finished the work before the window ended, so the session moves straight to what follows
+ * (the recovery, which is the stretch when stretch is on — the unused part of the window is simply not used).
+ * Reps: completed. Holds: completed only if the target time was actually held, otherwise partial.
+ */
 private fun earlyDone(s: SessionState, now: Long): Reduced {
     val b = s.currentBlock ?: return Reduced(s)
     if (s.phase != Phase.RUNNING || b.type != BlockType.WORK) return Reduced(s)
-    // Early done = the WORK is complete; the remainder of the window is the reviewed stretch, if one exists.
-    // Without a reviewed early-completion stretch there is no safe remainder action: the block simply keeps running.
-    if (b.earlyCompletionStretchId == null) return Reduced(s)
     val t = addActive(s, now)
-    return moveOn(t.copy(executions = t.executions + (b.id to Execution.COMPLETED)), now)
+    val heldEnough = b.target?.type != app.calisthenics.domain.model.TargetType.HOLD_SECONDS ||
+        (t.activeMs[b.id] ?: 0L) >= (b.target?.value ?: 0) * 1000L
+    return moveOn(t.copy(executions = t.executions + (b.id to if (heldEnough) Execution.COMPLETED else Execution.PARTIAL)), now)
+}
+
+private fun logBlock(s: SessionState, e: SessionEvent.LogBlock): Reduced {
+    val b = s.plan.blocks.firstOrNull { it.id == e.blockId } ?: return Reduced(s)
+    val started = (s.executions[b.id] ?: Execution.NOT_STARTED) != Execution.NOT_STARTED
+    if (b.type != BlockType.WORK || !started) return Reduced(s)
+    val n = bump(s.copy(logged = s.logged + (b.id to e.log.copy(reps = e.log.reps?.coerceIn(0, 999)))))
+    return Reduced(n, listOf(persist(n))) // saved to the crash-safe checkpoint right away
 }
 
 private fun moveOn(t: SessionState, now: Long): Reduced {

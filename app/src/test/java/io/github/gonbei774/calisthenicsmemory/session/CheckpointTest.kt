@@ -27,5 +27,16 @@ class CheckpointTest {
         val fin = reduce(rec, SessionEvent.RecoveryChoice(false)).state
         assertEquals(Phase.PARTIAL_FINISHED, fin.phase)
     }
+    @Test fun whatTheUserLoggedSurvivesACrash() {
+        var s = reduce(newSession("s1", plan()), SessionEvent.Start(1000)).state
+        s = reduce(s, SessionEvent.Tick(31_000)).state // work done, recovery running
+        s = reduce(s, SessionEvent.LogBlock("b1", BlockLog(reps = 7, discomfort = true))).state
+        val c = CheckpointCodec.decode(CheckpointCodec.encode(s, 5L, 32_000, 99L))!!
+        assertEquals(BlockLog(reps = 7, discomfort = true), c.logged["b1"])
+        assertEquals(BlockLog(reps = 7, discomfort = true), reduce(CheckpointCodec.toState(c), SessionEvent.ProcessRecovered).state.logged["b1"])
+        // a checkpoint written before U07 has no logs and still decodes
+        val old = CheckpointCodec.encode(s, 5L, 32_000, 99L).replace(Regex(""","logged":\{.*?\}\}"""), "")
+        assertTrue(CheckpointCodec.decode(old)?.logged?.isEmpty() == true)
+    }
     @Test fun garbageIsRejected() { assertNull(CheckpointCodec.decode("{not json")) }
 }

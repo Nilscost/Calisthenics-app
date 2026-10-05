@@ -90,14 +90,25 @@ class SessionReducerTest {
         assertEquals(Phase.COMPLETED, s.phase); assertEquals(Execution.SKIPPED, s.executions["only"])
     }
 
-    @Test fun `early done without a reviewed stretch does nothing and never makes passive rest`() {
-        val s = started()
-        assertSame(s, reduce(s, SessionEvent.EarlyDone(5_000)).state)
+    @Test fun `done moves straight on to the recovery whether or not a reviewed stretch exists`() {
+        for (early in listOf(null, "calf-stretch")) {
+            val s = reduce(started(plan(work("w1", early = early), rec("r1"))), SessionEvent.EarlyDone(9_000)).state
+            assertEquals(Execution.COMPLETED, s.executions["w1"]); assertEquals(1, s.blockIndex)
+            assertEquals(Execution.RUNNING, s.executions["r1"]); assertEquals(9_000 + 20_000, s.deadlineMs) // full recovery from now
+        }
     }
 
-    @Test fun `early done with a reviewed stretch completes the work and jumps to the stretch`() {
-        val s = reduce(started(plan(work("w1", early = "calf-stretch"), rec("r1"))), SessionEvent.EarlyDone(9_000)).state
-        assertEquals(Execution.COMPLETED, s.executions["w1"]); assertEquals(1, s.blockIndex)
+    @Test fun `done during a recovery block does nothing`() {
+        val s = reduce(started(), SessionEvent.Tick(41_000)).state
+        assertSame(s, reduce(s, SessionEvent.EarlyDone(45_000)).state)
+    }
+
+    @Test fun `done on a hold counts as completed only if the target time was held`() {
+        fun hold(secs: Int = 18) = TimelineBlock("h1", BlockType.WORK, secs, 1, "s-h", "plank", target = Target(TargetType.HOLD_SECONDS, 15), prescriptionTier = 1)
+        val early = reduce(started(plan(hold(), rec("r1")), at = 0), SessionEvent.EarlyDone(5_000)).state
+        assertEquals(Execution.PARTIAL, early.executions["h1"])
+        val enough = reduce(started(plan(hold(), rec("r1")), at = 0), SessionEvent.EarlyDone(16_000)).state
+        assertEquals(Execution.COMPLETED, enough.executions["h1"])
     }
 
     @Test fun `easier alternative pauses, keeps the original as partial and inserts the replacement`() {

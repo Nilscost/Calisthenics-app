@@ -28,12 +28,12 @@ object DemoClips {
 }
 
 @Composable
-fun DemoPlayer(file: File) {
+fun DemoPlayer(file: File, controls: Boolean = true) {
     val description = androidx.compose.ui.res.stringResource(io.github.gonbei774.calisthenicsmemory.R.string.demo_clip_description)
     AndroidView(modifier = Modifier.fillMaxWidth().heightIn(min = 180.dp, max = 260.dp).aspectRatio(16f / 10f).semantics { contentDescription = description }, factory = { c ->
         VideoView(c).apply {
             setVideoPath(file.absolutePath)
-            setMediaController(MediaController(c).also { it.setAnchorView(this) })
+            if (controls) setMediaController(MediaController(c).also { it.setAnchorView(this) })
             setOnPreparedListener { it.isLooping = true; it.setVolume(0f, 0f); start() }
         }
     })

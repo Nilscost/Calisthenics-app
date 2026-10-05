@@ -62,6 +62,15 @@ class HistoryAndMigrationTest {
         catch (_: SQLiteConstraintException) {}
     }
 
+    @Test fun feedbackLoggedDuringTheWorkoutIsSavedWithTheSession() = runBlocking {
+        val dao = mem().historyDao()
+        dao.saveFinishedSession(plan("p1"), WorkoutSessionEntity("s1", "p1", 1L, 2L, "COMPLETED"),
+            listOf(BlockResultEntity(sessionId = "s1", blockId = "b1", outcome = "MET", actualSeconds = 30, achievedValue = 6)),
+            listOf(FeedbackRevisionEntity(sessionId = "s1", variationId = "v1", revision = 1, rating = "BELOW", discomfort = false, assumedMet = false, createdAtEpochMs = 3L, actualReps = 6)))
+        assertEquals(6, dao.feedbackHistory("s1", "v1").single().actualReps)
+        assertEquals(6, dao.blockResults("s1").single().achievedValue)
+    }
+
     @Test fun failedSaveLeavesPriorRecordsIntact() = runBlocking {
         val dao = mem().historyDao()
         dao.saveFinishedSession(plan("p1"), WorkoutSessionEntity("s1", "p1", 1L, 2L, "COMPLETED"),

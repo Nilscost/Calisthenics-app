@@ -33,7 +33,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.OnboardingScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.OnboardingStore
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileEditScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfilesScreen
-import io.github.gonbei774.calisthenicsmemory.ui.screens.SessionScreen
+import io.github.gonbei774.calisthenicsmemory.ui.session.SessionScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.SettingsScreen
 import io.github.gonbei774.calisthenicsmemory.ui.train.PreviewScreen
 import io.github.gonbei774.calisthenicsmemory.ui.train.TrainScreen
