@@ -301,7 +301,7 @@ def one_arm(p):
     return f
 _STD = POSES["pushup-standard"]
 POSES.update({
-    "pushup-diamond": _STD, "pushup-archer": _STD, "pushup-one-arm-negative": (one_arm, "rep"), "pushup-one-arm": (one_arm, "rep"),
+    "pushup-diamond": _STD, "pushup-feet-elevated": _STD, "pushup-archer": _STD, "pushup-one-arm-negative": (one_arm, "rep"), "pushup-one-arm": (one_arm, "rep"),
     "pike-pushup": (pike(False), "rep"), "pike-pushup-elevated": (pike(True), "rep"),
     "wall-handstand-hold": (handstand(False), "hold"), "hspu-wall-negative": (handstand(True), "rep"), "hspu-wall": (handstand(True), "rep"),
     "pullup-full": (pullup_v(218, 262), "rep"), "pullup-chest-to-bar": (pullup_v(218, 274), "rep"), "muscle-up-bar": (pullup_v(218, 302), "rep"),

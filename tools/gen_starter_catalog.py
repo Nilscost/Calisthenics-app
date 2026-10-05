@@ -18,7 +18,7 @@ S_NG = "never-gymless-enamait"
 
 def rnd5(x): return int(5 * round(x / 5))
 
-def reps_tiers(targets, rec=(75, 75, 90, 90, 105), stretch=None):
+def reps_tiers(targets, rec=(60, 60, 60, 60, 60), stretch=None):
     tiers = []
     for i, t in enumerate(targets, 1):
         d = {"index": i, "target": {"type": "REPS", "value": t},
@@ -27,7 +27,7 @@ def reps_tiers(targets, rec=(75, 75, 90, 90, 105), stretch=None):
         tiers.append(d)
     return tiers
 
-def hold_tiers(targets, rec=(75, 75, 90, 90, 105), stretch=None):
+def hold_tiers(targets, rec=(60, 60, 60, 60, 60), stretch=None):
     tiers = []
     for i, t in enumerate(targets, 1):
         d = {"index": i, "target": {"type": "HOLD_SECONDS", "value": t},
@@ -134,7 +134,7 @@ strength("pullup-band-assisted", "Band-Assisted Pull-Up", "pullup", ["PULL_VERTI
          ["Loop a band over the bar and place a knee or foot in it.", "Hang with straight arms, shoulders pulled away from the ears.",
           "Pull until the chin clears the bar, then lower slowly with control.", "Use the lightest band that still allows clean reps."],
          ["Start from a controlled hang", "Chin over the bar", "Slow lowering"],
-         reps_tiers([3, 4, 5, 6, 8], rec=(90, 90, 105, 105, 120)), [S_CC, S_OG, S_YG], UP,
+         reps_tiers([3, 4, 5, 6, 8], rec=(60, 60, 60, 60, 60)), [S_CC, S_OG, S_YG], UP,
          eq=[{"needs": [need("pullup-bar"), need("resistance-band")]}], rank=20,
          cautions=(CAUTION_STRENGTH, "Check that the bar and band are secure before every set."))
 
@@ -195,9 +195,12 @@ def ex(id, name, fam, pat, area, kind, pos, steps, tiers, src, st, eq=NO_EQ, ran
              tiers, src, st, eq=eq, unilateral=uni, rank=rank, nxt=nxt, prereq=prereq, cautions=cautions)
 U, L, C = ["UPPER_BODY"], ["LOWER_BODY"], ["CORE"]
 # push (horizontal)
+ex("pushup-feet-elevated", "Feet-Elevated Push-Up", "pushup", "PUSH_HORIZONTAL", [ "UPPER_BODY", "CORE"], "REPS", "floor",
+   ["Feet on a stable chair or step, hands on the floor, body in one straight line.", "Lower the chest to the floor, elbows about 45 degrees from the body.", "Press to straight arms without sagging the hips."],
+   reps_tiers([4, 6, 8, 10, 12], stretch="stretch-chest-door"), [S_CC, S_OG, S_YG], UP, eq=[{"needs": [need("chair", suitability=["stable"])]}], rank=35, nxt=["pushup-diamond"], prereq={"allOf": [[vt("pushup-standard", 4)]]})
 ex("pushup-diamond", "Diamond Push-Up", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
    ["Plank position, hands together under the chest, thumbs and index fingers forming a diamond.", "Lower the chest to the hands, elbows close to the body.", "Press to full lockout."],
-   reps_tiers([4, 6, 8, 10, 12], stretch="stretch-chest-door"), [S_CC, S_YG], UP, rank=40, nxt=["pushup-archer"], prereq={"allOf": [[vt("pushup-standard", 4)]]})
+   reps_tiers([4, 6, 8, 10, 12], stretch="stretch-chest-door"), [S_CC, S_YG], UP, rank=40, nxt=["pushup-archer"], prereq={"allOf": [[vt("pushup-feet-elevated", 3)]]})
 ex("pushup-archer", "Archer Push-Up (per side)", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
    ["Wide hand position, hands turned slightly out.", "Lower toward one hand while the other arm stays straight.", "Press back up, alternate sides. Count each side."],
    reps_tiers([3, 4, 6, 8, 10], stretch="stretch-chest-door"), [S_CC, S_OG], UP, rank=50, nxt=["pushup-one-arm-negative"], prereq={"allOf": [[vt("pushup-diamond", 3)]]})
@@ -230,13 +233,13 @@ ex("hspu-wall", "Wall Handstand Push-Up", "hspu", "PUSH_VERTICAL", U, "REPS", "i
 # pull -> muscle-up
 ex("pullup-full", "Pull-Up", "pullup", "PULL_VERTICAL", U, "REPS", "hang",
    ["Hang from the bar, hands just wider than the shoulders.", "Pull until the chin clears the bar.", "Lower under control to straight arms."],
-   reps_tiers([1, 3, 5, 8, 10], rec=(90, 90, 105, 105, 120)), [S_CC, S_OG, S_YG], UP, eq=BAR, rank=30, nxt=["pullup-chest-to-bar"], prereq={"allOf": [[vt("pullup-band-assisted", 4)]]})
+   reps_tiers([1, 3, 5, 8, 10], rec=(60, 60, 60, 60, 60)), [S_CC, S_OG, S_YG], UP, eq=BAR, rank=30, nxt=["pullup-chest-to-bar"], prereq={"allOf": [[vt("pullup-band-assisted", 4)]]})
 ex("pullup-chest-to-bar", "Chest-to-Bar Pull-Up", "pullup", "PULL_VERTICAL", U, "REPS", "hang",
    ["Hang, then pull explosively but controlled so the chest reaches the bar.", "Lean back slightly at the top.", "Lower slowly."],
-   reps_tiers([1, 3, 5, 6, 8], rec=(90, 90, 105, 105, 120)), [S_OG, S_GB], UP, eq=BAR, rank=40, nxt=["muscle-up-bar"], prereq={"allOf": [[vt("pullup-full", 4)]]})
+   reps_tiers([1, 3, 5, 6, 8], rec=(60, 60, 60, 60, 60)), [S_OG, S_GB], UP, eq=BAR, rank=40, nxt=["muscle-up-bar"], prereq={"allOf": [[vt("pullup-full", 4)]]})
 ex("muscle-up-bar", "Bar Muscle-Up", "pullup", "PULL_VERTICAL", U, "REPS", "hang",
    ["False grip or strong overgrip, pull the bar to the lower chest.", "Transition the elbows over the bar quickly.", "Press to straight arms on top, then lower with control."],
-   reps_tiers([1, 2, 3, 4, 5], rec=(120, 120, 135, 135, 150)), [S_OG, S_GB], UP, eq=BAR, rank=50, prereq={"allOf": [[vt("pullup-chest-to-bar", 4)]]},
+   reps_tiers([1, 2, 3, 4, 5], rec=(60, 60, 60, 60, 60)), [S_OG, S_GB], UP, eq=BAR, rank=50, prereq={"allOf": [[vt("pullup-chest-to-bar", 4)]]},
    cautions=(CAUTION_STRENGTH, "Check the bar is secure; skill work, consider coaching."))
 # squat -> pistol
 ex("split-squat-bulgarian", "Bulgarian Split Squat (per side)", "squat", "LUNGE", L, "REPS", "standing",
@@ -305,7 +308,7 @@ ex("planche-adv-tuck", "Advanced Tuck Planche", "planche", "PUSH_HORIZONTAL", ["
 for pol in policies:
     if pol["variationId"] == "plank": pol["nextVariationIds"] = ["hollow-hold"]
     if pol["variationId"] == "pullup-band-assisted": pol["nextVariationIds"] = ["pullup-full"]
-    if pol["variationId"] == "pushup-standard": pol["nextVariationIds"] = ["pushup-diamond"]
+    if pol["variationId"] == "pushup-standard": pol["nextVariationIds"] = ["pushup-feet-elevated"]
     if pol["variationId"] == "split-squat": pol["nextVariationIds"] = ["split-squat-bulgarian"]
     if pol["variationId"] == "glute-bridge": pol["nextVariationIds"] = ["bridge-single-leg"]
 

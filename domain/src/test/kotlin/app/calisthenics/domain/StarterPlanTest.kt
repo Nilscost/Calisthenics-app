@@ -62,9 +62,10 @@ class ExplicitRoundsTest {
         assertEquals(6, lens[2].blocks.filter { it.type == BlockType.WORK && it.roundIndex == 1 }.map { it.slotId }.distinct().size)
     }
     @Test fun nullRoundsKeepsDurationBehaviour() { assertTrue(plan(null).plan.rounds in 1..MAX_ROUNDS) }
-    @Test fun threeRoundsTakeFortyToFortyFiveMinutes() {
-        val m = plan(3).plan.plannedDurationSeconds / 60.0
-        assertTrue("3 rounds = $m min", m in 40.0..45.0)
+    @Test fun fourRoundsOfTheStarterCircuitTakeAboutFortyFiveMinutes() {
+        // Owner 2026-10-05: ~1 min work + 1 min rest per exercise; 4 rounds of 5-6 exercises = ~45 min.
+        val m = plan(4).plan.plannedDurationSeconds / 60.0
+        assertTrue("4 rounds = $m min", m in 40.0..50.0)
     }
-    @Test fun printThreeRoundLength() { println("THREE_ROUNDS_SECONDS=" + plan(3).plan.plannedDurationSeconds) }
+    @Test fun printThreeRoundLength() { println("ROUNDS3=" + plan(3).plan.plannedDurationSeconds + " ROUNDS4=" + plan(4).plan.plannedDurationSeconds + " SLOTS=" + StarterRoutine.routine.slots.size) }
 }

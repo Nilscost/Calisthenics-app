@@ -33,7 +33,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(42, strength.size) // M6b: chains toward HSPU, muscle-up, pistol, L-sit, front lever, planche
+        assertEquals(43, strength.size) // M6b: chains toward HSPU, muscle-up, pistol, L-sit, front lever, planche
         assertEquals(7, stretches.size)
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
