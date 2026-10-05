@@ -30,7 +30,8 @@ object EquipmentOptions {
         EquipmentOption("pullup-bar"),
         EquipmentOption("high-bar"),          // hang with the feet clear of the floor (muscle-up, levers)
         EquipmentOption("low-bar"),           // low bar / sturdy table for inverted rows
-        EquipmentOption("resistance-band", strengthLabel = "assorted"),
+        // Ticking a band means you can anchor it (a door anchor, a post): row-band needs "stable-anchor".
+        EquipmentOption("resistance-band", strengthLabel = "assorted", suitability = setOf("stable-anchor")),
         EquipmentOption("kettlebell", weighted = true, defaultMassGrams = 12_000),
         EquipmentOption("weight", weighted = true, defaultMassGrams = 2_500, quantity = 2), // dumbbells, a pair
         EquipmentOption("chair", suitability = setOf("stable")),

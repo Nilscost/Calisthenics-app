@@ -18,7 +18,7 @@ object SeedProfiles {
             EquipmentItem("kettlebell", quantity = 1, massGrams = 12_000),
             EquipmentItem("weight", quantity = 2, massGrams = 2_500),
             EquipmentItem("mat"),
-            EquipmentItem("resistance-band", quantity = 1, strengthLabel = "assorted"),
+            EquipmentItem("resistance-band", quantity = 1, strengthLabel = "assorted", suitability = setOf("stable-anchor")),
         ),
         capabilities = setOf("floor-space", "wall"),
     )

@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.ui
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -44,7 +45,7 @@ class NavShellTest {
 
     @Test fun firstRunHidesTheTabBar() {
         launch(false)
-        rule.onNodeWithText("Your starting level").assertIsDisplayed()
+        rule.onNodeWithTag("onb_title").assertTextEquals("Welcome")
         rule.onNodeWithTag("bottom_bar").assertDoesNotExist()
     }
 

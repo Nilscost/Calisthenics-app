@@ -122,26 +122,7 @@ fun ProfileEditScreen(modifier: Modifier = Modifier, profileId: String?, onDone:
                 modifier = Modifier.fillMaxWidth().testTag("profile_name"),
             )
             Text(stringResource(R.string.profile_equipment), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = Spacing.s))
-            EquipmentOptions.all.forEach { opt ->
-                val on = opt.id in picked
-                Row(
-                    Modifier.fillMaxWidth().heightIn(min = Spacing.touch).clickable(role = Role.Checkbox) {
-                        picked = if (on) picked - opt.id else picked + opt.id
-                    }.testTag("eq_${opt.id}"),
-                    verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m),
-                ) {
-                    Checkbox(checked = on, onCheckedChange = null)
-                    EquipmentIcons.forId(opt.id)?.let { Icon(it, contentDescription = null, modifier = Modifier.size(24.dp)) }
-                    Text(stringResource(equipmentLabel(opt.id)), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                }
-                if (on && opt.weighted) {
-                    val grams = weights[opt.id] ?: opt.defaultMassGrams ?: 1000
-                    Row(Modifier.padding(start = 56.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text(stringResource(if (opt.id == "weight") R.string.eq_weight_each else R.string.eq_weight), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
-                        Stepper(grams / 500, { weights = weights + (opt.id to it * 500) }, 1..80, valueText = { "%.1f kg".format(it * 0.5) }, tag = "weight_${opt.id}")
-                    }
-                }
-            }
+            EquipmentChecklist(picked, { picked = it }, weights, { weights = it })
             if (existing != null && profiles.size > 1) {
                 OutlinedButton(onClick = { confirmDelete = true }, modifier = Modifier.fillMaxWidth().padding(top = Spacing.l).testTag("profile_delete")) {
                     Text(stringResource(R.string.profile_delete))
@@ -157,5 +138,30 @@ fun ProfileEditScreen(modifier: Modifier = Modifier, profileId: String?, onDone:
             confirmButton = { TextButton(onClick = { ProfileStore.delete(ctx, existing.id); confirmDelete = false; onDone() }) { Text(stringResource(R.string.profile_delete)) } },
             dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text(stringResource(R.string.cancel)) } },
         )
+    }
+}
+
+/** The equipment rows shared by the profile editor and the questionnaire. [weights] are grams for weighted rows. */
+@Composable
+fun EquipmentChecklist(picked: List<String>, onPicked: (List<String>) -> Unit, weights: Map<String, Int>, onWeights: (Map<String, Int>) -> Unit) {
+    EquipmentOptions.all.forEach { opt ->
+        val on = opt.id in picked
+        Row(
+            Modifier.fillMaxWidth().heightIn(min = Spacing.touch).clickable(role = Role.Checkbox) {
+                onPicked(if (on) picked - opt.id else picked + opt.id)
+            }.testTag("eq_${opt.id}"),
+            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m),
+        ) {
+            Checkbox(checked = on, onCheckedChange = null)
+            EquipmentIcons.forId(opt.id)?.let { Icon(it, contentDescription = null, modifier = Modifier.size(24.dp)) }
+            Text(stringResource(equipmentLabel(opt.id)), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+        }
+        if (on && opt.weighted) {
+            val grams = weights[opt.id] ?: opt.defaultMassGrams ?: 1000
+            Row(Modifier.padding(start = 56.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text(stringResource(if (opt.id == "weight") R.string.eq_weight_each else R.string.eq_weight), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                Stepper(grams / 500, { onWeights(weights + (opt.id to it * 500)) }, 1..80, valueText = { "%.1f kg".format(it * 0.5) }, tag = "weight_${opt.id}")
+            }
+        }
     }
 }

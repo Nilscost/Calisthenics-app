@@ -17,7 +17,7 @@ object ProfileStore {
 
     fun load(ctx: Context): List<EquipmentProfile> {
         val stored = try { p(ctx).getString("list", null)?.let { json.decodeFromString(ser, it) } } catch (_: Exception) { null }
-        if (!stored.isNullOrEmpty()) return stored
+        if (!stored.isNullOrEmpty()) return stored.map(::withBandAnchor).also { if (it != stored) save(ctx, it) }
         // First run (or unreadable): seeds. The old loose "high bar" toggle becomes a real item on Home.
         val seeds = if (ModeStore.takeLegacyHighBar(ctx))
             SeedProfiles.all.map { if (it.id == "home") it.copy(items = it.items + EquipmentItem("high-bar")) else it }
@@ -25,6 +25,11 @@ object ProfileStore {
         save(ctx, seeds)
         return seeds
     }
+
+    /** Profiles saved before U08 have a band without the anchor flag, which made the band row unusable. Ticking a band means it can be anchored. */
+    private fun withBandAnchor(p: EquipmentProfile) = p.copy(items = p.items.map {
+        if (it.equipmentId == "resistance-band" && "stable-anchor" !in it.suitability) it.copy(suitability = it.suitability + "stable-anchor") else it
+    })
 
     fun save(ctx: Context, list: List<EquipmentProfile>) {
         p(ctx).edit().putString("list", json.encodeToString(ser, list)).commit()

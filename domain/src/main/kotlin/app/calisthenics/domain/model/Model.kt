@@ -177,6 +177,21 @@ data class SkillEdge(
     val criterion: String = "",
 )
 
+/**
+ * One page of the questionnaire. [ladder] is the entry-level chain, easier to harder (never a hard skill, so "I don't know"
+ * cannot land on one). [anchorVariationId] is the owner's "Normal" (Q2): Normal = anchor at step 3, Easy/Hard = the
+ * neighbour on the ladder at step 3, or the anchor at step 1 / 5 when there is no neighbour.
+ */
+@Serializable
+data class OnboardingFamily(
+    val id: String,
+    val title: String,
+    val ladder: List<String>,
+    val anchorVariationId: String,
+    /** Only asked when the push-up answer is at least this exercise (shoulders). */
+    val requiresPushupAtLeast: String? = null,
+)
+
 @Serializable
 data class Catalog(
     val catalogVersion: Int,
@@ -186,6 +201,8 @@ data class Catalog(
     val skillEdges: List<SkillEdge> = emptyList(),
     val warmupTemplate: List<String> = emptyList(),
     val cooldownTemplate: List<String> = emptyList(),
+    /** U08: the families the first-run questionnaire asks about. Appended last with a default. */
+    val onboardingFamilies: List<OnboardingFamily> = emptyList(),
 ) {
     private val byId: Map<String, ExerciseVariation> by lazy { variations.associateBy { it.id } }
     private val policyById: Map<String, ProgressionPolicy> by lazy { policies.associateBy { it.id } }

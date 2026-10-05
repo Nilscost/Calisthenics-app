@@ -332,9 +332,20 @@ edges = [
      "relation": "RECOMMENDED_PREPARATION", "criterion": "A solid plank supports clean pulling."},
 ]
 
+# U08 / owner Q2: the questionnaire families. anchor = "Normal" (step 3). Ladders are entry level only: no hard skill is reachable via "I don't know".
+onboarding_families = [
+    {"id": "pushup", "title": "Push-up", "ladder": ["pushup-incline", "pushup-knee", "pushup-standard", "pushup-feet-elevated"], "anchorVariationId": "pushup-standard"},
+    {"id": "squat", "title": "Squat", "ladder": ["squat-air", "split-squat", "split-squat-bulgarian"], "anchorVariationId": "split-squat"},
+    {"id": "pull", "title": "Pull and row", "ladder": ["row-band", "pullup-band-assisted", "pullup-full"], "anchorVariationId": "pullup-band-assisted"},
+    {"id": "core", "title": "Core", "ladder": ["plank", "hollow-hold"], "anchorVariationId": "plank"},
+    {"id": "hinge", "title": "Hips and back", "ladder": ["glute-bridge", "bridge-single-leg"], "anchorVariationId": "glute-bridge"},
+    {"id": "shoulders", "title": "Shoulders", "ladder": ["pike-pushup", "pike-pushup-elevated"], "anchorVariationId": "pike-pushup", "requiresPushupAtLeast": "pushup-standard"},
+]
+
 catalog = {"catalogVersion": 1, "variations": variations, "policies": policies,
            "skillNodes": nodes, "skillEdges": edges,
-           "warmupTemplate": ["stretch-ankle-mobility"], "cooldownTemplate": ["stretch-back", "stretch-hamstring"]}
+           "warmupTemplate": ["stretch-ankle-mobility"], "cooldownTemplate": ["stretch-back", "stretch-hamstring"],
+           "onboardingFamilies": onboarding_families}
 
 OUT.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n")
 print(f"wrote {OUT}: {len(variations)} variations, {len(policies)} policies")

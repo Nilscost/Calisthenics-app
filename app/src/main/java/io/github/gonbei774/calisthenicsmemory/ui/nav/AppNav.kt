@@ -29,7 +29,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.BackupScreen2
 import io.github.gonbei774.calisthenicsmemory.ui.screens.HistoryScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.LibraryScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.LicensesScreen
-import io.github.gonbei774.calisthenicsmemory.ui.screens.OnboardingScreen
+import io.github.gonbei774.calisthenicsmemory.ui.onboarding.OnboardingScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.OnboardingStore
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileEditScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfilesScreen

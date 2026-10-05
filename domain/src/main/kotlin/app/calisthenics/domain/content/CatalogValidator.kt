@@ -36,6 +36,14 @@ fun validateCatalog(c: Catalog, production: Boolean = false): ValidationReport {
         .filterNot { KEBAB.matches(it) }.forEach { e += "id '$it' is not lowercase kebab-case" }
 
     val vIds = c.variations.map { it.id }.toSet()
+    for (o in c.onboardingFamilies) {
+        if (o.anchorVariationId !in o.ladder) e += "onboarding family '${o.id}': anchor '${o.anchorVariationId}' is not on its ladder"
+        for (id in o.ladder) {
+            val v = c.variation(id)
+            if (v == null) e += "onboarding family '${o.id}': unknown exercise '$id'"
+            else if (v.kind != Kind.REPS && v.kind != Kind.HOLD) e += "onboarding family '${o.id}': '$id' is not a strength exercise"
+        }
+    }
     val pById = c.policies.associateBy { it.id }
 
     for (v in c.variations) {
