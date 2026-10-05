@@ -60,7 +60,7 @@ Licences below are from the publishers' well-known licensing, NOT re-verified ar
 | org.jetbrains.compose.ui | ui, ui-geometry, ui-graphics, ui-text, ui-tooling-preview, ui-unit, ui-util | Apache-2.0 |
 | org.jetbrains.kotlin | kotlin-stdlib, kotlin-stdlib-common, kotlin-stdlib-jdk7, kotlin-stdlib-jdk8 | Apache-2.0 |
 | org.jetbrains.kotlinx | atomicfu, atomicfu-jvm, kotlinx-collections-immutable, kotlinx-collections-immutable-jvm, kotlinx-coroutines-android, ko | Apache-2.0 |
-| sh.calvin.reorderable | reorderable, reorderable-android | Apache-2.0 (to be confirmed from POM) |
+| sh.calvin.reorderable | reorderable, reorderable-android | Apache-2.0 (confirmed from the published POM, 3.0.0, 2026-10-05; compatible with GPL-3.0) |
 
 ## Build/test only (not shipped)
 JUnit 4 (EPL-1.0), Gradle, Kotlin compiler, KSP, Android SDK (see its own terms).
