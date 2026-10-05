@@ -37,7 +37,7 @@ class NavShellTest {
     @Test fun tabsSwitchScreens() {
         launch(true)
         rule.onNodeWithTag("tab_settings").performClick()
-        rule.onNodeWithText("Backup and restore").assertIsDisplayed()
+        rule.onNodeWithTag("settings_profiles").assertIsDisplayed()
         // The History tab reads Room; Robolectric's native SQLite is not available on linux-aarch64 (sandbox), so it is not opened here.
         rule.onNodeWithTag("tab_progress").performClick()
         rule.onNodeWithTag("tab_chip_push").assertIsDisplayed()

@@ -11,6 +11,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import io.github.gonbei774.calisthenicsmemory.R
 import androidx.compose.ui.unit.dp
 import app.calisthenics.domain.backup.*
 import app.calisthenics.domain.history.BlockRecord
@@ -45,27 +47,27 @@ fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
                 val payload = buildPayload()
                 val text = exportBackup(payload, "0.2.0-m5", System.currentTimeMillis())
                 ctx.contentResolver.openOutputStream(uri)?.use { it.write(text.toByteArray()) }
-                status = "Exported ${payload.sessions.size} session(s). The file is NOT encrypted; keep it private."
-            } catch (e: Exception) { status = "Export failed: ${e.message}" }
+                status = ctx.getString(R.string.backup_exported, payload.sessions.size)
+            } catch (e: Exception) { status = ctx.getString(R.string.backup_export_failed, e.message.orEmpty()) }
         }
     }
     val importer = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
         val text = try { ctx.contentResolver.openInputStream(uri)?.use { it.readBytes().take(20_000_000).toByteArray().decodeToString() } ?: "" } catch (e: Exception) { "" }
         when (val r = importBackup(text)) {
-            is ImportResult.Rejected -> { pending = null; status = "Not imported: ${r.reason} Nothing was changed." }
-            is ImportResult.Ok -> { pending = r.payload; status = "File is valid: ${r.payload.sessions.size} session(s). Confirm to restore." }
+            is ImportResult.Rejected -> { pending = null; status = ctx.getString(R.string.backup_not_imported, r.reason) }
+            is ImportResult.Ok -> { pending = r.payload; status = ctx.getString(R.string.backup_valid, r.payload.sessions.size) }
         }
     }
     val workoutActive = CheckpointStore.read(ctx) != null
-    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text("Backup") }, navigationIcon = { TextButton(onClick = onBack) { Text("Back") } }) }) { pad ->
+    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text(stringResource(R.string.settings_backup)) }, navigationIcon = { TextButton(onClick = onBack) { Text(stringResource(R.string.back)) } }) }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text("Backups are plain files you choose where to save. Demo clips ship inside the app and are not part of backups.")
-            Button(onClick = { exporter.launch("calisthenics-backup.json") }) { Text("Export backup") }
-            OutlinedButton(onClick = { importer.launch(arrayOf("application/json", "text/*", "*/*")) }) { Text("Check a backup file") }
+            Text(stringResource(R.string.backup_intro))
+            Button(onClick = { exporter.launch("calisthenics-backup.json") }) { Text(stringResource(R.string.backup_export)) }
+            OutlinedButton(onClick = { importer.launch(arrayOf("application/json", "text/*", "*/*")) }) { Text(stringResource(R.string.backup_check)) }
             pending?.let { p ->
-                Text("Restore replaces your settings and usual plan with the file's. Workout history from the file is ADDED to what you have; nothing existing is deleted or overwritten. A safety copy of your current data is saved first.", color = MaterialTheme.colorScheme.error)
-                if (workoutActive) Text("A workout is in progress or waiting for recovery. Finish or save it on the Today screen first.")
+                Text(stringResource(R.string.backup_restore_warning), color = MaterialTheme.colorScheme.error)
+                if (workoutActive) Text(stringResource(R.string.backup_workout_active))
                 Button(enabled = !workoutActive, onClick = {
                     scope.launch {
                         try {
@@ -86,10 +88,10 @@ fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
                             PrefsStore.save(ctx, p.preferences); p.routines.firstOrNull()?.let { RoutineStore.save(ctx, it) }
                             if (p.profiles.isNotEmpty()) ProfileStore.save(ctx, p.profiles)
                             pending = null
-                            status = "Restored. $added new workout(s) added; ${p.sessions.size - added} already on this phone. Safety copy: ${safety.name} (in the app's private storage)."
-                        } catch (e: Exception) { status = "Restore failed, nothing half-applied: ${e.message}" }
+                            status = ctx.getString(R.string.backup_restored, added, p.sessions.size - added, safety.name)
+                        } catch (e: Exception) { status = ctx.getString(R.string.backup_restore_failed, e.message.orEmpty()) }
                     }
-                }) { Text("Confirm restore") }
+                }) { Text(stringResource(R.string.backup_confirm)) }
             }
             if (status.isNotEmpty()) Text(status)
         }

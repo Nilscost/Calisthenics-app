@@ -26,7 +26,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.screens.BackupScreen2
-import io.github.gonbei774.calisthenicsmemory.ui.screens.HistoryScreen
+import io.github.gonbei774.calisthenicsmemory.data.AppTheme
+import io.github.gonbei774.calisthenicsmemory.ui.history.HistoryScreen
+import io.github.gonbei774.calisthenicsmemory.ui.history.SessionDetailScreen
+import io.github.gonbei774.calisthenicsmemory.ui.screens.PrivacyScreen
 import io.github.gonbei774.calisthenicsmemory.ui.progress.ProgressScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.LicensesScreen
 import io.github.gonbei774.calisthenicsmemory.ui.onboarding.OnboardingScreen
@@ -49,7 +52,7 @@ enum class Tab(val route: String, val labelRes: Int, val icon: ImageVector) {
 enum class Route(val route: String) {
     TRAIN("train"), PROGRESS("progress"), HISTORY("history"), SETTINGS("settings"),
     SESSION("session"), ONBOARDING("onboarding"), FIRST_RUN("first_run"), BACKUP("backup"), LICENSES("licenses"),
-    PROFILES("profiles"), PROFILE_EDIT("profile_edit"), PREVIEW("preview");
+    PROFILES("profiles"), PROFILE_EDIT("profile_edit"), PREVIEW("preview"), HISTORY_DETAIL("history_detail"), PRIVACY("privacy");
 
     val tab: Tab? get() = Tab.entries.firstOrNull { it.route == route }
 
@@ -60,13 +63,14 @@ enum class Route(val route: String) {
 }
 
 @Composable
-fun AppNav() {
+fun AppNav(theme: AppTheme = AppTheme.SYSTEM, onTheme: (AppTheme) -> Unit = {}) {
     val ctx = LocalContext.current
     var route by rememberSaveable {
         mutableStateOf((if (OnboardingStore.done(ctx)) Route.TRAIN else Route.FIRST_RUN).route)
     }
     // Where the profile editor returns to, and which profile it edits (null = new).
     var editId by rememberSaveable { mutableStateOf<String?>(null) }
+    var detailId by rememberSaveable { mutableStateOf("") }
     var editFrom by rememberSaveable { mutableStateOf(Route.TRAIN.route) }
     val current = Route.of(route) ?: Route.TRAIN
     fun go(r: Route) { route = r.route }
@@ -95,8 +99,10 @@ fun AppNav() {
                 onEditProfile = { id -> editId = id; editFrom = Route.TRAIN.route; go(Route.PROFILE_EDIT) })
             Route.PREVIEW -> { BackHandler { go(Route.TRAIN) }; PreviewScreen(m, onBack = { go(Route.TRAIN) }, onStarted = { go(Route.SESSION) }) }
             Route.PROGRESS -> ProgressScreen(m)
-            Route.HISTORY -> HistoryScreen(m)
-            Route.SETTINGS -> SettingsScreen(m, onLevels = { go(Route.ONBOARDING) }, onBackup = { go(Route.BACKUP) }, onLicenses = { go(Route.LICENSES) }, onProfiles = { go(Route.PROFILES) })
+            Route.HISTORY -> HistoryScreen(m, onOpen = { id -> detailId = id; go(Route.HISTORY_DETAIL) })
+            Route.HISTORY_DETAIL -> { BackHandler { go(Route.HISTORY) }; SessionDetailScreen(detailId, m, onBack = { go(Route.HISTORY) }) }
+            Route.PRIVACY -> { BackHandler { go(Route.SETTINGS) }; PrivacyScreen(m, onBack = { go(Route.SETTINGS) }) }
+            Route.SETTINGS -> SettingsScreen(m, onLevels = { go(Route.ONBOARDING) }, onBackup = { go(Route.BACKUP) }, onLicenses = { go(Route.LICENSES) }, onProfiles = { go(Route.PROFILES) }, onPrivacy = { go(Route.PRIVACY) }, theme = theme, onTheme = onTheme)
             Route.SESSION -> { BackHandler { go(Route.TRAIN) }; SessionScreen(m, onExit = { go(Route.TRAIN) }) }
             Route.FIRST_RUN -> OnboardingScreen(m, onBack = null, onDone = { OnboardingStore.setDone(ctx); go(Route.TRAIN) })
             Route.ONBOARDING -> { BackHandler { go(Route.SETTINGS) }; OnboardingScreen(m, onBack = { go(Route.SETTINGS) }, onDone = { OnboardingStore.setDone(ctx); go(Route.SETTINGS) }) }

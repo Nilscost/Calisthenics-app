@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import io.github.gonbei774.calisthenicsmemory.data.AppTheme
 import io.github.gonbei774.calisthenicsmemory.data.ThemePreferences
 import io.github.gonbei774.calisthenicsmemory.ui.nav.AppNav
@@ -26,13 +27,13 @@ class MainActivity : ComponentActivity() {
         val themePrefs = ThemePreferences(this)
         setContent {
             val isSystemDark by systemDarkMode
-            val theme = remember { themePrefs.getTheme() }
+            var theme by remember { mutableStateOf(themePrefs.getTheme()) }
             val dark = when (theme) {
                 AppTheme.SYSTEM -> isSystemDark
                 AppTheme.LIGHT -> false
                 AppTheme.DARK -> true
             }
-            CalisthenicsMemoryTheme(darkTheme = dark) { AppNav() }
+            CalisthenicsMemoryTheme(darkTheme = dark) { AppNav(theme) { theme = it; themePrefs.setTheme(it) } }
         }
     }
 

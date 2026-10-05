@@ -39,6 +39,8 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
 import io.github.gonbei774.calisthenicsmemory.ui.components.Stepper
+import app.calisthenics.domain.history.ratingFor
+import io.github.gonbei774.calisthenicsmemory.ui.history.RoomHistorySource
 import io.github.gonbei774.calisthenicsmemory.ui.screens.DemoClips
 import io.github.gonbei774.calisthenicsmemory.ui.screens.DemoPlayer
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProgressLoader
@@ -47,6 +49,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.train.formatClock
 import io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 /** The finished WORK block the logger belongs to: the last one before [st]'s current block, only while a recovery-type block runs. */
@@ -208,6 +211,7 @@ private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) 
     val minutes = (st.activeElapsedMs / 60_000L).toInt()
     var events by remember { mutableStateOf<List<String>>(emptyList()) }
     var editing by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
     // New level-ups appear once the session row is in Room; the progress is replayed from history, never stored.
     LaunchedEffect(Unit) {
         val deadline = System.currentTimeMillis() + 5000
@@ -226,8 +230,22 @@ private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) 
         }
         if (exercises.isNotEmpty()) {
             TextButton(onClick = { editing = !editing }, modifier = Modifier.testTag("end_edit")) { Text(stringResource(R.string.end_edit_logged)) }
-            if (editing) FeedbackForm(st.sessionId, exercises, waitSaved = true,
-                targets = st.plan.blocks.filter { it.type == BlockType.WORK && it.target != null && it.variationId != null }.associate { it.variationId!! to it.target!! })
+            if (editing) exercises.forEach { vid ->
+                val target = st.plan.blocks.firstOrNull { it.type == BlockType.WORK && it.variationId == vid }?.target
+                val log = st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid }.mapNotNull { st.logged[it.id] }
+                Card(Modifier.fillMaxWidth().testTag("end_fix_$vid"), shape = MaterialTheme.shapes.large) {
+                    Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                        Text(SessionBus.names[vid] ?: vid, style = MaterialTheme.typography.titleMedium)
+                        FeedbackEditor(target, log.mapNotNull { it.reps }.minOrNull(), log.any { it.tooHard }, log.any { it.discomfort }, tag = "end_$vid") { reps, tooHard, pain ->
+                            scope.launch {
+                                val deadline = System.currentTimeMillis() + 5000
+                                while (!SessionBus.saved && System.currentTimeMillis() < deadline) delay(100) // the session row must exist first
+                                RoomHistorySource(ctx).revise(st.sessionId, vid, ratingFor(reps, target, tooHard), pain, reps)
+                            }
+                        }
+                    }
+                }
+            }
         }
         Button(onClick = { SessionBus.clear(); onExit() }, Modifier.fillMaxWidth().height(56.dp).testTag("end_done"), shape = RoundedCornerShape(Radius.button)) { Text(stringResource(R.string.end_done)) }
     }
