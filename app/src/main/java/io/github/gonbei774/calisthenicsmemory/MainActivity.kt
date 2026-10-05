@@ -252,7 +252,7 @@ fun CalisthenicsMemoryApp(
                 )
                 is Screen.Today -> {
                     BackHandler { currentScreen = Screen.Home }
-                    io.github.gonbei774.calisthenicsmemory.ui.screens.TodayScreen(onBack = { currentScreen = Screen.Home }, onLevels = { currentScreen = Screen.Onboarding })
+                    io.github.gonbei774.calisthenicsmemory.ui.screens.TodayScreen(onBack = { currentScreen = Screen.Home }, onLevels = { currentScreen = Screen.Onboarding }, onStarted = { currentScreen = Screen.Session })
                 }
                 is Screen.Library -> {
                     BackHandler { currentScreen = Screen.Home }
@@ -261,6 +261,10 @@ fun CalisthenicsMemoryApp(
                 is Screen.Onboarding -> {
                     BackHandler { currentScreen = Screen.Today }
                     io.github.gonbei774.calisthenicsmemory.ui.screens.OnboardingScreen(onBack = { currentScreen = Screen.Today })
+                }
+                is Screen.Session -> {
+                    BackHandler { currentScreen = Screen.Home }
+                    io.github.gonbei774.calisthenicsmemory.ui.screens.SessionScreen(onExit = { currentScreen = Screen.Home })
                 }
                 is Screen.History -> {
                     BackHandler { currentScreen = Screen.Home }
@@ -470,6 +474,7 @@ sealed class Screen {
     object Library : Screen()
     object Onboarding : Screen()
     object History : Screen()
+    object Session : Screen()
     object Backup2 : Screen()
     object ToDo : Screen()
     object Create : Screen()
@@ -499,6 +504,7 @@ private val ScreenSaver = mapSaver(
                 Screen.Library -> put("type", "Library")
                 Screen.Onboarding -> put("type", "Onboarding")
                 Screen.History -> put("type", "History")
+                Screen.Session -> put("type", "Session")
                 Screen.Backup2 -> put("type", "Backup2")
                 Screen.ToDo -> put("type", "ToDo")
                 Screen.Create -> put("type", "Create")
@@ -549,6 +555,7 @@ private val ScreenSaver = mapSaver(
             "Library" -> Screen.Library
             "Onboarding" -> Screen.Onboarding
             "History" -> Screen.History
+            "Session" -> Screen.Session
             "Backup2" -> Screen.Backup2
             "ToDo" -> Screen.ToDo
             "Create" -> Screen.Create

@@ -1,5 +1,5 @@
 // T16 (first slice): Today / preview. Plans come from the pure-Kotlin domain planner and the bundled DRAFT catalog.
-// Start is disabled until the production foreground runtime (T15/M5) exists; nothing here fakes a workout.
+// Start hands the plan to the foreground service (M5).
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import androidx.compose.foundation.layout.*
@@ -23,7 +23,7 @@ private fun fmt(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit = {}) {
+fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit = {}) {
     val ctx = LocalContext.current
     val catalog = remember { ctx.assets.open("catalog.json").bufferedReader().use { parseCatalog(it.readText()) } }
     var routine by remember { mutableStateOf(RoutineStore.load(ctx)) }
@@ -95,7 +95,11 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit = {}) {
                         PrefsStore.save(ctx, app.calisthenics.domain.routine.rememberOnStart(saved,
                             SessionDraft.from(saved, routine).copy(durationSeconds = minutes * 60, stretchOn = stretch, profileId = profileId)))
                     }) { Text("Remember these settings") }
-                    Button(onClick = {}, enabled = false) { Text("Start (needs the G1 phone test first)") }
+                    Button(onClick = {
+                        val pj = kotlinx.serialization.json.Json { encodeDefaults = true }.encodeToString(app.calisthenics.domain.model.WorkoutPlan.serializer(), p)
+                        startWorkout(ctx, pj, java.util.UUID.randomUUID().toString(), true)
+                        onStarted()
+                    }) { Text("Start workout") }
                 }
             }
         }

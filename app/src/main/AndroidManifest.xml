@@ -35,6 +35,15 @@
         </activity>
 
         <service
+            android:name=".session.WorkoutSessionService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Hands-free workout timer with audio cues that must keep running with the screen locked (verified on S21, G1)." />
+        </service>
+
+        <service
             android:name=".service.WorkoutTimerService"
             android:foregroundServiceType="specialUse"
             android:exported="false">

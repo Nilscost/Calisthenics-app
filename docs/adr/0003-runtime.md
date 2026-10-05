@@ -125,3 +125,7 @@ state). See `spikes/android-session-runtime/README.md` for the full runbook.
   alarm batching under Doze makes per-second cue timing unreliable; the FGS
   + wakelock path is the documented mechanism for a continuously-running
   session.
+
+## G1 result (owner approved 2026-10-05)
+Galaxy S21, airplane mode, music (Spotify) playing, full 45:40 run: 219/219 cues fired, worst cue 17 ms late, total +3 ms; offline TTS 219/219. Evidence: `docs/evidence/g1/`.
+Accepted limit: Spotify did not lower its volume for a MAY_DUCK focus request (granted by Android), though cues were clearly audible over the music. The product must not promise ducking. Full-focus (pausing music per cue) was rejected as worse.

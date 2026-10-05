@@ -52,5 +52,7 @@ Added: T10/T11 planner (`planner/Planner.kt`, 30 tests), T14 session reducer (`s
 ### Still open
 Starter catalog (`content/starter/catalog.json`) in the new model; Android side (M0 fixes, Room, UI, service); G1 phone test.
 
-## Update 2026-10-04 (11): backup screen (T20 slice 1)
-- Export to a user-chosen file (SAF), checksummed. Import validates fully first; rejected files change nothing; confirm restores settings + usual plan ONLY. History-row restore, pre-import recovery copy and active-session guard are NOT built. Not device-tested.
+## Update 2026-10-05: G1 approved by owner; M5 first slice
+- G1 approved with the Spotify no-ducking limit accepted (ADR 0003 updated).
+- New `session/WorkoutSessionService` (foreground, service-owned monotonic timer driving the pure reducer; SoundPool + offline TTS; focus MAY_DUCK, refusal ignored; saves finished session to Room) and `SessionScreen` (pause/resume/skip/finish). Start on Today is enabled.
+- NOT built yet: mid-session checkpoint persistence/crash recovery (Persist effects ignored), feedback prompts after blocks, late feedback edits, reopening the live session from Home after leaving the app, audio-interruption pause, removing the spike/G1-test code. Not device-tested.
