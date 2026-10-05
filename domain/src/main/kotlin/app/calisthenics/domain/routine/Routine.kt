@@ -56,6 +56,8 @@ data class SessionDraft(
     val profileId: String,
     val swaps: Map<String, String> = emptyMap(), // slotId -> variationId, today only
     val goalId: String? = null,
+    /** Explicit round count; null = derive rounds from durationSeconds. */
+    val rounds: Int? = null,
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(

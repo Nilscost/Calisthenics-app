@@ -18,6 +18,8 @@ const val UNDERFILL_TOLERANCE_SECONDS = 60
 const val TRANSITION_SECONDS = 5
 /** NOT in the ADR: cap so a 90-minute request does not produce a 12-round circuit. Needs owner review at G2. */
 const val MAX_ROUNDS = 6
+/** Owner decision 2026-10-05: no minimum rounds; an explicit rounds setting may go up to this. */
+const val MAX_EXPLICIT_ROUNDS = 10
 /** NOT in the ADR: shortest stretch segment worth announcing. Needs owner review at G2. */
 const val MIN_STRETCH_SEGMENT_SECONDS = 10
 
@@ -99,15 +101,18 @@ private class Planner(val input: PlanInput) {
         }
 
         // 8–9. fit: keep all slots if a round count lands within tolerance; else drop optional slots from the end.
-        val budget = draft.durationSeconds
+        val fixedRounds = draft.rounds?.coerceIn(1, MAX_EXPLICIT_ROUNDS)
+        val budget = if (fixedRounds != null)
+            withTransitions(warm + rounds(chosen, fixedRounds) + cool).sumOf { it.durationSeconds }
+        else draft.durationSeconds
         val optionalIdx = chosen.indices.filter { chosen[it].slot.optional }
         data class Cand(val slots: List<Chosen>, val rounds: Int, val blocks: List<TimelineBlock>, val total: Int)
         val cands = mutableListOf<Cand>()
-        for (k in 0..optionalIdx.size) {
+        for (k in 0..(if (fixedRounds != null) 0 else optionalIdx.size)) {
             val dropped = optionalIdx.takeLast(k).toSet()
             val sl = chosen.filterIndexed { i, _ -> i !in dropped }
             var best: Cand? = null
-            for (r in 1..MAX_ROUNDS) {
+            for (r in (if (fixedRounds != null) fixedRounds..fixedRounds else 1..MAX_ROUNDS)) {
                 val b = withTransitions(warm + rounds(sl, r) + cool)
                 val t = b.sumOf { it.durationSeconds }
                 if (t <= budget) best = Cand(sl, r, b, t) else break

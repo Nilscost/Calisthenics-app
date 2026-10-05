@@ -30,6 +30,7 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
     var swaps by remember { mutableStateOf(emptyMap<String, String>()) }
     val saved = remember { PrefsStore.load(ctx) }
     var minutes by rememberSaveable { mutableIntStateOf(saved.defaultDurationSeconds / 60) }
+    var roundsSel by rememberSaveable { mutableIntStateOf(0) } // 0 = auto from minutes
     var stretch by rememberSaveable { mutableStateOf(saved.stretchOn) }
     var profileId by rememberSaveable { mutableStateOf(saved.selectedProfileId) }
     var focusNames by rememberSaveable { mutableStateOf(listOf("FULL_BODY")) }
@@ -38,9 +39,9 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
 
     var progress by remember { mutableStateOf(LevelStore.snapshot(catalog, LevelStore.load(ctx))) }
     LaunchedEffect(Unit) { progress = try { ProgressLoader.load(ctx, catalog) } catch (_: Exception) { progress } }
-    val result = remember(minutes, stretch, profileId, focusNames, progress, routine, swaps) {
+    val result = remember(minutes, roundsSel, stretch, profileId, focusNames, progress, routine, swaps) {
         val draft = SessionDraft.from(Preferences(defaultDurationSeconds = minutes * 60, stretchOn = stretch, selectedProfileId = profileId), routine)
-            .copy(focus = focus, swaps = swaps)
+            .copy(focus = focus, swaps = swaps, rounds = roundsSel.takeIf { it > 0 })
         generate(PlanInput("preview", System.currentTimeMillis(), 0, catalog, routine, draft, profile, progress = progress))
     }
     val names = remember(catalog) { catalog.variations.associate { it.id to it.name } }
@@ -48,6 +49,11 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
     Scaffold(topBar = { TopAppBar(title = { Text("Today's workout") }, navigationIcon = { TextButton(onClick = onBack) { Text("Back") } }) }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text("Length: $minutes min", style = MaterialTheme.typography.titleMedium)
+            Text("Rounds", style = MaterialTheme.typography.titleSmall)
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                (0..5).forEach { n -> FilterChip(selected = roundsSel == n, onClick = { roundsSel = n }, label = { Text(if (n == 0) "Auto" else "$n") }) }
+            }
+            if (roundsSel > 0) Text("Length follows from the rounds; the minutes slider is ignored.", style = MaterialTheme.typography.bodySmall)
             Slider(value = minutes.toFloat(), onValueChange = { minutes = (it / 5).toInt() * 5 }, valueRange = 10f..90f)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 SeedProfiles.all.forEach { p -> FilterChip(selected = profileId == p.id, onClick = { profileId = p.id }, label = { Text(p.name) }) }

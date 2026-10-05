@@ -48,3 +48,23 @@ class StarterPlanTest {
         }
     }
 }
+
+class ExplicitRoundsTest {
+    private val catalog = parseCatalog(File(System.getProperty("repo.root"), "content/starter/catalog.json").readText())
+    private fun plan(rounds: Int?) = generate(PlanInput("p", 0L, 0, catalog, StarterRoutine.routine,
+        SessionDraft.from(Preferences(), StarterRoutine.routine).copy(rounds = rounds), SeedProfiles.home)) as PlanResult.Ready
+
+    @Test fun explicitRoundsAreHonouredAndLengthFollows() {
+        val lens = (1..5).map { plan(it).plan }
+        for ((i, p) in lens.withIndex()) assertEquals(i + 1, p.rounds)
+        assertTrue(lens.zipWithNext().all { (a, b) -> b.plannedDurationSeconds > a.plannedDurationSeconds })
+        // keeps every slot (no optional slot silently dropped)
+        assertEquals(6, lens[2].blocks.filter { it.type == BlockType.WORK && it.roundIndex == 1 }.map { it.slotId }.distinct().size)
+    }
+    @Test fun nullRoundsKeepsDurationBehaviour() { assertTrue(plan(null).plan.rounds in 1..MAX_ROUNDS) }
+    @Test fun threeRoundsTakeFortyToFortyFiveMinutes() {
+        val m = plan(3).plan.plannedDurationSeconds / 60.0
+        assertTrue("3 rounds = $m min", m in 40.0..45.0)
+    }
+    @Test fun printThreeRoundLength() { println("THREE_ROUNDS_SECONDS=" + plan(3).plan.plannedDurationSeconds) }
+}

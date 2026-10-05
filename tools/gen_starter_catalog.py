@@ -18,20 +18,20 @@ S_NG = "never-gymless-enamait"
 
 def rnd5(x): return int(5 * round(x / 5))
 
-def reps_tiers(targets, rec=(30, 30, 40, 40, 45), stretch=None):
+def reps_tiers(targets, rec=(75, 75, 90, 90, 105), stretch=None):
     tiers = []
     for i, t in enumerate(targets, 1):
         d = {"index": i, "target": {"type": "REPS", "value": t},
-             "workWindowSeconds": max(30, rnd5(t * 4 + 12)), "minRecoverySeconds": rec[i - 1]}
+             "workWindowSeconds": max(30, rnd5(t * 6 + 15)), "minRecoverySeconds": rec[i - 1]}
         if stretch: d["earlyCompletionStretchId"] = stretch
         tiers.append(d)
     return tiers
 
-def hold_tiers(targets, rec=(30, 30, 40, 40, 45), stretch=None):
+def hold_tiers(targets, rec=(75, 75, 90, 90, 105), stretch=None):
     tiers = []
     for i, t in enumerate(targets, 1):
         d = {"index": i, "target": {"type": "HOLD_SECONDS", "value": t},
-             "workWindowSeconds": t + 15, "minRecoverySeconds": rec[i - 1]}
+             "workWindowSeconds": t + 25, "minRecoverySeconds": rec[i - 1]}
         if stretch: d["earlyCompletionStretchId"] = stretch
         tiers.append(d)
     return tiers
@@ -134,7 +134,7 @@ strength("pullup-band-assisted", "Band-Assisted Pull-Up", "pullup", ["PULL_VERTI
          ["Loop a band over the bar and place a knee or foot in it.", "Hang with straight arms, shoulders pulled away from the ears.",
           "Pull until the chin clears the bar, then lower slowly with control.", "Use the lightest band that still allows clean reps."],
          ["Start from a controlled hang", "Chin over the bar", "Slow lowering"],
-         reps_tiers([3, 4, 5, 6, 8], rec=(45, 45, 50, 50, 60)), [S_CC, S_OG, S_YG], UP,
+         reps_tiers([3, 4, 5, 6, 8], rec=(90, 90, 105, 105, 120)), [S_CC, S_OG, S_YG], UP,
          eq=[{"needs": [need("pullup-bar"), need("resistance-band")]}], rank=20,
          cautions=(CAUTION_STRENGTH, "Check that the bar and band are secure before every set."))
 

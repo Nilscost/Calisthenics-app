@@ -75,7 +75,3 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - Owner decisions: GPL-3.0 (LICENSE = GPLv3 text); Travel chair "stable"; audience = owner + a few friends, keep distributable; full history restore wanted; demo videos = DRAWN ANIMATIONS delivered as short video clips (owner will not film).
 - tools/gen_demo_clips.py renders 20 side-view stick-figure MP4 loops (480x360 H.264, ~590 KB total) into app/src/main/assets/demos/<variationId>.mp4. Shown in Library and on the live session screen (muted, looping, VideoView). Checked by eye on contact sheets: most read well; superman hold, band pull-up and cat-cow are the weakest. Artwork is original (generated), no third-party footage.
 - Not built: history restore, pre-import safety copy.
-
-## Update 2026-10-05 (5): history restore + current-level intake
-- Backup now carries feedback, progression events and achieved values. Restore = MERGE of history (new sessions added, existing never overwritten/deleted, one DB transaction), settings + usual plan replaced, safety copy written to app-private files/backups/ first, refused while a workout/recovery checkpoint exists. Not device-tested.
-- Onboarding: type reps (or seconds) you do in one comfortable set per exercise -> highest matching step (domain/intake/Intake.kt, IntakeTest). Rounds and added weight are NOT used; weighted variants are not credited. Exercises not in the catalog (e.g. weighted superman as reps, leg-and-torso V-up) have no ladder yet.
