@@ -197,6 +197,119 @@ POSES = {
     "stretch-shoulder": (shoulder_cross, "hold"), "stretch-ankle-mobility": (ankle_mobility, "rep"),
 }
 
+
+# ---------------------------------------------------------------- M6 poses (chains toward the hard skills)
+def pullup_v(top, bot):
+    def f(p):
+        s = rep(p); sy = lerp(top, bot, s); sx = 190
+        hip = (sx, sy - L_T)
+        return dict(hip=hip, a=90, arms=[("ik", (200, 280), (-1, 0))] * 2,
+                    legs=[("ik", (sx - 10, hip[1] - 82), (1, 0)), ("ik", (sx - 16, hip[1] - 80), (1, 0))], scene=[("bar", 200, 280)])
+    return f
+
+def pike(elev):
+    def f(p):
+        s = rep(p); hy = 112 if elev else 102
+        hip = (130, hy); a = lerp(-12 if elev else 0, -45 if elev else -35, s)
+        return dict(hip=hip, a=a, head_off=-20, arms=[("ik", (200, 44), (-1, 0))] * 2,
+                    legs=[("ik", (60 if elev else 70, 84 if elev else 44), (1, 0))] * 2,
+                    scene=[("rect", (35, 44, 80, 84), GRD)] if elev else [])
+    return f
+
+def handstand(move):
+    def f(p):
+        s = rep(p) if move else 0.04 * math.sin(2 * math.pi * p)
+        sy = lerp(104, 72, s) if move else 104 + 40 * s
+        sho = (200, sy); hip = (200, sy + L_T)
+        return dict(hip=hip, a=-90, head_off=0, arms=[("ik", (200, 44), (-1, 0))] * 2,
+                    legs=[("ik", (202, hip[1] + 84), (1, 0))] * 2, scene=[("rect", (214, 44, 220, 270), GRD)])
+    return f
+
+def bulgarian(p):
+    s = rep(p); hip = (192, lerp(130, 100, s))
+    return dict(hip=hip, a=90, arms=[("ik", (hip[0] + 8, hip[1] + 2), (-1, 0))] * 2,
+                legs=[("ik", (228, 44), (1, 0.4)), ("ik", (150, 84), (0, -1))], scene=[("rect", (135, 44, 165, 84), GRD)])
+
+def shrimp(p):
+    s = rep(p); hip = (lerp(205, 185, s), lerp(124, 70, s)); a = lerp(90, 62, s)
+    sho = sh(hip, a)
+    return dict(hip=hip, a=a, arms=[("ik", (sho[0] + 40, sho[1] - 25), (0, -1))] * 2,
+                legs=[("ik", (205, 44), (1, 0)), ("ik", (hip[0] - 38, lerp(hip[1] - 40, 52, s)), (-1, 0))])
+
+def pistol(assist):
+    def f(p):
+        s = rep(p); hip = (lerp(200, 168, s), lerp(124, 62, s)); a = lerp(90, 52, s)
+        sho = sh(hip, a)
+        hand = (240, lerp(150, 120, s)) if assist else (sho[0] + 60, sho[1] - 6)
+        return dict(hip=hip, a=a, head_off=lerp(0, 20, s), arms=[("ik", hand, (0, -1))] * 2,
+                    legs=[("ik", (200, 44), (1, 0)), ("ik", (hip[0] + 84, hip[1] + lerp(-6, 4, s)), (0, 1))],
+                    scene=[("rect", (238, 44, 244, 170), GRD)] if assist else [])
+    return f
+
+def bridge_single(p):
+    s = rep(p); S = (100, 48); beta = math.radians(lerp(0, 20, s))
+    hip = (S[0] + L_T * math.cos(beta), S[1] + L_T * math.sin(beta))
+    return dict(hip=hip, a=180 + math.degrees(beta), arms=[("ik", (S[0] + 60, 44), (0, 1))] * 2,
+                legs=[("ik", (232, 46), (0, 1)), ("ik", (hip[0] + 50, hip[1] + 62), (0, 1))])
+
+def bridge_back(p):
+    b = 3 * math.sin(2 * math.pi * p); hip = (180, 118 + b)
+    return dict(hip=hip, a=195, arms=[("ik", (110, 44), (0, 1))] * 2, legs=[("ik", (215, 44), (1, 0))] * 2)
+
+def hollow(p):
+    b = 2 * math.sin(2 * math.pi * p); hip = (200, 50); a = 172
+    sho = sh(hip, a)
+    return dict(hip=hip, a=a, arms=[("ik", (sho[0] - 62, sho[1] + 10 + b), (0, 1))] * 2, legs=[("ik", (284, 58 + b), (0, 1))] * 2)
+
+def lsit(high):
+    def f(p):
+        b = 1.5 * math.sin(2 * math.pi * p); hip = (160, 66 + b); a = 112 if high else 105
+        t = (hip[0] + (64 if high else 84), hip[1] + (54 if high else 0))
+        return dict(hip=hip, a=a, arms=[("fix", (152, 112), (152, 44))] * 2, legs=[("ik", t, (0, 1))] * 2)
+    return f
+
+def leg_raise(p):
+    s = rep(p); hip = (200, 48); t = math.radians(lerp(5, 90, s)); a = ank = (hip[0] + 84 * math.cos(t), hip[1] + 84 * math.sin(t))
+    return dict(hip=hip, a=180, arms=[("ik", (150, 46), (0, 1))] * 2, legs=[("ik", ank, (0, 1))] * 2)
+
+def v_up(p):
+    s = rep(p); hip = (200, 48); a = lerp(180, 118, s); t = math.radians(lerp(5, 55, s))
+    ank = (hip[0] + 84 * math.cos(t), hip[1] + 84 * math.sin(t)); sho = sh(hip, a)
+    hand = lerp2((sho[0] - 60, 50), (ank[0] - 12, ank[1] + 2), s)
+    return dict(hip=hip, a=a, arms=[("ik", hand, (0, 1))] * 2, legs=[("ik", ank, (0, 1))] * 2)
+
+def lever(kind):
+    def f(p):
+        b = 1.5 * math.sin(2 * math.pi * p); sho = (200, 218 + b); hip = (140, 218 + b)
+        legs = {"tuck": [("ik", (hip[0] + 10, hip[1] - 30), (1, 0))] * 2,
+                "adv": [("ik", (hip[0] - 35, hip[1] - 48), (1, 0))] * 2,
+                "straddle": [("ik", (hip[0] - 84, hip[1] + 2), (0, 1)), ("ik", (hip[0] - 80, hip[1] - 12), (0, 1))]}[kind]
+        return dict(hip=hip, a=0, arms=[("ik", (200, 280), (0, 1))] * 2, legs=legs, scene=[("bar", 200, 280)])
+    return f
+
+def planche(kind):
+    if kind == "lean": return plank_like((75, 44), 144, (206, 44), 104, 104)
+    def f(p):
+        b = 1.5 * math.sin(2 * math.pi * p); sho = (206, 104 + b); hip = (146, 104 + b)
+        legs = [("ik", (hip[0] - 10, hip[1] - 30), (1, 0))] * 2 if kind == "tuck" else [("ik", (hip[0] - 35, hip[1] - 45), (1, 0))] * 2
+        return dict(hip=hip, a=0, arms=[("ik", (206, 44), (-1, 0))] * 2, legs=legs)
+    return f
+
+_STD = POSES["pushup-standard"]
+POSES.update({
+    "pushup-diamond": _STD, "pushup-archer": _STD, "pushup-one-arm-negative": _STD, "pushup-one-arm": _STD,
+    "pike-pushup": (pike(False), "rep"), "pike-pushup-elevated": (pike(True), "rep"),
+    "wall-handstand-hold": (handstand(False), "hold"), "hspu-wall-negative": (handstand(True), "rep"), "hspu-wall": (handstand(True), "rep"),
+    "pullup-full": (pullup_v(218, 262), "rep"), "pullup-chest-to-bar": (pullup_v(218, 274), "rep"), "muscle-up-bar": (pullup_v(218, 302), "rep"),
+    "split-squat-bulgarian": (bulgarian, "rep"), "squat-shrimp": (shrimp, "rep"),
+    "squat-pistol-assisted": (pistol(True), "rep"), "squat-pistol": (pistol(False), "rep"),
+    "bridge-single-leg": (bridge_single, "rep"), "bridge-back": (bridge_back, "hold"),
+    "hollow-hold": (hollow, "hold"), "l-sit-floor": (lsit(False), "hold"), "v-sit-floor": (lsit(True), "hold"),
+    "leg-raise-lying": (leg_raise, "rep"), "v-up": (v_up, "rep"),
+    "front-lever-tuck": (lever("tuck"), "hold"), "front-lever-adv-tuck": (lever("adv"), "hold"), "front-lever-straddle": (lever("straddle"), "hold"),
+    "planche-lean": (planche("lean"), "hold"), "planche-tuck": (planche("tuck"), "hold"), "planche-adv-tuck": (planche("adv"), "hold"),
+})
+
 # ---------------------------------------------------------------- rendering
 _CAM = {}
 def camera(pose_fn):
