@@ -27,7 +27,7 @@ private fun fmt(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit = {}) {
+fun TodayScreen(modifier: Modifier = Modifier, onLevels: () -> Unit, onStarted: () -> Unit = {}) {
     val ctx = LocalContext.current
     val catalog = remember { ctx.assets.open("catalog.json").bufferedReader().use { parseCatalog(it.readText()) } }
     var baseRoutine by remember { mutableStateOf(RoutineStore.load(ctx)) }
@@ -46,7 +46,8 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
     val profile = if (highBar) baseProfile.copy(items = baseProfile.items + app.calisthenics.domain.model.EquipmentItem("high-bar")) else baseProfile
 
     var progress by remember { mutableStateOf(LevelStore.snapshot(catalog, LevelStore.load(ctx))) }
-    LaunchedEffect(Unit) { progress = try { ProgressLoader.load(ctx, catalog) } catch (_: Exception) { progress } }
+    // History unreadable (or no SQLite, as in JVM UI tests) -> keep self-assessed levels.
+    LaunchedEffect(Unit) { progress = try { ProgressLoader.load(ctx, catalog) } catch (_: Throwable) { progress } }
     val routine = remember(baseRoutine, goalId, progress) { Goals.routineFor(catalog, baseRoutine, goalId, progress) }
     var showTree by rememberSaveable { mutableStateOf(false) }
     val result = remember(minutes, roundsSel, timed, highBar, stretch, profileId, focusNames, progress, routine, swaps) {
@@ -56,7 +57,7 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
     }
     val names = remember(catalog) { catalog.variations.associate { it.id to it.name } }
 
-    Scaffold(topBar = { TopAppBar(title = { Text("Today's workout") }, navigationIcon = { TextButton(onClick = onBack) { Text("Back") } }) }) { pad ->
+    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text("Today's workout") }) }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text("Length: $minutes min", style = MaterialTheme.typography.titleMedium)
             Text("Goal (stays until you change it)", style = MaterialTheme.typography.titleSmall)

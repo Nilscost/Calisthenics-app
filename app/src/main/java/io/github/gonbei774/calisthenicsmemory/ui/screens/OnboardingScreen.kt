@@ -17,13 +17,13 @@ import androidx.compose.foundation.horizontalScroll
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OnboardingScreen(onBack: () -> Unit) {
+fun OnboardingScreen(modifier: Modifier = Modifier, onBack: (() -> Unit)?, onDone: () -> Unit) {
     val ctx = LocalContext.current
     val catalog = remember { ctx.assets.open("catalog.json").bufferedReader().use { parseCatalog(it.readText()) } }
     var levels by remember { mutableStateOf(LevelStore.load(ctx)) }
     var goalId by remember { mutableStateOf(GoalStore.load(ctx)) }
     val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
-    Scaffold(topBar = { TopAppBar(title = { Text("Your starting level") }, navigationIcon = { TextButton(onClick = onBack) { Text("Back") } }) }) { pad ->
+    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text("Your starting level") }, navigationIcon = { if (onBack != null) TextButton(onClick = onBack) { Text("Back") } }) }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("Your goal (stays until you change it)", style = MaterialTheme.typography.titleSmall)
             Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -52,7 +52,7 @@ fun OnboardingScreen(onBack: () -> Unit) {
                     }
                 }
             }
-            Button(onClick = { LevelStore.save(ctx, levels); onBack() }) { Text("Save") }
+            Button(onClick = { LevelStore.save(ctx, levels); onDone() }) { Text("Save") }
         }
     }
 }

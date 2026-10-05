@@ -95,6 +95,10 @@ android {
         buildConfig = true
     }
 
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
+
     // Lint: see app/lint.xml (auto-detected by AGP).
     // Only MissingTranslation is downgraded to warning — the ported app
     // inherits PARTIAL translation catalogs from upstream (ADR 0001):
@@ -155,6 +159,13 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("org.mockito:mockito-core:5.7.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
+    // U01: Compose UI tests on the JVM (Robolectric; android-all 14 / SDK 34 is the cached one, see @Config in the tests)
+    testImplementation("org.robolectric:robolectric:4.13")
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+    testImplementation("org.conscrypt:conscrypt-openjdk-uber:2.7.0") // 2.5.2 (Robolectric default) has no linux-aarch64 native
+    testImplementation("androidx.test:core:1.6.1")
+    testImplementation("androidx.test.espresso:espresso-core:3.6.1") // pins the cached version ui-test would otherwise ask 3.5.0 for
+    testImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")

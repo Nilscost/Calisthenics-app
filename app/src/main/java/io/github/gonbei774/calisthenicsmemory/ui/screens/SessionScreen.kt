@@ -24,13 +24,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SessionScreen(onExit: () -> Unit) {
+fun SessionScreen(modifier: Modifier = Modifier, onExit: () -> Unit) {
     val ctx = LocalContext.current
     val s by SessionBus.state.collectAsState()
     var nowTick by remember { mutableStateOf(android.os.SystemClock.elapsedRealtime()) }
     LaunchedEffect(Unit) { while (true) { nowTick = android.os.SystemClock.elapsedRealtime(); delay(250) } }
     fun cmd(a: String) { ctx.startService(Intent(ctx, WorkoutSessionService::class.java).setAction(a)) }
-    Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(24.dp), verticalArrangement = Arrangement.spacedBy(14.dp), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
+    Column(modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(24.dp), verticalArrangement = Arrangement.spacedBy(14.dp), horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
         val st = s
         if (st == null) { Text("Starting…"); return@Column }
         val b = st.currentBlock

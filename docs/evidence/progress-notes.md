@@ -75,3 +75,13 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - Owner decisions: GPL-3.0 (LICENSE = GPLv3 text); Travel chair "stable"; audience = owner + a few friends, keep distributable; full history restore wanted; demo videos = DRAWN ANIMATIONS delivered as short video clips (owner will not film).
 - tools/gen_demo_clips.py renders 20 side-view stick-figure MP4 loops (480x360 H.264, ~590 KB total) into app/src/main/assets/demos/<variationId>.mp4. Shown in Library and on the live session screen (muted, looping, VideoView). Checked by eye on contact sheets: most read well; superman hold, band pull-up and cat-cow are the weakest. Artwork is original (generated), no third-party footage.
 - Not built: history restore, pre-import safety copy.
+
+## UX overhaul (docs/10, handoff docs/11)
+
+### U01 — navigation shell (2026-10-05)
+- New `ui/nav/AppNav.kt`: bottom bar Train · Progress · History · Settings; full-screen routes Session, Onboarding (first run + redo), Backup, Licenses. `HomeScreen` and the old `Screen` sealed class are gone from navigation; `MainActivity` now only hosts the theme + `AppNav`. Train = old TodayScreen, Progress = old LibraryScreen, History = old HistoryScreen (all still the old content; redesigned in later tasks). Settings = new minimal `SettingsScreen` (questionnaire redo, backup, licences).
+- `OnboardingStore` (done flag; existing installs with saved levels count as done). Fresh install → old levels screen as "first run" until U08.
+- Tests: `NavShellTest` (Robolectric, SDK 34): 4 tabs exist, tabs switch, first run hides the bar, no old fork entries reachable. 363 unit tests total, 0 failures; lint + assembleDebug OK (exit 0).
+- Build changes: Robolectric 4.13, ui-test-junit4, androidx.test core, espresso-core 3.6.1 (pin; ui-test asks for uncached 3.5.0), conscrypt-openjdk-uber 2.7.0 (Robolectric's 2.5.2 has no linux-aarch64 native).
+- NOT done / limits: Robolectric's native SQLite does not run on linux-aarch64, so UI tests must not open screens that read Room (History tab). `TodayScreen` history load now catches `Throwable` so a missing SQLite never crashes the screen.
+- Choices not in the plan: androidx.navigation not cached → own route enum; tab icons are material-icons-core (PlayArrow, Star, DateRange, Settings), to be replaced by the U02 icon set; the language switcher (AppLanguage) was dropped from `MainActivity`/Application (English only, Q3) — data-module classes kept.

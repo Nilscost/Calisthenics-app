@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BackupScreen2(onBack: () -> Unit) {
+fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     var status by remember { mutableStateOf("") }
@@ -58,7 +58,7 @@ fun BackupScreen2(onBack: () -> Unit) {
         }
     }
     val workoutActive = CheckpointStore.read(ctx) != null
-    Scaffold(topBar = { TopAppBar(title = { Text("Backup") }, navigationIcon = { TextButton(onClick = onBack) { Text("Back") } }) }) { pad ->
+    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text("Backup") }, navigationIcon = { TextButton(onClick = onBack) { Text("Back") } }) }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text("Backups are plain files you choose where to save. Demo clips ship inside the app and are not part of backups.")
             Button(onClick = { exporter.launch("calisthenics-backup.json") }) { Text("Export backup") }

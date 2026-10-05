@@ -2,6 +2,13 @@
 <resources>
     <!-- App Name -->
     <string name="app_name">Calisthenics</string>
+    <string name="tab_train">Train</string>
+    <string name="tab_progress">Progress</string>
+    <string name="tab_history">History</string>
+    <string name="tab_settings">Settings</string>
+    <string name="settings_levels">Redo the starting questionnaire</string>
+    <string name="settings_backup">Backup and restore</string>
+    <string name="settings_licenses">Open-source licences</string>
     <!-- Common -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>

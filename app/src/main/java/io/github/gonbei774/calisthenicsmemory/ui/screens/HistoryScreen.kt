@@ -17,7 +17,7 @@ import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreen(onBack: () -> Unit) {
+fun HistoryScreen(modifier: Modifier = Modifier) {
     val ctx = LocalContext.current
     var sessions by remember { mutableStateOf<List<SessionRecord>?>(null) }
     LaunchedEffect(Unit) {
@@ -27,7 +27,7 @@ fun HistoryScreen(onBack: () -> Unit) {
                 dao.blockResults(s.sessionId).map { BlockRecord(it.blockId, null, "WORK", it.outcome, it.actualSeconds) })
         }
     }
-    Scaffold(topBar = { TopAppBar(title = { Text("History") }, navigationIcon = { TextButton(onClick = onBack) { Text("Back") } }) }) { pad ->
+    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text("History") }) }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             val list = sessions
             when {

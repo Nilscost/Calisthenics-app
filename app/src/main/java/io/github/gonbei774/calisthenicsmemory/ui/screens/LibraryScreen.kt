@@ -15,7 +15,7 @@ import app.calisthenics.domain.model.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LibraryScreen(onBack: () -> Unit) {
+fun LibraryScreen(modifier: Modifier = Modifier) {
     val ctx = LocalContext.current
     val catalog = remember { ctx.assets.open("catalog.json").bufferedReader().use { parseCatalog(it.readText()) } }
     val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
@@ -23,7 +23,7 @@ fun LibraryScreen(onBack: () -> Unit) {
     val names = catalog.variations.associate { it.id to it.name }
     var open by remember { mutableStateOf<String?>(null) }
 
-    Scaffold(topBar = { TopAppBar(title = { Text("Exercise library") }, navigationIcon = { TextButton(onClick = onBack) { Text("Back") } }) }) { pad ->
+    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text("Exercise library") }) }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text("All content is an unreviewed draft. Numbers are starting heuristics, not medical advice.", color = MaterialTheme.colorScheme.error)
             Text("Strength ladders (easier to harder)", style = MaterialTheme.typography.titleMedium)
