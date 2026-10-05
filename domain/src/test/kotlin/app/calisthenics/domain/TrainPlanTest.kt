@@ -63,4 +63,19 @@ class TrainPlanTest {
     @Test fun placeholderPlanIdMustBeReplacedByTheCaller() {
         assertEquals("draft", (plan() as PlanResult.Ready).plan.id)
     }
+
+    @Test fun swapOptionsAreSamePatternUsableAndStartWithTheCurrentOne() {
+        val routine = trainRoutine(catalog, StarterRoutine.routine, none, "general")
+        val opts = swapOptions(catalog, routine, "push", SeedProfiles.home, "pushup-incline")
+        assertEquals("pushup-incline", opts.first().id)
+        assertTrue(opts.size > 1)
+        val slot = routine.slots.first { it.id == "push" }
+        assertTrue(opts.all { slot.area in it.areas && slot.intent in it.patterns })
+        assertTrue(opts.all { app.calisthenics.domain.equipment.isAvailable(it, SeedProfiles.home) })
+        assertTrue(opts.none { it.kind == Kind.STRETCH })
+        // equipment decides: a bar-less profile never offers a pull-up for the pull slot
+        val noBar = SeedProfiles.travel
+        assertTrue(swapOptions(catalog, routine, "pull", noBar, "row-band").drop(1).none { "pullup" in it.id })
+        assertTrue(swapOptions(catalog, routine, "nope", SeedProfiles.home, "x").isEmpty())
+    }
 }

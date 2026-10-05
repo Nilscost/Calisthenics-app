@@ -81,4 +81,23 @@
     <string name="target_reps">%1$d reps</string>
     <string name="target_seconds">%1$d s</string>
     <string name="bullet_item">• %1$s</string>
+    <string name="target_per_side">%1$s per side</string>
+    <string name="pattern_push_horizontal">Push</string>
+    <string name="pattern_push_vertical">Overhead push</string>
+    <string name="pattern_pull_horizontal">Row</string>
+    <string name="pattern_pull_vertical">Pull-up</string>
+    <string name="pattern_squat">Squat</string>
+    <string name="pattern_lunge">Lunge</string>
+    <string name="pattern_hinge">Hinge</string>
+    <string name="pattern_core">Core</string>
+    <string name="pattern_other">Strength</string>
+    <string name="preview_draft_note">Exercise content is an unreviewed draft.</string>
+    <string name="preview_note">Check the notes before you start.</string>
+    <string name="preview_more_notes">%1$d notes</string>
+    <string name="preview_swap">Swap %1$s</string>
+    <string name="preview_timeline">Full timeline (%1$d blocks)</string>
+    <string name="preview_swap_title">Swap this exercise</string>
+    <string name="preview_swap_hint">Same movement, with your equipment. Applies to today only.</string>
+    <string name="preview_swap_current">Now</string>
+    <string name="preview_swap_keep">Keep for next time</string>
 </resources>
