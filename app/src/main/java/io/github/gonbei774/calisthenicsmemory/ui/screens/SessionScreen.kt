@@ -13,6 +13,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import app.calisthenics.domain.model.BlockType
 import app.calisthenics.domain.model.TargetType
 import app.calisthenics.domain.session.Phase
@@ -46,7 +48,7 @@ fun SessionScreen(onExit: () -> Unit) {
             b.target?.let { Text(if (it.type == TargetType.REPS) "${it.value} reps" else "${it.value}s hold", style = MaterialTheme.typography.titleLarge) }
             b.variationId?.let { v -> DemoClips.file(ctx, v)?.let { DemoPlayer(it) } }
             val rem = (st.remainingAt(nowTick) + 999) / 1000
-            Text("%d:%02d".format(rem / 60, rem % 60), fontSize = 72.sp)
+            Text("%d:%02d".format(rem / 60, rem % 60), fontSize = 72.sp, modifier = Modifier.semantics { contentDescription = "$name, ${rem / 60} minutes ${rem % 60} seconds remaining" })
             st.plan.blocks.getOrNull(st.blockIndex + 1)?.let { n ->
                 Text("Next: " + (n.variationId?.let { SessionBus.names[it] ?: it } ?: "Rest"), style = MaterialTheme.typography.bodyMedium)
             }

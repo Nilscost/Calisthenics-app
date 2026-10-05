@@ -11,6 +11,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import java.io.File
 
 object DemoClips {
@@ -27,7 +29,7 @@ object DemoClips {
 
 @Composable
 fun DemoPlayer(file: File) {
-    AndroidView(modifier = Modifier.fillMaxWidth().height(220.dp), factory = { c ->
+    AndroidView(modifier = Modifier.fillMaxWidth().height(220.dp).semantics { contentDescription = "Looping demonstration animation of the exercise" }, factory = { c ->
         VideoView(c).apply {
             setVideoPath(file.absolutePath)
             setMediaController(MediaController(c).also { it.setAnchorView(this) })
