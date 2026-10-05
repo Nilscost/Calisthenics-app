@@ -70,3 +70,8 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - G1 spike service, G1 test screen, androidTest spike and debug manifest REMOVED (evidence kept in docs/evidence/g1).
 - Verified: unit tests, lint, assembleDebug, compileDebugAndroidTestKotlin. NOT device-tested. No unit test yet for ProgressLoader (needs Room); call detection by audio mode is unverified on the S21.
 - Videos: none exist. No player, no media, no hosting (T21 blocked on owner decision).
+
+## Update 2026-10-05 (4): demo clips, licence, chair
+- Owner decisions: GPL-3.0 (LICENSE = GPLv3 text); Travel chair "stable"; audience = owner + a few friends, keep distributable; full history restore wanted; demo videos = DRAWN ANIMATIONS delivered as short video clips (owner will not film).
+- tools/gen_demo_clips.py renders 20 side-view stick-figure MP4 loops (480x360 H.264, ~590 KB total) into app/src/main/assets/demos/<variationId>.mp4. Shown in Library and on the live session screen (muted, looping, VideoView). Checked by eye on contact sheets: most read well; superman hold, band pull-up and cat-cow are the weakest. Artwork is original (generated), no third-party footage.
+- Not built: history restore, pre-import safety copy.

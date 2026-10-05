@@ -62,7 +62,9 @@ private fun Entry(v: ExerciseVariation, catalog: Catalog, expanded: Boolean, tog
                 }
                 Text("Needs: " + v.equipmentAlternatives.joinToString(" or ") { set -> if (set.needs.isEmpty()) "no equipment" else set.needs.joinToString(" + ") { it.equipmentId } })
                 if (v.sourceIds.isNotEmpty()) Text("Ladder order from: ${v.sourceIds.joinToString()}")
-                Text("Status: ${v.reviewState.name.lowercase()} (demo video: none yet)")
+                val clip = androidx.compose.ui.platform.LocalContext.current.let { DemoClips.file(it, v.id) }
+                if (clip != null) DemoPlayer(clip) else Text("No demo clip for this one")
+                Text("Status: ${v.reviewState.name.lowercase()}")
             }
         }
     }

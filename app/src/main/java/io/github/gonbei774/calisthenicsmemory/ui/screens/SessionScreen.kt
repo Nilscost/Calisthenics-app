@@ -44,6 +44,7 @@ fun SessionScreen(onExit: () -> Unit) {
             Text("Block ${st.blockIndex + 1} of ${st.plan.blocks.size}", style = MaterialTheme.typography.labelLarge)
             Text(name, style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center)
             b.target?.let { Text(if (it.type == TargetType.REPS) "${it.value} reps" else "${it.value}s hold", style = MaterialTheme.typography.titleLarge) }
+            b.variationId?.let { v -> DemoClips.file(ctx, v)?.let { DemoPlayer(it) } }
             val rem = (st.remainingAt(nowTick) + 999) / 1000
             Text("%d:%02d".format(rem / 60, rem % 60), fontSize = 72.sp)
             st.plan.blocks.getOrNull(st.blockIndex + 1)?.let { n ->

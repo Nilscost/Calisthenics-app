@@ -54,7 +54,7 @@ fun BackupScreen2(onBack: () -> Unit) {
     }
     Scaffold(topBar = { TopAppBar(title = { Text("Backup") }, navigationIcon = { TextButton(onClick = onBack) { Text("Back") } }) }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text("Backups are plain files you choose where to save. Demo videos are not included.")
+            Text("Backups are plain files you choose where to save. Demo clips ship inside the app and are not part of backups.")
             Button(onClick = { exporter.launch("calisthenics-backup.json") }) { Text("Export backup") }
             OutlinedButton(onClick = { importer.launch(arrayOf("application/json", "text/*", "*/*")) }) { Text("Check a backup file") }
             pending?.let { p ->
