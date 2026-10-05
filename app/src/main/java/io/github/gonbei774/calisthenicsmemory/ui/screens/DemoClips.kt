@@ -29,7 +29,7 @@ object DemoClips {
 
 @Composable
 fun DemoPlayer(file: File) {
-    AndroidView(modifier = Modifier.fillMaxWidth().height(220.dp).semantics { contentDescription = "Looping demonstration animation of the exercise" }, factory = { c ->
+    AndroidView(modifier = Modifier.fillMaxWidth().heightIn(min = 180.dp, max = 260.dp).aspectRatio(16f / 10f).semantics { contentDescription = "Looping demonstration animation of the exercise" }, factory = { c ->
         VideoView(c).apply {
             setVideoPath(file.absolutePath)
             setMediaController(MediaController(c).also { it.setAnchorView(this) })
