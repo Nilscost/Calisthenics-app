@@ -45,7 +45,7 @@ object Goals {
     private fun met(vt: VariationTier, p: ProgressSnapshot) =
         p.variations[vt.variationId]?.let { vt.tier in it.achievedTiers || it.tier > vt.tier } ?: false
 
-    private fun unmet(c: Catalog, v: String, p: ProgressSnapshot): List<VariationTier> =
+    fun unmet(c: Catalog, v: String, p: ProgressSnapshot): List<VariationTier> =
         (c.policyForVariation(v)?.prerequisiteRule?.allOf ?: emptyList()).mapNotNull { group ->
             val preds = group.mapNotNull { it.variationTierMet }
             if (preds.isEmpty() || preds.any { met(it, p) }) null else preds.first()

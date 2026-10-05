@@ -65,11 +65,7 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
                 if (g.entryVariationId != null) {
                     OutlinedButton(onClick = { showTree = !showTree }) { Text(if (showTree) "Hide skill tree" else "Show skill tree") }
                     if (showTree) {
-                        val nm = catalog.variations.associate { it.id to it.name }
-                        Goals.treeStates(catalog, g, progress).forEach { (v, st) ->
-                            val missing = catalog.variation(v)?.let { vv -> if (isAvailable(vv, profile)) "" else " – needs equipment: ${missingFor(vv, profile)}" } ?: ""
-                            Text("${when (st) { NodeState.MASTERED -> "★"; NodeState.AVAILABLE -> "▶"; NodeState.LOCKED -> "🔒" }} ${nm[v] ?: v}$missing")
-                        }
+                        SkillTree(catalog, g, progress, profile)
                     }
                 }
             }
