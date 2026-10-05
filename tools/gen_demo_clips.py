@@ -253,18 +253,18 @@ def bridge_single(p):
                 legs=[("ik", (232, 46), (0, 1)), ("ik", (hip[0] + 50, hip[1] + 62), (0, 1))])
 
 def bridge_back(p):
-    b = 3 * math.sin(2 * math.pi * p); hip = (180, 118 + b)
-    return dict(hip=hip, a=195, arms=[("ik", (110, 44), (0, 1))] * 2, legs=[("ik", (215, 44), (1, 0))] * 2)
+    b = 3 * math.sin(2 * math.pi * p); hip = (170, 128 + b)
+    return dict(hip=hip, a=235, arms=[("ik", (95, 44), (0, 1))] * 2, legs=[("ik", (225, 44), (1, 0))] * 2)
 
 def hollow(p):
-    b = 2 * math.sin(2 * math.pi * p); hip = (200, 50); a = 172
+    b = 2 * math.sin(2 * math.pi * p); hip = (200, 52); a = 160
     sho = sh(hip, a)
-    return dict(hip=hip, a=a, arms=[("ik", (sho[0] - 62, sho[1] + 10 + b), (0, 1))] * 2, legs=[("ik", (284, 58 + b), (0, 1))] * 2)
+    return dict(hip=hip, a=a, arms=[("ik", (sho[0] - 62, sho[1] + 10 + b), (0, 1))] * 2, legs=[("ik", (282, 84 + b), (0, 1))] * 2)
 
 def lsit(high):
     def f(p):
-        b = 1.5 * math.sin(2 * math.pi * p); hip = (160, 66 + b); a = 112 if high else 105
-        t = (hip[0] + (64 if high else 84), hip[1] + (54 if high else 0))
+        b = 1.5 * math.sin(2 * math.pi * p); hip = (160, 66 + b); a = 128 if high else 105
+        t = (hip[0] + (50 if high else 84), hip[1] + (74 if high else 0))
         return dict(hip=hip, a=a, arms=[("fix", (152, 112), (152, 44))] * 2, legs=[("ik", t, (0, 1))] * 2)
     return f
 
