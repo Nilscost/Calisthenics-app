@@ -1,6 +1,6 @@
 # 10 — UX/UI overhaul plan (owner feedback 2026-10-05)
 
-Status: **APPROVED TO START (owner answers 2026-10-05 in §2). U09 new chains still need the owner's OK on the §4.1 list.**
+Status: **APPROVED TO START (owner answers 2026-10-05 in §2). Owner OK on the §4.1 chains given in chat 2026-10-05, "OK for the moment" (provisional; draft content, may be changed).**
 Implementer: Sonnet (or any model). Read this whole file, then `docs/07-decisions-and-blockers.md`, then inspect the repo. Do not rely on chat history.
 
 ---
@@ -137,7 +137,7 @@ Single screen, no scrolling on a 6.2" phone at default font size:
 
 ## 4. Content changes
 
-### 4.1 New progressions (F15) — draft, flagged unreviewed
+### 4.1 New progressions (F15) — draft, flagged unreviewed (owner OK 2026-10-05, provisional)
 | Family | Chain (easier → harder) | Equipment |
 |---|---|---|
 | Row / horizontal pull | band row → inverted row bent knees → inverted row straight legs → feet-elevated inverted row → archer row | band; then low bar or sturdy table |
