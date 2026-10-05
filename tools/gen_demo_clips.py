@@ -282,7 +282,7 @@ def lever(kind):
     def f(p):
         b = 1.5 * math.sin(2 * math.pi * p); sho = (200, 218 + b); hip = (140, 218 + b)
         legs = {"tuck": [("ik", (hip[0] + 10, hip[1] - 30), (1, 0))] * 2,
-                "adv": [("ik", (hip[0] - 35, hip[1] - 48), (1, 0))] * 2,
+                "adv": [("ik", (hip[0] - 40, hip[1] - 8), (1, 0.3))] * 2,
                 "straddle": [("ik", (hip[0] - 84, hip[1] + 2), (0, 1)), ("ik", (hip[0] - 80, hip[1] - 12), (0, 1))]}[kind]
         return dict(hip=hip, a=0, arms=[("ik", (200, 280), (0, 1))] * 2, legs=legs, scene=[("bar", 200, 280)])
     return f
@@ -290,14 +290,18 @@ def lever(kind):
 def planche(kind):
     if kind == "lean": return plank_like((75, 44), 144, (206, 44), 104, 104)
     def f(p):
-        b = 1.5 * math.sin(2 * math.pi * p); sho = (206, 104 + b); hip = (146, 104 + b)
-        legs = [("ik", (hip[0] - 10, hip[1] - 30), (1, 0))] * 2 if kind == "tuck" else [("ik", (hip[0] - 35, hip[1] - 45), (1, 0))] * 2
+        b = 1.5 * math.sin(2 * math.pi * p); sho = (206, 120 + b); hip = (146, 120 + b)
+        legs = [("ik", (hip[0] - 22, hip[1] - 6), (1, 0.2))] * 2 if kind == "tuck" else [("ik", (hip[0] - 50, hip[1] - 10), (1, 0.2))] * 2
         return dict(hip=hip, a=0, arms=[("ik", (206, 44), (-1, 0))] * 2, legs=legs)
     return f
 
+def one_arm(p):
+    f = plank_like((95, 46), 144, (232, 44), 104, 64)(p)
+    f["arms"] = [f["arms"][0], ("fix", (150, f["hip"][1] + 14), (110, f["hip"][1] + 10))]
+    return f
 _STD = POSES["pushup-standard"]
 POSES.update({
-    "pushup-diamond": _STD, "pushup-archer": _STD, "pushup-one-arm-negative": _STD, "pushup-one-arm": _STD,
+    "pushup-diamond": _STD, "pushup-archer": _STD, "pushup-one-arm-negative": (one_arm, "rep"), "pushup-one-arm": (one_arm, "rep"),
     "pike-pushup": (pike(False), "rep"), "pike-pushup-elevated": (pike(True), "rep"),
     "wall-handstand-hold": (handstand(False), "hold"), "hspu-wall-negative": (handstand(True), "rep"), "hspu-wall": (handstand(True), "rep"),
     "pullup-full": (pullup_v(218, 262), "rep"), "pullup-chest-to-bar": (pullup_v(218, 274), "rep"), "muscle-up-bar": (pullup_v(218, 302), "rep"),
