@@ -62,3 +62,11 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - Today offers "Continue it (paused)" / "Save what was done and end" for an unfinished checkpoint; recovery uses reducer ProcessRecovered + RecoveryChoice (old deadlines never trusted).
 - End screen: optional per-exercise rating (Too hard / As planned / Easy) + Discomfort; each tap adds a new feedback revision; untouched = assumed met.
 - Verified: unit tests (CheckpointTest round-trip + recovery), lint, assembleDebug. NOT tested: real process kill on the phone; feedback revisions are stored but do not yet feed the progression engine at the next plan; late edit from History not built.
+
+## Update 2026-10-05 (3): M5 slice 3 — feedback drives progression, cleanup
+- ProgressLoader replays Room history (sessions, block results, latest feedback revision) + self-assessed levels through ProgressionEngine; Today plans from it.
+- History: tap a past workout to correct feedback (new revision; progress recomputes on next open).
+- Auto-pause when a phone call/ringtone/communication audio mode is detected (AudioInterrupted).
+- G1 spike service, G1 test screen, androidTest spike and debug manifest REMOVED (evidence kept in docs/evidence/g1).
+- Verified: unit tests, lint, assembleDebug, compileDebugAndroidTestKotlin. NOT device-tested. No unit test yet for ProgressLoader (needs Room); call detection by audio mode is unverified on the S21.
+- Videos: none exist. No player, no media, no hosting (T21 blocked on owner decision).

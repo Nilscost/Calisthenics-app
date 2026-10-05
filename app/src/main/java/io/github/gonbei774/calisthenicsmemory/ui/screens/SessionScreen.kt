@@ -35,7 +35,7 @@ fun SessionScreen(onExit: () -> Unit) {
         if (st.isTerminal) {
             Text(if (st.phase == Phase.COMPLETED) "Workout complete" else "Workout finished early", style = MaterialTheme.typography.headlineMedium)
             Text("Saved to your history (blocks done: ${st.executions.values.count { it.name == "COMPLETED" }}).")
-            FeedbackForm(st)
+            FeedbackForm(st.sessionId, st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null && st.executions[it.id]?.name == "COMPLETED" }.mapNotNull { it.variationId }.distinct(), waitSaved = true)
             Button(onClick = { SessionBus.clear(); onExit() }) { Text("Done") }
             return@Column
         }
@@ -70,20 +70,18 @@ fun startWorkout(ctx: Context, planJson: String, sessionId: String, speak: Boole
 
 /** Optional feedback per exercise. Untouched rows stay "assumed met" (no row written). Each tap adds a new revision. */
 @Composable
-private fun FeedbackForm(st: app.calisthenics.domain.session.SessionState) {
+fun FeedbackForm(sessionId: String, vids: List<String>, waitSaved: Boolean) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
-    val vids = st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null && st.executions[it.id]?.name == "COMPLETED" }
-        .mapNotNull { it.variationId }.distinct()
     if (vids.isEmpty()) return
     var rating by remember { mutableStateOf(mapOf<String, String>()) }
     var pain by remember { mutableStateOf(setOf<String>()) }
     fun save(v: String, r: String, d: Boolean) {
         scope.launch {
             val deadline = System.currentTimeMillis() + 5000
-            while (!SessionBus.saved && System.currentTimeMillis() < deadline) delay(100)
+            while (waitSaved && !SessionBus.saved && System.currentTimeMillis() < deadline) delay(100)
             io.github.gonbei774.calisthenicsmemory.data.AppDatabase.getDatabase(ctx).historyDao()
-                .reviseFeedback(st.sessionId, v, r, d, false, System.currentTimeMillis())
+                .reviseFeedback(sessionId, v, r, d, false, System.currentTimeMillis())
         }
     }
     Text("How did it go? (optional — skipping counts as met)", style = MaterialTheme.typography.titleSmall)

@@ -138,7 +138,12 @@ class WorkoutSessionService : Service() {
                 updateNotification(restored)
                 if (restored.isTerminal) finish(restored)
             }
-            exec!!.scheduleWithFixedDelay({ send(SessionEvent.Tick(now())) }, TICK_MS, TICK_MS, TimeUnit.MILLISECONDS)
+            exec!!.scheduleWithFixedDelay({
+                val mode = am?.mode
+                val inCall = mode == AudioManager.MODE_IN_CALL || mode == AudioManager.MODE_IN_COMMUNICATION || mode == AudioManager.MODE_RINGTONE
+                if (inCall && state?.phase == Phase.RUNNING) send(SessionEvent.AudioInterrupted(now()))
+                send(SessionEvent.Tick(now()))
+            }, TICK_MS, TICK_MS, TimeUnit.MILLISECONDS)
         }
     }
 

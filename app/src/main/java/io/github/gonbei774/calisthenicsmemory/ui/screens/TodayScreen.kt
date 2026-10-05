@@ -36,7 +36,8 @@ fun TodayScreen(onBack: () -> Unit, onLevels: () -> Unit, onStarted: () -> Unit 
     val focus = focusNames.map { StrengthFocus.valueOf(it) }.toSet()
     val profile = SeedProfiles.all.first { it.id == profileId }
 
-    val progress = remember { LevelStore.snapshot(catalog, LevelStore.load(ctx)) }
+    var progress by remember { mutableStateOf(LevelStore.snapshot(catalog, LevelStore.load(ctx))) }
+    LaunchedEffect(Unit) { progress = try { ProgressLoader.load(ctx, catalog) } catch (_: Exception) { progress } }
     val result = remember(minutes, stretch, profileId, focusNames, progress, routine, swaps) {
         val draft = SessionDraft.from(Preferences(defaultDurationSeconds = minutes * 60, stretchOn = stretch, selectedProfileId = profileId), routine)
             .copy(focus = focus, swaps = swaps)

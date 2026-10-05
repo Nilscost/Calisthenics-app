@@ -35,6 +35,25 @@ fun HistoryScreen(onBack: () -> Unit) {
                 list.isEmpty() -> Text("No finished workouts yet. Missed weeks are never penalised.")
                 else -> {
                     val zone = ZoneId.systemDefault()
+                    Text("Past workouts (tap to correct feedback — it adds a new revision and updates progress)", style = MaterialTheme.typography.titleSmall)
+                    list.forEach { sr ->
+                        var open by remember { mutableStateOf(false) }
+                        var vids by remember { mutableStateOf<List<String>>(emptyList()) }
+                        val label = java.time.Instant.ofEpochMilli(sr.startedAtEpochMs).atZone(zone).toLocalDate().toString()
+                        OutlinedButton(onClick = {
+                            open = !open
+                        }, modifier = Modifier.fillMaxWidth()) { Text("$label  ${sr.status.lowercase().replace('_', ' ')}") }
+                        if (open) {
+                            LaunchedEffect(sr.sessionId) {
+                                val dao = AppDatabase.getDatabase(ctx).historyDao()
+                                val plan = dao.plan(sr.planId)?.let { runCatching { kotlinx.serialization.json.Json { ignoreUnknownKeys = true }.decodeFromString(app.calisthenics.domain.model.WorkoutPlan.serializer(), it.planJson) }.getOrNull() }
+                                val done = dao.blockResults(sr.sessionId).filter { it.outcome == "MET" }.map { it.blockId }.toSet()
+                                vids = plan?.blocks?.filter { it.id in done && it.variationId != null && it.type == app.calisthenics.domain.model.BlockType.WORK }?.mapNotNull { it.variationId }?.distinct().orEmpty()
+                            }
+                            FeedbackForm(sr.sessionId, vids, waitSaved = false)
+                        }
+                    }
+                    HorizontalDivider()
                     weeklySummaries(list, zone).forEach { w ->
                         Card(Modifier.fillMaxWidth()) {
                             Column(Modifier.padding(12.dp)) {
