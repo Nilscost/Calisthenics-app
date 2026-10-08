@@ -94,4 +94,4 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 ## Automatic checks
 
-- ⚠️ Archer Push-Up (per side): unilateral=False but name says otherwise
+- No warnings.

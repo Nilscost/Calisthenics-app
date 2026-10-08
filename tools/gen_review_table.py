@@ -94,7 +94,8 @@ def main():
                     warn.append(f'{v["name"]} L{t["index"]}: {tv} reps in {w} s (<3 s/rep)')
                 if t["minRecoverySeconds"] != 60:
                     warn.append(f'{v["name"]} L{t["index"]}: rest {t["minRecoverySeconds"]} != 60')
-            if v["unilateral"] != ("per side" in v["name"].lower()):
+            alternating = any("alternate" in s.lower() for s in v.get("instructions", []))  # one block, count each side
+            if v["unilateral"] != ("per side" in v["name"].lower()) and not alternating:
                 warn.append(f'{v["name"]}: unilateral={v["unilateral"]} but name says otherwise')
             for n in pol.get("nextVariationIds", []):
                 nv, np_ = strength.get(n), pols.get(n)
