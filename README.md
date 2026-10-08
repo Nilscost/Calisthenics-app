@@ -1,43 +1,57 @@
-# Calisthenics — implementation handoff
+# Calisthenics App
 
-This repository contains an approved product specification and a precise workplan for a local coding model. **It does not yet contain a working Android application.** No Android build, Galaxy S21 test or repository audit has been passed.
+A personal Android app for bodyweight and kettlebell training. You get a circuit planned for the time you have, each exercise demonstrated, and progress tracked across 54 exercises up to skills such as the muscle-up, front lever and pistol squat. It runs fully offline: no account, no internet permission, and all data stays on the phone.
 
-## Start here
-1. Read `docs/01-product-specification.md` (approved behavior).
-2. Read `docs/02-coding-specification.md` (architecture, algorithms and data contracts).
-3. Execute tasks in `docs/03-workplan.md`, using `tasks.json` as the machine-readable queue.
-4. Follow `docs/04-verification.md`; stop at human gates.
-5. Keep `STATUS.md` honest; use `docs/05-local-model-prompt.md` to start a local model.
+![Six of the generated exercise demos](docs/media/exercises.png)
 
-A protected `AGENTS.md` write was not authorized, so no such file was created. The handoff is usable by explicitly loading the documents above; do not assume an agent will auto-load them.
+I built it as the product owner. AI coding agents wrote most of the code; I set the scope, made the decisions, reviewed the results and tested on my phone. The repository shows the app and also how the work was run: specification, ordered workplan, decision log, approval gates and evidence for every step.
 
-## Initial product
-Personal-first Android app, English, Galaxy S21. Familiar timed circuits, default 45 minutes; repetition targets inside timed blocks; optional skill goals and per-variation five-star progression. Automatically increase difficulty across completed training even without feedback, marking those results as assumed. Stretching on means no scheduled passive-rest-only blocks. Local data, offline demonstrations/audio, locked-screen guidance, recovery and portable backups.
+## What the app does
 
-## Planning decisions versus validated training guidance
-The coding specification supplies deterministic **engineering defaults**. Progression pacing, exercise tiers, prerequisite rules, recovery windows and stretch compatibility must pass task T02 / gate G0 before use in real workouts. These are not medical or scientifically validated rules merely because this repository describes them. Existing survey claims are unverified leads.
+- **Train:** pick a goal (a skill such as the handstand push-up, or a body focus), your equipment profile and the number of rounds. You get a circuit preview with the muscles worked; swap any exercise for today or permanently, then start.
+- **During the workout:** big ring timer, looping demo clip, voice cues and a foreground service, so it keeps time with the screen off. Stretches replace passive rest. You log reps while you stretch.
+- **Progression:** every exercise has five levels. The app moves you up after three successful sessions spread over a week, holds the level if you fall below target, pauses the whole exercise family if you report pain, and hands you to the next exercise when you master one. Kettlebell levels count per weight: a heavier bell restarts the same exercise, while the same bell leads to harder exercises.
+- **Progress:** a skill tree per family (push, pull, squat, core…) with 0–5 stars, locks and equipment badges.
+- **History:** a week view and per-workout details, with corrections saved as new revisions so nothing is overwritten.
+- **Data:** checksummed backup and restore, crash-safe workout recovery, and a schema-checked database with no destructive migrations.
 
-## Repository checks available now
-From this folder, using Python 3.10 or newer:
+## How the project was run
+
+| Stage | Where |
+|---|---|
+| Idea and product specification, approved before coding | `docs/00-owner-idea.md`, `docs/01-product-specification.md` |
+| Coding specification, workplan (27 tasks) and verification plan | `docs/02`–`04` |
+| Decisions, open risks, architecture records | `docs/07-decisions-and-blockers.md`, `docs/adr/` |
+| UX overhaul from my phone feedback: 18 findings, 8 open questions, 14 tasks | `docs/10-ux-overhaul-plan.md` |
+| Evidence: a verification log per task, phone-run results, reviews | `docs/evidence/` |
+| Honest current state | `STATUS.md` |
+
+Ground rules I set for the agents:
+
+- one small task at a time, with tests first;
+- the full verification run before every commit, with its log kept;
+- no claims without evidence;
+- I approve gates myself; an agent never does.
+
+Every number in the exercise catalog is marked DRAFT until I have reviewed it (`docs/review/draft-numbers.md`).
+
+## Engineering
+
+- Kotlin and Jetpack Compose (Material 3), Room, and a foreground service; minimum Android 8.0 (API 26). Built on the open-source [CalisthenicsMemory](https://codeberg.org/Gonbei774/CalisthenicsMemory) app (GPL-3.0), whose old screens were replaced.
+- Three modules:
+  - `domain`: pure Kotlin, holding the planner, progression engine and session state machine, all deterministic and unit-tested;
+  - `data`: storage;
+  - `app`: the user interface.
+- **308 automated tests** covering domain logic, catalog rules, and Robolectric UI tests at phone size, at text size 1.3 and in dark mode. Lint, an offline build check and a hygiene check run in CI (`.github/workflows/android.yml`).
+- The exercise catalog and demo clips are generated from scripts (`tools/gen_starter_catalog.py`, `tools/gen_demo_clips_v2.py`), so content changes are reviewable as code.
+
+## Build
 
 ```sh
-python3 tools/check_handoff.py
-python3 -m unittest discover -s tests -p 'test_*.py' -v
+bash scripts/verify.sh            # tests, lint, debug APK, content validation (JDK 21 + Android SDK 35)
+./gradlew :app:assembleDebug      # APK in app/build/outputs/apk/debug/
 ```
 
-These check the handoff/task/requirement structure, not an Android app. Android test commands are specified as a future contract in `docs/04-verification.md` and must only be claimed to work once their modules/tasks actually exist.
+## Status
 
-## Files
-- `docs/01-product-specification.md`: agreed requirements and identifiers.
-- `docs/02-coding-specification.md`: precise proposed implementation contracts.
-- `docs/03-workplan.md`: small ordered tasks and stop conditions.
-- `docs/04-verification.md`: automated and device acceptance scenarios.
-- `docs/05-local-model-prompt.md`: copy-paste delegation prompt.
-- `docs/06-github-and-install.md`: Mac placement, repository hygiene and later upload.
-- `docs/07-decisions-and-blockers.md`: what remains unverified and who resolves it.
-- `docs/research/landscape-survey.md`: prior survey, not a new source audit.
-- `tasks.json`: dependencies, requirements and task status.
-- `STATUS.md`: actual progress, not aspirational completion.
-
-## Publication
-No remote repository has been created or pushed. Do not assume a GitHub account, repo name or visibility. Future upload should initially be private unless the owner explicitly requests public. No application license is selected until reuse obligations are known. See `LICENSE-NOT-SELECTED.md` and `THIRD_PARTY_NOTICES.md`.
+The app is in personal use on a Galaxy S21. The latest UX overhaul is verified by the automated tests but not yet fully re-tested on the phone. The training numbers are not yet professionally reviewed. Licensed under GPL-3.0 (see `LICENSE`, `THIRD_PARTY_NOTICES.md` and `PRIVACY.md`).
