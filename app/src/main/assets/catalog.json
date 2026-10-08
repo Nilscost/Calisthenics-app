@@ -750,7 +750,8 @@
         "Stand with feet hip-width, kettlebell between the feet.",
         "Push the hips back with a flat back and grip the handle.",
         "Drive through the feet to stand tall; do not swing the weight.",
-        "Lower with control back to the floor."
+        "Lower with control back to the floor.",
+        "Weight: use a bell you can move with a flat back on every rep (most people start with 8-12 kg; swings often 12-16 kg). The app counts levels per weight: set a heavier kettlebell in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
       ],
       "formCues": [
         "Flat back",
@@ -3001,7 +3002,8 @@
       "instructions": [
         "Hold the kettlebell in the hand opposite the standing leg.",
         "Hinge at the hip, back flat, the free leg reaching behind.",
-        "Stand tall again by squeezing the glute; do not twist."
+        "Stand tall again by squeezing the glute; do not twist.",
+        "Weight: use a bell you can move with a flat back on every rep (most people start with 8-12 kg; swings often 12-16 kg). The app counts levels per weight: set a heavier kettlebell in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
       ],
       "formCues": [
         "Flat back",
@@ -3058,7 +3060,8 @@
       "instructions": [
         "Stand with feet a little wider than the hips, kettlebell in front of you.",
         "Hike the bell back between the legs, then drive the hips forward so the bell floats to chest height.",
-        "Let it fall back and hinge again; the arms only guide it."
+        "Let it fall back and hinge again; the arms only guide it.",
+        "Weight: use a bell you can move with a flat back on every rep (most people start with 8-12 kg; swings often 12-16 kg). The app counts levels per weight: set a heavier kettlebell in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
       ],
       "formCues": [
         "Hips drive, arms guide",
@@ -3086,6 +3089,66 @@
       ],
       "secondaryMuscles": [
         "LOWER_BACK",
+        "FRONT_DELTS",
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "kettlebell-swing-one-arm",
+      "familyId": "deadlift",
+      "name": "One-Arm Kettlebell Swing (per side)",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "kettlebell",
+              "minMassGrams": 8000
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Same set-up as the two-hand swing; hold the handle with one hand, thumb forward.",
+        "Drive the hips forward so the bell floats to chest height; the free arm moves naturally with it.",
+        "Do all reps on one side, then switch hands.",
+        "Weight: use a bell you can move with a flat back on every rep (most people start with 8-12 kg; swings often 12-16 kg). The app counts levels per weight: set a heavier kettlebell in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Hips drive, arm guides",
+        "Shoulders square, do not twist",
+        "Stop when the form slips"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Ballistic movement with one hand: only after the two-hand swing feels easy at this weight; keep the shoulders level; stop on any back pain."
+      ],
+      "difficultyRank": 50,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-kettlebell-swing-one-arm",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK",
+        "OBLIQUES",
         "FRONT_DELTS",
         "FOREARMS"
       ]
@@ -6898,6 +6961,9 @@
       ],
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
+      "nextVariationIds": [
+        "kettlebell-swing-one-arm"
+      ],
       "prerequisiteRule": {
         "allOf": [
           [
@@ -6913,6 +6979,76 @@
               "variationTierMet": {
                 "variationId": "kettlebell-deadlift",
                 "tier": 5
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-kettlebell-swing-one-arm",
+      "variationId": "kettlebell-swing-one-arm",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "kettlebell-swing",
+                "tier": 4
               }
             }
           ]

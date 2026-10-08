@@ -33,7 +33,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(53, strength.size) // M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains
+        assertEquals(54, strength.size) // M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
         assertEquals(7, stretches.size)
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
@@ -61,7 +61,7 @@ class StarterCatalogTest {
 
     /** Only these may end a chain; every other exercise must lead somewhere (U09, F15). */
     private val explicitTops = setOf("pushup-one-arm", "hspu-wall", "muscle-up-bar", "squat-pistol", "bridge-back", "v-sit-floor", "v-up",
-        "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing")
+        "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing-one-arm")
 
     @Test fun noDeadEndsExceptExplicitTops() {
         val deadEnds = catalog.policies.filter { it.nextVariationIds.isEmpty() }.map { it.variationId }.toSet()
@@ -83,7 +83,7 @@ class StarterCatalogTest {
         assertEquals(listOf("row-band", "inverted-row-bent-knees", "inverted-row", "inverted-row-feet-elevated", "archer-row"), chain("row-band"))
         assertEquals(listOf("superman-hold", "arch-hold-y", "arch-rocks"), chain("superman-hold"))
         assertEquals(listOf("side-plank", "side-plank-leg-raise", "copenhagen-side-plank"), chain("side-plank"))
-        assertEquals(listOf("kettlebell-deadlift", "kettlebell-single-leg-rdl", "kettlebell-swing"), chain("kettlebell-deadlift"))
+        assertEquals(listOf("kettlebell-deadlift", "kettlebell-single-leg-rdl", "kettlebell-swing", "kettlebell-swing-one-arm"), chain("kettlebell-deadlift"))
         assertEquals("hollow-hold", chain("dead-bug")[1]) // dead bug hands over to the hollow hold
         for (id in listOf("inverted-row-bent-knees", "inverted-row", "inverted-row-feet-elevated", "archer-row"))
             assertTrue(id, catalog.variation(id)!!.equipmentAlternatives.single().needs.single().equipmentId == "low-bar")

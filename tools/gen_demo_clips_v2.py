@@ -108,12 +108,21 @@ def kb_swing(p):
     return dict(hip=hip, a=a, head_off=lerp(14, 0, s), arms=[("ik", hand, (0, -1))] * 2,
                 legs=[("ik", (205, 46), (1, 0))] * 2, props=[("circle", "hand0", 9, v1.PROP, (0, -10))])
 
+def kb_swing_one_arm(p):
+    """Like the two-hand swing, but only the near hand holds the bell; the free hand stays by the hip."""
+    d = kb_swing(p)
+    hip, sho = d["hip"], sh(d["hip"], d["a"])
+    free = lerp2((hip[0] + 4, hip[1] - 22), (sho[0] + 26, sho[1] - 40), rep(p))
+    d["arms"] = [d["arms"][0], ("ik", free, (0, -1))]
+    return d
+
 NEW = {
     "inverted-row-bent-knees": (inv_row(knees_bent=True), "rep"), "inverted-row": (inv_row(), "rep"),
     "inverted-row-feet-elevated": (inv_row(feet_up=True), "rep"), "archer-row": (inv_row(archer=True), "rep"),
     "arch-hold-y": (arch_hold(True), "hold"), "arch-rocks": (arch_rocks, "rep"),
     "side-plank-leg-raise": (side_plank_raise, "rep"), "copenhagen-side-plank": (copenhagen, "hold"),
     "kettlebell-single-leg-rdl": (kb_rdl, "rep"), "kettlebell-swing": (kb_swing, "rep"),
+    "kettlebell-swing-one-arm": (kb_swing_one_arm, "rep"),
 }
 POSES = dict(v1.POSES); POSES.update(NEW)
 

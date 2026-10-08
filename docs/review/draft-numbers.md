@@ -74,7 +74,8 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Arch Rocks | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Arch Hold (arms overhead, Y) L4 | — (top) |
 | Controlled Kettlebell Deadlift | kettlebell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | Kettlebell Single-Leg RDL (per side) |
 | Kettlebell Single-Leg RDL (per side) | kettlebell | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Controlled Kettlebell Deadlift L4 | Kettlebell Swing |
-| Kettlebell Swing | kettlebell | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Kettlebell Single-Leg RDL (per side) L3 and Controlled Kettlebell Deadlift L5 | — (top) |
+| Kettlebell Swing | kettlebell | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Kettlebell Single-Leg RDL (per side) L3 and Controlled Kettlebell Deadlift L5 | One-Arm Kettlebell Swing (per side) |
+| One-Arm Kettlebell Swing (per side) | kettlebell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Kettlebell Swing L4 | — (top) |
 
 ## Core
 

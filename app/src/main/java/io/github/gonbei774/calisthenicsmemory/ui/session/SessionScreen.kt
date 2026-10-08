@@ -123,7 +123,7 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
             Text(title, style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center, modifier = Modifier.testTag("session_title"))
             val sideText = when (b.side) { Side.LEFT -> stringResource(R.string.side_left); Side.RIGHT -> stringResource(R.string.side_right); else -> "" }
             val targetText = b.target?.let { if (it.type == TargetType.REPS) stringResource(R.string.target_reps, it.value) else stringResource(R.string.target_seconds, it.value) }.orEmpty()
-            val sub = listOf(targetText, sideText).filter { it.isNotEmpty() }.joinToString(" · ")
+            val sub = listOf(io.github.gonbei774.calisthenicsmemory.ui.train.withLoad(targetText, b.loadGrams), sideText).filter { it.isNotEmpty() }.joinToString(" · ")
             if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.titleLarge, modifier = Modifier.testTag("session_target"))
             if (paused) Text(stringResource(R.string.session_paused), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("session_paused"))
         }

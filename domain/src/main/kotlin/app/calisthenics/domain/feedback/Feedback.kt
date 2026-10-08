@@ -91,6 +91,8 @@ data class SessionEvidence(
     val assumedBlocks: Int,
     val confirmedBlocks: Int,
     val minQualifyingBlocks: Int,
+    /** Kettlebell weight used (null = bodyweight or unknown). Levels count per weight. */
+    val loadGrams: Int? = null,
 ) {
     /** Spec §5 / ADR C2 exposure definition. */
     val qualifying: Boolean
@@ -110,6 +112,8 @@ fun deriveEvidence(
 ): List<SessionEvidence> {
     val tierByVariation = plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null }
         .groupBy { it.variationId!! }.mapValues { (_, bs) -> bs.mapNotNull { it.prescriptionTier }.maxOrNull() }
+    val loadByVariation = plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null }
+        .groupBy { it.variationId!! }.mapValues { (_, bs) -> bs.mapNotNull { it.loadGrams }.maxOrNull() }
     return outcomes.groupBy { it.variationId }.toSortedMap().map { (vid, os) ->
         val tier = tierByVariation[vid]
         val disc = os.any { it.discomfort }
@@ -128,6 +132,7 @@ fun deriveEvidence(
             assumedBlocks = os.count { it.origin == RatingOrigin.ASSUMED },
             confirmedBlocks = os.count { it.origin == RatingOrigin.USER_BLOCK || it.origin == RatingOrigin.USER_EXERCISE },
             minQualifyingBlocks = minQualifyingBlocksOf(vid, tier),
+            loadGrams = loadByVariation[vid],
         )
     }
 }

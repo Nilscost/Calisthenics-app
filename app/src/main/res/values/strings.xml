@@ -85,6 +85,9 @@
     <string name="target_seconds">%1$d s</string>
     <string name="bullet_item">• %1$s</string>
     <string name="target_per_side">%1$s per side</string>
+    <string name="target_with_load">%1$s · %2$s kg</string>
+    <string name="sheet_load_now">Kettlebell: %1$s kg. Levels count per weight; a heavier bell in your profile starts this exercise again at level 1.</string>
+    <string name="sheet_load_earlier">Earlier at %1$s kg: %2$d of 5 stars</string>
     <string name="preview_draft_note">Exercise content is an unreviewed draft.</string>
     <string name="preview_note">Check the notes before you start.</string>
     <string name="preview_more_notes">%1$d notes</string>

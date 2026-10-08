@@ -87,6 +87,15 @@ class PreviewScreenTest {
         assertEquals("pushup-incline", io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore.load(app).slots.first { it.id == "push" }.preferredVariationId)
     }
 
+    @Test fun kettlebellCardsShowTheBellWeightAndBodyweightCardsDoNot() {
+        show(); rule.waitForIdle()
+        openSwap("hinge")
+        rule.onNodeWithTag("swap_option_kettlebell-deadlift").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_name_hinge").assertTextEquals("Controlled Kettlebell Deadlift")
+        rule.onNodeWithTag("exercise_target_hinge").assertTextContains("· 12 kg", substring = true) // Home profile seed bell
+        rule.onNodeWithTag("exercise_target_push").assertTextEquals("6 reps")
+    }
+
     @Test fun timelineIsCollapsedUntilOpened() {
         show(); rule.waitForIdle()
         rule.onNodeWithTag("timeline_list").assertDoesNotExist()

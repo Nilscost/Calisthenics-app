@@ -24,6 +24,9 @@ import app.calisthenics.domain.tree.*
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.components.MuscleChips
 import io.github.gonbei774.calisthenicsmemory.ui.components.StarRow
+import app.calisthenics.domain.load.formatKg
+import app.calisthenics.domain.load.isLoaded
+import app.calisthenics.domain.load.loadGrams
 import io.github.gonbei774.calisthenicsmemory.ui.screens.*
 import io.github.gonbei774.calisthenicsmemory.ui.theme.FamilyIcons
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
@@ -112,6 +115,15 @@ private fun NodeSheet(c: Catalog, v: ExerciseVariation, progress: app.calistheni
                     Text(stateLabel(nodeState(c, v.id, progress, profile, emptySet())), style = MaterialTheme.typography.labelLarge)
                 }
                 if (v.primaryMuscles.isNotEmpty()) MuscleChips(v.primaryMuscles, v.secondaryMuscles)
+                // Kettlebell: levels count per weight. Show the weight in use and stars kept from lighter bells.
+                if (v.isLoaded()) {
+                    val vp = progress.variations[v.id]
+                    val kg = (vp?.loadGrams ?: profile.loadGrams())?.let { formatKg(it) }
+                    if (kg != null) Text(stringResource(R.string.sheet_load_now, kg), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("sheet_load"))
+                    vp?.starsByLoad?.toSortedMap()?.forEach { (g, n) ->
+                        Text(stringResource(R.string.sheet_load_earlier, formatKg(g), n), style = MaterialTheme.typography.bodySmall, modifier = Modifier.testTag("sheet_load_${g}"))
+                    }
+                }
             }
             DemoClips.file(ctx, v.id)?.let { DemoPlayer(it) }
             SheetSection(R.string.sheet_how, v.instructions.mapIndexed { i, t -> stringResource(R.string.numbered_item, i + 1, t) })

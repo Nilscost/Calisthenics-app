@@ -40,6 +40,7 @@ def hold_tiers(targets, rec=(60, 60, 60, 60, 60), stretch=None):
     return tiers
 
 NO_EQ = [{}]
+KB_WEIGHT = "Weight: use a bell you can move with a flat back on every rep (most people start with 8-12 kg; swings often 12-16 kg). The app counts levels per weight: set a heavier kettlebell in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
 def need(eid, **kw): return {"equipmentId": eid, **kw}
 
 STRETCH_NOTE = "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain."
@@ -167,11 +168,12 @@ strength("superman-hold", "Superman Hold", "superman", ["HINGE"], ["LOWER_BODY",
          hold_tiers([10, 15, 20, 25, 30]), [S_OG, S_YG], ["stretch-back", "stretch-hip-flexor"], rank=10)
 strength("kettlebell-deadlift", "Controlled Kettlebell Deadlift", "deadlift", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
          ["Stand with feet hip-width, kettlebell between the feet.", "Push the hips back with a flat back and grip the handle.",
-          "Drive through the feet to stand tall; do not swing the weight.", "Lower with control back to the floor."],
+          "Drive through the feet to stand tall; do not swing the weight.", "Lower with control back to the floor.", KB_WEIGHT],
          ["Flat back", "Hips back, not squat down", "Controlled tempo, no swinging"],
          reps_tiers([6, 8, 10, 12, 15]), [S_NG, S_YG], ["stretch-hamstring", "stretch-hip-flexor"],
          eq=[{"needs": [need("kettlebell", minMassGrams=8000)]}], rank=20,
          cautions=(CAUTION_STRENGTH, "Controlled tempo only; no ballistic or swinging work."))
+
 
 # ---------------- core ----------------
 strength("plank", "Front Plank", "plank", ["CORE_ANTI_EXTENSION"], ["CORE"], "HOLD", "floor",
@@ -361,16 +363,24 @@ strength("copenhagen-side-plank", "Copenhagen Side Plank (per side)", "side-plan
 
 # kettlebell hinge: deadlift -> single-leg RDL -> swing (ballistic: only after the two before)
 strength("kettlebell-single-leg-rdl", "Kettlebell Single-Leg RDL (per side)", "deadlift", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
-         ["Hold the kettlebell in the hand opposite the standing leg.", "Hinge at the hip, back flat, the free leg reaching behind.", "Stand tall again by squeezing the glute; do not twist."],
+         ["Hold the kettlebell in the hand opposite the standing leg.", "Hinge at the hip, back flat, the free leg reaching behind.", "Stand tall again by squeezing the glute; do not twist.", KB_WEIGHT],
          ["Flat back", "Hips square", "Controlled tempo"],
          reps_tiers([4, 6, 8, 10, 12]), [S_NG, S_YG], ["stretch-hamstring", "stretch-hip-flexor"], eq=KB, unilateral=True, rank=30, nxt=["kettlebell-swing"],
          prereq={"allOf": [[vt("kettlebell-deadlift", 4)]]}, cautions=(CAUTION_STRENGTH, "Controlled tempo only; no ballistic or swinging work in this one."))
 strength("kettlebell-swing", "Kettlebell Swing", "deadlift", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
-         ["Stand with feet a little wider than the hips, kettlebell in front of you.", "Hike the bell back between the legs, then drive the hips forward so the bell floats to chest height.", "Let it fall back and hinge again; the arms only guide it."],
+         ["Stand with feet a little wider than the hips, kettlebell in front of you.", "Hike the bell back between the legs, then drive the hips forward so the bell floats to chest height.", "Let it fall back and hinge again; the arms only guide it.", KB_WEIGHT],
          ["Hips drive, arms guide", "Flat back", "Stop when the form slips"],
-         reps_tiers([8, 10, 12, 15, 20]), [S_NG, S_YG], ["stretch-hamstring", "stretch-hip-flexor"], eq=KB, rank=40,
+         reps_tiers([8, 10, 12, 15, 20]), [S_NG, S_YG], ["stretch-hamstring", "stretch-hip-flexor"], eq=KB, rank=40, nxt=["kettlebell-swing-one-arm"],
          prereq={"allOf": [[vt("kettlebell-single-leg-rdl", 3)], [vt("kettlebell-deadlift", 5)]]},
          cautions=(CAUTION_STRENGTH, "Ballistic movement: only after the deadlift and the single-leg RDL feel easy; use a light bell; stop on any back pain."))
+
+# same bell, harder exercise: one-arm swing after the two-hand swing (owner 2026-10-08: progress with the same weight OR more weight)
+strength("kettlebell-swing-one-arm", "One-Arm Kettlebell Swing (per side)", "deadlift", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Same set-up as the two-hand swing; hold the handle with one hand, thumb forward.", "Drive the hips forward so the bell floats to chest height; the free arm moves naturally with it.", "Do all reps on one side, then switch hands.", KB_WEIGHT],
+         ["Hips drive, arm guides", "Shoulders square, do not twist", "Stop when the form slips"],
+         reps_tiers([6, 8, 10, 12, 15]), [S_NG, S_YG], ["stretch-hamstring", "stretch-hip-flexor"], eq=KB, unilateral=True, rank=50,
+         prereq={"allOf": [[vt("kettlebell-swing", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Ballistic movement with one hand: only after the two-hand swing feels easy at this weight; keep the shoulders level; stop on any back pain."))
 
 # plank no longer a dead end: top of the plank ladder leads to the hollow hold
 for pol in policies:
@@ -427,6 +437,7 @@ M = {
     "kettlebell-deadlift": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK", "FOREARMS"]),
     "kettlebell-single-leg-rdl": (["HAMSTRINGS", "GLUTES"], ["LOWER_BACK", "FOREARMS"]),
     "kettlebell-swing": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK", "FRONT_DELTS", "FOREARMS"]),
+    "kettlebell-swing-one-arm": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK", "OBLIQUES", "FRONT_DELTS", "FOREARMS"]),
     "plank": (["ABS"], ["OBLIQUES", "FRONT_DELTS", "GLUTES"]),
     "side-plank": (["OBLIQUES"], ["ABS", "GLUTES", "SIDE_DELTS"]),
     "side-plank-leg-raise": (["OBLIQUES", "GLUTES"], ["ABS", "SIDE_DELTS"]),

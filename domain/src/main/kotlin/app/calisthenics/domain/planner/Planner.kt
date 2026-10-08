@@ -5,6 +5,9 @@ package app.calisthenics.domain.planner
 
 import app.calisthenics.domain.equipment.isAvailable
 import app.calisthenics.domain.equipment.missingFor
+import app.calisthenics.domain.load.formatKg
+import app.calisthenics.domain.load.isLoaded
+import app.calisthenics.domain.load.loadGrams
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.progression.ProgressSnapshot
 import app.calisthenics.domain.routine.SessionDraft
@@ -47,7 +50,7 @@ sealed interface PlanResult {
     data class Infeasible(val reasons: List<ConstraintFailure>, val alternatives: List<PlanOption>) : PlanResult
 }
 
-private data class Chosen(val slot: RoutineSlot, val variation: ExerciseVariation, val tier: Tier)
+private data class Chosen(val slot: RoutineSlot, val variation: ExerciseVariation, val tier: Tier, val loadGrams: Int? = null)
 
 fun generate(input: PlanInput): PlanResult = Planner(input).run()
 
@@ -215,7 +218,16 @@ private class Planner(val input: PlanInput) {
             tierIdx = lower; needsAcceptance = true
             warn += "Welcome back — you haven't trained ${v.name} for ${app.calisthenics.domain.progression.REENTRY_DAYS}+ days. Planned at tier $lower; choose your own re-entry level before starting. Earned stars are kept."
         }
-        return Chosen(slot, v, pol.tier(tierIdx!!))
+        // Kettlebell weight (owner 2026-10-08): a heavier bell than the one the level was earned with restarts at tier 1.
+        val load = if (v.isLoaded()) input.profile.loadGrams() else null
+        val recorded = input.progress.variations[v.id]?.loadGrams
+        if (load != null && recorded != null && load > recorded) {
+            tierIdx = 1
+            explain += "${v.name}: heavier kettlebell (${formatKg(load)} kg instead of ${formatKg(recorded)} kg) — starting again at tier 1. Your stars at ${formatKg(recorded)} kg are kept."
+        } else if (load != null && recorded != null && load < recorded) {
+            warn += "${v.name}: your kettlebell here is ${formatKg(load)} kg, lighter than the ${formatKg(recorded)} kg you train with — this session is logged but does not count towards your next tier."
+        }
+        return Chosen(slot, v, pol.tier(tierIdx!!), load)
     }
 
     private fun substitute(slot: RoutineSlot, original: ExerciseVariation): Pair<ExerciseVariation, Boolean>? {
@@ -251,7 +263,7 @@ private class Planner(val input: PlanInput) {
                 val secs = if (draft.timed && !isHold) (if (side == Side.NONE) TIMED_WORK_SECONDS else TIMED_WORK_SECONDS / 2) else t.workWindowSeconds
                 workTotal += secs
                 out += TimelineBlock(id, BlockType.WORK, secs, r, c.slot.id, v.id, side, t.target, t.index,
-                    mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId)
+                    mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams)
             }
             val isLast = r == rounds && si == sl.lastIndex
             if (isLast || t.minRecoverySeconds <= 0) continue

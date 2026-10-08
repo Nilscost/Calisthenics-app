@@ -15,6 +15,8 @@ import app.calisthenics.domain.AdvancementResult
 import app.calisthenics.domain.QualifyingExposure
 import app.calisthenics.domain.evaluateAdvancement
 import app.calisthenics.domain.feedback.SessionEvidence
+import app.calisthenics.domain.load.formatKg
+import app.calisthenics.domain.load.isLoaded
 import app.calisthenics.domain.model.Catalog
 import app.calisthenics.domain.model.ProgressionPolicy
 import app.calisthenics.domain.model.Target
@@ -56,6 +58,10 @@ data class VariationProgress(
     val autoPaused: Boolean,
     val lastTrainedDay: Int?,
     val reentryResolvedDay: Int?,
+    /** Kettlebell weight the current tier is earned with (null = bodyweight / not recorded yet). */
+    val loadGrams: Int? = null,
+    /** Stars kept from lighter kettlebells: grams -> stars earned at that weight. */
+    val starsByLoad: Map<Int, Int> = emptyMap(),
 ) {
     /** Highest consecutive achieved tier counted from the tier the variation was started at. */
     fun earnedStars(): Int {
@@ -122,7 +128,27 @@ class ProgressionEngine(private val catalog: Catalog) {
             p = p.copy(lastTrainedDay = maxOf(p.lastTrainedDay ?: ev.day, ev.day))
             active.putIfAbsent(p.familyId, vid)
             val hold = holds[p.familyId]
-            when {
+            // Kettlebell weight: levels are earned per weight (owner 2026-10-08).
+            val load = ev.loadGrams
+            val recorded = p.loadGrams
+            var lighter = false
+            if (load != null) when {
+                recorded == null -> p = p.copy(loadGrams = load)
+                load > recorded -> {
+                    val kept = p.earnedStars()
+                    p = p.copy(tier = 1, baselineTier = null, achievedTiers = emptySet(), enrolledAtDay = ev.day,
+                        lastAutoAdvanceDay = null, streakDays = emptyList(), streakAssumed = 0, consecutiveBelow = 0,
+                        lowerTargetSuggested = false, loadGrams = load,
+                        starsByLoad = p.starsByLoad + (recorded to maxOf(kept, p.starsByLoad[recorded] ?: 0)))
+                    events += ProgressEvent(ev.day, vid,
+                        "Heavier kettlebell (${formatKg(load)} kg): ${catalog.variation(vid)?.name ?: vid} starts again at tier 1. Your $kept stars at ${formatKg(recorded)} kg are kept.")
+                }
+                load < recorded -> lighter = true
+            }
+            if (lighter) {
+                events += ProgressEvent(ev.day, vid,
+                    "Done with a lighter kettlebell (${formatKg(load!!)} kg instead of ${formatKg(recorded!!)} kg) — logged, but it does not count towards your next tier.")
+            } else when {
                 ev.qualifying && hold == null && !p.autoPaused && ev.prescribedTier == p.tier -> {
                     val days = (p.streakDays + ev.day).distinct().sorted()
                     p = p.copy(streakDays = days, streakAssumed = p.streakAssumed + if (ev.confirmedBlocks == 0) 1 else 0,
@@ -234,14 +260,19 @@ class ProgressionEngine(private val catalog: Catalog) {
         if (p0.tier == 5 && 5 !in p0.achievedTiers && gateWouldPass(pol, p0, day)) {
             val achieved = p0.copy(achievedTiers = p0.achievedTiers + 5, lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
             val successor = pol.nextVariationIds.firstOrNull { prerequisitesMet(it, vars) }
+            val name = catalog.variation(p0.variationId)?.name ?: p0.variationId
+            val loaded = catalog.variation(p0.variationId)?.isLoaded() == true
+            val at = p0.loadGrams?.let { " at ${formatKg(it)} kg" }.orEmpty()
+            val heavier = if (loaded) " Or keep $name with a heavier kettlebell: set the new weight in your equipment profile and it starts again at tier 1." else ""
             if (successor != null) {
                 active[achieved.familyId] = successor
                 events += ProgressEvent(day, p0.variationId,
-                    "All five tiers earned. Moving on to ${catalog.variation(successor)?.name ?: successor} (tier 1); your five stars here are kept. You can switch back anytime.$assumedNote")
+                    "All five tiers earned$at. Moving on to ${catalog.variation(successor)?.name ?: successor} (tier 1)${if (loaded) " with the same kettlebell" else ""}; your five stars here are kept. You can switch back anytime.$heavier$assumedNote")
             } else {
                 val blocked = pol.nextVariationIds.firstOrNull()
                 events += ProgressEvent(day, p0.variationId,
-                    if (blocked != null) "All five tiers earned. The harder variation ${catalog.variation(blocked)?.name ?: blocked} isn't available with your equipment/prerequisites yet, so you stay here."
+                    if (blocked != null) "All five tiers earned$at. The harder variation ${catalog.variation(blocked)?.name ?: blocked} isn't available with your equipment/prerequisites yet, so you stay here.$heavier"
+                    else if (loaded) "All five tiers earned$at — this is the top of this progression with this weight. To keep progressing, set a heavier kettlebell in your equipment profile; $name then starts again at tier 1."
                     else "All five tiers earned — this is the top of this progression.")
             }
             return achieved

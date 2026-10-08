@@ -274,6 +274,8 @@ data class TimelineBlock(
     val earlyCompletionStretchId: String? = null,
     /** Optional extra stretch appended to use remaining time; first to be trimmed. */
     val optionalExtra: Boolean = false,
+    /** Kettlebell weight for this work block (null = bodyweight / unknown, e.g. plans saved before 0.3.1). */
+    val loadGrams: Int? = null,
 ) {
     init { require(durationSeconds > 0) { "block $id must have positive duration" } }
 }

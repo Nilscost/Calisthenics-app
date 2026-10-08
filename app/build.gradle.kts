@@ -27,8 +27,8 @@ android {
         applicationId = "app.calisthenics.personal"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.3.0-ux"
+        versionCode = 3
+        versionName = "0.3.1-kb"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

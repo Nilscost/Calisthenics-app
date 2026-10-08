@@ -43,18 +43,24 @@ import java.util.UUID
 fun formatClock(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 
 /** The circuit: the work of round 1, one entry per exercise (both sides of a unilateral exercise are one entry). */
-data class CircuitEntry(val slotId: String, val variationId: String, val target: Target?, val perSide: Boolean)
+data class CircuitEntry(val slotId: String, val variationId: String, val target: Target?, val perSide: Boolean, val loadGrams: Int? = null)
 
 fun circuitOf(plan: WorkoutPlan): List<CircuitEntry> =
     plan.blocks.filter { it.type == BlockType.WORK && (it.roundIndex ?: 1) == 1 && it.slotId != null && it.variationId != null }
-        .groupBy { it.slotId!! }.values.map { bs -> CircuitEntry(bs.first().slotId!!, bs.first().variationId!!, bs.first().target, bs.size > 1) }
+        .groupBy { it.slotId!! }.values.map { bs -> CircuitEntry(bs.first().slotId!!, bs.first().variationId!!, bs.first().target, bs.size > 1, bs.first().loadGrams) }
 
 @Composable
-private fun targetText(t: Target?, perSide: Boolean): String {
+private fun targetText(t: Target?, perSide: Boolean, loadGrams: Int? = null): String {
     t ?: return ""
     val base = if (t.type == TargetType.REPS) stringResource(R.string.target_reps, t.value) else stringResource(R.string.target_seconds, t.value)
-    return if (perSide) stringResource(R.string.target_per_side, base) else base
+    val sided = if (perSide) stringResource(R.string.target_per_side, base) else base
+    return withLoad(sided, loadGrams)
 }
+
+/** "10 reps" -> "10 reps · 12 kg" for kettlebell work. */
+@Composable
+fun withLoad(text: String, loadGrams: Int?): String =
+    if (loadGrams == null || text.isEmpty()) text else stringResource(R.string.target_with_load, text, app.calisthenics.domain.load.formatKg(loadGrams))
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -161,7 +167,7 @@ private fun ExerciseCard(e: CircuitEntry, v: ExerciseVariation?, name: String, o
             }
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                 Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("exercise_name_${e.slotId}"))
-                Text(targetText(e.target, e.perSide), style = MaterialTheme.typography.bodyLarge)
+                Text(targetText(e.target, e.perSide, e.loadGrams), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("exercise_target_${e.slotId}"))
                 if (v != null && v.primaryMuscles.isNotEmpty()) MuscleChips(v.primaryMuscles, v.secondaryMuscles.take(2), Modifier.testTag("muscles_${e.slotId}"))
             }
             IconButton(onClick = onSwap, modifier = Modifier.testTag("swap_${e.slotId}")) { Icon(Icons.Filled.Refresh, stringResource(R.string.preview_swap, name)) }
@@ -180,7 +186,7 @@ private fun TimelineCard(p: WorkoutPlan, names: Map<String, String>, open: Boole
             if (open) Column(Modifier.padding(horizontal = Spacing.m, vertical = Spacing.s).testTag("timeline_list"), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 p.blocks.forEach { b ->
                     val target = b.target?.let { if (it.type == TargetType.REPS) stringResource(R.string.target_reps, it.value) else stringResource(R.string.target_seconds, it.value) }.orEmpty()
-                    Text("${formatClock(b.durationSeconds)}  ${CueText.label(p, b.id, names)} $target".trim(), style = MaterialTheme.typography.bodyMedium)
+                    Text("${formatClock(b.durationSeconds)}  ${CueText.label(p, b.id, names)} ${withLoad(target, b.loadGrams)}".trim(), style = MaterialTheme.typography.bodyMedium)
                 }
             }
         }
