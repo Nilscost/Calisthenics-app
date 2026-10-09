@@ -13,7 +13,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.temporal.TemporalAdjusters
 
-data class SessionOverview(val sessionId: String, val day: LocalDate, val startedAtEpochMs: Long, val minutes: Int, val rounds: Int, val exercises: Int, val finishedEarly: Boolean)
+data class SessionOverview(val sessionId: String, val day: LocalDate, val startedAtEpochMs: Long, val minutes: Int, val rounds: Int, val exercises: Int, val finishedEarly: Boolean, val format: app.calisthenics.domain.model.WorkoutFormat = app.calisthenics.domain.model.WorkoutFormat.CIRCUIT)
 
 /** Rounds and exercises count only work that was actually done (outcome MET or PARTIAL), never skipped blocks. */
 fun overviewOf(plan: WorkoutPlan?, s: SessionRecord, zone: ZoneId): SessionOverview {
@@ -23,7 +23,7 @@ fun overviewOf(plan: WorkoutPlan?, s: SessionRecord, zone: ZoneId): SessionOverv
     val exercises = done.mapNotNull { it.variationId ?: planned[it.blockId]?.variationId }.distinct().size
     val seconds = s.endedAtEpochMs?.let { ((it - s.startedAtEpochMs) / 1000L).toInt() } ?: s.blocks.sumOf { it.actualSeconds }
     return SessionOverview(s.sessionId, Instant.ofEpochMilli(s.startedAtEpochMs).atZone(zone).toLocalDate(), s.startedAtEpochMs,
-        (seconds + 30) / 60, rounds, exercises, s.status == "PARTIAL_FINISHED")
+        (seconds + 30) / 60, rounds, exercises, s.status == "PARTIAL_FINISHED", plan?.format ?: app.calisthenics.domain.model.WorkoutFormat.CIRCUIT)
 }
 
 data class RoundEntry(val round: Int, val side: Side, val blockId: String, val outcome: String, /** null = not typed (assumed as planned) */ val reps: Int?)

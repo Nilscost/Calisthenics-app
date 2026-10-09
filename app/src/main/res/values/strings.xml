@@ -74,6 +74,11 @@
     <string name="train_equipment_caption">Equipment</string>
     <string name="train_new_profile">New profile</string>
     <string name="train_sets_caption">Sets</string>
+    <string name="train_format_caption">Workout format</string>
+    <string name="format_circuit">Circuit</string>
+    <string name="format_pairs">Pairs</string>
+    <string name="format_straight">Straight sets</string>
+    <string name="train_rounds_caption">Rounds</string>
     <string name="train_between_caption">Between sets</string>
     <string name="between_stretch">Stretch</string>
     <string name="between_rest">Rest</string>
@@ -162,6 +167,8 @@
     <string name="preview_swap_keep">Keep for next time</string>
     <string name="session_starting">Starting…</string>
     <string name="session_round">Round %1$d of %2$d</string>
+    <string name="session_pair_set">Pair %1$d · Set %2$d of %3$d</string>
+    <string name="session_exercise_set">Exercise %1$d · Set %2$d of %3$d</string>
     <string name="session_step">Step %1$d of %2$d</string>
     <string name="session_more">More</string>
     <string name="session_end">End workout</string>
@@ -297,6 +304,7 @@
     <string name="history_empty">No finished workouts yet. Missed weeks are never penalised.</string>
     <string name="history_empty_week">No workouts this week.</string>
     <string name="history_session_line">%1$d min · %2$d rounds · %3$d exercises</string>
+    <string name="history_session_line_sets">%1$d min · %2$d sets · %3$d exercises</string>
     <string name="history_finished_early">Finished early</string>
     <string name="history_detail_title">Workout</string>
     <string name="history_not_found">This workout is not available.</string>
@@ -307,6 +315,8 @@
     <string name="body_map_description">Muscles worked: %1$s</string>
     <string name="body_map_none">No muscles listed</string>
     <string name="round_label">Round %1$d</string>
+    <string name="set_label">Set %1$d</string>
+    <string name="set_label_side">Set %1$d · %2$s</string>
     <string name="round_label_side">Round %1$d · %2$s</string>
     <string name="round_as_planned">as planned</string>
     <string name="round_corrected">corrected</string>

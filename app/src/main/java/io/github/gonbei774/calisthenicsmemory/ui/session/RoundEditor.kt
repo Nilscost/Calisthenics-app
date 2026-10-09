@@ -29,7 +29,7 @@ data class EditorRound(val blockId: String, val round: Int, val side: Side, val 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RoundEditor(
-    target: Target?, rounds: List<EditorRound>, tooHard0: Boolean, tooEasy0: Boolean, pain0: Boolean, tag: String,
+    target: Target?, rounds: List<EditorRound>, sets: Boolean = false, tooHard0: Boolean, tooEasy0: Boolean, pain0: Boolean, tag: String,
     onChange: (List<RoundCorrection>) -> Unit,
 ) {
     val hold = target?.type == TargetType.HOLD_SECONDS
@@ -47,7 +47,7 @@ fun RoundEditor(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f).semantics(mergeDescendants = true) {}.testTag("${tag}_round${i + 1}")) {
                     val side = when (r.side) { Side.LEFT -> stringResource(R.string.side_left); Side.RIGHT -> stringResource(R.string.side_right); else -> "" }
-                    Text(if (side.isEmpty()) stringResource(R.string.round_label, r.round) else stringResource(R.string.round_label_side, r.round, side), style = MaterialTheme.typography.bodyLarge)
+                    Text(if (side.isEmpty()) stringResource(if (sets) R.string.set_label else R.string.round_label, r.round) else stringResource(if (sets) R.string.set_label_side else R.string.round_label_side, r.round, side), style = MaterialTheme.typography.bodyLarge)
                     val note = listOfNotNull(
                         if (!typed[i]) stringResource(R.string.round_as_planned) else null,
                         if (r.corrected) stringResource(R.string.round_corrected) else null,

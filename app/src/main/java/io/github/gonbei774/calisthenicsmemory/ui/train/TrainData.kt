@@ -40,6 +40,7 @@ object TrainSettingsStore {
             goalId = GoalStore.load(ctx),
             profileId = ProfileStore.selected(ctx).id,
             rounds = p(ctx).getInt("rounds", app.calisthenics.domain.planner.DEFAULT_TRAIN_ROUNDS),
+            format = runCatching { app.calisthenics.domain.model.WorkoutFormat.valueOf(p(ctx).getString("format", "CIRCUIT")!!) }.getOrDefault(app.calisthenics.domain.model.WorkoutFormat.CIRCUIT),
             timed = ModeStore.timed(ctx),
             stretchOn = prefs.stretchOn,
         )
@@ -50,7 +51,7 @@ object TrainSettingsStore {
         ProfileStore.select(ctx, s.profileId)
         ModeStore.setTimed(ctx, s.timed)
         PrefsStore.save(ctx, PrefsStore.load(ctx).copy(stretchOn = s.stretchOn))
-        p(ctx).edit().putInt("rounds", s.rounds).apply()
+        p(ctx).edit().putInt("rounds", s.rounds).putString("format", s.format.name).apply()
     }
 }
 

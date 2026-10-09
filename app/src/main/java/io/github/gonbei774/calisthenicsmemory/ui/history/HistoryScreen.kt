@@ -96,7 +96,7 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
                 Card(Modifier.fillMaxWidth().clickable { onOpen(o.sessionId) }.testTag("session_${o.sessionId}"), shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                         Text(dateFmt.format(o.day), style = MaterialTheme.typography.titleMedium)
-                        Text(stringResource(R.string.history_session_line, o.minutes, o.rounds, o.exercises), style = MaterialTheme.typography.bodyLarge)
+                        Text(stringResource(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.string.history_session_line else R.string.history_session_line_sets, o.minutes, o.rounds, o.exercises), style = MaterialTheme.typography.bodyLarge)
                         if (o.finishedEarly) Text(stringResource(R.string.history_finished_early), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text)
                     }
                 }
@@ -125,7 +125,7 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
             if (s == null) { Text(stringResource(if (loaded) R.string.history_not_found else R.string.history_loading)); return@Column }
             val o = overviewOf(s.plan, s.record, ZoneId.systemDefault())
             Text(dateFmt.format(o.day), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("detail_title"))
-            Text(stringResource(R.string.history_session_line, o.minutes, o.rounds, o.exercises), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("detail_summary"))
+            Text(stringResource(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.string.history_session_line else R.string.history_session_line_sets, o.minutes, o.rounds, o.exercises), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("detail_summary"))
             if (s.plan == null) Text(stringResource(R.string.history_no_plan), style = MaterialTheme.typography.bodyMedium)
             val details = s.plan?.let { exerciseDetails(it, s.record.blocks) }.orEmpty()
             val achieved = s.record.blocks.filter { it.outcome == "MET" || it.outcome == "PARTIAL" }.associate { it.blockId to it.achievedValue }
@@ -142,7 +142,7 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
                             Text(name, style = MaterialTheme.typography.titleMedium)
                         }
                         RoundEditor(
-                            d.target, rounds.map { EditorRound(it.blockId, it.round, it.side, it.value, it.corrected) },
+                            d.target, rounds.map { EditorRound(it.blockId, it.round, it.side, it.value, it.corrected) }, sets = s.plan.format != app.calisthenics.domain.model.WorkoutFormat.CIRCUIT,
                             tooHard0 = rounds.any { it.rating == Rating.BELOW && !(it.value.let { v -> v != null && tv != null && v < tv }) },
                             tooEasy0 = rounds.any { it.rating == Rating.ABOVE }, pain0 = rounds.any { it.discomfort }, tag = "fix_${d.variationId}",
                         ) { list ->

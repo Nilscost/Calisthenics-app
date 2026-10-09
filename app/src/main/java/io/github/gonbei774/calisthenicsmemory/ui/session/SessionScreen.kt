@@ -43,6 +43,8 @@ import app.calisthenics.domain.model.Target
 import app.calisthenics.domain.model.TargetType
 import app.calisthenics.domain.model.TimelineBlock
 import app.calisthenics.domain.session.CueText
+import app.calisthenics.domain.session.HeaderKind
+import app.calisthenics.domain.session.headerFor
 import app.calisthenics.domain.session.Phase
 import app.calisthenics.domain.session.SessionState
 import io.github.gonbei774.calisthenicsmemory.R
@@ -150,9 +152,14 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                     Column(Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = Spacing.l, vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Row(verticalAlignment = Alignment.Top) {
                             Column(Modifier.weight(1f)) {
-                                val r = b.roundIndex
+                                val hd = headerFor(st.plan, b, st.blockIndex)
                                 Text(
-                                    (if (r != null) stringResource(R.string.session_round, r, st.plan.rounds) else stringResource(R.string.session_step, st.blockIndex + 1, st.plan.blocks.size)).uppercase(),
+                                    when (hd.kind) {
+                                        HeaderKind.ROUND -> stringResource(R.string.session_round, hd.set, hd.sets)
+                                        HeaderKind.PAIR -> stringResource(R.string.session_pair_set, hd.group ?: 1, hd.set, hd.sets)
+                                        HeaderKind.EXERCISE -> stringResource(R.string.session_exercise_set, hd.group ?: 1, hd.set, hd.sets)
+                                        HeaderKind.STEP -> stringResource(R.string.session_step, hd.set, hd.sets)
+                                    }.uppercase(),
                                     style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_round"),
                                 )
                                 SetMarkers(st.plan.rounds, b.roundIndex ?: 0)
@@ -288,7 +295,7 @@ private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) 
                     Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         Text(SessionBus.names[vid] ?: vid, style = MaterialTheme.typography.titleMedium)
                         // V04b (R21): one number per round, plus Too hard / Too easy / Pain for the exercise.
-                        RoundEditor(target, blocks.map { EditorRound(it.id, it.roundIndex ?: 1, it.side, st.logged[it.id]?.reps) },
+                        RoundEditor(target, blocks.map { EditorRound(it.id, it.roundIndex ?: 1, it.side, st.logged[it.id]?.reps) }, sets = st.plan.format != app.calisthenics.domain.model.WorkoutFormat.CIRCUIT,
                             tooHard0 = logs.any { it.tooHard }, tooEasy0 = logs.any { it.tooEasy }, pain0 = logs.any { it.discomfort }, tag = "end_$vid") { list ->
                             scope.launch {
                                 val deadline = System.currentTimeMillis() + 5000

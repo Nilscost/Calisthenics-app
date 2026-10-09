@@ -108,3 +108,34 @@ class SessionLogTest {
         assertEquals(BlockLog(5, true, false, tooEasy = false), old)
     }
 }
+
+class HeaderTest {
+    private val catalog = app.calisthenics.domain.content.parseCatalog(java.io.File(System.getProperty("repo.root"), "content/starter/catalog.json").readText())
+    private val none = app.calisthenics.domain.progression.ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
+    private fun plan(f: WorkoutFormat) = (app.calisthenics.domain.planner.buildTrainPlan(catalog, app.calisthenics.domain.routine.StarterRoutine.routine, none, app.calisthenics.domain.equipment.SeedProfiles.home,
+        app.calisthenics.domain.planner.TrainSettings(rounds = 3, format = f)) as app.calisthenics.domain.planner.PlanResult.Ready).plan
+
+    @Test fun theHeaderNamesTheRoundThePairOrTheExerciseAndTheSet() {
+        for ((f, kind) in listOf(WorkoutFormat.CIRCUIT to HeaderKind.ROUND, WorkoutFormat.PAIRS to HeaderKind.PAIR, WorkoutFormat.STRAIGHT to HeaderKind.EXERCISE)) {
+            val p = plan(f)
+            val i = p.blocks.indexOfLast { it.type == BlockType.WORK && it.roundIndex == 2 }
+            val h = headerFor(p, p.blocks[i], i)
+            assertEquals(kind, h.kind); assertEquals(2, h.set); assertEquals(3, h.sets)
+            if (f == WorkoutFormat.CIRCUIT) assertNull(h.group) else assertNotNull(h.group)
+        }
+        val pairs = plan(WorkoutFormat.PAIRS)
+        val second = pairs.blocks.indexOfFirst { it.slotId == "pull" && it.type == BlockType.WORK }
+        assertEquals(2, headerFor(pairs, pairs.blocks[second], second).group)
+    }
+
+    @Test fun breaksAndGetReadyBlocksKeepTheirPairAndSet() {
+        val p = plan(WorkoutFormat.PAIRS)
+        for ((i, b) in p.blocks.withIndex()) if (b.roundIndex != null) assertNotNull("block ${b.id} (${b.type}) has no pair number", headerFor(p, b, i).group)
+    }
+
+    @Test fun warmupBlocksWithoutASetAreSteps() {
+        val b = TimelineBlock("w", BlockType.WARMUP, 30)
+        val p = plan(WorkoutFormat.CIRCUIT)
+        assertEquals(HeaderKind.STEP, headerFor(p, b, 4).kind)
+    }
+}

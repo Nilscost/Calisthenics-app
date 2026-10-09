@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import app.calisthenics.domain.goals.Goal
 import app.calisthenics.domain.goals.Goals
 import app.calisthenics.domain.model.BlockType
+import app.calisthenics.domain.model.WorkoutFormat
 import app.calisthenics.domain.model.StrengthFocus
 import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
 import io.github.gonbei774.calisthenicsmemory.ui.components.ObjectivePicker
@@ -128,10 +129,21 @@ fun TrainScreen(
                 }
             }
 
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Caption(stringResource(R.string.train_format_caption))
+                SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+                    WorkoutFormat.entries.forEachIndexed { i, f ->
+                        SegmentedButton(selected = settings.format == f, onClick = { change(settings.copy(format = f)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(i, WorkoutFormat.entries.size), icon = {}, modifier = Modifier.testTag("format_${f.name}")) {
+                            Text(stringResource(when (f) { WorkoutFormat.CIRCUIT -> R.string.format_circuit; WorkoutFormat.PAIRS -> R.string.format_pairs; WorkoutFormat.STRAIGHT -> R.string.format_straight }), maxLines = 1)
+                        }
+                    }
+                }
+            }
+
             Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 Card(Modifier.weight(1f).fillMaxHeight(), shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                        Caption(stringResource(R.string.train_sets_caption))
+                        Caption(stringResource(if (settings.format == WorkoutFormat.CIRCUIT) R.string.train_rounds_caption else R.string.train_sets_caption))
                         Stepper(settings.rounds, { change(settings.copy(rounds = it)) }, MIN_TRAIN_ROUNDS..MAX_EXPLICIT_ROUNDS, tag = "rounds")
                     }
                 }

@@ -120,4 +120,16 @@ class TrainScreenTest {
         rule.onNodeWithTag("start_button").assertIsDisplayed()
         rule.onNodeWithTag("preview_header").assertIsDisplayed()
     }
+
+    @Test fun workoutFormatControlHasThreeFormatsPersistsAndRenamesRoundsToSets() {
+        show(); rule.waitForIdle()
+        for (f in listOf("CIRCUIT", "PAIRS", "STRAIGHT")) rule.onNodeWithTag("format_$f").assertExists()
+        rule.onNodeWithTag("format_CIRCUIT").assertIsSelected()
+        rule.onNodeWithText("Rounds", ignoreCase = true).assertExists()
+        rule.onNodeWithTag("format_PAIRS").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("format_PAIRS").assertIsSelected()
+        rule.onNodeWithText("Sets", ignoreCase = true).assertExists()
+        assertEquals("PAIRS", ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getString("format", ""))
+        rule.onNodeWithTag("exercise_count").assertExists() // the plan still builds in every format
+    }
 }

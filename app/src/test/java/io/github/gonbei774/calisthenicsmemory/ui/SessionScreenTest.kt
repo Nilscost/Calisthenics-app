@@ -8,6 +8,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import app.calisthenics.domain.equipment.SeedProfiles
 import app.calisthenics.domain.model.BlockType
+import app.calisthenics.domain.model.WorkoutFormat
 import app.calisthenics.domain.planner.PlanResult
 import app.calisthenics.domain.planner.TrainSettings
 import app.calisthenics.domain.planner.buildTrainPlan
@@ -192,4 +193,17 @@ class SessionScreenTest {
         rule.onNodeWithTag("end_${vid}_too_easy").performScrollTo().assertExists()
         rule.onNodeWithTag("end_${vid}_pain").performScrollTo().assertExists()
     }
+
+    private fun headerFor(f: WorkoutFormat, text: String) {
+        val none = ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
+        val p = (buildTrainPlan(catalog, StarterRoutine.routine, none, SeedProfiles.home, TrainSettings(rounds = 2, stretchOn = true, format = f)) as PlanResult.Ready).plan.copy(id = "plan-$f")
+        SessionBus.names = catalog.variations.associate { it.id to it.name }
+        SessionBus.publish(reduce(newSession("S", p), SessionEvent.Start(0)).state)
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = {}) } }
+        rule.waitForIdle()
+        rule.onNodeWithTag("session_round").assertTextContains(text)
+        rule.onNodeWithTag("session_markers").assertExists()
+    }
+
+    @Test fun pairsNameThePairAndTheSet() = headerFor(WorkoutFormat.PAIRS, "PAIR 1 · SET 1 OF 2")
 }
