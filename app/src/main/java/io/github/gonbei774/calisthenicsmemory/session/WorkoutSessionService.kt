@@ -45,6 +45,7 @@ class WorkoutSessionService : Service() {
         const val EXTRA_REPS = "reps"      // -1 = not typed
         const val EXTRA_TOO_HARD = "too_hard"
         const val EXTRA_PAIN = "pain"
+        const val EXTRA_TOO_EASY = "too_easy"
         const val ACTION_RECOVER = "wss.RECOVER"
         const val EXTRA_RESUME = "resume"
         const val EXTRA_PLAN = "plan_json"
@@ -82,7 +83,8 @@ class WorkoutSessionService : Service() {
             ACTION_DONE -> send(SessionEvent.EarlyDone(now()))
             ACTION_LOG -> intent.getStringExtra(EXTRA_BLOCK_ID)?.let { id ->
                 send(SessionEvent.LogBlock(id, BlockLog(intent.getIntExtra(EXTRA_REPS, -1).takeIf { it >= 0 },
-                    intent.getBooleanExtra(EXTRA_TOO_HARD, false), intent.getBooleanExtra(EXTRA_PAIN, false))))
+                    intent.getBooleanExtra(EXTRA_TOO_HARD, false), intent.getBooleanExtra(EXTRA_PAIN, false),
+                    intent.getBooleanExtra(EXTRA_TOO_EASY, false))))
             }
             else -> if (state == null) stopSelf()
         }

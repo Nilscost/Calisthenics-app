@@ -86,4 +86,25 @@ class SessionLogTest {
         assertTrue(evidence(mapOf("r1-push-work" to BlockLog(reps = 9))).qualifying)           // above target is fine
         assertFalse(evidence(mapOf("r1-push-work" to BlockLog(reps = 9), "r3-push-work" to BlockLog(reps = 5))).qualifying) // lowest round counts
     }
+
+    @Test fun tooEasyGivesAboveUnlessSomethingIsBelow() {
+        assertEquals(Rating.ABOVE, rowLogsFrom(plan, mapOf("r1-push-work" to BlockLog(reps = 8, tooEasy = true))).single().rating)
+        assertEquals(Rating.ABOVE, rowLogsFrom(plan, mapOf("r1-push-work" to BlockLog(tooEasy = true))).single().rating)
+        // a round below target (or "too hard") wins over "too easy" in another round
+        assertEquals(Rating.BELOW, rowLogsFrom(plan, mapOf("r1-push-work" to BlockLog(tooEasy = true), "r2-push-work" to BlockLog(reps = 3))).single().rating)
+        assertEquals(Rating.BELOW, rowLogsFrom(plan, mapOf("r1-push-work" to BlockLog(tooEasy = true, tooHard = true))).single().rating)
+    }
+
+    @Test fun ratingForHistoryCorrections() {
+        val t = Target(TargetType.REPS, 8)
+        assertEquals(Rating.ABOVE, app.calisthenics.domain.history.ratingFor(8, t, tooHard = false, tooEasy = true))
+        assertEquals(Rating.BELOW, app.calisthenics.domain.history.ratingFor(6, t, tooHard = false, tooEasy = true))
+        assertEquals(Rating.MET, app.calisthenics.domain.history.ratingFor(8, t, false))
+    }
+
+    @Test fun oldCheckpointLogsWithoutTooEasyStillDecode() {
+        val j = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
+        val old = j.decodeFromString(BlockLog.serializer(), """{"reps":5,"tooHard":true,"discomfort":false}""")
+        assertEquals(BlockLog(5, true, false, tooEasy = false), old)
+    }
 }

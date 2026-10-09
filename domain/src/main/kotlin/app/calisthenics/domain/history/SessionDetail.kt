@@ -45,8 +45,8 @@ fun exerciseDetails(plan: WorkoutPlan, blocks: List<BlockRecord>): List<Exercise
 }
 
 /** The rating a corrected number implies (spec §5): below the target is BELOW, otherwise MET unless the user said "too hard". */
-fun ratingFor(reps: Int?, target: Target?, tooHard: Boolean): Rating =
-    if (tooHard || (reps != null && target != null && reps < target.value)) Rating.BELOW else Rating.MET
+fun ratingFor(reps: Int?, target: Target?, tooHard: Boolean, tooEasy: Boolean = false): Rating =
+    if (tooHard || (reps != null && target != null && reps < target.value)) Rating.BELOW else if (tooEasy) Rating.ABOVE else Rating.MET
 
 fun weekStartOf(day: LocalDate): LocalDate = day.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
 fun weekDays(weekStart: LocalDate): List<LocalDate> = (0L..6L).map { weekStart.plusDays(it) }

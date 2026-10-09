@@ -23,8 +23,8 @@ fun sessionCommand(ctx: Context, action: String) {
 }
 
 /** [reps] null = not typed (reps for rep targets, seconds for holds). */
-fun logBlock(ctx: Context, blockId: String, reps: Int?, tooHard: Boolean, pain: Boolean) {
+fun logBlock(ctx: Context, blockId: String, reps: Int?, tooHard: Boolean, pain: Boolean, tooEasy: Boolean = false) {
     ctx.startService(Intent(ctx, WorkoutSessionService::class.java).setAction(WorkoutSessionService.ACTION_LOG)
         .putExtra(WorkoutSessionService.EXTRA_BLOCK_ID, blockId).putExtra(WorkoutSessionService.EXTRA_REPS, reps ?: -1)
-        .putExtra(WorkoutSessionService.EXTRA_TOO_HARD, tooHard).putExtra(WorkoutSessionService.EXTRA_PAIN, pain))
+        .putExtra(WorkoutSessionService.EXTRA_TOO_HARD, tooHard).putExtra(WorkoutSessionService.EXTRA_PAIN, pain).putExtra(WorkoutSessionService.EXTRA_TOO_EASY, tooEasy))
 }

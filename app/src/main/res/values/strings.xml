@@ -117,6 +117,10 @@
     <string name="logger_seconds_held">Seconds you held</string>
     <string name="logger_too_hard">Too hard</string>
     <string name="logger_pain">Pain</string>
+    <string name="logger_too_easy">Too easy</string>
+    <string name="logger_done">Done</string>
+    <string name="logger_logged">Logged: %1$d</string>
+    <string name="logger_edit">Change</string>
     <string name="end_complete">Workout complete</string>
     <string name="end_early">Workout finished early</string>
     <string name="end_summary">%1$d min · %2$d rounds · %3$d exercises</string>

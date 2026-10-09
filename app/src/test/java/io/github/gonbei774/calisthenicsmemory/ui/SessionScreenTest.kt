@@ -106,6 +106,28 @@ class SessionScreenTest {
         assertTrue(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_HARD, false))
     }
 
+    @Test fun tooEasyIsExclusiveWithTooHardAndSendsItsOwnFlag() {
+        show(stateAt(firstRecovery()))
+        rule.onNodeWithTag("logger_too_hard").performClick(); rule.waitForIdle()
+        assertTrue(lastIntent().getBooleanExtra(WorkoutSessionService.EXTRA_TOO_HARD, false))
+        rule.onNodeWithTag("logger_too_easy").performClick(); rule.waitForIdle()
+        val intent = lastIntent()
+        assertTrue(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_EASY, false))
+        assertFalse(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_HARD, true))
+    }
+
+    @Test fun loggerUsesTheWorkScreenLayoutPlusMinusAndDone() {
+        show(stateAt(firstRecovery()))
+        val target = plan.blocks[0].target!!.value
+        rule.onNodeWithTag("logger_plus").performClick(); rule.waitForIdle()
+        assertEquals(target + 1, lastIntent().getIntExtra(WorkoutSessionService.EXTRA_REPS, -2))
+        rule.onNodeWithTag("logger_done").assertIsDisplayed().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("logger_summary").assertIsDisplayed() // folded into one line, the stretch timer is untouched
+        rule.onNodeWithTag("logger_plus").assertDoesNotExist()
+        rule.onNodeWithTag("logger_change").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("logger_value").assertTextEquals((target + 1).toString())
+    }
+
     @Test fun loggedValuesComeBackFromTheSessionState() {
         val s0 = stateAt(firstRecovery())
         val s = reduce(s0, SessionEvent.LogBlock(plan.blocks[0].id, BlockLog(reps = 4, tooHard = true))).state

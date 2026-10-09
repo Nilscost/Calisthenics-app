@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FilledTonalIconButton
@@ -51,6 +52,38 @@ fun Stepper(
         )
         FilledTonalIconButton(onClick = { set(value + step) }, enabled = value < range.last, modifier = Modifier.size(Spacing.touch).testTag("${tag}_plus")) {
             Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.stepper_increase))
+        }
+    }
+}
+
+/**
+ * V03 (R17): the logger's big control, laid out like the work screen: − at the left, the number large in the middle,
+ * + at the right. Same tags as [Stepper] (`<tag>_minus`, `<tag>_value`, `<tag>_plus`); 64 dp touch targets.
+ */
+@Composable
+fun BigStepper(
+    value: Int,
+    onValueChange: (Int) -> Unit,
+    range: IntRange,
+    modifier: Modifier = Modifier,
+    step: Int = 1,
+    tag: String = "stepper",
+) {
+    val haptic = LocalHapticFeedback.current
+    fun set(v: Int) {
+        val c = v.coerceIn(range)
+        if (c != value) { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); onValueChange(c) }
+    }
+    Row(modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+        FilledTonalIconButton(onClick = { set(value - step) }, enabled = value > range.first, modifier = Modifier.size(64.dp).testTag("${tag}_minus")) {
+            Icon(AppIcons.Remove, contentDescription = stringResource(R.string.stepper_decrease), modifier = Modifier.size(32.dp))
+        }
+        Text(
+            value.toString(), style = MaterialTheme.typography.displayMedium, textAlign = TextAlign.Center, maxLines = 1,
+            modifier = Modifier.weight(1f).semantics { contentDescription = value.toString() }.testTag("${tag}_value"),
+        )
+        FilledTonalIconButton(onClick = { set(value + step) }, enabled = value < range.last, modifier = Modifier.size(64.dp).testTag("${tag}_plus")) {
+            Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.stepper_increase), modifier = Modifier.size(32.dp))
         }
     }
 }

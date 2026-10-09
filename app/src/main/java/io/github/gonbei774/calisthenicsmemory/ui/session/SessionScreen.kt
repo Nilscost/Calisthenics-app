@@ -40,7 +40,7 @@ import app.calisthenics.domain.session.SessionState
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
-import io.github.gonbei774.calisthenicsmemory.ui.components.Stepper
+import io.github.gonbei774.calisthenicsmemory.ui.components.BigStepper
 import app.calisthenics.domain.history.ratingFor
 import io.github.gonbei774.calisthenicsmemory.ui.history.RoomHistorySource
 import io.github.gonbei774.calisthenicsmemory.ui.screens.DemoClips
@@ -175,7 +175,12 @@ private fun TimerRing(progress: Float, modifier: Modifier, content: @Composable 
     }
 }
 
-/** "Push-up   − 10 +   [Too hard] [Pain]": prefilled with the target, saved the moment it changes. Untouched = as planned. */
+/**
+ * V03 (R17): the logger during the recovery, laid out like the work screen: name, then − [big number] +, the
+ * Too hard / Too easy / Pain chips, and Done below. Prefilled with the target; every change is saved at once and
+ * untouched = as planned. Done only confirms: it folds the logger into one "Logged: N" line (the timer is not touched).
+ */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun RepLogger(st: SessionState, work: TimelineBlock) {
     val ctx = LocalContext.current
@@ -184,22 +189,29 @@ private fun RepLogger(st: SessionState, work: TimelineBlock) {
     val saved = st.logged[work.id]
     var reps by remember(work.id) { mutableIntStateOf(saved?.reps ?: target?.value ?: 0) }
     var tooHard by remember(work.id) { mutableStateOf(saved?.tooHard ?: false) }
+    var tooEasy by remember(work.id) { mutableStateOf(saved?.tooEasy ?: false) }
     var pain by remember(work.id) { mutableStateOf(saved?.discomfort ?: false) }
     var typed by remember(work.id) { mutableStateOf(saved?.reps != null) }
-    fun push() { logBlock(ctx, work.id, if (typed) reps else null, tooHard, pain) }
+    var confirmed by remember(work.id) { mutableStateOf(false) }
+    fun push() { logBlock(ctx, work.id, if (typed) reps else null, tooHard, pain, tooEasy) }
     val name = SessionBus.names[work.variationId] ?: work.variationId.orEmpty()
     Card(Modifier.fillMaxWidth().testTag("logger"), shape = MaterialTheme.shapes.large, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)) {
-        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text(name, style = MaterialTheme.typography.titleMedium, maxLines = 1, modifier = Modifier.testTag("logger_name"))
-                    Text(stringResource(if (hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.bodySmall)
+        Column(Modifier.padding(Spacing.m), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            Text(name, style = MaterialTheme.typography.titleMedium, maxLines = 1, modifier = Modifier.testTag("logger_name"))
+            if (confirmed) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(stringResource(R.string.logger_logged, reps), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("logger_summary"))
+                    TextButton(onClick = { confirmed = false }, modifier = Modifier.testTag("logger_change")) { Text(stringResource(R.string.logger_edit)) }
                 }
-                Stepper(reps, { reps = it; typed = true; push() }, 0..999, step = if (hold && (target?.value ?: 0) >= 30) 5 else 1, tag = "logger")
-            }
-            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                FilterChip(selected = tooHard, onClick = { tooHard = !tooHard; push() }, label = { Text(stringResource(R.string.logger_too_hard)) }, modifier = Modifier.testTag("logger_too_hard"))
-                FilterChip(selected = pain, onClick = { pain = !pain; push() }, label = { Text(stringResource(R.string.logger_pain)) }, modifier = Modifier.testTag("logger_pain"))
+            } else {
+                Text(stringResource(if (hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.bodySmall)
+                BigStepper(reps, { reps = it; typed = true; push() }, 0..999, Modifier.fillMaxWidth(), step = if (hold && (target?.value ?: 0) >= 30) 5 else 1, tag = "logger")
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s, Alignment.CenterHorizontally)) {
+                    FilterChip(selected = tooHard, onClick = { tooHard = !tooHard; if (tooHard) tooEasy = false; push() }, label = { Text(stringResource(R.string.logger_too_hard)) }, modifier = Modifier.testTag("logger_too_hard"))
+                    FilterChip(selected = tooEasy, onClick = { tooEasy = !tooEasy; if (tooEasy) tooHard = false; push() }, label = { Text(stringResource(R.string.logger_too_easy)) }, modifier = Modifier.testTag("logger_too_easy"))
+                    FilterChip(selected = pain, onClick = { pain = !pain; push() }, label = { Text(stringResource(R.string.logger_pain)) }, modifier = Modifier.testTag("logger_pain"))
+                }
+                Button(onClick = { push(); confirmed = true }, Modifier.fillMaxWidth().height(48.dp).testTag("logger_done"), shape = RoundedCornerShape(Radius.button)) { Text(stringResource(R.string.logger_done)) }
             }
         }
     }

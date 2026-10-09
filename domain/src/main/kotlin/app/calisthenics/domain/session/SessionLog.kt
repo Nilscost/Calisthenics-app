@@ -9,7 +9,9 @@ import kotlinx.serialization.Serializable
 
 /** [reps] are reps for rep targets and seconds for holds; null = not typed. */
 @Serializable
-data class BlockLog(val reps: Int? = null, val tooHard: Boolean = false, val discomfort: Boolean = false)
+data class BlockLog(val reps: Int? = null, val tooHard: Boolean = false, val discomfort: Boolean = false,
+                    /** V03: "Too easy"; appended last with a default so saved checkpoints still decode. */
+                    val tooEasy: Boolean = false)
 
 /** Exercise-level feedback derived from the per-block logs of one session. */
 data class RowLog(val variationId: String, val rating: Rating, val discomfort: Boolean, val actualReps: Int?)
@@ -21,6 +23,7 @@ fun rowLogsFrom(plan: WorkoutPlan, logged: Map<String, BlockLog>): List<RowLog> 
         val logs = blocks.map { it to logged.getValue(it.id) }
         val reps = logs.mapNotNull { it.second.reps }.minOrNull()
         val below = logs.any { (b, l) -> l.tooHard || (l.reps != null && b.target != null && l.reps < b.target.value) }
-        RowLog(vid, if (below) Rating.BELOW else Rating.MET, logs.any { it.second.discomfort }, reps)
+        val easy = logs.any { it.second.tooEasy }
+        RowLog(vid, if (below) Rating.BELOW else if (easy) Rating.ABOVE else Rating.MET, logs.any { it.second.discomfort }, reps)
     }
 }
