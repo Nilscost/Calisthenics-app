@@ -115,7 +115,7 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
         if (logFor != null) RepLogger(st, logFor)
 
         val clip = remember(b.variationId) { b.variationId?.let { DemoClips.file(ctx, it) } }
-        if (clip != null) Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) { DemoPlayer(clip, controls = false) }
+        if (clip != null) Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) { DemoPlayer(clip, controls = false, minHeight = if (logFor != null) 96.dp else 180.dp) }
         else Spacer(Modifier.weight(1f))
 
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
@@ -128,9 +128,9 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
         }
 
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            TimerRing(progress, Modifier.size(168.dp)) {
+            TimerRing(progress, Modifier.size(if (logFor != null) 132.dp else 168.dp)) {
                 Text(
-                    formatClock(remSec), style = MaterialTheme.typography.displayLarge, maxLines = 1,
+                    formatClock(remSec), style = if (logFor != null) MaterialTheme.typography.displaySmall else MaterialTheme.typography.displayLarge, maxLines = 1,
                     modifier = Modifier.semantics { contentDescription = ctx.getString(R.string.session_time_description, title, remSec / 60, remSec % 60) }.testTag("session_time"),
                 )
             }

@@ -269,3 +269,8 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - Tests: HistorySettingsTest (rewritten detail test: per-round values, round-2 correction writes all rounds, pain/too easy/too hard flags, 5 new revision batches; corrected rounds shown instead of logged), SessionScreenTest (+1: end editor has one number per round and the three chips), EffectiveRoundsTest (+3). Verify exit 0 (`docs/evidence/v04b-verify-2026-10-09.log`).
 - Flows: `c_session` ends with the per-round editor shot (`09-end-editor`); `e_seeded` shows History detail with the editors.
 - Choices not in the plan: every change writes new revisions for all rounds (small, append-only); "Too easy" with "Pain" is allowed together; a session where the owner rates "Too easy" twice in a row now produces the D7 suggestion event in the engine, but there is still **no card/button in the app that shows the suggestion or applies it (AcceptHarder)**; the V27 suggestion card or a later UI task must surface it (not scheduled in the plan - listed as open issue).
+
+### CI fixes after the first run with V02-V04a (2026-10-09)
+- `connected` job failed: "Didn't find class androidx.test.runner.AndroidJUnitRunner" in the :data test APK -> added `androidTestImplementation("androidx.test:runner:1.6.1")` (cached offline).
+- `e_seeded` kettlebell sheet is found by its text "Kettlebell: 12 kg".
+- Screenshot review of run 577e644 showed the V03 logger plus the long stretch title squeezed the clip to zero height (clip drawn over the logger's Done button). Fix: while the logger is shown the timer ring is 132 dp (smaller clock), and the clip's minimum height is 96 dp instead of 180 dp.

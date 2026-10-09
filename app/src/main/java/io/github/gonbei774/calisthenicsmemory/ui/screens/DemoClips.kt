@@ -33,11 +33,11 @@ object DemoClips {
  * defensively; [onLoad] is called with every path that is handed to the view (used by tests).
  */
 @Composable
-fun DemoPlayer(file: File, controls: Boolean = true, onLoad: (String) -> Unit = {}) {
+fun DemoPlayer(file: File, controls: Boolean = true, onLoad: (String) -> Unit = {}, minHeight: androidx.compose.ui.unit.Dp = 180.dp) {
     val description = androidx.compose.ui.res.stringResource(io.github.gonbei774.calisthenicsmemory.R.string.demo_clip_description)
     val path = file.absolutePath
     key(path) {
-        AndroidView(modifier = Modifier.fillMaxWidth().heightIn(min = 180.dp, max = 260.dp).aspectRatio(16f / 10f).semantics { contentDescription = description }, factory = { c ->
+        AndroidView(modifier = Modifier.fillMaxWidth().heightIn(min = minHeight, max = 260.dp).aspectRatio(16f / 10f).semantics { contentDescription = description }, factory = { c ->
             VideoView(c).apply {
                 tag = path
                 setVideoPath(path); onLoad(path)

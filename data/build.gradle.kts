@@ -62,6 +62,7 @@ dependencies {
     // not exist (exportSchema = false), so it could never pass on-device.
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test:core:1.5.0")
+    androidTestImplementation("androidx.test:runner:1.6.1") // the test APK needs the runner class explicitly (CI connected job)
     androidTestImplementation("androidx.room:room-testing:2.6.1")
     androidTestImplementation("androidx.sqlite:sqlite-framework:2.4.0")
 }

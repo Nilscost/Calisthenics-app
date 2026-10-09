@@ -35,5 +35,5 @@ appId: app.calisthenics.personal
 - takeScreenshot: 06-progress-hips-${VARIANT}
 - tapOn: { id: "tree_node_kettlebell-deadlift" }
 # The sheet is its own window: look for text that only the sheet has.
-- extendedWaitUntil: { visible: "Stand with feet hip-width.*", timeout: 10000 }
+- extendedWaitUntil: { visible: "Kettlebell: 12 kg.*", timeout: 10000 }
 - takeScreenshot: 07-kettlebell-sheet-${VARIANT}
