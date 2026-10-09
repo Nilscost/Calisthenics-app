@@ -10,7 +10,7 @@ Galaxy S21's 1080×2400 at 420 dpi, in three variants: `light`, `dark`, `font13`
 - Find controls by test tag (`id:`; the app exposes test tags as resource ids) or by visible text. Bottom sheets and
   dialogs are separate windows: there, use text.
 - Every flow runs `../common/dismiss_system_dialogs.yaml` right after `launchApp` (emulator ANR dialogs). Keep it in new flows.
-- A failing flow does not stop the run; `results.txt` lists PASS/FAIL per flow and variant, and a `zz-failure-<variant>.png`
+- A failing flow is retried once (logged as RETRY), then recorded; it does not stop the run; `results.txt` lists PASS/FAIL per flow and variant, and a `zz-failure-<variant>.png`
   shows the screen where it stopped. Maestro's own debug output is in the Actions artifact (`.maestro/tests`).
 
 Why Maestro and not instrumented Compose tests: no new Gradle dependencies (the sandbox builds offline from a fixed

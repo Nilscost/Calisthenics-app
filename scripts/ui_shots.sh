@@ -5,7 +5,7 @@
 # A failing flow is recorded and the run continues, so the screenshots taken before the failure are kept;
 # the script exits non-zero at the end if any flow failed.
 set -uo pipefail
-APK="$1"; OUT="$2"; ROOT=$(pwd)
+APK="$1"; OUT="$2"; ROOT=$(pwd); PKG=app.calisthenics.personal
 export MAESTRO_CLI_NO_ANALYTICS=1
 mkdir -p "$OUT"; : > "$OUT/results.txt"
 adb wait-for-device
@@ -24,15 +24,24 @@ for variant in light dark font13; do
   esac
   adb shell cmd uimode night $night
   adb shell settings put system font_scale $scale
-  sleep 2
+  # A uimode/font change restarts system UI on the emulator; give it time, then start from the home screen.
+  adb shell am force-stop $PKG
+  sleep 15
+  adb shell input keyevent KEYCODE_HOME
+  sleep 3
   # Flows run in file order; a_* starts from a fresh install (clearState), the others continue from it.
   for flow in maestro/flows/*.yaml; do
     name=$(basename "$flow" .yaml)
     mkdir -p "$OUT/$name"
     # Maestro only writes screenshots inside its own output folder: run it there with relative names, then collect them.
-    tmp=$(mktemp -d)
-    if (cd "$tmp" && maestro test --no-ansi --test-output-dir "$tmp" -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant.txt" 2>&1; then
-      ok=1; else ok=0; fi
+    # One retry: the emulator occasionally shows a blank or frozen screen after a configuration change.
+    for try in 1 2; do
+      tmp=$(mktemp -d)
+      if (cd "$tmp" && maestro test --no-ansi --test-output-dir "$tmp" -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant.txt" 2>&1; then
+        ok=1; else ok=0; fi
+      [ $ok = 1 ] && break
+      [ $try = 1 ] && { echo "RETRY $name $variant" >> "$OUT/results.txt"; adb shell am force-stop $PKG; adb shell input keyevent KEYCODE_HOME; sleep 15; rm -rf "$tmp"; }
+    done
     find "$tmp" -name '*.png' -not -path '*/.maestro/*' -not -name 'screenshot-*' -exec cp {} "$OUT/$name/" \;
     rm -rf "$tmp"
     if [ $ok = 1 ]; then
