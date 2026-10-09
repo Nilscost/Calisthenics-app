@@ -2,6 +2,7 @@
 appId: app.calisthenics.personal
 ---
 - launchApp
+- runFlow: ../common/dismiss_system_dialogs.yaml
 - extendedWaitUntil: { visible: { id: preview_button }, timeout: 15000 }
 - takeScreenshot: 01-train-${VARIANT}
 - tapOn: { id: preview_button }

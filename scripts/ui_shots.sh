@@ -9,6 +9,9 @@ APK="$1"; OUT="$2"; ROOT=$(pwd)
 export MAESTRO_CLI_NO_ANALYTICS=1
 mkdir -p "$OUT"; : > "$OUT/results.txt"
 adb wait-for-device
+until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 ]; do sleep 2; done
+adb shell settings put global hide_error_dialogs 1   # no "isn't responding" dialogs over the app
+sleep 30                                             # let the launcher and system apps settle after boot
 adb shell wm size 1080x2400
 adb shell wm density 420          # Galaxy S21: 1080x2400, ~421 dpi
 adb install -r "$APK"

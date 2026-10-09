@@ -4,6 +4,7 @@ appId: app.calisthenics.personal
 - launchApp:
     clearState: true
     permissions: { all: allow }
+- runFlow: ../common/dismiss_system_dialogs.yaml
 - extendedWaitUntil: { visible: { id: onb_next }, timeout: 20000 }
 - takeScreenshot: 01-welcome-${VARIANT}
 - tapOn: { id: onb_next }

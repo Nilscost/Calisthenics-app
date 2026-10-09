@@ -2,6 +2,7 @@
 appId: app.calisthenics.personal
 ---
 - launchApp
+- runFlow: ../common/dismiss_system_dialogs.yaml
 - extendedWaitUntil: { visible: { id: bottom_bar }, timeout: 15000 }
 - tapOn: { id: tab_progress }
 - extendedWaitUntil: { visible: { id: tree_area }, timeout: 10000 }

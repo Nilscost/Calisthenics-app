@@ -1,0 +1,7 @@
+# Emulator housekeeping: close a system "isn't responding" dialog (e.g. the launcher) if one covers the app.
+appId: app.calisthenics.personal
+---
+- runFlow:
+    when: { visible: "isn't responding" }
+    commands:
+      - tapOn: "Wait"
