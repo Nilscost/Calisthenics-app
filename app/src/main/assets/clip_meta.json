@@ -425,11 +425,7 @@
    "FRONT_DELTS",
    "OBLIQUES"
   ],
-  "sharedPoseWith": [
-   "pushup-diamond",
-   "pushup-feet-elevated",
-   "pushup-standard"
-  ]
+  "sharedPoseWith": []
  },
  "pushup-diamond": {
   "kind": "rep",
@@ -440,11 +436,7 @@
   "secondary": [
    "FRONT_DELTS"
   ],
-  "sharedPoseWith": [
-   "pushup-archer",
-   "pushup-feet-elevated",
-   "pushup-standard"
-  ]
+  "sharedPoseWith": []
  },
  "pushup-feet-elevated": {
   "kind": "rep",
@@ -456,11 +448,7 @@
    "TRICEPS",
    "ABS"
   ],
-  "sharedPoseWith": [
-   "pushup-archer",
-   "pushup-diamond",
-   "pushup-standard"
-  ]
+  "sharedPoseWith": []
  },
  "pushup-incline": {
   "kind": "rep",
@@ -525,11 +513,7 @@
    "FRONT_DELTS",
    "ABS"
   ],
-  "sharedPoseWith": [
-   "pushup-archer",
-   "pushup-diamond",
-   "pushup-feet-elevated"
-  ]
+  "sharedPoseWith": []
  },
  "row-band": {
   "kind": "rep",

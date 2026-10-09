@@ -131,11 +131,66 @@ NEW = {
     "kettlebell-swing-one-arm": (kb_swing_one_arm, "rep"),
 }
 POSES = dict(v1.POSES); POSES.update(NEW)
+# ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)
+BAR_Y = 280
+
+def _std_pushup(sy_up=104, sy_down=64):
+    return v1.plank_like((95, 46), 144, (232, 44), sy_up, sy_down)
+
+def pushup_diamond(p):
+    """Standard push-up path, hands together under the chest (a diamond): the hands meet at the body's midline."""
+    d = _std_pushup()(p); d["arm_z"] = [3, -3]; return d
+
+def pushup_feet_elevated(p):
+    """Feet on a box: the body slopes slightly head-down at the bottom; same hand place as the standard push-up."""
+    d = v1.plank_like((95, 84), 144, (232, 44), 104, 62)(p)
+    d["scene"] = [("rect", (40, 44, 118, 84), v1.GRD)]
+    return d
+
+def pushup_archer(p):
+    """Wide hands: one arm bends, the other stays straight out to the side (the hand slides, seen as a long straight arm)."""
+    d = _std_pushup()(p)
+    sho = sh(d["hip"], d["a"])
+    d["arms"] = [d["arms"][0], ("ik", (sho[0] + 3, sho[1] - 70), (-1, -0.3))]
+    d["arm_z"] = [Z_ARM + 3, -66]
+    return d
+
+def pull_hang(top, bottom, lean=0, kind="pullup"):
+    """Hang from the bar and pull. top/bottom = shoulder height at the lowest / highest point (bar at BAR_Y, arm length 62).
+    lean = torso lean back (degrees) at the top, so the chest travels to the bar."""
+    def f(p):
+        s = rep(p); sy = lerp(top, bottom, s); sx = 192
+        a = 90 + lean * s
+        hip = (sx - L_T * math.cos(math.radians(a)), sy - L_T * math.sin(math.radians(a)))
+        hip = (sx + (hip[0] - sx), hip[1])
+        legs = [("ik", (hip[0] - 22 + 8 * s, hip[1] - 66), (1, 0)), ("ik", (hip[0] - 30 + 8 * s, hip[1] - 60), (1, 0))]   # knees bent, feet crossed behind
+        pose = dict(hip=hip, a=a, head_off=-6 * s, arms=[("ik", (200, BAR_Y), (-1, -0.2))] * 2, legs=legs, scene=[("bar", 200, BAR_Y)])
+        if kind == "band": pose["props"] = [("line", (232, BAR_Y), "ankle0", v1.PROP)]
+        return pose
+    return f
+
+def muscle_up(p):
+    """Pull explosively (leaning back), rotate over the bar, press out to straight arms above it."""
+    s = rep(p)
+    if s < 0.5:
+        u = s / 0.5; sy = lerp(218, 290, u); a = 90 + 22 * u
+    else:
+        u = (s - 0.5) / 0.5; sy = lerp(290, 346, u); a = lerp(112, 82, u)
+    sx = 192
+    hip = (sx - L_T * math.cos(math.radians(a)), sy - L_T * math.sin(math.radians(a)))
+    legs = [("ik", (hip[0] - 14, hip[1] - 70), (1, 0)), ("ik", (hip[0] - 22, hip[1] - 66), (1, 0))]
+    return dict(hip=hip, a=a, head_off=0, arms=[("ik", (200, BAR_Y), (-1, -0.2))] * 2, legs=legs, scene=[("bar", 200, BAR_Y)])
+
+OWN_POSES = {
+    "pushup-diamond": (pushup_diamond, "rep"), "pushup-feet-elevated": (pushup_feet_elevated, "rep"), "pushup-archer": (pushup_archer, "rep"),
+    "pullup-band-assisted": (pull_hang(218, 266, 4, "band"), "rep"), "pullup-full": (pull_hang(218, 274, 6), "rep"),
+    "pullup-chest-to-bar": (pull_hang(218, 288, 22), "rep"), "muscle-up-bar": (muscle_up, "rep"),
+}
+POSES.update(OWN_POSES)
 
 # V06a: a pose function may only be shared by several ids when the group is declared here with the difference that the
 # clip itself shows. V06b gives every variant of the first group its own pose (K2) and removes it from this table.
 SHARED_POSES = {
-    frozenset({"pushup-standard", "pushup-diamond", "pushup-feet-elevated", "pushup-archer"}): "OPEN (K2): same standard push-up pose; V06b gives each its own",
     frozenset({"pushup-one-arm-negative", "pushup-one-arm"}): "same one-arm push-up pose; the negative is the slow lowering half, only the cue text differs",
 }
 def pose_groups():
@@ -171,7 +226,7 @@ def mul(a, k): return tuple(x * k for x in a)
 def lerp3(a, b, t): return tuple(x + (y - x) * t for x, y in zip(a, b))
 TO_VIEWER = (math.sin(THETA) * math.cos(PHI), math.sin(PHI), math.cos(THETA) * math.cos(PHI))
 # Poses that are almost edge-on at 30 degrees (the figure is a thin line seen from the side) get a wider yaw so the depth reads.
-YAW_OVERRIDE = {"wall-handstand-hold": 62, "hspu-wall-negative": 62, "hspu-wall": 62, "front-lever-tuck": 55, "front-lever-adv-tuck": 55, "front-lever-straddle": 55}
+YAW_OVERRIDE = {"pushup-diamond": 62, "pushup-archer": 48, "wall-handstand-hold": 62, "hspu-wall-negative": 62, "hspu-wall": 62, "front-lever-tuck": 55, "front-lever-adv-tuck": 55, "front-lever-straddle": 55}
 def set_view(yaw_deg):
     global THETA, TO_VIEWER
     THETA = math.radians(yaw_deg)
@@ -386,6 +441,22 @@ def main():
     args = sys.argv[1:]
     sheet = None
     if "--sheet" in args: i = args.index("--sheet"); sheet = args[i + 1]; del args[i:i + 2]
+    if "--frames" in args:   # review aid: a contact sheet of 6 frames per id, one row per id:  --frames out.png id ...
+        i = args.index("--frames"); out_png = args[i + 1]; ids = [x for x in args[i + 2:] if not x.startswith("--")]
+        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        byid = {v["id"]: v for v in json.load(open(os.path.join(root, "app/src/main/assets/catalog.json")))["variations"]}
+        try: font = ImageFont.load_default(size=22 * SS)
+        except TypeError: font = ImageFont.load_default()
+        rows = []
+        for vid in ids:
+            set_view(YAW_OVERRIDE.get(vid, 30)); fn0, kind = POSES[vid]; fn = loop_fn(vid, fn0, kind); v = byid[vid]
+            muscles = [(m, SECONDARY) for m in v.get("secondaryMuscles", [])] + [(m, PRIMARY) for m in v.get("primaryMuscles", [])]
+            cam = camera_for(fn, vid)
+            rows.append([render(vid, v["name"], kind, fn, q / 6, cam, muscles, font).resize((W // 2, H // 2), Image.LANCZOS) for q in range(6)])
+        sheet_im = Image.new("RGB", (W // 2 * 6, H // 2 * len(rows)), BG)
+        for r, row in enumerate(rows):
+            for c, t in enumerate(row): sheet_im.paste(t, (c * W // 2, r * H // 2))
+        sheet_im.save(out_png); return
     check = "--check" in args
     args = [a for a in args if a != "--check"]
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
