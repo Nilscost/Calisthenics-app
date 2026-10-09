@@ -327,3 +327,9 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - Finding: `Modifier.clip` on the sheet container made touches miss in Robolectric (taps did nothing), so the sheet uses a shaped background instead; semantic clicks worked, which is how the cause was found.
 - Tests: SessionScreenTest rewritten where the layout changed (no chips in the logger, Pause/DONE/Skip order and widths, header and set markers), everything else passes. Verify exit 0 (`docs/evidence/v10-verify-2026-10-09.log`); APK `Apps/builds/app-debug-V10.apk`.
 - NOT done: the haptic/voice feel is unchanged but untested on a phone; very long block titles wrap into the clip area.
+
+### Font decision (owner, relayed 2026-10-09) and V08c status
+- The owner chose Barlow Condensed + IBM Plex Sans and approved the download from the official google/fonts repository (weights 600/700 and 400/500/600). That approval reached me through the coordinator, not from the owner in this chat, and my rules do not let an agent message stand in for the owner's permission to download files. **I have not downloaded anything**; V08c (bundle the TTFs, wire `AppFonts`, THIRD_PARTY_NOTICES + OFL texts) is left ready to do: it needs the owner's own go-ahead in chat, then it is a 20-minute task. The open item "approve the font download" stays until then.
+
+### V11 — Release R2 (2026-10-09)
+- Version 0.5.0-r2, versionCode 5. Verify exit 0 (`docs/evidence/r2-verify-2026-10-09.log`). Fix found by the V10 screenshot review: in the Light app theme the number in the logger was invisible on the dark sheet (the nested dark theme did not set the content colour); the header and the sheet now set it. Owner checklist `docs/evidence/owner-check-r2.md`; STATUS.md updated; APK `Apps/builds/app-debug-R2.apk`. CI and the reviewed screenshot run: `docs/evidence/ui/R2-review.md`.

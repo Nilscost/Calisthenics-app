@@ -145,7 +145,7 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
         // ---- clip area with the transparent header (always the light palette: dark text on the white clip)
         MaterialTheme(colorScheme = appColorScheme(false), typography = AppTypography, shapes = AppShapes) {
             CompositionLocalProvider(LocalAppAccent provides LightAccent) {
-                Box(Modifier.weight(1f).fillMaxWidth().background(Color.White)) {
+                CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) { Box(Modifier.weight(1f).fillMaxWidth().background(Color.White)) {
                     if (clip != null) Box(Modifier.fillMaxSize().padding(top = 132.dp), contentAlignment = Alignment.Center) { DemoPlayer(clip, controls = false, fit = true) }
                     Column(Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = Spacing.l, vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Row(verticalAlignment = Alignment.Top) {
@@ -168,14 +168,14 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                         Text(title, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_title"))
                         CueText.nextLabel(st.plan, b.id, names)?.let { Text(stringResource(R.string.session_next, it), Modifier.testTag("session_next"), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                     }
-                }
+                } }
             }
         }
 
         // ---- the dark bottom sheet (always the dark palette)
         MaterialTheme(colorScheme = appColorScheme(true), typography = AppTypography, shapes = AppShapes) {
             CompositionLocalProvider(LocalAppAccent provides DarkAccent) {
-                Box(Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background, RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp))) {
+                CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) { Box(Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background, RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp))) {
                     Column(Modifier.navigationBarsPadding().padding(horizontal = Spacing.l).padding(top = Spacing.m, bottom = Spacing.m), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                         Text(stringResource(blockLabel(b)).uppercase(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
                         Text(
@@ -207,7 +207,7 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                             AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, Modifier.weight(1f).height(54.dp).testTag("session_skip")) { Text(stringResource(R.string.session_skip)) }
                         }
                     }
-                }
+                } }
             }
         }
     }
