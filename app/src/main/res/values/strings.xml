@@ -128,6 +128,17 @@
     <string name="preview_type_text">Type reps (seconds for holds). It is used for this exercise in this set only and does not count towards your progress.</string>
     <string name="preview_type_ok">Use it</string>
     <string name="preview_type_clear">Back to the level</string>
+    <string name="rule_caption">Progression rule</string>
+    <string name="rule_app_levels">App levels</string>
+    <string name="rule_rep_range">Rep range</string>
+    <string name="rule_custom">Custom</string>
+    <string name="rule_app_levels_hint">Five levels per exercise; a level rises after 3 good sessions over at least 7 days.</string>
+    <string name="rule_rep_range_hint">%1$d sets of %2$d–%3$d reps (holds %4$d–%5$d s). When every set reaches the top you move on to the next exercise and start again at the bottom. A set you do not log counts as last time\'s number.</string>
+    <string name="rule_custom_hint">%1$d sets of %2$d–%3$d reps; %6$d session(s) in a row with every set at the top move you on.</string>
+    <string name="rule_sets">Sets</string>
+    <string name="rule_from">From (reps)</string>
+    <string name="rule_to">To (reps)</string>
+    <string name="rule_sessions">Sessions in a row</string>
     <string name="preview_set">Set %1$d</string>
     <string name="preview_applies_to_all">Changes apply to all sets</string>
     <string name="preview_level">Level %1$d of %2$d</string>
@@ -151,6 +162,8 @@
     <string name="preview_header">%1$d rounds · %2$d min · %3$s</string>
     <string name="target_reps">%1$d reps</string>
     <string name="target_seconds">%1$d s</string>
+    <string name="target_reps_range">%1$d–%2$d reps</string>
+    <string name="target_seconds_range">%1$d–%2$d s</string>
     <string name="bullet_item">• %1$s</string>
     <string name="target_per_side">%1$s per side</string>
     <string name="target_with_load">%1$s · %2$s kg</string>

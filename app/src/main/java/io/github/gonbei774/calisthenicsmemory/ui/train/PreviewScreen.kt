@@ -68,7 +68,7 @@ fun circuitOf(plan: WorkoutPlan, round: Int = 1): List<CircuitEntry> =
 @Composable
 private fun targetText(t: Target?, perSide: Boolean, loadGrams: Int? = null): String {
     t ?: return ""
-    val base = if (t.type == TargetType.REPS) stringResource(R.string.target_reps, t.value) else stringResource(R.string.target_seconds, t.value)
+    val base = io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(t)
     val sided = if (perSide) stringResource(R.string.target_per_side, base) else base
     return withLoad(sided, loadGrams)
 }
@@ -110,7 +110,7 @@ private fun TimelineCard(p: WorkoutPlan, names: Map<String, String>, open: Boole
             }
             if (open) Column(Modifier.padding(horizontal = Spacing.m, vertical = Spacing.s).testTag("timeline_list"), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 p.blocks.forEach { b ->
-                    val target = b.target?.let { if (it.type == TargetType.REPS) stringResource(R.string.target_reps, it.value) else stringResource(R.string.target_seconds, it.value) }.orEmpty()
+                    val target = b.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it) }.orEmpty()
                     Text("${formatClock(b.durationSeconds)}  ${CueText.label(p, b.id, names)} ${withLoad(target, b.loadGrams)}".trim(), style = MaterialTheme.typography.bodyMedium)
                 }
             }
@@ -248,6 +248,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                         }
                         Switch(checked = detailed, onCheckedChange = null)
                     }
+                    RulePicker(edits.rule ?: routine.rule) { edits = edits.copy(rule = it) }
                     // one set at a time (doc 17 §2.2); the Detailed edit lists every set
                     if (!detailed) Row(verticalAlignment = Alignment.CenterVertically) {
                         SingleChoiceSegmentedButtonRow(Modifier.weight(1f)) {
@@ -402,6 +403,37 @@ private fun AddSheet(exercises: List<Pair<app.calisthenics.domain.tree.TreeTab, 
             if (mode == "stretch") stretches.forEach { o ->
                 ListItem(headlineContent = { Text(o.name) }, leadingContent = { io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(o.id, o.name, 44.dp) }, modifier = Modifier.clickable { onStretch(o.id) }.testTag("add_stretch_${o.id}"))
             }
+        }
+    }
+}
+
+/** O2: App levels / Rep range / Custom. Rep range = sets x from-to with RR defaults; Custom edits every number. */
+@Composable
+private fun RulePicker(rule: ProgressionRule, onChange: (ProgressionRule) -> Unit) {
+    Column(Modifier.fillMaxWidth().testTag("rule_picker"), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Caption(stringResource(R.string.rule_caption))
+        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+            RuleKind.entries.forEachIndexed { i, k ->
+                SegmentedButton(selected = rule.kind == k, onClick = { onChange(rule.withKind(k)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(i, RuleKind.entries.size), icon = {}, modifier = Modifier.testTag("rule_${k.name}")) {
+                    Text(stringResource(when (k) { RuleKind.APP_LEVELS -> R.string.rule_app_levels; RuleKind.REP_RANGE -> R.string.rule_rep_range; RuleKind.CUSTOM -> R.string.rule_custom }), maxLines = 1)
+                }
+            }
+        }
+        Text(
+            stringResource(when (rule.kind) { RuleKind.APP_LEVELS -> R.string.rule_app_levels_hint; RuleKind.REP_RANGE -> R.string.rule_rep_range_hint; RuleKind.CUSTOM -> R.string.rule_custom_hint }, rule.sets, rule.from, rule.to, rule.holdFrom, rule.holdTo, rule.sessions),
+            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("rule_hint"),
+        )
+        if (rule.kind == RuleKind.CUSTOM) {
+            @Composable fun line(label: Int, value: Int, range: IntRange, tag: String, set: (Int) -> ProgressionRule?) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(stringResource(label), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                    io.github.gonbei774.calisthenicsmemory.ui.components.Stepper(value, { v -> set(v)?.let(onChange) }, range, tag = tag)
+                }
+            }
+            line(R.string.rule_sets, rule.sets, 1..10, "rule_sets") { v -> runCatching { rule.copy(sets = v) }.getOrNull() }
+            line(R.string.rule_from, rule.from, 1..rule.to, "rule_from") { v -> runCatching { rule.copy(from = v) }.getOrNull() }
+            line(R.string.rule_to, rule.to, rule.from..99, "rule_to") { v -> runCatching { rule.copy(to = v) }.getOrNull() }
+            line(R.string.rule_sessions, rule.sessions, 1..10, "rule_sessions") { v -> runCatching { rule.copy(sessions = v) }.getOrNull() }
         }
     }
 }

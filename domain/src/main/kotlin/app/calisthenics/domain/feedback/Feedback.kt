@@ -95,6 +95,10 @@ data class SessionEvidence(
     val loadGrams: Int? = null,
     /** V02: the user rated an exercise of this session "too easy" (Rating.ABOVE). Appended last with a default. */
     val anyAbove: Boolean = false,
+    /** V21: under a rep-range rule: did every set reach the top of the range (null = App levels). */
+    val ruleMet: Boolean? = null,
+    /** V21: how many such sessions in a row move you on. */
+    val ruleSessions: Int = 1,
 ) {
     /** Spec §5 / ADR C2 exposure definition. */
     val qualifying: Boolean
@@ -111,6 +115,8 @@ fun deriveEvidence(
     minQualifyingBlocksOf: (String, Int?) -> Int,
     easierOverrides: Set<String> = emptySet(),
     feedbackDay: Int? = null,
+    /** V21: per exercise, did the session meet the plan's rep-range rule? null = App levels. */
+    ruleMetOf: (String) -> Boolean? = { null },
 ): List<SessionEvidence> {
     val tierByVariation = plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null }
         // a free number (Detailed edit) means "does not count towards progression": no prescribed tier, so the session is never qualifying
@@ -137,6 +143,8 @@ fun deriveEvidence(
             minQualifyingBlocks = minQualifyingBlocksOf(vid, tier),
             loadGrams = loadByVariation[vid],
             anyAbove = os.any { it.rating == Rating.ABOVE },
+            ruleMet = ruleMetOf(vid),
+            ruleSessions = plan.rule.sessions,
         )
     }
 }

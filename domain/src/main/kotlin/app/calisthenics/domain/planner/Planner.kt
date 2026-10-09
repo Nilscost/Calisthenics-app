@@ -159,7 +159,7 @@ private class Planner(val input: PlanInput) {
             id = input.planId, routineId = input.routine.id, routineRevision = input.routine.revision,
             catalogVersion = cat.catalogVersion, createdAtEpochMs = input.createdAtEpochMs, profileId = input.profile.id,
             requestedDurationSeconds = budget, plannedDurationSeconds = pick.total, focus = draft.focus,
-            stretchOn = draft.stretchOn, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed, format = draft.format,
+            stretchOn = draft.stretchOn, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed, format = draft.format, rule = draft.rule,
             changesExplained = explain.distinct(), warnings = warn.distinct(), needsAcceptance = needsAcceptance,
             usesDraftContent = usesDraft, blocks = blocks,
         ))
@@ -286,8 +286,10 @@ private class Planner(val input: PlanInput) {
                 val secs = if (draft.timed && !isHold) (if (side == Side.NONE) TIMED_WORK_SECONDS else TIMED_WORK_SECONDS / 2) else t.workWindowSeconds
                 workTotal += secs
                 val free = draft.freeTargets["$r:${c.slot.id}"] ?: draft.freeTargets[c.slot.id]
-                val target = if (free != null) Target(t.target.type, free.coerceIn(1, 999)) else t.target
-                val dur = if (free != null && isHold) maxOf(secs, target.value + 3) else secs
+                val rng = draft.rule
+                val ruleTarget = if (rng.isRange) (if (isHold) Target(t.target.type, rng.holdFrom, rng.holdTo) else Target(t.target.type, rng.from, rng.to)) else null
+                val target = if (free != null) Target(t.target.type, free.coerceIn(1, 999)) else ruleTarget ?: t.target
+                val dur = if ((free != null || ruleTarget != null) && isHold) maxOf(secs, (target.max ?: target.value) + 3) else secs
                 out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, t.index,
                     mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams, freeTarget = free != null, groupIndex = group)
             }

@@ -82,9 +82,29 @@ data class EquipmentProfile(
 // ---------- content ----------
 
 @Serializable
-data class Target(val type: TargetType, val value: Int) {
-    init { require(value > 0) { "target must be positive" } }
-    override fun toString(): String = if (type == TargetType.REPS) "$value reps" else "${value}s hold"
+data class Target(val type: TargetType, val value: Int, /** V21: the top of a rep range (5-8): [value] is the bottom, [max] the top that moves you on. Null = a single number. */ val max: Int? = null) {
+    init { require(value > 0) { "target must be positive" }; require(max == null || max >= value) { "range top below its bottom" } }
+    override fun toString(): String = (if (max != null && max != value) "$value-$max" else "$value") + if (type == TargetType.REPS) " reps" else "s hold"
+}
+
+/** O2: how progress is judged for a routine. App levels = today's five-target tiers; Rep range = sets x from-to (a session where every set reaches the top moves you on); Custom = the same, with everything editable. */
+@Serializable enum class RuleKind { APP_LEVELS, REP_RANGE, CUSTOM }
+
+@Serializable
+data class ProgressionRule(
+    val kind: RuleKind = RuleKind.APP_LEVELS,
+    val sets: Int = 3,
+    val from: Int = 5,
+    val to: Int = 8,
+    /** Holds (seconds): they go on at the top, RR: 10-30 s. */
+    val holdFrom: Int = 10,
+    val holdTo: Int = 30,
+    /** Qualifying sessions in a row before moving on (Rep range: 1; Custom: editable). */
+    val sessions: Int = 1,
+) {
+    init { require(sets in 1..10 && from in 1..to && holdFrom in 1..holdTo && sessions in 1..10) { "rule values out of range" } }
+    val isRange: Boolean get() = kind != RuleKind.APP_LEVELS
+    fun withKind(k: RuleKind) = when (k) { RuleKind.REP_RANGE -> copy(kind = k, sessions = 1); else -> copy(kind = k) }
 }
 
 @Serializable
@@ -242,6 +262,8 @@ data class Routine(
     val slots: List<RoutineSlot>,
     val defaultFocus: Set<StrengthFocus> = setOf(StrengthFocus.FULL_BODY),
     val goalId: String? = null,
+    /** V21: the progression rule is a property of the routine (O2). Appended last; older routines use App levels. */
+    val rule: ProgressionRule = ProgressionRule(),
 )
 
 /** Remembered preferences (spec §3, ADR 0002 §A). */
@@ -313,4 +335,6 @@ data class WorkoutPlan(
     val timed: Boolean = false,
     /** V19: how the blocks are ordered. Appended last; plans saved before V19 are circuits. */
     val format: WorkoutFormat = WorkoutFormat.CIRCUIT,
+    /** V21: the rule the plan was made under (a snapshot, like everything in a plan). */
+    val rule: ProgressionRule = ProgressionRule(),
 )

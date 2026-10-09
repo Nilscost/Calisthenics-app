@@ -16,6 +16,10 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: "Add exercise", timeout: 5000 }
 - takeScreenshot: 02c-add-sheet-${VARIANT}
 - back
+# V21: the progression rule picker (Rep range shows ranges and three sets), then back to App levels
+- tapOn: { id: rule_REP_RANGE }
+- takeScreenshot: 02e-rule-rep-range-${VARIANT}
+- tapOn: { id: rule_APP_LEVELS }
 # V17: the Detailed edit lists every set
 - tapOn: { id: detailed_switch }
 - takeScreenshot: 02d-detailed-${VARIANT}

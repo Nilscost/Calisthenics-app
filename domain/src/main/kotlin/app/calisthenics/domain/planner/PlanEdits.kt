@@ -27,6 +27,8 @@ data class PlanEdits(
     val roundStretchPicks: Map<String, String> = emptyMap(),
     /** Detailed edit (D3): a typed number for one set ("<set>:<slot>") or every set ("<slot>"). It does not count towards progression. */
     val freeTargets: Map<String, Int> = emptyMap(),
+    /** V21: the progression rule chosen in the Preview (null = the routine's own). */
+    val rule: ProgressionRule? = null,
 ) {
     fun isEmpty() = this == PlanEdits()
 }

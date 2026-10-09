@@ -73,6 +73,8 @@ data class SessionDraft(
     val freeTargets: Map<String, Int> = emptyMap(),
     /** V19: Circuit, Pairs or Straight sets. */
     val format: WorkoutFormat = WorkoutFormat.CIRCUIT,
+    /** V21: the rule that decides the targets (ranges) and, through the plan, how sessions are judged. */
+    val rule: app.calisthenics.domain.model.ProgressionRule = app.calisthenics.domain.model.ProgressionRule(),
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(
@@ -84,6 +86,7 @@ data class SessionDraft(
             focus = normalizeFocus(routine.defaultFocus),
             profileId = prefs.selectedProfileId,
             goalId = routine.goalId,
+            rule = routine.rule,
         )
     }
 }

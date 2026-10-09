@@ -211,4 +211,28 @@ class PreviewScreenTest {
         rule.onNodeWithTag("level_push_s2").performScrollTo().assertTextContains("Level", substring = true)
         rule.onNodeWithTag("exercise_target_push").assertDoesNotExist() // the plain Preview tag only exists outside the Detailed edit
     }
+
+    // ---- V21: the progression rule picker
+    @Test fun theRuleDefaultsToAppLevelsAndRepRangeShowsRangesAndThreeSets() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("rule_APP_LEVELS").performScrollTo().assertIsSelected()
+        rule.onNodeWithTag("rule_REP_RANGE").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("rule_REP_RANGE").assertIsSelected()
+        rule.onNodeWithTag("rule_hint").assertTextContains("3 sets of 5–8 reps", substring = true)
+        rule.onNodeWithTag("exercise_target_squat").performScrollTo().assertTextContains("5–8 reps", substring = true)
+        rule.onNodeWithTag("preview_header").assertTextContains("3 rounds", substring = true)   // the rule's sets
+        rule.onNodeWithTag("rule_sets_value").assertDoesNotExist()
+    }
+
+    @Test fun customHasEditableSetsRangeAndSessions() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("rule_CUSTOM").performScrollTo().performClick(); rule.waitForIdle()
+        for (t in listOf("rule_sets", "rule_from", "rule_to", "rule_sessions")) rule.onNodeWithTag("${t}_value").assertExists()
+        rule.onNodeWithTag("rule_to_plus").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("rule_hint").assertTextContains("5–9", substring = true)
+        rule.onNodeWithTag("rule_sessions_plus").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("rule_hint").assertTextContains("2 session", substring = true)
+        rule.onNodeWithTag("rule_APP_LEVELS").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("rule_sets_value").assertDoesNotExist()
+    }
 }

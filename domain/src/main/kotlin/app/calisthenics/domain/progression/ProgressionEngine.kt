@@ -163,6 +163,14 @@ class ProgressionEngine(private val catalog: Catalog) {
                 events += ProgressEvent(ev.day, vid,
                     "Done with a lighter kettlebell (${formatKg(load!!)} kg instead of ${formatKg(recorded!!)} kg) — logged, but it does not count towards your next tier.")
             } else when {
+                // V21: Rep range / Custom rule: every set at the top of the range, in a row, moves you on to the next exercise (tier-free).
+                ev.ruleMet != null -> {
+                    if (ev.ruleMet && hold == null && !p.autoPaused) {
+                        val days = (p.streakDays + ev.day).distinct().sorted()
+                        p = p.copy(streakDays = days)
+                        if (autoProgression && days.size >= ev.ruleSessions) p = moveOnByRule(p, ev.day, events, active, vars)
+                    } else if (!ev.ruleMet) p = p.copy(streakDays = emptyList(), streakAssumed = 0)
+                }
                 ev.qualifying && hold == null && !p.autoPaused && ev.prescribedTier == p.tier -> {
                     val days = (p.streakDays + ev.day).distinct().sorted()
                     p = p.copy(streakDays = days, streakAssumed = p.streakAssumed + if (ev.confirmedBlocks == 0) 1 else 0,
@@ -254,6 +262,21 @@ class ProgressionEngine(private val catalog: Catalog) {
 
         items.sortedWith(compareBy({ it.day }, { it.order }, { it.key })).forEach { it.run() }
         return ProgressSnapshot(vars.toMap(), active.toMap(), holds.toMap(), events.toList())
+    }
+
+    /** The rule was met: this exercise counts as passed (all five stars) and the routine continues with the next exercise at its bottom. */
+    private fun moveOnByRule(p: VariationProgress, day: Int, events: MutableList<ProgressEvent>, active: MutableMap<String, String>, vars: MutableMap<String, VariationProgress>): VariationProgress {
+        val done = p.copy(achievedTiers = (1..5).toSet(), streakDays = emptyList(), streakAssumed = 0, lastAutoAdvanceDay = day)
+        val name = catalog.variation(p.variationId)?.name ?: p.variationId
+        val next = policy(p.variationId)?.nextVariationIds.orEmpty().firstOrNull { catalog.variation(it) != null }
+        if (next == null) {
+            events += ProgressEvent(day, p.variationId, "Every set reached the top of the range - this is the last exercise of this progression.")
+            return done
+        }
+        active[done.familyId] = next
+        if (!vars.containsKey(next)) vars[next] = VariationProgress(next, family(next), 1, day, null, emptySet(), null, emptyList(), 0, 0, false, false, null, null)
+        events += ProgressEvent(day, p.variationId, "Every set of $name reached the top of the range. Moving on to ${catalog.variation(next)?.name ?: next}, starting again at the bottom of the range.")
+        return done
     }
 
     private fun tryAdvance(
