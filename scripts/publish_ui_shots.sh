@@ -4,7 +4,7 @@
 # (a full `git clone` of this public repo fetches every branch).
 # Usage: bash scripts/publish_ui_shots.sh <shots-dir> <short-sha> <ref-name>   (needs GH_TOKEN and GITHUB_REPOSITORY)
 set -euo pipefail
-SRC="$1"; SHA="$2"; REF="$3"; KEEP=10
+SRC="$1"; SHA="$2"; REF="$3"; KEEP=5
 [ -d "$SRC" ] || { echo "no screenshots in $SRC"; exit 0; }
 URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 for attempt in 1 2 3; do

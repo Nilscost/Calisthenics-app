@@ -205,3 +205,15 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - Tests: `KettlebellLoadTest` (11), `PreviewScreenTest.kettlebellCardsShowTheBellWeight...`, StarterCatalogTest counts/tops/chain updated. Verify exit 0, 308 tests, 0 failures. Version 0.3.1-kb (versionCode 3). APK `Apps/builds/app-debug-KB1.apk`.
 - NOT done: only one kettlebell per profile (heaviest is used); no "which bell today" picker in the Preview; weight changes are made in the profile editor; dumbbells ("weight") are still unused by any exercise.
 - Checked: the Archer Push-Up is intentionally one block (alternate sides, count each side), not a bug.
+
+### V00 — UI screenshot pipeline + v2 plan review (2026-10-09, Opus reviewer)
+- `ui-screens` workflow: Maestro flows A–D on an S21-sized API 34 emulator in light, dark and font 1.3. Output goes to an Actions artifact and to the orphan branch `ui-shots`. `MainActivity` exposes test tags as resource ids. `android.yml` ignores `ui-shots`.
+- Acceptance: green run 37917550425 (12/12 PASS). A planted defect (invisible Start label) passed every flow and was found by looking at the screenshot. Evidence: `docs/evidence/ui/V00-review.md`.
+- Plan review: `docs/12-v2-plan.md` §11:
+  - V04, V06 split; V00b and V21b added; V18 moved after V21;
+  - V12 covers the Train goal control, and V20 the Train format control;
+  - Room migration risk named;
+  - RR/Minimalist re-checked;
+  - four owner questions.
+- Executor brief: `docs/14-executor-handoff.md`.
+- NOT done: no seeded-state flow (V00b); the Room migration test is not yet wired to the emulator (V04a); the verify gate was not re-run for this change (only `:app:lintDebug :app:assembleDebug`, exit 0, sandbox). CI `verify` runs on the push.
