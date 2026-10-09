@@ -19,6 +19,9 @@ appId: app.calisthenics.personal
 - takeScreenshot: 04-progress-push-${VARIANT}
 - tapOn: { id: tab_chip_squat }
 - takeScreenshot: 05-progress-squat-${VARIANT}
+# The tab chips scroll sideways: swipe the row, then pick the tab.
+- swipe: { start: "90%, 16%", end: "5%, 16%" }
+- swipe: { start: "90%, 16%", end: "5%, 16%" }
 - tapOn: { id: tab_chip_hips }
 - extendedWaitUntil: { visible: { id: "tree_node_kettlebell-deadlift" }, timeout: 10000 }
 - takeScreenshot: 06-progress-hips-${VARIANT}

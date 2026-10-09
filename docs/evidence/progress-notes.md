@@ -229,3 +229,9 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - Verify exit 0 (`docs/evidence/v00b-verify-2026-10-09.log`).
 - NOT done: the ui-screens result is added in `docs/evidence/ui/V00b-review.md`.
 - Choices not in the plan: hook mechanism instead of calling adb from the flow (Maestro has no adb step); seed wipes the app with `pm clear` first.
+
+### V01 — K1: the clip changes with the block (2026-10-09)
+- `DemoPlayer` now wraps its `AndroidView` in `key(path)` and has an `update` block that reloads when the path differs; `onLoad` reports every path handed to the view. Before, the view was built once and the first clip kept playing (stretch -> Split Squat).
+- Tests: `DemoPlayerTest` (Robolectric): changing the file loads the new path (a -> b -> a); the same file does not reload. Verify exit 0 (`docs/evidence/v01-verify-2026-10-09.log`).
+- Flow `c_session`: after the logger shot (stretch block) it skips to the next block and takes `04-next-block`; later shots renumbered. `e_seeded` fix: the tab chips scroll sideways, so the flow swipes the row before tapping "Hips and back" (first run of e_seeded failed on that).
+- NOT done: real playback of different clips is only visible on a device; the emulator shots show the first frame/poster of each clip at best. The owner check stays "clip changes every block".

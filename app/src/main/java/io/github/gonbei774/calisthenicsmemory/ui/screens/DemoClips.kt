@@ -27,14 +27,25 @@ object DemoClips {
     }
 }
 
+/**
+ * Plays [file] in a loop. K1 (v2 plan): the VideoView used to be created once and never reloaded, so the clip stayed on the
+ * first file when the block changed. The view is now keyed on the path (a new file = a new view) and `update` reloads
+ * defensively; [onLoad] is called with every path that is handed to the view (used by tests).
+ */
 @Composable
-fun DemoPlayer(file: File, controls: Boolean = true) {
+fun DemoPlayer(file: File, controls: Boolean = true, onLoad: (String) -> Unit = {}) {
     val description = androidx.compose.ui.res.stringResource(io.github.gonbei774.calisthenicsmemory.R.string.demo_clip_description)
-    AndroidView(modifier = Modifier.fillMaxWidth().heightIn(min = 180.dp, max = 260.dp).aspectRatio(16f / 10f).semantics { contentDescription = description }, factory = { c ->
-        VideoView(c).apply {
-            setVideoPath(file.absolutePath)
-            if (controls) setMediaController(MediaController(c).also { it.setAnchorView(this) })
-            setOnPreparedListener { it.isLooping = true; it.setVolume(0f, 0f); start() }
-        }
-    })
+    val path = file.absolutePath
+    key(path) {
+        AndroidView(modifier = Modifier.fillMaxWidth().heightIn(min = 180.dp, max = 260.dp).aspectRatio(16f / 10f).semantics { contentDescription = description }, factory = { c ->
+            VideoView(c).apply {
+                tag = path
+                setVideoPath(path); onLoad(path)
+                if (controls) setMediaController(MediaController(c).also { it.setAnchorView(this) })
+                setOnPreparedListener { it.isLooping = true; it.setVolume(0f, 0f); start() }
+            }
+        }, update = { v ->
+            if (v.tag != path) { v.tag = path; v.setVideoPath(path); onLoad(path); v.start() }
+        })
+    }
 }
