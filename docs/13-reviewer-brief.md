@@ -31,7 +31,7 @@ You are the **reviewer and setup lead** for version 2 of a personal calisthenics
    - the stop points.
    
    Commit the plan changes and the handoff.
-5. **Report to the owner:** what you changed in the plan, the V00 evidence (run URL, one screenshot path), open questions (§4 O1–O6 that are still unanswered), and whether the executor can start.
+5. **Report to the owner:** what you changed in the plan, the V00 evidence (run URL, one screenshot path), open questions (§4: O4 routine picks if still open), and whether the executor can start.
 
 ## Environment facts
 - Repo: `/Users/nils/Documents/hermes/Apps/calisthenics` (git, `main`, public at github.com/Nilscost/Calisthenics-app). The Mac repo is the source of truth.

@@ -93,25 +93,29 @@ Sources: owner phone test on Galaxy S21 (APK `app-debug-KB1.apk`, 0.3.1-kb) and 
   - It recommends **barbells** for the squat and hinge if available.
 - Reproduce structure and numbers, but **write our own instruction text and credit both sources** in the app and in `THIRD_PARTY_NOTICES.md`. The reviewer checks the wiki's licence before shipping any copied wording.
 
-## 4. Open decisions (raise with the owner before the dependent task; do not guess)
-- **O1 Formats** (blocks V18–V20): confirm three formats (Circuit · Pairs · Straight sets), or only Circuit · Pairs. In Pairs and Straight sets, is rest **a stretch** (as today) or **a plain timer**? Recommendation: plain rest by default (faithful to the RR), with "stretch during rest" as an option.
-- **O2 Progression rules** (blocks V21). Assistant proposal: the rule is a property of the **routine** (not global), with three options:
-  1. **App levels** (default, today's behaviour): 5 targets per exercise; level up after 3 qualifying sessions spread over 7+ days.
-  2. **Rep range (the RR's style):** sets × from–to (RR preset 3 × 5–8, holds 10–30 s); a session where every set reaches the top moves you to the next exercise.
-  3. **Custom:** the same as option 2, with sets, range and "sessions needed" editable.
+## 4. Decisions answered in round 3 (2026-10-08) and what is still open
+- **O1 Formats: ANSWERED.**
+  - Three formats: Circuit · Pairs · Straight sets.
+  - "Stretch during recovery" vs "plain rest timer" is a single switch that applies to **every** format, Circuit included.
+  - Default: stretch on (today's behaviour); the RR preset sets plain rest.
+- **O2 Progression rules: ANSWERED (accepted).** The rule is a property of the routine:
+  1. **App levels** (default, today's): 5 targets; up after 3 qualifying sessions spread over 7+ days.
+  2. **Rep range:** sets × from–to (RR preset 3 × 5–8, holds 10–30 s); a session where every set reaches the top moves you to the next exercise, starting again at the bottom of the range.
+  3. **Custom:** the same as option 2, with sets, range and qualifying sessions editable.
   
-  Options 2 and 3 are one rule with different numbers, so this is less work than it sounds. The owner asked "maybe modifiable"; confirm this design.
-- **O3 "Barbells"** (blocks V27): did the owner mean the RR's barbell squat/hinge option, the 2 × 2.5 kg dumbbells in the profile, or a weighted vest? Until answered: dumbbells only as a suggestion item; no barbell content.
-- **O4 Routines list** (blocks V22): RR and Minimalist confirmed. Any others? Default: those two only.
-- **O5 Kettlebell weight steps** (blocks V26): standard ladder 8 / 12 / 16 / 20 / 24 kg. Show steps from the owner's current bell upward only. Confirm.
-- **O6 Agent push access** (V00): either the owner pushes after each slice, or he adds a fine-grained GitHub token so the agent can push. Owner setup for the token:
-  ```bash
-  # GitHub → Settings → Developer settings → Fine-grained tokens → only repo Nilscost/Calisthenics-app;
-  # permissions: Contents read/write, Actions read, Metadata read. Then:
-  hermes config set GITHUB_TOKEN <paste token>        # stored in ~/.hermes/.env
-  hermes config set terminal.docker_forward_env '["GITHUB_TOKEN"]'
-  ```
-  The sandbox container may need a restart to pick it up. The agent must never print the token.
+  D4 (the global switch off) freezes all three.
+- **O3 Extra equipment: ANSWERED.**
+  - "Barbells" meant the owner's **dumbbells** (2 × 2.5 kg today, weight editable in the profile).
+  - **Barbell** (with or without rack) and **weighted vest** are new profile options.
+  - Content: dumbbell variants where a light load genuinely helps (e.g. goblet squat, dumbbell RDL / single-leg RDL, weighted glute bridge, rows); weight tracks like the kettlebell (V26); the RR's barbell squat and hinge alternatives shown when a barbell is in the profile; the weighted vest as a load option for push-ups, pull-ups, dips and squats.
+  - Everything beyond bodyweight also feeds the suggestion card (R29). Bodyweight-only must stay complete (D9).
+- **O4 Ready-made routines: PARTLY OPEN.** The RR and Minimalist are confirmed. The owner asked which other well-known routines could be added. Candidates the assistant proposed (owner to pick; the reviewer verifies each source and its licence; structure and numbers only, our own wording, credited):
+  - the r/bodyweightfitness **beginner / "simple" routine** (free wiki);
+  - **Antranik's beginner bodyweight routine** (free, antranik.org);
+  - **Convict Conditioning "Big Six"**: its programmes (e.g. "New Blood") as structure only; the book text and illustrations are copyrighted;
+  - formats rather than routines: **EMOM / AMRAP / Tabata** and **Grease the Groove**.
+- **O5 Kettlebell weight steps: ANSWERED (accepted).** Ladder 8 / 12 / 16 / 20 / 24 kg, shown from the owner's current bell upward.
+- **O6 Agent push access: ANSWERED, a token.** The owner creates a fine-grained GitHub token (only repo Nilscost/Calisthenics-app; Contents read/write, Actions read/write, Metadata read). He stores it in `~/.hermes/.env` as `GITHUB_TOKEN` and forwards it with `terminal.docker_forward_env`. The agent checks it exists with `[ -n "$GITHUB_TOKEN" ]`, pushes with `git push https://x-access-token:$GITHUB_TOKEN@github.com/Nilscost/Calisthenics-app.git main`, and must never print it or store it in git config or files.
 
 ## 5. Target experience
 ### 5.1 Visual system (R4, R5, R9, R16, R18, R19, R25) — do this once, use it everywhere
@@ -216,7 +220,7 @@ Columns: id · what · needs · start files · automated check · screenshot che
 
 | # | Task | Needs | Start files | Automated check | Screenshot check | Owner check |
 |---|---|---|---|---|---|---|
-| V00 | UI screenshot pipeline (§7) | O6 | `.github/workflows/`, new `maestro/` or `app/src/androidTest/` | workflow green; PNGs on `ui-shots` | planted defect found | — |
+| V00 | UI screenshot pipeline (§7) | token (O6) | `.github/workflows/`, new `maestro/` or `app/src/androidTest/` | workflow green; PNGs on `ui-shots` | planted defect found | — |
 | V01 | Fix K1: `DemoPlayer` reloads on file change (`key(file)` + `update`) | — | `ui/screens/DemoClips.kt` | Robolectric: changing the block changes the video path | stretch → exercise transition frames | clip changes every block |
 | V02 | "Too easy" rating + D7 suggestion (domain) | — | `feedback/Feedback.kt`, `ProgressionEngine.kt` | unit: 2× too easy → suggestion event, no automatic change | — | — |
 | V03 | Logger redesign (R17) incl. Too easy chip | V02 | `ui/session/SessionScreen.kt` | UI test: − / + / Done send the right actions | logger frames light/dark/1.3 | logging feels like the work screen |
@@ -235,15 +239,15 @@ Columns: id · what · needs · start files · automated check · screenshot che
 | V16 | Preview editor: level stepper (D3), remove "−", "+" between blocks, break rows, swap sheet D1, "Profile" label (R8) | V09 | `ui/train/*`, `planner/TrainPlan.kt`, `routine/Routine.kt` | unit: stepper moves within levels; add/remove yields valid plans; swap lists the full chain | preview + swap sheet | — |
 | V17 | Detailed edit: per-round stretches, free reps that don't count (D3, D6); timeline in card format per round (R12) | V16 | same + `feedback` (non-counting flag) | unit: a free number is excluded from progression evidence | detailed edit | — |
 | V18 | Saved routines: save / save as new / update; listed under Ready-made routines (R13, D5) | V16 | `ui/screens/RoutineStore.kt` → domain routine store, backup | unit: save, update keeps history; backup round-trip | | save + reuse |
-| V19 | Workout formats in the planner: Circuit / Pairs / Straight sets (D11, O1) | O1 | `planner/Planner.kt`, `model/Model.kt` (append-only fields) | planner tests per format: block order, rest lengths, durations | timeline per format | — |
+| V19 | Workout formats in the planner: Circuit / Pairs / Straight sets, with the stretch-or-rest switch across all formats (D11, O1) | — | `planner/Planner.kt`, `model/Model.kt` (append-only fields) | planner tests per format: block order, rest lengths, durations | timeline per format | — |
 | V20 | Workout screen + History for sets ("Set 2 of 3"), plain-rest timer | V19 | `ui/session/*`, `history/*` | reducer/UI tests | workout frames per format | Pairs workout feels right |
-| V21 | Progression rule per routine: App levels / Rep range / Custom (O2) | O2, V19 | `progression/*` | engine tests per rule incl. holds (10–30 s) | rule picker | — |
-| V22 | Ready-made routines RR + Minimalist (D10, C-B, C-C, C-D) | V19–V21, O4 | catalog + new `routine/Presets.kt` | tests: structure matches §3 (pairs, sets, rests, warm-up, core triplet; Minimalist circuit 2–6) | routine preview | runs like the RR |
+| V21 | Progression rule per routine: App levels / Rep range / Custom (O2) | V19 | `progression/*` | engine tests per rule incl. holds (10–30 s) | rule picker | — |
+| V22 | Ready-made routines RR + Minimalist, plus any O4 picks (D10, C-B, C-C, C-D) | V19–V21 | catalog + new `routine/Presets.kt` | tests: structure matches §3 (pairs, sets, rests, warm-up, core triplet; Minimalist circuit 2–6) | routine preview | runs like the RR |
 | V23 | Warm-up block for any workout (D12, C-B) | V22 | planner, Train/Preview | planner: warm-up first, its duration counted | | — |
 | V24 | **Release R4** (editor, formats, routines) | V16–V23 | | | | owner phone test R4 |
 | V25 | Content gaps C-E + parallettes/dip content (C-C; fixes K3/R2) | V06 | catalog, clips | no-dead-end + equipment tests | new clips | — |
-| V26 | Kettlebell weight track (R27, O5) | O5 | `load/Load.kt`, `ui/progress/*` | unit: locked steps from the profile; same-weight successors unaffected | progress sheet | — |
-| V27 | Suggestion card (R29, D9) + "barbells" per O3 | O3 | new `progress/Suggestions.kt` | unit: max 1, dismissible, never blocks; the bodyweight-only profile always has a complete plan | progress | — |
+| V26 | Weight tracks for kettlebell and dumbbells; weighted-vest load option (R27, O3, O5) | V25 | `load/Load.kt`, `ui/progress/*` | unit: locked steps from the profile; same-weight successors unaffected | progress sheet | — |
+| V27 | Suggestion card (R29, D9); barbell + vest profile options; dumbbell/barbell content (O3) | V26 | new `progress/Suggestions.kt` | unit: max 1, dismissible, never blocks; the bodyweight-only profile always has a complete plan | progress | — |
 | V28 | **Release R5**; regenerate the review table; STATUS/README | all | | full verify + CI green | full flow set | owner phone test R5 |
 
 ## 9. Releases and stop points
