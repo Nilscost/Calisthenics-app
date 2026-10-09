@@ -99,6 +99,16 @@ private fun StretchList(c: Catalog, modifier: Modifier, onOpen: (String) -> Unit
     }
 }
 
+/** V08: the body figure with the muscle chips next to it. */
+@Composable
+private fun MusclesRow(v: ExerciseVariation) {
+    if (v.primaryMuscles.isEmpty()) return
+    Row(horizontalArrangement = Arrangement.spacedBy(Spacing.m), verticalAlignment = Alignment.CenterVertically) {
+        io.github.gonbei774.calisthenicsmemory.ui.components.BodyMap(v.primaryMuscles, v.secondaryMuscles, showNamesOnTap = false, tag = "sheet_body_map")
+        MuscleChips(v.primaryMuscles, v.secondaryMuscles, Modifier.weight(1f))
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun NodeSheet(c: Catalog, v: ExerciseVariation, progress: app.calisthenics.domain.progression.ProgressSnapshot, profile: EquipmentProfile, onDismiss: () -> Unit) {
@@ -114,7 +124,7 @@ private fun NodeSheet(c: Catalog, v: ExerciseVariation, progress: app.calistheni
                     StarRow(stars(progress, v.id), size = 20.dp)
                     Text(stateLabel(nodeState(c, v.id, progress, profile, emptySet())), style = MaterialTheme.typography.labelLarge)
                 }
-                if (v.primaryMuscles.isNotEmpty()) MuscleChips(v.primaryMuscles, v.secondaryMuscles)
+                MusclesRow(v)
                 // Kettlebell: levels count per weight. Show the weight in use and stars kept from lighter bells.
                 if (v.isLoaded()) {
                     val vp = progress.variations[v.id]
@@ -125,6 +135,7 @@ private fun NodeSheet(c: Catalog, v: ExerciseVariation, progress: app.calistheni
                     }
                 }
             }
+            if (!strength) MusclesRow(v)
             DemoClips.file(ctx, v.id)?.let { DemoPlayer(it) }
             SheetSection(R.string.sheet_how, v.instructions.mapIndexed { i, t -> stringResource(R.string.numbered_item, i + 1, t) })
             SheetSection(R.string.sheet_cues, v.formCues.map { stringResource(R.string.bullet_item, it) })
