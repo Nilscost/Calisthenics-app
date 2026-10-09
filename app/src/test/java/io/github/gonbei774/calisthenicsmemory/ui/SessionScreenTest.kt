@@ -76,7 +76,7 @@ class SessionScreenTest {
         show(stateAt(i))
         rule.onNodeWithTag("session_title").assertTextContains("Stretch:", substring = true)
         rule.onNodeWithTag("logger").assertIsDisplayed()
-        rule.onNodeWithTag("logger_name").assertTextEquals("Incline Push-Up")
+        rule.onNodeWithTag("logger_name").assertTextEquals("Incline Push-Up · set 1")
         rule.onNodeWithTag("logger_value").assertTextEquals(plan.blocks[0].target!!.value.toString()) // prefilled with the target
         rule.onNodeWithTag("session_done").assertDoesNotExist()
     }
@@ -94,38 +94,26 @@ class SessionScreenTest {
         rule.onNodeWithTag("logger_value").assertTextEquals((target - 1).toString())
     }
 
-    @Test fun tooHardAndPainAreOneTapAndKeepTheTypedState() {
+    @Test fun noRatingChipsDuringTheWorkoutTheyLiveOnTheEndScreen() {
+        // doc 17 §2.3: Too hard / Too easy / Pain moved to the end screen (V10); the logger keeps - number + and DONE
         show(stateAt(firstRecovery()))
-        rule.onNodeWithTag("logger_too_hard").performClick(); rule.waitForIdle()
-        var intent = lastIntent()
-        assertTrue(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_HARD, false))
-        assertEquals(-1, intent.getIntExtra(WorkoutSessionService.EXTRA_REPS, -2)) // reps untouched = not typed = as planned
-        rule.onNodeWithTag("logger_pain").performClick(); rule.waitForIdle()
-        intent = lastIntent()
-        assertTrue(intent.getBooleanExtra(WorkoutSessionService.EXTRA_PAIN, false))
-        assertTrue(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_HARD, false))
+        for (t in listOf("logger_too_hard", "logger_too_easy", "logger_pain")) rule.onNodeWithTag(t).assertDoesNotExist()
+        rule.onNodeWithTag("logger_minus").assertExists(); rule.onNodeWithTag("logger_plus").assertExists(); rule.onNodeWithTag("logger_done").assertExists()
     }
 
-    @Test fun tooEasyIsExclusiveWithTooHardAndSendsItsOwnFlag() {
-        show(stateAt(firstRecovery()))
-        rule.onNodeWithTag("logger_too_hard").performClick(); rule.waitForIdle()
-        assertTrue(lastIntent().getBooleanExtra(WorkoutSessionService.EXTRA_TOO_HARD, false))
-        rule.onNodeWithTag("logger_too_easy").performClick(); rule.waitForIdle()
-        val intent = lastIntent()
-        assertTrue(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_EASY, false))
-        assertFalse(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_HARD, true))
+    @Test fun theBottomRowIsPauseDoneSkipWithDoneInTheMiddle() {
+        show(stateAt(0))
+        val x = { t: String -> rule.onNodeWithTag(t).fetchSemanticsNode().boundsInRoot.center.x }
+        assertTrue(x("session_pause") < x("session_done") && x("session_done") < x("session_skip"))
+        val w = { t: String -> rule.onNodeWithTag(t).fetchSemanticsNode().boundsInRoot.width }
+        assertTrue("DONE is the widest", w("session_done") > w("session_pause") && w("session_done") > w("session_skip"))
+        rule.onNodeWithTag("session_done").assertTextContains("DONE")
     }
 
-    @Test fun loggerUsesTheWorkScreenLayoutPlusMinusAndDone() {
-        show(stateAt(firstRecovery()))
-        val target = plan.blocks[0].target!!.value
-        rule.onNodeWithTag("logger_plus").performClick(); rule.waitForIdle()
-        assertEquals(target + 1, lastIntent().getIntExtra(WorkoutSessionService.EXTRA_REPS, -2))
-        rule.onNodeWithTag("logger_done").assertIsDisplayed().performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("logger_summary").assertIsDisplayed() // folded into one line, the stretch timer is untouched
-        rule.onNodeWithTag("logger_plus").assertDoesNotExist()
-        rule.onNodeWithTag("logger_change").performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("logger_value").assertTextEquals((target + 1).toString())
+    @Test fun theTimerHeaderAndSetMarkersAreShown() {
+        show(stateAt(0))
+        rule.onNodeWithTag("session_round").assertTextContains("ROUND 1 OF 2")
+        rule.onNodeWithTag("session_markers").assertExists(); rule.onNodeWithTag("session_elapsed").assertExists(); rule.onNodeWithTag("session_time").assertExists()
     }
 
     @Test fun loggedValuesComeBackFromTheSessionState() {

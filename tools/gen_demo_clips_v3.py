@@ -478,7 +478,7 @@ def camera_for(fn, vid, margin=(420, 250)):
     oy = (76 + 346) / 2 + sc * (y0 + y1) / 2          # centre the art between the caption and the bottom edge
     return sc, ox, oy, (x0, x1)
 
-def render(vid, name, kind, fn, p, cam, muscles, font):
+def render(vid, name, kind, fn, p, cam, muscles, font, caption=True):
     cv = Canvas(cam[:3])
     L = lift(fn(p))
     floor(cv, cam[3] if False else (-40, 330))
@@ -489,8 +489,9 @@ def render(vid, name, kind, fn, p, cam, muscles, font):
     draw_scene(cv, L, L["pose"].get("scene", []), L["pose"].get("props", []), None)
     draw_figure(cv, L, muscles)
     cv.flush()
-    cv.d.text((16 * SS, 12 * SS), name, fill=(31, 41, 55), font=font)
-    cv.d.text((16 * SS, 42 * SS), "hold steady" if kind == "hold" else "slow and controlled", fill=(107, 114, 128), font=font)
+    if caption:   # V10: the workout screen has its own header, so the clips themselves carry no caption (pure white background)
+        cv.d.text((16 * SS, 12 * SS), name, fill=(31, 41, 55), font=font)
+        cv.d.text((16 * SS, 42 * SS), "hold steady" if kind == "hold" else "slow and controlled", fill=(107, 114, 128), font=font)
     return cv.img.resize((W, H), Image.LANCZOS)
 
 THUMB_PX, THUMB_KB = 128, 12
@@ -567,7 +568,7 @@ def main():
         n = FPS * SECONDS
         out = os.path.join(outdir, vid + ".mp4")
         if not thumbs_only:
-            v1.encode((render(vid, v["name"], kind, fn, i / n, cam, muscles, font) for i in range(n)), out)
+            v1.encode((render(vid, v["name"], kind, fn, i / n, cam, muscles, font, caption=False) for i in range(n)), out)
         size = os.path.getsize(out) / 1024
         assert size < 120, f"{vid}: {size:.0f} KB is over the 120 KB budget"
         tp = os.path.join(thumbdir, vid + ".webp")

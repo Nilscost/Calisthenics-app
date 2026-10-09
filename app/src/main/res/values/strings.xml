@@ -119,6 +119,14 @@
     <string name="logger_pain">Pain</string>
     <string name="logger_too_easy">Too easy</string>
     <string name="logger_done">Done</string>
+    <string name="logger_name_set">%1$s · set %2$d</string>
+    <string name="block_work">Work</string>
+    <string name="block_hold">Hold</string>
+    <string name="block_rest">Rest</string>
+    <string name="block_stretch">Stretch</string>
+    <string name="block_get_ready">Get ready</string>
+    <string name="block_warmup">Warm-up</string>
+    <string name="block_cooldown">Cool-down</string>
     <string name="logger_logged">Logged: %1$d</string>
     <string name="logger_edit">Change</string>
     <string name="end_complete">Workout complete</string>

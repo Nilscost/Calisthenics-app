@@ -389,7 +389,7 @@ def render(vid, name, kind, pose_fn, p, font):
 def encode(frames_iter, out):
     import imageio_ffmpeg
     cmd = [imageio_ffmpeg.get_ffmpeg_exe(), "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
-           "-i", "-", "-c:v", "libx264", "-profile:v", "main", "-pix_fmt", "yuv420p", "-crf", "28", "-movflags", "+faststart", "-an", out]
+           "-i", "-", "-vf", "scale=in_range=pc:out_range=tv:flags=accurate_rnd+full_chroma_int", "-c:v", "libx264", "-profile:v", "main", "-pix_fmt", "yuv420p", "-color_range", "tv", "-crf", "26", "-movflags", "+faststart", "-an", out]
     pr = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for f in frames_iter: pr.stdin.write(f.tobytes())
     pr.stdin.close()
