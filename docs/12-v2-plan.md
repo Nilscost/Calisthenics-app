@@ -115,7 +115,15 @@ Sources: owner phone test on Galaxy S21 (APK `app-debug-KB1.apk`, 0.3.1-kb) and 
   - **Convict Conditioning "Big Six"**: its programmes (e.g. "New Blood") as structure only; the book text and illustrations are copyrighted;
   - formats rather than routines: **EMOM / AMRAP / Tabata** and **Grease the Groove**.
 - **O5 Kettlebell weight steps: ANSWERED (accepted).** Ladder 8 / 12 / 16 / 20 / 24 kg, shown from the owner's current bell upward.
-- **O6 Agent push access: ANSWERED, a token.** The owner creates a fine-grained GitHub token (only repo Nilscost/Calisthenics-app; Contents read/write, Actions read/write, Metadata read). He stores it in `~/.hermes/.env` as `GITHUB_TOKEN` and forwards it with `terminal.docker_forward_env`. The agent checks it exists with `[ -n "$GITHUB_TOKEN" ]`, pushes with `git push https://x-access-token:$GITHUB_TOKEN@github.com/Nilscost/Calisthenics-app.git main`, and must never print it or store it in git config or files.
+- **O6 Agent push access: ANSWERED and working (2026-10-09).**
+  - A fine-grained token (only repo Nilscost/Calisthenics-app; Contents read/write, Actions read/write) lives in `/Users/nils/Documents/hermes/.secrets/github_token` (mode 600, outside the repo).
+  - Forwarding it via `terminal.docker_forward_env` did not reach the sandbox, so the env-var route is not used.
+  - Push command (never print the token; never store it in git config or files):
+    ```
+    GIT_TERMINAL_PROMPT=0 git -c credential.helper= -c credential.helper='!f() { echo username=x-access-token; printf "password=%s\n" "$(tr -d "\r\n" < /Users/nils/Documents/hermes/.secrets/github_token)"; }; f' push origin main
+    ```
+  - For the GitHub API: `curl -H "Authorization: Bearer $(cat <file>)" ...`, inline in the command only.
+  - The token expires about 90 days after 2026-10-08; on 401 errors, ask the owner to regenerate it.
 
 ## 5. Target experience
 ### 5.1 Visual system (R4, R5, R9, R16, R18, R19, R25) — do this once, use it everywhere

@@ -23,7 +23,7 @@ You are the **reviewer and setup lead** for version 2 of a personal calisthenics
    - look at them with vision;
    - prove you can catch a planted defect.
    
-   If push access is missing (plan §4 O6), stop and ask the owner. Don't work around it.
+   Push access: use the token file and command in plan §4 O6. If it fails, stop and ask the owner; don't work around it.
 4. **Write `docs/14-executor-handoff.md`** for the Sonnet executor. It is a self-contained brief:
    - the exact commands;
    - the task order;
