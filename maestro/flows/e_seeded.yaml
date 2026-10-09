@@ -11,7 +11,7 @@ appId: app.calisthenics.personal
 - tapOn: { id: "session_.*", index: 0 }
 - extendedWaitUntil: { visible: { id: detail_title }, timeout: 10000 }
 - takeScreenshot: 02-history-detail-${VARIANT}
-- scrollUntilVisible: { element: { id: "detail_.*", index: 2 }, direction: DOWN, timeout: 5000, optional: true }
+- scrollUntilVisible: { element: { id: "fix_.*_too_easy", index: 3 }, direction: DOWN, timeout: 8000, optional: true }
 - takeScreenshot: 03-history-detail-lower-${VARIANT}
 - back
 - tapOn: { id: tab_progress }

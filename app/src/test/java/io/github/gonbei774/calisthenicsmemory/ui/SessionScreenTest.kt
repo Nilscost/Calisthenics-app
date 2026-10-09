@@ -190,4 +190,18 @@ class SessionScreenTest {
         rule.onNodeWithTag("end_done").performClick()
         assertTrue(exited)
     }
+
+    @Test fun theEndScreenEditorHasOneNumberPerRoundAndTooEasyNextToTooHard() {
+        val s = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
+        SessionBus.saved = true
+        show(s)
+        rule.onNodeWithTag("end_edit").performClick(); rule.waitForIdle()
+        val vid = plan.blocks.first { it.type == BlockType.WORK }.variationId!!
+        val rounds = plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid }.size
+        rule.onNodeWithTag("end_fix_$vid").assertExists()
+        for (i in 1..rounds) rule.onNodeWithTag("end_${vid}_round${i}_value").performScrollTo().assertExists()
+        rule.onNodeWithTag("end_${vid}_too_hard").performScrollTo().assertExists()
+        rule.onNodeWithTag("end_${vid}_too_easy").performScrollTo().assertExists()
+        rule.onNodeWithTag("end_${vid}_pain").performScrollTo().assertExists()
+    }
 }

@@ -29,7 +29,9 @@ import app.calisthenics.domain.history.*
 import app.calisthenics.domain.model.Side
 import app.calisthenics.domain.model.TargetType
 import io.github.gonbei774.calisthenicsmemory.R
-import io.github.gonbei774.calisthenicsmemory.ui.session.FeedbackEditor
+import app.calisthenics.domain.feedback.effectiveRounds
+import io.github.gonbei774.calisthenicsmemory.ui.session.EditorRound
+import io.github.gonbei774.calisthenicsmemory.ui.session.RoundEditor
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog
 import kotlinx.coroutines.launch
@@ -124,24 +126,23 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
             Text(stringResource(R.string.history_session_line, o.minutes, o.rounds, o.exercises), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("detail_summary"))
             if (s.plan == null) Text(stringResource(R.string.history_no_plan), style = MaterialTheme.typography.bodyMedium)
             val details = s.plan?.let { exerciseDetails(it, s.record.blocks) }.orEmpty()
+            val achieved = s.record.blocks.filter { it.outcome == "MET" || it.outcome == "PARTIAL" }.associate { it.blockId to it.achievedValue }
+            if (details.isNotEmpty()) Text(stringResource(R.string.history_correct), style = MaterialTheme.typography.labelLarge)
             details.forEach { d ->
                 val name = catalog?.variation(d.variationId)?.name ?: d.variationId
-                val fb = s.feedback[d.variationId]
+                // V04b (R22): every round has its own number; a correction is saved as new revisions, the history stays append-only.
+                val rounds = effectiveRounds(s.plan!!, d.variationId, achieved, s.rows)
+                val tv = d.target?.value
                 Card(Modifier.fillMaxWidth().testTag("detail_${d.variationId}"), shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         Text(name, style = MaterialTheme.typography.titleMedium)
-                        d.rounds.forEach { r ->
-                            val side = when (r.side) { Side.LEFT -> stringResource(R.string.side_left); Side.RIGHT -> stringResource(R.string.side_right); else -> "" }
-                            val value = r.reps?.let { stringResource(if (d.isHold) R.string.target_seconds else R.string.target_reps, it) } ?: stringResource(R.string.history_as_planned)
-                            Text(listOf(stringResource(R.string.history_round_value, r.round, value), side).filter { it.isNotEmpty() }.joinToString(" · "), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("round_${r.blockId}"))
-                        }
-                        HorizontalDivider()
-                        Text(stringResource(R.string.history_correct), style = MaterialTheme.typography.labelLarge)
-                        val tv = d.target?.value
-                        val tooHard0 = fb?.rating == "BELOW" && !(fb.actualReps != null && tv != null && fb.actualReps < tv)
-                        FeedbackEditor(d.target, fb?.actualReps ?: d.lowest, tooHard0, fb?.discomfort ?: false, tag = "fix_${d.variationId}") { reps, tooHard, pain ->
+                        RoundEditor(
+                            d.target, rounds.map { EditorRound(it.blockId, it.round, it.side, it.value, it.corrected) },
+                            tooHard0 = rounds.any { it.rating == Rating.BELOW && !(it.value.let { v -> v != null && tv != null && v < tv }) },
+                            tooEasy0 = rounds.any { it.rating == Rating.ABOVE }, pain0 = rounds.any { it.discomfort }, tag = "fix_${d.variationId}",
+                        ) { list ->
                             corrected = true
-                            scope.launch { src.revise(sessionId, d.variationId, ratingFor(reps, d.target, tooHard), pain, reps) }
+                            scope.launch { src.reviseRounds(sessionId, d.variationId, list) }
                         }
                     }
                 }

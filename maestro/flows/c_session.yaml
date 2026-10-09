@@ -1,4 +1,4 @@
-# C — a workout: first block, Done, the logger during recovery, pause, end with confirm, end screen.
+# C — a workout: first block, Done, the logger during recovery, stretch and next work block, pause, end with confirm, end screen, per-round editor.
 appId: app.calisthenics.personal
 ---
 - launchApp
@@ -39,4 +39,8 @@ appId: app.calisthenics.personal
 - tapOn: "End workout"
 - extendedWaitUntil: { visible: { id: end_title }, timeout: 10000 }
 - takeScreenshot: 08-end-screen-${VARIANT}
+# V04b: the per-round editor (one number per round, Too hard / Too easy / Pain).
+- tapOn: { id: end_edit }
+- scrollUntilVisible: { element: { id: "end_fix_.*" }, direction: DOWN, timeout: 8000 }
+- takeScreenshot: 09-end-editor-${VARIANT}
 - tapOn: { id: end_done }

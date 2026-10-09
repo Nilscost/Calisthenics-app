@@ -23,6 +23,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import app.calisthenics.domain.feedback.FeedbackRow
+import io.github.gonbei774.calisthenicsmemory.ui.history.RoundCorrection
 import java.time.LocalDate
 import java.time.ZoneId
 
@@ -30,6 +32,8 @@ class FakeHistory(var list: List<StoredSession>) : HistorySource {
     val revisions = mutableListOf<List<Any?>>()
     override suspend fun sessions() = list
     override suspend fun revise(sessionId: String, variationId: String, rating: Rating, discomfort: Boolean, reps: Int?) { revisions += listOf(sessionId, variationId, rating, discomfort, reps) }
+    val roundRevisions = mutableListOf<Pair<String, List<RoundCorrection>>>()
+    override suspend fun reviseRounds(sessionId: String, variationId: String, rounds: List<RoundCorrection>) { roundRevisions += variationId to rounds }
 }
 
 @RunWith(RobolectricTestRunner::class)
@@ -87,23 +91,45 @@ class HistorySettingsTest {
         rule.onNodeWithTag("history_empty").assertTextContains("never penalised", substring = true)
     }
 
-    @Test fun detailShowsEachRoundAndACorrectionAddsARevision() {
+    @Test fun detailShowsEachRoundWithItsOwnNumberAndACorrectionAddsRevisionsForEveryRound() {
         val fake = FakeHistory(listOf(session("a", today, 8, 6, null)))
         rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionDetailScreen("a", source = fake, onBack = {}) } }
         rule.waitForIdle()
         rule.onNodeWithTag("detail_summary").assertTextContains("3 rounds", substring = true)
-        rule.onNodeWithTag("round_r1-push-work").assertTextContains("Round 1: 8 reps")
-        rule.onNodeWithTag("round_r2-push-work").assertTextContains("Round 2: 6 reps")
-        rule.onNodeWithTag("round_r3-push-work").assertTextContains("as planned", substring = true)
-        rule.onNodeWithTag("fix_pushup-standard_reps_value").assertTextEquals("6") // the lowest round is the starting point
-        rule.onNodeWithTag("fix_pushup-standard_reps_plus").performClick(); rule.waitForIdle()
-        assertEquals(listOf<Any?>("a", "pushup-standard", Rating.BELOW.let { Rating.BELOW }, false, 7), fake.revisions.last().let { listOf(it[0], it[1], it[2], it[3], it[4]) }) // 7 < target 8
-        rule.onNodeWithTag("fix_pushup-standard_reps_plus").performClick(); rule.waitForIdle()
-        assertEquals(Rating.MET, fake.revisions.last()[2]); assertEquals(8, fake.revisions.last()[4])
+        rule.onNodeWithTag("fix_pushup-standard_round1").assertTextContains("Round 1")
+        rule.onNodeWithTag("fix_pushup-standard_round1_value").assertTextEquals("8")
+        rule.onNodeWithTag("fix_pushup-standard_round2_value").assertTextEquals("6")
+        rule.onNodeWithTag("fix_pushup-standard_round3").assertTextContains("as planned", substring = true)
+        rule.onNodeWithTag("fix_pushup-standard_round3_value").assertTextEquals("8") // untyped = the target
+        // correct round 2 only: 6 -> 8; the others keep what they had, and ALL rounds are written (see Corrections.kt)
+        rule.onNodeWithTag("fix_pushup-standard_round2_plus").performClick(); rule.waitForIdle()
+        var (vid, list) = fake.roundRevisions.last()
+        assertEquals("pushup-standard", vid)
+        assertEquals(listOf("r1-push-work", "r2-push-work", "r3-push-work"), list.map { it.blockId })
+        assertEquals(listOf<Int?>(8, 7, null), list.map { it.reps })
+        assertEquals(listOf(Rating.MET, Rating.BELOW, Rating.MET), list.map { it.rating }) // 7 < target 8
+        rule.onNodeWithTag("fix_pushup-standard_round2_plus").performClick(); rule.waitForIdle()
+        list = fake.roundRevisions.last().second
+        assertEquals(listOf(Rating.MET, Rating.MET, Rating.MET), list.map { it.rating }); assertEquals(8, list[1].reps)
         rule.onNodeWithTag("fix_pushup-standard_pain").performClick(); rule.waitForIdle()
-        assertEquals(true, fake.revisions.last()[3])
-        assertEquals(3, fake.revisions.size) // every change is a new revision; nothing is overwritten
+        assertTrue(fake.roundRevisions.last().second.all { it.discomfort })
+        rule.onNodeWithTag("fix_pushup-standard_too_easy").performClick(); rule.waitForIdle()
+        assertTrue(fake.roundRevisions.last().second.all { it.rating == Rating.ABOVE })
+        rule.onNodeWithTag("fix_pushup-standard_too_hard").performClick(); rule.waitForIdle() // exclusive with "too easy"
+        assertTrue(fake.roundRevisions.last().second.all { it.rating == Rating.BELOW })
+        assertEquals(5, fake.roundRevisions.size) // every change is new revisions; nothing is overwritten
         rule.onNodeWithTag("corrected_note").assertExists()
+    }
+
+    @Test fun correctedRoundsAreShownInsteadOfTheLoggedNumber() {
+        val s = session("a", today, 8, 6, 8).let { it.copy(rows = listOf(
+            FeedbackRow("pushup-standard", "r2-push-work", 2, Rating.MET, false, 9),
+            FeedbackRow("pushup-standard", "r1-push-work", 3, Rating.MET, false, 8),
+            FeedbackRow("pushup-standard", "r3-push-work", 4, Rating.MET, false, 8))) }
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionDetailScreen("a", source = FakeHistory(listOf(s)), onBack = {}) } }
+        rule.waitForIdle()
+        rule.onNodeWithTag("fix_pushup-standard_round2_value").assertTextEquals("9")
+        rule.onNodeWithTag("fix_pushup-standard_round2").assertTextContains("corrected", substring = true)
     }
 
     @Test fun anUnknownWorkoutSaysSo() {

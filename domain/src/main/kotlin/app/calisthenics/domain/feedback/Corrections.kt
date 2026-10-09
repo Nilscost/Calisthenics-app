@@ -18,51 +18,68 @@ data class FeedbackRow(
     val actualHoldSeconds: Int? = null,
 )
 
+/** One done round of an exercise as the screens and the evidence see it after corrections. [value] = reps, or seconds for holds; null = not typed (as planned). */
+data class EffectiveRound(val blockId: String, val round: Int, val side: app.calisthenics.domain.model.Side, val value: Int?, val rating: Rating, val discomfort: Boolean, val corrected: Boolean)
+
+/**
+ * The done rounds of [vid] (outcome MET or PARTIAL, i.e. a key of [achieved]) with their values after corrections:
+ * the latest correction for the block, else the number logged during the workout. Without any round correction the
+ * flags of the original whole-exercise row ("too hard", "too easy", pain) are shown on every round; once a round was corrected,
+ * the editors have written every round, and an uncorrected round only keeps "below target" / the row's "too easy".
+ */
+fun effectiveRounds(plan: WorkoutPlan, vid: String, achieved: Map<String, Int?>, rows: List<FeedbackRow>): List<EffectiveRound> {
+    val mine = rows.filter { it.variationId == vid }
+    val hold = plan.blocks.any { it.type == BlockType.WORK && it.variationId == vid && it.target?.type == TargetType.HOLD_SECONDS }
+    fun valueOf(r: FeedbackRow): Int? = if (hold) r.actualHoldSeconds ?: r.actualReps else r.actualReps
+    val rowRev = mine.filter { it.blockId == null }.maxByOrNull { it.revision }
+    val overrides = mine.filter { it.blockId != null }.groupBy { it.blockId!! }.mapValues { (_, v) -> v.maxBy { it.revision } }
+    return plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid && (it.id in achieved || it.id in overrides) }.map { b ->
+        val ov = overrides[b.id]
+        val value = if (ov != null) valueOf(ov) else achieved[b.id]
+        val target = b.target?.value
+        val below = value != null && target != null && value < target
+        val rating = ov?.rating ?: when {
+            below -> Rating.BELOW
+            overrides.isEmpty() && rowRev?.rating == Rating.BELOW -> Rating.BELOW // "too hard" on the original row
+            rowRev?.rating == Rating.ABOVE -> Rating.ABOVE
+            else -> Rating.MET
+        }
+        val discomfort = ov?.discomfort ?: (overrides.isEmpty() && rowRev?.discomfort == true)
+        EffectiveRound(b.id, b.roundIndex ?: 1, b.side, value, rating, discomfort, ov != null)
+    }
+}
+
 /**
  * The feedback per exercise that [resolveFeedback] should see.
  *
  * - No round corrections for an exercise: the latest whole-exercise revision, exactly as before.
- * - With round corrections: every done round is judged on its own number, the latest correction for that block, else the
- *   value logged during the workout ([achieved], blockId -> value, null = not typed). The exercise gets the lowest number,
- *   BELOW if any round is below target or rated below, else ABOVE if any round is "too easy", else MET. A "too hard" flag on the
- *   original row cannot be attributed to a round once corrections exist, so the editors write every round together.
+ * - With round corrections: [effectiveRounds]; the exercise gets the lowest number, BELOW if any round is below target or rated
+ *   below, else ABOVE if any round is "too easy", else MET; pain follows the rounds. A "too hard" flag on the original row cannot be
+ *   attributed to a round once corrections exist, so the editors write every round together.
  */
 fun effectiveFeedback(plan: WorkoutPlan, achieved: Map<String, Int?>, rows: List<FeedbackRow>): Map<String, Feedback> {
     val out = mutableMapOf<String, Feedback>()
     for ((vid, list) in rows.groupBy { it.variationId }) {
-        val work = plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid }
-        val hold = work.any { it.target?.type == TargetType.HOLD_SECONDS }
-        fun valueOf(r: FeedbackRow): Int? = if (hold) r.actualHoldSeconds ?: r.actualReps else r.actualReps
+        val hold = plan.blocks.any { it.type == BlockType.WORK && it.variationId == vid && it.target?.type == TargetType.HOLD_SECONDS }
         val rowRev = list.filter { it.blockId == null }.maxByOrNull { it.revision }
-        val overrides = list.filter { it.blockId != null }.groupBy { it.blockId!! }.mapValues { (_, v) -> v.maxBy { it.revision } }
+        val hasRoundCorrections = list.any { it.blockId != null }
         val revision = list.maxOf { it.revision }
-        if (overrides.isEmpty()) {
+        if (!hasRoundCorrections) {
             val r = rowRev ?: continue
-            val v = valueOf(r)
+            val v = if (hold) r.actualHoldSeconds ?: r.actualReps else r.actualReps
             out[vid] = Feedback(rating = r.rating, actualReps = if (hold) null else v, actualHoldSeconds = if (hold) v else null,
                 discomfort = r.discomfort, revision = r.revision)
             continue
         }
-        val done = work.filter { it.id in achieved || it.id in overrides }
-        val ratings = done.map { b ->
-            val ov = overrides[b.id]
-            val value = if (ov != null) valueOf(ov) else achieved[b.id]
-            val target = b.target?.value
-            val rating = ov?.rating ?: when {
-                value != null && target != null && value < target -> Rating.BELOW
-                rowRev?.rating == Rating.ABOVE -> Rating.ABOVE
-                else -> Rating.MET
-            }
-            Triple(value, rating, ov?.discomfort ?: false)
-        }
-        val lowest = ratings.mapNotNull { it.first }.minOrNull()
+        val rounds = effectiveRounds(plan, vid, achieved, list)
+        val lowest = rounds.mapNotNull { it.value }.minOrNull()
         val rating = when {
-            ratings.any { it.second == Rating.BELOW } -> Rating.BELOW
-            ratings.any { it.second == Rating.ABOVE } -> Rating.ABOVE
+            rounds.any { it.rating == Rating.BELOW } -> Rating.BELOW
+            rounds.any { it.rating == Rating.ABOVE } -> Rating.ABOVE
             else -> Rating.MET
         }
-        val covered = done.all { it.id in overrides }
-        val discomfort = ratings.any { it.third } || (!covered && rowRev?.discomfort == true)
+        val covered = rounds.all { it.corrected }
+        val discomfort = rounds.any { it.discomfort } || (!covered && rowRev?.discomfort == true)
         out[vid] = Feedback(rating = rating, actualReps = if (hold) null else lowest, actualHoldSeconds = if (hold) lowest else null,
             discomfort = discomfort, revision = revision)
     }

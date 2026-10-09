@@ -219,6 +219,10 @@
     <string name="history_as_planned">as planned</string>
     <string name="history_round_value">Round %1$d: %2$s</string>
     <string name="history_correct">Correct what you did</string>
+    <string name="round_label">Round %1$d</string>
+    <string name="round_label_side">Round %1$d · %2$s</string>
+    <string name="round_as_planned">as planned</string>
+    <string name="round_corrected">corrected</string>
     <string name="history_corrected">Saved as a correction. Your progress updates the next time you open Train or Progress.</string>
     <string name="settings_section_training">Training</string>
     <string name="settings_defaults">Workout defaults</string>

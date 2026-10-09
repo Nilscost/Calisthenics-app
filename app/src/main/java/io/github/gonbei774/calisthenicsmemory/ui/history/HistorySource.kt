@@ -3,6 +3,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui.history
 
 import android.content.Context
+import app.calisthenics.domain.feedback.FeedbackRow
 import app.calisthenics.domain.feedback.Rating
 import app.calisthenics.domain.history.BlockRecord
 import app.calisthenics.domain.history.SessionRecord
@@ -12,7 +13,9 @@ import io.github.gonbei774.calisthenicsmemory.data.AppDatabase
 import kotlinx.serialization.json.Json
 
 data class StoredFeedback(val rating: String, val discomfort: Boolean, val actualReps: Int?)
-data class StoredSession(val record: SessionRecord, val plan: WorkoutPlan?, val feedback: Map<String, StoredFeedback>)
+data class StoredSession(val record: SessionRecord, val plan: WorkoutPlan?, val feedback: Map<String, StoredFeedback>,
+                         /** V04b: every stored feedback revision (whole-exercise and per-round); see feedback/Corrections.kt. */
+                         val rows: List<FeedbackRow> = emptyList())
 
 interface HistorySource {
     /** Newest first. */
@@ -20,7 +23,7 @@ interface HistorySource {
     /** A correction is a NEW feedback revision; the earlier one is kept. */
     suspend fun revise(sessionId: String, variationId: String, rating: Rating, discomfort: Boolean, reps: Int?)
     /** V04a: corrects the rounds of one exercise (each round a new revision with its block id); the history stays append-only. */
-    suspend fun reviseRounds(sessionId: String, variationId: String, rounds: List<RoundCorrection>) {}
+    suspend fun reviseRounds(sessionId: String, variationId: String, rounds: List<RoundCorrection>)
 }
 
 /** One corrected round: [reps] = reps, or seconds when [isHold]; [rating] already includes too hard / too easy / below target. */
@@ -42,7 +45,10 @@ class RoomHistorySource(private val ctx: Context) : HistorySource {
             val fb = plan?.blocks?.mapNotNull { it.variationId }?.distinct().orEmpty().mapNotNull { v ->
                 dao.feedbackHistory(s.sessionId, v).lastOrNull { it.blockId == null }?.let { v to StoredFeedback(it.rating, it.discomfort, it.actualReps) }
             }.toMap()
-            StoredSession(SessionRecord(s.sessionId, s.planId, s.startedAtEpochMs, s.endedAtEpochMs, s.status, blocks), plan, fb)
+            val rows = dao.feedbackForSession(s.sessionId).map { f ->
+                FeedbackRow(f.variationId, f.blockId, f.revision, runCatching { Rating.valueOf(f.rating) }.getOrNull(), f.discomfort, f.actualReps, f.actualHoldSeconds)
+            }
+            StoredSession(SessionRecord(s.sessionId, s.planId, s.startedAtEpochMs, s.endedAtEpochMs, s.status, blocks), plan, fb, rows)
         }
     }
 

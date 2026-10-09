@@ -41,7 +41,6 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
 import io.github.gonbei774.calisthenicsmemory.ui.components.BigStepper
-import app.calisthenics.domain.history.ratingFor
 import io.github.gonbei774.calisthenicsmemory.ui.history.RoomHistorySource
 import io.github.gonbei774.calisthenicsmemory.ui.screens.DemoClips
 import io.github.gonbei774.calisthenicsmemory.ui.screens.DemoPlayer
@@ -246,16 +245,19 @@ private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) 
         if (exercises.isNotEmpty()) {
             TextButton(onClick = { editing = !editing }, modifier = Modifier.testTag("end_edit")) { Text(stringResource(R.string.end_edit_logged)) }
             if (editing) exercises.forEach { vid ->
-                val target = st.plan.blocks.firstOrNull { it.type == BlockType.WORK && it.variationId == vid }?.target
-                val log = st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid }.mapNotNull { st.logged[it.id] }
+                val blocks = st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid && st.executions[it.id] == Execution.COMPLETED }
+                val target = blocks.firstOrNull()?.target
+                val logs = blocks.mapNotNull { st.logged[it.id] }
                 Card(Modifier.fillMaxWidth().testTag("end_fix_$vid"), shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         Text(SessionBus.names[vid] ?: vid, style = MaterialTheme.typography.titleMedium)
-                        FeedbackEditor(target, log.mapNotNull { it.reps }.minOrNull(), log.any { it.tooHard }, log.any { it.discomfort }, tag = "end_$vid") { reps, tooHard, pain ->
+                        // V04b (R21): one number per round, plus Too hard / Too easy / Pain for the exercise.
+                        RoundEditor(target, blocks.map { EditorRound(it.id, it.roundIndex ?: 1, it.side, st.logged[it.id]?.reps) },
+                            tooHard0 = logs.any { it.tooHard }, tooEasy0 = logs.any { it.tooEasy }, pain0 = logs.any { it.discomfort }, tag = "end_$vid") { list ->
                             scope.launch {
                                 val deadline = System.currentTimeMillis() + 5000
                                 while (!SessionBus.saved && System.currentTimeMillis() < deadline) delay(100) // the session row must exist first
-                                RoomHistorySource(ctx).revise(st.sessionId, vid, ratingFor(reps, target, tooHard), pain, reps)
+                                RoomHistorySource(ctx).reviseRounds(st.sessionId, vid, list)
                             }
                         }
                     }

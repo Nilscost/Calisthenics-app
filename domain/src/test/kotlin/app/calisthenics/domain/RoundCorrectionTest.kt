@@ -79,3 +79,29 @@ class RoundCorrectionTest {
         assertNull(old.blockId); assertNull(old.actualHoldSeconds); assertNull(old.actualReps)
     }
 }
+
+class EffectiveRoundsTest {
+    private fun w(r: Int, side: Side = Side.NONE) = TimelineBlock("r$r-w", BlockType.WORK, 60, r, "s", "pushup-standard", side, Target(TargetType.REPS, 8), 3)
+    private val plan = WorkoutPlan("p", "r", 1, 1, 0L, "home", 0, 180, emptySet(), false, null, 3, emptyList(), emptyList(), false, false, listOf(w(1), w(2), w(3)))
+    private val ach = mapOf<String, Int?>("r1-w" to 8, "r2-w" to 6, "r3-w" to null)
+
+    @Test fun loggedValuesAreShownAndAnUntypedRoundStaysAsPlanned() {
+        val r = effectiveRounds(plan, "pushup-standard", ach, emptyList())
+        assertEquals(listOf<Int?>(8, 6, null), r.map { it.value })
+        assertEquals(listOf(Rating.MET, Rating.BELOW, Rating.MET), r.map { it.rating })
+        assertTrue(r.none { it.corrected })
+    }
+
+    @Test fun skippedRoundsAreNotListed() {
+        assertEquals(2, effectiveRounds(plan, "pushup-standard", mapOf("r1-w" to 8, "r3-w" to 8), emptyList()).size)
+    }
+
+    @Test fun theOriginalRowFlagsShowOnEveryRoundUntilARoundIsCorrected() {
+        val tooHard = FeedbackRow("pushup-standard", null, 1, Rating.BELOW, true, null)
+        val r = effectiveRounds(plan, "pushup-standard", mapOf("r1-w" to 8, "r2-w" to 8), listOf(tooHard))
+        assertTrue(r.all { it.rating == Rating.BELOW && it.discomfort })
+        val corrected = listOf(tooHard, FeedbackRow("pushup-standard", "r1-w", 2, Rating.MET, false, 8), FeedbackRow("pushup-standard", "r2-w", 3, Rating.MET, false, 8))
+        val c = effectiveRounds(plan, "pushup-standard", mapOf("r1-w" to 8, "r2-w" to 8), corrected)
+        assertTrue(c.all { it.rating == Rating.MET && !it.discomfort && it.corrected })
+    }
+}
