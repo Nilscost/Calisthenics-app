@@ -38,7 +38,7 @@ Why AI video is back on the table:
 **Hermes limit:** Hermes's `video_generate` tool (OpenRouter plugin) sends only a **first** frame. It is fine for quick looks, but looping clips need the script in step 4, which also sends `last_frame`.
 
 ## 2. A consistent character (once)
-1. Write one character description and reuse it verbatim in every prompt. Suggestion: *"a neutral athletic adult mannequin-like figure, plain light-grey fitted clothing, no logos, no face detail, plain light studio background, soft even light, full body always in frame, side-on 3/4 camera, fixed camera, no camera motion"*.
+1. Write one character description and reuse it verbatim in every prompt. Suggestion: *"a neutral athletic adult mannequin-like figure, plain light-grey fitted clothing, no logos, no face detail, pure white seamless background (#FFFFFF, no floor line or shadow edge), soft even light, full body always in frame, side-on 3/4 camera, fixed camera, no camera motion"*.
 2. Make a **reference image** of that character (Hermes image generation, or an OpenRouter image model that accepts a reference image).
 3. Per exercise, make a **start-pose image** from the reference: same character, same background and camera, in the exercise's start position (e.g. "top of a feet-elevated push-up, feet on a chair, hands on the floor"). Check it by eye: correct contact points, the right number of limbs, and equipment (chair, bar) in the right place.
 4. Save it as `work/clips-ai/<exerciseId>/start.png`. The `work/` folder is outside git; add it to `.gitignore` if needed.
