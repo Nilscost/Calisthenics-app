@@ -38,6 +38,7 @@ fun SettingsScreen(
     var confirmRedo by remember { mutableStateOf(false) }
     var defaults by remember { mutableStateOf(TrainSettingsStore.load(ctx)) }
     var voice by remember { mutableStateOf(PrefsStore.load(ctx).audioEnabled) }
+    var autoProg by remember { mutableStateOf(PrefsStore.load(ctx).autoProgression) }
     val version = remember { runCatching { ctx.packageManager.getPackageInfo(ctx.packageName, 0).versionName }.getOrNull().orEmpty() }
     fun saveDefaults(s: app.calisthenics.domain.planner.TrainSettings) { defaults = s; TrainSettingsStore.save(ctx, s) }
 
@@ -60,6 +61,9 @@ fun SettingsScreen(
                     SwitchRow(R.string.settings_voice, voice, "set_voice") { voice = it; PrefsStore.save(ctx, PrefsStore.load(ctx).copy(audioEnabled = it)) }
                 }
             }
+            Section(R.string.settings_section_progression)
+            SwitchRow(R.string.settings_auto_progress, autoProg, "set_auto_progress") { autoProg = it; PrefsStore.save(ctx, PrefsStore.load(ctx).copy(autoProgression = it)) }
+            Text(stringResource(if (autoProg) R.string.settings_auto_progress_on else R.string.settings_auto_progress_off), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("auto_progress_hint"))
             NavRow(R.string.settings_levels, R.string.settings_levels_hint, "settings_redo") { confirmRedo = true }
 
             Section(R.string.settings_section_appearance)

@@ -26,5 +26,7 @@ appId: app.calisthenics.personal
       - back
 - tapOn: { id: tab_settings }
 - takeScreenshot: 05-settings-${VARIANT}
+- scrollUntilVisible: { element: { id: set_auto_progress }, direction: DOWN, timeout: 10000 }
+- takeScreenshot: 05b-settings-progression-${VARIANT}
 - scrollUntilVisible: { element: { id: settings_about }, direction: DOWN, timeout: 10000 }
 - takeScreenshot: 06-settings-bottom-${VARIANT}

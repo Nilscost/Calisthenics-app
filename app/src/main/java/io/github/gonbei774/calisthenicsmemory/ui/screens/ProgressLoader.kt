@@ -35,6 +35,6 @@ object ProgressLoader {
                 { v, tier -> catalog.policyForVariation(v)?.tiers?.firstOrNull { it.index == tier }?.minQualifyingBlocks ?: 2 })
         }
         val actions = LevelStore.load(ctx).map { (v, t) -> UserAction.SelfAssessment(0, v, t) }
-        return ProgressionEngine(catalog).replay(evidence, actions)
+        return ProgressionEngine(catalog).replay(evidence, actions, PrefsStore.load(ctx).autoProgression)
     }
 }

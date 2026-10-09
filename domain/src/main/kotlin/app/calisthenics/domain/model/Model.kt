@@ -254,6 +254,8 @@ data class Preferences(
     val selectedProfileId: String = "home",
     val excludedVariationIds: Set<String> = emptySet(),
     val dismissedSuggestionIds: Set<String> = emptySet(),
+    /** D4 (V14): the global "Automatic progression" switch. Off freezes levels and exercises; the owner changes them by hand. Appended last. */
+    val autoProgression: Boolean = true,
 )
 
 // ---------- plan ----------

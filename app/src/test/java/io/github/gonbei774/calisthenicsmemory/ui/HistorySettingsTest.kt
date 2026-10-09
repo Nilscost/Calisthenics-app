@@ -132,6 +132,17 @@ class HistorySettingsTest {
         rule.onNodeWithTag("fix_pushup-standard_round2").assertTextContains("corrected", substring = true)
     }
 
+    @Test fun theAutomaticProgressionSwitchIsOnByDefaultAndPersists() {
+        ctx.getSharedPreferences("planner_prefs", Context.MODE_PRIVATE).edit().clear().commit()
+        showSettings()
+        rule.onNodeWithTag("set_auto_progress").performScrollTo().assertIsOn()
+        rule.onNodeWithTag("auto_progress_hint").assertTextContains("levels rise", substring = true)
+        rule.onNodeWithTag("set_auto_progress").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("set_auto_progress").assertIsOff()
+        rule.onNodeWithTag("auto_progress_hint").assertTextContains("stay as they are", substring = true)
+        assertFalse(io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.load(ctx).autoProgression)
+    }
+
     @Test fun anUnknownWorkoutSaysSo() {
         rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionDetailScreen("zzz", source = FakeHistory(emptyList()), onBack = {}) } }
         rule.waitForIdle()

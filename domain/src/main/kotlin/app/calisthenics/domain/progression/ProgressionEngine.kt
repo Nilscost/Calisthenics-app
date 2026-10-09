@@ -114,7 +114,11 @@ class ProgressionEngine(private val catalog: Catalog) {
         tiers = p.tiers.map { SeedTier(it.index, it.target.value, it.workWindowSeconds, it.minRecoverySeconds) },
     )
 
-    fun replay(evidence: List<SessionEvidence>, actions: List<UserAction>): ProgressSnapshot {
+    /**
+     * [autoProgression] is the global D4 switch: with it off a session still counts as trained (last trained day, streak) but never
+     * moves a level or switches to the successor exercise; only the owner's own actions (self-assessment, manual override, accepting a suggestion) do.
+     */
+    fun replay(evidence: List<SessionEvidence>, actions: List<UserAction>, autoProgression: Boolean = true): ProgressSnapshot {
         val vars = sortedMapOf<String, VariationProgress>()
         val active = sortedMapOf<String, String>()
         val holds = sortedMapOf<String, FamilyHold>()
@@ -163,7 +167,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                     val days = (p.streakDays + ev.day).distinct().sorted()
                     p = p.copy(streakDays = days, streakAssumed = p.streakAssumed + if (ev.confirmedBlocks == 0) 1 else 0,
                         consecutiveBelow = 0, lowerTargetSuggested = false)
-                    p = tryAdvance(p, ev.day, events, active, vars)
+                    if (autoProgression) p = tryAdvance(p, ev.day, events, active, vars)
                 }
                 ev.anyBelow && !ev.discomfort -> {
                     val below = p.consecutiveBelow + 1
