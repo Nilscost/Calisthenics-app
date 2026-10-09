@@ -21,7 +21,7 @@ Overlap with v2:
 
 | # | Task | Notes / done when |
 |---|---|---|
-| L00 | **Verify against the live r/bodyweightfitness wiki** | Done by the reviewer when the owner's browser is available, then recorded in `docs/research/rr-live-check.md`. If that file does not exist when you reach L00, **skip L00**. Tag every RR-derived item "per 2019 mirror (unverified)" in the catalog sources and the review table, then continue. |
+| L00 | **Verify against the live r/bodyweightfitness wiki** | **DONE (2026-10-09)** by the reviewer from the owner's saved pages: `docs/research/rr-live-check.md` (RR, all progression pages, Minimalist, Starting To Stretch). Use it as the source. |
 | L01 | Tier profiles + source/draft flag | A `tierProfile` field (R, RU, C, H30, H60, N, E, M; report §"One gate, five tiers"), appended last with a default. The RR rule is one function (gate 3×8 or 30 s, reset to 3×5). Each exercise also gets a `draft`/`source` field. Tests: profiles produce the report's tier values; old catalogs decode. |
 | L02 | Push-up chain reorder (Ebben 2011) | wall → high incline → knee ‖ low incline → full → diamond ‖ chair decline → archer → one-arm progression; pseudo-planche is its own branch. Migrate existing levels by exercise id (no star loss). Test: order + migration. |
 | L03 | Pull-up path without a band | dead hang, scapular pull, arch hang (timed exercise + a rep-based warm-up variant), flexed-arm hang, negatives, chair-assisted pull-up; chin-up ‖ pull-up as parallel; flexed-hang placement test in the questionnaire. |
@@ -33,6 +33,7 @@ Overlap with v2:
 | L09 | Back-bridge ladder | glute bridge → table bridge → chair (box) bridge → head-supported → **feet-elevated / wall walk-down (middle step)** → full bridge. |
 | L10 | Dips detail | chair dips with a 90° depth cap and "stop on front-shoulder pain" copy; support hold 3×30 s; chair-dip negatives. |
 | L11 | Stretch library to 24 | Each stretch tagged between-sets (BS) or cool-down (CD). The planner puts only BS stretches between sets, ≤30 s each, and keeps static holds before strength work ≤60 s per muscle. Sleeper, Jefferson curl and German hang are opt-in. Each new stretch gets a clip and thumbnail through the v3 pipeline. |
+| L11b | "Starting To Stretch" session (r/flexibility) | A ready-made stretch-only routine with the 10 stretches and the bump/hold protocol (see `docs/research/rr-live-check.md`, last section). It is listed under Ready-made routines and offered as an optional post-workout cool-down; never before strength work. Planner test: blocks, order, total of about 30 min; upper/lower half option. Screenshot review of the routine preview and a stretch block. |
 | L12 | Warm-up as RAMP blocks | The RR's eight items in raise/activate/mobilise/potentiate order. Gated items unlock from ladder state (arch hang after negatives, support hold after negative dips, etc.). There is a wrist block before handstand/push days. |
 | L13 | Calves + tibialis mini-ladder | Profile E; the 2.5 kg dumbbells as load. Then a **release R6**: full verify, CI, screenshots, `owner-check-r6.md`, `app-debug-R6.apk`, and `docs/review/draft-numbers.md` regenerated. |
 

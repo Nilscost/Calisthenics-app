@@ -6,7 +6,7 @@ Pages read:
 - Recommended Routine;
 - push-up, pull-up, row, dip, squat, hinge and core progressions.
 
-**Not provided:** the Minimal(ist) Routine and Starting Stretching pages. For those, keep the sources already in plan §3 and in the research report, marked unverified.
+Added later the same day: **the Minimalist Routine** (r/bodyweightfitness wiki) and **Starting To Stretch** (r/flexibility wiki); see the two sections at the end.
 
 Licence: no licence is stated on the wiki, so treat it as all rights reserved. Use structure and numbers only, our own wording, and credit "r/bodyweightfitness wiki".
 
@@ -128,3 +128,48 @@ Licence: no licence is stated on the wiki, so treat it as all rights reserved. U
 - **L08:** the core lists as above.
 - **L10:** dips = two-chair / counter-corner support hold, negatives and dips. No bench dips in the RR preset.
 - **Tag RR-derived items** with source "r/bodyweightfitness wiki, live check 2026-10-09", not "unverified".
+
+## Minimalist Routine (live page)
+**Confirms plan §3.**
+- **Circuit:** 2–6 circuits of walking lunges → push-ups → rows → plank shoulder taps.
+- **Rest and effort:** little to no rest; every set 1–2 reps short of failure. If you fail the last rep, do 1–2 fewer next time.
+- **Reps:** any rep range. Usually reach about **3 sets of 8–10** before making an exercise significantly harder.
+- **Frequency:** daily is possible; 3×/week with gradual progression is better for strength and muscle growth.
+- **Optional extras:** supermans / arch hold, bird dogs, dead bugs, a hip hinge, squats, calf raises, the RR core options.
+- **Harder steps:**
+  - push-up → diamond → pseudo-planche;
+  - rows → pull-ups;
+  - lunges → squats → cossack → single-leg squats / pistol / shrimp.
+- **Where to row:**
+  - under a table;
+  - a **broomstick across the seats of two chairs**;
+  - towels over a pull-up bar;
+  - a rope over a branch or swing set;
+  - rings;
+  - a knotted bedsheet in a door.
+- **Advice:**
+  - keep push-up and row volume roughly equal;
+  - schedule a deload break every few months.
+- **Credit:** derived from u/m092's Concept Wednesday post. Credit both.
+
+**→ V22:** the Minimalist preset uses exactly this. Its progression rule is "Rep range" with a top of about 10 (DRAFT 3 × 8–10). Rest is the minimum transition, with no stretch blocks by default (the stretch switch stays available). The optional extras are an "add exercise" suggestion list, not part of the preset.
+
+## Starting To Stretch (r/flexibility wiki, live page)
+- **Ten stretches in two halves:**
+
+  | Half | Stretches |
+  |---|---|
+  | Upper body | shoulder backbend, spine backbend, rear hand clasp (with a towel or band), lying cross, wrist-biceps stretch (palms on the wall, fingers back) |
+  | Lower body | one-leg pike (foot on a chair), kneeling lunge, pancake, butterfly, calf stretch |
+
+- **Protocol per stretch:** 10 gentle "bumps" into the stretch → hold 10 s → 10 bumps → hold 20 s → 10 bumps → hold 30 s. Go a little deeper each time.
+- **Schedule:** 2–3×/week, about 30 min. If short on time, alternate the upper and lower halves.
+- **Its FAQ says: "don't do it before a workout"; after a workout is fine.**
+- Licence: none stated, so use structure only, our own wording, and credit "r/flexibility wiki, Starting To Stretch (u/tykato)".
+
+**→ New task L11b (batch 3):** a ready-made **"Starting To Stretch"** stretch session.
+- It is a routine of stretch blocks only, using the protocol above. The bumps are cued as "gently ease in and out 10 times".
+- It is listed under Ready-made routines and can also run as an optional cool-down after a workout.
+- It is never placed before strength work.
+- Add any of the ten stretches the library doesn't have yet to L11's list.
+- The "bumping" is a mild ballistic element. Add a caution: gentle and small, never forced, skip it with an acute injury.
