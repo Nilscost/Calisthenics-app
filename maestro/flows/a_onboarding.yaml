@@ -1,0 +1,30 @@
+# A — first run: the questionnaire from a fresh install, every page, "I don't know" → Normal on each family.
+appId: app.calisthenics.personal
+---
+- launchApp:
+    clearState: true
+    permissions: { all: allow }
+- extendedWaitUntil: { visible: { id: onb_next }, timeout: 20000 }
+- takeScreenshot: ${SHOTS}/01-welcome-${VARIANT}
+- tapOn: { id: onb_next }
+- takeScreenshot: ${SHOTS}/02-goal-${VARIANT}
+- tapOn: { id: onb_next }
+- takeScreenshot: ${SHOTS}/03-equipment-${VARIANT}
+- tapOn: { id: onb_next }
+- evalScript: ${output.n = 0}
+- repeat:
+    while: { visible: { id: onb_dont_know } }
+    times: 8
+    commands:
+      - evalScript: ${output.n = output.n + 1}
+      - takeScreenshot: ${SHOTS}/04-family${output.n}-${VARIANT}
+      - tapOn: { id: onb_dont_know }
+      - tapOn: { id: onb_guess_NORMAL }
+      - takeScreenshot: ${SHOTS}/04-family${output.n}-normal-${VARIANT}
+      - tapOn: { id: onb_next }
+- takeScreenshot: ${SHOTS}/05-style-${VARIANT}
+- tapOn: { id: onb_next }
+- extendedWaitUntil: { visible: { id: onb_finish }, timeout: 5000 }
+- takeScreenshot: ${SHOTS}/06-ready-${VARIANT}
+- tapOn: { id: onb_finish }
+- extendedWaitUntil: { visible: { id: preview_button }, timeout: 10000 }

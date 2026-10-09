@@ -1,0 +1,19 @@
+# B — Train setup and the Preview: cards, swap sheet, full timeline.
+appId: app.calisthenics.personal
+---
+- launchApp
+- extendedWaitUntil: { visible: { id: preview_button }, timeout: 15000 }
+- takeScreenshot: ${SHOTS}/01-train-${VARIANT}
+- tapOn: { id: preview_button }
+- extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
+- takeScreenshot: ${SHOTS}/02-preview-${VARIANT}
+- scrollUntilVisible: { element: { id: timeline_toggle }, direction: DOWN, timeout: 10000 }
+- takeScreenshot: ${SHOTS}/03-preview-bottom-${VARIANT}
+- tapOn: { id: timeline_toggle }
+- takeScreenshot: ${SHOTS}/04-timeline-${VARIANT}
+- scrollUntilVisible: { element: { id: "swap_.*" }, direction: UP, timeout: 10000 }
+- tapOn: { id: "swap_.*", index: 0 }
+- extendedWaitUntil: { visible: "Swap this exercise", timeout: 5000 }
+- takeScreenshot: ${SHOTS}/05-swap-sheet-${VARIANT}
+- back
+- back
