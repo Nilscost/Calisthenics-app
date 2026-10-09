@@ -38,6 +38,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable enum class TargetType { REPS, HOLD_SECONDS }
 
+/** V19 (D11, O1): how the exercises of a workout are ordered. Circuit = all exercises, then the next round; Pairs = two exercises alternate for all their sets; Straight sets = all sets of one exercise, then the next. */
+@Serializable enum class WorkoutFormat { CIRCUIT, PAIRS, STRAIGHT }
+
 // ---------- equipment ----------
 
 /** One required item. Mass range only where relevant; band strength is a label, never kg. */
@@ -278,6 +281,10 @@ data class TimelineBlock(
     val optionalExtra: Boolean = false,
     /** Kettlebell weight for this work block (null = bodyweight / unknown, e.g. plans saved before 0.3.1). */
     val loadGrams: Int? = null,
+    /** V17 (D3): the number was typed freely in the Detailed edit. A session with a free number does not count towards progression. */
+    val freeTarget: Boolean = false,
+    /** V19: the pair (Pairs) or the exercise number (Straight sets) this block belongs to; null in a Circuit. */
+    val groupIndex: Int? = null,
 ) {
     init { require(durationSeconds > 0) { "block $id must have positive duration" } }
 }
@@ -304,4 +311,6 @@ data class WorkoutPlan(
     val blocks: List<TimelineBlock>,
     /** Timed-rounds mode: 60 s work / 60 s rest per exercise. */
     val timed: Boolean = false,
+    /** V19: how the blocks are ordered. Appended last; plans saved before V19 are circuits. */
+    val format: WorkoutFormat = WorkoutFormat.CIRCUIT,
 )

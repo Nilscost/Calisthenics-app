@@ -145,3 +145,108 @@ class PlanEditsTest {
         assertTrue(PlanEdits().isEmpty())
     }
 }
+
+class DetailedEditTest {
+    private val catalog = app.calisthenics.domain.content.parseCatalog(java.io.File(System.getProperty("repo.root"), "content/starter/catalog.json").readText())
+    private val none = app.calisthenics.domain.progression.ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
+    private val home = app.calisthenics.domain.equipment.SeedProfiles.home
+    private val routine = app.calisthenics.domain.routine.StarterRoutine.routine
+    private fun plan(edits: PlanEdits = PlanEdits()) =
+        (buildTrainPlan(catalog, routine, none, home, TrainSettings(rounds = 3, stretchOn = true), edits = edits) as PlanResult.Ready).plan
+
+    @Test fun aStretchForOneSetOnlyLeavesTheOtherSetsAlone() {
+        val p = plan(PlanEdits(roundStretchPicks = mapOf("2:push" to "stretch-frog")))
+        val of = { r: Int -> p.blocks.filter { it.roundIndex == r && it.slotId == "push" && it.type == BlockType.STRETCH }.mapNotNull { it.variationId }.toSet() }
+        assertEquals(setOf("stretch-frog"), of(2))
+        assertTrue("stretch-frog" !in of(1) && "stretch-frog" !in of(3))
+        val both = plan(PlanEdits(stretchPicks = mapOf("push" to "stretch-pigeon"), roundStretchPicks = mapOf("3:push" to "stretch-frog")))
+        assertEquals(setOf("stretch-pigeon"), both.blocks.filter { it.roundIndex == 1 && it.slotId == "push" && it.type == BlockType.STRETCH }.mapNotNull { it.variationId }.toSet())
+        assertEquals(setOf("stretch-frog"), both.blocks.filter { it.roundIndex == 3 && it.slotId == "push" && it.type == BlockType.STRETCH }.mapNotNull { it.variationId }.toSet())
+    }
+
+    @Test fun aFreeNumberIsMarkedAndNeverCountsTowardsProgression() {
+        val p = plan(PlanEdits(freeTargets = mapOf("2:push" to 13)))
+        val w = p.blocks.filter { it.type == BlockType.WORK && it.slotId == "push" }
+        assertEquals(listOf(false, true, false), w.sortedBy { it.roundIndex }.map { it.freeTarget })
+        assertEquals(13, w.first { it.roundIndex == 2 }.target!!.value)
+        val outcomes = app.calisthenics.domain.feedback.resolveFeedback(p, p.blocks.filter { it.type == BlockType.WORK }.associate { it.id to app.calisthenics.domain.feedback.Execution.COMPLETED })
+        val ev = app.calisthenics.domain.feedback.deriveEvidence("S", 1, p, outcomes, { catalog.variation(it)?.familyId ?: it }, { _, _ -> 2 })
+        assertFalse(ev.first { it.variationId == routine.slots.first { s -> s.id == "push" }.preferredVariationId }.qualifying)
+        assertTrue(ev.first { it.variationId == "squat-air" }.qualifying)               // the other exercises still count
+        val plain = app.calisthenics.domain.feedback.deriveEvidence("S", 1, plan(), app.calisthenics.domain.feedback.resolveFeedback(plan(), plan().blocks.filter { it.type == BlockType.WORK }.associate { it.id to app.calisthenics.domain.feedback.Execution.COMPLETED }), { catalog.variation(it)?.familyId ?: it }, { _, _ -> 2 })
+        assertTrue(plain.all { it.qualifying })
+    }
+
+    @Test fun aFreeHoldKeepsItsGetReadyAndOldPlansDecodeWithoutTheFlag() {
+        val hold = plan(PlanEdits(freeTargets = mapOf("core" to 70))).blocks.first { it.slotId == "core" && it.type == BlockType.WORK }
+        assertEquals(70, hold.target!!.value); assertTrue(hold.durationSeconds >= 73)
+        val j = kotlinx.serialization.json.Json { ignoreUnknownKeys = false }
+        val old = j.decodeFromString(TimelineBlock.serializer(), """{"id":"b","type":"WORK","durationSeconds":60}""")
+        assertFalse(old.freeTarget)
+    }
+}
+
+/** V19 (D11, O1): Circuit, Pairs and Straight sets, each with the stretch-or-rest switch. */
+class WorkoutFormatTest {
+    private val catalog = app.calisthenics.domain.content.parseCatalog(java.io.File(System.getProperty("repo.root"), "content/starter/catalog.json").readText())
+    private val none = app.calisthenics.domain.progression.ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
+    private val home = app.calisthenics.domain.equipment.SeedProfiles.home
+    private val routine = app.calisthenics.domain.routine.StarterRoutine.routine
+    private fun plan(f: WorkoutFormat, stretch: Boolean = true, sets: Int = 3) =
+        (buildTrainPlan(catalog, routine, none, home, TrainSettings(rounds = sets, stretchOn = stretch, format = f)) as PlanResult.Ready).plan
+    private fun slots(p: WorkoutPlan) = p.blocks.filter { it.type == BlockType.WORK && it.side != Side.RIGHT }.mapNotNull { it.slotId } // one entry per set (the right side of a one-sided exercise is the same set)
+    private val six = listOf("push", "squat", "pull", "core", "hinge", "core2")
+
+    @Test fun circuitIsUnchangedAndOldPlansAreCircuits() {
+        val p = plan(WorkoutFormat.CIRCUIT)
+        assertEquals(WorkoutFormat.CIRCUIT, p.format)
+        assertEquals(six + six + six, slots(p))
+        assertTrue(p.blocks.all { it.groupIndex == null })
+        val j = kotlinx.serialization.json.Json { ignoreUnknownKeys = true; encodeDefaults = true }
+        val text = j.encodeToString(WorkoutPlan.serializer(), p).replace(Regex(""","format":"[A-Z]+""""), "")
+        assertEquals(WorkoutFormat.CIRCUIT, j.decodeFromString(WorkoutPlan.serializer(), text).format)
+    }
+
+    @Test fun pairsAlternateTwoExercisesForAllTheirSetsThenMoveOn() {
+        val p = plan(WorkoutFormat.PAIRS)
+        assertEquals(WorkoutFormat.PAIRS, p.format)
+        val expected = listOf("push", "squat").let { a -> List(3) { a }.flatten() } + listOf("pull", "core").let { a -> List(3) { a }.flatten() } + listOf("hinge", "core2").let { a -> List(3) { a }.flatten() }
+        assertEquals(expected, slots(p))
+        val w = p.blocks.filter { it.type == BlockType.WORK }
+        assertEquals(setOf(1, 2, 3), w.mapNotNull { it.groupIndex }.toSet())
+        assertEquals(1, w.first { it.slotId == "squat" }.groupIndex); assertEquals(2, w.first { it.slotId == "core" }.groupIndex)
+        for (s in six) assertEquals(listOf(1, 2, 3), w.filter { it.slotId == s }.mapNotNull { it.roundIndex }.distinct())
+    }
+
+    @Test fun pairsWithAnOddNumberOfExercisesEndWithOneOnItsOwn() {
+        val removed = (buildTrainPlan(catalog, routine, none, home, TrainSettings(rounds = 2, format = WorkoutFormat.PAIRS), edits = PlanEdits(removed = setOf("core2"))) as PlanResult.Ready).plan
+        assertEquals(listOf("hinge", "hinge"), slots(removed).takeLast(2))
+        assertEquals(3, removed.blocks.filter { it.type == BlockType.WORK }.mapNotNull { it.groupIndex }.max())
+    }
+
+    @Test fun straightSetsDoAllSetsOfOneExerciseThenTheNext() {
+        val p = plan(WorkoutFormat.STRAIGHT)
+        assertEquals(six.flatMap { listOf(it, it, it) }, slots(p))
+        val w = p.blocks.filter { it.type == BlockType.WORK }
+        assertEquals((1..6).toList(), w.mapNotNull { it.groupIndex }.distinct())
+    }
+
+    @Test fun everyFormatHasTheSameWorkAndABreakAfterEverySetExceptTheLast() {
+        for (f in WorkoutFormat.entries) for (stretch in listOf(true, false)) {
+            val p = plan(f, stretch)
+            val work = p.blocks.filter { it.type == BlockType.WORK }
+            assertEquals("$f has the same work as the circuit", plan(WorkoutFormat.CIRCUIT, stretch).blocks.count { it.type == BlockType.WORK }, work.size)
+            val breaks = p.blocks.filter { it.type == BlockType.STRETCH || it.type == BlockType.PASSIVE_RECOVERY }
+            if (stretch) assertTrue("$f: stretch on means no plain rest", breaks.none { it.type == BlockType.PASSIVE_RECOVERY } && breaks.isNotEmpty())
+            else assertTrue("$f: stretch off means plain rest only", breaks.all { it.type == BlockType.PASSIVE_RECOVERY } && breaks.size == 17)
+            assertEquals(p.plannedDurationSeconds, p.blocks.sumOf { it.durationSeconds })
+            assertEquals("$f: nothing after the very last set", BlockType.WORK, p.blocks.last().type)
+        }
+        assertEquals(plan(WorkoutFormat.CIRCUIT, false).blocks.filter { it.type == BlockType.PASSIVE_RECOVERY }.sumOf { it.durationSeconds },
+            plan(WorkoutFormat.STRAIGHT, false).blocks.filter { it.type == BlockType.PASSIVE_RECOVERY }.sumOf { it.durationSeconds })
+    }
+
+    @Test fun blockIdsStayUniqueInEveryFormat() {
+        for (f in WorkoutFormat.entries) { val ids = plan(f).blocks.map { it.id }; assertEquals("$f", ids.size, ids.toSet().size) }
+    }
+}

@@ -7,6 +7,7 @@ import app.calisthenics.domain.model.Routine
 import app.calisthenics.domain.model.RoutineSlot
 import app.calisthenics.domain.model.StretchArea
 import app.calisthenics.domain.model.StrengthFocus
+import app.calisthenics.domain.model.WorkoutFormat
 
 /** Spec §4.2: FULL_BODY clears specific focuses; specific focuses combine by union; empty = FULL_BODY. */
 fun normalizeFocus(selected: Set<StrengthFocus>): Set<StrengthFocus> =
@@ -66,6 +67,12 @@ data class SessionDraft(
     val stretchPicks: Map<String, String> = emptyMap(),
     /** V16: extra stretches added after a slot's break (the "+" between blocks). */
     val extraStretches: Map<String, List<String>> = emptyMap(),
+    /** V17 (D6): a stretch for one set only, key "<set>:<slot>". */
+    val roundStretchPicks: Map<String, String> = emptyMap(),
+    /** V17 (D3): a typed number for one set ("<set>:<slot>") or for every set (just "<slot>"); never counts towards progression. */
+    val freeTargets: Map<String, Int> = emptyMap(),
+    /** V19: Circuit, Pairs or Straight sets. */
+    val format: WorkoutFormat = WorkoutFormat.CIRCUIT,
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(

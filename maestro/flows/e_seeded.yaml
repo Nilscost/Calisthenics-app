@@ -31,7 +31,7 @@ appId: app.calisthenics.personal
     commands:
       - swipe: { start: "90%, 16%", end: "10%, 16%" }
 - tapOn: { id: tab_chip_hips }
-- extendedWaitUntil: { visible: { id: "tree_node_kettlebell-deadlift" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "tree_node_kettlebell-deadlift" }, direction: DOWN, timeout: 15000 }
 - takeScreenshot: 06-progress-hips-${VARIANT}
 - tapOn: { id: "tree_node_kettlebell-deadlift" }
 - extendedWaitUntil: { visible: { id: node_panel }, timeout: 10000 }

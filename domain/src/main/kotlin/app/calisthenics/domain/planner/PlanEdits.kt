@@ -23,6 +23,10 @@ data class PlanEdits(
     val stretchPicks: Map<String, String> = emptyMap(),
     /** slot -> extra stretches after its break. */
     val extraStretches: Map<String, List<String>> = emptyMap(),
+    /** Detailed edit (D6): a stretch for one set only, key "<set>:<slot>". */
+    val roundStretchPicks: Map<String, String> = emptyMap(),
+    /** Detailed edit (D3): a typed number for one set ("<set>:<slot>") or every set ("<slot>"). It does not count towards progression. */
+    val freeTargets: Map<String, Int> = emptyMap(),
 ) {
     fun isEmpty() = this == PlanEdits()
 }

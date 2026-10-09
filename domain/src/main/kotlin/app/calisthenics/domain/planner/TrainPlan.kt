@@ -21,6 +21,8 @@ data class TrainSettings(
     val stretchOn: Boolean = true,
     /** null = follow the goal ("Full body" for most goals, "Upper body" for the upper-body goal, ...). */
     val focus: Set<StrengthFocus>? = null,
+    /** V19: the workout format (Circuit, Pairs, Straight sets); `rounds` are then the sets. */
+    val format: WorkoutFormat = WorkoutFormat.CIRCUIT,
 ) {
     fun effectiveFocus(): Set<StrengthFocus> = focus ?: Goals.focusFor(goalId)
 }
@@ -61,7 +63,8 @@ fun buildTrainPlan(
 ): PlanResult {
     val routine = applyEdits(trainRoutine(catalog, baseRoutine, progress, s.goalId), edits)
     val draft = SessionDraft.from(prefs.copy(stretchOn = s.stretchOn, selectedProfileId = profile.id), routine)
-        .copy(focus = s.effectiveFocus(), swaps = swaps + edits.swaps, rounds = s.rounds.coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed,
-            tierOverrides = edits.tierOverrides, stretchPicks = edits.stretchPicks, extraStretches = edits.extraStretches)
+        .copy(focus = s.effectiveFocus(), swaps = swaps + edits.swaps, rounds = s.rounds.coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed, format = s.format,
+            tierOverrides = edits.tierOverrides, stretchPicks = edits.stretchPicks, extraStretches = edits.extraStretches,
+            roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets)
     return generate(PlanInput("draft", nowEpochMs, nowDay, catalog, routine, draft, profile, progress = progress))
 }

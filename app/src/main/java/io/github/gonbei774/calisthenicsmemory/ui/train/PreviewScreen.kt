@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.foundation.selection.toggleable
 import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
@@ -58,11 +59,11 @@ import java.util.UUID
 fun formatClock(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 
 /** The circuit: the work of round 1, one entry per exercise (both sides of a unilateral exercise are one entry). */
-data class CircuitEntry(val slotId: String, val variationId: String, val target: Target?, val perSide: Boolean, val loadGrams: Int? = null, val tier: Int = 1)
+data class CircuitEntry(val slotId: String, val variationId: String, val target: Target?, val perSide: Boolean, val loadGrams: Int? = null, val tier: Int = 1, val free: Boolean = false)
 
 fun circuitOf(plan: WorkoutPlan, round: Int = 1): List<CircuitEntry> =
     plan.blocks.filter { it.type == BlockType.WORK && (it.roundIndex ?: 1) == round && it.slotId != null && it.variationId != null }
-        .groupBy { it.slotId!! }.values.map { bs -> CircuitEntry(bs.first().slotId!!, bs.first().variationId!!, bs.first().target, bs.size > 1, bs.first().loadGrams, bs.first().prescriptionTier ?: 1) }
+        .groupBy { it.slotId!! }.values.map { bs -> CircuitEntry(bs.first().slotId!!, bs.first().variationId!!, bs.first().target, bs.size > 1, bs.first().loadGrams, bs.first().prescriptionTier ?: 1, bs.first().freeTarget) }
 
 @Composable
 private fun targetText(t: Target?, perSide: Boolean, loadGrams: Int? = null): String {
@@ -129,28 +130,29 @@ private fun movementTag(v: ExerciseVariation?): Int = when (v?.patterns?.firstOr
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name: String, levels: Int, onLevel: (Int) -> Unit, onSwap: () -> Unit, onRemove: () -> Unit) {
+private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name: String, levels: Int, onLevel: (Int) -> Unit, onSwap: () -> Unit, onRemove: () -> Unit, sfx: String = "", onTypeNumber: (() -> Unit)? = null) {
     val removeLabel = stringResource(R.string.preview_remove)
     Card(Modifier.fillMaxWidth().pointerInput(Unit) { detectTapGestures(onLongPress = { onRemove() }) }
-        .semantics { onLongClick(label = removeLabel) { onRemove(); true } }.testTag("exercise_${e.slotId}"), shape = MaterialTheme.shapes.large) {
+        .semantics { onLongClick(label = removeLabel) { onRemove(); true } }.testTag("exercise_${e.slotId}$sfx"), shape = MaterialTheme.shapes.large) {
         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(e.variationId, name, 56.dp)
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                    Text(stringResource(R.string.preview_slot_tag, index + 1, stringResource(movementTag(v))), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("slot_tag_${e.slotId}"))
-                    Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("exercise_name_${e.slotId}"))
+                    Text(stringResource(R.string.preview_slot_tag, index + 1, stringResource(movementTag(v))), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("slot_tag_${e.slotId}$sfx"))
+                    Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("exercise_name_${e.slotId}$sfx"))
                 }
-                if (v != null && v.primaryMuscles.isNotEmpty()) io.github.gonbei774.calisthenicsmemory.ui.components.BodyMap(v.primaryMuscles, v.secondaryMuscles, showNamesOnTap = false, tag = "muscles_${e.slotId}", viewWidth = 24.dp)
-                IconButton(onClick = onSwap, modifier = Modifier.testTag("swap_${e.slotId}")) { Icon(Icons.Filled.Refresh, stringResource(R.string.preview_swap, name)) }
+                if (v != null && v.primaryMuscles.isNotEmpty()) io.github.gonbei774.calisthenicsmemory.ui.components.BodyMap(v.primaryMuscles, v.secondaryMuscles, showNamesOnTap = false, tag = "muscles_${e.slotId}$sfx", viewWidth = 24.dp)
+                IconButton(onClick = onSwap, modifier = Modifier.testTag("swap_${e.slotId}$sfx")) { Icon(Icons.Filled.Refresh, stringResource(R.string.preview_swap, name)) }
             }
             // D3: the level stepper; the number between - and + is the target of that level
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                FilledTonalIconButton(onClick = { onLevel(stepLevel(e.tier, -1, levels)) }, enabled = e.tier > 1, modifier = Modifier.size(Spacing.touch).testTag("level_minus_${e.slotId}")) { Icon(io.github.gonbei774.calisthenicsmemory.ui.theme.AppIcons.Remove, stringResource(R.string.stepper_decrease)) }
+                FilledTonalIconButton(onClick = { onLevel(stepLevel(e.tier, -1, levels)) }, enabled = e.tier > 1, modifier = Modifier.size(Spacing.touch).testTag("level_minus_${e.slotId}$sfx")) { Icon(io.github.gonbei774.calisthenicsmemory.ui.theme.AppIcons.Remove, stringResource(R.string.stepper_decrease)) }
                 Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(targetText(e.target, e.perSide, e.loadGrams), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("exercise_target_${e.slotId}"))
-                    Text(stringResource(R.string.preview_level, e.tier, levels), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("level_${e.slotId}"))
+                    Text(targetText(e.target, e.perSide, e.loadGrams), style = MaterialTheme.typography.headlineMedium, color = if (e.free) AppAccentTheme.colors.text else MaterialTheme.colorScheme.onSurface,
+                        modifier = (if (onTypeNumber != null) Modifier.clickable(onClick = onTypeNumber).heightIn(min = Spacing.touch).wrapContentHeight(Alignment.CenterVertically) else Modifier).testTag("exercise_target_${e.slotId}$sfx"))
+                    Text(if (e.free) stringResource(R.string.preview_free_number) else stringResource(R.string.preview_level, e.tier, levels), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("level_${e.slotId}$sfx"))
                 }
-                FilledTonalIconButton(onClick = { onLevel(stepLevel(e.tier, 1, levels)) }, enabled = e.tier < levels, modifier = Modifier.size(Spacing.touch).testTag("level_plus_${e.slotId}")) { Icon(Icons.Filled.Add, stringResource(R.string.stepper_increase)) }
+                FilledTonalIconButton(onClick = { onLevel(stepLevel(e.tier, 1, levels)) }, enabled = e.tier < levels, modifier = Modifier.size(Spacing.touch).testTag("level_plus_${e.slotId}$sfx")) { Icon(Icons.Filled.Add, stringResource(R.string.stepper_increase)) }
             }
         }
     }
@@ -158,19 +160,19 @@ private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name
 
 /** The slim row between two exercises: what the break is (the stretch or the rest) and a dashed + to add something here. */
 @Composable
-private fun BreakRow(slotId: String, p: WorkoutPlan, round: Int, names: Map<String, String>, onChange: () -> Unit, onAdd: () -> Unit) {
+private fun BreakRow(slotId: String, p: WorkoutPlan, round: Int, names: Map<String, String>, onChange: () -> Unit, onAdd: () -> Unit, sfx: String = "") {
     val blocks = p.blocks.filter { it.slotId == slotId && it.roundIndex == round && (it.type == BlockType.STRETCH || it.type == BlockType.PASSIVE_RECOVERY) }
     val secs = blocks.sumOf { it.durationSeconds }
     val stretches = blocks.filter { it.type == BlockType.STRETCH }.mapNotNull { it.variationId }.distinct().mapNotNull { names[it] }
     Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
-        if (blocks.isNotEmpty()) Row(Modifier.weight(1f).clickable(onClick = onChange).heightIn(min = Spacing.touch).testTag("break_$slotId"), verticalAlignment = Alignment.CenterVertically) {
+        if (blocks.isNotEmpty()) Row(Modifier.weight(1f).clickable(onClick = onChange).heightIn(min = Spacing.touch).testTag("break_$slotId$sfx"), verticalAlignment = Alignment.CenterVertically) {
             Text(
                 if (stretches.isNotEmpty()) stringResource(R.string.preview_break_stretch, stretches.joinToString(" + "), formatClock(secs)) else stringResource(R.string.preview_break_rest, formatClock(secs)),
                 Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2,
             )
             Text(stringResource(R.string.preview_change), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text)
         } else Spacer(Modifier.weight(1f))
-        AddButton(onAdd, Modifier.testTag("add_after_$slotId"))
+        AddButton(onAdd, Modifier.testTag("add_after_$slotId$sfx"))
     }
 }
 
@@ -197,7 +199,9 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     var edits by remember { mutableStateOf(PlanEdits()) }
     var swapSlot by remember { mutableStateOf<String?>(null) }
     var removeSlot by remember { mutableStateOf<String?>(null) }
-    var breakSlot by remember { mutableStateOf<String?>(null) }
+    var breakSlot by remember { mutableStateOf<Pair<String, Int?>?>(null) }   // slot and, in the Detailed edit, the one set it is for
+    var detailed by rememberSaveable { mutableStateOf(false) }
+    var typeFor by remember { mutableStateOf<Pair<String, Int>?>(null) }      // slot and set of the number being typed
     var addAfter by remember { mutableStateOf<String?>("") }   // "" = closed, null = at the start, else after that slot
     var setTab by rememberSaveable { mutableIntStateOf(1) }
     var timelineOpen by remember { mutableStateOf(false) }
@@ -237,21 +241,33 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                         style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"),
                     )
                     InfoRow(p)
-                    // one set at a time (doc 17 §2.2)
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch).toggleable(detailed, role = androidx.compose.ui.semantics.Role.Switch) { detailed = it }.testTag("detailed_switch"), verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(stringResource(R.string.preview_detailed), style = MaterialTheme.typography.bodyLarge)
+                            Text(stringResource(R.string.preview_detailed_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
+                        }
+                        Switch(checked = detailed, onCheckedChange = null)
+                    }
+                    // one set at a time (doc 17 §2.2); the Detailed edit lists every set
+                    if (!detailed) Row(verticalAlignment = Alignment.CenterVertically) {
                         SingleChoiceSegmentedButtonRow(Modifier.weight(1f)) {
                             for (i in 1..p.rounds.coerceAtMost(6)) SegmentedButton(selected = i == set, onClick = { setTab = i }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(i - 1, p.rounds.coerceAtMost(6)), icon = {}, modifier = Modifier.testTag("set_tab_$i")) { Text(stringResource(R.string.preview_set, i), maxLines = 1) }
                         }
                         Text(stringResource(R.string.train_minutes, (p.blocks.filter { it.roundIndex == set }.sumOf { it.durationSeconds } + 30) / 60), Modifier.padding(start = Spacing.s).testTag("set_time"), style = MaterialTheme.typography.labelLarge)
                     }
-                    Caption(stringResource(R.string.preview_applies_to_all))
-                    val circuit = circuitOf(p, set)
+                    Caption(stringResource(if (detailed) R.string.preview_detailed_caption else R.string.preview_applies_to_all))
                     AddButton({ addAfter = null }, Modifier.align(Alignment.End).testTag("add_start"))
-                    circuit.forEachIndexed { i, e ->
-                        val v = data.catalog.variation(e.variationId)
-                        ExerciseRow(i, e, v, names[e.variationId] ?: e.variationId, data.catalog.policyForVariation(e.variationId)?.tiers?.size ?: 5,
-                            onLevel = { t -> edits = edits.copy(tierOverrides = edits.tierOverrides + (e.slotId to t)) }, onSwap = { swapSlot = e.slotId }, onRemove = { removeSlot = e.slotId })
-                        BreakRow(e.slotId, p, set, names, onChange = { breakSlot = e.slotId }, onAdd = { addAfter = e.slotId })
+                    for (st in if (detailed) 1..p.rounds else set..set) {
+                        if (detailed) Caption(stringResource(R.string.preview_set, st), Modifier.padding(top = Spacing.s).testTag("set_header_$st"))
+                        val sfx = if (detailed) "_s$st" else ""
+                        circuitOf(p, st).forEachIndexed { i, e ->
+                            val v = data.catalog.variation(e.variationId)
+                            ExerciseRow(i, e, v, names[e.variationId] ?: e.variationId, data.catalog.policyForVariation(e.variationId)?.tiers?.size ?: 5,
+                                onLevel = { t -> edits = edits.copy(tierOverrides = edits.tierOverrides + (e.slotId to t), freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) }) },
+                                onSwap = { swapSlot = e.slotId }, onRemove = { removeSlot = e.slotId }, sfx = sfx,
+                                onTypeNumber = if (detailed) ({ typeFor = e.slotId to st }) else null)
+                            BreakRow(e.slotId, p, st, names, onChange = { breakSlot = e.slotId to (if (detailed) st else null) }, onAdd = { addAfter = e.slotId }, sfx = sfx)
+                        }
                     }
                     if (!edits.isEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
                     TimelineCard(p, names, timelineOpen) { timelineOpen = !timelineOpen }
@@ -282,10 +298,27 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
             dismissButton = { AppTextButton(onClick = { removeSlot = null }) { Text(stringResource(R.string.cancel)) } },
         )
     }
-    breakSlot?.let { id ->
+    breakSlot?.let { (id, onlySet) ->
         StretchPickerSheet(title = R.string.preview_pick_stretch, options = stretchChoices(data.catalog, profile), autoLabel = true, onDismiss = { breakSlot = null }) { pick ->
-            edits = edits.copy(stretchPicks = if (pick == null) edits.stretchPicks - id else edits.stretchPicks + (id to pick)); breakSlot = null
+            edits = if (onlySet != null) edits.copy(roundStretchPicks = if (pick == null) edits.roundStretchPicks - "$onlySet:$id" else edits.roundStretchPicks + ("$onlySet:$id" to pick))
+                else edits.copy(stretchPicks = if (pick == null) edits.stretchPicks - id else edits.stretchPicks + (id to pick), roundStretchPicks = edits.roundStretchPicks.filterKeys { k -> !k.endsWith(":$id") })
+            breakSlot = null
         }
+    }
+    typeFor?.let { (id, st) ->
+        var text by remember(id, st) { mutableStateOf("") }
+        AlertDialog(
+            onDismissRequest = { typeFor = null },
+            title = { Text(stringResource(R.string.preview_type_title, st)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                    Text(stringResource(R.string.preview_type_text))
+                    OutlinedTextField(value = text, onValueChange = { text = it.filter { c -> c.isDigit() }.take(3) }, singleLine = true, keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Number), modifier = Modifier.testTag("free_number_field"))
+                }
+            },
+            confirmButton = { AppTextButton(onClick = { text.toIntOrNull()?.takeIf { it > 0 }?.let { n -> edits = edits.copy(freeTargets = edits.freeTargets + ("$st:$id" to n)) }; typeFor = null }, modifier = Modifier.testTag("free_number_ok")) { Text(stringResource(R.string.preview_type_ok)) } },
+            dismissButton = { AppTextButton(onClick = { edits = edits.copy(freeTargets = edits.freeTargets - "$st:$id"); typeFor = null }, modifier = Modifier.testTag("free_number_clear")) { Text(stringResource(R.string.preview_type_clear)) } },
+        )
     }
     if (addAfter != "" && result is PlanResult.Ready) {
         val after = addAfter

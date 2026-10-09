@@ -115,6 +115,14 @@
     <string name="tag_calf">CALF</string>
     <string name="tag_core">CORE</string>
     <string name="tag_other">EXERCISE</string>
+    <string name="preview_detailed">Detailed edit</string>
+    <string name="preview_detailed_hint">Every set on its own: a stretch per set, a typed number</string>
+    <string name="preview_detailed_caption">Each set can differ here. A typed number does not count towards your progress.</string>
+    <string name="preview_free_number">typed · not counted</string>
+    <string name="preview_type_title">Number for set %1$d</string>
+    <string name="preview_type_text">Type reps (seconds for holds). It is used for this exercise in this set only and does not count towards your progress.</string>
+    <string name="preview_type_ok">Use it</string>
+    <string name="preview_type_clear">Back to the level</string>
     <string name="preview_set">Set %1$d</string>
     <string name="preview_applies_to_all">Changes apply to all sets</string>
     <string name="preview_level">Level %1$d of %2$d</string>

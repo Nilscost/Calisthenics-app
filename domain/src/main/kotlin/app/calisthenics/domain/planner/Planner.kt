@@ -159,7 +159,7 @@ private class Planner(val input: PlanInput) {
             id = input.planId, routineId = input.routine.id, routineRevision = input.routine.revision,
             catalogVersion = cat.catalogVersion, createdAtEpochMs = input.createdAtEpochMs, profileId = input.profile.id,
             requestedDurationSeconds = budget, plannedDurationSeconds = pick.total, focus = draft.focus,
-            stretchOn = draft.stretchOn, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed,
+            stretchOn = draft.stretchOn, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed, format = draft.format,
             changesExplained = explain.distinct(), warnings = warn.distinct(), needsAcceptance = needsAcceptance,
             usesDraftContent = usesDraft, blocks = blocks,
         ))
@@ -257,9 +257,23 @@ private class Planner(val input: PlanInput) {
             .sortedBy { it.id }
     }
 
+    /** One entry per (set, exercise, group) in the order of the chosen format (V19). */
+    private fun sequenceOf(n: Int, sets: Int): List<Triple<Int, Int, Int?>> = when (draft.format) {
+        WorkoutFormat.CIRCUIT -> (1..sets).flatMap { r -> (0 until n).map { Triple(r, it, null) } }
+        WorkoutFormat.STRAIGHT -> (0 until n).flatMap { i -> (1..sets).map { r -> Triple(r, i, i + 1) } }
+        // two exercises alternate for all their sets, then the next pair; an odd last exercise is a straight exercise on its own
+        WorkoutFormat.PAIRS -> (0 until n step 2).flatMap { a ->
+            val pair = if (a + 1 < n) listOf(a, a + 1) else listOf(a)
+            (1..sets).flatMap { r -> pair.map { Triple(r, it, a / 2 + 1) } }
+        }
+    }
+
     private fun rounds(sl: List<Chosen>, rounds: Int): List<TimelineBlock> {
         val out = mutableListOf<TimelineBlock>()
-        for (r in 1..rounds) for ((si, c) in sl.withIndex()) {
+        val order = sequenceOf(sl.size, rounds)
+        for ((pos, item) in order.withIndex()) {
+            val (r, si, group) = item
+            val c = sl[si]
             val v = c.variation; val t = c.tier
             val sides = if (v.unilateral) listOf(Side.LEFT, Side.RIGHT) else listOf(Side.NONE)
             val workIds = mutableListOf<String>()
@@ -271,10 +285,13 @@ private class Planner(val input: PlanInput) {
                 workIds += id
                 val secs = if (draft.timed && !isHold) (if (side == Side.NONE) TIMED_WORK_SECONDS else TIMED_WORK_SECONDS / 2) else t.workWindowSeconds
                 workTotal += secs
-                out += TimelineBlock(id, BlockType.WORK, secs, r, c.slot.id, v.id, side, t.target, t.index,
-                    mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams)
+                val free = draft.freeTargets["$r:${c.slot.id}"] ?: draft.freeTargets[c.slot.id]
+                val target = if (free != null) Target(t.target.type, free.coerceIn(1, 999)) else t.target
+                val dur = if (free != null && isHold) maxOf(secs, target.value + 3) else secs
+                out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, t.index,
+                    mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams, freeTarget = free != null, groupIndex = group)
             }
-            val isLast = r == rounds && si == sl.lastIndex
+            val isLast = pos == order.lastIndex
             fun extras() {
                 draft.extraStretches[c.slot.id].orEmpty().forEachIndexed { i, id ->
                     val x = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH } ?: return@forEachIndexed
@@ -290,7 +307,7 @@ private class Planner(val input: PlanInput) {
                 out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.PASSIVE_RECOVERY, window, r, c.slot.id, recoveryForBlockIds = workIds)
             } else {
                 val cands = stretchesFor(v)
-                val s = draft.stretchPicks[c.slot.id]?.let { cat.variation(it) }?.takeIf { it.kind == Kind.STRETCH } ?: cands[(r - 1 + si) % cands.size]
+                val s = (draft.roundStretchPicks["$r:${c.slot.id}"] ?: draft.stretchPicks[c.slot.id])?.let { cat.variation(it) }?.takeIf { it.kind == Kind.STRETCH } ?: cands[(r - 1 + si) % cands.size]
                 if (s.unilateral) {
                     val seg = (window + 1) / 2 // never below the reviewed minimum recovery
                     for (side in listOf(Side.LEFT, Side.RIGHT)) out += TimelineBlock("r$r-${c.slot.id}-rec-${side.name.first()}", BlockType.STRETCH, seg, r, c.slot.id, s.id, side,

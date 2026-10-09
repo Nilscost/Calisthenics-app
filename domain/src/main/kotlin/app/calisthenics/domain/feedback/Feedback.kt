@@ -113,7 +113,8 @@ fun deriveEvidence(
     feedbackDay: Int? = null,
 ): List<SessionEvidence> {
     val tierByVariation = plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null }
-        .groupBy { it.variationId!! }.mapValues { (_, bs) -> bs.mapNotNull { it.prescriptionTier }.maxOrNull() }
+        // a free number (Detailed edit) means "does not count towards progression": no prescribed tier, so the session is never qualifying
+        .groupBy { it.variationId!! }.mapValues { (_, bs) -> if (bs.any { it.freeTarget }) null else bs.mapNotNull { it.prescriptionTier }.maxOrNull() }
     val loadByVariation = plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null }
         .groupBy { it.variationId!! }.mapValues { (_, bs) -> bs.mapNotNull { it.loadGrams }.maxOrNull() }
     return outcomes.groupBy { it.variationId }.toSortedMap().map { (vid, os) ->

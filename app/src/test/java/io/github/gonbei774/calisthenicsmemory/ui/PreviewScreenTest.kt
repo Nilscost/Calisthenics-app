@@ -188,4 +188,27 @@ class PreviewScreenTest {
         rule.onNodeWithTag("swap_other_types").performSemanticsAction(click); rule.waitForIdle()
         rule.onNodeWithTag("swap_option_squat-air").assertExists()
     }
+
+    // ---- V17: Detailed edit
+    @Test fun detailedEditListsEverySetAndAStretchCanDifferPerSet() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("detailed_switch").performClick(); rule.waitForIdle()
+        for (st in 1..4) rule.onNodeWithTag("set_header_$st").performScrollTo().assertExists()
+        rule.onNodeWithTag("set_tab_1").assertDoesNotExist()
+        rule.onNodeWithTag("break_push_s2").performScrollTo().performClick(); rule.waitForIdle(); rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle()
+        rule.onNodeWithTag("break_option_stretch-frog").performSemanticsAction(click); rule.waitForIdle()
+        rule.onNodeWithTag("break_push_s2").performScrollTo().assertTextContains("Frog", substring = true)
+        rule.onNodeWithTag("break_push_s3").performScrollTo().assertTextContains("Shoulder", substring = true) // the other sets keep their own stretch
+    }
+
+    // The "type a number" dialog has a text field. Robolectric's Compose clock never goes idle while a dialog with a text field is open
+    // (the test hangs for minutes), so the dialog itself is not driven here. What it produces is covered by the planner tests
+    // (DetailedEditTest: the free number is marked, shown, and excluded from progression) and the target cell's tag is checked.
+    @Test fun inTheDetailedEditEachSetsNumberIsATapTarget() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("detailed_switch").performClick(); rule.waitForIdle()
+        for (st in 1..4) rule.onNodeWithTag("exercise_target_push_s$st").performScrollTo().assertHasClickAction()
+        rule.onNodeWithTag("level_push_s2").performScrollTo().assertTextContains("Level", substring = true)
+        rule.onNodeWithTag("exercise_target_push").assertDoesNotExist() // the plain Preview tag only exists outside the Detailed edit
+    }
 }
