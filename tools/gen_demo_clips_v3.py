@@ -1,12 +1,18 @@
 #!/usr/bin/env python3
-"""Demo clips v2 (U11, plan §5): 3/4 view, solid grey capsule body, worked muscles orange-red, equipment in 3-D.
+"""Demo clips v3 (V06a; v2 was U11, plan §5): 3/4 view, solid grey capsule body, worked muscles orange-red, equipment in 3-D.
 
 Reuses the sagittal poses of v1 (tools/gen_demo_clips.py) and adds the ten exercises U09 introduced. Each 2-D pose is lifted to
 3-D (left/right limbs get a z offset), projected orthographically (yaw 30 deg, pitch 15 deg) and drawn back to front.
 Only the muscles listed in the catalog are coloured: primary saturated, secondary light. Hidden ones (e.g. the chest in a
 push-up seen from above) are drawn as a faint x-ray tint so the colour code stays readable.
-Output: app/src/main/assets/demos/<variationId>.mp4 (480x360, 24 fps, 2 s loop, H.264, < 120 KB). Pillow + imageio-ffmpeg only.
-Run:  python3 tools/gen_demo_clips_v2.py [--sheet out.png] [--check] [id ...]
+Output per exercise and stretch (V06a, plan §5.1 one drawing pipeline):
+  app/src/main/assets/demos/<variationId>.mp4   clip (480x360, 24 fps, 2 s loop, H.264, < 120 KB)
+  app/src/main/assets/thumbs/<variationId>.webp still key frame, body cropped, transparent background (< 12 KB)
+  app/src/main/assets/clip_meta.json            per id: kind, pose group, primary/secondary muscles (what the body figure needs)
+Pillow + imageio-ffmpeg only.
+Run:  python3 tools/gen_demo_clips_v3.py [--sheet out.png] [--check] [--thumbs] [id ...]
+  --check   assertions only (every id has a pose, every pose is its own unless declared in SHARED_POSES, muscles have regions)
+  --thumbs  thumbnails + clip_meta.json only (no mp4)
 """
 import json, math, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -126,6 +132,17 @@ NEW = {
 }
 POSES = dict(v1.POSES); POSES.update(NEW)
 
+# V06a: a pose function may only be shared by several ids when the group is declared here with the difference that the
+# clip itself shows. V06b gives every variant of the first group its own pose (K2) and removes it from this table.
+SHARED_POSES = {
+    frozenset({"pushup-standard", "pushup-diamond", "pushup-feet-elevated", "pushup-archer"}): "OPEN (K2): same standard push-up pose; V06b gives each its own",
+    frozenset({"pushup-one-arm-negative", "pushup-one-arm"}): "same one-arm push-up pose; the negative is the slow lowering half, only the cue text differs",
+}
+def pose_groups():
+    g = {}
+    for k, (fn, _kind) in POSES.items(): g.setdefault(id(fn), set()).add(k)
+    return [frozenset(v) for v in g.values() if len(v) > 1]
+
 # Poses whose v1 function repeats twice per 0..1 are played once per 2 s loop; the rest are already periodic in p.
 ALTERNATING = {"dead-bug"}   # left/right alternate inside one loop: play as is
 def loop_fn(vid, fn, kind):
@@ -191,8 +208,10 @@ def lift(pose):
     return out
 
 class Canvas:
-    def __init__(self, cam):
-        self.cam = cam; self.img = Image.new("RGB", (W * SS, H * SS), BG); self.d = ImageDraw.Draw(self.img); self.items = []
+    def __init__(self, cam, transparent=False):
+        self.cam = cam; self.items = []
+        self.img = Image.new("RGBA", (W * SS, H * SS), (0, 0, 0, 0)) if transparent else Image.new("RGB", (W * SS, H * SS), BG)
+        self.d = ImageDraw.Draw(self.img)
     def P(self, p3):
         X, Y, D = proj(p3); sc, ox, oy = self.cam
         return ((X * sc + ox) * SS, (oy - Y * sc) * SS), D
@@ -345,6 +364,24 @@ def render(vid, name, kind, fn, p, cam, muscles, font):
     cv.d.text((16 * SS, 42 * SS), "hold steady" if kind == "hold" else "slow and controlled", fill=(107, 114, 128), font=font)
     return cv.img.resize((W, H), Image.LANCZOS)
 
+THUMB_PX, THUMB_KB = 128, 12
+
+def render_thumb(fn, cam, muscles, p=0.25):
+    """Key frame on a transparent background, cropped to the figure (and its equipment), fitted into a square."""
+    cv = Canvas(cam[:3], transparent=True)
+    L = lift(fn(p))
+    draw_scene(cv, L, L["pose"].get("scene", []), L["pose"].get("props", []), None)
+    draw_figure(cv, L, muscles)
+    cv.flush()
+    img = cv.img.resize((W, H), Image.LANCZOS)
+    box = img.getchannel("A").getbbox()
+    img = img.crop(box)
+    pad = max(2, int(max(img.size) * 0.06))
+    side = max(img.size) + 2 * pad
+    sq = Image.new("RGBA", (side, side), (0, 0, 0, 0))
+    sq.paste(img, ((side - img.width) // 2, (side - img.height) // 2))
+    return sq.resize((THUMB_PX, THUMB_PX), Image.LANCZOS)
+
 def main():
     args = sys.argv[1:]
     sheet = None
@@ -361,11 +398,20 @@ def main():
     assert used <= set(REGIONS), f"muscles without a body region: {used - set(REGIONS)}"
     assert set(REGIONS) == ALL_MUSCLES, "every Muscle needs a region"
     assert all(v.get("primaryMuscles") for v in byid.values() if v["kind"] in ("REPS", "HOLD")), "strength exercise without primary muscles"
+    undeclared = [sorted(g) for g in pose_groups() if g not in SHARED_POSES]
+    assert not undeclared, f"ids share one pose without a declared difference (SHARED_POSES): {undeclared}"
+    stale = [sorted(g) for g in SHARED_POSES if g not in pose_groups()]
+    assert not stale, f"SHARED_POSES lists groups that no longer share a pose: {stale}"
     if check: print("checks passed:", len(byid), "poses,", len(used), "muscles used"); return
     try: font = ImageFont.load_default(size=22 * SS)
     except TypeError: font = ImageFont.load_default()
     outdir = os.path.join(root, "app/src/main/assets/demos"); os.makedirs(outdir, exist_ok=True)
+    thumbdir = os.path.join(root, "app/src/main/assets/thumbs"); os.makedirs(thumbdir, exist_ok=True)
+    thumbs_only = "--thumbs" in args
+    args = [a for a in args if a != "--thumbs"]
     ids = args or list(byid)
+    groups = {i: sorted(g) for g in pose_groups() for i in g}
+    meta = {}
     thumbs = []
     for vid in ids:
         set_view(YAW_OVERRIDE.get(vid, 30))
@@ -375,11 +421,19 @@ def main():
         cam = camera_for(fn, vid)
         n = FPS * SECONDS
         out = os.path.join(outdir, vid + ".mp4")
-        v1.encode((render(vid, v["name"], kind, fn, i / n, cam, muscles, font) for i in range(n)), out)
+        if not thumbs_only:
+            v1.encode((render(vid, v["name"], kind, fn, i / n, cam, muscles, font) for i in range(n)), out)
         size = os.path.getsize(out) / 1024
         assert size < 120, f"{vid}: {size:.0f} KB is over the 120 KB budget"
-        print(f"{vid:28s} {kind:5s} {size:6.0f} KB")
+        tp = os.path.join(thumbdir, vid + ".webp")
+        render_thumb(fn, cam, muscles).save(tp, "WEBP", quality=82, method=6)
+        tsize = os.path.getsize(tp) / 1024
+        assert tsize < THUMB_KB, f"{vid}: thumbnail {tsize:.1f} KB is over the {THUMB_KB} KB budget"
+        meta[vid] = {"kind": kind, "primary": v.get("primaryMuscles", []), "secondary": v.get("secondaryMuscles", []), "sharedPoseWith": [g for g in groups.get(vid, []) if g != vid]}
+        print(f"{vid:28s} {kind:5s} {size:6.0f} KB  thumb {tsize:4.1f} KB")
         if sheet: thumbs.append((vid, [render(vid, v["name"], kind, fn, q, cam, muscles, font) for q in (0.0, 0.25, 0.5)]))
+    if not args or len(ids) == len(byid):
+        with open(os.path.join(root, "app/src/main/assets/clip_meta.json"), "w") as fh: json.dump(dict(sorted(meta.items())), fh, indent=1, sort_keys=True); fh.write("\n")
     if sheet:
         tw, th = W // 2, H // 2
         im = Image.new("RGB", (tw * 3, th * len(thumbs)), BG)

@@ -1,0 +1,734 @@
+{
+ "arch-hold-y": {
+  "kind": "hold",
+  "primary": [
+   "LOWER_BACK",
+   "GLUTES"
+  ],
+  "secondary": [
+   "UPPER_BACK",
+   "REAR_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "arch-rocks": {
+  "kind": "rep",
+  "primary": [
+   "LOWER_BACK",
+   "GLUTES"
+  ],
+  "secondary": [
+   "UPPER_BACK"
+  ],
+  "sharedPoseWith": []
+ },
+ "archer-row": {
+  "kind": "rep",
+  "primary": [
+   "LATS",
+   "UPPER_BACK"
+  ],
+  "secondary": [
+   "BICEPS",
+   "FOREARMS",
+   "OBLIQUES"
+  ],
+  "sharedPoseWith": []
+ },
+ "bridge-back": {
+  "kind": "hold",
+  "primary": [
+   "GLUTES",
+   "LOWER_BACK"
+  ],
+  "secondary": [
+   "FRONT_DELTS",
+   "TRICEPS",
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
+ "bridge-single-leg": {
+  "kind": "rep",
+  "primary": [
+   "GLUTES",
+   "HAMSTRINGS"
+  ],
+  "secondary": [
+   "LOWER_BACK",
+   "OBLIQUES"
+  ],
+  "sharedPoseWith": []
+ },
+ "copenhagen-side-plank": {
+  "kind": "hold",
+  "primary": [
+   "ADDUCTORS",
+   "OBLIQUES"
+  ],
+  "secondary": [
+   "ABS",
+   "GLUTES"
+  ],
+  "sharedPoseWith": []
+ },
+ "dead-bug": {
+  "kind": "rep",
+  "primary": [
+   "ABS"
+  ],
+  "secondary": [
+   "HIP_FLEXORS",
+   "OBLIQUES"
+  ],
+  "sharedPoseWith": []
+ },
+ "front-lever-adv-tuck": {
+  "kind": "hold",
+  "primary": [
+   "LATS",
+   "ABS"
+  ],
+  "secondary": [
+   "BICEPS",
+   "FOREARMS",
+   "REAR_DELTS",
+   "UPPER_BACK"
+  ],
+  "sharedPoseWith": []
+ },
+ "front-lever-straddle": {
+  "kind": "hold",
+  "primary": [
+   "LATS",
+   "ABS"
+  ],
+  "secondary": [
+   "BICEPS",
+   "FOREARMS",
+   "REAR_DELTS",
+   "UPPER_BACK"
+  ],
+  "sharedPoseWith": []
+ },
+ "front-lever-tuck": {
+  "kind": "hold",
+  "primary": [
+   "LATS",
+   "ABS"
+  ],
+  "secondary": [
+   "BICEPS",
+   "FOREARMS",
+   "REAR_DELTS",
+   "UPPER_BACK"
+  ],
+  "sharedPoseWith": []
+ },
+ "glute-bridge": {
+  "kind": "rep",
+  "primary": [
+   "GLUTES",
+   "HAMSTRINGS"
+  ],
+  "secondary": [
+   "LOWER_BACK"
+  ],
+  "sharedPoseWith": []
+ },
+ "hollow-hold": {
+  "kind": "hold",
+  "primary": [
+   "ABS"
+  ],
+  "secondary": [
+   "HIP_FLEXORS",
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
+ "hspu-wall": {
+  "kind": "rep",
+  "primary": [
+   "FRONT_DELTS",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "SIDE_DELTS",
+   "UPPER_BACK",
+   "ABS"
+  ],
+  "sharedPoseWith": []
+ },
+ "hspu-wall-negative": {
+  "kind": "rep",
+  "primary": [
+   "FRONT_DELTS",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "SIDE_DELTS",
+   "UPPER_BACK",
+   "ABS"
+  ],
+  "sharedPoseWith": []
+ },
+ "inverted-row": {
+  "kind": "rep",
+  "primary": [
+   "UPPER_BACK",
+   "LATS"
+  ],
+  "secondary": [
+   "BICEPS",
+   "REAR_DELTS",
+   "ABS"
+  ],
+  "sharedPoseWith": []
+ },
+ "inverted-row-bent-knees": {
+  "kind": "rep",
+  "primary": [
+   "UPPER_BACK",
+   "LATS"
+  ],
+  "secondary": [
+   "BICEPS",
+   "REAR_DELTS",
+   "ABS"
+  ],
+  "sharedPoseWith": []
+ },
+ "inverted-row-feet-elevated": {
+  "kind": "rep",
+  "primary": [
+   "UPPER_BACK",
+   "LATS"
+  ],
+  "secondary": [
+   "BICEPS",
+   "REAR_DELTS",
+   "ABS",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
+ "kettlebell-deadlift": {
+  "kind": "rep",
+  "primary": [
+   "GLUTES",
+   "HAMSTRINGS"
+  ],
+  "secondary": [
+   "LOWER_BACK",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
+ "kettlebell-single-leg-rdl": {
+  "kind": "rep",
+  "primary": [
+   "HAMSTRINGS",
+   "GLUTES"
+  ],
+  "secondary": [
+   "LOWER_BACK",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
+ "kettlebell-swing": {
+  "kind": "rep",
+  "primary": [
+   "GLUTES",
+   "HAMSTRINGS"
+  ],
+  "secondary": [
+   "LOWER_BACK",
+   "FRONT_DELTS",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
+ "kettlebell-swing-one-arm": {
+  "kind": "rep",
+  "primary": [
+   "GLUTES",
+   "HAMSTRINGS"
+  ],
+  "secondary": [
+   "LOWER_BACK",
+   "OBLIQUES",
+   "FRONT_DELTS",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
+ "l-sit-floor": {
+  "kind": "hold",
+  "primary": [
+   "ABS",
+   "HIP_FLEXORS"
+  ],
+  "secondary": [
+   "TRICEPS",
+   "QUADS",
+   "FRONT_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "leg-raise-lying": {
+  "kind": "rep",
+  "primary": [
+   "ABS",
+   "HIP_FLEXORS"
+  ],
+  "secondary": [
+   "OBLIQUES"
+  ],
+  "sharedPoseWith": []
+ },
+ "muscle-up-bar": {
+  "kind": "rep",
+  "primary": [
+   "LATS",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "CHEST",
+   "BICEPS",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
+ "pike-pushup": {
+  "kind": "rep",
+  "primary": [
+   "FRONT_DELTS",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "SIDE_DELTS",
+   "UPPER_BACK"
+  ],
+  "sharedPoseWith": []
+ },
+ "pike-pushup-elevated": {
+  "kind": "rep",
+  "primary": [
+   "FRONT_DELTS",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "SIDE_DELTS",
+   "UPPER_BACK"
+  ],
+  "sharedPoseWith": []
+ },
+ "planche-adv-tuck": {
+  "kind": "hold",
+  "primary": [
+   "FRONT_DELTS",
+   "CHEST"
+  ],
+  "secondary": [
+   "TRICEPS",
+   "ABS",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
+ "planche-lean": {
+  "kind": "hold",
+  "primary": [
+   "FRONT_DELTS",
+   "CHEST"
+  ],
+  "secondary": [
+   "TRICEPS",
+   "ABS",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
+ "planche-tuck": {
+  "kind": "hold",
+  "primary": [
+   "FRONT_DELTS",
+   "CHEST"
+  ],
+  "secondary": [
+   "TRICEPS",
+   "ABS",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
+ "plank": {
+  "kind": "hold",
+  "primary": [
+   "ABS"
+  ],
+  "secondary": [
+   "OBLIQUES",
+   "FRONT_DELTS",
+   "GLUTES"
+  ],
+  "sharedPoseWith": []
+ },
+ "pullup-band-assisted": {
+  "kind": "rep",
+  "primary": [
+   "LATS",
+   "BICEPS"
+  ],
+  "secondary": [
+   "UPPER_BACK",
+   "FOREARMS",
+   "REAR_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "pullup-chest-to-bar": {
+  "kind": "rep",
+  "primary": [
+   "LATS",
+   "BICEPS"
+  ],
+  "secondary": [
+   "UPPER_BACK",
+   "FOREARMS",
+   "REAR_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "pullup-full": {
+  "kind": "rep",
+  "primary": [
+   "LATS",
+   "BICEPS"
+  ],
+  "secondary": [
+   "UPPER_BACK",
+   "FOREARMS",
+   "REAR_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "pushup-archer": {
+  "kind": "rep",
+  "primary": [
+   "CHEST",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "FRONT_DELTS",
+   "OBLIQUES"
+  ],
+  "sharedPoseWith": [
+   "pushup-diamond",
+   "pushup-feet-elevated",
+   "pushup-standard"
+  ]
+ },
+ "pushup-diamond": {
+  "kind": "rep",
+  "primary": [
+   "TRICEPS",
+   "CHEST"
+  ],
+  "secondary": [
+   "FRONT_DELTS"
+  ],
+  "sharedPoseWith": [
+   "pushup-archer",
+   "pushup-feet-elevated",
+   "pushup-standard"
+  ]
+ },
+ "pushup-feet-elevated": {
+  "kind": "rep",
+  "primary": [
+   "CHEST",
+   "FRONT_DELTS"
+  ],
+  "secondary": [
+   "TRICEPS",
+   "ABS"
+  ],
+  "sharedPoseWith": [
+   "pushup-archer",
+   "pushup-diamond",
+   "pushup-standard"
+  ]
+ },
+ "pushup-incline": {
+  "kind": "rep",
+  "primary": [
+   "CHEST",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "FRONT_DELTS",
+   "ABS"
+  ],
+  "sharedPoseWith": []
+ },
+ "pushup-knee": {
+  "kind": "rep",
+  "primary": [
+   "CHEST",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "FRONT_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "pushup-one-arm": {
+  "kind": "rep",
+  "primary": [
+   "CHEST",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "FRONT_DELTS",
+   "ABS",
+   "OBLIQUES"
+  ],
+  "sharedPoseWith": [
+   "pushup-one-arm-negative"
+  ]
+ },
+ "pushup-one-arm-negative": {
+  "kind": "rep",
+  "primary": [
+   "CHEST",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "FRONT_DELTS",
+   "ABS",
+   "OBLIQUES"
+  ],
+  "sharedPoseWith": [
+   "pushup-one-arm"
+  ]
+ },
+ "pushup-standard": {
+  "kind": "rep",
+  "primary": [
+   "CHEST",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "FRONT_DELTS",
+   "ABS"
+  ],
+  "sharedPoseWith": [
+   "pushup-archer",
+   "pushup-diamond",
+   "pushup-feet-elevated"
+  ]
+ },
+ "row-band": {
+  "kind": "rep",
+  "primary": [
+   "UPPER_BACK",
+   "LATS"
+  ],
+  "secondary": [
+   "BICEPS",
+   "REAR_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "side-plank": {
+  "kind": "hold",
+  "primary": [
+   "OBLIQUES"
+  ],
+  "secondary": [
+   "ABS",
+   "GLUTES",
+   "SIDE_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "side-plank-leg-raise": {
+  "kind": "rep",
+  "primary": [
+   "OBLIQUES",
+   "GLUTES"
+  ],
+  "secondary": [
+   "ABS",
+   "SIDE_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "split-squat": {
+  "kind": "rep",
+  "primary": [
+   "QUADS",
+   "GLUTES"
+  ],
+  "secondary": [
+   "HAMSTRINGS",
+   "ADDUCTORS"
+  ],
+  "sharedPoseWith": []
+ },
+ "split-squat-bulgarian": {
+  "kind": "rep",
+  "primary": [
+   "QUADS",
+   "GLUTES"
+  ],
+  "secondary": [
+   "HAMSTRINGS",
+   "HIP_FLEXORS"
+  ],
+  "sharedPoseWith": []
+ },
+ "squat-air": {
+  "kind": "rep",
+  "primary": [
+   "QUADS",
+   "GLUTES"
+  ],
+  "secondary": [
+   "HAMSTRINGS",
+   "CALVES"
+  ],
+  "sharedPoseWith": []
+ },
+ "squat-pistol": {
+  "kind": "rep",
+  "primary": [
+   "QUADS",
+   "GLUTES"
+  ],
+  "secondary": [
+   "HAMSTRINGS",
+   "ADDUCTORS",
+   "CALVES"
+  ],
+  "sharedPoseWith": []
+ },
+ "squat-pistol-assisted": {
+  "kind": "rep",
+  "primary": [
+   "QUADS",
+   "GLUTES"
+  ],
+  "secondary": [
+   "HAMSTRINGS",
+   "ADDUCTORS",
+   "CALVES"
+  ],
+  "sharedPoseWith": []
+ },
+ "squat-shrimp": {
+  "kind": "rep",
+  "primary": [
+   "QUADS",
+   "GLUTES"
+  ],
+  "secondary": [
+   "HAMSTRINGS",
+   "HIP_FLEXORS"
+  ],
+  "sharedPoseWith": []
+ },
+ "stretch-ankle-mobility": {
+  "kind": "rep",
+  "primary": [],
+  "secondary": [],
+  "sharedPoseWith": []
+ },
+ "stretch-back": {
+  "kind": "rep",
+  "primary": [],
+  "secondary": [],
+  "sharedPoseWith": []
+ },
+ "stretch-calf-wall": {
+  "kind": "hold",
+  "primary": [],
+  "secondary": [],
+  "sharedPoseWith": []
+ },
+ "stretch-chest-door": {
+  "kind": "hold",
+  "primary": [],
+  "secondary": [],
+  "sharedPoseWith": []
+ },
+ "stretch-hamstring": {
+  "kind": "rep",
+  "primary": [],
+  "secondary": [],
+  "sharedPoseWith": []
+ },
+ "stretch-hip-flexor": {
+  "kind": "hold",
+  "primary": [],
+  "secondary": [],
+  "sharedPoseWith": []
+ },
+ "stretch-shoulder": {
+  "kind": "hold",
+  "primary": [],
+  "secondary": [],
+  "sharedPoseWith": []
+ },
+ "superman-hold": {
+  "kind": "hold",
+  "primary": [
+   "LOWER_BACK",
+   "GLUTES"
+  ],
+  "secondary": [
+   "REAR_DELTS",
+   "HAMSTRINGS"
+  ],
+  "sharedPoseWith": []
+ },
+ "v-sit-floor": {
+  "kind": "hold",
+  "primary": [
+   "ABS",
+   "HIP_FLEXORS"
+  ],
+  "secondary": [
+   "TRICEPS",
+   "QUADS",
+   "FRONT_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "v-up": {
+  "kind": "rep",
+  "primary": [
+   "ABS",
+   "HIP_FLEXORS"
+  ],
+  "secondary": [
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
+ "wall-handstand-hold": {
+  "kind": "hold",
+  "primary": [
+   "FRONT_DELTS",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "UPPER_BACK",
+   "ABS"
+  ],
+  "sharedPoseWith": []
+ }
+}

@@ -21,4 +21,20 @@ class ClipAssetsTest {
         val orphans = File(root, "src/main/assets/demos").listFiles().orEmpty().map { it.nameWithoutExtension }.filter { it !in ids }
         assertTrue("clips without an exercise: $orphans", orphans.isEmpty())
     }
+
+    /** V06a: one drawing pipeline also makes the still thumbnails and the muscle data. */
+    @Test fun everyExerciseHasAThumbnailUnderBudgetAndAnEntryInTheClipMeta() {
+        val missing = catalog.variations.map { it.id }.filter { !File(root, "src/main/assets/thumbs/$it.webp").isFile }
+        assertTrue("no thumbnail for $missing", missing.isEmpty())
+        for (v in catalog.variations) assertTrue(v.id, File(root, "src/main/assets/thumbs/${v.id}.webp").length() < 12 * 1024)
+        val orphans = File(root, "src/main/assets/thumbs").listFiles().orEmpty().map { it.nameWithoutExtension }.filter { id -> catalog.variations.none { it.id == id } }
+        assertTrue("thumbnails without an exercise: $orphans", orphans.isEmpty())
+        val meta = kotlinx.serialization.json.Json.parseToJsonElement(File(root, "src/main/assets/clip_meta.json").readText()) as kotlinx.serialization.json.JsonObject
+        assertTrue("clip_meta.json out of date", meta.keys == catalog.variations.map { it.id }.toSet())
+        for (v in catalog.variations) {
+            val e = meta.getValue(v.id) as kotlinx.serialization.json.JsonObject
+            val primary = (e.getValue("primary") as kotlinx.serialization.json.JsonArray).map { (it as kotlinx.serialization.json.JsonPrimitive).content }
+            assertTrue(v.id, primary == v.primaryMuscles.map { it.name })
+        }
+    }
 }

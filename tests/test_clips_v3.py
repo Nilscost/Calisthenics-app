@@ -11,10 +11,10 @@ except ImportError:
     HAVE_PIL = False
 
 
-class ClipsV2(unittest.TestCase):
+class ClipsV3(unittest.TestCase):
     @unittest.skipUnless(HAVE_PIL, "Pillow not installed")
     def test_generator_checks_pass(self):
-        r = subprocess.run([sys.executable, str(ROOT / "tools" / "gen_demo_clips_v2.py"), "--check"], capture_output=True, text=True)
+        r = subprocess.run([sys.executable, str(ROOT / "tools" / "gen_demo_clips_v3.py"), "--check"], capture_output=True, text=True)
         self.assertEqual(r.returncode, 0, r.stderr)
         self.assertIn("checks passed", r.stdout)
 
