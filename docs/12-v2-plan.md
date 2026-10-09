@@ -1,6 +1,6 @@
 # 12 — Version 2 plan: owner phone test of 0.3.1 (2026-10-08)
 
-Status: **draft for review.** Workflow:
+Status: **reviewed 2026-10-09 (see §11); the executor works from `docs/14-executor-handoff.md`.** Workflow:
 1. An Opus reviewer reviews this plan and makes the UI-check capability (task V00) work end to end.
 2. Only then does it hand over to a Sonnet executor.
 
@@ -278,5 +278,69 @@ Each release ends with:
 - Every UI task includes the V00 screenshot review; "tests pass" alone is not done for UI.
 - Never claim device testing; never approve owner gates; content stays DRAFT.
 
-## 11. Reviewer changes
-(The Opus reviewer fills this in: tasks split, merged or reordered, and why; V00 evidence; questions raised to the owner.)
+## 11. Reviewer changes (Opus reviewer, 2026-10-09)
+Owner decisions §2 and the answers in §4 are unchanged. The executor follows **the task order in `docs/14-executor-handoff.md`**, which applies the changes below to §8.
+
+### 11.1 Code facts checked
+- K1 confirmed: `DemoPlayer` creates the `VideoView` only in `factory` (no `update`, no `key(file)`).
+- "Too easy" needs no new data: `Rating.ABOVE` exists, `feedback_revisions.rating` stores it as text, and `Progression.kt` already says ABOVE never accelerates (fits D7).
+- **Per-round corrections (V04) need a Room migration.** Feedback revisions are keyed `(sessionId, variationId, revision)`, one per exercise; per-round values live only in the append-only `block_results.achievedValue`. A per-round correction needs a new nullable `blockId` column on `feedback_revisions` (plus `actualHoldSeconds`, missing today), migration 23 → 24, additive only. The plan did not name this risk.
+- Warm-up plumbing already exists (`BlockType.WARMUP`, `Preferences.warmupOn`, `Catalog.warmupTemplate`, `Planner.template()`); V23 is mostly UI and content.
+- `Routine` has no fields for format, progression rule, rests, warm-up or stretch picks. V19/V21 append them (last, with defaults), and V18 saves them, so V18 moves after V21.
+- `data/src/androidTest/HistoryAndMigrationTest.kt` exists but has never run (no device). The V00 emulator can run it: V04a adds that job.
+
+### 11.2 Content facts re-checked (§3)
+Checked on 2026-10-09 against redditbwf.github.io/wiki/recommended_routine.html and aegirlab.com/guides/minimalist-routine.html.
+- RR structure, rests, 3 × 5–8, core 3 × 8–12 / 60 s, the progression rule, holds 10–30 s, tempo 10X0, 3 sessions a week: **confirmed.**
+- Additions:
+  - The RR warm-up items are **conditional**: arch hangs after negative pull-ups, support hold after negative dips, easier squat after Bulgarian split squats, easier hinge after banded Nordic curls.
+  - Only one exercise from each progression is done per session.
+  - The barbell option is specific: barbell squat 3 × 5; hinge = weighted Romanian deadlift 3 × 8 in workouts 1 and 3 and deadlift 3 × 5 in workout 2; it needs a barbell **and a squat rack**.
+- The wiki's per-exercise pages (`/exercises/...`) return 404 on redditbwf.github.io. A mirror of the r/bodyweightfitness wiki gives:
+  - hinge: Romanian deadlift → single-leg deadlift → banded Nordic curl negatives (weaker bands step by step), or a floor-slide path without bands;
+  - dips: parallel-bar support hold (that page says up to 3 × 60 s, the routine page says holds move on at 3 × 30 s) → negative dips → dips.
+  
+  The executor re-checks these at the source in V21b and records the URL used.
+- Minimalist: **confirmed** as written in §3. The source also names the harder steps: push-up → diamond → pseudo-planche push-up; row → pull-up; lunge → squat → cossack squat → pistol / shrimp squat. Aegirlab marks its 8–10 rep range for rows and its 8-week length as its own additions, not the routine's.
+- Licences: no licence is stated on either page, so treat them as all rights reserved. Use structure and numbers only, our own wording, and credit both sources (as §3 already says). The same applies to Antranik and Convict Conditioning if picked (O4).
+
+### 11.3 Task changes (and why)
+| Change | Why |
+|---|---|
+| **V00 done by the reviewer** (see 11.4). It touched app code once: `MainActivity` exposes test tags as resource ids (`testTagsAsResourceId`), so the flows can find controls. `android.yml` now ignores the `ui-shots` branch. | Needed for V00. |
+| **New V00b** (first executor task): a debug-only seed. A `src/debug` broadcast receiver imports a fixture backup from debug assets (several sessions, levels with stars, two profiles). The flows call it with `adb shell am broadcast`, and a flow `e_seeded` screenshots History and Progress with data. | Flows A–D start from a fresh install, so Progress shows no stars and History has only one workout. A restore through the system file picker is too brittle to script. |
+| **V04 split:** V04a = Room migration 23 → 24 (`feedback_revisions.blockId`, `actualHoldSeconds`, both nullable) + domain per-round correction + evidence from corrected rounds + a `connected` job in `ui-screens.yml` that runs `:data:connectedDebugAndroidTest` on the emulator. V04b = the end-screen and History UI. | A migration and its first on-device test should not share a commit with UI work. |
+| **V06 split:** V06a = pipeline v3 (thumbnails, muscle data, the per-id pose assertion, size limits), keeping today's poses. V06b = own pose for every variant that shares one (K2), plus the pull-up (K5) and full review (`clips-v3-review.md`). | V06 covered 61 clips and a new pipeline in one commit. |
+| **New V21b** (before V22): content for the presets: RR warm-up items (C-B), dip chain with chair-dip alternative, RR hinge, band anti-rotation hold, reverse hyperextension (C-C), walking lunges and plank shoulder taps (C-D), each with clip and thumbnail. **V25 keeps only C-E.** | V22 (RR preset) needs the dip, hinge and core content, but §8 scheduled the dip content in V25, after V22. |
+| **V18 moves after V21.** A saved routine stores slots, chosen exercises, level or free-rep overrides, stretch picks, format, progression rule, rests and warm-up. | Those fields only exist after V19 and V21. |
+| **V12 also builds the three-type goal control on Train** (shared component). "Ready-made routine" is shown only once presets exist (V22); until then it is hidden. | The Train goal control (§5.3) had no task, and R3 would otherwise ship an empty choice. |
+| **Train Format control** goes to V20 (UI), with V19 (planner). | It had no task. |
+| **Every UI task** ends with the screenshot review (handoff §5): push, wait for `ui-screens`, fetch, look at every changed screen, write `docs/evidence/ui/<task>-review.md`. | §10 rule, made concrete. |
+
+### 11.4 V00 evidence
+**Accepted 2026-10-09.** Full evidence: `docs/evidence/ui/V00-review.md`.
+- The token needed the **Workflows** permission to push `.github/workflows/`; the owner added it.
+- Green runs, each 12/12 flow × variant PASS:
+  - https://github.com/Nilscost/Calisthenics-app/actions/runs/37917550425 (branch);
+  - https://github.com/Nilscost/Calisthenics-app/actions/runs/37920253931 (`main`).
+  
+  Example shot: `ui-shots` branch `ebb4dc7/b_train_preview/02-preview-dark.png`.
+- Emulator flakes seen and handled: an ANR dialog, and a blank screen after a theme switch (settle step + one retry).
+- Planted defect: an invisible Start label on branch `ui-check/v00-planted`, run https://github.com/Nilscost/Calisthenics-app/actions/runs/37917561183. All flows still passed. It was found only by looking at `fb6930d/b_train_preview/02-preview-light.png`, which shows a blank primary button.
+- Real defect found on the way: the status bar is not themed in dark mode (logged for the executor).
+
+### 11.5 Questions for the owner — ANSWERED 2026-10-09
+Owner answers:
+- Q1: recommendation accepted;
+- Q2: chair dips OK;
+- Q3: 30 s;
+- Q4: RR + Minimalist first.
+
+1. **Rep-range rule and unlogged sets (O2 option 2).** Today an untouched set counts "as planned". Under "Rep range" the plan shows a range (e.g. 5–8), so "as planned" is undefined.
+   - Reviewer recommendation: an unlogged set counts as **the same numbers as last time** (no progress, no regression). Progress then needs logged numbers.
+   - The alternative, counting it as the top of the range, would move you to the next exercise after one silent session.
+   
+   **Answer: accepted.**
+2. **Dips without equipment.** The owner has no dip bars or parallettes (D9). Is **chair dips** (with a shoulder caution) acceptable as the RR dip slot for bodyweight-only, or should the slot fall back to a push-up variation with a note? **Answer: chair dips OK.**
+3. **Support-hold length.** The routine page says holds move on at 3 × 30 s; the wiki dip page says the support hold goes to 3 × 60 s. Which one should the RR preset use? **Answer: 30 s.**
+4. **O4 picks** are still open. V22 does RR + Minimalist only; picks can be added later without blocking. **Answer: RR + Minimalist first.**
