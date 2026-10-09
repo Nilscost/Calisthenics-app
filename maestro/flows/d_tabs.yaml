@@ -11,9 +11,12 @@ appId: app.calisthenics.personal
 - back
 - tapOn: { id: tab_history }
 - takeScreenshot: 03-history-${VARIANT}
-- tapOn: { id: "session_.*", index: 0, optional: true }
-- takeScreenshot: 04-history-detail-${VARIANT}
-- back
+- runFlow:
+    when: { visible: { id: "session_.*" } }
+    commands:
+      - tapOn: { id: "session_.*", index: 0 }
+      - takeScreenshot: 04-history-detail-${VARIANT}
+      - back
 - tapOn: { id: tab_settings }
 - takeScreenshot: 05-settings-${VARIANT}
 - scrollUntilVisible: { element: { id: settings_about }, direction: DOWN, timeout: 10000 }

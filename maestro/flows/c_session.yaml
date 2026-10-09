@@ -24,7 +24,8 @@ appId: app.calisthenics.personal
 - tapOn: { id: session_more }
 - tapOn: "End workout"
 - takeScreenshot: 05-end-confirm-${VARIANT}
-- tapOn: { id: session_end_confirm }
+# The confirm dialog is its own window: select by text (the dialog title is "End the workout?").
+- tapOn: "End workout"
 - extendedWaitUntil: { visible: { id: end_title }, timeout: 10000 }
 - takeScreenshot: 06-end-screen-${VARIANT}
 - tapOn: { id: end_done }
