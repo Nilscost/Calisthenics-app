@@ -25,6 +25,8 @@ import app.calisthenics.domain.ProgressionPolicy as SeedPolicy
 
 const val REENTRY_DAYS = 14 // ADR 0002 C8
 const val BELOW_SUGGEST_AFTER = 2 // ADR 0002 C6
+/** V02 / D7: this many sessions in a row rated "too easy" suggest one level up (never applied without the user). */
+const val ABOVE_SUGGEST_AFTER = 2
 
 /** Explicit user actions that change progression (all optional; silence never clears a hold). */
 sealed interface UserAction {
@@ -32,6 +34,8 @@ sealed interface UserAction {
     /** Initial self-assessment / manual pick of a familiar variation (ONB-01). */
     data class SelfAssessment(override val day: Int, val variationId: String, val tier: Int) : UserAction
     /** Accept the app's lower-target suggestion or the easier adjustment after discomfort. */
+    /** D7: the user confirms the "too easy" suggestion and moves up to [tier]. Never created by the app itself. */
+    data class AcceptHarder(override val day: Int, val variationId: String, val tier: Int) : UserAction
     data class AcceptEasier(override val day: Int, val variationId: String, val tier: Int) : UserAction
     /** "I'm comfortable progressing again" for a family (C7). Does not advance immediately. */
     data class ComfortClearance(override val day: Int, val familyId: String) : UserAction
@@ -62,6 +66,10 @@ data class VariationProgress(
     val loadGrams: Int? = null,
     /** Stars kept from lighter kettlebells: grams -> stars earned at that weight. */
     val starsByLoad: Map<Int, Int> = emptyMap(),
+    /** V02: sessions in a row rated "too easy" at this tier. */
+    val consecutiveAbove: Int = 0,
+    /** V02 / D7: one level up is suggested; it only changes when the user accepts. */
+    val raiseSuggested: Boolean = false,
 ) {
     /** Highest consecutive achieved tier counted from the tier the variation was started at. */
     fun earnedStars(): Int {
@@ -126,6 +134,7 @@ class ProgressionEngine(private val catalog: Catalog) {
             val vid = ev.variationId
             var p = ensure(vid, ev.day, tier = ev.prescribedTier ?: 1)
             p = p.copy(lastTrainedDay = maxOf(p.lastTrainedDay ?: ev.day, ev.day))
+            val start = p
             active.putIfAbsent(p.familyId, vid)
             val hold = holds[p.familyId]
             // Kettlebell weight: levels are earned per weight (owner 2026-10-08).
@@ -170,6 +179,12 @@ class ProgressionEngine(private val catalog: Catalog) {
                 }
                 else -> Unit
             }
+            // V02 / D7: "too easy" in a row suggests one level up; the tier itself never changes here.
+            val tooEasy = ev.anyAbove && ev.prescribedTier == start.tier && !ev.anyBelow && !ev.discomfort && !ev.skippedOrPartial && !lighter
+            val above = if (tooEasy && p.tier == start.tier) p.consecutiveAbove + 1 else 0
+            val suggest = above >= ABOVE_SUGGEST_AFTER && !p.raiseSuggested && p.tier < 5 && p.tier == start.tier
+            p = p.copy(consecutiveAbove = above, raiseSuggested = if (p.tier != start.tier) false else p.raiseSuggested || suggest)
+            if (suggest) events += ProgressEvent(ev.day, vid, "Two sessions in a row too easy — a harder target (tier ${p.tier + 1}) is suggested. Nothing changes unless you accept.")
             vars[vid] = p
         }
         for (ev in evidence.filter { it.discomfort }) {
@@ -190,6 +205,12 @@ class ProgressionEngine(private val catalog: Catalog) {
                     val p = ensure(a.variationId, a.day, a.tier, a.tier)
                     vars[a.variationId] = p.copy(tier = a.tier, baselineTier = a.tier, enrolledAtDay = a.day)
                     active.putIfAbsent(p.familyId, a.variationId)
+                }
+                is UserAction.AcceptHarder -> {
+                    val p = ensure(a.variationId, a.day)
+                    vars[a.variationId] = p.copy(tier = a.tier, enrolledAtDay = a.day, streakDays = emptyList(),
+                        streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false)
+                    events += ProgressEvent(a.day, a.variationId, "You accepted a harder target (tier ${a.tier}).")
                 }
                 is UserAction.AcceptEasier -> {
                     val p = ensure(a.variationId, a.day)

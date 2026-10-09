@@ -93,6 +93,8 @@ data class SessionEvidence(
     val minQualifyingBlocks: Int,
     /** Kettlebell weight used (null = bodyweight or unknown). Levels count per weight. */
     val loadGrams: Int? = null,
+    /** V02: the user rated an exercise of this session "too easy" (Rating.ABOVE). Appended last with a default. */
+    val anyAbove: Boolean = false,
 ) {
     /** Spec §5 / ADR C2 exposure definition. */
     val qualifying: Boolean
@@ -133,6 +135,7 @@ fun deriveEvidence(
             confirmedBlocks = os.count { it.origin == RatingOrigin.USER_BLOCK || it.origin == RatingOrigin.USER_EXERCISE },
             minQualifyingBlocks = minQualifyingBlocksOf(vid, tier),
             loadGrams = loadByVariation[vid],
+            anyAbove = os.any { it.rating == Rating.ABOVE },
         )
     }
 }
