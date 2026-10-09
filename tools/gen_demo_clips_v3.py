@@ -130,6 +130,76 @@ NEW = {
     "kettlebell-single-leg-rdl": (kb_rdl, "rep"), "kettlebell-swing": (kb_swing, "rep"),
     "kettlebell-swing-one-arm": (kb_swing_one_arm, "rep"),
 }
+
+# ----------------------------------------------------------------------------------------------- V07 stretch poses (3-D: depth via arm_z / arm_zm / leg_z)
+def _breath(p): return 0.5 + 0.5 * math.sin(2 * math.pi * p)
+
+def st_pigeon(p):
+    b = _breath(p); hip = (150, 50); a = lerp(52, 26, b); sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=-14, arms=[("ik", (sho[0] + 46, 46), (-1, -0.2))] * 2,
+                legs=[("fix", (192, 48), (150, 46)), ("ik", (66, 46), (0, 1))], leg_z=[(6.5, 6.5), (-6.5, -6.5)])
+
+def st_90_90(p):
+    b = _breath(p); hip = (140, 46); a = lerp(92, 62, b); sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=-8, arms=[("ik", (sho[0] + 30, 50), (0, 1)), ("ik", (sho[0] + 20, 50), (0, 1))],
+                legs=[("fix", (184, 48), (184, 46)), ("fix", (140, 48), (100, 46))], leg_z=[(6.5, 60), (-52, -52)])
+
+def st_frog(p):
+    b = _breath(p); hip = (lerp(122, 108, b), 68); a = lerp(24, 14, b)
+    return dict(hip=hip, a=a, head_off=-10, arms=[("ik", (232, 46), (0, 1))] * 2, arm_z=[Z_ARM, -Z_ARM],
+                legs=[("fix", (hip[0] + 8, 46), (hip[0] - 34, 46))] * 2, leg_z=[(54, 74), (-54, -74)])
+
+def st_couch(p):
+    b = _breath(p); hip = (lerp(136, 128, b), 88); a = lerp(92, 100, b); sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=0, arms=[("ik", (sho[0] + 40, sho[1] - 38), (0, -1))] * 2,
+                legs=[("ik", (194, 46), (1, 0.4)), ("fix", (118, 46), (80, 74))], scene=[("rect", (60, 44, 68, 170), v1.GRD)])
+
+def st_quad_standing(p):
+    b = _breath(p); hip = (150, 124); sho = sh(hip, 90 + 2 * b)
+    kn, an = (hip[0] + 4, hip[1] - 42), (hip[0] - 24, hip[1] - 12)
+    return dict(hip=hip, a=90 + 2 * b, arms=[("ik", an, (0, -1)), ("ik", (sho[0] + 38, sho[1] - 30), (0, -1))],
+                legs=[("ik", (150, 46), (1, 0)), ("fix", kn, an)])
+
+def st_ham_standing(p):
+    b = _breath(p); hip = (130, 112); a = lerp(62, 40, b); sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=-10, arms=[("ik", (hip[0] + 34, 74), (-1, 0))] * 2,
+                legs=[("ik", (hip[0] + 56, 46), (0, 1)), ("ik", (hip[0] - 16, 46), (1, 0))])
+
+def st_lat_wall(p):
+    b = _breath(p); hip = (100, 128); a = 3 * b - 2; sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=-14, arms=[("ik", (222, 130), (0, -1))] * 2, legs=[("ik", (100, 46), (1, 0))] * 2,
+                scene=[("rect", (226, 44, 234, 200), v1.GRD)])
+
+def st_sleeper(p):
+    b = _breath(p); hip = (170, 50); a = 180; sho = sh(hip, a)
+    pressing = lerp(0, 8, b)
+    return dict(hip=hip, a=a, head_off=0, arms=[("fix", (sho[0] + 2, 52), (sho[0] + 2, 82 - pressing)), ("ik", (sho[0] + 2, 82 - pressing), (0, 1))],
+                arm_z=[54, 54], arm_zm=[54, None], legs=[("ik", (170 + 78, 52), (0, 1)), ("ik", (170 + 72, 56), (0, 1))])
+
+def _quad(hip_x, a=18):
+    hip = (hip_x, 88); sho = sh(hip, a)
+    return hip, a, sho
+
+def st_wrist_flexor(p):
+    b = _breath(p); hip, a, sho = _quad(lerp(118, 98, b)); hand = (sho[0] + 6, 44)
+    return dict(hip=hip, a=a, head_off=-6, arms=[("ik", hand, (-1, 0))] * 2, legs=[("fix", (hip[0] + 2, 46), (hip[0] - 40, 46))] * 2)
+
+def st_wrist_extensor(p):
+    b = _breath(p); hip, a, sho = _quad(lerp(122, 108, b)); hand = (sho[0] + 6, 44)
+    return dict(hip=hip, a=a, head_off=-6, arms=[("ik", hand, (-1, 0))] * 2, arm_z=[Z_ARM + 8, -Z_ARM - 8], legs=[("fix", (hip[0] + 2, 46), (hip[0] - 40, 46))] * 2)
+
+def st_thoracic(p):
+    s = rep(p, 1); hip, a, sho = _quad(120)
+    reach = lerp2((sho[0] + 4, sho[1] + 60), (sho[0] - 14, 46), 1 - s)    # the threaded arm: up to the ceiling <-> under the body
+    return dict(hip=hip, a=a, head_off=-6, arms=[("ik", (sho[0] + 6, 44), (-1, 0)), ("ik", reach, (-1, 0))],
+                arm_z=[Z_ARM, lerp(-64, 30, 1 - s)], legs=[("fix", (hip[0] + 2, 46), (hip[0] - 40, 46))] * 2)
+
+NEW.update({
+    "stretch-pigeon": (st_pigeon, "hold"), "stretch-90-90": (st_90_90, "hold"), "stretch-frog": (st_frog, "hold"), "stretch-quad-couch": (st_couch, "hold"),
+    "stretch-quad-standing": (st_quad_standing, "hold"), "stretch-hamstring-standing": (st_ham_standing, "hold"), "stretch-lat-wall": (st_lat_wall, "hold"),
+    "stretch-sleeper": (st_sleeper, "hold"), "stretch-wrist-flexor": (st_wrist_flexor, "hold"), "stretch-wrist-extensor": (st_wrist_extensor, "hold"),
+    "stretch-thoracic": (st_thoracic, "rep"),
+})
 POSES = dict(v1.POSES); POSES.update(NEW)
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)
 BAR_Y = 280
@@ -245,12 +315,16 @@ def lift(pose):
     d = (sho[0] - hip[0], sho[1] - hip[1]); n = math.hypot(*d) or 1
     ant = (d[1] / n, -d[0] / n)                                   # anterior normal of the torso (clockwise perpendicular)
     out = {"hip": (hip[0], hip[1], 0), "sho": (sho[0], sho[1], 0), "ant": ant, "arms": [], "legs": []}
-    arm_z = pose.get("arm_z")
+    arm_z, arm_zm, leg_z = pose.get("arm_z"), pose.get("arm_zm"), pose.get("leg_z")   # V07: elbow depth and knee/ankle depth can be set
     for key, zoff in (("arms", Z_ARM), ("legs", Z_LEG)):
         for i, (root, mid, end) in enumerate(j[key]):
             zs = (1 if i == 0 else -1) * zoff
-            ze = arm_z[i] if (key == "arms" and arm_z) else zs
-            r3, m3, e3 = (root[0], root[1], zs), (mid[0], mid[1], (zs + ze) / 2 if key == "arms" else zs), (end[0], end[1], ze if key == "arms" else zs)
+            if key == "arms":
+                ze = arm_z[i] if arm_z else zs
+                zm = arm_zm[i] if (arm_zm and arm_zm[i] is not None) else (zs + ze) / 2
+            else:
+                zm, ze = leg_z[i] if leg_z else (zs, zs)
+            r3, m3, e3 = (root[0], root[1], zs), (mid[0], mid[1], zm), (end[0], end[1], ze)
             u = (mid[0] - root[0], mid[1] - root[1]); w = (end[0] - mid[0], end[1] - mid[1])
             cr = u[0] * w[1] - u[1] * w[0]
             un = math.hypot(*u) or 1

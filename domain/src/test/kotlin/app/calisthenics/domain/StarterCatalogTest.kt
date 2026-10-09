@@ -34,7 +34,7 @@ class StarterCatalogTest {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
         assertEquals(54, strength.size) // M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
-        assertEquals(7, stretches.size)
+        assertEquals(18, stretches.size) // V07: 7 + 11 new stretches (C-A)
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
     }
@@ -117,5 +117,22 @@ class StarterCatalogTest {
         assertEquals("v-sit-floor", chain("plank").last().let { chain("hollow-hold").last() })
         assertEquals("planche-adv-tuck", chain("planche-lean").last())
         assertEquals("front-lever-straddle", chain("front-lever-tuck").last())
+    }
+
+    /** V07 (C-A): the stretch library covers hips, hamstrings, quads, lats, shoulders, wrists, spine, calves and ankles. */
+    @Test fun stretchLibraryCoversTheAreasWithCluesAndCautions() {
+        val stretches = catalog.variations.filter { it.kind == Kind.STRETCH }
+        val areas = stretches.flatMap { it.stretchAreas }.toSet()
+        for (a in listOf(StretchArea.HIP, StretchArea.HAMSTRING, StretchArea.QUAD, StretchArea.BACK, StretchArea.CHEST, StretchArea.SHOULDER, StretchArea.WRIST, StretchArea.CALF)) assertTrue("no stretch for $a", a in areas)
+        for (id in listOf("stretch-pigeon", "stretch-90-90", "stretch-frog", "stretch-quad-couch", "stretch-quad-standing", "stretch-hamstring-standing",
+            "stretch-lat-wall", "stretch-sleeper", "stretch-wrist-flexor", "stretch-wrist-extensor", "stretch-thoracic")) {
+            val v = catalog.variation(id) ?: error("missing $id")
+            assertTrue(id, v.defaultSeconds != null && v.stretchAreas.isNotEmpty() && v.instructions.size >= 3)
+            assertTrue("$id needs cues", v.formCues.isNotEmpty())
+            assertTrue("$id needs its own caution on top of the general one", v.cautions.size >= 2 || id.contains("standing") || id == "stretch-lat-wall")
+            assertTrue("$id needs primary muscles", v.primaryMuscles.isNotEmpty())
+        }
+        assertTrue(stretches.filter { it.unilateral }.all { it.defaultSeconds != null })
+        assertTrue(catalog.variation("stretch-wrist-flexor")!!.stretchAreas == setOf(StretchArea.WRIST))
     }
 }

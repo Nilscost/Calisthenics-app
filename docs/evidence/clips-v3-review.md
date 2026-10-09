@@ -30,3 +30,18 @@ Method: for every one of the 61 ids a 6-frame sequence (frames 0, 1/6 … 5/6 of
 Everything else reads as intended in the frame sequences: the movement shows within one loop, contact points are plausible (feet and hands on the floor, bar or box in the right place), and what makes the variant different is visible.
 
 Open for the owner (phone): clip smoothness, pace, and whether the new pull-up and push-up variants feel right.
+
+## V07 additions: the 11 new stretches (frame sequences in `frames-07/08-new-stretches-*.png`)
+| Id | Verdict | Note |
+|---|---|---|
+| `stretch-pigeon` | acceptable | the crossed front shin is shown front-on; folds forward and back with the breath |
+| `stretch-90-90` | acceptable | seated, one shin forward, the other leg to the side, leaning over the front shin |
+| `stretch-frog` | good | wide knees, forearms down, hips rock back |
+| `stretch-quad-couch` | good | back foot up the wall, hands on the front knee |
+| `stretch-quad-standing` | weak | the small figure reads, but the held foot is hard to see |
+| `stretch-hamstring-standing` | acceptable | front heel forward, hinge with the hands on the thigh |
+| `stretch-lat-wall` | good | hands on the wall, hips back, chest sinking |
+| `stretch-sleeper` | weak | side-lying with the arm up; the pressing hand is small |
+| `stretch-wrist-flexor`, `stretch-wrist-extensor` | weak | the hand orientation (palms up / backs of the hands) is not drawn, so the two clips look alike; only the rocking differs |
+| `stretch-thoracic` | good | the threaded arm travels from under the body to the ceiling |
+All 18 stretches now colour the muscle that is stretched (primary) and a helper (secondary); the old 7 had none (K4). Still flat: the 7 older stretches keep their v1 poses (small sway only).

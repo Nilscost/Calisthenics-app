@@ -64,13 +64,16 @@ def strength(id, name, family, patterns, areas, kind, position, instructions, cu
     if prereq: pol["prerequisiteRule"] = prereq
     policies.append(pol)
 
-def stretch(id, name, areas, seconds, uni, position, instructions, eq=NO_EQ, kind="STRETCH"):
+def stretch(id, name, areas, seconds, uni, position, instructions, eq=NO_EQ, kind="STRETCH", cues=(), cautions=(), primary=(), secondary=()):
     v = {"id": id, "familyId": id, "name": name,
          "patterns": ["STRETCH" if kind == "STRETCH" else "MOBILITY"],
          "kind": kind, "unilateral": uni, "position": position, "defaultSeconds": seconds,
-         "equipmentAlternatives": eq, "instructions": instructions, "cautions": [STRETCH_NOTE],
+         "equipmentAlternatives": eq, "instructions": instructions, "cautions": [STRETCH_NOTE, *cautions],
          "sourceIds": [S_OG, S_GB], "reviewState": "DRAFT"}
+    if cues: v["formCues"] = list(cues)
     if areas: v["stretchAreas"] = areas
+    if primary: v["primaryMuscles"] = list(primary)
+    if secondary: v["secondaryMuscles"] = list(secondary)
     variations.append(v)
 
 def vt(variation, tier): return {"variationTierMet": {"variationId": variation, "tier": tier}}
@@ -101,9 +104,87 @@ stretch("stretch-ankle-mobility", "Ankle Mobility (knee-to-wall)", [], 30, True,
          "Move slowly in and out within a pain-free range.", "Switch sides."],
         eq=[{"capabilities": ["wall"]}], kind="MOBILITY")
 
-UP = ["stretch-chest-door", "stretch-shoulder"]
-LOW = ["stretch-hip-flexor", "stretch-hamstring", "stretch-calf-wall"]
-CORE_ST = ["stretch-back", "stretch-hip-flexor"]
+# V07 (C-A): the stretches the owner asked for (hips, hamstrings, quads, lats, shoulders, wrists, spine). DRAFT like all content.
+stretch("stretch-pigeon", "Pigeon Stretch", ["HIP"], 30, True, "kneeling",
+        ["Start on hands and knees on a mat.", "Slide one knee forward and turn that shin across the body; stretch the other leg straight back.",
+         "Lower the hips toward the floor and fold forward over the front leg.", "Hold, breathe slowly, then switch sides."],
+        cues=["Keep the hips level", "Fold only as far as is comfortable"],
+        cautions=["Stop if you feel the knee of the front leg pinch or twist. Come out of the pose slowly."],
+        primary=["GLUTES"], secondary=["HIP_FLEXORS"])
+stretch("stretch-90-90", "90/90 Hip Stretch", ["HIP"], 30, True, "seated",
+        ["Sit on the floor with the front knee bent at a right angle and the back knee bent to the other side.", "Sit tall, then lean the chest over the front shin.",
+         "Feel the stretch in the outer hip of the front leg.", "Hold, then switch sides."],
+        cues=["Sit tall before you lean", "Keep both sit bones near the floor"],
+        cautions=["If the knees complain, sit on a folded towel or skip this stretch."],
+        primary=["GLUTES"], secondary=["ADDUCTORS"])
+stretch("stretch-frog", "Frog Stretch", ["HIP"], 30, False, "kneeling",
+        ["Start on hands and knees; slide the knees wide apart, feet turned out.", "Lower onto the forearms and rock the hips back toward the heels.",
+         "Feel the stretch along the inner thighs.", "Breathe slowly; come out by walking the knees together."],
+        cues=["Knees on a mat or folded towel", "Move only as far as the stretch stays comfortable"],
+        cautions=["Do not force the knees wider; stop on groin or knee pain."],
+        primary=["ADDUCTORS"])
+stretch("stretch-quad-couch", "Couch Stretch (quads and hip flexors)", ["QUAD", "HIP"], 30, True, "kneeling",
+        ["Kneel with the back foot resting up against a wall or the side of a couch, the other foot flat in front.", "Lift the chest and tuck the pelvis under.",
+         "Feel the stretch along the front of the back thigh and hip.", "Hold, then switch sides."],
+        eq=[{"capabilities": ["wall"], "needs": [need("mat")]}],
+        cues=["Pelvis tucked, ribs down", "Hands on the front knee for balance"],
+        cautions=["A strong stretch for the knee: ease off if the knee hurts. Pad the knee with a mat."],
+        primary=["QUADS"], secondary=["HIP_FLEXORS"])
+stretch("stretch-quad-standing", "Standing Quad Stretch", ["QUAD"], 30, True, "standing",
+        ["Stand tall; hold a wall or chair if you need balance.", "Bend one knee and hold the foot behind you, knees together.",
+         "Tuck the pelvis slightly and feel the stretch along the front of the thigh.", "Hold, then switch sides."],
+        cues=["Knees stay together", "Do not arch the lower back"],
+        primary=["QUADS"])
+stretch("stretch-hamstring-standing", "Standing Hamstring Stretch", ["HAMSTRING"], 30, True, "standing",
+        ["Stand and place one heel a step ahead, toes up, leg straight (a little knee bend is fine).", "Hinge forward from the hips with a long back, hands on the front thigh.",
+         "Feel the stretch behind the front thigh.", "Hold, then switch sides."],
+        cues=["Hinge at the hips, not the lower back", "Keep the chest open"],
+        primary=["HAMSTRINGS"], secondary=["CALVES"])
+stretch("stretch-lat-wall", "Lat Stretch (hands on a wall)", ["BACK", "SHOULDER"], 30, False, "standing",
+        ["Face a wall, hands on it at about hip height, feet well back.", "Push the hips back and let the chest sink toward the floor, arms and back in one line.",
+         "Feel the stretch along the sides of the back and under the arms.", "Breathe slowly and hold."],
+        eq=[{"capabilities": ["wall"]}],
+        cues=["Arms stay straight", "Ribs down, do not collapse the lower back"],
+        primary=["LATS"], secondary=["REAR_DELTS"])
+stretch("stretch-sleeper", "Sleeper Stretch (shoulder)", ["SHOULDER"], 30, True, "floor",
+        ["Lie on one side with the lower arm in front of you, elbow bent to a right angle, forearm pointing up.", "With the other hand, gently press the forearm toward the floor.",
+         "Feel a mild stretch at the back of the lower shoulder.", "Hold, then switch sides."],
+        cues=["Press gently; this is a small stretch", "Keep the shoulder blade relaxed"],
+        cautions=["Stop on any pinching at the front of the shoulder. Not for an injured or recently operated shoulder."],
+        primary=["REAR_DELTS"])
+stretch("stretch-wrist-flexor", "Wrist Stretch (palms up)", ["WRIST"], 30, False, "kneeling",
+        ["Kneel on hands and knees, palms up and fingers pointing back toward the knees.", "Rock the hips back slowly until you feel a stretch in the forearms.",
+         "Keep the movement small; stay in a comfortable range.", "Hold, then release."],
+        cues=["Rock back only a little", "Breathe slowly"],
+        cautions=["Stop on wrist pain or tingling in the fingers; lift the hands off the floor."],
+        primary=["FOREARMS"])
+stretch("stretch-wrist-extensor", "Wrist Stretch (backs of the hands)", ["WRIST"], 30, False, "kneeling",
+        ["Kneel on hands and knees, backs of the hands on the floor and fingers pointing back toward the knees.", "Lean the weight gently back toward the heels.",
+         "Feel the stretch along the top of the forearms.", "Hold, then release."],
+        cues=["Small, slow movement", "Never force the lean"],
+        cautions=["Stop on wrist pain or tingling in the fingers. This is a strong stretch; start with a very small lean."],
+        primary=["FOREARMS"])
+stretch("stretch-thoracic", "Thoracic Rotation (thread the needle)", ["BACK"], 30, True, "kneeling",
+        ["Start on hands and knees; place one hand behind the head.", "Rotate the elbow down toward the other arm, then open it up toward the ceiling.",
+         "Move slowly with the breath; the rotation comes from the upper back.", "Repeat for the time, then switch sides."],
+        cues=["Hips stay still", "Follow the elbow with your eyes"],
+        cautions=["Stay in a pain-free range; skip if a shoulder or the neck complains."],
+        primary=["UPPER_BACK"], secondary=["OBLIQUES"])
+
+NEW_ST_UP = ["stretch-sleeper", "stretch-wrist-flexor", "stretch-wrist-extensor", "stretch-lat-wall"]
+NEW_ST_LOW = ["stretch-pigeon", "stretch-90-90", "stretch-quad-couch", "stretch-quad-standing", "stretch-hamstring-standing", "stretch-frog"]
+NEW_ST_CORE = ["stretch-thoracic", "stretch-lat-wall"]
+UP = ["stretch-chest-door", "stretch-shoulder", *NEW_ST_UP]
+LOW = ["stretch-hip-flexor", "stretch-hamstring", "stretch-calf-wall", *NEW_ST_LOW]
+CORE_ST = ["stretch-back", "stretch-hip-flexor", *NEW_ST_CORE]
+# the targeted muscles of the first seven stretches (V07), so their clips and the body figure show what is stretched
+_MUSCLES = {"stretch-calf-wall": (["CALVES"], []), "stretch-hip-flexor": (["HIP_FLEXORS"], ["QUADS"]), "stretch-hamstring": (["HAMSTRINGS"], ["LOWER_BACK"]),
+            "stretch-back": (["LOWER_BACK"], ["LATS"]), "stretch-chest-door": (["CHEST"], ["FRONT_DELTS"]), "stretch-shoulder": (["REAR_DELTS"], []),
+            "stretch-ankle-mobility": (["CALVES"], [])}
+for _v in variations:
+    if _v["id"] in _MUSCLES:
+        _v["primaryMuscles"], _v["secondaryMuscles"] = _MUSCLES[_v["id"]][0], _MUSCLES[_v["id"]][1]
+        if not _v["secondaryMuscles"]: del _v["secondaryMuscles"]
 
 # ---------------- push ----------------
 strength("pushup-incline", "Incline Push-Up", "pushup", ["PUSH_HORIZONTAL"], ["UPPER_BODY"], "REPS", "floor",

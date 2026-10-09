@@ -625,45 +625,167 @@
   ],
   "sharedPoseWith": []
  },
+ "stretch-90-90": {
+  "kind": "hold",
+  "primary": [
+   "GLUTES"
+  ],
+  "secondary": [
+   "ADDUCTORS"
+  ],
+  "sharedPoseWith": []
+ },
  "stretch-ankle-mobility": {
   "kind": "rep",
-  "primary": [],
+  "primary": [
+   "CALVES"
+  ],
   "secondary": [],
   "sharedPoseWith": []
  },
  "stretch-back": {
   "kind": "rep",
-  "primary": [],
-  "secondary": [],
+  "primary": [
+   "LOWER_BACK"
+  ],
+  "secondary": [
+   "LATS"
+  ],
   "sharedPoseWith": []
  },
  "stretch-calf-wall": {
   "kind": "hold",
-  "primary": [],
+  "primary": [
+   "CALVES"
+  ],
   "secondary": [],
   "sharedPoseWith": []
  },
  "stretch-chest-door": {
   "kind": "hold",
-  "primary": [],
+  "primary": [
+   "CHEST"
+  ],
+  "secondary": [
+   "FRONT_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "stretch-frog": {
+  "kind": "hold",
+  "primary": [
+   "ADDUCTORS"
+  ],
   "secondary": [],
   "sharedPoseWith": []
  },
  "stretch-hamstring": {
   "kind": "rep",
-  "primary": [],
-  "secondary": [],
+  "primary": [
+   "HAMSTRINGS"
+  ],
+  "secondary": [
+   "LOWER_BACK"
+  ],
+  "sharedPoseWith": []
+ },
+ "stretch-hamstring-standing": {
+  "kind": "hold",
+  "primary": [
+   "HAMSTRINGS"
+  ],
+  "secondary": [
+   "CALVES"
+  ],
   "sharedPoseWith": []
  },
  "stretch-hip-flexor": {
   "kind": "hold",
-  "primary": [],
+  "primary": [
+   "HIP_FLEXORS"
+  ],
+  "secondary": [
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
+ "stretch-lat-wall": {
+  "kind": "hold",
+  "primary": [
+   "LATS"
+  ],
+  "secondary": [
+   "REAR_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "stretch-pigeon": {
+  "kind": "hold",
+  "primary": [
+   "GLUTES"
+  ],
+  "secondary": [
+   "HIP_FLEXORS"
+  ],
+  "sharedPoseWith": []
+ },
+ "stretch-quad-couch": {
+  "kind": "hold",
+  "primary": [
+   "QUADS"
+  ],
+  "secondary": [
+   "HIP_FLEXORS"
+  ],
+  "sharedPoseWith": []
+ },
+ "stretch-quad-standing": {
+  "kind": "hold",
+  "primary": [
+   "QUADS"
+  ],
   "secondary": [],
   "sharedPoseWith": []
  },
  "stretch-shoulder": {
   "kind": "hold",
-  "primary": [],
+  "primary": [
+   "REAR_DELTS"
+  ],
+  "secondary": [],
+  "sharedPoseWith": []
+ },
+ "stretch-sleeper": {
+  "kind": "hold",
+  "primary": [
+   "REAR_DELTS"
+  ],
+  "secondary": [],
+  "sharedPoseWith": []
+ },
+ "stretch-thoracic": {
+  "kind": "rep",
+  "primary": [
+   "UPPER_BACK"
+  ],
+  "secondary": [
+   "OBLIQUES"
+  ],
+  "sharedPoseWith": []
+ },
+ "stretch-wrist-extensor": {
+  "kind": "hold",
+  "primary": [
+   "FOREARMS"
+  ],
+  "secondary": [],
+  "sharedPoseWith": []
+ },
+ "stretch-wrist-flexor": {
+  "kind": "hold",
+  "primary": [
+   "FOREARMS"
+  ],
   "secondary": [],
   "sharedPoseWith": []
  },

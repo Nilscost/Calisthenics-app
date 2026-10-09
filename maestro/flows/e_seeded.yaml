@@ -37,3 +37,18 @@ appId: app.calisthenics.personal
 # The sheet is its own window: look for text that only the sheet has.
 - extendedWaitUntil: { visible: "Kettlebell: 12 kg.*", timeout: 10000 }
 - takeScreenshot: 07-kettlebell-sheet-${VARIANT}
+# V07: the stretch library tab and one new stretch (sheet with clip, steps and cautions).
+- back
+- repeat:
+    while: { notVisible: { id: tab_chip_stretches } }
+    times: 5
+    commands:
+      - swipe: { start: "90%, 16%", end: "10%, 16%" }
+- tapOn: { id: tab_chip_stretches }
+- extendedWaitUntil: { visible: { id: "stretch_stretch-calf-wall" }, timeout: 10000 }
+- takeScreenshot: 08-stretch-list-${VARIANT}
+- scrollUntilVisible: { element: { id: "stretch_stretch-thoracic" }, direction: DOWN, timeout: 10000 }
+- takeScreenshot: 09-stretch-list-bottom-${VARIANT}
+- tapOn: { id: "stretch_stretch-thoracic" }
+- extendedWaitUntil: { visible: "Thoracic Rotation.*", timeout: 10000 }
+- takeScreenshot: 10-stretch-sheet-${VARIANT}

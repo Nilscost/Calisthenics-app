@@ -19,7 +19,7 @@ import kotlinx.serialization.Serializable
 /** Strength focus. FULL_BODY is mutually exclusive with the specific ones (spec §4.2). */
 @Serializable enum class StrengthFocus { FULL_BODY, UPPER_BODY, LOWER_BODY, CORE }
 
-@Serializable enum class StretchArea { FULL_BODY, CALF, ANKLE, HIP, HAMSTRING, QUAD, BACK, CHEST, SHOULDER }
+@Serializable enum class StretchArea { FULL_BODY, CALF, ANKLE, HIP, HAMSTRING, QUAD, BACK, CHEST, SHOULDER, WRIST }
 
 @Serializable enum class Pattern {
     PUSH_HORIZONTAL, PUSH_VERTICAL, PULL_HORIZONTAL, PULL_VERTICAL,

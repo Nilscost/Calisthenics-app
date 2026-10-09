@@ -35,6 +35,9 @@
       "reviewState": "DRAFT",
       "stretchAreas": [
         "CALF"
+      ],
+      "primaryMuscles": [
+        "CALVES"
       ]
     },
     {
@@ -67,6 +70,12 @@
       "reviewState": "DRAFT",
       "stretchAreas": [
         "HIP"
+      ],
+      "primaryMuscles": [
+        "HIP_FLEXORS"
+      ],
+      "secondaryMuscles": [
+        "QUADS"
       ]
     },
     {
@@ -99,6 +108,12 @@
       "reviewState": "DRAFT",
       "stretchAreas": [
         "HAMSTRING"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK"
       ]
     },
     {
@@ -131,6 +146,12 @@
       "reviewState": "DRAFT",
       "stretchAreas": [
         "BACK"
+      ],
+      "primaryMuscles": [
+        "LOWER_BACK"
+      ],
+      "secondaryMuscles": [
+        "LATS"
       ]
     },
     {
@@ -167,6 +188,12 @@
       "reviewState": "DRAFT",
       "stretchAreas": [
         "CHEST"
+      ],
+      "primaryMuscles": [
+        "CHEST"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS"
       ]
     },
     {
@@ -199,6 +226,9 @@
       "reviewState": "DRAFT",
       "stretchAreas": [
         "SHOULDER"
+      ],
+      "primaryMuscles": [
+        "REAR_DELTS"
       ]
     },
     {
@@ -232,7 +262,480 @@
         "overcoming-gravity-2-low",
         "building-the-gymnastic-body-sommer"
       ],
-      "reviewState": "DRAFT"
+      "reviewState": "DRAFT",
+      "primaryMuscles": [
+        "CALVES"
+      ]
+    },
+    {
+      "id": "stretch-pigeon",
+      "familyId": "stretch-pigeon",
+      "name": "Pigeon Stretch",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": true,
+      "position": "kneeling",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Start on hands and knees on a mat.",
+        "Slide one knee forward and turn that shin across the body; stretch the other leg straight back.",
+        "Lower the hips toward the floor and fold forward over the front leg.",
+        "Hold, breathe slowly, then switch sides."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stop if you feel the knee of the front leg pinch or twist. Come out of the pose slowly."
+      ],
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Keep the hips level",
+        "Fold only as far as is comfortable"
+      ],
+      "stretchAreas": [
+        "HIP"
+      ],
+      "primaryMuscles": [
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HIP_FLEXORS"
+      ]
+    },
+    {
+      "id": "stretch-90-90",
+      "familyId": "stretch-90-90",
+      "name": "90/90 Hip Stretch",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": true,
+      "position": "seated",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Sit on the floor with the front knee bent at a right angle and the back knee bent to the other side.",
+        "Sit tall, then lean the chest over the front shin.",
+        "Feel the stretch in the outer hip of the front leg.",
+        "Hold, then switch sides."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "If the knees complain, sit on a folded towel or skip this stretch."
+      ],
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Sit tall before you lean",
+        "Keep both sit bones near the floor"
+      ],
+      "stretchAreas": [
+        "HIP"
+      ],
+      "primaryMuscles": [
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "ADDUCTORS"
+      ]
+    },
+    {
+      "id": "stretch-frog",
+      "familyId": "stretch-frog",
+      "name": "Frog Stretch",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": false,
+      "position": "kneeling",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Start on hands and knees; slide the knees wide apart, feet turned out.",
+        "Lower onto the forearms and rock the hips back toward the heels.",
+        "Feel the stretch along the inner thighs.",
+        "Breathe slowly; come out by walking the knees together."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Do not force the knees wider; stop on groin or knee pain."
+      ],
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Knees on a mat or folded towel",
+        "Move only as far as the stretch stays comfortable"
+      ],
+      "stretchAreas": [
+        "HIP"
+      ],
+      "primaryMuscles": [
+        "ADDUCTORS"
+      ]
+    },
+    {
+      "id": "stretch-quad-couch",
+      "familyId": "stretch-quad-couch",
+      "name": "Couch Stretch (quads and hip flexors)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": true,
+      "position": "kneeling",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {
+          "capabilities": [
+            "wall"
+          ],
+          "needs": [
+            {
+              "equipmentId": "mat"
+            }
+          ]
+        }
+      ],
+      "instructions": [
+        "Kneel with the back foot resting up against a wall or the side of a couch, the other foot flat in front.",
+        "Lift the chest and tuck the pelvis under.",
+        "Feel the stretch along the front of the back thigh and hip.",
+        "Hold, then switch sides."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "A strong stretch for the knee: ease off if the knee hurts. Pad the knee with a mat."
+      ],
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Pelvis tucked, ribs down",
+        "Hands on the front knee for balance"
+      ],
+      "stretchAreas": [
+        "QUAD",
+        "HIP"
+      ],
+      "primaryMuscles": [
+        "QUADS"
+      ],
+      "secondaryMuscles": [
+        "HIP_FLEXORS"
+      ]
+    },
+    {
+      "id": "stretch-quad-standing",
+      "familyId": "stretch-quad-standing",
+      "name": "Standing Quad Stretch",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": true,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Stand tall; hold a wall or chair if you need balance.",
+        "Bend one knee and hold the foot behind you, knees together.",
+        "Tuck the pelvis slightly and feel the stretch along the front of the thigh.",
+        "Hold, then switch sides."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain."
+      ],
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Knees stay together",
+        "Do not arch the lower back"
+      ],
+      "stretchAreas": [
+        "QUAD"
+      ],
+      "primaryMuscles": [
+        "QUADS"
+      ]
+    },
+    {
+      "id": "stretch-hamstring-standing",
+      "familyId": "stretch-hamstring-standing",
+      "name": "Standing Hamstring Stretch",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": true,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Stand and place one heel a step ahead, toes up, leg straight (a little knee bend is fine).",
+        "Hinge forward from the hips with a long back, hands on the front thigh.",
+        "Feel the stretch behind the front thigh.",
+        "Hold, then switch sides."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain."
+      ],
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Hinge at the hips, not the lower back",
+        "Keep the chest open"
+      ],
+      "stretchAreas": [
+        "HAMSTRING"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "CALVES"
+      ]
+    },
+    {
+      "id": "stretch-lat-wall",
+      "familyId": "stretch-lat-wall",
+      "name": "Lat Stretch (hands on a wall)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": false,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {
+          "capabilities": [
+            "wall"
+          ]
+        }
+      ],
+      "instructions": [
+        "Face a wall, hands on it at about hip height, feet well back.",
+        "Push the hips back and let the chest sink toward the floor, arms and back in one line.",
+        "Feel the stretch along the sides of the back and under the arms.",
+        "Breathe slowly and hold."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain."
+      ],
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Arms stay straight",
+        "Ribs down, do not collapse the lower back"
+      ],
+      "stretchAreas": [
+        "BACK",
+        "SHOULDER"
+      ],
+      "primaryMuscles": [
+        "LATS"
+      ],
+      "secondaryMuscles": [
+        "REAR_DELTS"
+      ]
+    },
+    {
+      "id": "stretch-sleeper",
+      "familyId": "stretch-sleeper",
+      "name": "Sleeper Stretch (shoulder)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": true,
+      "position": "floor",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Lie on one side with the lower arm in front of you, elbow bent to a right angle, forearm pointing up.",
+        "With the other hand, gently press the forearm toward the floor.",
+        "Feel a mild stretch at the back of the lower shoulder.",
+        "Hold, then switch sides."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stop on any pinching at the front of the shoulder. Not for an injured or recently operated shoulder."
+      ],
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Press gently; this is a small stretch",
+        "Keep the shoulder blade relaxed"
+      ],
+      "stretchAreas": [
+        "SHOULDER"
+      ],
+      "primaryMuscles": [
+        "REAR_DELTS"
+      ]
+    },
+    {
+      "id": "stretch-wrist-flexor",
+      "familyId": "stretch-wrist-flexor",
+      "name": "Wrist Stretch (palms up)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": false,
+      "position": "kneeling",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Kneel on hands and knees, palms up and fingers pointing back toward the knees.",
+        "Rock the hips back slowly until you feel a stretch in the forearms.",
+        "Keep the movement small; stay in a comfortable range.",
+        "Hold, then release."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stop on wrist pain or tingling in the fingers; lift the hands off the floor."
+      ],
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Rock back only a little",
+        "Breathe slowly"
+      ],
+      "stretchAreas": [
+        "WRIST"
+      ],
+      "primaryMuscles": [
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "stretch-wrist-extensor",
+      "familyId": "stretch-wrist-extensor",
+      "name": "Wrist Stretch (backs of the hands)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": false,
+      "position": "kneeling",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Kneel on hands and knees, backs of the hands on the floor and fingers pointing back toward the knees.",
+        "Lean the weight gently back toward the heels.",
+        "Feel the stretch along the top of the forearms.",
+        "Hold, then release."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stop on wrist pain or tingling in the fingers. This is a strong stretch; start with a very small lean."
+      ],
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Small, slow movement",
+        "Never force the lean"
+      ],
+      "stretchAreas": [
+        "WRIST"
+      ],
+      "primaryMuscles": [
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "stretch-thoracic",
+      "familyId": "stretch-thoracic",
+      "name": "Thoracic Rotation (thread the needle)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": true,
+      "position": "kneeling",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Start on hands and knees; place one hand behind the head.",
+        "Rotate the elbow down toward the other arm, then open it up toward the ceiling.",
+        "Move slowly with the breath; the rotation comes from the upper back.",
+        "Repeat for the time, then switch sides."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stay in a pain-free range; skip if a shoulder or the neck complains."
+      ],
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Hips stay still",
+        "Follow the elbow with your eyes"
+      ],
+      "stretchAreas": [
+        "BACK"
+      ],
+      "primaryMuscles": [
+        "UPPER_BACK"
+      ],
+      "secondaryMuscles": [
+        "OBLIQUES"
+      ]
     },
     {
       "id": "pushup-incline",
@@ -288,7 +791,11 @@
       "progressionPolicyId": "pol-pushup-incline",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -339,7 +846,11 @@
       "progressionPolicyId": "pol-pushup-knee",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -391,7 +902,11 @@
       "progressionPolicyId": "pol-pushup-standard",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -450,7 +965,11 @@
       "progressionPolicyId": "pol-row-band",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -511,7 +1030,11 @@
       "progressionPolicyId": "pol-pullup-band-assisted",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "LATS",
@@ -564,7 +1087,13 @@
       "compatibleStretchIds": [
         "stretch-hip-flexor",
         "stretch-hamstring",
-        "stretch-calf-wall"
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -615,7 +1144,13 @@
       "compatibleStretchIds": [
         "stretch-hip-flexor",
         "stretch-hamstring",
-        "stretch-calf-wall"
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -821,7 +1356,9 @@
       "progressionPolicyId": "pol-plank",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "ABS"
@@ -869,7 +1406,9 @@
       "progressionPolicyId": "pol-side-plank",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "OBLIQUES"
@@ -917,7 +1456,9 @@
       "progressionPolicyId": "pol-dead-bug",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "ABS"
@@ -976,7 +1517,11 @@
       "progressionPolicyId": "pol-pushup-feet-elevated",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1025,7 +1570,11 @@
       "progressionPolicyId": "pol-pushup-diamond",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "TRICEPS",
@@ -1073,7 +1622,11 @@
       "progressionPolicyId": "pol-pushup-archer",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1123,7 +1676,11 @@
       "progressionPolicyId": "pol-pushup-one-arm-negative",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1173,7 +1730,11 @@
       "progressionPolicyId": "pol-pushup-one-arm",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1224,7 +1785,11 @@
       "progressionPolicyId": "pol-pike-pushup",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -1282,7 +1847,11 @@
       "progressionPolicyId": "pol-pike-pushup-elevated",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -1337,7 +1906,11 @@
       "progressionPolicyId": "pol-wall-handstand-hold",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -1396,7 +1969,11 @@
       "progressionPolicyId": "pol-hspu-wall-negative",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -1456,7 +2033,11 @@
       "progressionPolicyId": "pol-hspu-wall",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -1513,7 +2094,11 @@
       "progressionPolicyId": "pol-pullup-full",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "LATS",
@@ -1569,7 +2154,11 @@
       "progressionPolicyId": "pol-pullup-chest-to-bar",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "LATS",
@@ -1629,7 +2218,11 @@
       "progressionPolicyId": "pol-muscle-up-bar",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "LATS",
@@ -1689,7 +2282,13 @@
       "compatibleStretchIds": [
         "stretch-hip-flexor",
         "stretch-hamstring",
-        "stretch-calf-wall"
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -1739,7 +2338,13 @@
       "compatibleStretchIds": [
         "stretch-hip-flexor",
         "stretch-hamstring",
-        "stretch-calf-wall"
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -1790,7 +2395,13 @@
       "compatibleStretchIds": [
         "stretch-hip-flexor",
         "stretch-hamstring",
-        "stretch-calf-wall"
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -1842,7 +2453,13 @@
       "compatibleStretchIds": [
         "stretch-hip-flexor",
         "stretch-hamstring",
-        "stretch-calf-wall"
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -1992,7 +2609,9 @@
       "progressionPolicyId": "pol-hollow-hold",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "ABS"
@@ -2041,7 +2660,9 @@
       "progressionPolicyId": "pol-l-sit-floor",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "ABS",
@@ -2091,7 +2712,9 @@
       "progressionPolicyId": "pol-v-sit-floor",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "ABS",
@@ -2141,7 +2764,9 @@
       "progressionPolicyId": "pol-leg-raise-lying",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "ABS",
@@ -2189,7 +2814,9 @@
       "progressionPolicyId": "pol-v-up",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "ABS",
@@ -2248,7 +2875,11 @@
       "progressionPolicyId": "pol-front-lever-tuck",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "LATS",
@@ -2310,7 +2941,11 @@
       "progressionPolicyId": "pol-front-lever-adv-tuck",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "LATS",
@@ -2372,7 +3007,11 @@
       "progressionPolicyId": "pol-front-lever-straddle",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "LATS",
@@ -2425,7 +3064,11 @@
       "progressionPolicyId": "pol-planche-lean",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2477,7 +3120,11 @@
       "progressionPolicyId": "pol-planche-tuck",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2529,7 +3176,11 @@
       "progressionPolicyId": "pol-planche-adv-tuck",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2587,7 +3238,11 @@
       "progressionPolicyId": "pol-inverted-row-bent-knees",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -2646,7 +3301,11 @@
       "progressionPolicyId": "pol-inverted-row",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -2702,7 +3361,11 @@
       "progressionPolicyId": "pol-inverted-row-feet-elevated",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -2759,7 +3422,11 @@
       "progressionPolicyId": "pol-archer-row",
       "compatibleStretchIds": [
         "stretch-chest-door",
-        "stretch-shoulder"
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "LATS",
@@ -2811,7 +3478,9 @@
       "progressionPolicyId": "pol-arch-hold-y",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "LOWER_BACK",
@@ -2860,7 +3529,9 @@
       "progressionPolicyId": "pol-arch-rocks",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "LOWER_BACK",
@@ -2907,7 +3578,9 @@
       "progressionPolicyId": "pol-side-plank-leg-raise",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "OBLIQUES",
@@ -2965,7 +3638,9 @@
       "progressionPolicyId": "pol-copenhagen-side-plank",
       "compatibleStretchIds": [
         "stretch-back",
-        "stretch-hip-flexor"
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
       ],
       "primaryMuscles": [
         "ADDUCTORS",
