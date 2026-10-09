@@ -33,6 +33,11 @@ for variant in light dark font13; do
   for flow in maestro/flows/*.yaml; do
     name=$(basename "$flow" .yaml)
     mkdir -p "$OUT/$name"
+    # Optional hook before a flow (maestro/hooks/<flow>.pre.sh), e.g. the debug seed for e_seeded.
+    hook="maestro/hooks/$name.pre.sh"
+    if [ -f "$hook" ]; then
+      bash "$hook" > "$OUT/$name/hook-$variant.txt" 2>&1 || echo "HOOKFAIL $name $variant" >> "$OUT/results.txt"
+    fi
     # Maestro only writes screenshots inside its own output folder: run it there with relative names, then collect them.
     # One retry: the emulator occasionally shows a blank or frozen screen after a configuration change.
     for try in 1 2; do

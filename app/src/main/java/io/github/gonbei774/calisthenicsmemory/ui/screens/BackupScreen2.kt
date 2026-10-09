@@ -30,17 +30,7 @@ fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
     var status by remember { mutableStateOf("") }
     var pending by remember { mutableStateOf<BackupPayload?>(null) }
 
-    suspend fun buildPayload(): BackupPayload {
-        val dao = AppDatabase.getDatabase(ctx).historyDao()
-        val sessions = dao.sessions()
-        return BackupPayload(
-            preferences = PrefsStore.load(ctx), routines = listOf(RoutineStore.load(ctx)),
-            plans = sessions.mapNotNull { dao.plan(it.planId) }.distinctBy { it.planId }.map { PlanRecord(it.planId, it.planJson) },
-            sessions = sessions.map { s -> SessionRecord(s.sessionId, s.planId, s.startedAtEpochMs, s.endedAtEpochMs, s.status,
-                dao.blockResults(s.sessionId).map { BlockRecord(it.blockId, null, "WORK", it.outcome, it.actualSeconds, it.achievedValue) }) },
-            feedback = dao.allFeedback().map { FeedbackRecord(it.sessionId, it.variationId, it.revision, it.rating, it.discomfort, it.assumedMet, it.createdAtEpochMs, it.actualReps) },
-            events = dao.allEvents().map { ProgressionEventRecord(it.eventId, it.variationId, it.kind, it.fromTier, it.toTier, it.reason, it.atEpochMs) }, profiles = ProfileStore.load(ctx))
-    }
+    suspend fun buildPayload(): BackupPayload = BackupApply.buildPayload(ctx)
     val exporter = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
         if (uri == null) return@rememberLauncherForActivityResult
         scope.launch {
@@ -75,19 +65,7 @@ fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
                             val dir = java.io.File(ctx.filesDir, "backups").apply { mkdirs() }
                             val safety = java.io.File(dir, "before-restore-${System.currentTimeMillis()}.json")
                             safety.writeText(exportBackup(buildPayload(), BuildConfig.VERSION_NAME, System.currentTimeMillis()))
-                            val dao = AppDatabase.getDatabase(ctx).historyDao()
-                            val pj = kotlinx.serialization.json.Json { ignoreUnknownKeys = true }
-                            val plans = p.plans.map { pr ->
-                                val wp = pj.decodeFromString(app.calisthenics.domain.model.WorkoutPlan.serializer(), pr.planJson)
-                                PlanSnapshotEntity(pr.planId, wp.createdAtEpochMs, wp.routineId, wp.routineRevision, wp.catalogVersion, wp.profileId, pr.planJson)
-                            }
-                            val sessions = p.sessions.map { WorkoutSessionEntity(it.sessionId, it.planId, it.startedAtEpochMs, it.endedAtEpochMs, it.status) }
-                            val blocks = p.sessions.flatMap { s -> s.blocks.map { BlockResultEntity(sessionId = s.sessionId, blockId = it.blockId, outcome = it.outcome, actualSeconds = it.actualSeconds, achievedValue = it.achievedValue) } }
-                            val fb = p.feedback.map { FeedbackRevisionEntity(sessionId = it.sessionId, variationId = it.variationId, revision = it.revision, rating = it.rating, discomfort = it.discomfort, assumedMet = it.assumedMet, createdAtEpochMs = it.createdAtEpochMs, actualReps = it.actualReps) }
-                            val ev = p.events.map { ProgressionEventEntity(it.eventId, it.variationId, it.kind, it.fromTier, it.toTier, it.reason, it.atEpochMs) }
-                            val added = dao.restoreMerge(plans, sessions, blocks, fb, ev)
-                            PrefsStore.save(ctx, p.preferences); p.routines.firstOrNull()?.let { RoutineStore.save(ctx, it) }
-                            if (p.profiles.isNotEmpty()) ProfileStore.save(ctx, p.profiles)
+                            val added = BackupApply.restore(ctx, p)
                             pending = null
                             status = ctx.getString(R.string.backup_restored, added, p.sessions.size - added, safety.name)
                         } catch (e: Exception) { status = ctx.getString(R.string.backup_restore_failed, e.message.orEmpty()) }

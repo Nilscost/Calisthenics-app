@@ -1,0 +1,27 @@
+# E — seeded data (V00b): History list + detail, Progress with stars, a kettlebell exercise sheet.
+# scripts/ui_shots.sh runs maestro/hooks/e_seeded.pre.sh first (pm clear + debug seed broadcast).
+appId: app.calisthenics.personal
+---
+- launchApp
+- runFlow: ../common/dismiss_system_dialogs.yaml
+- extendedWaitUntil: { visible: { id: bottom_bar }, timeout: 20000 }
+- tapOn: { id: tab_history }
+- extendedWaitUntil: { visible: { id: "session_.*" }, timeout: 10000 }
+- takeScreenshot: 01-history-list-${VARIANT}
+- tapOn: { id: "session_.*", index: 0 }
+- extendedWaitUntil: { visible: { id: detail_title }, timeout: 10000 }
+- takeScreenshot: 02-history-detail-${VARIANT}
+- scrollUntilVisible: { element: { id: "detail_.*", index: 2 }, direction: DOWN, timeout: 5000, optional: true }
+- takeScreenshot: 03-history-detail-lower-${VARIANT}
+- back
+- tapOn: { id: tab_progress }
+- extendedWaitUntil: { visible: { id: tree_area }, timeout: 10000 }
+- takeScreenshot: 04-progress-push-${VARIANT}
+- tapOn: { id: tab_chip_squat }
+- takeScreenshot: 05-progress-squat-${VARIANT}
+- tapOn: { id: tab_chip_hips }
+- extendedWaitUntil: { visible: { id: "tree_node_kettlebell-deadlift" }, timeout: 10000 }
+- takeScreenshot: 06-progress-hips-${VARIANT}
+- tapOn: { id: "tree_node_kettlebell-deadlift" }
+- extendedWaitUntil: { visible: { id: sheet_title }, timeout: 10000 }
+- takeScreenshot: 07-kettlebell-sheet-${VARIANT}
