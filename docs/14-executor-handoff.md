@@ -110,9 +110,9 @@ One task = one commit (or a commit plus its review commit). Tests first for logi
 | 20 | V17 | Detailed edit |
 | 21 | V19 | formats in the planner |
 | 22 | V20 | workout screen for sets + Train Format control |
-| 23 | V21 | progression rule per routine. For unlogged sets under Rep range, use plan §11.5 Q1 unless the owner answered otherwise. |
+| 23 | V21 | progression rule per routine. Unlogged sets under Rep range count as the same numbers as last time (owner answer, §11.5 Q1). |
 | 24 | V18 | saved routines (stores format, rule, rests, warm-up, stretch picks, overrides) |
-| 25 | **V21b** | preset content C-B, C-C, C-D. Re-check the RR hinge and dip lists at the source and record the URL. Dips without equipment follow §11.5 Q2: if it is unanswered, build the chair dip but leave the RR dip slot's bodyweight fallback as an open question in the notes. |
+| 25 | **V21b** | preset content C-B, C-C, C-D. Re-check the RR hinge and dip lists at the source and record the URL. Bodyweight-only RR dip slot = chair dips with a shoulder caution; support hold moves on at 3 × 30 s (owner answers, §11.5 Q2–Q3). |
 | 26 | V22 | RR + Minimalist presets; show "Ready-made routine" in the questionnaire and on Train |
 | 27 | V23 | warm-up switch for any workout (plumbing exists: `BlockType.WARMUP`, `Preferences.warmupOn`, `Planner.template`) |
 | 28 | **V24 Release R4** | **STOP** |
