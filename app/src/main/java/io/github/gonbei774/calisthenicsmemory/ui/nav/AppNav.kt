@@ -4,6 +4,8 @@ package io.github.gonbei774.calisthenicsmemory.ui.nav
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -95,6 +97,11 @@ fun AppNav(theme: AppTheme = AppTheme.SYSTEM, onTheme: (AppTheme) -> Unit = {}) 
                             onClick = { go(Route.of(t)) },
                             icon = { Icon(t.icon, contentDescription = null) },
                             label = { Text(stringResource(t.labelRes)) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme.colors.text, selectedTextColor = io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme.colors.text,
+                                indicatorColor = MaterialTheme.colorScheme.surfaceVariant,
+                                unselectedIconColor = MaterialTheme.colorScheme.outline, unselectedTextColor = MaterialTheme.colorScheme.outline,
+                            ),
                             modifier = Modifier.testTag("tab_${t.route}"),
                         )
                     }

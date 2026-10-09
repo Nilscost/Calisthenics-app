@@ -1,6 +1,11 @@
 // U05 (F1–F6): the Train tab. One screen: goal, profile, rounds + style, focus, stretch, and one Preview button.
 package io.github.gonbei774.calisthenicsmemory.ui.train
 
+import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
+
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.appSegmentedColors
+
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.semantics.Role
@@ -99,8 +104,8 @@ fun TrainScreen(
                     Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         Text(stringResource(R.string.train_style), style = MaterialTheme.typography.labelLarge)
                         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                            SegmentedButton(selected = !settings.timed, onClick = { change(settings.copy(timed = false)) }, shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("style_reps")) { Text(stringResource(R.string.style_reps)) }
-                            SegmentedButton(selected = settings.timed, onClick = { change(settings.copy(timed = true)) }, shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("style_timed")) { Text(stringResource(R.string.style_timed)) }
+                            SegmentedButton(selected = !settings.timed, onClick = { change(settings.copy(timed = false)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("style_reps")) { Text(stringResource(R.string.style_reps)) }
+                            SegmentedButton(selected = settings.timed, onClick = { change(settings.copy(timed = true)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("style_timed")) { Text(stringResource(R.string.style_timed)) }
                         }
                         Text(stringResource(if (settings.timed) R.string.style_timed_hint else R.string.style_reps_hint), style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center)
                     }
@@ -112,7 +117,7 @@ fun TrainScreen(
                 focusOrder.forEachIndexed { i, f ->
                     SegmentedButton(
                         checked = f in focus, onCheckedChange = { change(settings.copy(focus = toggleFocus(focus, f))) },
-                        shape = SegmentedButtonDefaults.itemShape(i, focusOrder.size), icon = {}, modifier = Modifier.testTag("focus_${f.name}"),
+                        colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(i, focusOrder.size), icon = {}, modifier = Modifier.testTag("focus_${f.name}"),
                     ) { Text(stringResource(focusLabel(f))) }
                 }
             }
@@ -162,7 +167,7 @@ private fun GoalDropdown(goalId: String, onPick: (String) -> Unit) {
         )
         ExposedDropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             @Composable fun group(title: Int, goals: List<Goal>) {
-                DropdownMenuItem(text = { Text(stringResource(title), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary) }, onClick = {}, enabled = false)
+                DropdownMenuItem(text = { Text(stringResource(title), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text) }, onClick = {}, enabled = false)
                 goals.forEach { g ->
                     DropdownMenuItem(text = { Text(g.name) }, onClick = { onPick(g.id); open = false }, modifier = Modifier.testTag("goal_${g.id}"))
                 }
@@ -193,7 +198,7 @@ private fun UnfinishedBanner(onOpen: () -> Unit) {
                 Text(stringResource(R.string.train_unfinished))
                 Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
                     Button(onClick = { recoverWorkout(ctx, true); onOpen() }) { Text(stringResource(R.string.train_continue)) }
-                    OutlinedButton(onClick = { recoverWorkout(ctx, false); onOpen() }) { Text(stringResource(R.string.train_save_end)) }
+                    AppOutlinedButton(onClick = { recoverWorkout(ctx, false); onOpen() }) { Text(stringResource(R.string.train_save_end)) }
                 }
             }
         }

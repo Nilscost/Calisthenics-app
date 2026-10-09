@@ -2,6 +2,12 @@
 // Welcome · Goal · Equipment · one page per family · Workout style · Summary.
 package io.github.gonbei774.calisthenicsmemory.ui.onboarding
 
+import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
+
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.appSegmentedColors
+
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -114,7 +120,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onBack: (() -> Unit)?, onDon
     Column(modifier.fillMaxSize().statusBarsPadding().padding(horizontal = Spacing.l)) {
         Row(Modifier.fillMaxWidth().padding(vertical = Spacing.m), verticalAlignment = Alignment.CenterVertically) {
             Dots(i, pages.size, Modifier.weight(1f).testTag("onb_dots"))
-            if (onBack != null) TextButton(onClick = onBack, modifier = Modifier.testTag("onb_cancel")) { Text(stringResource(R.string.cancel)) }
+            if (onBack != null) AppTextButton(onClick = onBack, modifier = Modifier.testTag("onb_cancel")) { Text(stringResource(R.string.cancel)) }
         }
         AnimatedContent(
             targetState = i, modifier = Modifier.weight(1f).fillMaxWidth(),
@@ -133,7 +139,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onBack: (() -> Unit)?, onDon
             }
         }
         Row(Modifier.fillMaxWidth().padding(vertical = Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
-            if (i > 0) OutlinedButton(onClick = { index = i - 1 }, Modifier.height(52.dp).testTag("onb_back")) { Text(stringResource(R.string.back)) }
+            if (i > 0) AppOutlinedButton(onClick = { index = i - 1 }, Modifier.height(52.dp).testTag("onb_back")) { Text(stringResource(R.string.back)) }
             Spacer(Modifier.weight(1f))
             if (page == Page.Summary) Button(onClick = { finish() }, Modifier.height(56.dp).testTag("onb_finish"), shape = RoundedCornerShape(Radius.button)) { Text(stringResource(R.string.onb_start)) }
             else Button(onClick = { index = i + 1 }, enabled = canNext, modifier = Modifier.height(56.dp).testTag("onb_next"), shape = RoundedCornerShape(Radius.button)) { Text(stringResource(R.string.onb_next)) }
@@ -172,7 +178,7 @@ private fun Dots(current: Int, total: Int, modifier: Modifier) {
             modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth().testTag("onb_goal"))
         ExposedDropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             @Composable fun group(title: Int, goals: List<Goal>) {
-                DropdownMenuItem(text = { Text(stringResource(title), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary) }, onClick = {}, enabled = false)
+                DropdownMenuItem(text = { Text(stringResource(title), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text) }, onClick = {}, enabled = false)
                 goals.forEach { g -> DropdownMenuItem(text = { Text(g.name) }, onClick = { form.goalId = g.id; open = false }, modifier = Modifier.testTag("onb_goal_${g.id}")) }
             }
             group(R.string.goal_group_skills, skillGoals()); group(R.string.goal_group_body, bodyGoals())
@@ -195,8 +201,8 @@ private fun Dots(current: Int, total: Int, modifier: Modifier) {
     val profile = form.profile("home")
     Title(stringResource(R.string.onb_family_title, f.title), stringResource(R.string.onb_family_text))
     SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-        SegmentedButton(selected = know, onClick = { form.knowMode[f.id] = true; form.answers.remove(f.id) }, shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("onb_know")) { Text(stringResource(R.string.onb_i_know)) }
-        SegmentedButton(selected = !know, onClick = { form.knowMode[f.id] = false; form.answers.remove(f.id) }, shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("onb_dont_know")) { Text(stringResource(R.string.onb_i_dont_know)) }
+        SegmentedButton(selected = know, onClick = { form.knowMode[f.id] = true; form.answers.remove(f.id) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("onb_know")) { Text(stringResource(R.string.onb_i_know)) }
+        SegmentedButton(selected = !know, onClick = { form.knowMode[f.id] = false; form.answers.remove(f.id) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("onb_dont_know")) { Text(stringResource(R.string.onb_i_dont_know)) }
     }
     if (know) {
         LazyRow(Modifier.testTag("onb_carousel"), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
@@ -276,8 +282,8 @@ private fun Dots(current: Int, total: Int, modifier: Modifier) {
 @Composable private fun StylePage(form: Form) {
     Title(stringResource(R.string.onb_style_title), stringResource(R.string.onb_style_text))
     SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-        SegmentedButton(selected = !form.timed, onClick = { form.timed = false }, shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("onb_style_reps")) { Text(stringResource(R.string.style_reps)) }
-        SegmentedButton(selected = form.timed, onClick = { form.timed = true }, shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("onb_style_timed")) { Text(stringResource(R.string.style_timed)) }
+        SegmentedButton(selected = !form.timed, onClick = { form.timed = false }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("onb_style_reps")) { Text(stringResource(R.string.style_reps)) }
+        SegmentedButton(selected = form.timed, onClick = { form.timed = true }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("onb_style_timed")) { Text(stringResource(R.string.style_timed)) }
     }
     Text(stringResource(if (form.timed) R.string.style_timed_hint else R.string.style_reps_hint), style = MaterialTheme.typography.bodyMedium)
     Row(verticalAlignment = Alignment.CenterVertically) {

@@ -1,6 +1,9 @@
 // U04 (F5): profile list (Settings) and the profile editor with an equipment checklist.
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -110,7 +113,7 @@ fun ProfileEditScreen(modifier: Modifier = Modifier, profileId: String?, onDone:
         TopAppBar(
             title = { Text(stringResource(if (existing == null) R.string.profile_new else R.string.profile_edit)) },
             navigationIcon = { IconButton(onClick = onDone) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) } },
-            actions = { TextButton(onClick = { save() }, modifier = Modifier.testTag("profile_save")) { Text(stringResource(R.string.save)) } },
+            actions = { AppTextButton(onClick = { save() }, modifier = Modifier.testTag("profile_save")) { Text(stringResource(R.string.save)) } },
         )
     }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
@@ -126,7 +129,7 @@ fun ProfileEditScreen(modifier: Modifier = Modifier, profileId: String?, onDone:
             Text(stringResource(R.string.profile_equipment), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(top = Spacing.s))
             EquipmentChecklist(picked, { picked = it }, weights, { weights = it })
             if (existing != null && profiles.size > 1) {
-                OutlinedButton(onClick = { confirmDelete = true }, modifier = Modifier.fillMaxWidth().padding(top = Spacing.l).testTag("profile_delete")) {
+                AppOutlinedButton(onClick = { confirmDelete = true }, modifier = Modifier.fillMaxWidth().padding(top = Spacing.l).testTag("profile_delete")) {
                     Text(stringResource(R.string.profile_delete))
                 }
             }
@@ -137,8 +140,8 @@ fun ProfileEditScreen(modifier: Modifier = Modifier, profileId: String?, onDone:
             onDismissRequest = { confirmDelete = false },
             title = { Text(stringResource(R.string.profile_delete_title, existing.name)) },
             text = { Text(stringResource(R.string.profile_delete_text)) },
-            confirmButton = { TextButton(onClick = { ProfileStore.delete(ctx, existing.id); confirmDelete = false; onDone() }) { Text(stringResource(R.string.profile_delete)) } },
-            dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text(stringResource(R.string.cancel)) } },
+            confirmButton = { AppTextButton(onClick = { ProfileStore.delete(ctx, existing.id); confirmDelete = false; onDone() }) { Text(stringResource(R.string.profile_delete)) } },
+            dismissButton = { AppTextButton(onClick = { confirmDelete = false }) { Text(stringResource(R.string.cancel)) } },
         )
     }
 }

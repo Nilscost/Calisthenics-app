@@ -2,6 +2,9 @@
 // Restore: merge history (never deletes/overwrites), replace settings + usual plan, safety copy first, refused while a workout is active.
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
+
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -51,11 +54,11 @@ fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
         }
     }
     val workoutActive = CheckpointStore.read(ctx) != null
-    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text(stringResource(R.string.settings_backup)) }, navigationIcon = { TextButton(onClick = onBack) { Text(stringResource(R.string.back)) } }) }) { pad ->
+    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text(stringResource(R.string.settings_backup)) }, navigationIcon = { AppTextButton(onClick = onBack) { Text(stringResource(R.string.back)) } }) }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             Text(stringResource(R.string.backup_intro))
             Button(onClick = { exporter.launch("calisthenics-backup.json") }) { Text(stringResource(R.string.backup_export)) }
-            OutlinedButton(onClick = { importer.launch(arrayOf("application/json", "text/*", "*/*")) }) { Text(stringResource(R.string.backup_check)) }
+            AppOutlinedButton(onClick = { importer.launch(arrayOf("application/json", "text/*", "*/*")) }) { Text(stringResource(R.string.backup_check)) }
             pending?.let { p ->
                 Text(stringResource(R.string.backup_restore_warning), color = MaterialTheme.colorScheme.error)
                 if (workoutActive) Text(stringResource(R.string.backup_workout_active))

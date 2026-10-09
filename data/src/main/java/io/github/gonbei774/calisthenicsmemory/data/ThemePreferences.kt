@@ -17,8 +17,8 @@ class ThemePreferences(context: Context) {
      * @return AppTheme (SYSTEM, LIGHT, DARK)
      */
     fun getTheme(): AppTheme {
-        val themeCode = prefs.getString(KEY_THEME, AppTheme.SYSTEM.code)
-        return AppTheme.fromCode(themeCode ?: AppTheme.SYSTEM.code)
+        val themeCode = prefs.getString(KEY_THEME, AppTheme.DARK.code) // doc 17: a fresh install starts in Dark
+        return AppTheme.fromCode(themeCode ?: AppTheme.DARK.code)
     }
 
     /**

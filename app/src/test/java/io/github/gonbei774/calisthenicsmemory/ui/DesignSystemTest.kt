@@ -17,8 +17,7 @@ import androidx.compose.ui.test.performClick
 import io.github.gonbei774.calisthenicsmemory.ui.components.Stepper
 import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Teal40
-import io.github.gonbei774.calisthenicsmemory.ui.theme.Teal80
+import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import io.github.gonbei774.calisthenicsmemory.ui.theme.appColorScheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -35,9 +34,14 @@ import java.io.File
 class DesignSystemTest {
     @get:Rule val rule = createComposeRule()
 
-    @Test fun fallbackPaletteIsTealAndDiffersByTheme() {
-        assertEquals(Teal40, appColorScheme(false, null).primary)
-        assertEquals(Teal80, appColorScheme(true, null).primary)
+    @Test fun paletteIsTheFixedDirectionBPaletteAndDiffersByTheme() {
+        assertEquals(Gold, appColorScheme(false, null).primary)
+        assertEquals(Gold, appColorScheme(true, null).primary)
+        assertEquals(BgDark, appColorScheme(true, null).background); assertEquals(BgLight, appColorScheme(false, null).background)
+        assertEquals(SurfaceDark, appColorScheme(true, null).surface); assertEquals(SurfaceLight, appColorScheme(false, null).surface)
+        assertEquals(TextDark, appColorScheme(true, null).onBackground)
+        assertEquals(TextMutedDark, appColorScheme(true, null).outline)
+        assertEquals(DividerDark, appColorScheme(true, null).outlineVariant)
     }
 
     @Test fun lightAndDarkThemesCompose() {
@@ -46,12 +50,11 @@ class DesignSystemTest {
         var dark by mutableStateOf(false)
         rule.setContent { CalisthenicsMemoryTheme(darkTheme = dark, dynamicColor = false) { primary = MaterialTheme.colorScheme.primary; accent = AppAccentTheme.colors.accent; Text("x") } }
         rule.waitForIdle()
-        assertEquals(Teal40, primary)
-        assertNotEquals(primary, accent)
+        assertEquals(Gold, primary)
+        assertEquals(Gold, accent)
         dark = true
         rule.waitForIdle()
-        assertEquals(Teal80, primary)
-        assertNotEquals(primary, accent)
+        assertEquals(Gold, primary)
     }
 
     @Test fun stepperClampsAndShowsValue() {

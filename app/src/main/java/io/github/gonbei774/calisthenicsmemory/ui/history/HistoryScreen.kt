@@ -2,6 +2,8 @@
 // screen with what was logged in each round. A correction adds a new feedback revision; nothing is overwritten.
 package io.github.gonbei774.calisthenicsmemory.ui.history
 
+import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -95,7 +97,7 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
                     Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                         Text(dateFmt.format(o.day), style = MaterialTheme.typography.titleMedium)
                         Text(stringResource(R.string.history_session_line, o.minutes, o.rounds, o.exercises), style = MaterialTheme.typography.bodyLarge)
-                        if (o.finishedEarly) Text(stringResource(R.string.history_finished_early), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
+                        if (o.finishedEarly) Text(stringResource(R.string.history_finished_early), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text)
                     }
                 }
             }
@@ -147,7 +149,7 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
                     }
                 }
             }
-            if (corrected) Text(stringResource(R.string.history_corrected), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary, modifier = Modifier.testTag("corrected_note"))
+            if (corrected) Text(stringResource(R.string.history_corrected), style = MaterialTheme.typography.bodyMedium, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("corrected_note"))
         }
     }
 }

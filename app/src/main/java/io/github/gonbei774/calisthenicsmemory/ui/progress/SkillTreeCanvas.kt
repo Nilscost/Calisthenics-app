@@ -123,7 +123,7 @@ private fun TreeNode(n: NodeUi, onClick: () -> Unit) {
             }
         }
         Text(n.name, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center, maxLines = 2, modifier = Modifier.padding(horizontal = 2.dp))
-        if (n.state == TreeNodeState.CURRENT) Text(stringResource(R.string.node_training_now), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary)
+        if (n.state == TreeNodeState.CURRENT) Text(stringResource(R.string.node_training_now), style = MaterialTheme.typography.labelSmall, color = AppAccentTheme.colors.text)
         StarRow(n.stars, size = 13.dp)
     }
 }

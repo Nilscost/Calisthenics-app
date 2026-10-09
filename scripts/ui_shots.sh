@@ -34,14 +34,13 @@ for variant in light dark font13; do
     name=$(basename "$flow" .yaml)
     mkdir -p "$OUT/$name"
     # Optional hook before a flow (maestro/hooks/<flow>.pre.sh), e.g. the debug seed for e_seeded.
-    hook="maestro/hooks/$name.pre.sh"
-    if [ -f "$hook" ]; then
-      bash "$hook" > "$OUT/$name/hook-$variant.txt" 2>&1 || echo "HOOKFAIL $name $variant" >> "$OUT/results.txt"
-    fi
+    hook="maestro/hooks/$name.pre.sh"; [ -f "$hook" ] || hook="maestro/hooks/default.pre.sh"
     # Maestro only writes screenshots inside its own output folder: run it there with relative names, then collect them.
     # One retry: the emulator occasionally shows a blank or frozen screen after a configuration change.
     for try in 1 2; do
       tmp=$(mktemp -d)
+      # The hook runs before every attempt (fresh state / seed / theme of the variant).
+      bash "$hook" "$variant" > "$OUT/$name/hook-$variant.txt" 2>&1 || echo "HOOKFAIL $name $variant" >> "$OUT/results.txt"
       if (cd "$tmp" && maestro test --no-ansi --test-output-dir "$tmp" -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant.txt" 2>&1; then
         ok=1; else ok=0; fi
       [ $ok = 1 ] && break

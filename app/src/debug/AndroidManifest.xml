@@ -11,5 +11,14 @@
                 <action android:name="app.calisthenics.personal.debug.SEED" />
             </intent-filter>
         </receiver>
+        <!-- V08b: the screenshot runner picks the app theme per variant (a fresh install starts in Dark). -->
+        <receiver
+            android:name=".debug.ThemeReceiver"
+            android:exported="true"
+            android:permission="android.permission.DUMP">
+            <intent-filter>
+                <action android:name="app.calisthenics.personal.debug.THEME" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

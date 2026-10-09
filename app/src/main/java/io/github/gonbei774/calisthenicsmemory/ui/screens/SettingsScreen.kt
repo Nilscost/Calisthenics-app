@@ -1,6 +1,11 @@
 // U12 (§3.9): Settings. Profiles, workout defaults, voice cues, appearance, the starting questionnaire, backup, privacy, licences, about.
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
+import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
+
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.appSegmentedColors
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.semantics.Role
@@ -48,8 +53,8 @@ fun SettingsScreen(
                         Stepper(defaults.rounds, { saveDefaults(defaults.copy(rounds = it)) }, MIN_TRAIN_ROUNDS..MAX_EXPLICIT_ROUNDS, tag = "set_rounds")
                     }
                     SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                        SegmentedButton(selected = !defaults.timed, onClick = { saveDefaults(defaults.copy(timed = false)) }, shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("set_reps")) { Text(stringResource(R.string.style_reps)) }
-                        SegmentedButton(selected = defaults.timed, onClick = { saveDefaults(defaults.copy(timed = true)) }, shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("set_timed")) { Text(stringResource(R.string.style_timed)) }
+                        SegmentedButton(selected = !defaults.timed, onClick = { saveDefaults(defaults.copy(timed = false)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("set_reps")) { Text(stringResource(R.string.style_reps)) }
+                        SegmentedButton(selected = defaults.timed, onClick = { saveDefaults(defaults.copy(timed = true)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("set_timed")) { Text(stringResource(R.string.style_timed)) }
                     }
                     SwitchRow(R.string.train_stretch, defaults.stretchOn, "set_stretch") { saveDefaults(defaults.copy(stretchOn = it)) }
                     SwitchRow(R.string.settings_voice, voice, "set_voice") { voice = it; PrefsStore.save(ctx, PrefsStore.load(ctx).copy(audioEnabled = it)) }
@@ -60,7 +65,7 @@ fun SettingsScreen(
             Section(R.string.settings_section_appearance)
             SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
                 listOf(AppTheme.SYSTEM to R.string.theme_system, AppTheme.LIGHT to R.string.theme_light, AppTheme.DARK to R.string.theme_dark).forEachIndexed { i, (t, label) ->
-                    SegmentedButton(selected = theme == t, onClick = { onTheme(t) }, shape = SegmentedButtonDefaults.itemShape(i, 3), icon = {}, modifier = Modifier.testTag("theme_${t.code}")) { Text(stringResource(label)) }
+                    SegmentedButton(selected = theme == t, onClick = { onTheme(t) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(i, 3), icon = {}, modifier = Modifier.testTag("theme_${t.code}")) { Text(stringResource(label)) }
                 }
             }
 
@@ -77,13 +82,13 @@ fun SettingsScreen(
         onDismissRequest = { confirmRedo = false },
         title = { Text(stringResource(R.string.settings_redo_title)) },
         text = { Text(stringResource(R.string.settings_redo_text)) },
-        confirmButton = { TextButton(onClick = { confirmRedo = false; onLevels() }, modifier = Modifier.testTag("settings_redo_confirm")) { Text(stringResource(R.string.settings_redo_confirm)) } },
-        dismissButton = { TextButton(onClick = { confirmRedo = false }) { Text(stringResource(R.string.cancel)) } },
+        confirmButton = { AppTextButton(onClick = { confirmRedo = false; onLevels() }, modifier = Modifier.testTag("settings_redo_confirm")) { Text(stringResource(R.string.settings_redo_confirm)) } },
+        dismissButton = { AppTextButton(onClick = { confirmRedo = false }) { Text(stringResource(R.string.cancel)) } },
     )
 }
 
 @Composable private fun Section(title: Int) {
-    Text(stringResource(title), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = Spacing.m))
+    Text(stringResource(title), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text, modifier = Modifier.padding(top = Spacing.m))
 }
 
 @Composable private fun NavRow(title: Int, hint: Int?, tag: String, onClick: () -> Unit) {
@@ -110,7 +115,7 @@ fun PrivacyScreen(modifier: Modifier = Modifier, onBack: () -> Unit) {
     val text = remember { runCatching { ctx.assets.open("privacy.md").bufferedReader().use { it.readText() } }.getOrDefault("") }
     val lines = remember(text) { text.lines().map { it.removePrefix("# ").removePrefix("- ").replace("**", "") }.filter { it.isNotBlank() } }
     Scaffold(modifier = modifier, topBar = {
-        TopAppBar(title = { Text(stringResource(R.string.settings_privacy)) }, navigationIcon = { TextButton(onClick = onBack) { Text(stringResource(R.string.back)) } })
+        TopAppBar(title = { Text(stringResource(R.string.settings_privacy)) }, navigationIcon = { AppTextButton(onClick = onBack) { Text(stringResource(R.string.back)) } })
     }) { pad ->
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(Spacing.l).testTag("privacy_text"), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
             lines.forEachIndexed { i, l -> Text(l, style = if (i == 0) MaterialTheme.typography.titleLarge else MaterialTheme.typography.bodyLarge) }

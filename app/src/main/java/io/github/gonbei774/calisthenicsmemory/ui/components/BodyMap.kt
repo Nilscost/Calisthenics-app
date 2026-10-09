@@ -15,7 +15,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
+import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.testTag
@@ -25,13 +25,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import app.calisthenics.domain.model.Muscle
 import io.github.gonbei774.calisthenicsmemory.R
-
-/** Doc 17 §1 colours for the body map (V08b moves them into the theme tokens). */
-object BodyMapColors {
-    val PRIMARY = Color(0xFFE9C046)
-    val SECONDARY_DARK = Color(0xFF8A7A3E)
-    val SECONDARY_LIGHT = Color(0xFFD8C88A)
-}
 
 enum class BodyView { FRONT, BACK }
 enum class ShapeKind { OVAL, ROUND_RECT }
@@ -87,9 +80,8 @@ fun musclesDescription(primary: List<Muscle>, secondary: List<Muscle>, name: (Mu
 @Composable
 fun BodyMap(primary: List<Muscle>, secondary: List<Muscle> = emptyList(), modifier: Modifier = Modifier, showNamesOnTap: Boolean = true, tag: String = "body_map") {
     // doc 17 tokens: primary muscles gold (#E9C046), secondary "accentDim" (#8A7A3E on dark, #D8C88A on light)
-    val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
-    val gold = BodyMapColors.PRIMARY
-    val dim = if (dark) BodyMapColors.SECONDARY_DARK else BodyMapColors.SECONDARY_LIGHT
+    val gold = AppAccentTheme.colors.accent
+    val dim = AppAccentTheme.colors.accentLight
     val base = MaterialTheme.colorScheme.surfaceVariant
     val outline = MaterialTheme.colorScheme.outline
     val ctx = androidx.compose.ui.platform.LocalContext.current
@@ -99,7 +91,7 @@ fun BodyMap(primary: List<Muscle>, secondary: List<Muscle> = emptyList(), modifi
     Column(modifier.then(if (showNamesOnTap) Modifier.clickable { showNames = !showNames } else Modifier).semantics(mergeDescendants = true) { contentDescription = description }.testTag(tag),
         horizontalAlignment = Alignment.CenterHorizontally) {
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            for (view in BodyView.entries) Canvas(Modifier.width(48.dp).aspectRatio(BodyRegions.W / BodyRegions.H)) {
+            for (view in BodyView.entries) Canvas(Modifier.width(60.dp).aspectRatio(BodyRegions.W / BodyRegions.H)) {
                 drawFigure(view, primary, secondary, base, outline, gold, dim)
             }
         }

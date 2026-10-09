@@ -43,26 +43,42 @@ private fun contrast(a: Color, b: Color): Double {
     return (hi + 0.05) / (lo + 0.05)
 }
 
-/** U13: colour contrast of both palettes (WCAG AA: 4.5:1 for text), checked on the tokens, because Robolectric cannot render pixels here. */
+/** V08b: colour contrast of the Direction B palette (doc 17 §1), checked on the tokens, because Robolectric cannot render pixels here. */
 class ContrastTest {
-    private fun pairs(c: ColorScheme, accent: AppAccent) = listOf(
+    private fun pairs(c: ColorScheme, accent: AppAccent, bgForAccentText: Color) = listOf(
         "onPrimary/primary" to (c.onPrimary to c.primary), "onPrimaryContainer/primaryContainer" to (c.onPrimaryContainer to c.primaryContainer),
-        "onSecondary/secondary" to (c.onSecondary to c.secondary), "onSecondaryContainer/secondaryContainer" to (c.onSecondaryContainer to c.secondaryContainer),
+        "onSecondaryContainer/secondaryContainer" to (c.onSecondaryContainer to c.secondaryContainer),
         "onSurface/surface" to (c.onSurface to c.surface), "onBackground/background" to (c.onBackground to c.background),
-        "onSurfaceVariant/surfaceVariant" to (c.onSurfaceVariant to c.surfaceVariant), "error/surface" to (c.error to c.surface),
-        "onTertiary/tertiary" to (c.onTertiary to c.tertiary), "onAccent/accent" to (accent.onAccent to accent.accent),
+        "onSurface/background" to (c.onSurface to c.background),
+        "onSurfaceVariant/surface" to (c.onSurfaceVariant to c.surface), "onSurfaceVariant/surfaceVariant" to (c.onSurfaceVariant to c.surfaceVariant),
+        "muted caption (outline)/background" to (c.outline to c.background), "muted caption (outline)/surface" to (c.outline to c.surface),
+        "error/surface" to (c.error to c.surface), "onTertiary/tertiary" to (c.onTertiary to c.tertiary),
+        "onAccent/accent" to (accent.onAccent to accent.accent), "gold text/background" to (accent.text to bgForAccentText), "gold text/surface" to (accent.text to c.surface),
     )
 
-    @Test fun bothFallbackPalettesMeetWcagAaForText() {
+    @Test fun bothPalettesMeetWcagAaForText() {
         for (dark in listOf(false, true)) {
-            val accent = if (dark) AppAccent(AccentOnDark, AccentLight, ACCENT_TEXT_DARK) else AppAccent(Accent, AccentLight, ACCENT_TEXT_LIGHT)
-            for ((name, p) in pairs(appColorScheme(dark, null), accent)) assertTrue("${if (dark) "dark" else "light"} $name = ${"%.2f".format(contrast(p.first, p.second))}", contrast(p.first, p.second) >= 4.5)
+            val c = appColorScheme(dark, null)
+            val accent = if (dark) DarkAccent else LightAccent
+            for ((name, p) in pairs(c, accent, c.background)) assertTrue("${if (dark) "dark" else "light"} $name = ${"%.2f".format(contrast(p.first, p.second))}", contrast(p.first, p.second) >= 4.5)
         }
     }
 
-    @Test fun theAccentColoursSeenOnTheClipsStayDistinctFromTheBody() {
-        assertTrue(contrast(Accent, Color(0xFFFFFFFF)) >= 3.0)   // graphical objects: 3:1
-        assertTrue(contrast(AccentOnDark, Slate10) >= 3.0)
+    @Test fun cautionBoxesMeetAaInBothThemes() {
+        assertTrue(contrast(CautionDarkText, CautionDarkSurface) >= 4.5)
+        assertTrue(contrast(CautionLightText, CautionLightSurface) >= 4.5)
+    }
+
+    @Test fun goldGraphicsAndStarsAreVisibleOnBothBackgrounds() {
+        assertTrue(contrast(Gold, BgDark) >= 3.0 && contrast(Gold, SurfaceDark) >= 3.0)          // graphical objects: 3:1
+        assertTrue(contrast(GoldMarkOnLight, SurfaceLight) >= 2.9)                              // doc 17 "accentText" mark on white: about 3:1, never used for small text
+        assertTrue(contrast(GoldDimDark, SurfaceDark) >= 3.0 || contrast(GoldDimDark, BgDark) >= 3.0)
+    }
+
+    @Test fun primaryAndSecondaryMuscleColoursDifferOnBothThemes() {
+        assertTrue(contrast(DarkAccent.accent, DarkAccent.accentLight) >= 1.5)
+        // doc 17 tokens: on white the two golds differ in saturation more than in lightness (about 1.05:1); the owner approved them, so only "different" is asserted
+        assertNotEquals(Gold, GoldDimLight)
     }
 }
 

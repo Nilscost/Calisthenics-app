@@ -3,6 +3,9 @@
 // logger at the top for the work that just ended. No block is ever called "Rest" when stretch is on (CueText).
 package io.github.gonbei774.calisthenicsmemory.ui.session
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
+
 import android.os.SystemClock
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
@@ -142,7 +145,7 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
         Row(Modifier.fillMaxWidth().padding(bottom = Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
             if (paused) FilledTonalButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_RESUME) }, Modifier.weight(1f).height(52.dp).testTag("session_resume")) { Text(stringResource(R.string.session_resume)) }
             else FilledTonalButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_PAUSE) }, Modifier.weight(1f).height(52.dp).testTag("session_pause")) { Text(stringResource(R.string.session_pause)) }
-            OutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, Modifier.weight(1f).height(52.dp).testTag("session_skip")) { Text(stringResource(R.string.session_skip)) }
+            AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, Modifier.weight(1f).height(52.dp).testTag("session_skip")) { Text(stringResource(R.string.session_skip)) }
             if (b.type == BlockType.WORK) Button(
                 onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_DONE) }, enabled = st.phase == Phase.RUNNING,
                 modifier = Modifier.weight(1f).height(52.dp).testTag("session_done"), shape = RoundedCornerShape(Radius.button),
@@ -154,8 +157,8 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
         onDismissRequest = { confirmEnd = false },
         title = { Text(stringResource(R.string.session_end_title)) },
         text = { Text(stringResource(R.string.session_end_text)) },
-        confirmButton = { TextButton(onClick = { confirmEnd = false; sessionCommand(ctx, WorkoutSessionService.ACTION_FINISH) }, modifier = Modifier.testTag("session_end_confirm")) { Text(stringResource(R.string.session_end)) } },
-        dismissButton = { TextButton(onClick = { confirmEnd = false }) { Text(stringResource(R.string.cancel)) } },
+        confirmButton = { AppTextButton(onClick = { confirmEnd = false; sessionCommand(ctx, WorkoutSessionService.ACTION_FINISH) }, modifier = Modifier.testTag("session_end_confirm")) { Text(stringResource(R.string.session_end)) } },
+        dismissButton = { AppTextButton(onClick = { confirmEnd = false }) { Text(stringResource(R.string.cancel)) } },
     )
 }
 
@@ -201,7 +204,7 @@ private fun RepLogger(st: SessionState, work: TimelineBlock) {
             if (confirmed) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(stringResource(R.string.logger_logged, reps), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("logger_summary"))
-                    TextButton(onClick = { confirmed = false }, modifier = Modifier.testTag("logger_change")) { Text(stringResource(R.string.logger_edit)) }
+                    AppTextButton(onClick = { confirmed = false }, modifier = Modifier.testTag("logger_change")) { Text(stringResource(R.string.logger_edit)) }
                 }
             } else {
                 Text(stringResource(if (hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.bodySmall)
@@ -244,7 +247,7 @@ private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) 
             }
         }
         if (exercises.isNotEmpty()) {
-            TextButton(onClick = { editing = !editing }, modifier = Modifier.testTag("end_edit")) { Text(stringResource(R.string.end_edit_logged)) }
+            AppTextButton(onClick = { editing = !editing }, modifier = Modifier.testTag("end_edit")) { Text(stringResource(R.string.end_edit_logged)) }
             if (editing) exercises.forEach { vid ->
                 val blocks = st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid && st.executions[it.id] == Execution.COMPLETED }
                 val target = blocks.firstOrNull()?.target
