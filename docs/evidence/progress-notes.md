@@ -257,3 +257,7 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - Tests: `RoundCorrectionTest` (8, domain), androidTest `HistoryAndMigrationTest` +2 (`migration23to24...` keeps rows and new columns null; `roundCorrections...` new revisions keyed to the block, original stays, holds). Verify exit 0 (`docs/evidence/v04a-verify-2026-10-09.log`); `:data:assembleDebugAndroidTest` compiles (exit 0).
 - **New CI job `connected` in `ui-screens.yml`** runs `./gradlew :data:connectedDebugAndroidTest` on an API 34 emulator. Result: see the next entry / `docs/evidence/ui/V04a-review.md`.
 - Choice not in the plan: the editors (V04b) write every round of an exercise together, because a "too hard" flag on the original whole-exercise row cannot be attributed to one round once corrections exist.
+
+### V01 follow-up — status bar, flows (2026-10-09)
+- V00 defect fixed: the status bar now follows the app theme (`CalisthenicsMemoryTheme` sets the bar colour to the background and the icon contrast per theme).
+- `c_session` now shoots the stretch block (04) and the next work block (05) so the clip change is visible; `e_seeded` uses a swipe-until-visible loop for the tab chips and finds the kettlebell sheet by text.

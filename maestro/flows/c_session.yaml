@@ -20,17 +20,23 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: { id: logger }, timeout: 10000 }
 - takeScreenshot: 03-logger-${VARIANT}
 - tapOn: { id: logger_plus }
-# K1 (V01): the clip must change from the stretch to the next work block; shot 03 shows the stretch clip, 04 the next block's.
+# K1 (V01): the clip must change with the block. Shot 04 = the stretch block's clip, shot 05 = the next work block's clip.
 - tapOn: { id: session_skip }
 - extendedWaitUntil: { visible: { id: session_title }, timeout: 10000 }
-- takeScreenshot: 04-next-block-${VARIANT}
+- takeScreenshot: 04-stretch-block-${VARIANT}
+- repeat:
+    while: { notVisible: { id: session_done, enabled: true } }
+    times: 6
+    commands:
+      - tapOn: { id: session_skip }
+- takeScreenshot: 05-next-work-block-${VARIANT}
 - tapOn: { id: session_pause }
-- takeScreenshot: 05-paused-${VARIANT}
+- takeScreenshot: 06-paused-${VARIANT}
 - tapOn: { id: session_more }
 - tapOn: "End workout"
-- takeScreenshot: 06-end-confirm-${VARIANT}
+- takeScreenshot: 07-end-confirm-${VARIANT}
 # The confirm dialog is its own window: select by text (the dialog title is "End the workout?").
 - tapOn: "End workout"
 - extendedWaitUntil: { visible: { id: end_title }, timeout: 10000 }
-- takeScreenshot: 07-end-screen-${VARIANT}
+- takeScreenshot: 08-end-screen-${VARIANT}
 - tapOn: { id: end_done }

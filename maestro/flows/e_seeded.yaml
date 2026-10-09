@@ -17,14 +17,23 @@ appId: app.calisthenics.personal
 - tapOn: { id: tab_progress }
 - extendedWaitUntil: { visible: { id: tree_area }, timeout: 10000 }
 - takeScreenshot: 04-progress-push-${VARIANT}
+- repeat:
+    while: { notVisible: { id: tab_chip_squat } }
+    times: 4
+    commands:
+      - swipe: { start: "90%, 16%", end: "10%, 16%" }
 - tapOn: { id: tab_chip_squat }
 - takeScreenshot: 05-progress-squat-${VARIANT}
-# The tab chips scroll sideways: swipe the row, then pick the tab.
-- swipe: { start: "90%, 16%", end: "5%, 16%" }
-- swipe: { start: "90%, 16%", end: "5%, 16%" }
+# The tab chips scroll sideways: swipe the row until the tab is on screen.
+- repeat:
+    while: { notVisible: { id: tab_chip_hips } }
+    times: 4
+    commands:
+      - swipe: { start: "90%, 16%", end: "10%, 16%" }
 - tapOn: { id: tab_chip_hips }
 - extendedWaitUntil: { visible: { id: "tree_node_kettlebell-deadlift" }, timeout: 10000 }
 - takeScreenshot: 06-progress-hips-${VARIANT}
 - tapOn: { id: "tree_node_kettlebell-deadlift" }
-- extendedWaitUntil: { visible: { id: sheet_title }, timeout: 10000 }
+# The sheet is its own window: look for text that only the sheet has.
+- extendedWaitUntil: { visible: "Stand with feet hip-width.*", timeout: 10000 }
 - takeScreenshot: 07-kettlebell-sheet-${VARIANT}

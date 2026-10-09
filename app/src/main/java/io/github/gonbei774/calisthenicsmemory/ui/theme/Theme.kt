@@ -1,6 +1,13 @@
 package io.github.gonbei774.calisthenicsmemory.ui.theme
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Build
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
@@ -56,7 +63,18 @@ fun CalisthenicsMemoryTheme(
         if (darkTheme) dynamicDarkColorScheme(ctx) else dynamicLightColorScheme(ctx)
     } else null
     val accent = if (darkTheme) AppAccent(AccentOnDark, AccentLight, ACCENT_TEXT_DARK) else AppAccent(Accent, AccentLight, ACCENT_TEXT_LIGHT)
+    val scheme = appColorScheme(darkTheme, dynamic)
+    // V01 (V00 defect): the status bar follows the app theme (it stayed grey in dark mode). Icons are dark on a light bar.
+    val view = LocalView.current
+    if (!view.isInEditMode) SideEffect {
+        var c: Context = view.context
+        while (c is ContextWrapper && c !is Activity) c = c.baseContext
+        (c as? Activity)?.window?.let { w ->
+            @Suppress("DEPRECATION") w.statusBarColor = scheme.background.toArgb()
+            WindowCompat.getInsetsController(w, view).isAppearanceLightStatusBars = !darkTheme
+        }
+    }
     CompositionLocalProvider(LocalAppAccent provides accent) {
-        MaterialTheme(colorScheme = appColorScheme(darkTheme, dynamic), typography = AppTypography, shapes = AppShapes, content = content)
+        MaterialTheme(colorScheme = scheme, typography = AppTypography, shapes = AppShapes, content = content)
     }
 }
