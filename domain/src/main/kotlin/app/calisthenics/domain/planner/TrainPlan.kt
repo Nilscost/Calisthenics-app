@@ -57,9 +57,11 @@ fun buildTrainPlan(
     nowEpochMs: Long = 0L,
     nowDay: Int = 0,
     prefs: Preferences = Preferences(),
+    edits: PlanEdits = PlanEdits(),
 ): PlanResult {
-    val routine = trainRoutine(catalog, baseRoutine, progress, s.goalId)
+    val routine = applyEdits(trainRoutine(catalog, baseRoutine, progress, s.goalId), edits)
     val draft = SessionDraft.from(prefs.copy(stretchOn = s.stretchOn, selectedProfileId = profile.id), routine)
-        .copy(focus = s.effectiveFocus(), swaps = swaps, rounds = s.rounds.coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed)
+        .copy(focus = s.effectiveFocus(), swaps = swaps + edits.swaps, rounds = s.rounds.coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed,
+            tierOverrides = edits.tierOverrides, stretchPicks = edits.stretchPicks, extraStretches = edits.extraStretches)
     return generate(PlanInput("draft", nowEpochMs, nowDay, catalog, routine, draft, profile, progress = progress))
 }

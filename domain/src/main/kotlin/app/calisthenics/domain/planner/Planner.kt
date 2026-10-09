@@ -211,6 +211,10 @@ private class Planner(val input: PlanInput) {
             }
             v = sv
         }
+        if (draft.swaps[slot.id] != null && slot.intent !in v.patterns) {
+            warn += "${v.name} is not the same movement as the slot it replaces (${slot.intent.name.lowercase().replace('_', ' ')}). Confirm before starting."
+            needsAcceptance = true
+        }
         val pol = cat.policyFor(v) ?: run { warn += "${v.name} has no progression policy; skipped."; return null }
         var tierIdx = input.progress.tierFor(v.id)
         if (tierIdx == null) { tierIdx = 1; explain += "${v.name}: no assessed level yet — starting at the easiest target (tier 1)." }
@@ -226,6 +230,11 @@ private class Planner(val input: PlanInput) {
             explain += "${v.name}: heavier kettlebell (${formatKg(load)} kg instead of ${formatKg(recorded)} kg) — starting again at tier 1. Your stars at ${formatKg(recorded)} kg are kept."
         } else if (load != null && recorded != null && load < recorded) {
             warn += "${v.name}: your kettlebell here is ${formatKg(load)} kg, lighter than the ${formatKg(recorded)} kg you train with — this session is logged but does not count towards your next tier."
+        }
+        draft.tierOverrides[slot.id]?.let { o ->
+            val t = o.coerceIn(pol.tiers.minOf { it.index }, pol.tiers.maxOf { it.index })
+            if (t != tierIdx) explain += "${v.name}: level set to $t for today (it only counts towards progress at your own level)."
+            tierIdx = t
         }
         return Chosen(slot, v, pol.tier(tierIdx!!), load)
     }
@@ -266,20 +275,29 @@ private class Planner(val input: PlanInput) {
                     mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams)
             }
             val isLast = r == rounds && si == sl.lastIndex
-            if (isLast || t.minRecoverySeconds <= 0) continue
+            fun extras() {
+                draft.extraStretches[c.slot.id].orEmpty().forEachIndexed { i, id ->
+                    val x = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH } ?: return@forEachIndexed
+                    val secs = x.defaultSeconds ?: 30
+                    if (x.unilateral) for (side in listOf(Side.LEFT, Side.RIGHT)) out += TimelineBlock("r$r-${c.slot.id}-x$i-${side.name.first()}", BlockType.STRETCH, secs, r, c.slot.id, x.id, side, recoveryForBlockIds = workIds, mediaId = x.mediaId)
+                    else out += TimelineBlock("r$r-${c.slot.id}-x$i", BlockType.STRETCH, secs, r, c.slot.id, x.id, Side.BOTH, recoveryForBlockIds = workIds, mediaId = x.mediaId)
+                }
+            }
+            if (isLast || t.minRecoverySeconds <= 0) { extras(); continue }
             // Timed mode keeps one 60 s cycle per exercise: the time a short hold does not use goes to the recovery (the stretch when stretch is on).
             val window = if (draft.timed) TIMED_REST_SECONDS + (TIMED_WORK_SECONDS - workTotal).coerceAtLeast(0) else t.minRecoverySeconds
             if (!draft.stretchOn) {
                 out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.PASSIVE_RECOVERY, window, r, c.slot.id, recoveryForBlockIds = workIds)
             } else {
                 val cands = stretchesFor(v)
-                val s = cands[(r - 1 + si) % cands.size]
+                val s = draft.stretchPicks[c.slot.id]?.let { cat.variation(it) }?.takeIf { it.kind == Kind.STRETCH } ?: cands[(r - 1 + si) % cands.size]
                 if (s.unilateral) {
                     val seg = (window + 1) / 2 // never below the reviewed minimum recovery
                     for (side in listOf(Side.LEFT, Side.RIGHT)) out += TimelineBlock("r$r-${c.slot.id}-rec-${side.name.first()}", BlockType.STRETCH, seg, r, c.slot.id, s.id, side,
                         recoveryForBlockIds = workIds, mediaId = s.mediaId)
                 } else out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.STRETCH, window, r, c.slot.id, s.id, Side.BOTH, recoveryForBlockIds = workIds, mediaId = s.mediaId)
             }
+            extras()
         }
         return out
     }

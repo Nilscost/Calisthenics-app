@@ -79,3 +79,69 @@ class TrainPlanTest {
         assertTrue(swapOptions(catalog, routine, "nope", SeedProfiles.home, "x").isEmpty())
     }
 }
+
+class PlanEditsTest {
+    private val catalog = app.calisthenics.domain.content.parseCatalog(java.io.File(System.getProperty("repo.root"), "content/starter/catalog.json").readText())
+    private val none = app.calisthenics.domain.progression.ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
+    private val home = app.calisthenics.domain.equipment.SeedProfiles.home
+    private val routine = app.calisthenics.domain.routine.StarterRoutine.routine
+    private fun plan(edits: PlanEdits = PlanEdits(), stretch: Boolean = true, rounds: Int = 2) =
+        (buildTrainPlan(catalog, routine, none, home, TrainSettings(rounds = rounds, stretchOn = stretch), edits = edits) as PlanResult.Ready).plan
+    private fun work(p: WorkoutPlan, round: Int = 1) = p.blocks.filter { it.type == BlockType.WORK && it.roundIndex == round }
+
+    @Test fun theLevelStepperChangesTheTargetOfOneSlotOnly() {
+        val base = plan(); val up = plan(PlanEdits(tierOverrides = mapOf("push" to 4)))
+        val bp = work(base).first { it.slotId == "push" }; val up4 = work(up).first { it.slotId == "push" }
+        assertEquals(4, up4.prescriptionTier); assertTrue(up4.target!!.value > bp.target!!.value)
+        for (s in listOf("squat", "pull", "core")) assertEquals(work(base).first { it.slotId == s }.target, work(up).first { it.slotId == s }.target)
+        assertTrue(up.changesExplained.any { it.contains("level set to 4") })
+        assertEquals(1, stepLevel(1, -1)); assertEquals(5, stepLevel(5, 1)); assertEquals(3, stepLevel(2, 1))
+    }
+
+    @Test fun removingAndAddingExercisesGivesValidPlans() {
+        val removed = plan(PlanEdits(removed = setOf("core")))
+        assertTrue(work(removed).none { it.slotId == "core" })
+        val v = catalog.variation("pushup-diamond")!!
+        val added = plan(PlanEdits(added = listOf(AddedSlot("squat", slotFor(v)))))
+        val slots = work(added).mapNotNull { it.slotId }.distinct()
+        assertEquals(slots.indexOf("squat") + 1, slots.indexOf("add-pushup-diamond"))   // inserted right after the slot it was added under
+        assertTrue(added.blocks.sumOf { it.durationSeconds } == added.plannedDurationSeconds)
+        val first = plan(PlanEdits(added = listOf(AddedSlot(null, slotFor(v)))))
+        assertEquals("add-pushup-diamond", work(first).first().slotId)
+        assertTrue(plan().blocks.sumOf { it.durationSeconds } == plan().plannedDurationSeconds)
+    }
+
+    @Test fun aPickedStretchRepeatsInEverySetAndExtraStretchesAddBlocks() {
+        val pick = plan(PlanEdits(stretchPicks = mapOf("push" to "stretch-pigeon")), rounds = 3)
+        for (r in 1..3) assertTrue(pick.blocks.any { it.roundIndex == r && it.slotId == "push" && it.type == BlockType.STRETCH && it.variationId == "stretch-pigeon" })
+        val base = plan(); val extra = plan(PlanEdits(extraStretches = mapOf("push" to listOf("stretch-90-90"))))
+        assertEquals(base.blocks.count { it.type == BlockType.STRETCH } + 4, extra.blocks.count { it.type == BlockType.STRETCH }) // 2 sides x 2 rounds
+        assertTrue(extra.plannedDurationSeconds > base.plannedDurationSeconds)
+    }
+
+    @Test fun swappingToAnotherMovementTypeWarnsAndSameFamilyDoesNot() {
+        val other = plan(PlanEdits(swaps = mapOf("push" to "squat-air")))
+        assertTrue(other.warnings.any { it.contains("not the same movement") }); assertTrue(other.needsAcceptance)
+        val same = plan(PlanEdits(swaps = mapOf("push" to "pushup-diamond")))
+        assertTrue(same.warnings.none { it.contains("not the same movement") })
+    }
+
+    @Test fun theSwapSheetListsTheWholeFamilyAndOtherTypes() {
+        val fam = swapFamilyOptions(catalog, "pushup-standard", home)
+        assertTrue(fam.map { it.id }.containsAll(listOf("pushup-incline", "pushup-knee", "pushup-standard", "pushup-diamond", "pushup-archer")))
+        assertEquals(fam.sortedBy { it.difficultyRank }.map { it.id }, fam.map { it.id })
+        val others = swapOtherTypes(catalog, "pushup-standard", home)
+        assertTrue(others.flatMap { it.second }.none { it.familyId == "pushup" })
+        assertTrue(others.any { (tab, list) -> tab.id == "squat" && list.any { it.id == "squat-air" } })
+        assertTrue(others.flatMap { it.second }.all { app.calisthenics.domain.equipment.isAvailable(it, home) })
+    }
+
+    @Test fun addableExercisesAndStretchChoicesAreOfferedForThisEquipmentWithoutDuplicates() {
+        val inPlan = work(plan()).mapNotNull { it.variationId }.toSet()
+        val add = addableExercises(catalog, home, inPlan)
+        assertTrue(add.flatMap { it.second }.none { it.id in inPlan })
+        assertTrue(add.isNotEmpty())
+        assertTrue(stretchChoices(catalog, home).map { it.id }.containsAll(listOf("stretch-pigeon", "stretch-lat-wall")))
+        assertTrue(PlanEdits().isEmpty())
+    }
+}

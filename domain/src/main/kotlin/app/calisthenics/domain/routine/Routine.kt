@@ -60,6 +60,12 @@ data class SessionDraft(
     val rounds: Int? = null,
     /** Timed-rounds mode: every exercise is 60 s of work + 60 s rest; target reps = benchmark to reach in 60 s. */
     val timed: Boolean = false,
+    /** V16: today-only level per slot (the Preview's - / + stepper, D3). */
+    val tierOverrides: Map<String, Int> = emptyMap(),
+    /** V16: a fixed stretch for a slot's break in every set (instead of the automatic rotation). */
+    val stretchPicks: Map<String, String> = emptyMap(),
+    /** V16: extra stretches added after a slot's break (the "+" between blocks). */
+    val extraStretches: Map<String, List<String>> = emptyMap(),
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(
