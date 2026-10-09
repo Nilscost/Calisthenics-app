@@ -344,3 +344,8 @@ Owner answers:
 2. **Dips without equipment.** The owner has no dip bars or parallettes (D9). Is **chair dips** (with a shoulder caution) acceptable as the RR dip slot for bodyweight-only, or should the slot fall back to a push-up variation with a note? **Answer: chair dips OK.**
 3. **Support-hold length.** The routine page says holds move on at 3 × 30 s; the wiki dip page says the support hold goes to 3 × 60 s. Which one should the RR preset use? **Answer: 30 s.**
 4. **O4 picks** are still open. V22 does RR + Minimalist only; picks can be added later without blocking. **Answer: RR + Minimalist first.**
+
+### 11.6 Owner design decisions (2026-10-09)
+The owner chose UI direction B ("Logbook") on a design canvas and refined it. The contract is `docs/17-ui-direction-b.md`; it overrides older layout details in `docs/10-ux-overhaul-plan.md` and §5 of this plan where they conflict. Behaviour, data and decisions D1-D15 stay.
+- **One change to an earlier decision:** R17's chips **Too hard / Too easy / Pain leave the in-workout logger and move to the end screen** (the logger keeps `-`, the number, `+` and Done). D7 is unchanged.
+- Task integration (executor handoff §4): V08 uses the doc 17 colours for the body map; **V08b "Design system B"** follows V08 (tokens, fonts, dynamic colour off, dark default, bottom tabs); later UI tasks build their screens per doc 17 and their screenshot reviews check against it: Train V12, workout screen and end-screen chips V10, Progress tree and exercise detail V13, round preview V16/V17, History V20; anything left over becomes **V27b "Direction B pass"** before R5.
