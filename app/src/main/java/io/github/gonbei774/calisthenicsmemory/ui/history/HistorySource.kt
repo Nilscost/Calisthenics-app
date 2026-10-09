@@ -19,7 +19,12 @@ interface HistorySource {
     suspend fun sessions(): List<StoredSession>
     /** A correction is a NEW feedback revision; the earlier one is kept. */
     suspend fun revise(sessionId: String, variationId: String, rating: Rating, discomfort: Boolean, reps: Int?)
+    /** V04a: corrects the rounds of one exercise (each round a new revision with its block id); the history stays append-only. */
+    suspend fun reviseRounds(sessionId: String, variationId: String, rounds: List<RoundCorrection>) {}
 }
+
+/** One corrected round: [reps] = reps, or seconds when [isHold]; [rating] already includes too hard / too easy / below target. */
+data class RoundCorrection(val blockId: String, val reps: Int?, val rating: Rating, val discomfort: Boolean, val isHold: Boolean = false)
 
 class RoomHistorySource(private val ctx: Context) : HistorySource {
     private val json = Json { ignoreUnknownKeys = true }
@@ -35,7 +40,7 @@ class RoomHistorySource(private val ctx: Context) : HistorySource {
                 BlockRecord(r.blockId, b?.variationId, (b?.type ?: BlockType.WORK).name, r.outcome, r.actualSeconds, r.achievedValue)
             }
             val fb = plan?.blocks?.mapNotNull { it.variationId }?.distinct().orEmpty().mapNotNull { v ->
-                dao.feedbackHistory(s.sessionId, v).lastOrNull()?.let { v to StoredFeedback(it.rating, it.discomfort, it.actualReps) }
+                dao.feedbackHistory(s.sessionId, v).lastOrNull { it.blockId == null }?.let { v to StoredFeedback(it.rating, it.discomfort, it.actualReps) }
             }.toMap()
             StoredSession(SessionRecord(s.sessionId, s.planId, s.startedAtEpochMs, s.endedAtEpochMs, s.status, blocks), plan, fb)
         }
@@ -43,5 +48,9 @@ class RoomHistorySource(private val ctx: Context) : HistorySource {
 
     override suspend fun revise(sessionId: String, variationId: String, rating: Rating, discomfort: Boolean, reps: Int?) {
         dao().reviseFeedback(sessionId, variationId, rating.name, discomfort, false, System.currentTimeMillis(), reps)
+    }
+
+    override suspend fun reviseRounds(sessionId: String, variationId: String, rounds: List<RoundCorrection>) {
+        dao().reviseRounds(sessionId, variationId, rounds.map { io.github.gonbei774.calisthenicsmemory.data.RoundRevision(it.blockId, it.reps, it.rating.name, it.discomfort, it.isHold) }, System.currentTimeMillis())
     }
 }

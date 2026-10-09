@@ -30,6 +30,9 @@ abstract class HistoryDao {
     @Query("SELECT * FROM feedback_revisions WHERE sessionId = :id AND variationId = :vid ORDER BY revision")
     abstract suspend fun feedbackHistory(id: String, vid: String): List<FeedbackRevisionEntity>
 
+    @Query("SELECT * FROM feedback_revisions WHERE sessionId = :id ORDER BY variationId, revision")
+    abstract suspend fun feedbackForSession(id: String): List<FeedbackRevisionEntity>
+
     @Query("SELECT COALESCE(MAX(revision), 0) FROM feedback_revisions WHERE sessionId = :id AND variationId = :vid")
     abstract suspend fun latestRevision(id: String, vid: String): Int
 
@@ -70,10 +73,24 @@ abstract class HistoryDao {
 
     /** Editing old feedback adds a NEW revision; the earlier one is kept. */
     @Transaction
-    open suspend fun reviseFeedback(sessionId: String, variationId: String, rating: String, discomfort: Boolean, assumedMet: Boolean, now: Long, actualReps: Int? = null): Int {
+    open suspend fun reviseFeedback(sessionId: String, variationId: String, rating: String, discomfort: Boolean, assumedMet: Boolean, now: Long, actualReps: Int? = null,
+                                    blockId: String? = null, actualHoldSeconds: Int? = null): Int {
         val next = latestRevision(sessionId, variationId) + 1
         insertFeedback(FeedbackRevisionEntity(sessionId = sessionId, variationId = variationId, revision = next,
-            rating = rating, discomfort = discomfort, assumedMet = assumedMet, createdAtEpochMs = now, actualReps = actualReps))
+            rating = rating, discomfort = discomfort, assumedMet = assumedMet, createdAtEpochMs = now, actualReps = actualReps,
+            blockId = blockId, actualHoldSeconds = actualHoldSeconds))
         return next
     }
+
+    /** V04a: corrects several rounds of one exercise together (new revisions, one transaction). Returns the last revision number. */
+    @Transaction
+    open suspend fun reviseRounds(sessionId: String, variationId: String, rounds: List<RoundRevision>, now: Long): Int {
+        var last = latestRevision(sessionId, variationId)
+        for (r in rounds) last = reviseFeedback(sessionId, variationId, r.rating, r.discomfort, false, now,
+            actualReps = r.reps.takeUnless { r.isHold }, blockId = r.blockId, actualHoldSeconds = r.reps.takeIf { r.isHold })
+        return last
+    }
 }
+
+/** One corrected round: [reps] are reps, or seconds when [isHold]. */
+data class RoundRevision(val blockId: String, val reps: Int?, val rating: String, val discomfort: Boolean, val isHold: Boolean = false)

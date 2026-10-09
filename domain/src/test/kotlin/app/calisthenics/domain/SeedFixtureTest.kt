@@ -72,9 +72,9 @@ class SeedFixtureTest {
     @Test fun committedSeedFixtureIsCurrentAndImports() {
         val (backup, levels) = build()
         val bf = File(dir, "backup.json"); val lf = File(dir, "levels.json")
-        if (!bf.exists() || !lf.exists()) { dir.mkdirs(); bf.writeText(backup); lf.writeText(levels) }
+        if (System.getProperty("write.seed") == "1" || !bf.exists() || !lf.exists()) { dir.mkdirs(); bf.writeText(backup); lf.writeText(levels) }
         assertTrue("fixture missing", bf.exists() && lf.exists())
-        assertEquals("seed backup is stale; delete the seed files and rerun to regenerate", backup, bf.readText())
+        assertEquals("seed backup is stale; rerun with WRITE_SEED=1 to regenerate", backup, bf.readText())
         assertEquals(levels, lf.readText())
         val ok = importBackup(bf.readText()) as ImportResult.Ok
         assertEquals(8, ok.payload.sessions.size)

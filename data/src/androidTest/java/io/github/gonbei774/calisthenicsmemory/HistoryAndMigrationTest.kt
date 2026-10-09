@@ -103,4 +103,33 @@ class HistoryAndMigrationTest {
         catch (_: android.database.sqlite.SQLiteException) {}
         assertNotNull(d.historyDao().plan("p1"))
     }
+
+    @Test fun migration23to24AddsTheRoundColumnsAndKeepsEveryRow() {
+        helper.createDatabase("mig24", 23).apply {
+            execSQL("INSERT INTO plan_snapshots (planId, createdAtEpochMs, routineId, routineRevision, catalogVersion, profileId, planJson) VALUES ('p1', 1, 'r', 1, 1, 'home', '{}')")
+            execSQL("INSERT INTO workout_sessions (sessionId, planId, startedAtEpochMs, endedAtEpochMs, status) VALUES ('s1', 'p1', 1, 2, 'COMPLETED')")
+            execSQL("INSERT INTO feedback_revisions (sessionId, variationId, revision, rating, discomfort, assumedMet, createdAtEpochMs, actualReps) VALUES ('s1', 'v1', 1, 'BELOW', 0, 0, 3, 6)")
+            close()
+        }
+        val migrated = helper.runMigrationsAndValidate("mig24", 24, true, AppDatabase.MIGRATION_23_24)
+        migrated.query("SELECT rating, actualReps, blockId, actualHoldSeconds FROM feedback_revisions").use {
+            assertTrue(it.moveToFirst())
+            assertEquals("BELOW", it.getString(0)); assertEquals(6, it.getInt(1))
+            assertTrue(it.isNull(2)); assertTrue(it.isNull(3))
+        }
+    }
+
+    @Test fun roundCorrectionsAreNewRevisionsKeyedToTheBlockAndTheOriginalStays() = runBlocking {
+        val dao = mem().historyDao()
+        dao.saveFinishedSession(plan("p1"), WorkoutSessionEntity("s1", "p1", 1L, 2L, "COMPLETED"), emptyList(),
+            listOf(FeedbackRevisionEntity(sessionId = "s1", variationId = "v1", revision = 1, rating = "BELOW", discomfort = false, assumedMet = false, createdAtEpochMs = 3L, actualReps = 5)))
+        val last = dao.reviseRounds("s1", "v1", listOf(RoundRevision("b1", 8, "MET", false), RoundRevision("b2", 8, "MET", false)), 10L)
+        assertEquals(3, last)
+        val h = dao.feedbackHistory("s1", "v1")
+        assertEquals(listOf(null, "b1", "b2"), h.map { it.blockId })
+        assertEquals(5, h.first().actualReps) // the original is kept
+        assertEquals(listOf(1, 2, 3), h.map { it.revision })
+        dao.reviseRounds("s1", "v1", listOf(RoundRevision("b1", 30, "MET", false, isHold = true)), 11L)
+        assertEquals(30, dao.feedbackHistory("s1", "v1").last().actualHoldSeconds)
+    }
 }

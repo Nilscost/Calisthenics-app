@@ -24,13 +24,11 @@ object ProgressLoader {
             val exec = dao.blockResults(s.sessionId).associate { r ->
                 r.blockId to when (r.outcome) { "MET" -> Execution.COMPLETED; "PARTIAL" -> Execution.PARTIAL; "SKIPPED" -> Execution.SKIPPED; else -> Execution.NOT_STARTED }
             }
-            val vids = plan.blocks.mapNotNull { it.variationId }.distinct()
-            val rows = vids.mapNotNull { v ->
-                dao.feedbackHistory(s.sessionId, v).lastOrNull()?.let { f ->
-                    v to Feedback(rating = runCatching { Rating.valueOf(f.rating) }.getOrNull(), discomfort = f.discomfort, revision = f.revision,
-                        actualReps = if (isHold(plan, v)) null else f.actualReps, actualHoldSeconds = if (isHold(plan, v)) f.actualReps else null)
-                }
-            }.toMap()
+            // V04a: per-round corrections (feedback revisions with a blockId) are applied by the domain; the original per-round numbers are the block results.
+            val achieved = dao.blockResults(s.sessionId).filter { it.outcome == "MET" || it.outcome == "PARTIAL" }.associate { it.blockId to it.achievedValue }
+            val rows = effectiveFeedback(plan, achieved, dao.feedbackForSession(s.sessionId).map { f ->
+                FeedbackRow(f.variationId, f.blockId, f.revision, runCatching { Rating.valueOf(f.rating) }.getOrNull(), f.discomfort, f.actualReps, f.actualHoldSeconds)
+            })
             val day = Instant.ofEpochMilli(s.startedAtEpochMs).atZone(zone).toLocalDate().toEpochDay().toInt()
             evidence += deriveEvidence(s.sessionId, day, plan, resolveFeedback(plan, exec, emptyMap(), rows),
                 { catalog.variation(it)?.familyId ?: it },
@@ -39,5 +37,4 @@ object ProgressLoader {
         val actions = LevelStore.load(ctx).map { (v, t) -> UserAction.SelfAssessment(0, v, t) }
         return ProgressionEngine(catalog).replay(evidence, actions)
     }
-    private fun isHold(plan: WorkoutPlan, v: String) = plan.blocks.any { it.variationId == v && it.target?.type == app.calisthenics.domain.model.TargetType.HOLD_SECONDS }
 }

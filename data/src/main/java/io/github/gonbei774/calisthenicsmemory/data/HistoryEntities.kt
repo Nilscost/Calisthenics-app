@@ -66,6 +66,10 @@ data class FeedbackRevisionEntity(
     val createdAtEpochMs: Long,
     /** Reps the user entered (fewest in any round); null = not entered. */
     val actualReps: Int? = null,
+    /** V04a: set when this revision corrects ONE round (the work block); null = the whole exercise, as before. */
+    val blockId: String? = null,
+    /** V04a: seconds held, for hold exercises. Older rows kept hold seconds in [actualReps]. */
+    val actualHoldSeconds: Int? = null,
 )
 
 @Entity(tableName = "progression_events", indices = [Index("variationId")])

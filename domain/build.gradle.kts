@@ -24,5 +24,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
 tasks.test {
     // Content tests read the real starter catalog from the repository.
     systemProperty("repo.root", rootProject.projectDir.absolutePath)
+    // WRITE_SEED=1 regenerates the debug seed fixture (SeedFixtureTest); the env var is an input so the task is not skipped as up to date.
+    systemProperty("write.seed", System.getenv("WRITE_SEED") ?: "")
+    inputs.property("writeSeed", System.getenv("WRITE_SEED") ?: "")
     testLogging { events("failed"); exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL }
 }
