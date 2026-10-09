@@ -300,3 +300,9 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - Tests: `StarterCatalogTest` count 18 and a new test for the library (areas covered, cues, cautions, muscles, WRIST); `ClipAssetsTest` (clips and thumbnails for every id); debug seed fixture regenerated (plans changed). Verify exit 0 (`docs/evidence/v07-verify-2026-10-09.log`). Flow `e_seeded` shows the Stretches tab (list, bottom, one new stretch sheet).
 - Choices not in the plan: only 11 new stretches (18 total, "about 18"); calves/ankle keep their existing stretch and mobility drill; no new equipment type (the couch stretch needs wall + mat as capabilities).
 - NOT done: the wrist clips cannot show palm direction; the 7 old stretches keep their flat v1 poses.
+
+### V08 — body figure (2026-10-09)
+- `ui/components/BodyMap.kt`: front and back silhouette drawn from vector shapes (ovals and rounded rectangles in a 100 x 210 box, `BodyRegions` per `Muscle`, left and right separate). Primary muscles gold `#E9C046`, secondary accentDim (`#8A7A3E` on dark, `#D8C88A` on light) per doc 17; V08b moves these into the theme tokens. The whole figure has one screen-reader description ("Muscles worked: Chest, Triceps; + Abs"); a tap shows the muscle names as chips.
+- Shown for now in the Progress node sheet (strength exercises and, new, stretches) next to the muscle chips; V09 puts it in all lists.
+- Tests: `BodyMapTest` (every `Muscle` has a region inside the box, front/back both used and chest/lats/glutes on the right side, left/right mirror, description text, names on tap, empty description). Verify exit 0 (`docs/evidence/v08-verify-2026-10-09.log`); APK `Apps/builds/app-debug-V08.apk`. Screenshot review: `docs/evidence/ui/V08-review.md` (after the run).
+- Choices not in the plan: schematic shapes rather than anatomical drawings (about 48 dp wide per view); hip flexors and adductors sit at the front only; side delts show on both views.
