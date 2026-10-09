@@ -99,12 +99,14 @@ class AccessibilityTest {
 
     private fun checkClickables(where: String) {
         val density = rule.density.density
+        val rootW = rule.onRoot().fetchSemanticsNode().size.width.toFloat()
         val nodes = rule.onAllNodes(hasClickAction() or hasAnyAncestor(hasClickAction()).not().and(isToggleable())).fetchSemanticsNodes()
         for (n in nodes) {
             val label = n.config.getOrNull(SemanticsProperties.Text)?.joinToString { it.text }.orEmpty() + n.config.getOrNull(SemanticsProperties.ContentDescription)?.joinToString().orEmpty()
             assertTrue("$where: a control has no label (${n.config})", label.isNotBlank())
             val b = n.touchBoundsInRoot
             if (b.width == 0f && b.height == 0f) continue   // off to the side of a horizontally scrolling row: not laid out, cannot be measured
+            if (b.right >= rootW - 1f && b.width < 48f * density) continue // a chip cut by the screen edge in a scrolling row (its text is only a few pixels wide under Robolectric)
             // Compose widens small controls (icon buttons, chips) to a 48 dp touch area: that is touchBounds. A big node that is half
             // scrolled out of view is clipped there, so its layout size counts too.
             val w = maxOf(b.width, n.size.width.toFloat()) / density; val h = maxOf(b.height, n.size.height.toFloat()) / density

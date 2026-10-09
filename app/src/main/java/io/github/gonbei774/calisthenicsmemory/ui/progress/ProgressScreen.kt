@@ -28,9 +28,25 @@ import app.calisthenics.domain.load.formatKg
 import app.calisthenics.domain.load.isLoaded
 import app.calisthenics.domain.load.loadGrams
 import io.github.gonbei774.calisthenicsmemory.ui.screens.*
-import io.github.gonbei774.calisthenicsmemory.ui.theme.FamilyIcons
+import io.github.gonbei774.calisthenicsmemory.ui.theme.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
+import io.github.gonbei774.calisthenicsmemory.ui.components.BodyMap
+import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
+import io.github.gonbei774.calisthenicsmemory.ui.components.appSegmentedColors
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.train.rememberTrainData
+
+private enum class ProgressMode { TYPE, SKILL }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,28 +58,57 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
     val goal = Goals.byId(goalId)
     val c = data.catalog
     val startTab = remember(c) { goal?.entryVariationId?.let { TreeTabs.tabForVariation(c, it) }?.id ?: "push" }
+    var modeName by rememberSaveable { mutableStateOf(ProgressMode.TYPE.name) }
+    val mode = ProgressMode.valueOf(modeName)
     var tabId by rememberSaveable { mutableStateOf(startTab) }
     val tab = TreeTabs.byId(tabId) ?: TreeTabs.all.first()
-    var open by remember { mutableStateOf<String?>(null) }
+    val skills = remember { Goals.goalsOf(app.calisthenics.domain.goals.ObjectiveType.SKILL) }
+    var skillId by rememberSaveable { mutableStateOf(goal?.takeIf { it.entryVariationId != null }?.id ?: skills.first().id) }
+    val skill = skills.firstOrNull { it.id == skillId } ?: skills.first()
+    var open by remember { mutableStateOf<String?>(null) }          // a stretch sheet
+    var selected by rememberSaveable { mutableStateOf<String?>(null) }  // the ringed node, its panel is open
+    var detailId by rememberSaveable { mutableStateOf<String?>(null) }  // the exercise detail page
 
-    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text(stringResource(R.string.tab_progress)) }) }) { pad ->
+    val detail = detailId?.let { c.variation(it) }
+    if (detail != null) {
+        androidx.activity.compose.BackHandler { detailId = null }
+        ExerciseDetail(c, detail, data.progress, profile, TreeTabs.tabForVariation(c, detail.id)?.title.orEmpty(), modifier) { detailId = null }
+        return
+    }
+
+    Scaffold(modifier = modifier) { pad ->
         Column(Modifier.padding(pad).fillMaxSize()) {
+            Text(stringResource(R.string.tab_progress).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("progress_title"))
+            SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(horizontal = Spacing.l).height(48.dp)) {
+                SegmentedButton(selected = mode == ProgressMode.TYPE, onClick = { modeName = ProgressMode.TYPE.name; selected = null }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("progress_mode_type")) { Text(stringResource(R.string.progress_by_type)) }
+                SegmentedButton(selected = mode == ProgressMode.SKILL, onClick = { modeName = ProgressMode.SKILL.name; selected = null }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("progress_mode_skill")) { Text(stringResource(R.string.progress_by_skill)) }
+            }
             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.s), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                TreeTabs.all.forEach { t ->
+                if (mode == ProgressMode.TYPE) TreeTabs.all.forEach { t ->
                     FilterChip(
-                        selected = t.id == tab.id, onClick = { tabId = t.id },
+                        selected = t.id == tab.id, onClick = { tabId = t.id; selected = null },
                         label = { Text(t.title) },
-                        leadingIcon = { Icon(FamilyIcons.forFamily(t.familyIds.firstOrNull() ?: ""), null, Modifier.size(18.dp)) },
+                        border = FilterChipDefaults.filterChipBorder(true, t.id == tab.id, borderColor = MaterialTheme.colorScheme.outlineVariant, selectedBorderColor = AppAccentTheme.colors.accent, selectedBorderWidth = 2.dp),
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = MaterialTheme.colorScheme.surface, selectedLabelColor = AppAccentTheme.colors.text),
                         modifier = Modifier.testTag("tab_chip_${t.id}"),
+                    )
+                } else skills.forEach { g ->
+                    FilterChip(
+                        selected = g.id == skill.id, onClick = { skillId = g.id; selected = null },
+                        label = { Text(g.name) },
+                        border = FilterChipDefaults.filterChipBorder(true, g.id == skill.id, borderColor = MaterialTheme.colorScheme.outlineVariant, selectedBorderColor = AppAccentTheme.colors.accent, selectedBorderWidth = 2.dp),
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = MaterialTheme.colorScheme.surface, selectedLabelColor = AppAccentTheme.colors.text),
+                        modifier = Modifier.testTag("skill_chip_${g.id}"),
                     )
                 }
             }
-            if (goal != null && goal.entryVariationId != null) Text(
-                stringResource(R.string.progress_goal, goal.name), Modifier.padding(horizontal = Spacing.l), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary,
+            if (mode == ProgressMode.SKILL) Text(skill.description, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = Spacing.l).testTag("skill_description"))
+            if (mode == ProgressMode.TYPE && goal != null && goal.entryVariationId != null) Text(
+                stringResource(R.string.progress_goal, goal.name), Modifier.padding(horizontal = Spacing.l), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text,
             )
-            if (tab.id == TreeTabs.STRETCHES) StretchList(c, Modifier.weight(1f)) { open = it }
+            if (mode == ProgressMode.TYPE && tab.id == TreeTabs.STRETCHES) StretchList(c, Modifier.weight(1f)) { open = it }
             else {
-                val layout = remember(c, tab.id) { layoutTree(c, tab.familyIds) }
+                val layout = remember(c, tab.id, mode, skill.id) { if (mode == ProgressMode.SKILL) skillLayout(c, skill) else layoutTreeVertical(c, tab.familyIds) }
                 val now = remember(c, data.progress, goalId) { trainingNow(c, data.progress, goalId) }
                 val goalChain = remember(c, goalId) { goal?.let { Goals.chain(c, it).toSet() } ?: emptySet() }
                 val nodes = remember(layout, data.progress, profile, now, goalChain) {
@@ -72,17 +117,93 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
                         val state = nodeState(c, v.id, data.progress, profile, now)
                         val missing = v.equipmentAlternatives.minByOrNull { s -> s.needs.count { n -> !app.calisthenics.domain.equipment.needSatisfied(n, profile) } }
                             ?.needs?.firstOrNull { n -> !app.calisthenics.domain.equipment.needSatisfied(n, profile) }?.equipmentId
-                        v.id to NodeUi(v.id, v.name, v.familyId, state, stars(data.progress, v.id), v.id in goalChain, missing)
+                        v.id to NodeUi(v.id, v.name, v.familyId, state, displayStars(c, data.progress, v.id), v.id in goalChain, missing, data.progress.tierFor(v.id) ?: 1)
                     }
                 }
                 val mastered = remember(nodes) { nodes.filterValues { it.state == TreeNodeState.MASTERED }.keys }
                 Box(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).horizontalScroll(rememberScrollState()).testTag("tree_area")) {
-                    SkillTreeCanvas(layout, nodes, mastered, onNode = { open = it })
+                    SkillTreeCanvas(layout, nodes, mastered, selected, onNode = { selected = if (selected == it) null else it })
                 }
+                selected?.let { id -> c.variation(id)?.let { v -> nodes[id]?.let { n -> NodePanel(c, v, n, data.progress, profile, onOpen = { detailId = id }, onClose = { selected = null }) } } }
             }
         }
     }
     open?.let { id -> c.variation(id)?.let { v -> NodeSheet(c, v, data.progress, profile) { open = null } } }
+}
+
+/** Doc 17 §2.6: the panel above the tab bar after the first tap on a node: details, OPEN EXERCISE DETAIL, close. */
+@Composable
+private fun NodePanel(c: Catalog, v: ExerciseVariation, n: NodeUi, progress: app.calisthenics.domain.progression.ProgressSnapshot, profile: EquipmentProfile, onOpen: () -> Unit, onClose: () -> Unit) {
+    val policy = c.policyFor(v)
+    val tier = progress.tierFor(v.id) ?: 1
+    val target = policy?.tiers?.firstOrNull { it.index == tier }?.target
+    val unlocks = policy?.nextVariationIds.orEmpty().mapNotNull { c.variation(it)?.name }
+    val unmet = Goals.unmet(c, v.id, progress).map { stringResource(R.string.sheet_step_name, c.variation(it.variationId)?.name ?: it.variationId, it.tier) }
+    Card(Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("node_panel"), shape = MaterialTheme.shapes.large) {
+        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(v.name, style = MaterialTheme.typography.titleLarge, modifier = Modifier.testTag("panel_title"))
+                    Text(stateLabel(n.state), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("panel_state"))
+                }
+                IconButton(onClick = onClose, modifier = Modifier.testTag("panel_close")) { Icon(Icons.Filled.Close, stringResource(R.string.close)) }
+            }
+            if (target != null) Text(stringResource(R.string.panel_level, tier, 5, if (target.type == TargetType.REPS) stringResource(R.string.target_reps, target.value) else stringResource(R.string.target_seconds, target.value)), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("panel_level"))
+            if (unlocks.isNotEmpty()) Text(stringResource(R.string.panel_unlocks, unlocks.joinToString()), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("panel_unlocks"))
+            if (unmet.isNotEmpty() && v.id !in progress.variations) Text(stringResource(R.string.panel_needs, unmet.joinToString()), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("panel_needs"))
+            if (!isAvailable(v, profile)) Text(stringResource(R.string.sheet_missing, missingFor(v, profile)), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
+            AppOutlinedButton(onClick = onOpen, Modifier.fillMaxWidth().height(48.dp).testTag("panel_open_detail")) { Text(stringResource(R.string.panel_open_detail).uppercase()) }
+        }
+    }
+}
+
+/** Doc 17 §2.7: the exercise detail, a sub-page of Progress. No action buttons here. */
+@Composable
+private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calisthenics.domain.progression.ProgressSnapshot, profile: EquipmentProfile, familyTitle: String, modifier: Modifier, onBack: () -> Unit) {
+    val ctx = LocalContext.current
+    val policy = c.policyFor(v)
+    val tier = progress.tierFor(v.id) ?: 1
+    val achieved = progress.variations[v.id]?.achievedTiers ?: emptySet()
+    val unlocks = policy?.nextVariationIds.orEmpty().mapNotNull { c.variation(it)?.name }
+    val needs = Goals.unmet(c, v.id, progress).map { stringResource(R.string.sheet_step_name, c.variation(it.variationId)?.name ?: it.variationId, it.tier) }
+    val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
+    Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).statusBarsPadding().padding(horizontal = Spacing.l).padding(bottom = Spacing.xl).testTag("exercise_detail"), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBack, modifier = Modifier.testTag("detail_back")) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) }
+            Caption(stringResource(R.string.detail_breadcrumb, familyTitle, tier, 5), Modifier.testTag("detail_breadcrumb"))
+        }
+        Text(v.name.uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("detail_title"))
+        StarRow(displayStars(c, progress, v.id), size = 22.dp)
+        Row(horizontalArrangement = Arrangement.spacedBy(Spacing.m), verticalAlignment = Alignment.CenterVertically) {
+            // the clip stays on its white background in both themes (doc 17)
+            Box(Modifier.weight(1f).clip(RoundedCornerShape(12.dp)).background(Color.White)) { DemoClips.file(ctx, v.id)?.let { DemoPlayer(it, controls = false) } }
+            if (v.primaryMuscles.isNotEmpty()) BodyMap(v.primaryMuscles, v.secondaryMuscles, showNamesOnTap = true, tag = "detail_body_map", viewWidth = 44.dp)
+        }
+        if (policy != null) {
+            Caption(stringResource(R.string.detail_levels))
+            policy.tiers.forEach { t ->
+                val state = when { t.index in achieved || t.index < tier -> R.string.detail_done; t.index == tier -> R.string.detail_now; else -> R.string.detail_next }
+                val value = if (t.target.type == TargetType.REPS) stringResource(R.string.target_reps, t.target.value) else stringResource(R.string.target_seconds, t.target.value)
+                Row(Modifier.fillMaxWidth().heightIn(min = 40.dp).semantics(mergeDescendants = true) {}.testTag("detail_level_${t.index}"), verticalAlignment = Alignment.CenterVertically) {
+                    Text("${t.index}", style = MaterialTheme.typography.titleLarge, modifier = Modifier.width(32.dp), color = if (t.index == tier) AppAccentTheme.colors.text else MaterialTheme.colorScheme.onSurface)
+                    Text(value, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(state).uppercase(), style = MaterialTheme.typography.labelLarge, color = if (t.index == tier) AppAccentTheme.colors.text else MaterialTheme.colorScheme.outline)
+                }
+            }
+        }
+        if (unlocks.isNotEmpty()) { Caption(stringResource(R.string.detail_unlocks)); Text(unlocks.joinToString(), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("detail_unlocks")) }
+        if (needs.isNotEmpty() || !isAvailable(v, profile)) {
+            Caption(stringResource(R.string.detail_needs))
+            Text((needs + if (!isAvailable(v, profile)) listOf(missingFor(v, profile)) else emptyList()).joinToString(), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("detail_needs"))
+        }
+        if (v.cautions.isNotEmpty()) {
+            val bg = if (dark) CautionDarkSurface else CautionLightSurface; val br = if (dark) CautionDarkBorder else CautionLightBorder; val tx = if (dark) CautionDarkText else CautionLightText
+            Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(bg).border(1.dp, br, RoundedCornerShape(12.dp)).padding(Spacing.m).testTag("detail_caution"), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                Text(stringResource(R.string.sheet_cautions).uppercase(), style = MaterialTheme.typography.labelLarge, color = tx)
+                v.cautions.forEach { Text(it, style = MaterialTheme.typography.bodyMedium, color = tx) }
+            }
+        }
+    }
 }
 
 @Composable

@@ -2,6 +2,7 @@ package app.calisthenics.domain
 
 import app.calisthenics.domain.content.parseCatalog
 import app.calisthenics.domain.equipment.SeedProfiles
+import app.calisthenics.domain.goals.Goals
 import app.calisthenics.domain.model.Kind
 import app.calisthenics.domain.progression.*
 import app.calisthenics.domain.tree.*
@@ -87,5 +88,47 @@ class SkillTreeTest {
         assertEquals("shoulders", TreeTabs.tabForVariation(catalog, "pike-pushup")?.id)
         assertEquals("core", TreeTabs.tabForVariation(catalog, "hollow-hold")?.id)
         assertEquals("pull", TreeTabs.tabForVariation(catalog, "front-lever-tuck")?.id)
+    }
+
+    // ---- V13: vertical layout, skills view, stars below the current level
+    @Test fun verticalLayoutHasNoOverlapsAndEveryEdgeRunsDownwards() {
+        for (tab in TreeTabs.all) {
+            val l = layoutTreeVertical(catalog, tab.familyIds)
+            assertEquals("${tab.id} overlap", l.nodes.size, l.nodes.map { it.col to it.row }.toSet().size)
+            assertTrue(l.nodes.all { it.col < l.cols && it.row < l.rows })
+            for (e in l.edges) assertTrue("${tab.id}: ${e.from} -> ${e.to}", l.node(e.from)!!.row < l.node(e.to)!!.row)
+            assertTrue("${tab.id} is wider than a phone can show (${l.cols} columns)", l.cols <= 3)
+        }
+    }
+
+    @Test fun verticalLayoutIsDeterministicAndShowsEveryExercise() {
+        for (tab in TreeTabs.all) assertEquals(layoutTreeVertical(catalog, tab.familyIds), layoutTreeVertical(catalog, tab.familyIds.reversed()))
+        val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }.map { it.id }
+        assertEquals(strength.sorted(), TreeTabs.all.flatMap { layoutTreeVertical(catalog, it.familyIds).nodes }.map { it.variationId }.sorted())
+    }
+
+    @Test fun pushUpsBranchSideBySideAfterTheStandardPushup() {
+        val l = layoutTreeVertical(catalog, listOf("pushup", "planche"))
+        val std = l.node("pushup-standard")!!
+        assertTrue(l.node("pushup-incline")!!.row < std.row && l.node("pushup-knee")!!.row < std.row)
+        assertEquals(l.node("pushup-feet-elevated")!!.row, l.node("planche-lean")!!.row) // the two paths out of the standard push-up sit on the same row
+        assertNotEquals(l.node("pushup-feet-elevated")!!.col, l.node("planche-lean")!!.col)
+    }
+
+    @Test fun aSkillIsOneVerticalChainFromTheEntryToTheTarget() {
+        val g = Goals.byId("muscle-up")!!
+        val l = skillLayout(catalog, g)
+        assertEquals(Goals.chain(catalog, g), l.nodes.sortedBy { it.row }.map { it.variationId })
+        assertTrue(l.nodes.all { it.col == 0 }); assertEquals("muscle-up-bar", l.nodes.last().variationId)
+        assertEquals(l.nodes.size - 1, l.edges.size)
+    }
+
+    @Test fun exercisesYouHaveMovedPastShowFiveStars() {
+        val s = snap("pushup-standard" to 2, "pushup-feet-elevated" to 1)
+        assertEquals(5, displayStars(catalog, s, "pushup-standard"))     // a harder exercise after it has been started
+        assertEquals(5, displayStars(catalog, s, "pushup-knee"))          // and everything below it in the chain
+        assertEquals(0, displayStars(catalog, s, "pushup-feet-elevated")) // the current one shows its own stars
+        assertEquals(0, displayStars(catalog, s, "pushup-one-arm"))
+        assertEquals(1, displayStars(catalog, snap("pushup-standard" to 2), "pushup-standard"))
     }
 }

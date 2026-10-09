@@ -1,4 +1,4 @@
-# D — the other tabs: Progress (tree + node sheet), History (with the workout from flow C), Settings.
+# D — the other tabs: Progress (vertical tree, node panel, exercise detail, by skill), History (with the workout from flow C), Settings.
 appId: app.calisthenics.personal
 ---
 - launchApp
@@ -8,8 +8,14 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: { id: tree_area }, timeout: 10000 }
 - takeScreenshot: 01-progress-${VARIANT}
 - tapOn: { id: "tree_node_.*", index: 0 }
-- takeScreenshot: 02-node-sheet-${VARIANT}
-- back
+- extendedWaitUntil: { visible: { id: node_panel }, timeout: 10000 }
+- takeScreenshot: 02-node-panel-${VARIANT}
+- tapOn: { id: panel_open_detail }
+- extendedWaitUntil: { visible: { id: exercise_detail }, timeout: 10000 }
+- takeScreenshot: 02b-exercise-detail-${VARIANT}
+- tapOn: { id: detail_back }
+- tapOn: { id: progress_mode_skill }
+- takeScreenshot: 02c-by-skill-${VARIANT}
 - tapOn: { id: tab_history }
 - takeScreenshot: 03-history-${VARIANT}
 - runFlow:

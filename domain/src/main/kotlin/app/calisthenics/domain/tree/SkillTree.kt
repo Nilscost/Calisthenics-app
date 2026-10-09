@@ -2,6 +2,7 @@
 package app.calisthenics.domain.tree
 
 import app.calisthenics.domain.equipment.isAvailable
+import app.calisthenics.domain.goals.Goal
 import app.calisthenics.domain.goals.Goals
 import app.calisthenics.domain.model.Catalog
 import app.calisthenics.domain.model.EquipmentProfile
@@ -38,11 +39,9 @@ data class TreeLayout(val nodes: List<TreeNodeLayout>, val edges: List<TreeEdge>
     fun node(id: String) = nodes.firstOrNull { it.variationId == id }
 }
 
-/**
- * Columns run easier -> harder (longest path from a root), rows separate exercises that share a column. Independent chains
- * (e.g. side plank next to the plank chain) are stacked as blocks, so two nodes never share a cell. Same catalog, same layout.
- */
-fun layoutTree(c: Catalog, familyIds: Collection<String>): TreeLayout {
+private class Graph(val ids: Set<String>, val edges: List<TreeEdge>, val order: Comparator<String>, val depth: Map<String, Int>, val comps: List<List<String>>)
+
+private fun graphOf(c: Catalog, familyIds: Collection<String>): Graph {
     val ex = c.variations.filter { (it.kind == Kind.REPS || it.kind == Kind.HOLD) && it.familyId in familyIds }
     val ids = ex.map { it.id }.toSet()
     val edges = linkedSetOf<TreeEdge>()
@@ -66,19 +65,55 @@ fun layoutTree(c: Catalog, familyIds: Collection<String>): TreeLayout {
     fun find(x: String): String { var r = x; while (parent.getValue(r) != r) r = parent.getValue(r); return r }
     edges.forEach { e -> val a = find(e.from); val b = find(e.to); if (a != b) parent[maxOf(a, b)] = minOf(a, b) }
     val comps = ids.groupBy { find(it) }.values.map { it.sortedWith(order) }.sortedWith(compareBy({ rank[it.first()] ?: 0 }, { it.first() }))
+    return Graph(ids, edges.toList(), order, depth, comps)
+}
+
+/**
+ * Columns run easier -> harder (longest path from a root), rows separate exercises that share a column. Independent chains
+ * (e.g. side plank next to the plank chain) are stacked as blocks, so two nodes never share a cell. Same catalog, same layout.
+ */
+fun layoutTree(c: Catalog, familyIds: Collection<String>): TreeLayout {
+    val g = graphOf(c, familyIds)
     val out = mutableListOf<TreeNodeLayout>()
     var rowBase = 0
     var maxCol = 0
-    for (comp in comps) {
-        val byCol = comp.groupBy { depth.getValue(it) }.toSortedMap()
+    for (comp in g.comps) {
+        val byCol = comp.groupBy { g.depth.getValue(it) }.toSortedMap()
         var height = 0
         for ((col, members) in byCol) {
-            members.sortedWith(order).forEachIndexed { r, id -> out += TreeNodeLayout(id, col, rowBase + r) }
+            members.sortedWith(g.order).forEachIndexed { r, id -> out += TreeNodeLayout(id, col, rowBase + r) }
             height = maxOf(height, members.size); maxCol = maxOf(maxCol, col)
         }
         rowBase += height
     }
-    return TreeLayout(out, edges.toList(), if (out.isEmpty()) 0 else maxCol + 1, rowBase)
+    return TreeLayout(out, g.edges, if (out.isEmpty()) 0 else maxCol + 1, rowBase)
+}
+
+/**
+ * V13 (R23, doc 17 §2.6): the same graph laid out vertically: easier at the top, harder below (row = depth). Exercises that share a
+ * depth sit side by side (column = position among them), which is where the paths branch. Independent chains are stacked one after
+ * the other. `col` is the horizontal index, `row` the vertical one.
+ */
+fun layoutTreeVertical(c: Catalog, familyIds: Collection<String>): TreeLayout {
+    val g = graphOf(c, familyIds)
+    val out = mutableListOf<TreeNodeLayout>()
+    var rowBase = 0
+    var maxCols = 0
+    for (comp in g.comps) {
+        val byDepth = comp.groupBy { g.depth.getValue(it) }.toSortedMap()
+        for ((d, members) in byDepth) {
+            members.sortedWith(g.order).forEachIndexed { i, id -> out += TreeNodeLayout(id, i, rowBase + d) }
+            maxCols = maxOf(maxCols, members.size)
+        }
+        rowBase += (byDepth.keys.maxOrNull() ?: 0) + 1
+    }
+    return TreeLayout(out, g.edges, maxCols, rowBase)
+}
+
+/** V13 "By skill": the exercises that lead to a skill, in order, as one vertical chain. */
+fun skillLayout(c: Catalog, goal: Goal): TreeLayout {
+    val chain = Goals.chain(c, goal).filter { c.variation(it) != null }
+    return TreeLayout(chain.mapIndexed { i, id -> TreeNodeLayout(id, 0, i) }, chain.zipWithNext().map { (a, b) -> TreeEdge(a, b, EdgeKind.NEXT) }, if (chain.isEmpty()) 0 else 1, chain.size)
 }
 
 enum class TreeNodeState { MASTERED, CURRENT, AVAILABLE, LOCKED, NEEDS_EQUIPMENT }
@@ -104,3 +139,23 @@ fun trainingNow(c: Catalog, progress: ProgressSnapshot, goalId: String?): Set<St
 }
 
 fun stars(progress: ProgressSnapshot, id: String): Int = progress.variations[id]?.earnedStars() ?: 0
+
+/**
+ * R26 / D8: what the tree shows. Your own stars, but an exercise you have clearly moved past (a harder exercise that follows it has
+ * been started) shows all five, because the level is below your current one.
+ */
+fun displayStars(c: Catalog, progress: ProgressSnapshot, id: String): Int {
+    val own = stars(progress, id)
+    if (own >= 5) return own
+    val seen = mutableSetOf(id)
+    val queue = ArrayDeque(listOf(id))
+    while (queue.isNotEmpty()) {
+        val cur = queue.removeFirst()
+        for (n in c.policyForVariation(cur)?.nextVariationIds.orEmpty()) {
+            if (!seen.add(n)) continue
+            if (progress.variations.containsKey(n)) return 5
+            queue += n
+        }
+    }
+    return own
+}

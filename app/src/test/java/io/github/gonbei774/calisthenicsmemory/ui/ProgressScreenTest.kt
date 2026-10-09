@@ -60,15 +60,66 @@ class ProgressScreenTest {
         rule.onNodeWithTag("tree_node_dead-bug").assertExists()
     }
 
-    @Test fun tappingANodeOpensTheSheetWithTheFiveSteps() {
+    @Test fun firstTapSelectsTheNodeAndOpensThePanelAboveTheTabBar() {
+        LevelStore.save(ctx, mapOf("pushup-standard" to 3))
+        show()
+        rule.onNodeWithTag("node_panel").assertDoesNotExist()
+        rule.onNodeWithTag("tree_node_pushup-standard").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
+        rule.onNodeWithTag("node_panel").assertIsDisplayed()
+        rule.onNodeWithTag("panel_title").assertTextEquals("Standard Push-Up")
+        rule.onNodeWithTag("panel_level").assertTextContains("Level 3 of 5", substring = true)
+        rule.onNodeWithTag("panel_unlocks").assertExists()
+        rule.onNodeWithTag("panel_open_detail").assertIsDisplayed()
+        rule.onNodeWithTag("panel_close").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("node_panel").assertDoesNotExist()
+    }
+
+    @Test fun theExerciseDetailShowsTheFiveLevelsUnlocksAndCautionsWithoutActionButtons() {
         LevelStore.save(ctx, mapOf("pushup-standard" to 3))
         show()
         rule.onNodeWithTag("tree_node_pushup-standard").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
-        rule.mainClock.advanceTimeBy(1000); rule.waitForIdle()
-        rule.onNodeWithTag("sheet_title").assertTextEquals("Standard Push-Up")
-        (1..5).forEach { rule.onNodeWithTag("sheet_step_$it").assertExists() }
-        rule.onNodeWithTag("sheet_step_3").assertTextContains("you are here", substring = true)
-        rule.onNodeWithText("Cautions").assertExists()
+        rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_detail").assertIsDisplayed()
+        rule.onNodeWithTag("detail_title").assertTextEquals("STANDARD PUSH-UP")
+        rule.onNodeWithTag("detail_breadcrumb").assertTextContains("STEP 3 OF 5", substring = true, ignoreCase = true)
+        (1..5).forEach { rule.onNodeWithTag("detail_level_$it").performScrollTo().assertExists() }
+        rule.onNodeWithTag("detail_level_3").assertTextContains("NOW", substring = true)
+        rule.onNodeWithTag("detail_level_1").assertTextContains("DONE", substring = true)
+        rule.onNodeWithTag("detail_unlocks").performScrollTo().assertExists()
+        rule.onNodeWithTag("detail_caution").performScrollTo().assertExists()
+        rule.onNodeWithTag("detail_body_map").performScrollTo().assertExists()
+        rule.onNodeWithText("Swap", substring = true, ignoreCase = true).assertDoesNotExist()
+        rule.onNodeWithTag("detail_back").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_detail").assertDoesNotExist()
+        rule.onNodeWithTag("tree_node_pushup-standard").assertExists()
+    }
+
+    @Test fun byTypeAndBySkillAreSwitchedUnderTheTitleAndSkillsListTheirChain() {
+        show()
+        rule.onNodeWithTag("progress_title").assertTextEquals("PROGRESS")
+        rule.onNodeWithTag("progress_mode_type").assertIsSelected()
+        rule.onNodeWithTag("progress_mode_skill").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("progress_mode_skill").assertIsSelected()
+        rule.onNodeWithTag("skill_chip_muscle-up").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("tree_node_pullup-band-assisted").assertExists()
+        rule.onNodeWithTag("tree_node_muscle-up-bar").assertExists()
+        rule.onNodeWithTag("tree_node_pushup-standard").assertDoesNotExist()
+        rule.onNodeWithTag("tree_node_muscle-up-bar").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
+        rule.onNodeWithTag("panel_title").assertTextEquals("Bar Muscle-Up")
+    }
+
+    @Test fun exercisesBelowTheCurrentOneShowFiveStars() {
+        LevelStore.save(ctx, mapOf("pushup-standard" to 2, "pushup-feet-elevated" to 1))
+        show()
+        assertTrue(desc("tree_node_pushup-standard"), desc("tree_node_pushup-standard").contains("5 of 5 stars"))
+        assertTrue(desc("tree_node_pushup-knee").contains("5 of 5 stars"))
+    }
+
+    @Test fun treeNodesAreVerticalSoLowerExercisesAreBelowEasierOnes() {
+        show()
+        val y = { t: String -> rule.onNodeWithTag(t).fetchSemanticsNode().boundsInRoot.top }
+        assertTrue("${y("tree_node_pushup-incline")} < ${y("tree_node_pushup-standard")}", y("tree_node_pushup-incline") < y("tree_node_pushup-standard"))
+        assertTrue("${y("tree_node_pushup-standard")} < ${y("tree_node_pushup-feet-elevated")}", y("tree_node_pushup-standard") < y("tree_node_pushup-feet-elevated"))
     }
 
     @Test fun stretchesHaveTheirOwnTab() {

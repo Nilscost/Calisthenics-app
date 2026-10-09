@@ -34,11 +34,13 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: { id: "tree_node_kettlebell-deadlift" }, timeout: 10000 }
 - takeScreenshot: 06-progress-hips-${VARIANT}
 - tapOn: { id: "tree_node_kettlebell-deadlift" }
-# The sheet is its own window: look for text that only the sheet has.
-- extendedWaitUntil: { visible: "Kettlebell: 12 kg.*", timeout: 10000 }
-- takeScreenshot: 07-kettlebell-sheet-${VARIANT}
+- extendedWaitUntil: { visible: { id: node_panel }, timeout: 10000 }
+- takeScreenshot: 07-kettlebell-panel-${VARIANT}
+- tapOn: { id: panel_open_detail }
+- extendedWaitUntil: { visible: { id: exercise_detail }, timeout: 10000 }
+- takeScreenshot: 07b-kettlebell-detail-${VARIANT}
+- tapOn: { id: detail_back }
 # V07: the stretch library tab and one new stretch (sheet with clip, steps and cautions).
-- back
 - repeat:
     while: { notVisible: { id: tab_chip_stretches } }
     times: 5
