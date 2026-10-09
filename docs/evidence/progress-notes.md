@@ -281,3 +281,8 @@ Starter catalog (`content/starter/catalog.json`) in the new model; Android side 
 - Tests: Python `tests/test_clips_v3.py` (renamed; `--check` passes, 21 Python tests OK); `ClipAssetsTest` + 1 (thumbnail for every id under 12 KB, no orphans, `clip_meta.json` lists exactly the catalog ids and primary muscles equal the catalog). Verify exit 0 (`docs/evidence/v06a-verify-2026-10-09.log`).
 - Looked at the contact sheet of all 61 thumbnails: each is recognisable at 128 px; wall and bar exercises keep their equipment. The pose quality problems (pull-up K5, shared push-up poses K2) are V06b's.
 - Not used by the app yet (V09 shows thumbnails; V08 the body map). No UI change, so no screenshot review.
+
+### V05 — Release R1 (2026-10-09)
+- Version 0.4.0-r1, versionCode 4. Verify exit 0 (`docs/evidence/r1-verify-2026-10-09.log`); CI `verify` green (run 37937080706); `ui-screens` run 37937080629: 15/15 PASS and the new `connected` job green (Room migration 23->24 and DAO tests on an API 34 emulator). Reviews: `docs/evidence/ui/R1-review.md` (+ V00b, V01, V03, V04b). Owner checklist: `docs/evidence/owner-check-r1.md`. APK: `Apps/builds/app-debug-R1.apk`. STATUS.md updated.
+- Per-task APKs for V00b-V04b were not kept separately (R1 contains them all); from V06a on each task's APK is `app-debug-V<NN>.apk`.
+- NOT done: no phone testing; the D7 suggestion has no UI; the get-ready/empty band, clip framing and white clip frames stay for V06b/V10.
