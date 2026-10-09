@@ -50,6 +50,10 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.components.MuscleChips
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore
 import io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore
+import io.github.gonbei774.calisthenicsmemory.ui.screens.SavedRoutineStore
+import app.calisthenics.domain.routine.savedFrom
+import app.calisthenics.domain.routine.settingsFor
+import app.calisthenics.domain.routine.updateSaved
 import io.github.gonbei774.calisthenicsmemory.ui.session.startWorkout
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Radius
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
@@ -193,10 +197,15 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     val ctx = LocalContext.current
     val haptic = LocalHapticFeedback.current
     val data by rememberTrainData()
-    val settings = remember { TrainSettingsStore.load(ctx) }
+    val stored = remember { TrainSettingsStore.load(ctx) }
+    val resolved = remember(data) { resolveTrain(ctx, data.routine, stored) }   // V18: the usual plan, or the saved routine chosen on Train
+    val settings = resolved.settings
     val profile = remember { ProfileStore.selected(ctx) }
-    var routine by remember(data) { mutableStateOf(data.routine) }
-    var edits by remember { mutableStateOf(PlanEdits()) }
+    var routine by remember(data) { mutableStateOf(resolved.routine) }
+    var edits by remember(data) { mutableStateOf(resolved.edits) }
+    var saveDialog by remember { mutableStateOf(false) }
+    var savedNote by remember { mutableStateOf<String?>(null) }
+    val editing = remember { SavedRoutineStore.get(ctx, stored.routineId) }
     var swapSlot by remember { mutableStateOf<String?>(null) }
     var removeSlot by remember { mutableStateOf<String?>(null) }
     var breakSlot by remember { mutableStateOf<Pair<String, Int?>?>(null) }   // slot and, in the Detailed edit, the one set it is for
@@ -216,12 +225,15 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
         bottomBar = {
             Column {
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                Button(
-                    onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); startPlan(ctx, (result as PlanResult.Ready).plan); onStarted() },
-                    enabled = result is PlanResult.Ready,
-                    modifier = Modifier.fillMaxWidth().padding(Spacing.l).height(56.dp).testTag("start_button"),
-                    shape = RoundedCornerShape(Radius.button),
-                ) { Text(stringResource(R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
+                Row(Modifier.fillMaxWidth().padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
+                    AppOutlinedButton(onClick = { saveDialog = true }, enabled = result is PlanResult.Ready, modifier = Modifier.weight(1f).height(56.dp).testTag("save_routine_button")) { Text(stringResource(R.string.routine_save), textAlign = TextAlign.Center) }
+                    Button(
+                        onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); startPlan(ctx, (result as PlanResult.Ready).plan); onStarted() },
+                        enabled = result is PlanResult.Ready,
+                        modifier = Modifier.weight(1.6f).height(56.dp).testTag("start_button"),
+                        shape = RoundedCornerShape(Radius.button),
+                    ) { Text(stringResource(R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
+                }
             }
         },
     ) { pad ->
@@ -241,6 +253,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                         style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"),
                     )
                     InfoRow(p)
+                    savedNote?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("routine_saved_note")) }
                     Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch).toggleable(detailed, role = androidx.compose.ui.semantics.Role.Switch) { detailed = it }.testTag("detailed_switch"), verticalAlignment = Alignment.CenterVertically) {
                         Column(Modifier.weight(1f)) {
                             Text(stringResource(R.string.preview_detailed), style = MaterialTheme.typography.bodyLarge)
@@ -275,6 +288,37 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                 }
             }
         }
+    }
+
+    if (saveDialog) {
+        var name by remember { mutableStateOf(editing?.name ?: "") }
+        fun save(asNew: Boolean) {
+            val now = System.currentTimeMillis()
+            val rule = edits.rule ?: routine.rule
+            val fresh = savedFrom(java.util.UUID.randomUUID().toString(), name, 1, routine, edits, settings, rule, now)
+            val toStore = if (!asNew && editing != null) updateSaved(editing, fresh.copy(name = name.trim().ifBlank { editing.name })) else fresh
+            SavedRoutineStore.upsert(ctx, toStore)
+            TrainSettingsStore.save(ctx, settingsFor(toStore, stored))
+            savedNote = ctx.getString(if (!asNew && editing != null) R.string.routine_updated else R.string.routine_saved, toStore.name)
+            saveDialog = false
+        }
+        AlertDialog(
+            onDismissRequest = { saveDialog = false },
+            title = { Text(stringResource(R.string.routine_save_title)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                    Text(stringResource(R.string.routine_save_text))
+                    OutlinedTextField(value = name, onValueChange = { name = it.take(40) }, singleLine = true, label = { Text(stringResource(R.string.routine_name)) }, modifier = Modifier.testTag("routine_name_field"))
+                }
+            },
+            confirmButton = {
+                Column(horizontalAlignment = Alignment.End) {
+                    if (editing != null) AppTextButton(onClick = { save(false) }, modifier = Modifier.testTag("routine_update")) { Text(stringResource(R.string.routine_update)) }
+                    AppTextButton(onClick = { save(true) }, enabled = name.isNotBlank(), modifier = Modifier.testTag("routine_save_new")) { Text(stringResource(if (editing != null) R.string.routine_save_as_new else R.string.routine_save_ok)) }
+                }
+            },
+            dismissButton = { AppTextButton(onClick = { saveDialog = false }) { Text(stringResource(R.string.cancel)) } },
+        )
     }
 
     val slot = swapSlot

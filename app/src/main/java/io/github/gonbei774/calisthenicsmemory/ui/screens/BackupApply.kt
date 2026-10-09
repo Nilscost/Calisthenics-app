@@ -17,7 +17,8 @@ object BackupApply {
             sessions = sessions.map { s -> SessionRecord(s.sessionId, s.planId, s.startedAtEpochMs, s.endedAtEpochMs, s.status,
                 dao.blockResults(s.sessionId).map { BlockRecord(it.blockId, null, "WORK", it.outcome, it.actualSeconds, it.achievedValue) }) },
             feedback = dao.allFeedback().map { FeedbackRecord(it.sessionId, it.variationId, it.revision, it.rating, it.discomfort, it.assumedMet, it.createdAtEpochMs, it.actualReps, it.blockId, it.actualHoldSeconds) },
-            events = dao.allEvents().map { ProgressionEventRecord(it.eventId, it.variationId, it.kind, it.fromTier, it.toTier, it.reason, it.atEpochMs) }, profiles = ProfileStore.load(ctx))
+            events = dao.allEvents().map { ProgressionEventRecord(it.eventId, it.variationId, it.kind, it.fromTier, it.toTier, it.reason, it.atEpochMs) }, profiles = ProfileStore.load(ctx),
+            savedRoutines = SavedRoutineStore.load(ctx))
     }
 
     /** Merges history (never deletes or overwrites), replaces settings and the usual plan. Returns the number of new sessions. */
@@ -35,6 +36,7 @@ object BackupApply {
         val added = dao.restoreMerge(plans, sessions, blocks, fb, ev)
         PrefsStore.save(ctx, p.preferences); p.routines.firstOrNull()?.let { RoutineStore.save(ctx, it) }
         if (p.profiles.isNotEmpty()) ProfileStore.save(ctx, p.profiles)
+        if (p.savedRoutines.isNotEmpty()) SavedRoutineStore.saveAll(ctx, app.calisthenics.domain.routine.mergeSaved(SavedRoutineStore.load(ctx), p.savedRoutines))
         return added
     }
 }

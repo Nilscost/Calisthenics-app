@@ -41,6 +41,7 @@ import io.github.gonbei774.calisthenicsmemory.session.CheckpointStore
 import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import io.github.gonbei774.calisthenicsmemory.ui.components.Stepper
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore
+import io.github.gonbei774.calisthenicsmemory.ui.screens.SavedRoutineStore
 import io.github.gonbei774.calisthenicsmemory.ui.session.recoverWorkout
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Radius
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
@@ -72,7 +73,9 @@ fun TrainScreen(
     var settings by remember { mutableStateOf(TrainSettingsStore.load(ctx)) }
     fun change(s: TrainSettings) { settings = s; TrainSettingsStore.save(ctx, s) }
     val profile = profiles.firstOrNull { it.id == settings.profileId } ?: profiles.first()
-    val result = remember(settings, data, profile) { buildTrainPlan(data.catalog, data.routine, data.progress, profile, settings) }
+    val saved = remember(settings.routineId) { SavedRoutineStore.load(ctx) }
+    val resolved = remember(settings, data, saved) { resolveTrain(ctx, data.routine, settings) }
+    val result = remember(resolved, data, profile) { buildTrainPlan(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = resolved.edits) }
     val plan = (result as? PlanResult.Ready)?.plan
     val minutes = plan?.plannedDurationSeconds?.let { (it + 30) / 60 }
     val exercises = plan?.blocks?.filter { it.type == BlockType.WORK }?.mapNotNull { it.variationId }?.distinct()?.size
@@ -102,7 +105,7 @@ fun TrainScreen(
             Text(stringResource(R.string.train_title).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("train_title"))
             UnfinishedBanner(onStarted)
 
-            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null)) })
+            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null)) }, routines = saved, routineId = settings.routineId, onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } })
 
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Caption(stringResource(R.string.train_equipment_caption))

@@ -40,6 +40,7 @@ object TrainSettingsStore {
             goalId = GoalStore.load(ctx),
             profileId = ProfileStore.selected(ctx).id,
             rounds = p(ctx).getInt("rounds", app.calisthenics.domain.planner.DEFAULT_TRAIN_ROUNDS),
+            routineId = p(ctx).getString("routine", null),
             format = runCatching { app.calisthenics.domain.model.WorkoutFormat.valueOf(p(ctx).getString("format", "CIRCUIT")!!) }.getOrDefault(app.calisthenics.domain.model.WorkoutFormat.CIRCUIT),
             timed = ModeStore.timed(ctx),
             stretchOn = prefs.stretchOn,
@@ -51,7 +52,7 @@ object TrainSettingsStore {
         ProfileStore.select(ctx, s.profileId)
         ModeStore.setTimed(ctx, s.timed)
         PrefsStore.save(ctx, PrefsStore.load(ctx).copy(stretchOn = s.stretchOn))
-        p(ctx).edit().putInt("rounds", s.rounds).putString("format", s.format.name).apply()
+        p(ctx).edit().putInt("rounds", s.rounds).putString("format", s.format.name).putString("routine", s.routineId).apply()
     }
 }
 
@@ -60,4 +61,10 @@ fun startPlan(ctx: Context, plan: app.calisthenics.domain.model.WorkoutPlan) {
     val p = plan.copy(id = java.util.UUID.randomUUID().toString())
     val json = kotlinx.serialization.json.Json { encodeDefaults = true }.encodeToString(app.calisthenics.domain.model.WorkoutPlan.serializer(), p)
     io.github.gonbei774.calisthenicsmemory.ui.session.startWorkout(ctx, json, java.util.UUID.randomUUID().toString(), PrefsStore.load(ctx).audioEnabled)
+}
+
+/** V18: the routine, settings and edits the plan is built from: the usual plan, or the saved routine chosen as the objective. */
+fun resolveTrain(ctx: Context, base: Routine, s: TrainSettings): app.calisthenics.domain.routine.ResolvedRoutine {
+    val saved = SavedRoutineStore.get(ctx, s.routineId) ?: return app.calisthenics.domain.routine.ResolvedRoutine(base, s.copy(routineId = null), app.calisthenics.domain.planner.PlanEdits())
+    return app.calisthenics.domain.routine.resolveSaved(saved, s)
 }

@@ -23,6 +23,8 @@ data class TrainSettings(
     val focus: Set<StrengthFocus>? = null,
     /** V19: the workout format (Circuit, Pairs, Straight sets); `rounds` are then the sets. */
     val format: WorkoutFormat = WorkoutFormat.CIRCUIT,
+    /** V18: a saved routine is chosen as the objective (null = a body part or a skill). */
+    val routineId: String? = null,
 ) {
     fun effectiveFocus(): Set<StrengthFocus> = focus ?: Goals.focusFor(goalId)
 }

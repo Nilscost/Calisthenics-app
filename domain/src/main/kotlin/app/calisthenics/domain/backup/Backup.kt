@@ -35,6 +35,8 @@ data class BackupPayload(
     val events: List<ProgressionEventRecord>,
     /** U04: equipment profiles. Appended last with a default so older backup files still import. */
     val profiles: List<EquipmentProfile> = emptyList(),
+    /** V18: the routines saved from the Preview. Appended last with a default so older backup files still import. */
+    val savedRoutines: List<app.calisthenics.domain.routine.SavedRoutine> = emptyList(),
 )
 
 @Serializable

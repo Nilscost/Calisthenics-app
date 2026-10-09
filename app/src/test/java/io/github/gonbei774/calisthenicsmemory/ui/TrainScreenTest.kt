@@ -23,7 +23,7 @@ class TrainScreenTest {
     private val ctx: Context get() = ApplicationProvider.getApplicationContext()
 
     @Before fun clean() {
-        for (n in listOf("profiles", "mode", "planner_prefs", "train", "goal", "levels", "onboarding"))
+        for (n in listOf("profiles", "mode", "planner_prefs", "train", "goal", "levels", "onboarding", "saved_routines"))
             ctx.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit()
         OnboardingStore.setDone(ctx)
     }
@@ -131,5 +131,44 @@ class TrainScreenTest {
         rule.onNodeWithText("Sets", ignoreCase = true).assertExists()
         assertEquals("PAIRS", ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getString("format", ""))
         rule.onNodeWithTag("exercise_count").assertExists() // the plan still builds in every format
+    }
+
+    private fun saveRoutine(name: String = "Push day", format: app.calisthenics.domain.model.WorkoutFormat = app.calisthenics.domain.model.WorkoutFormat.PAIRS): app.calisthenics.domain.routine.SavedRoutine {
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx)
+        val edits = app.calisthenics.domain.planner.PlanEdits(added = listOf(app.calisthenics.domain.planner.AddedSlot("squat", app.calisthenics.domain.planner.slotFor(catalog.variation("pushup-diamond")!!))), removed = setOf("core2"))
+        val r = app.calisthenics.domain.routine.savedFrom("rt-1", name, 1, app.calisthenics.domain.routine.StarterRoutine.routine, edits,
+            app.calisthenics.domain.planner.TrainSettings(rounds = 3, format = format, stretchOn = false), app.calisthenics.domain.model.ProgressionRule(), 1L)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.SavedRoutineStore.upsert(ctx, r); return r
+    }
+
+    @Test fun routineAppearsAsAnObjectiveTypeOnlyOnceSomethingIsSaved() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("objective_type_ROUTINE").assertDoesNotExist()
+    }
+
+    @Test fun choosingASavedRoutineLoadsItsFormatRestAndSetsAndItsExercises() {
+        saveRoutine(); show(); rule.waitForIdle()
+        rule.onNodeWithTag("objective_type_ROUTINE").assertIsDisplayed().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("objective_type_ROUTINE").assertIsSelected()
+        rule.onNodeWithTag("goal_field").assertTextContains("Push day")
+        rule.onNodeWithTag("format_PAIRS").assertIsSelected()
+        rule.onNodeWithTag("between_rest").assertIsSelected()
+        assertEquals("rt-1", ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getString("routine", null))
+        // five original exercises minus core2 plus the added push-up: still six exercises per set
+        rule.onNodeWithTag("exercise_count").assertTextEquals("6")
+        // picking a body part again leaves the routine
+        rule.onNodeWithTag("objective_type_BODY_PART").performClick(); rule.waitForIdle()
+        assertNull(ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getString("routine", null))
+    }
+
+    @Test fun thePreviewOfASavedRoutineShowsItsAddedExerciseAndOffersUpdateOrNew() {
+        saveRoutine()
+        ctx.getSharedPreferences("train", Context.MODE_PRIVATE).edit().putString("routine", "rt-1").putInt("rounds", 3).commit()
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { io.github.gonbei774.calisthenicsmemory.ui.train.PreviewScreen(onBack = {}, onStarted = {}) } }
+        rule.waitForIdle()
+        rule.onNodeWithTag("exercise_add-pushup-diamond").performScrollTo().assertExists()
+        rule.onNodeWithTag("exercise_core2").assertDoesNotExist()
+        rule.onNodeWithTag("save_routine_button").assertIsDisplayed().assertIsEnabled()
+        rule.onNodeWithTag("start_button").assertIsDisplayed()
     }
 }
