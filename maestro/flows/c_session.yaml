@@ -7,24 +7,24 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
 - tapOn: { id: start_button }
 - extendedWaitUntil: { visible: { id: session_title }, timeout: 15000 }
-- takeScreenshot: ${SHOTS}/01-first-block-${VARIANT}
+- takeScreenshot: 01-first-block-${VARIANT}
 # Skip ahead until a work block offers Done (warm-up / get-ready blocks come first).
 - repeat:
     while: { notVisible: { id: session_done, enabled: true } }
     times: 6
     commands:
       - tapOn: { id: session_skip }
-- takeScreenshot: ${SHOTS}/02-work-block-${VARIANT}
+- takeScreenshot: 02-work-block-${VARIANT}
 - tapOn: { id: session_done }
 - extendedWaitUntil: { visible: { id: logger }, timeout: 10000 }
-- takeScreenshot: ${SHOTS}/03-logger-${VARIANT}
+- takeScreenshot: 03-logger-${VARIANT}
 - tapOn: { id: logger_plus }
 - tapOn: { id: session_pause }
-- takeScreenshot: ${SHOTS}/04-paused-${VARIANT}
+- takeScreenshot: 04-paused-${VARIANT}
 - tapOn: { id: session_more }
 - tapOn: "End workout"
-- takeScreenshot: ${SHOTS}/05-end-confirm-${VARIANT}
+- takeScreenshot: 05-end-confirm-${VARIANT}
 - tapOn: { id: session_end_confirm }
 - extendedWaitUntil: { visible: { id: end_title }, timeout: 10000 }
-- takeScreenshot: ${SHOTS}/06-end-screen-${VARIANT}
+- takeScreenshot: 06-end-screen-${VARIANT}
 - tapOn: { id: end_done }

@@ -5,7 +5,8 @@
 # A failing flow is recorded and the run continues, so the screenshots taken before the failure are kept;
 # the script exits non-zero at the end if any flow failed.
 set -uo pipefail
-APK="$1"; OUT="$2"; PKG=app.calisthenics.personal
+APK="$1"; OUT="$2"; ROOT=$(pwd)
+export MAESTRO_CLI_NO_ANALYTICS=1
 mkdir -p "$OUT"; : > "$OUT/results.txt"
 adb wait-for-device
 adb shell wm size 1080x2400
@@ -25,7 +26,13 @@ for variant in light dark font13; do
   for flow in maestro/flows/*.yaml; do
     name=$(basename "$flow" .yaml)
     mkdir -p "$OUT/$name"
-    if maestro test --no-ansi -e VARIANT=$variant -e SHOTS="$OUT/$name" "$flow" > "$OUT/$name/log-$variant.txt" 2>&1; then
+    # Maestro only writes screenshots inside its own output folder: run it there with relative names, then collect them.
+    tmp=$(mktemp -d)
+    if (cd "$tmp" && maestro test --no-ansi --test-output-dir "$tmp" -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant.txt" 2>&1; then
+      ok=1; else ok=0; fi
+    find "$tmp" -name '*.png' -not -path '*/.maestro/*' -not -name 'screenshot-*' -exec cp {} "$OUT/$name/" \;
+    rm -rf "$tmp"
+    if [ $ok = 1 ]; then
       echo "PASS $name $variant" >> "$OUT/results.txt"
     else
       echo "FAIL $name $variant" >> "$OUT/results.txt"; fail=1

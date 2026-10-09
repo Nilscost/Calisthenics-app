@@ -5,8 +5,8 @@ Galaxy S21's 1080×2400 at 420 dpi, in three variants: `light`, `dark`, `font13`
 
 - Flows run in file order per variant. `a_onboarding` starts from a fresh install (`clearState`); later flows continue
   from the state it leaves (onboarding done, Normal answers).
-- Each flow gets two variables: `VARIANT` and `SHOTS` (its output folder). Name screenshots
-  `${SHOTS}/<NN>-<step>-${VARIANT}` (Maestro adds `.png`).
+- Each flow gets the variable `VARIANT`. Name screenshots `<NN>-<step>-${VARIANT}` with no folder (Maestro adds
+  `.png`; it refuses paths outside its output folder, and the script files them under the flow's name).
 - Find controls by test tag (`id:`; the app exposes test tags as resource ids) or by visible text. Bottom sheets and
   dialogs are separate windows: there, use text.
 - A failing flow does not stop the run; `results.txt` lists PASS/FAIL per flow and variant, and a `zz-failure-<variant>.png`
