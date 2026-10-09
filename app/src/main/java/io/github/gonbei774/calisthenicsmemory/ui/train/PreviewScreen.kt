@@ -161,15 +161,12 @@ private fun InfoRow(p: WorkoutPlan) {
 private fun ExerciseCard(e: CircuitEntry, v: ExerciseVariation?, name: String, onSwap: () -> Unit) {
     Card(Modifier.fillMaxWidth().testTag("exercise_${e.slotId}"), shape = MaterialTheme.shapes.large) {
         Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-            // Family pictograms arrive with the skill tree (U10); until then the initial keeps the card scannable.
-            Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primaryContainer, modifier = Modifier.size(44.dp)) {
-                Box(contentAlignment = Alignment.Center) { Text(name.take(1), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onPrimaryContainer) }
-            }
+            io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(e.variationId, name, 56.dp)
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                 Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("exercise_name_${e.slotId}"))
                 Text(targetText(e.target, e.perSide, e.loadGrams), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("exercise_target_${e.slotId}"))
-                if (v != null && v.primaryMuscles.isNotEmpty()) MuscleChips(v.primaryMuscles, v.secondaryMuscles.take(2), Modifier.testTag("muscles_${e.slotId}"))
             }
+            if (v != null && v.primaryMuscles.isNotEmpty()) io.github.gonbei774.calisthenicsmemory.ui.components.BodyMap(v.primaryMuscles, v.secondaryMuscles, showNamesOnTap = false, tag = "muscles_${e.slotId}", viewWidth = 24.dp)
             IconButton(onClick = onSwap, modifier = Modifier.testTag("swap_${e.slotId}")) { Icon(Icons.Filled.Refresh, stringResource(R.string.preview_swap, name)) }
         }
     }
@@ -204,6 +201,7 @@ private fun SwapSheet(options: List<ExerciseVariation>, currentId: String, onDis
             options.forEach { o ->
                 ListItem(
                     headlineContent = { Text(o.name) },
+                    leadingContent = { io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(o.id, o.name, 48.dp) },
                     trailingContent = { if (o.id == currentId) Text(stringResource(R.string.preview_swap_current), style = MaterialTheme.typography.labelLarge) },
                     modifier = Modifier.clickable { onPick(o.id, keep) }.testTag("swap_option_${o.id}"),
                 )

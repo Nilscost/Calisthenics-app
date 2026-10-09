@@ -56,8 +56,11 @@ class PreviewScreenTest {
     @Test fun cardsShowTheMusclesWorked() {
         show(); rule.waitForIdle()
         rule.onNodeWithTag("muscles_push").assertExists()
-        rule.onNodeWithTag("muscles_push").assert(hasAnyDescendant(hasText("Chest")))
-        rule.onNodeWithTag("muscles_core").assert(hasAnyDescendant(hasText("Abs")))
+        // V09 (R9): the body figure replaces the muscle names on the card; the names stay in its screen-reader description
+        fun desc(tag: String) = rule.onNodeWithTag(tag).fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString()
+        assertTrue(desc("muscles_push"), desc("muscles_push").contains("Chest"))
+        assertTrue(desc("muscles_core"), desc("muscles_core").contains("Abs"))
+        rule.onNodeWithTag("thumb_pushup-incline").assertExists()
     }
 
     @Test fun swapChangesTheCardAndOffersOnlySameMovementOptions() {

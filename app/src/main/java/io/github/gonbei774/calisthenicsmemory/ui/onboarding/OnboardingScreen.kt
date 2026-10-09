@@ -211,9 +211,7 @@ private fun Dots(current: Int, total: Int, modifier: Modifier) {
                 Card(onClick = { sheet = v }, modifier = Modifier.width(200.dp).testTag("onb_ex_${v.id}"), shape = MaterialTheme.shapes.large,
                     border = if (selected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null) {
                     Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                        Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primaryContainer, modifier = Modifier.size(40.dp)) {
-                            Box(contentAlignment = Alignment.Center) { Text(v.name.take(1), style = MaterialTheme.typography.titleMedium) }
-                        }
+                        io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(v.id, v.name, 64.dp)
                         Text(v.name, style = MaterialTheme.typography.titleMedium, maxLines = 2)
                         Text(v.instructions.firstOrNull().orEmpty(), style = MaterialTheme.typography.bodySmall, maxLines = 2)
                         if (!isAvailable(v, profile)) Text(stringResource(R.string.onb_needs_equipment), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.error)

@@ -137,7 +137,10 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
                 val tv = d.target?.value
                 Card(Modifier.fillMaxWidth().testTag("detail_${d.variationId}"), shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                        Text(name, style = MaterialTheme.typography.titleMedium)
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                            io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(d.variationId, name, 48.dp)
+                            Text(name, style = MaterialTheme.typography.titleMedium)
+                        }
                         RoundEditor(
                             d.target, rounds.map { EditorRound(it.blockId, it.round, it.side, it.value, it.corrected) },
                             tooHard0 = rounds.any { it.rating == Rating.BELOW && !(it.value.let { v -> v != null && tv != null && v < tv }) },

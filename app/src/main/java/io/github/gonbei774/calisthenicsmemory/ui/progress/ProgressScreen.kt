@@ -91,7 +91,7 @@ private fun StretchList(c: Catalog, modifier: Modifier, onOpen: (String) -> Unit
         c.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }.forEach { v ->
             Card(Modifier.fillMaxWidth().clickable { onOpen(v.id) }.testTag("stretch_${v.id}"), shape = MaterialTheme.shapes.large) {
                 Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-                    Icon(FamilyIcons.Stretch, null, Modifier.size(28.dp))
+                    io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(v.id, v.name, 44.dp)
                     Text(v.name, Modifier.weight(1f), style = MaterialTheme.typography.titleMedium)
                 }
             }
