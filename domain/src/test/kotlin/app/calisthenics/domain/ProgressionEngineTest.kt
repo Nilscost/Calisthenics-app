@@ -130,6 +130,6 @@ class ProgressionEngineTest {
 
     @Test fun `self reported baseline is kept separately from earned stars`() {
         val s = engine.replay(emptyList(), listOf(start))
-        assertEquals(2, s.variations.getValue(V).baselineTier); assertEquals(0, s.variations.getValue(V).earnedStars())
+        assertEquals(2, s.variations.getValue(V).baselineTier); assertEquals(1, s.variations.getValue(V).earnedStars()) // D8: the level below the starting level counts as a star
     }
 }

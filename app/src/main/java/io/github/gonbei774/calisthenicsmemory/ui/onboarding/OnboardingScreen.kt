@@ -17,6 +17,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -119,7 +120,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onBack: (() -> Unit)?, onDon
 
     Column(modifier.fillMaxSize().statusBarsPadding().padding(horizontal = Spacing.l)) {
         Row(Modifier.fillMaxWidth().padding(vertical = Spacing.m), verticalAlignment = Alignment.CenterVertically) {
-            Dots(i, pages.size, Modifier.weight(1f).testTag("onb_dots"))
+            if (page != Page.Welcome && page != Page.Summary) StepHeader(page, Modifier.weight(1f).testTag("onb_header")) else Spacer(Modifier.weight(1f))
             if (onBack != null) AppTextButton(onClick = onBack, modifier = Modifier.testTag("onb_cancel")) { Text(stringResource(R.string.cancel)) }
         }
         AnimatedContent(
@@ -147,12 +148,18 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onBack: (() -> Unit)?, onDon
     }
 }
 
+/** R6 / D2: the three parts Goal · Equipment · Level, the current one highlighted. No step dots (R7). */
 @Composable
-private fun Dots(current: Int, total: Int, modifier: Modifier) {
-    Row(modifier, horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-        repeat(total) { n ->
-            Box(Modifier.size(if (n == current) 10.dp else 8.dp).clip(CircleShape)
-                .background(if (n == current) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant))
+private fun StepHeader(page: Page, modifier: Modifier) {
+    val current = when (page) { Page.GoalPage -> 0; Page.Equipment -> 1; else -> 2 }
+    val names = listOf(R.string.onb_part_goal, R.string.onb_part_equipment, R.string.onb_part_level)
+    Row(modifier, horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
+        names.forEachIndexed { n, r ->
+            val here = n == current
+            Column(Modifier.semantics(mergeDescendants = true) {}.testTag("onb_part_$n")) {
+                Text(stringResource(r).uppercase(), style = MaterialTheme.typography.labelLarge, color = if (here) AppAccentTheme.colors.text else MaterialTheme.colorScheme.outline)
+                Box(Modifier.padding(top = 3.dp).width(28.dp).height(3.dp).clip(RoundedCornerShape(2.dp)).background(if (here) AppAccentTheme.colors.accent else MaterialTheme.colorScheme.outlineVariant))
+            }
         }
     }
 }
@@ -167,23 +174,9 @@ private fun Dots(current: Int, total: Int, modifier: Modifier) {
     Text(stringResource(R.string.onb_welcome_privacy), style = MaterialTheme.typography.bodyMedium)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable private fun GoalPage(form: Form) {
     Title(stringResource(R.string.onb_goal_title), stringResource(R.string.onb_goal_text))
-    var open by remember { mutableStateOf(false) }
-    val goal = Goals.byId(form.goalId) ?: Goals.all.first()
-    ExposedDropdownMenuBox(expanded = open, onExpandedChange = { open = it }) {
-        OutlinedTextField(value = goal.name, onValueChange = {}, readOnly = true, singleLine = true, label = { Text(stringResource(R.string.train_goal)) },
-            supportingText = { Text(goal.description, maxLines = 2) }, trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(open) },
-            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth().testTag("onb_goal"))
-        ExposedDropdownMenu(expanded = open, onDismissRequest = { open = false }) {
-            @Composable fun group(title: Int, goals: List<Goal>) {
-                DropdownMenuItem(text = { Text(stringResource(title), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text) }, onClick = {}, enabled = false)
-                goals.forEach { g -> DropdownMenuItem(text = { Text(g.name) }, onClick = { form.goalId = g.id; open = false }, modifier = Modifier.testTag("onb_goal_${g.id}")) }
-            }
-            group(R.string.goal_group_skills, skillGoals()); group(R.string.goal_group_body, bodyGoals())
-        }
-    }
+    io.github.gonbei774.calisthenicsmemory.ui.components.ObjectivePicker(form.goalId, { form.goalId = it })
 }
 
 @Composable private fun EquipmentPage(form: Form) {
@@ -206,14 +199,15 @@ private fun Dots(current: Int, total: Int, modifier: Modifier) {
     }
     if (know) {
         LazyRow(Modifier.testTag("onb_carousel"), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-            items(f.ladder.mapNotNull { cat.variation(it) }, key = { it.id }) { v ->
+            items(fullProgression(cat, f), key = { it.id }) { v ->
                 val selected = form.chosen[f.id] == v.id
                 Card(onClick = { sheet = v }, modifier = Modifier.width(200.dp).testTag("onb_ex_${v.id}"), shape = MaterialTheme.shapes.large,
                     border = if (selected) BorderStroke(2.dp, MaterialTheme.colorScheme.primary) else null) {
                     Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                         io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(v.id, v.name, 64.dp)
                         Text(v.name, style = MaterialTheme.typography.titleMedium, maxLines = 2)
-                        Text(v.instructions.firstOrNull().orEmpty(), style = MaterialTheme.typography.bodySmall, maxLines = 2)
+                        val tiers = cat.policyForVariation(v.id)?.tiers.orEmpty()
+                        if (tiers.isNotEmpty()) Text(stringResource(R.string.onb_levels_line, tiers.joinToString(" · ") { it.target.value.toString() }, stringResource(if (tiers.first().target.type == TargetType.REPS) R.string.unit_reps else R.string.unit_seconds)), style = MaterialTheme.typography.bodySmall, maxLines = 2, modifier = Modifier.testTag("onb_levels_${v.id}"))
                         if (!isAvailable(v, profile)) Text(stringResource(R.string.onb_needs_equipment), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.error)
                     }
                 }
@@ -305,7 +299,7 @@ private fun Dots(current: Int, total: Int, modifier: Modifier) {
                     Text(v?.name.orEmpty(), style = MaterialTheme.typography.titleMedium)
                     Text(stringResource(R.string.onb_summary_line, l.tier, target?.let { targetLabel(it) }.orEmpty()), style = MaterialTheme.typography.bodyMedium)
                 }
-                StarRow(0)
+                StarRow(l.tier - 1) // D8: the levels below the chosen one are shown as stars
             }
         }
     }

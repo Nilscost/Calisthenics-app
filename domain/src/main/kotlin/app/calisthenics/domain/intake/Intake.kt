@@ -63,6 +63,24 @@ fun levelFor(c: Catalog, f: OnboardingFamily, a: FamilyAnswer, usable: (Exercise
     is FamilyAnswer.NotSure -> levelFor(c, f, a.guess, usable)
 }
 
+/**
+ * R3: every exercise of the family's progression for the level page, easier to harder: the entry ladder first, then everything
+ * that follows it through `nextVariationIds`, ordered by difficulty. Each exercise appears once. Picking a harder one without its
+ * prerequisites is allowed (self-assessment).
+ */
+fun fullProgression(c: Catalog, f: OnboardingFamily): List<ExerciseVariation> {
+    val seen = LinkedHashSet<String>()
+    f.ladder.forEach { seen += it }
+    val queue = ArrayDeque(f.ladder)
+    while (queue.isNotEmpty()) {
+        val id = queue.removeFirst()
+        c.policyForVariation(id)?.nextVariationIds.orEmpty().forEach { if (seen.add(it)) queue += it }
+    }
+    val ladderIds = f.ladder.toSet()
+    val rest = seen.filter { it !in ladderIds }.mapNotNull { c.variation(it) }.sortedBy { it.difficultyRank }
+    return f.ladder.mapNotNull { c.variation(it) } + rest
+}
+
 /** Shoulders are only asked when the push-up answer is at least the family's threshold (standard push-up). */
 fun shouldAsk(c: Catalog, f: OnboardingFamily, pushup: FamilyAnswer?): Boolean {
     val min = f.requiresPushupAtLeast ?: return true

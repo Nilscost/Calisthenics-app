@@ -76,7 +76,8 @@ data class VariationProgress(
         val start = baselineTier ?: 1
         var t = start
         while (t in achievedTiers) t++
-        return if (t == start) 0 else t - 1
+        // D8 / R26: levels below the one you start at count as stars too (one kind of star, earned or assumed).
+        return t - 1
     }
 }
 

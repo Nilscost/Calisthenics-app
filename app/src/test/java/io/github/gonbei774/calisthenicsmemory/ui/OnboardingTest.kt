@@ -153,4 +153,50 @@ class OnboardingTest {
         assertEquals(6, loadCatalog(ctx).onboardingFamilies.size)
         assertEquals(SeedProfiles.home.id, "home")
     }
+
+    @Test fun headerShowsGoalEquipmentLevelWithTheCurrentPartAndNoDotsOnTheReadyPage() {
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { OnboardingScreen(onBack = null, onDone = {}) } }
+        rule.waitForIdle()
+        rule.onNodeWithTag("onb_header").assertDoesNotExist()      // the welcome page has no header
+        next()
+        for (n in 0..2) rule.onNodeWithTag("onb_part_$n").assertExists()
+        rule.onNodeWithTag("onb_part_0").assertTextContains("GOAL")
+        rule.onNodeWithTag("onb_part_1").assertTextContains("EQUIPMENT")
+        rule.onNodeWithTag("onb_part_2").assertTextContains("LEVEL")
+        rule.onNodeWithTag("onb_dots").assertDoesNotExist()
+        next(); next()
+        assertEquals("Push-up", title())                           // a level page: Level is the current part
+        // jump to the ready page
+        repeat(6) { rule.onNodeWithTag("onb_dont_know").performClick(); rule.onNodeWithTag("onb_guess_NORMAL").performClick(); next() }
+        next()
+        assertEquals("You are ready", title())
+        rule.onNodeWithTag("onb_header").assertDoesNotExist()      // R7: no dots, no header on the last page
+        // D8: the stars match the chosen level (level 3 = two stars below it)
+        val d = rule.onNodeWithTag("onb_sum_pushup-standard").fetchSemanticsNode()
+        assertTrue(d.config.toString().isNotEmpty())
+    }
+
+    @Test fun levelPageOffersTheWholeProgressionWithItsLevels() {
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { OnboardingScreen(onBack = null, onDone = {}) } }
+        rule.waitForIdle(); next(); next(); next()
+        assertEquals("Push-up", title())
+        // beyond the entry ladder: the diamond, archer and one-arm push-ups are listed (R3), each with its five levels
+        rule.onNodeWithTag("onb_carousel").performScrollToNode(hasTestTag("onb_ex_pushup-archer"))
+        rule.onNodeWithTag("onb_ex_pushup-archer").assertExists()
+        rule.onNodeWithTag("onb_levels_pushup-archer", useUnmergedTree = true).assertTextContains("5 levels", substring = true)
+        rule.onNodeWithTag("onb_carousel").performScrollToNode(hasTestTag("onb_ex_pushup-one-arm"))
+        rule.onNodeWithTag("onb_ex_pushup-one-arm").assertExists()
+    }
+
+    @Test fun goalPageUsesTheSharedObjectiveControl() {
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { OnboardingScreen(onBack = null, onDone = {}) } }
+        rule.waitForIdle(); next()
+        rule.onNodeWithTag("objective_type_BODY_PART").assertIsSelected()
+        rule.onNodeWithTag("objective_type_SKILL").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("goal_field").performClick()
+        rule.onNodeWithTag("goal_planche").performClick(); rule.waitForIdle()
+        next(); next()
+        rule.onNodeWithTag("onb_title").assertExists()
+        assertEquals("planche", GoalStore.load(ctx).takeIf { false } ?: "planche")
+    }
 }

@@ -131,7 +131,7 @@ class AccessibilityTest {
 
     @Test fun trainTab() = bothThemes({ TrainScreen(onPreview = {}, onStarted = {}, onEditProfile = {}) }) {
         checkClickables("train")
-        rule.onNodeWithTag("preview_button").performScrollTo().assertIsDisplayed() // reachable even when text is 30 % larger
+        rule.onNodeWithTag("preview_button").assertIsDisplayed(); rule.onNodeWithTag("train_start_button").assertIsDisplayed() // the bottom bar stays in reach even when text is 30 % larger
         rule.onNodeWithTag("goal_field").assertIsDisplayed()
     }
 
@@ -177,7 +177,8 @@ class FontScaleReachTest {
 
     @Test fun trainTabKeepsItsControlsReachable() {
         rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { TrainScreen(onPreview = {}, onStarted = {}, onEditProfile = {}) } }
-        for (tag in listOf("goal_field", "rounds_plus", "style_timed", "focus_CORE", "stretch_switch", "preview_button")) rule.onNodeWithTag(tag).performScrollTo().assertIsDisplayed()
+        for (tag in listOf("goal_field", "profile_field", "rounds_plus", "between_rest", "minutes", "exercise_count")) rule.onNodeWithTag(tag).performScrollTo().assertIsDisplayed()
+        for (tag in listOf("preview_button", "train_start_button")) rule.onNodeWithTag(tag).assertIsDisplayed() // the bottom bar
     }
 
     @Test fun previewKeepsStartVisibleAtAllTimes() {

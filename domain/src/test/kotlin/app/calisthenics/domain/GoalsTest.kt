@@ -45,3 +45,26 @@ class GoalsTest {
         assertEquals(NodeState.LOCKED, st["wall-handstand-hold"])
     }
 }
+
+class ObjectiveTypesTest {
+    @Test fun skillGoalsAndBodyPartsAreSeparatedAndRoutineIsHiddenUntilPresetsExist() {
+        assertTrue(Goals.goalsOf(ObjectiveType.SKILL).all { it.entryVariationId != null })
+        assertTrue(Goals.goalsOf(ObjectiveType.BODY_PART).map { it.id }.containsAll(listOf("general", "body-upper", "body-lower", "body-core")))
+        assertEquals(Goals.all.size, Goals.goalsOf(ObjectiveType.SKILL).size + Goals.goalsOf(ObjectiveType.BODY_PART).size)
+        assertTrue(Goals.goalsOf(ObjectiveType.ROUTINE).isEmpty())
+        assertEquals(listOf(ObjectiveType.BODY_PART, ObjectiveType.SKILL), Goals.availableTypes(false))
+        assertEquals(listOf(ObjectiveType.BODY_PART, ObjectiveType.SKILL, ObjectiveType.ROUTINE), Goals.availableTypes(true))
+        assertEquals(ObjectiveType.SKILL, Goals.typeOf(Goals.byId("planche")!!))
+    }
+}
+
+class AssumedStarsTest {
+    @Test fun startingAtLevelThreeShowsTwoStarsAndEarningLevelThreeMakesThree() {
+        val engine = app.calisthenics.domain.progression.ProgressionEngine(Fx.catalog())
+        val s = engine.replay(emptyList(), listOf(UserAction.SelfAssessment(0, "pushup-knee", 3)))
+        assertEquals(2, s.variations.getValue("pushup-knee").earnedStars())
+        assertEquals(0, engine.replay(emptyList(), listOf(UserAction.SelfAssessment(0, "pushup-knee", 1))).variations.getValue("pushup-knee").earnedStars())
+        val p = s.variations.getValue("pushup-knee")
+        assertEquals(3, p.copy(achievedTiers = setOf(3)).earnedStars())
+    }
+}

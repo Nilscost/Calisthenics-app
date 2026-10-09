@@ -87,9 +87,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                 Button(
                     onClick = {
                         haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                        val plan = (result as PlanResult.Ready).plan.copy(id = UUID.randomUUID().toString()) // one history snapshot per workout
-                        val json = Json { encodeDefaults = true }.encodeToString(WorkoutPlan.serializer(), plan)
-                        startWorkout(ctx, json, UUID.randomUUID().toString(), io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.load(ctx).audioEnabled)
+                        startPlan(ctx, (result as PlanResult.Ready).plan)
                         onStarted()
                     },
                     enabled = result is PlanResult.Ready,

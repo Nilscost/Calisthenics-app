@@ -38,7 +38,7 @@ class TrainScreenTest {
     @Test fun everythingFitsOnOneScreenWithoutScrolling() {
         show()
         rule.waitForIdle()
-        for (tag in listOf("goal_field", "profile_plus", "rounds_plus", "style_timed", "focus_CORE", "stretch_switch", "preview_button"))
+        for (tag in listOf("goal_field", "profile_field", "rounds_plus", "between_rest", "minutes", "exercise_count", "preview_button", "train_start_button"))
             rule.onNodeWithTag(tag).assertIsDisplayed()
     }
 
@@ -60,37 +60,57 @@ class TrainScreenTest {
         assertTrue(minutes() < at4)
     }
 
-    @Test fun styleStretchAndFocusAreOneTapAndPersist() {
+    @Test fun betweenSetsStretchOrRestPersists() {
         show()
-        rule.onNodeWithTag("style_timed").performClick()
-        rule.onNodeWithTag("stretch_switch").performClick()
-        rule.onNodeWithTag("focus_UPPER_BODY").performClick()
-        rule.waitForIdle()
-        rule.onNodeWithTag("style_timed").assertIsSelected()
-        rule.onNodeWithTag("stretch_switch").assertIsOff()
-        rule.onNodeWithTag("focus_FULL_BODY").assertIsOff()
-        rule.onNodeWithTag("focus_UPPER_BODY").assertIsOn()
-        assertTrue(ctx.getSharedPreferences("mode", Context.MODE_PRIVATE).getBoolean("timed", false))
+        rule.onNodeWithTag("between_stretch").assertIsSelected()
+        rule.onNodeWithTag("between_rest").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("between_rest").assertIsSelected()
+        rule.onNodeWithTag("between_stretch").assertIsNotSelected()
     }
 
-    @Test fun goalDropdownListsSkillsAndBodyFocusAndSwitchesTheFocus() {
+    @Test fun objectiveHasBodyPartAndSkillButRoutineIsHiddenUntilPresetsExist() {
+        show()
+        rule.onNodeWithTag("objective_type_BODY_PART").assertIsSelected()
+        rule.onNodeWithTag("objective_type_SKILL").assertIsDisplayed()
+        rule.onNodeWithTag("objective_type_ROUTINE").assertDoesNotExist()
+    }
+
+    @Test fun pickingTheSkillTypeChoosesASkillAndTheDropdownListsOnlySkills() {
+        show()
+        rule.onNodeWithTag("objective_type_SKILL").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("objective_type_SKILL").assertIsSelected()
+        rule.onNodeWithTag("goal_field").performClick()
+        rule.onNodeWithTag("goal_planche").assertIsDisplayed()
+        rule.onNodeWithTag("goal_body-core").assertDoesNotExist()
+    }
+
+    @Test fun bodyPartDropdownSwitchesTheFocusThroughTheGoal() {
         show()
         rule.onNodeWithTag("goal_field").performClick()
-        rule.onNodeWithText("Skills").assertIsDisplayed()
-        rule.onNodeWithText("Body focus").assertIsDisplayed()
-        rule.onNodeWithTag("goal_body-core").performClick()
-        rule.waitForIdle()
-        rule.onNodeWithTag("focus_CORE").assertIsOn()
-        rule.onNodeWithTag("focus_FULL_BODY").assertIsOff()
+        rule.onNodeWithTag("goal_body-core").performClick(); rule.waitForIdle()
+        rule.onNodeWithText("Focus: core", substring = true).assertExists()
+        assertEquals("body-core", ctx.getSharedPreferences("goal", Context.MODE_PRIVATE).all.values.firstOrNull { it == "body-core" })
     }
 
-    @Test fun profilesAreChipsWithAPlus() {
+    @Test fun equipmentIsADropdownWithANewProfileEntry() {
         show()
-        rule.onNodeWithTag("profile_chip_home").assertIsSelected()
-        rule.onNodeWithTag("profile_chip_travel").performClick()
-        rule.waitForIdle()
-        rule.onNodeWithTag("profile_chip_travel").assertIsSelected()
+        rule.onNodeWithTag("profile_field").assertIsDisplayed()
+        rule.onNodeWithTag("profile_field").performClick()
+        rule.onNodeWithTag("profile_chip_travel").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("profile_field").assertTextContains("Travel")
+        rule.onNodeWithTag("profile_field").performClick()
         rule.onNodeWithTag("profile_plus").assertIsDisplayed()
+    }
+
+    @Test fun summaryTilesShowTimeAndExercisesAndStartIsNextToTheirPreview() {
+        show(); rule.waitForIdle()
+        assertTrue(minutes() in 40..50)
+        rule.onNodeWithTag("exercise_count").assertIsDisplayed()
+        rule.onNodeWithTag("train_start_button").assertIsEnabled().assertTextContains("START WORKOUT")
+        rule.onNodeWithTag("preview_button").assertIsEnabled().assertTextContains("Workout preview")
+        val sx = rule.onNodeWithTag("train_start_button").fetchSemanticsNode().boundsInRoot
+        val px = rule.onNodeWithTag("preview_button").fetchSemanticsNode().boundsInRoot
+        assertTrue("START is about twice as wide as the preview button", sx.width > px.width * 1.5f)
     }
 
     @Test fun trainIsTheDefaultTabAndPreviewIsReachable() {

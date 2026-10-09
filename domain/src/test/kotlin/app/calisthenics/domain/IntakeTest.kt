@@ -90,3 +90,19 @@ class QuestionnaireTest {
         assertEquals(10, suggestedRounds(listOf(FamilyAnswer.Does("a", 5, 40))))
     }
 }
+
+class FullProgressionTest {
+    private val catalog = app.calisthenics.domain.content.parseCatalog(java.io.File(System.getProperty("repo.root"), "content/starter/catalog.json").readText())
+
+    @Test fun everyFamilyPageShowsTheWholeProgressionNotOnlyTheEntryLadder() {
+        for (f in catalog.onboardingFamilies) {
+            val all = app.calisthenics.domain.intake.fullProgression(catalog, f)
+            assertEquals(all.map { it.id }.toSet().size, all.size) // each exercise once
+            assertEquals(f.ladder, all.take(f.ladder.size).map { it.id })
+            assertTrue("${f.id} should list more than the ladder", all.size > f.ladder.size)
+        }
+        val push = catalog.onboardingFamilies.first { it.id == "pushup" }
+        val ids = app.calisthenics.domain.intake.fullProgression(catalog, push).map { it.id }
+        assertTrue(ids.containsAll(listOf("pushup-diamond", "pushup-archer", "pushup-one-arm")))
+    }
+}

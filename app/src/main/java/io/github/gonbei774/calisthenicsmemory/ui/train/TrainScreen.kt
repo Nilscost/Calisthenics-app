@@ -24,10 +24,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import app.calisthenics.domain.goals.Goal
 import app.calisthenics.domain.goals.Goals
+import app.calisthenics.domain.model.BlockType
 import app.calisthenics.domain.model.StrengthFocus
+import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
+import io.github.gonbei774.calisthenicsmemory.ui.components.ObjectivePicker
 import app.calisthenics.domain.planner.*
 import app.calisthenics.domain.routine.toggleFocus
 import io.github.gonbei774.calisthenicsmemory.R
@@ -60,74 +65,90 @@ fun TrainScreen(
     onEditProfile: (String?) -> Unit,
 ) {
     val ctx = LocalContext.current
+    val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
     val data by rememberTrainData()
     val profiles = remember { ProfileStore.load(ctx) }
     var settings by remember { mutableStateOf(TrainSettingsStore.load(ctx)) }
     fun change(s: TrainSettings) { settings = s; TrainSettingsStore.save(ctx, s) }
     val profile = profiles.firstOrNull { it.id == settings.profileId } ?: profiles.first()
     val result = remember(settings, data, profile) { buildTrainPlan(data.catalog, data.routine, data.progress, profile, settings) }
-    val minutes = (result as? PlanResult.Ready)?.plan?.plannedDurationSeconds?.let { (it + 30) / 60 }
+    val plan = (result as? PlanResult.Ready)?.plan
+    val minutes = plan?.plannedDurationSeconds?.let { (it + 30) / 60 }
+    val exercises = plan?.blocks?.filter { it.type == BlockType.WORK }?.mapNotNull { it.variationId }?.distinct()?.size
 
-    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text(stringResource(R.string.tab_train)) }) }) { pad ->
+    // Doc 17 §2.1: choices only; START WORKOUT and Workout preview stay at the bottom.
+    Scaffold(
+        modifier = modifier,
+        bottomBar = {
+            Column {
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                Row(Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.m), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
+                    Button(
+                        onClick = { haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress); plan?.let { startPlan(ctx, it); onStarted() } }, enabled = plan != null,
+                        modifier = Modifier.weight(2f).height(56.dp).testTag("train_start_button"), shape = androidx.compose.foundation.shape.RoundedCornerShape(Radius.button),
+                    ) { Text(stringResource(R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
+                    AppOutlinedButton(onClick = onPreview, enabled = plan != null, modifier = Modifier.weight(1f).height(56.dp).testTag("preview_button")) {
+                        Text(stringResource(R.string.train_preview_short), textAlign = TextAlign.Center)
+                    }
+                }
+            }
+        },
+    ) { pad ->
         Column(
             Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.s),
             verticalArrangement = Arrangement.spacedBy(Spacing.m),
         ) {
+            Text(stringResource(R.string.train_title).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("train_title"))
             UnfinishedBanner(onStarted)
 
-            GoalDropdown(settings.goalId) { change(settings.copy(goalId = it, focus = null)) }
+            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null)) })
 
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Row(Modifier.weight(1f).horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
-                    profiles.forEach { p ->
-                        FilterChip(selected = p.id == profile.id, onClick = { change(settings.copy(profileId = p.id)) }, label = { Text(p.name) }, modifier = Modifier.testTag("profile_chip_${p.id}"))
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Caption(stringResource(R.string.train_equipment_caption))
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    var open by remember { mutableStateOf(false) }
+                    val profileDescription = stringResource(R.string.field_description, stringResource(R.string.train_equipment_caption), profile.name)
+                    ExposedDropdownMenuBox(expanded = open, onExpandedChange = { open = it }, modifier = Modifier.weight(1f)) {
+                        OutlinedTextField(
+                            value = profile.name, onValueChange = {}, readOnly = true, singleLine = true,
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(open) },
+                            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth().semantics { contentDescription = profileDescription }.testTag("profile_field"),
+                        )
+                        ExposedDropdownMenu(expanded = open, onDismissRequest = { open = false }) {
+                            profiles.forEach { p -> DropdownMenuItem(text = { Text(p.name) }, onClick = { change(settings.copy(profileId = p.id)); open = false }, modifier = Modifier.testTag("profile_chip_${p.id}")) }
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.train_new_profile)) }, leadingIcon = { Icon(Icons.Filled.Add, null) },
+                                onClick = { open = false; onEditProfile(null) }, modifier = Modifier.testTag("profile_plus"),
+                            )
+                        }
                     }
-                    AssistChip(onClick = { onEditProfile(null) }, label = { Icon(Icons.Filled.Add, stringResource(R.string.profile_add), Modifier.size(18.dp)) }, modifier = Modifier.testTag("profile_plus"))
-                }
-                IconButton(onClick = { onEditProfile(profile.id) }, modifier = Modifier.testTag("profile_edit")) {
-                    Icon(Icons.Filled.Edit, stringResource(R.string.train_edit_profile, profile.name))
+                    IconButton(onClick = { onEditProfile(profile.id) }, modifier = Modifier.testTag("profile_edit")) {
+                        Icon(Icons.Filled.Edit, stringResource(R.string.train_edit_profile, profile.name))
+                    }
                 }
             }
 
             Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 Card(Modifier.weight(1f).fillMaxHeight(), shape = MaterialTheme.shapes.large) {
-                    Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                        Text(stringResource(R.string.train_rounds), style = MaterialTheme.typography.labelLarge)
+                    Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                        Caption(stringResource(R.string.train_sets_caption))
                         Stepper(settings.rounds, { change(settings.copy(rounds = it)) }, MIN_TRAIN_ROUNDS..MAX_EXPLICIT_ROUNDS, tag = "rounds")
-                        Text(
-                            minutes?.let { stringResource(R.string.train_minutes, it) } ?: stringResource(R.string.train_minutes_unknown),
-                            style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center, modifier = Modifier.testTag("minutes"),
-                        )
                     }
                 }
                 Card(Modifier.weight(1f).fillMaxHeight(), shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                        Text(stringResource(R.string.train_style), style = MaterialTheme.typography.labelLarge)
+                        Caption(stringResource(R.string.train_between_caption))
                         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                            SegmentedButton(selected = !settings.timed, onClick = { change(settings.copy(timed = false)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("style_reps")) { Text(stringResource(R.string.style_reps)) }
-                            SegmentedButton(selected = settings.timed, onClick = { change(settings.copy(timed = true)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("style_timed")) { Text(stringResource(R.string.style_timed)) }
+                            SegmentedButton(selected = settings.stretchOn, onClick = { change(settings.copy(stretchOn = true)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("between_stretch")) { Text(stringResource(R.string.between_stretch), maxLines = 1) }
+                            SegmentedButton(selected = !settings.stretchOn, onClick = { change(settings.copy(stretchOn = false)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("between_rest")) { Text(stringResource(R.string.between_rest), maxLines = 1) }
                         }
-                        Text(stringResource(if (settings.timed) R.string.style_timed_hint else R.string.style_reps_hint), style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center)
                     }
                 }
             }
 
-            val focus = settings.effectiveFocus()
-            MultiChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                focusOrder.forEachIndexed { i, f ->
-                    SegmentedButton(
-                        checked = f in focus, onCheckedChange = { change(settings.copy(focus = toggleFocus(focus, f))) },
-                        colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(i, focusOrder.size), icon = {}, modifier = Modifier.testTag("focus_${f.name}"),
-                    ) { Text(stringResource(focusLabel(f))) }
-                }
-            }
-
-            Row(
-                Modifier.fillMaxWidth().heightIn(min = Spacing.touch).toggleable(settings.stretchOn, role = Role.Switch) { change(settings.copy(stretchOn = it)) }.testTag("stretch_switch"),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(stringResource(R.string.train_stretch), Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                Switch(checked = settings.stretchOn, onCheckedChange = null)
+            Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                SummaryTile(R.string.train_time_caption, minutes?.let { stringResource(R.string.train_minutes, it) } ?: stringResource(R.string.train_minutes_unknown), null, "minutes", Modifier.weight(1f))
+                SummaryTile(R.string.train_exercises_caption, exercises?.toString() ?: stringResource(R.string.train_minutes_unknown), stringResource(R.string.train_exercises_per_round), "exercise_count", Modifier.weight(1f))
             }
 
             if (result is PlanResult.Infeasible) {
@@ -139,41 +160,17 @@ fun TrainScreen(
                     }
                 }
             }
-
-            Button(
-                onClick = onPreview, enabled = result is PlanResult.Ready,
-                modifier = Modifier.fillMaxWidth().height(56.dp).testTag("preview_button"), shape = androidx.compose.foundation.shape.RoundedCornerShape(Radius.button),
-            ) {
-                Text(stringResource(R.string.train_preview))
-                Spacer(Modifier.width(Spacing.s))
-                Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null)
-            }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun GoalDropdown(goalId: String, onPick: (String) -> Unit) {
-    var open by remember { mutableStateOf(false) }
-    val goal = Goals.byId(goalId) ?: Goals.all.first()
-    ExposedDropdownMenuBox(expanded = open, onExpandedChange = { open = it }) {
-        OutlinedTextField(
-            value = goal.name, onValueChange = {}, readOnly = true, singleLine = true,
-            label = { Text(stringResource(R.string.train_goal)) },
-            supportingText = { Text(goal.description, maxLines = 1) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(open) },
-            modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth().testTag("goal_field"),
-        )
-        ExposedDropdownMenu(expanded = open, onDismissRequest = { open = false }) {
-            @Composable fun group(title: Int, goals: List<Goal>) {
-                DropdownMenuItem(text = { Text(stringResource(title), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text) }, onClick = {}, enabled = false)
-                goals.forEach { g ->
-                    DropdownMenuItem(text = { Text(g.name) }, onClick = { onPick(g.id); open = false }, modifier = Modifier.testTag("goal_${g.id}"))
-                }
-            }
-            group(R.string.goal_group_skills, skillGoals())
-            group(R.string.goal_group_body, bodyGoals())
+private fun SummaryTile(caption: Int, value: String, sub: String?, tag: String, modifier: Modifier) {
+    Card(modifier.fillMaxHeight(), shape = MaterialTheme.shapes.large) {
+        Column(Modifier.padding(Spacing.m).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Caption(stringResource(caption))
+            Text(value, style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag(tag))
+            if (sub != null) Text(sub, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
         }
     }
 }

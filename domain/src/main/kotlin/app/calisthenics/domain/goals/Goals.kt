@@ -13,7 +13,16 @@ data class Goal(
     val focus: Set<StrengthFocus> = setOf(StrengthFocus.FULL_BODY),
 )
 
+/** R1 / doc 17: the three top-level kinds of objective. ROUTINE (ready-made and saved routines) only appears once presets exist (V22). */
+enum class ObjectiveType { BODY_PART, SKILL, ROUTINE }
+
 object Goals {
+    fun typeOf(g: Goal): ObjectiveType = if (g.entryVariationId != null) ObjectiveType.SKILL else ObjectiveType.BODY_PART
+    fun goalsOf(type: ObjectiveType): List<Goal> = all.filter { typeOf(it) == type }
+    /** The types to offer: ROUTINE is hidden until there is something to put in it. */
+    fun availableTypes(presetsExist: Boolean): List<ObjectiveType> =
+        listOf(ObjectiveType.BODY_PART, ObjectiveType.SKILL) + if (presetsExist) listOf(ObjectiveType.ROUTINE) else emptyList()
+
     val all = listOf(
         Goal("general", "General strength", "Balanced full-body work; no skill target.", focus = setOf(StrengthFocus.FULL_BODY)),
         Goal("hspu", "Handstand push-up", "Pike push-up to wall handstand push-up.", "pike-pushup", "hspu-wall"),

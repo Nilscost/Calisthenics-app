@@ -53,3 +53,10 @@ object TrainSettingsStore {
         p(ctx).edit().putInt("rounds", s.rounds).apply()
     }
 }
+
+/** Starts [plan] as a workout (one history snapshot per workout): used by the Train tab's START and by the Preview. */
+fun startPlan(ctx: Context, plan: app.calisthenics.domain.model.WorkoutPlan) {
+    val p = plan.copy(id = java.util.UUID.randomUUID().toString())
+    val json = kotlinx.serialization.json.Json { encodeDefaults = true }.encodeToString(app.calisthenics.domain.model.WorkoutPlan.serializer(), p)
+    io.github.gonbei774.calisthenicsmemory.ui.session.startWorkout(ctx, json, java.util.UUID.randomUUID().toString(), PrefsStore.load(ctx).audioEnabled)
+}

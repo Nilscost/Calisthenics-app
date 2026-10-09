@@ -34,7 +34,7 @@ class ProgressScreenTest {
     @Test fun pushTreeShowsNodesWithStarsAndStates() {
         LevelStore.save(ctx, mapOf("pushup-standard" to 3))
         show()
-        assertTrue(desc("tree_node_pushup-standard").contains("0 of 5 stars"))
+        assertTrue(desc("tree_node_pushup-standard").contains("2 of 5 stars")) // D8: the two levels below the starting level count
         assertTrue(desc("tree_node_pushup-standard").contains("Training now"))
         assertTrue(desc("tree_node_pushup-incline").contains("Ready to start") || desc("tree_node_pushup-incline").contains("Needs equipment"))
         assertTrue(desc("tree_node_pushup-one-arm").contains("Locked"))
