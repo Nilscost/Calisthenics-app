@@ -19,6 +19,8 @@
 | https://github.com/Nilscost/Calisthenics-app/actions/runs/37916455847 | 72320f2 | all FAIL: emulator "Pixel Launcher isn't responding" dialog over the app → boot wait, `hide_error_dialogs`, dismiss sub-flow |
 | https://github.com/Nilscost/Calisthenics-app/actions/runs/37917550425 | ebb4dc7 | **12/12 PASS** (4 flows × 3 variants), 102 screenshots |
 | https://github.com/Nilscost/Calisthenics-app/actions/runs/37917561183 | fb6930d (branch `ui-check/v00-planted`) | **12/12 PASS**, with the planted defect |
+| https://github.com/Nilscost/Calisthenics-app/actions/runs/37919210076 | 48b8963 (main) | light 4/4 PASS, dark and font13 FAIL: a blank emulator screen after the theme switch (flake) → settle step after each switch + one retry per flow |
+| https://github.com/Nilscost/Calisthenics-app/actions/runs/37920253931 | 5f2019a (main) | **12/12 PASS**, no retries |
 
 ## Planted-defect test
 - **Defect:** on `ui-check/v00-planted` (commit fb6930d, never merged), the Preview's Start label was given the button's own colour (`colorScheme.primary` on a primary button), which makes it invisible. All flows still pass, because the button works by its tag.
