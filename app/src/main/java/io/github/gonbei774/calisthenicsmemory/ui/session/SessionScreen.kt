@@ -114,8 +114,9 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
 
         if (logFor != null) RepLogger(st, logFor)
 
+        // The clip fits the space that is left; it never overlaps the logger or the title.
         val clip = remember(b.variationId) { b.variationId?.let { DemoClips.file(ctx, it) } }
-        if (clip != null) Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) { DemoPlayer(clip, controls = false, minHeight = if (logFor != null) 96.dp else 180.dp) }
+        if (clip != null) Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) { DemoPlayer(clip, controls = false, fit = true) }
         else Spacer(Modifier.weight(1f))
 
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {

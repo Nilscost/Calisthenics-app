@@ -1,6 +1,9 @@
 # Actual project status
 
-## Current state (2026-10-05, UX overhaul U01–U13)
+## Current state (2026-10-09, version 2 in progress; Release R1 = 0.4.0-r1)
+Version 2 follows `docs/12-v2-plan.md` (owner feedback R1-R29) with the task list in `docs/14-executor-handoff.md`. Done so far: V00 UI screenshot pipeline (GitHub Actions + Maestro, light/dark/font 1.3), V00b debug seed, V01 clip reloads per block, V02 "too easy" rule in the domain, V03 logger redesign, V04a Room 24 and per-round corrections, V04b per-round editors. **Nothing was tested on a phone.** All exercise content stays an unreviewed DRAFT. Details: `docs/evidence/progress-notes.md`; owner checklist: `docs/evidence/owner-check-r1.md`; screenshot reviews: `docs/evidence/ui/`.
+
+## Previous state (2026-10-05, UX overhaul U01-U13)
 The app is now one product with four tabs (Train · Progress · History · Settings): first-run questionnaire, equipment profiles, one-screen Train setup, draft Preview, redesigned live session with in-workout rep logging, skill tree with stars, history with corrections, settings, 3/4-view demo clips with muscle colouring, 10 new exercises. The old fork screens are deleted (data tables kept). Everything was verified with the offline Gradle gate (see `docs/evidence/uNN-verify-*.log`) and Robolectric UI tests; **nothing was tested on a phone**. The owner device test is the open gate; all exercise content stays an unreviewed DRAFT. Details per task: `docs/evidence/progress-notes.md`; plan: `docs/10-ux-overhaul-plan.md`; owner checklist: `docs/evidence/owner-check-u13.md`.
 
 (The sections below are the older history of the project and are kept as written.)
