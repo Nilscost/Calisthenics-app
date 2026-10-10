@@ -496,6 +496,21 @@ def pistol_counterbalance(p):
 
 NEW.update({"squat-shrimp-intermediate": (shrimp_intermediate, "rep"), "squat-shrimp-advanced": (shrimp_advanced, "rep"),
             "squat-pistol-box": (pistol_box, "rep"), "squat-pistol-counterbalance": (pistol_counterbalance, "rep")})
+
+# ----------------------------------------------------------------------------------------------- L07 poses (L-sit steps)
+def _lsit_pose(hip_y, leg_a, leg_b, a=106):
+    def f(p):
+        b = 1.1 * math.sin(2 * math.pi * p); hip = (160, hip_y + b)
+        return dict(hip=hip, a=a, arms=[("fix", (152, 114), (152, 44))] * 2, legs=[("ik", leg_a(hip), (0, 1)), ("ik", leg_b(hip), (0, 1))])
+    return f
+
+l_sit_foot_supported = _lsit_pose(60, lambda h: (h[0] + 82, 46), lambda h: (h[0] + 80, 46), a=110)
+l_sit_one_foot = _lsit_pose(64, lambda h: (h[0] + 84, 46), lambda h: (h[0] + 84, h[1] - 2), a=108)
+l_sit_advanced_tuck = _lsit_pose(70, lambda h: (h[0] + 52, h[1] - 2), lambda h: (h[0] + 50, h[1] - 6), a=104)
+l_sit_one_leg = _lsit_pose(70, lambda h: (h[0] + 84, h[1] - 2), lambda h: (h[0] + 34, h[1] - 12), a=105)
+
+NEW.update({"l-sit-foot-supported": (l_sit_foot_supported, "hold"), "l-sit-one-foot": (l_sit_one_foot, "hold"),
+            "l-sit-advanced-tuck": (l_sit_advanced_tuck, "hold"), "l-sit-one-leg": (l_sit_one_leg, "hold")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)

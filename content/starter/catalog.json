@@ -3039,6 +3039,112 @@
       ]
     },
     {
+      "id": "l-sit-foot-supported",
+      "familyId": "plank",
+      "name": "Foot-Supported L-Sit",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "seated",
+      "instructions": [
+        "Sit with straight legs and the hands beside the hips, fingers forward, heels on the floor.",
+        "Press down, lift the hips off the floor while the heels stay on it and carry some of the weight.",
+        "Hold with straight arms and the shoulders pushed down."
+      ],
+      "formCues": [
+        "Push the floor away",
+        "Shoulders down",
+        "Straight arms"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 22,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-l-sit-foot-supported",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "ABS",
+        "HIP_FLEXORS"
+      ],
+      "secondaryMuscles": [
+        "TRICEPS",
+        "FRONT_DELTS",
+        "QUADS"
+      ]
+    },
+    {
+      "id": "l-sit-one-foot",
+      "familyId": "plank",
+      "name": "One-Foot L-Sit",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "seated",
+      "instructions": [
+        "From the foot-supported L-sit, lift one leg off the floor and hold it straight in front of you; the other heel stays down.",
+        "Switch the lifted leg between holds.",
+        "Keep the arms straight and the shoulders pushed down."
+      ],
+      "formCues": [
+        "Straight lifted leg",
+        "Switch legs",
+        "Shoulders down"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 24,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-l-sit-one-foot",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "ABS",
+        "HIP_FLEXORS"
+      ],
+      "secondaryMuscles": [
+        "TRICEPS",
+        "FRONT_DELTS",
+        "QUADS"
+      ]
+    },
+    {
       "id": "l-sit-tuck",
       "familyId": "plank",
       "name": "Tuck L-Sit",
@@ -3067,13 +3173,120 @@
       "cautions": [
         "Stop the set on sharp or joint pain; do not push through it."
       ],
-      "difficultyRank": 25,
+      "difficultyRank": 26,
       "sourceIds": [
         "overcoming-gravity-2-low",
-        "building-the-gymnastic-body-sommer"
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
       ],
       "reviewState": "DRAFT",
       "progressionPolicyId": "pol-l-sit-tuck",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "ABS",
+        "HIP_FLEXORS"
+      ],
+      "secondaryMuscles": [
+        "TRICEPS",
+        "FRONT_DELTS",
+        "QUADS"
+      ]
+    },
+    {
+      "id": "l-sit-advanced-tuck",
+      "familyId": "plank",
+      "name": "Advanced Tuck L-Sit",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "seated",
+      "instructions": [
+        "From the tuck L-sit, move the knees away from the chest so the thighs are close to level and the shins hang down.",
+        "Keep the back upright and the arms straight.",
+        "Hold, then lower with control."
+      ],
+      "formCues": [
+        "Thighs level",
+        "Straight arms",
+        "Upright back"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 28,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-l-sit-advanced-tuck",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "ABS",
+        "HIP_FLEXORS"
+      ],
+      "secondaryMuscles": [
+        "TRICEPS",
+        "FRONT_DELTS",
+        "QUADS"
+      ]
+    },
+    {
+      "id": "l-sit-one-leg",
+      "familyId": "plank",
+      "name": "One-Leg Extended L-Sit",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "seated",
+      "instructions": [
+        "From the advanced tuck, straighten one leg in front of you while the other stays tucked.",
+        "Switch legs between holds.",
+        "Keep the arms straight and the shoulders pushed down."
+      ],
+      "formCues": [
+        "Straight leg locked",
+        "Switch legs",
+        "Shoulders down"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 29,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-l-sit-one-leg",
       "compatibleStretchIds": [
         "stretch-back",
         "stretch-hip-flexor",
@@ -3123,7 +3336,8 @@
       "sourceIds": [
         "overcoming-gravity-2-low",
         "building-the-gymnastic-body-sommer",
-        "convict-conditioning-wade"
+        "convict-conditioning-wade",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
       ],
       "reviewState": "DRAFT",
       "progressionPolicyId": "pol-l-sit-floor",
@@ -9645,7 +9859,7 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "l-sit-tuck"
+        "l-sit-foot-supported"
       ],
       "prerequisiteRule": {
         "allOf": [
@@ -9667,30 +9881,12 @@
       }
     },
     {
-      "id": "pol-l-sit-tuck",
-      "variationId": "l-sit-tuck",
+      "id": "pol-l-sit-foot-supported",
+      "variationId": "l-sit-foot-supported",
       "version": 1,
       "tiers": [
         {
           "index": 1,
-          "target": {
-            "type": "HOLD_SECONDS",
-            "value": 5
-          },
-          "workWindowSeconds": 8,
-          "minRecoverySeconds": 60
-        },
-        {
-          "index": 2,
-          "target": {
-            "type": "HOLD_SECONDS",
-            "value": 8
-          },
-          "workWindowSeconds": 11,
-          "minRecoverySeconds": 60
-        },
-        {
-          "index": 3,
           "target": {
             "type": "HOLD_SECONDS",
             "value": 10
@@ -9699,7 +9895,7 @@
           "minRecoverySeconds": 60
         },
         {
-          "index": 4,
+          "index": 2,
           "target": {
             "type": "HOLD_SECONDS",
             "value": 15
@@ -9708,23 +9904,42 @@
           "minRecoverySeconds": 60
         },
         {
-          "index": 5,
+          "index": 3,
           "target": {
             "type": "HOLD_SECONDS",
             "value": 20
           },
           "workWindowSeconds": 23,
           "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 60
+          },
+          "workWindowSeconds": 63,
+          "minRecoverySeconds": 60
         }
       ],
       "evidenceSourceIds": [
         "overcoming-gravity-2-low",
-        "building-the-gymnastic-body-sommer"
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "l-sit-floor"
+        "l-sit-one-foot"
       ],
       "prerequisiteRule": {
         "allOf": [
@@ -9737,24 +9952,17 @@
             }
           ]
         ]
-      }
+      },
+      "tierProfile": "H60",
+      "tierNote": "One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT."
     },
     {
-      "id": "pol-l-sit-floor",
-      "variationId": "l-sit-floor",
+      "id": "pol-l-sit-one-foot",
+      "variationId": "l-sit-one-foot",
       "version": 1,
       "tiers": [
         {
           "index": 1,
-          "target": {
-            "type": "HOLD_SECONDS",
-            "value": 5
-          },
-          "workWindowSeconds": 8,
-          "minRecoverySeconds": 60
-        },
-        {
-          "index": 2,
           "target": {
             "type": "HOLD_SECONDS",
             "value": 10
@@ -9763,7 +9971,7 @@
           "minRecoverySeconds": 60
         },
         {
-          "index": 3,
+          "index": 2,
           "target": {
             "type": "HOLD_SECONDS",
             "value": 15
@@ -9772,7 +9980,7 @@
           "minRecoverySeconds": 60
         },
         {
-          "index": 4,
+          "index": 3,
           "target": {
             "type": "HOLD_SECONDS",
             "value": 20
@@ -9781,24 +9989,185 @@
           "minRecoverySeconds": 60
         },
         {
-          "index": 5,
+          "index": 4,
           "target": {
             "type": "HOLD_SECONDS",
             "value": 30
           },
           "workWindowSeconds": 33,
           "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 60
+          },
+          "workWindowSeconds": 63,
+          "minRecoverySeconds": 60
         }
       ],
       "evidenceSourceIds": [
         "overcoming-gravity-2-low",
         "building-the-gymnastic-body-sommer",
-        "convict-conditioning-wade"
+        "r/bodyweightfitness wiki, live check 2026-10-09"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "v-sit-floor"
+        "l-sit-tuck"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "l-sit-foot-supported",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      },
+      "tierProfile": "H60",
+      "tierNote": "One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT."
+    },
+    {
+      "id": "pol-l-sit-tuck",
+      "variationId": "l-sit-tuck",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 60
+          },
+          "workWindowSeconds": 63,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "l-sit-advanced-tuck"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "l-sit-one-foot",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      },
+      "tierProfile": "H60",
+      "tierNote": "One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT."
+    },
+    {
+      "id": "pol-l-sit-advanced-tuck",
+      "variationId": "l-sit-advanced-tuck",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 60
+          },
+          "workWindowSeconds": 63,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "l-sit-one-leg"
       ],
       "prerequisiteRule": {
         "allOf": [
@@ -9811,7 +10180,162 @@
             }
           ]
         ]
-      }
+      },
+      "tierProfile": "H60",
+      "tierNote": "One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT."
+    },
+    {
+      "id": "pol-l-sit-one-leg",
+      "variationId": "l-sit-one-leg",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 60
+          },
+          "workWindowSeconds": 63,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "l-sit-floor"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "l-sit-advanced-tuck",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      },
+      "tierProfile": "H60",
+      "tierNote": "One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT."
+    },
+    {
+      "id": "pol-l-sit-floor",
+      "variationId": "l-sit-floor",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 60
+          },
+          "workWindowSeconds": 63,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer",
+        "convict-conditioning-wade",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "v-sit-floor"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "l-sit-one-leg",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      },
+      "tierProfile": "H60",
+      "tierNote": "One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT."
     },
     {
       "id": "pol-v-sit-floor",

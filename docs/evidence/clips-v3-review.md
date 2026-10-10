@@ -110,3 +110,10 @@ Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).
 | `squat-shrimp-advanced` | acceptable | deeper, the rear foot held behind |
 | `squat-pistol-box` | acceptable | a box behind the figure, the free leg out in front |
 | `squat-pistol-counterbalance` | acceptable | arms straight out with a small weight |
+
+## L07 additions (`frames-19-lsit-steps.png`)
+| Id | Verdict | Note |
+|---|---|---|
+| `l-sit-foot-supported`, `l-sit-one-foot` | weak | seated with the hips just off the floor; the heels on the floor and the one lifted leg are small differences from the side view |
+| `l-sit-tuck`, `l-sit-advanced-tuck` | acceptable | the knees move from the chest to level thighs |
+| `l-sit-one-leg` | acceptable | one leg straight, one tucked |

@@ -484,6 +484,19 @@
   ],
   "sharedPoseWith": []
  },
+ "l-sit-advanced-tuck": {
+  "kind": "hold",
+  "primary": [
+   "ABS",
+   "HIP_FLEXORS"
+  ],
+  "secondary": [
+   "TRICEPS",
+   "FRONT_DELTS",
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
  "l-sit-floor": {
   "kind": "hold",
   "primary": [
@@ -494,6 +507,45 @@
    "TRICEPS",
    "QUADS",
    "FRONT_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "l-sit-foot-supported": {
+  "kind": "hold",
+  "primary": [
+   "ABS",
+   "HIP_FLEXORS"
+  ],
+  "secondary": [
+   "TRICEPS",
+   "FRONT_DELTS",
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
+ "l-sit-one-foot": {
+  "kind": "hold",
+  "primary": [
+   "ABS",
+   "HIP_FLEXORS"
+  ],
+  "secondary": [
+   "TRICEPS",
+   "FRONT_DELTS",
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
+ "l-sit-one-leg": {
+  "kind": "hold",
+  "primary": [
+   "ABS",
+   "HIP_FLEXORS"
+  ],
+  "secondary": [
+   "TRICEPS",
+   "FRONT_DELTS",
+   "QUADS"
   ],
   "sharedPoseWith": []
  },

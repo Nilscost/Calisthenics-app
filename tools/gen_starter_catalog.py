@@ -300,9 +300,9 @@ strength("dead-bug", "Dead Bug", "dead-bug", ["CORE_ANTI_EXTENSION"], ["CORE"], 
 BAR = [{"needs": [need("pullup-bar")]}]
 WALL = [{"capabilities": ["wall"]}]
 HIGH_BAR = [{"needs": [need("pullup-bar"), need("high-bar")]}]  # hang with feet clear and get above it
-def ex(id, name, fam, pat, area, kind, pos, steps, tiers, src, st, eq=NO_EQ, rank=0, nxt=(), prereq=None, uni=False, cues=None, cautions=(CAUTION_STRENGTH,)):
+def ex(id, name, fam, pat, area, kind, pos, steps, tiers, src, st, eq=NO_EQ, rank=0, nxt=(), prereq=None, uni=False, cues=None, cautions=(CAUTION_STRENGTH,), tier_profile=None, tier_note=None):
     strength(id, name, fam, [pat], area, kind, pos, steps, cues or ["Controlled tempo", "Full range or clean position", "Stop if form breaks"],
-             tiers, src, st, eq=eq, unilateral=uni, rank=rank, nxt=nxt, prereq=prereq, cautions=cautions)
+             tiers, src, st, eq=eq, unilateral=uni, rank=rank, nxt=nxt, prereq=prereq, cautions=cautions, tier_profile=tier_profile, tier_note=tier_note)
 U, L, C = ["UPPER_BODY"], ["LOWER_BODY"], ["CORE"]
 # push (horizontal)
 ex("pushup-wall", "Wall Push-Up", "pushup", "PUSH_HORIZONTAL", [ "UPPER_BODY", "CORE"], "REPS", "standing",
@@ -400,14 +400,30 @@ ex("bridge-back", "Full Back Bridge", "bridge", "HINGE", L, "HOLD", "supine",
 # core
 ex("hollow-hold", "Hollow Body Hold", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "supine",
    ["Lie on your back, press the lower back into the floor.", "Lift shoulders and straight legs a few centimetres, arms by the ears or sides.", "Hold; make it easier by bending the knees."],
-   hold_tiers([10, 15, 20, 30, 40]), [S_GB, S_OG], CORE_ST, rank=20, prereq={"allOf": [[vt("plank", 4)]]}, nxt=["l-sit-tuck"])
+   hold_tiers([10, 15, 20, 30, 40]), [S_GB, S_OG], CORE_ST, rank=20, prereq={"allOf": [[vt("plank", 4)]]}, nxt=["l-sit-foot-supported"])
+ex("l-sit-foot-supported", "Foot-Supported L-Sit", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "seated",
+   ["Sit with straight legs and the hands beside the hips, fingers forward, heels on the floor.", "Press down, lift the hips off the floor while the heels stay on it and carry some of the weight.", "Hold with straight arms and the shoulders pushed down."],
+   hold_tiers([10, 15, 20, 30, 60]), [S_OG, S_GB, S_RR], CORE_ST, rank=22, nxt=["l-sit-one-foot"], prereq={"allOf": [[vt("hollow-hold", 3)]]}, tier_profile="H60", tier_note="One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT.",
+   cues=["Push the floor away", "Shoulders down", "Straight arms"])
+ex("l-sit-one-foot", "One-Foot L-Sit", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "seated",
+   ["From the foot-supported L-sit, lift one leg off the floor and hold it straight in front of you; the other heel stays down.", "Switch the lifted leg between holds.", "Keep the arms straight and the shoulders pushed down."],
+   hold_tiers([10, 15, 20, 30, 60]), [S_OG, S_GB, S_RR], CORE_ST, rank=24, nxt=["l-sit-tuck"], prereq={"allOf": [[vt("l-sit-foot-supported", 4)]]}, tier_profile="H60", tier_note="One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT.",
+   cues=["Straight lifted leg", "Switch legs", "Shoulders down"])
 ex("l-sit-tuck", "Tuck L-Sit", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "seated",
    ["Sit with the knees bent and the hands beside the hips, fingers forward.", "Press down, lift the hips and the feet off the floor with the knees pulled in.", "Hold with straight arms; the shoulders stay pushed down."],
-   hold_tiers([5, 8, 10, 15, 20]), [S_OG, S_GB], CORE_ST, rank=25, nxt=["l-sit-floor"], prereq={"allOf": [[vt("hollow-hold", 3)]]},
+   hold_tiers([10, 15, 20, 30, 60]), [S_OG, S_GB, S_RR], CORE_ST, rank=26, nxt=["l-sit-advanced-tuck"], prereq={"allOf": [[vt("l-sit-one-foot", 4)]]}, tier_profile="H60", tier_note="One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT.",
    cues=["Push the floor away", "Shoulders down", "Knees tight to the chest"])
+ex("l-sit-advanced-tuck", "Advanced Tuck L-Sit", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "seated",
+   ["From the tuck L-sit, move the knees away from the chest so the thighs are close to level and the shins hang down.", "Keep the back upright and the arms straight.", "Hold, then lower with control."],
+   hold_tiers([10, 15, 20, 30, 60]), [S_OG, S_GB, S_RR], CORE_ST, rank=28, nxt=["l-sit-one-leg"], prereq={"allOf": [[vt("l-sit-tuck", 4)]]}, tier_profile="H60", tier_note="One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT.",
+   cues=["Thighs level", "Straight arms", "Upright back"])
+ex("l-sit-one-leg", "One-Leg Extended L-Sit", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "seated",
+   ["From the advanced tuck, straighten one leg in front of you while the other stays tucked.", "Switch legs between holds.", "Keep the arms straight and the shoulders pushed down."],
+   hold_tiers([10, 15, 20, 30, 60]), [S_OG, S_GB, S_RR], CORE_ST, rank=29, nxt=["l-sit-floor"], prereq={"allOf": [[vt("l-sit-advanced-tuck", 4)]]}, tier_profile="H60", tier_note="One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT.",
+   cues=["Straight leg locked", "Switch legs", "Shoulders down"])
 ex("l-sit-floor", "L-Sit (floor)", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "seated",
    ["Sit with straight legs, hands beside the hips.", "Press down, lift the hips and legs off the floor.", "Hold with legs straight and locked."],
-   hold_tiers([5, 10, 15, 20, 30]), [S_OG, S_GB, S_CC], CORE_ST, rank=30, nxt=["v-sit-floor"], prereq={"allOf": [[vt("l-sit-tuck", 4)]]})
+   hold_tiers([10, 15, 20, 30, 60]), [S_OG, S_GB, S_CC, S_RR], CORE_ST, rank=30, nxt=["v-sit-floor"], prereq={"allOf": [[vt("l-sit-one-leg", 4)]]}, tier_profile="H60", tier_note="One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT.")
 ex("v-sit-floor", "V-Sit (floor)", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "seated",
    ["From an L-sit, lift the legs higher while leaning back slightly.", "Keep the arms straight and the legs locked.", "Hold; come down with control."],
    hold_tiers([3, 5, 8, 12, 15]), [S_OG, S_GB], CORE_ST, rank=40, prereq={"allOf": [[vt("l-sit-floor", 4)]]})
@@ -853,6 +869,10 @@ M = {
     "scapular-pull": (["LATS", "UPPER_BACK"], ["BICEPS", "FOREARMS", "REAR_DELTS"]),
     "arch-hang": (["LATS", "UPPER_BACK"], ["REAR_DELTS", "FOREARMS", "BICEPS"]),
     "pullup-negative": (["LATS", "BICEPS"], ["UPPER_BACK", "FOREARMS", "REAR_DELTS"]),
+    "l-sit-foot-supported": (["ABS", "HIP_FLEXORS"], ["TRICEPS", "FRONT_DELTS", "QUADS"]),
+    "l-sit-one-foot": (["ABS", "HIP_FLEXORS"], ["TRICEPS", "FRONT_DELTS", "QUADS"]),
+    "l-sit-advanced-tuck": (["ABS", "HIP_FLEXORS"], ["TRICEPS", "FRONT_DELTS", "QUADS"]),
+    "l-sit-one-leg": (["ABS", "HIP_FLEXORS"], ["TRICEPS", "FRONT_DELTS", "QUADS"]),
     "l-sit-tuck": (["ABS", "HIP_FLEXORS"], ["TRICEPS", "FRONT_DELTS", "QUADS"]),
     "bridge-incline": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK", "FRONT_DELTS", "TRICEPS"]),
     "goblet-squat": (["QUADS", "GLUTES"], ["ABS", "UPPER_BACK"]),
