@@ -79,3 +79,6 @@ Content task; the screens it changes are the Progress tabs (new nodes) and the c
 | Hips and back tab (single-leg slide, superman, arch, kettlebell chain) | 4 | 4 | 3 | the new bridge step is below the visible part in this capture |
 Not captured by any flow: the Pull tab (scapular pull → arch hang → negative → pull-up), the Core tab (tuck L-sit) and the incline bridge node. **Defect (process, 3):** the flows do not open those tabs; `e_seeded` gets two more tab shots in V27b so later runs show them.
 Defects below 3: none.
+
+## V26 — weight tracks (run 38026121221 at `a592d06`: 24 PASS, 0 FAIL)
+The Weight section sits under the five levels of the kettlebell exercise detail; `e_seeded` 07b captures only the top of that page (clip, levels), so **the track itself was not seen in a screenshot**: it is covered by `ProgressScreenTest` (steps NOW / Needs a 16 kg kettlebell) and the domain tests. **Defect (process, 3):** no flow step scrolled to it; V27b adds `07c-kettlebell-weights` to `e_seeded`, to be reviewed from that run. Detail page itself: light 4, dark 4, font 1.3 4 (unchanged apart from the new section). Defects below 3: none.
