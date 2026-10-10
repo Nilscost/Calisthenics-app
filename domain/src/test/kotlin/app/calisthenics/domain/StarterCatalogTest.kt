@@ -238,4 +238,19 @@ class StarterCatalogTest {
             assertTrue(id, catalog.variation(id)!!.instructions.any { "Ankle check" in it && "information only" in it })
         assertEquals(setOf("chair"), catalog.variation("squat-pistol-box")!!.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet())
     }
+
+    @Test fun l06HingeHasFourPathsWithSafeNordicDefaults() {
+        fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
+        fun tiers(id: String) = catalog.policyForVariation(id)!!.tiers.map { it.target.value }
+        // the four paths: bridge, single-leg deadlift, sliding leg curl (floor slides), Nordic; and the extension exercise on a table or bed edge
+        assertEquals(setOf("nordic-negative-banded", "slide-negative"), next("single-leg-deadlift").toSet())
+        assertEquals("bridge", catalog.variation("glute-bridge")!!.familyId); assertEquals("slide", catalog.variation("slide-hamstring")!!.familyId); assertEquals("nordic", catalog.variation("nordic-curl")!!.familyId)
+        assertTrue(catalog.variation("reverse-hyperextension")!!.instructions.any { "table" in it && "bed" in it })
+        // Nordic: band from the bar for the banded steps, a couch warning on every Nordic step, low volume (the top tier never above 6 reps)
+        for (id in listOf("nordic-negative-banded", "nordic-banded", "nordic-curl")) {
+            val v = catalog.variation(id)!!
+            assertTrue(id, v.instructions.any { "Couch anchor" in it }); assertTrue(id, tiers(id).max() <= 6)
+        }
+        for (id in listOf("nordic-negative-banded", "nordic-banded")) assertTrue(id, catalog.variation(id)!!.instructions.any { "Band from the bar" in it && "pull-up bar" in it })
+    }
 }

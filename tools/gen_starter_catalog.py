@@ -598,21 +598,23 @@ strength("single-leg-deadlift", "Single-Leg Deadlift (per side)", "rdl", ["HINGE
          ["Hips square", "Flat back", "Free leg in line with the body"],
          reps_tiers([4, 5, 6, 7, 8]), RR, HAM_ST, unilateral=True, rank=20, nxt=["nordic-negative-banded", "slide-negative"], prereq={"allOf": [[vt("rdl-bodyweight", 4)]]})
 NORDIC_NOTE = "Anchor the heels under something sturdy (a sofa or heavy furniture); the anchor point is about a fist away from the ankles. Pad the knees with a mat."
+COUCH_WARNING = "Couch anchor: check that the sofa is heavy, cannot slide or tip, and that the heels cannot slip out from under it. A partner holding the ankles also works. Keep the volume low: two or three sets of a few reps; the hamstrings need days to recover."
+NORDIC_BAND = "Band from the bar: loop a resistance band over the pull-up bar (or another high, sturdy anchor), hold it in both hands in front of you so it lifts you as you lower; a thicker band helps more, a thinner one less."
 strength("nordic-negative-banded", "Banded Nordic Curl Negative", "nordic", ["HINGE"], ["LOWER_BODY"], "REPS", "kneeling",
          ["Kneel on a mat with the heels anchored under something sturdy. Hold a resistance band anchored in front of you (door or post) so it takes some weight.", "Keep the body straight from the knees to the head and lower yourself slowly forward; the band helps at the bottom.",
-          "Catch yourself with the hands, then push back up to the start. Use a band that lets you lower for about 3-5 seconds.", NORDIC_NOTE],
+          "Catch yourself with the hands, then push back up to the start. Use a band that lets you lower for about 3-5 seconds.", NORDIC_BAND, NORDIC_NOTE, COUCH_WARNING],
          ["Straight body from knees to head", "Slow lowering", "Hands ready to catch"],
-         reps_tiers([3, 4, 5, 6, 8]), RR, HAM_ST, eq=ANCHOR_BAND, rank=30, nxt=["nordic-banded"], prereq={"allOf": [[vt("single-leg-deadlift", 4)]]},
+         reps_tiers([2, 3, 4, 5, 6]), RR, HAM_ST, eq=ANCHOR_BAND, rank=30, nxt=["nordic-banded"], prereq={"allOf": [[vt("single-leg-deadlift", 4)]]},
          cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))
 strength("nordic-banded", "Banded Nordic Curl", "nordic", ["HINGE"], ["LOWER_BODY"], "REPS", "kneeling",
          ["Same set-up as the negative: heels anchored, band held in front.", "Lower forward under control, then curl yourself back up using the hamstrings with the band's help.",
-          "When this feels easy, repeat with a weaker band; then try the Nordic curl.", NORDIC_NOTE],
+          "When this feels easy, repeat with a weaker band; then try the Nordic curl.", NORDIC_BAND, NORDIC_NOTE, COUCH_WARNING],
          ["Straight body from knees to head", "Pull up with the hamstrings", "Weaker band over time"],
-         reps_tiers([3, 4, 5, 6, 8]), RR, HAM_ST, eq=ANCHOR_BAND, rank=40, nxt=["nordic-curl"], prereq={"allOf": [[vt("nordic-negative-banded", 4)]]},
+         reps_tiers([2, 3, 4, 5, 6]), RR, HAM_ST, eq=ANCHOR_BAND, rank=40, nxt=["nordic-curl"], prereq={"allOf": [[vt("nordic-negative-banded", 4)]]},
          cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))
 strength("nordic-curl", "Nordic Curl", "nordic", ["HINGE"], ["LOWER_BODY"], "REPS", "kneeling",
          ["Kneel on a mat with the heels anchored under something sturdy.", "Lower the body forward as slowly as you can, keeping it straight from the knees to the head.",
-          "Use the hands to catch and help up if you need to; aim to come back up with the hamstrings.", NORDIC_NOTE],
+          "Use the hands to catch and help up if you need to; aim to come back up with the hamstrings.", NORDIC_NOTE, COUCH_WARNING],
          ["Straight body", "As slow as you can", "Little help from the hands"],
          reps_tiers([1, 2, 3, 4, 5]), RR, HAM_ST, eq=ANCHOR, rank=50, prereq={"allOf": [[vt("nordic-banded", 4)]]},
          cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))

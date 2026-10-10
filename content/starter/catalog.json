@@ -4960,7 +4960,9 @@
         "Kneel on a mat with the heels anchored under something sturdy. Hold a resistance band anchored in front of you (door or post) so it takes some weight.",
         "Keep the body straight from the knees to the head and lower yourself slowly forward; the band helps at the bottom.",
         "Catch yourself with the hands, then push back up to the start. Use a band that lets you lower for about 3-5 seconds.",
-        "Anchor the heels under something sturdy (a sofa or heavy furniture); the anchor point is about a fist away from the ankles. Pad the knees with a mat."
+        "Band from the bar: loop a resistance band over the pull-up bar (or another high, sturdy anchor), hold it in both hands in front of you so it lifts you as you lower; a thicker band helps more, a thinner one less.",
+        "Anchor the heels under something sturdy (a sofa or heavy furniture); the anchor point is about a fist away from the ankles. Pad the knees with a mat.",
+        "Couch anchor: check that the sofa is heavy, cannot slide or tip, and that the heels cannot slip out from under it. A partner holding the ankles also works. Keep the volume low: two or three sets of a few reps; the hamstrings need days to recover."
       ],
       "formCues": [
         "Straight body from knees to head",
@@ -5022,7 +5024,9 @@
         "Same set-up as the negative: heels anchored, band held in front.",
         "Lower forward under control, then curl yourself back up using the hamstrings with the band's help.",
         "When this feels easy, repeat with a weaker band; then try the Nordic curl.",
-        "Anchor the heels under something sturdy (a sofa or heavy furniture); the anchor point is about a fist away from the ankles. Pad the knees with a mat."
+        "Band from the bar: loop a resistance band over the pull-up bar (or another high, sturdy anchor), hold it in both hands in front of you so it lifts you as you lower; a thicker band helps more, a thinner one less.",
+        "Anchor the heels under something sturdy (a sofa or heavy furniture); the anchor point is about a fist away from the ankles. Pad the knees with a mat.",
+        "Couch anchor: check that the sofa is heavy, cannot slide or tip, and that the heels cannot slip out from under it. A partner holding the ankles also works. Keep the volume low: two or three sets of a few reps; the hamstrings need days to recover."
       ],
       "formCues": [
         "Straight body from knees to head",
@@ -5078,7 +5082,8 @@
         "Kneel on a mat with the heels anchored under something sturdy.",
         "Lower the body forward as slowly as you can, keeping it straight from the knees to the head.",
         "Use the hands to catch and help up if you need to; aim to come back up with the hamstrings.",
-        "Anchor the heels under something sturdy (a sofa or heavy furniture); the anchor point is about a fist away from the ankles. Pad the knees with a mat."
+        "Anchor the heels under something sturdy (a sofa or heavy furniture); the anchor point is about a fist away from the ankles. Pad the knees with a mat.",
+        "Couch anchor: check that the sofa is heavy, cannot slide or tip, and that the heels cannot slip out from under it. A partner holding the ankles also works. Keep the volume low: two or three sets of a few reps; the hamstrings need days to recover."
       ],
       "formCues": [
         "Straight body",
@@ -11703,13 +11708,22 @@
           "index": 1,
           "target": {
             "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
             "value": 3
           },
           "workWindowSeconds": 35,
           "minRecoverySeconds": 60
         },
         {
-          "index": 2,
+          "index": 3,
           "target": {
             "type": "REPS",
             "value": 4
@@ -11718,7 +11732,7 @@
           "minRecoverySeconds": 60
         },
         {
-          "index": 3,
+          "index": 4,
           "target": {
             "type": "REPS",
             "value": 5
@@ -11727,21 +11741,12 @@
           "minRecoverySeconds": 60
         },
         {
-          "index": 4,
+          "index": 5,
           "target": {
             "type": "REPS",
             "value": 6
           },
           "workWindowSeconds": 50,
-          "minRecoverySeconds": 60
-        },
-        {
-          "index": 5,
-          "target": {
-            "type": "REPS",
-            "value": 8
-          },
-          "workWindowSeconds": 65,
           "minRecoverySeconds": 60
         }
       ],
@@ -11775,13 +11780,22 @@
           "index": 1,
           "target": {
             "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
             "value": 3
           },
           "workWindowSeconds": 35,
           "minRecoverySeconds": 60
         },
         {
-          "index": 2,
+          "index": 3,
           "target": {
             "type": "REPS",
             "value": 4
@@ -11790,7 +11804,7 @@
           "minRecoverySeconds": 60
         },
         {
-          "index": 3,
+          "index": 4,
           "target": {
             "type": "REPS",
             "value": 5
@@ -11799,21 +11813,12 @@
           "minRecoverySeconds": 60
         },
         {
-          "index": 4,
+          "index": 5,
           "target": {
             "type": "REPS",
             "value": 6
           },
           "workWindowSeconds": 50,
-          "minRecoverySeconds": 60
-        },
-        {
-          "index": 5,
-          "target": {
-            "type": "REPS",
-            "value": 8
-          },
-          "workWindowSeconds": 65,
           "minRecoverySeconds": 60
         }
       ],

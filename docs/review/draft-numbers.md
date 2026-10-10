@@ -100,8 +100,8 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | One-Arm Kettlebell Swing (per side) | kettlebell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Kettlebell Swing L4 | — (top) |
 | Romanian Deadlift (bodyweight) | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | Single-Leg Deadlift (per side) |
 | Single-Leg Deadlift (per side) | none | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 7 / 55 / 60 | 8 / 65 / 60 | Romanian Deadlift (bodyweight) L4 | Banded Nordic Curl Negative, Hamstring Slide Negative |
-| Banded Nordic Curl Negative | foot-anchor + resistance-band* | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Single-Leg Deadlift (per side) L4 | Banded Nordic Curl |
-| Banded Nordic Curl | foot-anchor + resistance-band* | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Banded Nordic Curl Negative L4 | Nordic Curl |
+| Banded Nordic Curl Negative | foot-anchor + resistance-band* | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Single-Leg Deadlift (per side) L4 | Banded Nordic Curl |
+| Banded Nordic Curl | foot-anchor + resistance-band* | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Banded Nordic Curl Negative L4 | Nordic Curl |
 | Nordic Curl | foot-anchor | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Banded Nordic Curl L4 | — (top) |
 | Hamstring Slide Negative | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Single-Leg Deadlift (per side) L4 | Hamstring Slide |
 | Hamstring Slide | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Hamstring Slide Negative L4 | Single-Leg Slide Negative (per side) |
