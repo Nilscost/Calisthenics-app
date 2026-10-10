@@ -82,3 +82,11 @@ Defects below 3: none.
 
 ## V26 — weight tracks (run 38026121221 at `a592d06`: 24 PASS, 0 FAIL)
 The Weight section sits under the five levels of the kettlebell exercise detail; `e_seeded` 07b captures only the top of that page (clip, levels), so **the track itself was not seen in a screenshot**: it is covered by `ProgressScreenTest` (steps NOW / Needs a 16 kg kettlebell) and the domain tests. **Defect (process, 3):** no flow step scrolled to it; V27b adds `07c-kettlebell-weights` to `e_seeded`, to be reviewed from that run. Detail page itself: light 4, dark 4, font 1.3 4 (unchanged apart from the new section). Defects below 3: none.
+
+## V27 — suggestion card, barbell and vest options (run 38027682554 at `725125b`: 24 PASS, 0 FAIL)
+| Screen | Light | Dark | Font 1.3 | Notes |
+|---|---|---|---|---|
+| Progress with the suggestion card ("Chair opens Bulgarian Split Squat (per side). You do not need it; the plan works without.", Close) | 5 | 5 | 4 | one card, under the title, does not cover the tree; at font 1.3 the text takes three lines |
+| Progress Push tab below the card | 4 | 4 | 3 | the equipment-locked dip chain is still drawn first here (fixed in V27b) |
+Not captured by a flow: the With weights tab and the equipment editor options Barbell / Weighted vest. **Defect (process, 3):** `e_seeded` gets a With-weights shot in V27b. The profile editor with the two new options was not opened in a flow either; it uses the same checklist row component as the other options (weighted rows with a kilogram field), covered by the profile tests.
+Defects below 3: none.
