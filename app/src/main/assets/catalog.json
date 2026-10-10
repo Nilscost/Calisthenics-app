@@ -10052,7 +10052,9 @@
       "approved": false,
       "nextVariationIds": [
         "dip-negative"
-      ]
+      ],
+      "tierProfile": "H30",
+      "tierNote": "Tiers 10 / 15 / 20 / 25 / 30 s: the 30 s gate is sourced (RR, owner decision); the steps between are DRAFT."
     },
     {
       "id": "pol-dip-negative",
@@ -10835,18 +10837,18 @@
           "index": 1,
           "target": {
             "type": "REPS",
-            "value": 6
+            "value": 8
           },
-          "workWindowSeconds": 50,
+          "workWindowSeconds": 65,
           "minRecoverySeconds": 60
         },
         {
           "index": 2,
           "target": {
             "type": "REPS",
-            "value": 8
+            "value": 9
           },
-          "workWindowSeconds": 65,
+          "workWindowSeconds": 70,
           "minRecoverySeconds": 60
         },
         {
@@ -10862,18 +10864,18 @@
           "index": 4,
           "target": {
             "type": "REPS",
-            "value": 12
+            "value": 11
           },
-          "workWindowSeconds": 85,
+          "workWindowSeconds": 80,
           "minRecoverySeconds": 60
         },
         {
           "index": 5,
           "target": {
             "type": "REPS",
-            "value": 15
+            "value": 12
           },
-          "workWindowSeconds": 105,
+          "workWindowSeconds": 85,
           "minRecoverySeconds": 60
         }
       ],
@@ -10881,7 +10883,9 @@
         "r/bodyweightfitness wiki, live check 2026-10-09"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
-      "approved": false
+      "approved": false,
+      "tierProfile": "C",
+      "tierNote": "Core reps 8 to 12: the range is sourced (RR); the steps and the 12-rep gate are DRAFT."
     },
     {
       "id": "pol-reverse-hyperextension",
@@ -10892,18 +10896,18 @@
           "index": 1,
           "target": {
             "type": "REPS",
-            "value": 6
+            "value": 8
           },
-          "workWindowSeconds": 50,
+          "workWindowSeconds": 65,
           "minRecoverySeconds": 60
         },
         {
           "index": 2,
           "target": {
             "type": "REPS",
-            "value": 8
+            "value": 9
           },
-          "workWindowSeconds": 65,
+          "workWindowSeconds": 70,
           "minRecoverySeconds": 60
         },
         {
@@ -10919,18 +10923,18 @@
           "index": 4,
           "target": {
             "type": "REPS",
-            "value": 12
+            "value": 11
           },
-          "workWindowSeconds": 85,
+          "workWindowSeconds": 80,
           "minRecoverySeconds": 60
         },
         {
           "index": 5,
           "target": {
             "type": "REPS",
-            "value": 15
+            "value": 12
           },
-          "workWindowSeconds": 105,
+          "workWindowSeconds": 85,
           "minRecoverySeconds": 60
         }
       ],
@@ -10938,7 +10942,9 @@
         "r/bodyweightfitness wiki, live check 2026-10-09"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
-      "approved": false
+      "approved": false,
+      "tierProfile": "C",
+      "tierNote": "Core reps 8 to 12: the range is sourced (RR); the steps and the 12-rep gate are DRAFT."
     },
     {
       "id": "pol-plank-shoulder-tap",

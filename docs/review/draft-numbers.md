@@ -80,7 +80,7 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Superman Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Arch Hold (arms overhead, Y) |
 | Arch Hold (arms overhead, Y) | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | Superman Hold L4 | Arch Rocks |
 | Arch Rocks | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Arch Hold (arms overhead, Y) L4 | — (top) |
-| Reverse Hyperextension | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | — (top) |
+| Reverse Hyperextension | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 80 / 60 | 12 / 85 / 60 | - | — (top) |
 | Controlled Kettlebell Deadlift | kettlebell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | Kettlebell Single-Leg RDL (per side) |
 | Kettlebell Single-Leg RDL (per side) | kettlebell | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Controlled Kettlebell Deadlift L4 | Kettlebell Swing |
 | Kettlebell Swing | kettlebell | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Kettlebell Single-Leg RDL (per side) L3 and Controlled Kettlebell Deadlift L5 | One-Arm Kettlebell Swing (per side) |
@@ -109,7 +109,7 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Side Plank (per side) | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | - | Side Plank with Leg Raise (per side) |
 | Side Plank with Leg Raise (per side) | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Side Plank (per side) L4 | Copenhagen Side Plank (per side) |
 | Copenhagen Side Plank (per side) | chair* | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 16s / 19 / 60 | 20s / 23 / 60 | Side Plank with Leg Raise (per side) L4 | — (top) |
-| Pallof Press (per side) | resistance-band* | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | — (top) |
+| Pallof Press (per side) | resistance-band* | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 80 / 60 | 12 / 85 / 60 | - | — (top) |
 | Lying Leg Raise | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | V-Up |
 | V-Up | none | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Lying Leg Raise L3 | — (top) |
 

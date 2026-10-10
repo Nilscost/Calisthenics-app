@@ -88,6 +88,9 @@ data class Target(val type: TargetType, val value: Int, /** V21: the top of a re
 }
 
 /** O2: how progress is judged for a routine. App levels = today's five-target tiers; Rep range = sets x from-to (a session where every set reaches the top moves you on); Custom = the same, with everything editable. */
+/** L01: the shared tier vocabulary. R reps, RU reps per side, C core reps, H30 holds to 30 s, H60 accumulated holds to one minute, N negatives, E endurance (calves, tibialis), M McGill maintenance. */
+@Serializable enum class TierProfile { R, RU, C, H30, H60, N, E, M }
+
 @Serializable enum class RuleKind { APP_LEVELS, REP_RANGE, CUSTOM }
 
 @Serializable
@@ -152,6 +155,10 @@ data class ProgressionPolicy(
     val evidenceSourceIds: List<String> = emptyList(),
     val policyKind: PolicyKind = PolicyKind.PRODUCT_HEURISTIC,
     val approved: Boolean = false,
+    /** L01: the shared tier vocabulary this policy's five tiers follow (null = hand-written numbers). Appended last; old catalogs decode. */
+    val tierProfile: TierProfile? = null,
+    /** L01: which of the tier numbers have a source and which are DRAFT (free text, our words). */
+    val tierNote: String? = null,
 ) {
     fun tier(index: Int): Tier = tiers.first { it.index == index }
 }

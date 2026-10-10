@@ -49,9 +49,28 @@ CAUTION_STRENGTH = "Stop the set on sharp or joint pain; do not push through it.
 
 variations, policies = [], []
 
+# L01: the shared tier vocabulary (report "One gate, five tiers"); keep in sync with domain/.../progression/TierProfiles.kt (a test compares them)
+PROFILE_SPECS = {
+    "R": [(3, 5), (3, 6), (3, 7), (3, 8), (3, 10)], "RU": [(3, 5), (3, 6), (3, 7), (3, 8), (3, 10)],
+    "C": [(3, 8), (3, 9), (3, 10), (3, 11), (3, 12)], "H30": [(3, 10), (3, 15), (3, 20), (3, 25), (3, 30)],
+    "H60": [(6, 10), (4, 15), (3, 20), (2, 30), (1, 60)], "N": [(3, 3, 3), (3, 4, 5), (3, 5, 5), (3, 5, 8), (3, 5, 10)],
+    "E": [(3, 15), (3, 18), (3, 20), (3, 22), (3, 25)], "M": [(1, 10)] * 5,
+}
+HOLD_PROFILES = {"H30", "H60", "M"}
+def profile_tiers(code, rec=60, stretch=None):
+    specs = PROFILE_SPECS[code]; hold = code in HOLD_PROFILES; tiers = []
+    for i, sp in enumerate(specs, 1):
+        v = sp[1]; desc = sp[2] if len(sp) > 2 else None
+        if hold: t = {"type": "HOLD_SECONDS", "value": v}; win = v + HOLD_SETUP_SECONDS
+        else: t = {"type": "REPS", "value": v}; win = max(30, rnd5(v * (desc + 3 if desc else 6) + 15))
+        d = {"index": i, "target": t, "workWindowSeconds": win, "minRecoverySeconds": rec}
+        if stretch: d["earlyCompletionStretchId"] = stretch
+        tiers.append(d)
+    return tiers
+
 def strength(id, name, family, patterns, areas, kind, position, instructions, cues, tiers,
              sources, stretches, eq=NO_EQ, unilateral=False, rank=0, nxt=(), prereq=None,
-             cautions=(CAUTION_STRENGTH,)):
+             cautions=(CAUTION_STRENGTH,), tier_profile=None, tier_note=None):
     variations.append({
         "id": id, "familyId": family, "name": name, "patterns": patterns, "areas": areas,
         "kind": kind, "equipmentAlternatives": eq, "unilateral": unilateral, "position": position,
@@ -63,6 +82,9 @@ def strength(id, name, family, patterns, areas, kind, position, instructions, cu
            "evidenceSourceIds": sources, "policyKind": "PRODUCT_HEURISTIC", "approved": False}
     if nxt: pol["nextVariationIds"] = list(nxt)
     if prereq: pol["prerequisiteRule"] = prereq
+    if tier_profile:
+        pol["tierProfile"] = tier_profile; pol["tiers"] = profile_tiers(tier_profile, rec=tiers[0]["minRecoverySeconds"] if tiers else 60)
+        if tier_note: pol["tierNote"] = tier_note
     policies.append(pol)
 
 def stretch(id, name, areas, seconds, uni, position, instructions, eq=NO_EQ, kind="STRETCH", cues=(), cautions=(), primary=(), secondary=(), sources=None):
@@ -521,7 +543,7 @@ strength("dip-support-hold", "Dip Support Hold", "dip", ["PUSH_VERTICAL"], ["UPP
          ["Support the body on two parallel bars with straight arms, shoulders pushed down away from the ears.", "Keep the body still and breathe; the legs can hang or be bent.", DIP_NOTE,
           "Move on when all sets reach 30 s (the wiki aims for one minute; 30 s is the app's choice)."],
          ["Straight arms", "Shoulders down", "Body still"],
-         hold_tiers([10, 15, 20, 25, 30]), RR, UP, eq=DIPEQ, rank=60, nxt=["dip-negative"],
+         hold_tiers([10, 15, 20, 25, 30]), RR, UP, eq=DIPEQ, rank=60, nxt=["dip-negative"], tier_profile="H30", tier_note="Tiers 10 / 15 / 20 / 25 / 30 s: the 30 s gate is sourced (RR, owner decision); the steps between are DRAFT.",
          cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; step down on shoulder pain."))
 strength("dip-negative", "Negative Dip", "dip", ["PUSH_VERTICAL"], ["UPPER_BODY"], "REPS", "standing",
          ["Start in the support hold with straight arms.", "Lower yourself slowly (about 5 seconds, working toward 10) until the upper arms are about parallel to the floor.",
@@ -596,12 +618,12 @@ strength("pallof-press", "Pallof Press (per side)", "pallof", ["CORE_ANTI_ROTATI
          ["Anchor a resistance band at chest height beside you and stand sideways to it, holding the band at the chest with both hands.", "Press the hands straight out in front of you and pause for a moment with the arms straight.",
           "Do not let the band turn you; bring the hands back to the chest. Do all reps on one side, then switch."],
          ["Do not rotate", "Pause with arms straight", "Ribs down"],
-         reps_tiers([6, 8, 10, 12, 15]), RR, CORE_ST, eq=[{"needs": [need("resistance-band", suitability=["stable-anchor"])]}], unilateral=True, rank=20)
+         reps_tiers([6, 8, 10, 12, 15]), RR, CORE_ST, eq=[{"needs": [need("resistance-band", suitability=["stable-anchor"])]}], unilateral=True, rank=20, tier_profile="C", tier_note="Core reps 8 to 12: the range is sourced (RR); the steps and the 12-rep gate are DRAFT.")
 strength("reverse-hyperextension", "Reverse Hyperextension", "reverse-hyper", ["HINGE"], ["LOWER_BODY", "CORE"], "REPS", "prone",
          ["Lie face down over the edge of a stable table, counter or bed so the hips are at the edge and the legs hang; hold the sides with your hands.", "Squeeze the glutes and raise both legs until they are in line with the body.",
           "Lower with control and repeat. Make sure the surface cannot slide or tip."],
          ["Glutes drive the lift", "Do not swing", "Stop at body height"],
-         reps_tiers([6, 8, 10, 12, 15]), RR, CORE_ST, rank=25,
+         reps_tiers([6, 8, 10, 12, 15]), RR, CORE_ST, rank=25, tier_profile="C", tier_note="Core reps 8 to 12: the range is sourced (RR); the steps and the 12-rep gate are DRAFT.",
          cautions=(CAUTION_STRENGTH, "Check that the table or counter is stable. Stop on any pinching in the lower back; arch raises (Arch Hold) are the floor alternative."))
 strength("plank-shoulder-tap", "Plank Shoulder Taps", "plank-tap", ["CORE_ANTI_EXTENSION"], ["CORE"], "REPS", "floor",
          ["Start in a high plank, hands under the shoulders, feet a little wider than hip width.", "Lift one hand and tap the opposite shoulder without letting the hips rock.",

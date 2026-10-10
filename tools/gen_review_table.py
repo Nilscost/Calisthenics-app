@@ -85,7 +85,9 @@ def main():
                          f' | {prereq(pol, names)} | {nxt} |')
             # --- sanity checks ---
             vals = [t["target"]["value"] for t in tiers]
-            if vals != sorted(vals) or len(set(vals)) != len(vals):
+            if pol.get("tierProfile") == "N":   # negatives get harder by the length of the descent, the reps may stay
+                if vals != sorted(vals): warn.append(f'{v["name"]}: targets fall {vals}')
+            elif vals != sorted(vals) or len(set(vals)) != len(vals):
                 warn.append(f'{v["name"]}: targets not strictly rising {vals}')
             for t in tiers:
                 tv, w = t["target"]["value"], t["workWindowSeconds"]
