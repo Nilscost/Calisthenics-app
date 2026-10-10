@@ -1,6 +1,6 @@
 # Calisthenics App
 
-A personal Android app for bodyweight and kettlebell training. You get a circuit planned for the time you have, each exercise demonstrated, and progress tracked across 112 exercises and 25 stretch and warm-up items, up to skills such as the muscle-up, front lever and pistol squat. It runs fully offline: no account, no internet permission, and all data stays on the phone.
+A personal Android app for bodyweight and kettlebell training. You get a circuit planned for the time you have, each exercise demonstrated, and progress tracked across 117 exercises and 35 stretch and warm-up items, up to skills such as the muscle-up, front lever and pistol squat. It runs fully offline: no account, no internet permission, and all data stays on the phone.
 
 ![Six of the generated exercise demos](docs/media/exercises.png)
 
@@ -15,7 +15,7 @@ I built it as the product owner. AI coding agents wrote most of the code; I set 
 - **History:** a week view and per-workout details, with corrections saved as new revisions so nothing is overwritten.
 - **Data:** checksummed backup and restore, crash-safe workout recovery, and a schema-checked database with no destructive migrations.
 
-**Version 2 (release R5, 0.8.0-r5):** a redesigned Train and workout screen, a round preview you can edit (levels, stretches, per-set numbers), three workout formats (circuit, pairs, straight sets), progression rules (levels or rep ranges), saved routines and the ready-made Recommended and Minimalist routines, an optional warm-up, History charts, weight tracks and suggestions for extra equipment. See `STATUS.md` and `docs/evidence/owner-check-r5.md`. Exercise content is still an unreviewed draft and nothing has been tested on a phone yet.
+**Version 2 (release R6, 0.9.0-r6):** a redesigned Train and workout screen, a round preview you can edit (levels, stretches, per-set numbers), three workout formats (circuit, pairs, straight sets), progression rules (levels or rep ranges), saved routines and the ready-made Recommended and Minimalist routines, an optional warm-up, History charts, weight tracks and suggestions for extra equipment, a 24-stretch library with a "Starting To Stretch" session, a RAMP warm-up and the Barlow Condensed and IBM Plex Sans type. See `STATUS.md` and `docs/evidence/owner-check-final.md`. Exercise content is still an unreviewed draft and nothing has been tested on a phone yet.
 
 ## How the project was run
 
