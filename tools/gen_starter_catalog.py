@@ -607,20 +607,21 @@ stretch("warmup-support-hold", "Support Hold (warm-up)", ["SHOULDER"], 30, False
 # --- dips: parallel-bar support hold -> negative dips -> dips (two sturdy chairs or a counter corner work; no bench dips)
 DIPEQ = [{"needs": [need("dip-support")]}]
 DIP_NOTE = "Support: parallel bars, two sturdy chairs (put weight on the seats so they cannot tip), or a 90-degree kitchen-counter corner. Bench dips with the hands behind you are not used here: they carry over poorly to real dips."
+DIP_DEPTH = "Depth cap: never go lower than a right angle at the elbows (upper arms about parallel to the floor), especially between two chairs. Stop the set on pain at the front of the shoulder and skip dips until it settles."
 strength("dip-support-hold", "Dip Support Hold", "dip", ["PUSH_VERTICAL"], ["UPPER_BODY"], "HOLD", "standing",
          ["Support the body on two parallel bars with straight arms, shoulders pushed down away from the ears.", "Keep the body still and breathe; the legs can hang or be bent.", DIP_NOTE,
-          "Move on when all sets reach 30 s (the wiki aims for one minute; 30 s is the app's choice)."],
+          "Move on when all three sets reach 30 s (the wiki aims for one minute; 30 s is the app's choice).", DIP_DEPTH],
          ["Straight arms", "Shoulders down", "Body still"],
          hold_tiers([10, 15, 20, 25, 30]), RR, UP, eq=DIPEQ, rank=60, nxt=["dip-negative"], tier_profile="H30", tier_note="Tiers 10 / 15 / 20 / 25 / 30 s: the 30 s gate is sourced (RR, owner decision); the steps between are DRAFT.",
          cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; step down on shoulder pain."))
 strength("dip-negative", "Negative Dip", "dip", ["PUSH_VERTICAL"], ["UPPER_BODY"], "REPS", "standing",
          ["Start in the support hold with straight arms.", "Lower yourself slowly (about 5 seconds, working toward 10) until the upper arms are about parallel to the floor.",
-          "Step or jump back up to the top; do not push up with the arms.", DIP_NOTE],
+          "Step or jump back up to the top; do not push up with the arms.", DIP_NOTE, DIP_DEPTH],
          ["Slow lowering", "Elbows close to the body", "Shoulders down"],
          reps_tiers([3, 4, 5, 6, 8]), RR, UP, eq=DIPEQ, rank=65, nxt=["dip-parallel"], prereq={"allOf": [[vt("dip-support-hold", 4)]]},
          cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; stop on shoulder or elbow pain."))
 strength("dip-parallel", "Dip", "dip", ["PUSH_VERTICAL"], ["UPPER_BODY"], "REPS", "standing",
-         ["Start in the support hold with straight arms.", "Lower until the upper arms are about parallel to the floor, then press back up to straight arms.", "Keep the shoulders down and the body slightly forward.", DIP_NOTE],
+         ["Start in the support hold with straight arms.", "Lower until the upper arms are about parallel to the floor, then press back up to straight arms.", "Keep the shoulders down and the body slightly forward.", DIP_NOTE, DIP_DEPTH],
          ["Controlled lowering", "Full lockout", "Shoulders down"],
          reps_tiers([3, 5, 6, 8, 10]), RR, UP, eq=DIPEQ, rank=70, prereq={"allOf": [[vt("dip-negative", 4)]]},
          cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; stop on shoulder or elbow pain."))
@@ -809,7 +810,7 @@ strength("weighted-pullup", "Weighted Pull-Up", "vest-pull", ["PULL_VERTICAL"], 
          ["Put on the vest and hang from the bar with straight arms.", "Pull until the chin is over the bar, then lower slowly to straight arms.", LOAD_WEIGHT],
          ["Straight arms at the bottom", "Chin over the bar"], reps_tiers([3, 4, 5, 6, 8]), RR, UP, eq=[{"needs": [need("pullup-bar"), need("weighted-vest")]}], rank=45, prereq={"allOf": [[vt("pullup-full", 5)]]})
 strength("weighted-dip", "Weighted Dip", "vest-dip", ["PUSH_VERTICAL"], ["UPPER_BODY"], "REPS", "standing",
-         ["Put on the vest and support yourself on the parallel bars (or two sturdy chairs / a counter corner) with straight arms.", "Lower until the upper arms are about parallel to the floor, then press back up.", DIP_NOTE, LOAD_WEIGHT],
+         ["Put on the vest and support yourself on the parallel bars (or two sturdy chairs / a counter corner) with straight arms.", "Lower until the upper arms are about parallel to the floor, then press back up.", DIP_NOTE, DIP_DEPTH, LOAD_WEIGHT],
          ["Shoulders down", "Full lockout"], reps_tiers([3, 5, 6, 8, 10]), RR, UP, eq=[{"needs": [need("dip-support"), need("weighted-vest")]}], rank=40, prereq={"allOf": [[vt("dip-parallel", 5)]]},
          cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; stop on shoulder or elbow pain."))
 strength("weighted-squat", "Weighted Squat", "vest-squat", ["SQUAT"], ["LOWER_BODY"], "REPS", "standing",

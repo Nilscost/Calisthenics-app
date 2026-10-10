@@ -287,4 +287,14 @@ class StarterCatalogTest {
         assertEquals(setOf("wall"), catalog.variation("bridge-wall-walkdown")!!.equipmentAlternatives.flatMap { it.capabilities }.toSet())
         assertTrue(catalog.variation("bridge-head")!!.cautions.any { "neck" in it })
     }
+
+    @Test fun l10DipsCarryTheDepthCapAndShoulderPainCopy() {
+        for (id in listOf("dip-support-hold", "dip-negative", "dip-parallel", "weighted-dip")) {
+            val v = catalog.variation(id)!!
+            assertTrue(id, v.instructions.any { "Depth cap" in it && "right angle" in it && "front of the shoulder" in it })
+            assertTrue(id, v.instructions.any { "two sturdy chairs" in it && "counter corner" in it.replace("-", " ").replace("kitchen counter corner", "counter corner") || "kitchen-counter corner" in it })
+        }
+        assertEquals(30, catalog.policyForVariation("dip-support-hold")!!.tiers.last().target.value)            // support hold 3 x 30 s
+        assertTrue(catalog.variations.none { "bench dip" in it.name.lowercase() })
+    }
 }
