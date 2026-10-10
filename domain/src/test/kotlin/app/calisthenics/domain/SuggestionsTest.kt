@@ -46,7 +46,10 @@ class SuggestionsTest {
     }
 
     @Test fun dipSupportIsHintedAfterASolidPushUp() {
-        val s = suggest(catalog, bare, snap(vp("pushup-standard", 4, setOf(1, 2, 3, 4))), emptySet()) as Suggestion.GetEquipment
+        val withChair = bare.copy(items = listOf(EquipmentItem("chair", suitability = setOf("stable"))))
+        val first = suggest(catalog, bare, snap(vp("pushup-standard", 4, setOf(1, 2, 3, 4))), emptySet()) as Suggestion.GetEquipment
+        assertEquals("chair", first.equipmentId)   // the nearer step: feet-elevated push-ups need a chair
+        val s = suggest(catalog, withChair, snap(vp("pushup-standard", 4, setOf(1, 2, 3, 4))), emptySet()) as Suggestion.GetEquipment
         assertEquals("dip-support", s.equipmentId); assertEquals("dip-support-hold", s.unlocksVariationId)
         assertNull(suggest(catalog, bare, snap(vp("pushup-standard", 2)), emptySet()))   // not before
     }

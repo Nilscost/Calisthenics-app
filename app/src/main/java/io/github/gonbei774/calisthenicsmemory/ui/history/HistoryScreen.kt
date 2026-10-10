@@ -35,6 +35,7 @@ import app.calisthenics.domain.feedback.effectiveRounds
 import io.github.gonbei774.calisthenicsmemory.ui.session.EditorRound
 import io.github.gonbei774.calisthenicsmemory.ui.session.RoundEditor
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
+import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
 import io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -57,14 +58,27 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
     var weekStart by remember { mutableStateOf(weekStartOf(today)) }
     var selected by remember { mutableStateOf<LocalDate?>(null) }
 
-    Scaffold(modifier = modifier, topBar = { TopAppBar(title = { Text(stringResource(R.string.tab_history)) }) }) { pad ->
+    val catalog = remember { runCatching { loadCatalog(ctx) }.getOrNull() }
+    var progress by remember { mutableStateOf<app.calisthenics.domain.progression.ProgressSnapshot?>(null) }
+    LaunchedEffect(catalog) { if (catalog != null) progress = try { io.github.gonbei774.calisthenicsmemory.ui.screens.ProgressLoader.load(ctx, catalog) } catch (_: Throwable) { null } }
+    var chartFor by remember { mutableStateOf<String?>(null) }
+    Scaffold(modifier = modifier) { pad ->
         Column(Modifier.padding(pad).fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+            Text(stringResource(R.string.tab_history).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("history_title"))
             val list = all
             if (list == null) { Text(stringResource(R.string.history_loading)); return@Column }
             val finished = finishedSessions(list.map { it.record }).map { it.sessionId }.toSet()
             val overviews = list.filter { it.record.sessionId in finished }.map { overviewOf(it.plan, it.record, zone) }
             val days = weekDays(weekStart)
             val trained = overviews.map { it.day }.toSet()
+            // doc 17 §2.5: summary tiles
+            val levelUpDays = progress?.events?.filter { isLevelUp(it) }?.map { LocalDate.ofEpochDay(it.day.toLong()) }.orEmpty()
+            val tiles = remember(list, levelUpDays, today) { historyTiles(list.map { it.record }, levelUpDays, today, zone) }
+            Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                StatTile(tiles.sessionsThisWeek.toString(), R.string.history_tile_sessions, "tile_sessions", Modifier.weight(1f).fillMaxHeight())
+                StatTile(tiles.levelUpsThisMonth.toString(), R.string.history_tile_levelups, "tile_levelups", Modifier.weight(1f).fillMaxHeight())
+                StatTile(tiles.workMinutesThisWeek.toString(), R.string.history_tile_minutes, "tile_minutes", Modifier.weight(1f).fillMaxHeight())
+            }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { weekStart = weekStart.minusWeeks(1); selected = null }, modifier = Modifier.testTag("week_prev")) { Icon(Icons.Filled.KeyboardArrowLeft, stringResource(R.string.history_prev_week)) }
                 Text(stringResource(R.string.history_week_range, dateFmt.format(days.first()), dateFmt.format(days.last())), Modifier.weight(1f).testTag("week_label"), textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
@@ -101,7 +115,60 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
                     }
                 }
             }
+            // doc 17 §2.5: every progression with its current best, and the lowest set per session for the one that is open
+            val series = remember(list) { lowestSetSeries(list.map { it.record }, zone) }
+            if (series.isNotEmpty() && catalog != null) {
+                Caption(stringResource(R.string.history_progressions))
+                series.entries.sortedByDescending { it.value.last().day }.forEach { (vid, pts) ->
+                    val v = catalog.variation(vid) ?: return@forEach
+                    val tier = progress?.tierFor(vid)
+                    val unit = if (v.kind == app.calisthenics.domain.model.Kind.HOLD) "s" else ""
+                    val open = chartFor == vid
+                    Card(Modifier.fillMaxWidth().clickable { chartFor = if (open) null else vid }.testTag("progression_$vid"), shape = MaterialTheme.shapes.large) {
+                        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                                io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(vid, v.name, 40.dp)
+                                Column(Modifier.weight(1f)) {
+                                    Text(v.name, style = MaterialTheme.typography.titleMedium)
+                                    Text(listOfNotNull(tier?.let { stringResource(R.string.history_level_of, it) }, stringResource(R.string.history_best, pts.maxOf { it.lowest }, unit)).joinToString(" · "), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
+                            }
+                            if (open) {
+                                val gate = tier?.let { t -> catalog.policyFor(v)?.tiers?.firstOrNull { it.index == t }?.target?.value }
+                                LowestSetChart(pts.takeLast(12).map { it.lowest }, gate, Modifier.fillMaxWidth().height(120.dp).testTag("chart_$vid"))
+                                if (gate != null) Text(stringResource(R.string.history_chart_gate, gate, unit), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
+                    }
+                }
+            }
         }
+    }
+}
+
+@Composable
+private fun StatTile(value: String, caption: Int, tag: String, modifier: Modifier) {
+    Card(modifier.semantics(mergeDescendants = true) {}.testTag(tag), shape = MaterialTheme.shapes.large) {
+        Column(Modifier.padding(Spacing.m).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            Text(value, style = MaterialTheme.typography.headlineMedium)
+            Caption(stringResource(caption))
+        }
+    }
+}
+
+/** The lowest set of each session as a line with dots; the dashed line is the number that gates the level. */
+@Composable
+private fun LowestSetChart(values: List<Int>, gate: Int?, modifier: Modifier) {
+    val line = AppAccentTheme.colors.accent; val grid = MaterialTheme.colorScheme.outlineVariant; val gateColor = MaterialTheme.colorScheme.outline
+    val desc = stringResource(R.string.history_chart_desc, values.joinToString(", "))
+    androidx.compose.foundation.Canvas(modifier.semantics { contentDescription = desc }) {
+        val top = (values + listOfNotNull(gate)).max().toFloat().coerceAtLeast(1f); val pad = 8.dp.toPx()
+        fun y(v: Float) = size.height - pad - (size.height - 2 * pad) * (v / top)
+        drawLine(grid, androidx.compose.ui.geometry.Offset(0f, size.height - pad), androidx.compose.ui.geometry.Offset(size.width, size.height - pad), 1.dp.toPx())
+        gate?.let { drawLine(gateColor, androidx.compose.ui.geometry.Offset(0f, y(it.toFloat())), androidx.compose.ui.geometry.Offset(size.width, y(it.toFloat())), 1.dp.toPx(), pathEffect = androidx.compose.ui.graphics.PathEffect.dashPathEffect(floatArrayOf(10f, 10f))) }
+        val xs = values.indices.map { i -> pad + (size.width - 2 * pad) * (if (values.size == 1) 0.5f else i / (values.size - 1f)) }
+        for (i in 0 until values.size - 1) drawLine(line, androidx.compose.ui.geometry.Offset(xs[i], y(values[i].toFloat())), androidx.compose.ui.geometry.Offset(xs[i + 1], y(values[i + 1].toFloat())), 3.dp.toPx())
+        values.forEachIndexed { i, v -> drawCircle(line, 5.dp.toPx(), androidx.compose.ui.geometry.Offset(xs[i], y(v.toFloat()))) }
     }
 }
 

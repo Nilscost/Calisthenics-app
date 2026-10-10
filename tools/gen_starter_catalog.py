@@ -521,18 +521,18 @@ strength("dip-support-hold", "Dip Support Hold", "dip", ["PUSH_VERTICAL"], ["UPP
          ["Support the body on two parallel bars with straight arms, shoulders pushed down away from the ears.", "Keep the body still and breathe; the legs can hang or be bent.", DIP_NOTE,
           "Move on when all sets reach 30 s (the wiki aims for one minute; 30 s is the app's choice)."],
          ["Straight arms", "Shoulders down", "Body still"],
-         hold_tiers([10, 15, 20, 25, 30]), RR, UP, eq=DIPEQ, rank=10, nxt=["dip-negative"],
+         hold_tiers([10, 15, 20, 25, 30]), RR, UP, eq=DIPEQ, rank=60, nxt=["dip-negative"],
          cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; step down on shoulder pain."))
 strength("dip-negative", "Negative Dip", "dip", ["PUSH_VERTICAL"], ["UPPER_BODY"], "REPS", "standing",
          ["Start in the support hold with straight arms.", "Lower yourself slowly (about 5 seconds, working toward 10) until the upper arms are about parallel to the floor.",
           "Step or jump back up to the top; do not push up with the arms.", DIP_NOTE],
          ["Slow lowering", "Elbows close to the body", "Shoulders down"],
-         reps_tiers([3, 4, 5, 6, 8]), RR, UP, eq=DIPEQ, rank=20, nxt=["dip-parallel"], prereq={"allOf": [[vt("dip-support-hold", 4)]]},
+         reps_tiers([3, 4, 5, 6, 8]), RR, UP, eq=DIPEQ, rank=65, nxt=["dip-parallel"], prereq={"allOf": [[vt("dip-support-hold", 4)]]},
          cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; stop on shoulder or elbow pain."))
 strength("dip-parallel", "Dip", "dip", ["PUSH_VERTICAL"], ["UPPER_BODY"], "REPS", "standing",
          ["Start in the support hold with straight arms.", "Lower until the upper arms are about parallel to the floor, then press back up to straight arms.", "Keep the shoulders down and the body slightly forward.", DIP_NOTE],
          ["Controlled lowering", "Full lockout", "Shoulders down"],
-         reps_tiers([3, 5, 6, 8, 10]), RR, UP, eq=DIPEQ, rank=30, prereq={"allOf": [[vt("dip-negative", 4)]]},
+         reps_tiers([3, 5, 6, 8, 10]), RR, UP, eq=DIPEQ, rank=70, prereq={"allOf": [[vt("dip-negative", 4)]]},
          cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; stop on shoulder or elbow pain."))
 
 # --- hinge: Romanian deadlift -> single-leg deadlift -> banded Nordic negatives -> banded Nordic curl -> Nordic curl (or the floor-slide path)

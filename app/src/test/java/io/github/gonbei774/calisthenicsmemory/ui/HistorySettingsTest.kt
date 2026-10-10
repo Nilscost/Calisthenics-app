@@ -66,6 +66,18 @@ class HistorySettingsTest {
         rule.onNodeWithTag("week_summary").assertTextContains("2 workouts", substring = true)
     }
 
+    @Test fun historyHasATitleSummaryTilesAndAProgressionWithItsChart() {   // V27b (doc 17 section 2.5)
+        showHistory(FakeHistory(listOf(session("a", LocalDate.of(2026, 10, 5), 8, 6, 8), session("b", LocalDate.of(2026, 10, 7), 9, 8, 8))))
+        rule.waitForIdle()
+        rule.onNodeWithTag("history_title").assertTextEquals("HISTORY")
+        rule.onNodeWithTag("tile_sessions").assertTextContains("2", substring = true)
+        rule.onNodeWithTag("tile_minutes").assertIsDisplayed(); rule.onNodeWithTag("tile_levelups").assertIsDisplayed()
+        rule.onNodeWithTag("progression_pushup-standard").performScrollTo().assertTextContains("best 8", substring = true)   // lowest set of each workout: 6 and 8
+        rule.onNodeWithTag("chart_pushup-standard", useUnmergedTree = true).assertDoesNotExist()
+        rule.onNodeWithTag("progression_pushup-standard").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("chart_pushup-standard", useUnmergedTree = true).assertExists()
+    }
+
     @Test fun tappingADayFiltersAndTappingASessionOpensIt() {
         var opened = ""
         showHistory(FakeHistory(listOf(session("a", LocalDate.of(2026, 10, 5), 8), session("b", LocalDate.of(2026, 10, 7), 8))), { opened = it })

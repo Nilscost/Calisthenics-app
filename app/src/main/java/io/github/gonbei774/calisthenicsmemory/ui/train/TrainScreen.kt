@@ -89,9 +89,9 @@ fun TrainScreen(
                 Row(Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.m), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
                     Button(
                         onClick = { haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress); plan?.let { startPlan(ctx, it); onStarted() } }, enabled = plan != null,
-                        modifier = Modifier.weight(2f).height(56.dp).testTag("train_start_button"), shape = androidx.compose.foundation.shape.RoundedCornerShape(Radius.button),
+                        modifier = Modifier.weight(2f).heightIn(min = 56.dp).testTag("train_start_button"), shape = androidx.compose.foundation.shape.RoundedCornerShape(Radius.button),
                     ) { Text(stringResource(R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
-                    AppOutlinedButton(onClick = onPreview, enabled = plan != null, modifier = Modifier.weight(1f).height(56.dp).testTag("preview_button")) {
+                    AppOutlinedButton(onClick = onPreview, enabled = plan != null, modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("preview_button")) {
                         Text(stringResource(R.string.train_preview_short), textAlign = TextAlign.Center)
                     }
                 }
@@ -143,14 +143,18 @@ fun TrainScreen(
                 }
             }
 
-            Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-                Card(Modifier.weight(1f).fillMaxHeight(), shape = MaterialTheme.shapes.large) {
+            // V27b: with a large font the two cards stack, so "Stretch" and "Rest" are not cut
+            val stacked = androidx.compose.ui.platform.LocalDensity.current.fontScale > 1.15f
+            val setsCard: @Composable (Modifier) -> Unit = { m ->
+                Card(m, shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         Caption(stringResource(if (settings.format == WorkoutFormat.CIRCUIT) R.string.train_rounds_caption else R.string.train_sets_caption))
                         Stepper(settings.rounds, { change(settings.copy(rounds = it)) }, MIN_TRAIN_ROUNDS..MAX_EXPLICIT_ROUNDS, tag = "rounds")
                     }
                 }
-                Card(Modifier.weight(1f).fillMaxHeight(), shape = MaterialTheme.shapes.large) {
+            }
+            val betweenCard: @Composable (Modifier) -> Unit = { m ->
+                Card(m, shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         Caption(stringResource(R.string.train_between_caption))
                         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
@@ -159,6 +163,10 @@ fun TrainScreen(
                         }
                     }
                 }
+            }
+            if (stacked) { setsCard(Modifier.fillMaxWidth()); betweenCard(Modifier.fillMaxWidth()) }
+            else Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                setsCard(Modifier.weight(1f).fillMaxHeight()); betweenCard(Modifier.weight(1f).fillMaxHeight())
             }
 
             val warmupLabel = stringResource(R.string.train_warmup)

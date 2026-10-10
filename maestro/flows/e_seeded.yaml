@@ -8,6 +8,12 @@ appId: app.calisthenics.personal
 - tapOn: { id: tab_history }
 - extendedWaitUntil: { visible: { id: "session_.*" }, timeout: 10000 }
 - takeScreenshot: 01-history-list-${VARIANT}
+# V27b: summary tiles above; the progressions list and the lowest-set chart below
+- scrollUntilVisible: { element: { id: "progression_.*" }, direction: DOWN, timeout: 8000, optional: true }
+- takeScreenshot: 01b-history-progressions-${VARIANT}
+- tapOn: { id: "progression_.*", index: 0, optional: true }
+- takeScreenshot: 01c-history-chart-${VARIANT}
+- scrollUntilVisible: { element: { id: history_title }, direction: UP, timeout: 8000, optional: true }
 - tapOn: { id: "session_.*", index: 0 }
 - extendedWaitUntil: { visible: { id: detail_title }, timeout: 10000 }
 - takeScreenshot: 02-history-detail-${VARIANT}
@@ -19,6 +25,9 @@ appId: app.calisthenics.personal
 - takeScreenshot: 04-progress-push-${VARIANT}
 # V27: a suggestion card, when there is one, pushes the tab chips down; close it so the swipes below hit the row
 - tapOn: { id: suggestion_dismiss, optional: true }
+# V25: the pull path without a band
+- tapOn: { id: tab_chip_pull }
+- takeScreenshot: 04b-progress-pull-${VARIANT}
 - repeat:
     while: { notVisible: { id: tab_chip_squat } }
     times: 4
@@ -41,7 +50,25 @@ appId: app.calisthenics.personal
 - tapOn: { id: panel_open_detail }
 - extendedWaitUntil: { visible: { id: exercise_detail }, timeout: 10000 }
 - takeScreenshot: 07b-kettlebell-detail-${VARIANT}
+# V26: the weight track under the five levels
+- scrollUntilVisible: { element: { id: "weight_step_.*" }, direction: DOWN, timeout: 8000, optional: true }
+- takeScreenshot: 07c-kettlebell-weights-${VARIANT}
 - tapOn: { id: detail_back }
+# V25: the core tab with the tuck L-sit; V27: the "With weights" tab
+- repeat:
+    while: { notVisible: { id: tab_chip_core } }
+    times: 5
+    commands:
+      - swipe: { start: "90%, 20%", end: "10%, 20%" }
+- tapOn: { id: tab_chip_core }
+- takeScreenshot: 07d-progress-core-${VARIANT}
+- repeat:
+    while: { notVisible: { id: tab_chip_weights } }
+    times: 5
+    commands:
+      - swipe: { start: "90%, 20%", end: "10%, 20%" }
+- tapOn: { id: tab_chip_weights }
+- takeScreenshot: 07e-progress-weights-${VARIANT}
 # V07: the stretch library tab and one new stretch (sheet with clip, steps and cautions).
 - repeat:
     while: { notVisible: { id: tab_chip_stretches } }

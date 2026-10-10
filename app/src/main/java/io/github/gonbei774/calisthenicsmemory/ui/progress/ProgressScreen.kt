@@ -146,6 +146,15 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
     open?.let { id -> c.variation(id)?.let { v -> NodeSheet(c, v, data.progress, profile) { open = null } } }
 }
 
+/** The equipment the cheapest alternative still lacks, with the names the person sees in the profile editor (not the ids). */
+@Composable
+private fun missingLabel(v: ExerciseVariation, profile: EquipmentProfile): String {
+    val best = v.equipmentAlternatives.minByOrNull { set -> set.needs.count { !app.calisthenics.domain.equipment.needSatisfied(it, profile) } + (set.capabilities - profile.capabilities).size } ?: return ""
+    val ids = best.needs.filter { !app.calisthenics.domain.equipment.needSatisfied(it, profile) }.map { it.equipmentId } + (best.capabilities - profile.capabilities)
+    val names = ids.distinct().map { stringResource(equipmentLabelShortPublic(it)) }
+    return names.joinToString()
+}
+
 /** V27 (R29): at most one suggestion; it can be closed and never blocks anything (D9). A raise can be accepted with one tap. */
 @Composable
 private fun SuggestionCard(c: Catalog, s: Suggestion, onDismiss: () -> Unit, onAccept: (() -> Unit)?) {
@@ -187,7 +196,7 @@ private fun NodePanel(c: Catalog, v: ExerciseVariation, n: NodeUi, progress: app
             if (target != null) Text(stringResource(R.string.panel_level, tier, 5, if (target.type == TargetType.REPS) stringResource(R.string.target_reps, target.value) else stringResource(R.string.target_seconds, target.value)), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("panel_level"))
             if (unlocks.isNotEmpty()) Text(stringResource(R.string.panel_unlocks, unlocks.joinToString()), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("panel_unlocks"))
             if (unmet.isNotEmpty() && v.id !in progress.variations) Text(stringResource(R.string.panel_needs, unmet.joinToString()), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("panel_needs"))
-            if (!isAvailable(v, profile)) Text(stringResource(R.string.sheet_missing, missingFor(v, profile)), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
+            if (!isAvailable(v, profile)) Text(stringResource(R.string.sheet_missing, missingLabel(v, profile)), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
             AppOutlinedButton(onClick = onOpen, Modifier.fillMaxWidth().height(48.dp).testTag("panel_open_detail")) { Text(stringResource(R.string.panel_open_detail).uppercase()) }
         }
     }
@@ -231,7 +240,7 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
         if (unlocks.isNotEmpty()) { Caption(stringResource(R.string.detail_unlocks)); Text(unlocks.joinToString(), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("detail_unlocks")) }
         if (needs.isNotEmpty() || !isAvailable(v, profile)) {
             Caption(stringResource(R.string.detail_needs))
-            Text((needs + if (!isAvailable(v, profile)) listOf(missingFor(v, profile)) else emptyList()).joinToString(), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("detail_needs"))
+            Text((needs + if (!isAvailable(v, profile)) listOf(missingLabel(v, profile)) else emptyList()).joinToString(), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("detail_needs"))
         }
         if (v.cautions.isNotEmpty()) {
             val bg = if (dark) CautionDarkSurface else CautionLightSurface; val br = if (dark) CautionDarkBorder else CautionLightBorder; val tx = if (dark) CautionDarkText else CautionLightText
@@ -345,7 +354,7 @@ private fun NodeSheet(c: Catalog, v: ExerciseVariation, progress: app.calistheni
                 if (items.isEmpty()) noEquipment else items.joinToString(" + ")
             }.joinToString(stringResource(R.string.sheet_or))
             Text(need, style = MaterialTheme.typography.bodyMedium)
-            if (!isAvailable(v, profile)) Text(stringResource(R.string.sheet_missing, missingFor(v, profile)), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
+            if (!isAvailable(v, profile)) Text(stringResource(R.string.sheet_missing, missingLabel(v, profile)), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
             SheetSection(R.string.sheet_cautions, v.cautions.map { stringResource(R.string.bullet_item, it) }, error = true)
             if (v.sourceIds.isNotEmpty()) Text(stringResource(R.string.sheet_sources, v.sourceIds.joinToString()), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(stringResource(R.string.sheet_draft), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)

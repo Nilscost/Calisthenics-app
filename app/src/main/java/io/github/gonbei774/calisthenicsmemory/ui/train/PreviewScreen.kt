@@ -174,7 +174,7 @@ private fun BreakRow(slotId: String, p: WorkoutPlan, round: Int, names: Map<Stri
                 if (stretches.isNotEmpty()) stringResource(R.string.preview_break_stretch, stretches.joinToString(" + "), formatClock(secs)) else stringResource(R.string.preview_break_rest, formatClock(secs)),
                 Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2,
             )
-            Text(stringResource(R.string.preview_change), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text)
+            Text(stringResource(R.string.preview_change), Modifier.padding(start = Spacing.s), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text)
         } else Spacer(Modifier.weight(1f))
         AddButton(onAdd, Modifier.testTag("add_after_$slotId$sfx"))
     }
@@ -226,11 +226,11 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
             Column {
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 Row(Modifier.fillMaxWidth().padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
-                    AppOutlinedButton(onClick = { saveDialog = true }, enabled = result is PlanResult.Ready, modifier = Modifier.weight(1f).height(56.dp).testTag("save_routine_button")) { Text(stringResource(R.string.routine_save), textAlign = TextAlign.Center) }
+                    AppOutlinedButton(onClick = { saveDialog = true }, enabled = result is PlanResult.Ready, modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("save_routine_button")) { Text(stringResource(R.string.routine_save), textAlign = TextAlign.Center) }
                     Button(
                         onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); startPlan(ctx, (result as PlanResult.Ready).plan); onStarted() },
                         enabled = result is PlanResult.Ready,
-                        modifier = Modifier.weight(1.6f).height(56.dp).testTag("start_button"),
+                        modifier = Modifier.weight(1.6f).heightIn(min = 56.dp).testTag("start_button"),
                         shape = RoundedCornerShape(Radius.button),
                     ) { Text(stringResource(R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
                 }
