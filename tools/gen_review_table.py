@@ -16,7 +16,7 @@ TABS = [  # keep in sync with TreeTabs
     ("Push", ["pushup", "dip", "planche"]),
     ("Shoulders", ["hspu"]),
     ("Pull", ["pullup", "lever"]),
-    ("Row", ["row"]),
+    ("Row", ["row", "kb-row"]),
     ("Squat", ["squat", "lunge"]),
     ("Hips and back", ["bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide"]),
     ("Core", ["plank", "plank-tap", "dead-bug", "side-plank", "pallof", "legraise"]),

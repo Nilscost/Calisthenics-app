@@ -95,3 +95,10 @@ Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).
 | `flexed-arm-hang` | acceptable | the top of a pull-up held; legs bent behind |
 | `chair-assisted-pullup` | good | a chair under the feet, the body rises with the arms and the legs help |
 | `chinup-full` | weak | the same movement as the pull-up with a little more lean; the underhand grip is not drawn (cue text carries it) |
+
+## L04 additions (`frames-17-rows.png`, the towel row frames are from the corrected version `l04b`)
+| Id | Verdict | Note |
+|---|---|---|
+| `inverted-row-wide` | good | the inverted row with the hands wide apart |
+| `towel-door-row` | weak | leaning back from a door with a towel; the door slab hides part of the figure, the towel is a thin line |
+| `kettlebell-one-arm-row` | acceptable | the same set-up as the dumbbell row with a bell; the bell is a short line |

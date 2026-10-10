@@ -406,6 +406,20 @@
   ],
   "sharedPoseWith": []
  },
+ "inverted-row-wide": {
+  "kind": "rep",
+  "primary": [
+   "UPPER_BACK",
+   "LATS"
+  ],
+  "secondary": [
+   "BICEPS",
+   "REAR_DELTS",
+   "ABS",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
  "kettlebell-deadlift": {
   "kind": "rep",
   "primary": [
@@ -414,6 +428,19 @@
   ],
   "secondary": [
    "LOWER_BACK",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
+ "kettlebell-one-arm-row": {
+  "kind": "rep",
+  "primary": [
+   "LATS",
+   "UPPER_BACK"
+  ],
+  "secondary": [
+   "BICEPS",
+   "REAR_DELTS",
    "FOREARMS"
   ],
   "sharedPoseWith": []
@@ -1198,6 +1225,19 @@
   "secondary": [
    "REAR_DELTS",
    "HAMSTRINGS"
+  ],
+  "sharedPoseWith": []
+ },
+ "towel-door-row": {
+  "kind": "rep",
+  "primary": [
+   "UPPER_BACK",
+   "LATS"
+  ],
+  "secondary": [
+   "BICEPS",
+   "REAR_DELTS",
+   "FOREARMS"
   ],
   "sharedPoseWith": []
  },

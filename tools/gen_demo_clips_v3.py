@@ -450,6 +450,24 @@ def chinup(p):
     return pull_hang(218, 280, 12)(p)
 
 NEW.update({"dead-hang": (dead_hang, "hold"), "flexed-arm-hang": (flexed_arm_hang, "hold"), "chair-assisted-pullup": (chair_assisted_pullup, "rep"), "chinup-full": (chinup, "rep")})
+
+# ----------------------------------------------------------------------------------------------- L04 poses (rows without a low bar)
+def inv_row_wide(p):
+    d = inv_row()(p); d["arm_z"] = [Z_ARM + 34, -Z_ARM - 34]; return d
+
+def towel_door_row(p):
+    """Leaning back from a door, a towel round the handles; pull the chest toward the door, body straight."""
+    s = rep(p); pivot = (150, 46); Lp = 144
+    sy = lerp(128, 172, s); phi = math.asin(max(-1, min(1, (sy - 46) / Lp)))
+    hip = (pivot[0] - 84 * math.cos(phi), pivot[1] + 84 * math.sin(phi)); sho = (pivot[0] - Lp * math.cos(phi), pivot[1] + Lp * math.sin(phi))
+    hand = (sho[0] - lerp(54, 12, s), sho[1] - lerp(22, 40, s) + 28)
+    return dict(hip=hip, a=180 - math.degrees(phi), head_off=-6, arms=[("ik", hand, (0, -1))] * 2, legs=[("ik", pivot, (0, 1))] * 2,
+                scene=[("rect", (30, 40, 40, 262), v1.GRD)], props=[("line", "hand0", (36, 130), v1.PROP)])
+
+def kb_one_arm_row(p):
+    d = db_row(p); d["props"] = [("line", (d["props"][0][1][0] - 8, d["props"][0][1][1] - 4), (d["props"][0][2][0] + 8, d["props"][0][2][1] - 4), v1.PROP)]; return d
+
+NEW.update({"inverted-row-wide": (inv_row_wide, "rep"), "towel-door-row": (towel_door_row, "rep"), "kettlebell-one-arm-row": (kb_one_arm_row, "rep")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)

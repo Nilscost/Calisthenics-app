@@ -49,7 +49,7 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Chin-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Band-Assisted Pull-Up L4 or Negative Pull-Up L4 or Chair-Assisted Pull-Up L4 or Flexed-Arm Hang L4 | — (top) |
 | Chest-to-Bar Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Pull-Up L4 | Bar Muscle-Up |
 | Bar Muscle-Up | pullup-bar + high-bar | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Chest-to-Bar Pull-Up L4 | — (top) |
-| Tuck Front Lever | pullup-bar + high-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Pull-Up L3 and Hollow Body Hold L3 | Advanced Tuck Front Lever |
+| Tuck Front Lever | pullup-bar + high-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Pull-Up L3 and Hollow Body Hold L3 and Wide Inverted Row L4 | Advanced Tuck Front Lever |
 | Advanced Tuck Front Lever | pullup-bar + high-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Tuck Front Lever L4 | Straddle Front Lever |
 | Straddle Front Lever | pullup-bar + high-bar | 2s / 5 / 60 | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | Advanced Tuck Front Lever L4 | — (top) |
 
@@ -57,11 +57,14 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
+| Towel Door Row | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | Inverted Row (knees bent) |
 | Band Row (seated) | resistance-band* | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 14 / 100 / 60 | 16 / 110 / 60 | - | Inverted Row (knees bent) |
-| Inverted Row (knees bent) | low-bar | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 11 / 80 / 60 | 13 / 95 / 60 | Band Row (seated) L4 | Inverted Row |
-| Inverted Row | low-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Inverted Row (knees bent) L4 | Inverted Row (feet elevated) |
-| Inverted Row (feet elevated) | low-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Inverted Row L4 | Archer Row (per side) |
+| Inverted Row (knees bent) | low-bar | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 11 / 80 / 60 | 13 / 95 / 60 | Band Row (seated) L4 or Towel Door Row L4 | Inverted Row |
+| Inverted Row | low-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Inverted Row (knees bent) L4 | Wide Inverted Row |
+| Wide Inverted Row | low-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Inverted Row L4 | Inverted Row (feet elevated) |
+| Inverted Row (feet elevated) | low-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Wide Inverted Row L4 | Archer Row (per side) |
 | Archer Row (per side) | low-bar | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Inverted Row (feet elevated) L4 | — (top) |
+| Kettlebell One-Arm Row (per side) | kettlebell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Band Row (seated) L4 | — (top) |
 
 ## Squat
 

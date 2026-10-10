@@ -18,7 +18,7 @@ object TreeTabs {
         TreeTab("push", "Push", listOf("pushup", "dip", "planche")),
         TreeTab("shoulders", "Shoulders", listOf("hspu")),
         TreeTab("pull", "Pull", listOf("pullup", "lever")),
-        TreeTab("row", "Row", listOf("row")),
+        TreeTab("row", "Row", listOf("row", "kb-row")),
         TreeTab("squat", "Squat", listOf("squat", "lunge")),
         TreeTab("hips", "Hips and back", listOf("bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide")),
         TreeTab("core", "Core", listOf("plank", "plank-tap", "dead-bug", "side-plank", "pallof", "legraise")),

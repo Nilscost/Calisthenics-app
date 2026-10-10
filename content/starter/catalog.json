@@ -3543,6 +3543,68 @@
       ]
     },
     {
+      "id": "inverted-row-wide",
+      "familyId": "row",
+      "name": "Wide Inverted Row",
+      "patterns": [
+        "PULL_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "low-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Set up like an inverted row with the hands about one and a half shoulder widths apart.",
+        "Pull the chest to the bar, body in a straight line; the wide grip makes it harder.",
+        "Lower slowly to straight arms. Three sets of eight is the gate for the front lever work."
+      ],
+      "formCues": [
+        "Plank line",
+        "Chest to the bar",
+        "Slow lowering"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the bar or table is stable before every set."
+      ],
+      "difficultyRank": 35,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-inverted-row-wide",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "UPPER_BACK",
+        "LATS"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "REAR_DELTS",
+        "ABS",
+        "FOREARMS"
+      ]
+    },
+    {
       "id": "inverted-row-feet-elevated",
       "familyId": "row",
       "name": "Inverted Row (feet elevated)",
@@ -5277,6 +5339,124 @@
       "secondaryMuscles": [
         "UPPER_BACK",
         "BICEPS"
+      ]
+    },
+    {
+      "id": "towel-door-row",
+      "familyId": "row",
+      "name": "Towel Door Row",
+      "patterns": [
+        "PULL_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Loop a towel (or a knotted bedsheet) round the handles of a sturdy door and close the door towards you, so it cannot open. Check the knot and the towel before every set.",
+        "Lean back with straight arms and the body in one line, feet near the door.",
+        "Pull the chest to the hands, then lower slowly. The more you lean, the harder it is."
+      ],
+      "formCues": [
+        "Straight body",
+        "Slow lowering",
+        "Door stays closed"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Use a sturdy door that closes towards you and a strong towel or sheet; check the knot and the handles before every set; stop if anything slips."
+      ],
+      "difficultyRank": 6,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09",
+        "never-gymless-enamait"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-towel-door-row",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "UPPER_BACK",
+        "LATS"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "REAR_DELTS",
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "kettlebell-one-arm-row",
+      "familyId": "kb-row",
+      "name": "Kettlebell One-Arm Row (per side)",
+      "patterns": [
+        "PULL_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "kettlebell",
+              "minMassGrams": 8000
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Put one hand and the same-side knee (or just the hand) on a stable chair, back flat, the kettlebell in the other hand hanging straight down.",
+        "Pull the elbow up and back toward the hip, shoulder blade squeezing in.",
+        "Lower slowly to a straight arm; finish a side, then switch.",
+        "Weight: use a bell you can move with a flat back on every rep (most people start with 8-12 kg; swings often 12-16 kg). The app counts levels per weight: set a heavier kettlebell in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Flat back",
+        "Elbow to the hip",
+        "No twisting"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Controlled tempo only; no ballistic or swinging work."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-kettlebell-one-arm-row",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "UPPER_BACK"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "REAR_DELTS",
+        "FOREARMS"
       ]
     },
     {
@@ -9362,6 +9542,14 @@
                 "tier": 3
               }
             }
+          ],
+          [
+            {
+              "variationTierMet": {
+                "variationId": "inverted-row-wide",
+                "tier": 4
+              }
+            }
           ]
         ]
       }
@@ -9816,6 +10004,12 @@
                 "variationId": "row-band",
                 "tier": 4
               }
+            },
+            {
+              "variationTierMet": {
+                "variationId": "towel-door-row",
+                "tier": 4
+              }
             }
           ]
         ]
@@ -9880,7 +10074,7 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "inverted-row-feet-elevated"
+        "inverted-row-wide"
       ],
       "prerequisiteRule": {
         "allOf": [
@@ -9888,6 +10082,79 @@
             {
               "variationTierMet": {
                 "variationId": "inverted-row-bent-knees",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-inverted-row-wide",
+      "variationId": "inverted-row-wide",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "inverted-row-feet-elevated"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "inverted-row",
                 "tier": 4
               }
             }
@@ -9960,7 +10227,7 @@
           [
             {
               "variationTierMet": {
-                "variationId": "inverted-row",
+                "variationId": "inverted-row-wide",
                 "tier": 4
               }
             }
@@ -11697,6 +11964,137 @@
       "nextVariationIds": [
         "scapular-pull"
       ]
+    },
+    {
+      "id": "pol-towel-door-row",
+      "variationId": "towel-door-row",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09",
+        "never-gymless-enamait"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "inverted-row-bent-knees"
+      ]
+    },
+    {
+      "id": "pol-kettlebell-one-arm-row",
+      "variationId": "kettlebell-one-arm-row",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "row-band",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
     },
     {
       "id": "pol-scapular-pull",

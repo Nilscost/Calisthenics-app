@@ -42,7 +42,7 @@ class SuggestionsTest {
         // owning a low bar removes it; the next thing the mastered band row opens (a dumbbell for the one-arm row) is then offered instead, one at a time
         val own = suggest(catalog, bare.copy(items = listOf(EquipmentItem("low-bar"), EquipmentItem("pullup-bar"))), p, emptySet()) as Suggestion.GetEquipment
         assertEquals("weight", own.equipmentId); assertEquals("dumbbell-row", own.unlocksVariationId)
-        assertNull(suggest(catalog, bare.copy(items = listOf(EquipmentItem("low-bar"), EquipmentItem("pullup-bar"), EquipmentItem("weight", quantity = 2, massGrams = 2_500))), p, emptySet()))
+        assertNull(suggest(catalog, bare.copy(items = listOf(EquipmentItem("low-bar"), EquipmentItem("pullup-bar"), EquipmentItem("weight", quantity = 2, massGrams = 2_500), EquipmentItem("kettlebell", massGrams = 12_000))), p, emptySet()))
     }
 
     @Test fun dipSupportIsHintedAfterASolidPushUp() {
