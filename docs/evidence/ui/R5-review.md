@@ -1,6 +1,6 @@
 # Release R5 screenshot review (0.8.0-r5)
 
-Evidence: ui-screens run https://github.com/Nilscost/Calisthenics-app/actions/runs/38058180879 (commit `4072272`, the R5 commit `f31fb2d` plus the bundled fonts `0629f5f` and the CI fixes): `results.txt` on the `ui-shots` branch, folder `4072272/`: **24 PASS, 0 FAIL** (8 flows × light / dark / font 1.3). Earlier R5 attempts: `f31fb2d` failed `h_ready` at font 1.3 (a scroll-until-visible wait), `0629f5f` failed the `verify` preflight (files over 400 KB: the catalog and the font); both fixed in `4072272`.
+Evidence: ui-screens run https://github.com/Nilscost/Calisthenics-app/actions/runs/38058255006 (commit `4072272`, the R5 commit `f31fb2d` plus the bundled fonts `0629f5f` and the CI fixes): `results.txt` on the `ui-shots` branch, folder `4072272/`: **24 PASS, 0 FAIL** (8 flows × light / dark / font 1.3). Earlier R5 attempts: `f31fb2d` failed `h_ready` at font 1.3 (a scroll-until-visible wait), `0629f5f` failed the `verify` preflight (files over 400 KB: the catalog and the font); both fixed in `4072272`.
 Per-task reviews with scores and defects: `V12-V27-review.md` (V12–V27), `L01-L10-review.md` (L01–L10). This file covers the release as a whole and the **new type** (Barlow Condensed and IBM Plex Sans, bundled in V08c).
 
 ## The new type (all screens of the run)
