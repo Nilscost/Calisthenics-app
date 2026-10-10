@@ -157,5 +157,4 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 ## Automatic checks
 
-- ⚠️ Short-Lever Copenhagen Side Plank (per side): looks like a bar exercise but equipment is "chair*"
-- ⚠️ Copenhagen Side Plank (long lever, per side): looks like a bar exercise but equipment is "chair*"
+- No warnings.

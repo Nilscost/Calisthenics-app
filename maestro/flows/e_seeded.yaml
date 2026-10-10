@@ -73,6 +73,14 @@ appId: app.calisthenics.personal
       - swipe: { start: "90%, 20%", end: "10%, 20%" }
 - tapOn: { id: tab_chip_weights }
 - takeScreenshot: 07e-progress-weights-${VARIANT}
+# L04: the Row tab (swipe the chip row back)
+- repeat:
+    while: { notVisible: { id: tab_chip_row } }
+    times: 6
+    commands:
+      - swipe: { start: "10%, 20%", end: "90%, 20%" }
+- tapOn: { id: tab_chip_row }
+- takeScreenshot: 07f-progress-row-${VARIANT}
 # V07: the stretch library tab and one new stretch (sheet with clip, steps and cautions).
 - repeat:
     while: { notVisible: { id: tab_chip_stretches } }

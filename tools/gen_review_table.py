@@ -109,7 +109,7 @@ def main():
             eq = equipment(v)
             low = v["name"].lower()
             if any(k in low for k in ("pull-up", "chin-up", "hang", "muscle-up", "lever", "leg raise (hanging")) \
-                    and "bar" not in eq and "row" not in low:
+                    and "bar" not in eq and "row" not in low and "copenhagen" not in low:
                 warn.append(f'{v["name"]}: looks like a bar exercise but equipment is "{eq}"')
             if "wall" in low and "wall" not in eq:
                 warn.append(f'{v["name"]}: wall exercise; check that a wall is declared (capabilities)')
