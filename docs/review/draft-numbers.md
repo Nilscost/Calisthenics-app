@@ -36,8 +36,11 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
+| Scapular Pull | pullup-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | - | Arch Hang |
+| Arch Hang | pullup-bar | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Scapular Pull L4 | Negative Pull-Up |
 | Band-Assisted Pull-Up | pullup-bar + resistance-band | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | - | Pull-Up |
-| Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Band-Assisted Pull-Up L4 | Chest-to-Bar Pull-Up |
+| Negative Pull-Up | pullup-bar | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Arch Hang L4 | Pull-Up |
+| Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Band-Assisted Pull-Up L4 or Negative Pull-Up L4 | Chest-to-Bar Pull-Up |
 | Chest-to-Bar Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Pull-Up L4 | Bar Muscle-Up |
 | Bar Muscle-Up | pullup-bar + high-bar | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Chest-to-Bar Pull-Up L4 | — (top) |
 | Tuck Front Lever | pullup-bar + high-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Pull-Up L3 and Hollow Body Hold L3 | Advanced Tuck Front Lever |
@@ -60,9 +63,9 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 |---|---|---|---|---|---|---|---|---|
 | Air Squat | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | Split Squat (per side) |
 | Split Squat (per side) | none | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Air Squat L3 | Bulgarian Split Squat (per side) |
-| Bulgarian Split Squat (per side) | chair* | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Split Squat (per side) L3 | Shrimp Squat (per side) |
-| Shrimp Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bulgarian Split Squat (per side) L4 | Assisted Pistol Squat (per side) |
-| Assisted Pistol Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Shrimp Squat (per side) L3 | Pistol Squat (per side) |
+| Bulgarian Split Squat (per side) | chair* | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Split Squat (per side) L3 | Assisted Pistol Squat (per side), Shrimp Squat (per side) |
+| Shrimp Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bulgarian Split Squat (per side) L4 | — (top) |
+| Assisted Pistol Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bulgarian Split Squat (per side) L4 | Pistol Squat (per side) |
 | Pistol Squat (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Assisted Pistol Squat (per side) L4 | — (top) |
 | Walking Lunge | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 16 / 110 / 60 | Air Squat L3 | — (top) |
 
@@ -71,8 +74,9 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
 | Glute Bridge | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 18 / 125 / 60 | - | Single-Leg Glute Bridge (per side) |
-| Single-Leg Glute Bridge (per side) | none | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Glute Bridge L4 | Full Back Bridge |
-| Full Back Bridge | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Single-Leg Glute Bridge (per side) L3 | — (top) |
+| Single-Leg Glute Bridge (per side) | none | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Glute Bridge L4 | Incline Bridge (hands on a chair) |
+| Incline Bridge (hands on a chair) | chair* | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Single-Leg Glute Bridge (per side) L3 | Full Back Bridge |
+| Full Back Bridge | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Incline Bridge (hands on a chair) L3 | — (top) |
 | Superman Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Arch Hold (arms overhead, Y) |
 | Arch Hold (arms overhead, Y) | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | Superman Hold L4 | Arch Rocks |
 | Arch Rocks | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Arch Hold (arms overhead, Y) L4 | — (top) |
@@ -96,8 +100,9 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
 | Front Plank | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | - | Hollow Body Hold |
-| Hollow Body Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | Front Plank L4 or Dead Bug L5 | L-Sit (floor) |
-| L-Sit (floor) | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Hollow Body Hold L3 | V-Sit (floor) |
+| Hollow Body Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | Front Plank L4 or Dead Bug L5 | Tuck L-Sit |
+| Tuck L-Sit | none | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | Hollow Body Hold L3 | L-Sit (floor) |
+| L-Sit (floor) | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Tuck L-Sit L4 | V-Sit (floor) |
 | V-Sit (floor) | none | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 15s / 18 / 60 | L-Sit (floor) L4 | — (top) |
 | Plank Shoulder Taps | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 16 / 110 / 60 | Front Plank L2 | — (top) |
 | Dead Bug | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 14 / 100 / 60 | - | Hollow Body Hold |

@@ -33,7 +33,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(70, strength.size) // V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
+        assertEquals(75, strength.size) // V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
         assertEquals(25, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
@@ -63,7 +63,8 @@ class StarterCatalogTest {
     private val explicitTops = setOf("pushup-one-arm", "hspu-wall", "muscle-up-bar", "squat-pistol", "bridge-back", "v-sit-floor", "v-up",
         "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing-one-arm",
         // V21b: ends of the RR paths and single exercises of the ready-made routines
-        "dip-parallel", "nordic-curl", "slide-single-leg", "pallof-press", "reverse-hyperextension", "plank-shoulder-tap", "walking-lunge")
+        "dip-parallel", "nordic-curl", "slide-single-leg", "pallof-press", "reverse-hyperextension", "plank-shoulder-tap", "walking-lunge",
+        "squat-shrimp" /* V25: the shrimp path is an alternative after the Bulgarian split squat */)
 
     @Test fun noDeadEndsExceptExplicitTops() {
         val deadEnds = catalog.policies.filter { it.nextVariationIds.isEmpty() }.map { it.variationId }.toSet()
@@ -163,5 +164,20 @@ class StarterCatalogTest {
     @Test fun warmUpItemsAreThirtySecondMobilityBlocks() {
         val ids = listOf("warmup-shoulder-band", "warmup-shoulder-towel", "warmup-squat-sky-reach", "warmup-wrist-prep", "warmup-dead-bug", "warmup-arch-hang", "warmup-support-hold")
         for (id in ids) { val v = catalog.variation(id)!!; assertEquals(id, Kind.MOBILITY, v.kind); assertEquals(id, 30, v.defaultSeconds) }
+    }
+
+    @Test fun v25FillsTheReviewGaps() {   // C-E
+        fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
+        fun prereq(id: String) = catalog.policyForVariation(id)!!.prerequisiteRule.allOf.map { g -> g.mapNotNull { it.variationTierMet?.variationId } }
+        // pull-up path without a band (wiki main path); the band path stays an alternative way to the full pull-up
+        assertEquals(listOf("arch-hang"), next("scapular-pull")); assertEquals(listOf("pullup-negative"), next("arch-hang")); assertEquals(listOf("pullup-full"), next("pullup-negative"))
+        assertEquals(listOf(listOf("pullup-band-assisted", "pullup-negative")), prereq("pullup-full"))
+        for (id in listOf("scapular-pull", "arch-hang", "pullup-negative")) assertEquals(id, setOf("pullup-bar"), catalog.variation(id)!!.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet())
+        // tuck L-sit sits between the hollow hold and the floor L-sit
+        assertEquals(listOf("l-sit-tuck"), next("hollow-hold")); assertEquals(listOf("l-sit-floor"), next("l-sit-tuck")); assertEquals(listOf(listOf("l-sit-tuck")), prereq("l-sit-floor"))
+        // the pistol path and the shrimp path are alternatives after the Bulgarian split squat (wiki), the pistol path first
+        assertEquals(listOf("squat-pistol-assisted", "squat-shrimp"), next("split-squat-bulgarian")); assertEquals(listOf(listOf("split-squat-bulgarian")), prereq("squat-pistol-assisted")); assertTrue(next("squat-shrimp").isEmpty())
+        // a middle step before the full back bridge
+        assertEquals(listOf("bridge-incline"), next("bridge-single-leg")); assertEquals(listOf("bridge-back"), next("bridge-incline")); assertEquals(listOf(listOf("bridge-incline")), prereq("bridge-back"))
     }
 }

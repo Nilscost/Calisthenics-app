@@ -2521,6 +2521,66 @@
       ]
     },
     {
+      "id": "bridge-incline",
+      "familyId": "bridge",
+      "name": "Incline Bridge (hands on a chair)",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "chair",
+              "suitability": [
+                "stable"
+              ]
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Sit in front of a sturdy chair seat, hands on the front edge behind you, fingers pointing toward the feet, feet flat on the floor.",
+        "Press up so the hips rise and the arms straighten, the body arched like a small bridge.",
+        "Lower slowly; lower the chair step by step (a sofa, then a low step) as it gets easier. This is the middle step before the full back bridge."
+      ],
+      "formCues": [
+        "Push the hips up",
+        "Arms straight",
+        "Chair cannot slide"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Needs some shoulder and wrist mobility; check that the chair is stable and cannot slide; stop on any pinching."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-bridge-incline",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-back"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK",
+        "FRONT_DELTS",
+        "TRICEPS"
+      ]
+    },
+    {
       "id": "bridge-back",
       "familyId": "bridge",
       "name": "Full Back Bridge",
@@ -2618,6 +2678,58 @@
       ],
       "secondaryMuscles": [
         "HIP_FLEXORS",
+        "QUADS"
+      ]
+    },
+    {
+      "id": "l-sit-tuck",
+      "familyId": "plank",
+      "name": "Tuck L-Sit",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "seated",
+      "instructions": [
+        "Sit with the knees bent and the hands beside the hips, fingers forward.",
+        "Press down, lift the hips and the feet off the floor with the knees pulled in.",
+        "Hold with straight arms; the shoulders stay pushed down."
+      ],
+      "formCues": [
+        "Push the floor away",
+        "Shoulders down",
+        "Knees tight to the chest"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-l-sit-tuck",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "ABS",
+        "HIP_FLEXORS"
+      ],
+      "secondaryMuscles": [
+        "TRICEPS",
+        "FRONT_DELTS",
         "QUADS"
       ]
     },
@@ -4993,6 +5105,186 @@
         "HIP_FLEXORS",
         "CALVES"
       ]
+    },
+    {
+      "id": "scapular-pull",
+      "familyId": "pullup",
+      "name": "Scapular Pull",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Hang from a bar with straight arms (feet may rest on the floor or a chair to take weight off).",
+        "Without bending the elbows, pull the shoulder blades down and together so the body rises a little.",
+        "Hold for 3-5 seconds at the top, then lower slowly. Use a band or your feet to help if you cannot do it yet."
+      ],
+      "formCues": [
+        "Straight arms",
+        "Shoulders down and back",
+        "Hold 3-5 s at the top"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on shoulder pain; take weight off with the feet if the grip tires."
+      ],
+      "difficultyRank": 5,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-scapular-pull",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "UPPER_BACK"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "FOREARMS",
+        "REAR_DELTS"
+      ]
+    },
+    {
+      "id": "arch-hang",
+      "familyId": "pullup",
+      "name": "Arch Hang",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Hang from a bar and pull the shoulder blades down and back, so the chest comes forward and the back arches a little.",
+        "Work toward the arms reaching about 90 degrees at the shoulder.",
+        "Hold, then relax; feet may take weight off at first."
+      ],
+      "formCues": [
+        "Straight arms",
+        "Chest forward",
+        "Shoulders away from the ears"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on shoulder pain; take weight off with the feet if the grip tires."
+      ],
+      "difficultyRank": 10,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-arch-hang",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "UPPER_BACK"
+      ],
+      "secondaryMuscles": [
+        "REAR_DELTS",
+        "FOREARMS",
+        "BICEPS"
+      ]
+    },
+    {
+      "id": "pullup-negative",
+      "familyId": "pullup",
+      "name": "Negative Pull-Up",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Step or jump up so the chin is over the bar, arms bent.",
+        "Lower yourself as slowly as you can, about 3-5 seconds at first and working toward 10 seconds, to straight arms.",
+        "Step back up for the next repetition; do not pull up with the arms."
+      ],
+      "formCues": [
+        "Slow lowering",
+        "Chin over the bar to start",
+        "Shoulders stay active"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on shoulder or elbow pain; use a stable chair or step to get up."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pullup-negative",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "BICEPS"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK",
+        "FOREARMS",
+        "REAR_DELTS"
+      ]
     }
   ],
   "policies": [
@@ -6698,6 +6990,12 @@
                 "variationId": "pullup-band-assisted",
                 "tier": 4
               }
+            },
+            {
+              "variationTierMet": {
+                "variationId": "pullup-negative",
+                "tier": 4
+              }
             }
           ]
         ]
@@ -6904,6 +7202,7 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
+        "squat-pistol-assisted",
         "squat-shrimp"
       ],
       "prerequisiteRule": {
@@ -6976,9 +7275,6 @@
       ],
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
-      "nextVariationIds": [
-        "squat-pistol-assisted"
-      ],
       "prerequisiteRule": {
         "allOf": [
           [
@@ -7058,8 +7354,8 @@
           [
             {
               "variationTierMet": {
-                "variationId": "squat-shrimp",
-                "tier": 3
+                "variationId": "split-squat-bulgarian",
+                "tier": 4
               }
             }
           ]
@@ -7195,7 +7491,7 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "bridge-back"
+        "bridge-incline"
       ],
       "prerequisiteRule": {
         "allOf": [
@@ -7204,6 +7500,79 @@
               "variationTierMet": {
                 "variationId": "glute-bridge",
                 "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-bridge-incline",
+      "variationId": "bridge-incline",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "bridge-back"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "bridge-single-leg",
+                "tier": 3
               }
             }
           ]
@@ -7272,7 +7641,7 @@
           [
             {
               "variationTierMet": {
-                "variationId": "bridge-single-leg",
+                "variationId": "bridge-incline",
                 "tier": 3
               }
             }
@@ -7338,7 +7707,7 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "l-sit-floor"
+        "l-sit-tuck"
       ],
       "prerequisiteRule": {
         "allOf": [
@@ -7353,6 +7722,79 @@
               "variationTierMet": {
                 "variationId": "dead-bug",
                 "tier": 5
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-l-sit-tuck",
+      "variationId": "l-sit-tuck",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 8,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 8
+          },
+          "workWindowSeconds": 11,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "building-the-gymnastic-body-sommer"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "l-sit-floor"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "hollow-hold",
+                "tier": 3
               }
             }
           ]
@@ -7425,8 +7867,8 @@
           [
             {
               "variationTierMet": {
-                "variationId": "hollow-hold",
-                "tier": 3
+                "variationId": "l-sit-tuck",
+                "tier": 4
               }
             }
           ]
@@ -9974,6 +10416,210 @@
               "variationTierMet": {
                 "variationId": "squat-air",
                 "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-scapular-pull",
+      "variationId": "scapular-pull",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "arch-hang"
+      ]
+    },
+    {
+      "id": "pol-arch-hang",
+      "variationId": "arch-hang",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 8,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pullup-negative"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "scapular-pull",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-pullup-negative",
+      "variationId": "pullup-negative",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pullup-full"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "arch-hang",
+                "tier": 4
               }
             }
           ]

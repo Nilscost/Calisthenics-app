@@ -63,3 +63,11 @@ All 18 stretches now colour the muscle that is stretched (primary) and a helper 
 | `plank-shoulder-tap` | acceptable | the lifted hand is small but alternates |
 | `walking-lunge` | acceptable | steps forward, the back foot comes through |
 Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).
+
+## V25 additions: the C-E gap clips (`frames-13-c-e-gaps.png`)
+| Id | Verdict | Note |
+|---|---|---|
+| `pullup-negative` | good | chin over the bar, then a slow lowering to straight arms |
+| `scapular-pull`, `arch-hang` | weak | the movement is small by nature (shoulders rise a few centimetres with straight arms; the arch is slight); both read as a hang on the bar, the cue text carries the detail |
+| `tuck-l-sit` (`l-sit-tuck`) | weak | seated with the knees tucked and a small hold sway; the lifted hips are hard to see from this angle |
+| `bridge-incline` | acceptable | hands on a chair seat behind, hips pushed up, body in a diagonal line |

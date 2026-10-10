@@ -33,7 +33,7 @@ object Presets {
         val rule = ProgressionRule(RuleKind.REP_RANGE, sets = 3, from = 5, to = 8, holdFrom = 10, holdTo = 30, sessions = 1)
         val rotation = pick(c, profile, "pallof-press", "side-plank")   // no band: the Copenhagen path (it starts with the side plank)
         val slots = listOf(
-            slot("rr-pull", Pattern.PULL_VERTICAL, Area.UPPER_BODY, pick(c, profile, "pullup-band-assisted", "pullup-full"), group = 1, rest = 90),
+            slot("rr-pull", Pattern.PULL_VERTICAL, Area.UPPER_BODY, pick(c, profile, "pullup-band-assisted", "scapular-pull"), group = 1, rest = 90),
             slot("rr-squat", Pattern.SQUAT, Area.LOWER_BODY, "squat-air", group = 1, rest = 90),
             slot("rr-dip", Pattern.PUSH_VERTICAL, Area.UPPER_BODY, "dip-support-hold", group = 2, rest = 90),
             slot("rr-hinge", Pattern.HINGE, Area.LOWER_BODY, "rdl-bodyweight", group = 2, rest = 90),

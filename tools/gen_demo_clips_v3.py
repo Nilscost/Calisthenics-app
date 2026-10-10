@@ -338,6 +338,40 @@ NEW.update({
 # the warm-up versions of exercises that already exist are the same movement for 30 s: one pose, declared in SHARED_POSES below
 NEW["warmup-dead-bug"] = POSES_DEAD = (v1.POSES["dead-bug"][0], "rep")
 NEW["warmup-support-hold"] = NEW["dip-support-hold"]
+
+# ----------------------------------------------------------------------------------------------- V25 poses (C-E)
+def _rep_phase(s_target):   # the phase q (0..0.25) for which rep(q) with its default 2 reps per loop equals s_target (0..1)
+    return math.acos(max(-1.0, min(1.0, 1 - 2 * s_target))) / (4 * math.pi)
+
+def scapular_pull(p):
+    """Hang with straight arms; the shoulders rise a little while the elbows stay straight, and hold at the top."""
+    s = min(1.0, rep(p, 1) * 1.8); sx = 192; sy = lerp(216, 230, s); a = 90
+    hip = (sx - 2, sy - L_T)
+    return dict(hip=hip, a=a, head_off=-4 * s, arms=[("ik", (200, BAR_Y), (-1, -0.2))] * 2,
+                legs=[("ik", (hip[0] - 22, hip[1] - 66), (1, 0)), ("ik", (hip[0] - 30, hip[1] - 60), (1, 0))], scene=[("bar", 200, BAR_Y)])
+
+def arch_hang_hold(p):
+    b = 0.5 + 0.5 * math.sin(2 * math.pi * p); sy = 224 + 2 * b; sx = 192; hip = (sx - 8, sy - 58)
+    return dict(hip=hip, a=96, head_off=-8, arms=[("ik", (200, BAR_Y), (-1, -0.2))] * 2,
+                legs=[("ik", (hip[0] - 34, hip[1] - 72), (1, 0))] * 2, scene=[("bar", 200, BAR_Y)])
+
+def pullup_negative(p):
+    """Chin over the bar, then lowered very slowly (80 % of the loop); the quick part is stepping back up."""
+    s = 1 - p / 0.8 if p < 0.8 else (p - 0.8) / 0.2
+    return pull_hang(218, 274, 6)(_rep_phase(max(0.0, min(1.0, s))))
+
+def l_sit_tuck(p):
+    b = 1.2 * math.sin(2 * math.pi * p); hip = (160, 70 + b)
+    return dict(hip=hip, a=106, arms=[("fix", (152, 114), (152, 44))] * 2, legs=[("ik", (hip[0] + 34, hip[1] - 12), (0, 1))] * 2)
+
+def bridge_incline(p):
+    s = rep(p); sho = (78, 136); a = lerp(152, 137, s); r = math.radians(a)
+    hip = (sho[0] - L_T * math.cos(r), sho[1] - L_T * math.sin(r))
+    return dict(hip=hip, a=a, head_off=-6, arms=[("ik", (80, 78), (0, 1))] * 2, legs=[("ik", (192, 46), (0, 1))] * 2,
+                scene=[("rect", (48, 46, 112, 78), v1.GRD)])
+
+NEW.update({"scapular-pull": (scapular_pull, "rep"), "arch-hang": (arch_hang_hold, "hold"), "pullup-negative": (pullup_negative, "rep"),
+            "l-sit-tuck": (l_sit_tuck, "hold"), "bridge-incline": (bridge_incline, "rep")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)

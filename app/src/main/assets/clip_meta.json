@@ -1,4 +1,17 @@
 {
+ "arch-hang": {
+  "kind": "hold",
+  "primary": [
+   "LATS",
+   "UPPER_BACK"
+  ],
+  "secondary": [
+   "REAR_DELTS",
+   "FOREARMS",
+   "BICEPS"
+  ],
+  "sharedPoseWith": []
+ },
  "arch-hold-y": {
   "kind": "hold",
   "primary": [
@@ -45,6 +58,19 @@
    "FRONT_DELTS",
    "TRICEPS",
    "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
+ "bridge-incline": {
+  "kind": "rep",
+  "primary": [
+   "GLUTES",
+   "HAMSTRINGS"
+  ],
+  "secondary": [
+   "LOWER_BACK",
+   "FRONT_DELTS",
+   "TRICEPS"
   ],
   "sharedPoseWith": []
  },
@@ -317,6 +343,19 @@
   ],
   "sharedPoseWith": []
  },
+ "l-sit-tuck": {
+  "kind": "hold",
+  "primary": [
+   "ABS",
+   "HIP_FLEXORS"
+  ],
+  "secondary": [
+   "TRICEPS",
+   "FRONT_DELTS",
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
  "leg-raise-lying": {
   "kind": "rep",
   "primary": [
@@ -512,6 +551,19 @@
   ],
   "sharedPoseWith": []
  },
+ "pullup-negative": {
+  "kind": "rep",
+  "primary": [
+   "LATS",
+   "BICEPS"
+  ],
+  "secondary": [
+   "UPPER_BACK",
+   "FOREARMS",
+   "REAR_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
  "pushup-archer": {
   "kind": "rep",
   "primary": [
@@ -642,6 +694,19 @@
   ],
   "secondary": [
    "BICEPS",
+   "REAR_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "scapular-pull": {
+  "kind": "rep",
+  "primary": [
+   "LATS",
+   "UPPER_BACK"
+  ],
+  "secondary": [
+   "BICEPS",
+   "FOREARMS",
    "REAR_DELTS"
   ],
   "sharedPoseWith": []
