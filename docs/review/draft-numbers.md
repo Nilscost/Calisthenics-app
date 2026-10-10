@@ -72,10 +72,14 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 |---|---|---|---|---|---|---|---|---|
 | Air Squat | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | Split Squat (per side) |
 | Split Squat (per side) | none | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Air Squat L3 | Bulgarian Split Squat (per side) |
-| Bulgarian Split Squat (per side) | chair* | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Split Squat (per side) L3 | Assisted Pistol Squat (per side), Shrimp Squat (per side) |
-| Shrimp Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bulgarian Split Squat (per side) L4 | — (top) |
-| Assisted Pistol Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bulgarian Split Squat (per side) L4 | Pistol Squat (per side) |
-| Pistol Squat (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Assisted Pistol Squat (per side) L4 | — (top) |
+| Bulgarian Split Squat (per side) | chair* | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Split Squat (per side) L3 | Assisted Pistol Squat (per side), Beginner Shrimp Squat (per side) |
+| Beginner Shrimp Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bulgarian Split Squat (per side) L4 | Intermediate Shrimp Squat (per side) |
+| Intermediate Shrimp Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Beginner Shrimp Squat (per side) L4 | Advanced Shrimp Squat (per side) |
+| Assisted Pistol Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bulgarian Split Squat (per side) L4 | Box Pistol Squat (per side), Counterbalance Pistol Squat (per side) |
+| Counterbalance Pistol Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Assisted Pistol Squat (per side) L3 | Pistol Squat (per side) |
+| Box Pistol Squat (per side) | chair* | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Assisted Pistol Squat (per side) L3 | Pistol Squat (per side) |
+| Advanced Shrimp Squat (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Intermediate Shrimp Squat (per side) L4 | — (top) |
+| Pistol Squat (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Box Pistol Squat (per side) L4 or Counterbalance Pistol Squat (per side) L4 | — (top) |
 | Walking Lunge | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 16 / 110 / 60 | Air Squat L3 | — (top) |
 
 ## Hips and back

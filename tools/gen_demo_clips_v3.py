@@ -468,6 +468,34 @@ def kb_one_arm_row(p):
     d = db_row(p); d["props"] = [("line", (d["props"][0][1][0] - 8, d["props"][0][1][1] - 4), (d["props"][0][2][0] + 8, d["props"][0][2][1] - 4), v1.PROP)]; return d
 
 NEW.update({"inverted-row-wide": (inv_row_wide, "rep"), "towel-door-row": (towel_door_row, "rep"), "kettlebell-one-arm-row": (kb_one_arm_row, "rep")})
+
+# ----------------------------------------------------------------------------------------------- L05 poses (single-leg squats)
+def shrimp_intermediate(p):
+    s = rep(p); hip = (lerp(205, 186, s), lerp(124, 64, s)); a = lerp(90, 58, s); sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=lerp(0, 14, s), arms=[("ik", (sho[0] + 34, sho[1] - 18), (0, -1))] * 2,
+                legs=[("ik", (205, 44), (1, 0)), ("ik", (hip[0] - 40, lerp(hip[1] - 44, 50, s)), (-1, 0))])
+
+def shrimp_advanced(p):
+    s = rep(p); hip = (lerp(205, 188, s), lerp(124, 58, s)); a = lerp(90, 54, s); sho = sh(hip, a)
+    foot = (hip[0] - 34, lerp(hip[1] - 40, 70, s))     # the rear foot is held in the hand behind the body
+    return dict(hip=hip, a=a, head_off=lerp(0, 10, s), arms=[("ik", (foot[0] + 4, foot[1] + 8), (0, 1))] * 2,
+                legs=[("ik", (205, 44), (1, 0)), ("ik", foot, (-1, 0))])
+
+def pistol_box(p):
+    s = rep(p); hip = (lerp(200, 170, s), lerp(124, 66, s)); a = lerp(90, 56, s); sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=lerp(0, 18, s), arms=[("ik", (sho[0] + 56, sho[1] - 8), (0, -1))] * 2,
+                legs=[("ik", (200, 44), (1, 0)), ("ik", (hip[0] + 84, hip[1] + lerp(-6, 6, s)), (0, 1))],
+                scene=[("rect", (118, 40, 160, 62), v1.GRD)])
+
+def pistol_counterbalance(p):
+    s = rep(p); hip = (lerp(200, 166, s), lerp(124, 60, s)); a = lerp(90, 50, s); sho = sh(hip, a)
+    hand = (sho[0] + 62, sho[1] - 2 + lerp(0, 8, s))
+    return dict(hip=hip, a=a, head_off=lerp(0, 22, s), arms=[("ik", hand, (0, -1))] * 2, arm_z=[7, -7],
+                legs=[("ik", (200, 44), (1, 0)), ("ik", (hip[0] + 84, hip[1] + lerp(-6, 4, s)), (0, 1))],
+                props=[("line", (hand[0] - 2, hand[1] - 8), (hand[0] - 2, hand[1] + 8), v1.PROP)])
+
+NEW.update({"squat-shrimp-intermediate": (shrimp_intermediate, "rep"), "squat-shrimp-advanced": (shrimp_advanced, "rep"),
+            "squat-pistol-box": (pistol_box, "rep"), "squat-pistol-counterbalance": (pistol_counterbalance, "rep")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)

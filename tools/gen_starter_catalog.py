@@ -363,15 +363,28 @@ ex("muscle-up-bar", "Bar Muscle-Up", "pullup", "PULL_VERTICAL", U, "REPS", "hang
 ex("split-squat-bulgarian", "Bulgarian Split Squat (per side)", "squat", "LUNGE", L, "REPS", "standing",
    ["Back foot on a stable chair behind you, front foot a stride ahead.", "Lower until the front thigh is about parallel.", "Drive up through the front heel; finish a side, then switch."],
    reps_tiers([5, 6, 8, 10, 12]), [S_YG, S_NG], LOW, eq=[{"needs": [need("chair", suitability=["stable"])]}], uni=True, rank=30, nxt=["squat-pistol-assisted", "squat-shrimp"], prereq={"allOf": [[vt("split-squat", 3)]]})
-ex("squat-shrimp", "Shrimp Squat (per side)", "squat", "LUNGE", L, "REPS", "standing",
-   ["Stand on one leg, hold the other foot behind you.", "Lower until the back knee touches the floor lightly.", "Stand back up on the working leg."],
-   reps_tiers([2, 3, 5, 6, 8]), [S_OG, S_YG], LOW, uni=True, rank=40, prereq={"allOf": [[vt("split-squat-bulgarian", 4)]]})
+ex("squat-shrimp", "Beginner Shrimp Squat (per side)", "squat", "LUNGE", L, "REPS", "standing",
+   ["Stand on one leg, hold the other foot behind you.", "Lower until the back knee touches the floor lightly (a folded towel under the knee is fine).", "Stand back up on the working leg. This is the first of three shrimp steps.", "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."],
+   reps_tiers([2, 3, 5, 6, 8]), [S_OG, S_YG, S_RR], LOW, uni=True, rank=40, nxt=["squat-shrimp-intermediate"], prereq={"allOf": [[vt("split-squat-bulgarian", 4)]]})
+ex("squat-shrimp-intermediate", "Intermediate Shrimp Squat (per side)", "squat", "LUNGE", L, "REPS", "standing",
+   ["Hold the rear foot with the same-side hand and keep the chest up.", "Lower slowly until the back knee touches the floor; keep the weight over the middle of the working foot.", "Stand up without pushing off the back knee.", "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."],
+   reps_tiers([2, 3, 5, 6, 8]), [S_OG, S_RR], LOW, uni=True, rank=42, nxt=["squat-shrimp-advanced"], prereq={"allOf": [[vt("squat-shrimp", 4)]]})
+ex("squat-shrimp-advanced", "Advanced Shrimp Squat (per side)", "squat", "LUNGE", L, "REPS", "standing",
+   ["Hold the rear foot behind you with both hands (or the same-side hand with the knee pointing down), torso upright.", "Lower slowly until the back knee touches the floor, then stand up.", "A parallel end point to the pistol squat: choose whichever suits your ankles.", "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."],
+   reps_tiers([1, 2, 3, 4, 5]), [S_OG, S_RR], LOW, uni=True, rank=55, prereq={"allOf": [[vt("squat-shrimp-intermediate", 4)]]})
 ex("squat-pistol-assisted", "Assisted Pistol Squat (per side)", "squat", "SQUAT", L, "REPS", "standing",
-   ["Hold a door frame or post lightly for balance.", "Lower on one leg with the other leg straight out in front.", "Stand up using as little help as possible."],
-   reps_tiers([2, 3, 5, 6, 8]), [S_CC, S_OG, S_NG], LOW, uni=True, rank=50, nxt=["squat-pistol"], prereq={"allOf": [[vt("split-squat-bulgarian", 4)]]})
+   ["Hold a door frame or post lightly for balance (or a resistance band anchored above you).", "Lower on one leg with the other leg straight out in front.", "Stand up using as little help as possible.", "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."],
+   reps_tiers([2, 3, 5, 6, 8]), [S_CC, S_OG, S_NG], LOW, uni=True, rank=45, nxt=["squat-pistol-box", "squat-pistol-counterbalance"], prereq={"allOf": [[vt("split-squat-bulgarian", 4)]]})
+ex("squat-pistol-box", "Box Pistol Squat (per side)", "squat", "SQUAT", L, "REPS", "standing",
+   ["Stand in front of a stable chair or box, the free leg straight out in front.", "Sit down onto the seat on one leg, slowly, and stand back up without rocking.", "Lower the seat over the weeks (a chair, then a lower step).", "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."],
+   reps_tiers([2, 3, 5, 6, 8]), [S_OG, S_RR], LOW, eq=[{"needs": [need("chair", suitability=["stable"])]}], uni=True, rank=50, nxt=["squat-pistol"], prereq={"allOf": [[vt("squat-pistol-assisted", 3)]]},
+   cautions=(CAUTION_STRENGTH, "Check that the chair is stable and cannot slide; do not drop onto the seat."))
+ex("squat-pistol-counterbalance", "Counterbalance Pistol Squat (per side)", "squat", "SQUAT", L, "REPS", "standing",
+   ["Hold a light weight (a small dumbbell, a book or a water bottle) out in front of you with straight arms: it is an easier version because it balances the body.", "Lower on one leg with the free leg straight out in front, then stand up.", "Use less weight over time.", "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."],
+   reps_tiers([2, 3, 5, 6, 8]), [S_OG, S_RR], LOW, uni=True, rank=48, nxt=["squat-pistol"], prereq={"allOf": [[vt("squat-pistol-assisted", 3)]]})
 ex("squat-pistol", "Pistol Squat (per side)", "squat", "SQUAT", L, "REPS", "standing",
    ["Stand on one leg, other leg straight in front.", "Lower to full depth with the heel down.", "Stand up with control; switch sides."],
-   reps_tiers([1, 2, 3, 5, 6]), [S_CC, S_OG, S_NG], LOW, uni=True, rank=60, prereq={"allOf": [[vt("squat-pistol-assisted", 4)]]})
+   reps_tiers([1, 2, 3, 5, 6]), [S_CC, S_OG, S_NG], LOW, uni=True, rank=60, prereq={"allOf": [[vt("squat-pistol-box", 4), vt("squat-pistol-counterbalance", 4)]]})
 # bridge
 ex("bridge-single-leg", "Single-Leg Glute Bridge (per side)", "bridge", "HINGE", L, "REPS", "supine",
    ["Lie on your back, one foot flat, other leg straight up.", "Press through the heel to lift the hips level.", "Lower slowly; finish a side, then switch."],
@@ -796,6 +809,10 @@ M = {
     "split-squat": (["QUADS", "GLUTES"], ["HAMSTRINGS", "ADDUCTORS"]),
     "split-squat-bulgarian": (["QUADS", "GLUTES"], ["HAMSTRINGS", "HIP_FLEXORS"]),
     "squat-shrimp": (["QUADS", "GLUTES"], ["HAMSTRINGS", "HIP_FLEXORS"]),
+    "squat-shrimp-intermediate": (["QUADS", "GLUTES"], ["HAMSTRINGS", "HIP_FLEXORS"]),
+    "squat-shrimp-advanced": (["QUADS", "GLUTES"], ["HAMSTRINGS", "HIP_FLEXORS", "CALVES"]),
+    "squat-pistol-box": (["QUADS", "GLUTES"], ["HAMSTRINGS", "ADDUCTORS", "CALVES"]),
+    "squat-pistol-counterbalance": (["QUADS", "GLUTES"], ["HAMSTRINGS", "ADDUCTORS", "CALVES"]),
     "squat-pistol-assisted": (["QUADS", "GLUTES"], ["HAMSTRINGS", "ADDUCTORS", "CALVES"]),
     "squat-pistol": (["QUADS", "GLUTES"], ["HAMSTRINGS", "ADDUCTORS", "CALVES"]),
     "glute-bridge": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK"]),

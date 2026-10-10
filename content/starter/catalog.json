@@ -2415,7 +2415,7 @@
     {
       "id": "squat-shrimp",
       "familyId": "squat",
-      "name": "Shrimp Squat (per side)",
+      "name": "Beginner Shrimp Squat (per side)",
       "patterns": [
         "LUNGE"
       ],
@@ -2430,8 +2430,9 @@
       "position": "standing",
       "instructions": [
         "Stand on one leg, hold the other foot behind you.",
-        "Lower until the back knee touches the floor lightly.",
-        "Stand back up on the working leg."
+        "Lower until the back knee touches the floor lightly (a folded towel under the knee is fine).",
+        "Stand back up on the working leg. This is the first of three shrimp steps.",
+        "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."
       ],
       "formCues": [
         "Controlled tempo",
@@ -2444,7 +2445,8 @@
       "difficultyRank": 40,
       "sourceIds": [
         "overcoming-gravity-2-low",
-        "you-are-your-own-gym-lauren"
+        "you-are-your-own-gym-lauren",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
       ],
       "reviewState": "DRAFT",
       "progressionPolicyId": "pol-squat-shrimp",
@@ -2469,6 +2471,121 @@
       ]
     },
     {
+      "id": "squat-shrimp-intermediate",
+      "familyId": "squat",
+      "name": "Intermediate Shrimp Squat (per side)",
+      "patterns": [
+        "LUNGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Hold the rear foot with the same-side hand and keep the chest up.",
+        "Lower slowly until the back knee touches the floor; keep the weight over the middle of the working foot.",
+        "Stand up without pushing off the back knee.",
+        "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 42,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-squat-shrimp-intermediate",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "HIP_FLEXORS"
+      ]
+    },
+    {
+      "id": "squat-shrimp-advanced",
+      "familyId": "squat",
+      "name": "Advanced Shrimp Squat (per side)",
+      "patterns": [
+        "LUNGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Hold the rear foot behind you with both hands (or the same-side hand with the knee pointing down), torso upright.",
+        "Lower slowly until the back knee touches the floor, then stand up.",
+        "A parallel end point to the pistol squat: choose whichever suits your ankles.",
+        "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 55,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-squat-shrimp-advanced",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "HIP_FLEXORS",
+        "CALVES"
+      ]
+    },
+    {
       "id": "squat-pistol-assisted",
       "familyId": "squat",
       "name": "Assisted Pistol Squat (per side)",
@@ -2485,9 +2602,10 @@
       "unilateral": true,
       "position": "standing",
       "instructions": [
-        "Hold a door frame or post lightly for balance.",
+        "Hold a door frame or post lightly for balance (or a resistance band anchored above you).",
         "Lower on one leg with the other leg straight out in front.",
-        "Stand up using as little help as possible."
+        "Stand up using as little help as possible.",
+        "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."
       ],
       "formCues": [
         "Controlled tempo",
@@ -2497,7 +2615,7 @@
       "cautions": [
         "Stop the set on sharp or joint pain; do not push through it."
       ],
-      "difficultyRank": 50,
+      "difficultyRank": 45,
       "sourceIds": [
         "convict-conditioning-wade",
         "overcoming-gravity-2-low",
@@ -2505,6 +2623,132 @@
       ],
       "reviewState": "DRAFT",
       "progressionPolicyId": "pol-squat-pistol-assisted",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "ADDUCTORS",
+        "CALVES"
+      ]
+    },
+    {
+      "id": "squat-pistol-box",
+      "familyId": "squat",
+      "name": "Box Pistol Squat (per side)",
+      "patterns": [
+        "SQUAT"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "chair",
+              "suitability": [
+                "stable"
+              ]
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Stand in front of a stable chair or box, the free leg straight out in front.",
+        "Sit down onto the seat on one leg, slowly, and stand back up without rocking.",
+        "Lower the seat over the weeks (a chair, then a lower step).",
+        "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the chair is stable and cannot slide; do not drop onto the seat."
+      ],
+      "difficultyRank": 50,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-squat-pistol-box",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "ADDUCTORS",
+        "CALVES"
+      ]
+    },
+    {
+      "id": "squat-pistol-counterbalance",
+      "familyId": "squat",
+      "name": "Counterbalance Pistol Squat (per side)",
+      "patterns": [
+        "SQUAT"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Hold a light weight (a small dumbbell, a book or a water bottle) out in front of you with straight arms: it is an easier version because it balances the body.",
+        "Lower on one leg with the free leg straight out in front, then stand up.",
+        "Use less weight over time.",
+        "Ankle check (information only): stand a fist-width from a wall and try to touch the knee to the wall with the heel flat. If you cannot, work on the ankle mobility stretch first; this is not a pass or fail test."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 48,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-squat-pistol-counterbalance",
       "compatibleStretchIds": [
         "stretch-hip-flexor",
         "stretch-hamstring",
@@ -8660,7 +8904,154 @@
       ],
       "evidenceSourceIds": [
         "overcoming-gravity-2-low",
-        "you-are-your-own-gym-lauren"
+        "you-are-your-own-gym-lauren",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "squat-shrimp-intermediate"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "split-squat-bulgarian",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-squat-shrimp-intermediate",
+      "variationId": "squat-shrimp-intermediate",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "squat-shrimp-advanced"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "squat-shrimp",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-squat-shrimp-advanced",
+      "variationId": "squat-shrimp-advanced",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 1
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
       ],
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
@@ -8669,7 +9060,7 @@
           [
             {
               "variationTierMet": {
-                "variationId": "split-squat-bulgarian",
+                "variationId": "squat-shrimp-intermediate",
                 "tier": 4
               }
             }
@@ -8736,7 +9127,8 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "squat-pistol"
+        "squat-pistol-box",
+        "squat-pistol-counterbalance"
       ],
       "prerequisiteRule": {
         "allOf": [
@@ -8745,6 +9137,152 @@
               "variationTierMet": {
                 "variationId": "split-squat-bulgarian",
                 "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-squat-pistol-box",
+      "variationId": "squat-pistol-box",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "squat-pistol"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "squat-pistol-assisted",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-squat-pistol-counterbalance",
+      "variationId": "squat-pistol-counterbalance",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "squat-pistol"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "squat-pistol-assisted",
+                "tier": 3
               }
             }
           ]
@@ -8814,7 +9352,13 @@
           [
             {
               "variationTierMet": {
-                "variationId": "squat-pistol-assisted",
+                "variationId": "squat-pistol-box",
+                "tier": 4
+              }
+            },
+            {
+              "variationTierMet": {
+                "variationId": "squat-pistol-counterbalance",
                 "tier": 4
               }
             }

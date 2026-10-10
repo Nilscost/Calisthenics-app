@@ -33,7 +33,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(95, strength.size) // L04: +3 (towel door row, wide inverted row, kettlebell one-arm row); L03: +4 (dead hang, flexed-arm hang, chair-assisted pull-up, chin-up); L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
+        assertEquals(99, strength.size) // L05: +4 (shrimp steps, box and counterbalance pistol); L04: +3 (towel door row, wide inverted row, kettlebell one-arm row); L03: +4 (dead hang, flexed-arm hang, chair-assisted pull-up, chin-up); L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
         assertEquals(25, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
@@ -64,7 +64,7 @@ class StarterCatalogTest {
         "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing-one-arm",
         // V21b: ends of the RR paths and single exercises of the ready-made routines
         "dip-parallel", "nordic-curl", "slide-single-leg", "pallof-press", "reverse-hyperextension", "plank-shoulder-tap", "walking-lunge",
-        "squat-shrimp" /* V25: the shrimp path is an alternative after the Bulgarian split squat */, "chinup-full" /* L03: the chin-up is a parallel option to the pull-up */, "kettlebell-one-arm-row",
+        "squat-shrimp-advanced" /* V25/L05: the shrimp path is an alternative end point next to the pistol */, "chinup-full" /* L03: the chin-up is a parallel option to the pull-up */, "kettlebell-one-arm-row",
         // V27: extra-equipment exercises (dumbbells, barbell, vest)
         "goblet-squat", "dumbbell-single-leg-rdl", "weighted-glute-bridge", "dumbbell-row", "barbell-squat", "barbell-rdl", "weighted-pushup", "weighted-pullup", "weighted-dip", "weighted-squat")
 
@@ -179,7 +179,7 @@ class StarterCatalogTest {
         // tuck L-sit sits between the hollow hold and the floor L-sit
         assertEquals(listOf("l-sit-tuck"), next("hollow-hold")); assertEquals(listOf("l-sit-floor"), next("l-sit-tuck")); assertEquals(listOf(listOf("l-sit-tuck")), prereq("l-sit-floor"))
         // the pistol path and the shrimp path are alternatives after the Bulgarian split squat (wiki), the pistol path first
-        assertEquals(listOf("squat-pistol-assisted", "squat-shrimp"), next("split-squat-bulgarian")); assertEquals(listOf(listOf("split-squat-bulgarian")), prereq("squat-pistol-assisted")); assertTrue(next("squat-shrimp").isEmpty())
+        assertEquals(listOf("squat-pistol-assisted", "squat-shrimp"), next("split-squat-bulgarian")); assertEquals(listOf(listOf("split-squat-bulgarian")), prereq("squat-pistol-assisted")); assertEquals(listOf("squat-shrimp-intermediate"), next("squat-shrimp"))
         // a middle step before the full back bridge
         assertEquals(listOf("bridge-incline"), next("bridge-single-leg")); assertEquals(listOf("bridge-back"), next("bridge-incline")); assertEquals(listOf(listOf("bridge-incline")), prereq("bridge-back"))
     }
@@ -222,5 +222,20 @@ class StarterCatalogTest {
         assertEquals(listOf("inverted-row-wide"), next("inverted-row")); assertEquals(listOf("inverted-row-feet-elevated"), next("inverted-row-wide"))
         assertEquals(listOf(listOf("inverted-row-wide")), prereq("inverted-row-feet-elevated"))
         assertTrue(listOf("inverted-row-wide") in prereq("front-lever-tuck"))
+    }
+
+    @Test fun l05SingleLegSquatRestructure() {
+        fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
+        fun prereq(id: String) = catalog.policyForVariation(id)!!.prerequisiteRule.allOf.map { g -> g.mapNotNull { it.variationTierMet?.variationId } }
+        // beginner shrimp || band/frame-assisted pistol -> intermediate shrimp || box pistol || counterbalance pistol -> advanced shrimp || pistol
+        assertEquals(listOf("squat-shrimp-intermediate"), next("squat-shrimp")); assertEquals(listOf("squat-shrimp-advanced"), next("squat-shrimp-intermediate"))
+        assertEquals(listOf("squat-pistol-box", "squat-pistol-counterbalance"), next("squat-pistol-assisted"))
+        assertEquals(listOf("squat-pistol"), next("squat-pistol-box")); assertEquals(listOf("squat-pistol"), next("squat-pistol-counterbalance"))
+        assertEquals(listOf(listOf("squat-pistol-box", "squat-pistol-counterbalance")), prereq("squat-pistol"))
+        assertTrue(next("squat-shrimp-advanced").isEmpty() && next("squat-pistol").isEmpty())    // two parallel end points
+        // the ankle check is information, in every single-leg step
+        for (id in listOf("squat-shrimp", "squat-shrimp-intermediate", "squat-shrimp-advanced", "squat-pistol-assisted", "squat-pistol-box", "squat-pistol-counterbalance"))
+            assertTrue(id, catalog.variation(id)!!.instructions.any { "Ankle check" in it && "information only" in it })
+        assertEquals(setOf("chair"), catalog.variation("squat-pistol-box")!!.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet())
     }
 }

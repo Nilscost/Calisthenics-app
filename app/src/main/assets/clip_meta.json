@@ -1040,7 +1040,58 @@
   ],
   "sharedPoseWith": []
  },
+ "squat-pistol-box": {
+  "kind": "rep",
+  "primary": [
+   "QUADS",
+   "GLUTES"
+  ],
+  "secondary": [
+   "HAMSTRINGS",
+   "ADDUCTORS",
+   "CALVES"
+  ],
+  "sharedPoseWith": []
+ },
+ "squat-pistol-counterbalance": {
+  "kind": "rep",
+  "primary": [
+   "QUADS",
+   "GLUTES"
+  ],
+  "secondary": [
+   "HAMSTRINGS",
+   "ADDUCTORS",
+   "CALVES"
+  ],
+  "sharedPoseWith": []
+ },
  "squat-shrimp": {
+  "kind": "rep",
+  "primary": [
+   "QUADS",
+   "GLUTES"
+  ],
+  "secondary": [
+   "HAMSTRINGS",
+   "HIP_FLEXORS"
+  ],
+  "sharedPoseWith": []
+ },
+ "squat-shrimp-advanced": {
+  "kind": "rep",
+  "primary": [
+   "QUADS",
+   "GLUTES"
+  ],
+  "secondary": [
+   "HAMSTRINGS",
+   "HIP_FLEXORS",
+   "CALVES"
+  ],
+  "sharedPoseWith": []
+ },
+ "squat-shrimp-intermediate": {
   "kind": "rep",
   "primary": [
    "QUADS",

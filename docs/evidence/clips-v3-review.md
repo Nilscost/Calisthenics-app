@@ -102,3 +102,11 @@ Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).
 | `inverted-row-wide` | good | the inverted row with the hands wide apart |
 | `towel-door-row` | weak | leaning back from a door with a towel; the door slab hides part of the figure, the towel is a thin line |
 | `kettlebell-one-arm-row` | acceptable | the same set-up as the dumbbell row with a bell; the bell is a short line |
+
+## L05 additions (`frames-18-single-leg.png`)
+| Id | Verdict | Note |
+|---|---|---|
+| `squat-shrimp-intermediate` | acceptable | the back knee goes down to the floor, the hand reaches back; close to the beginner version (the difference is range and the hold, in the cue text) |
+| `squat-shrimp-advanced` | acceptable | deeper, the rear foot held behind |
+| `squat-pistol-box` | acceptable | a box behind the figure, the free leg out in front |
+| `squat-pistol-counterbalance` | acceptable | arms straight out with a small weight |
