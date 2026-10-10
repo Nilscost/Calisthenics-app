@@ -8,7 +8,9 @@ import app.calisthenics.domain.model.ExerciseVariation
 /** The kettlebell. V26 adds the dumbbells ("weight", the weight of each) as a second loaded kind; no exercise needs them before V27. */
 const val LOAD_EQUIPMENT_ID = "kettlebell"
 const val DUMBBELL_EQUIPMENT_ID = "weight"
-val LOAD_EQUIPMENT_IDS = listOf(LOAD_EQUIPMENT_ID, DUMBBELL_EQUIPMENT_ID)
+const val BARBELL_EQUIPMENT_ID = "barbell"
+const val VEST_EQUIPMENT_ID = "weighted-vest"
+val LOAD_EQUIPMENT_IDS = listOf(LOAD_EQUIPMENT_ID, DUMBBELL_EQUIPMENT_ID, BARBELL_EQUIPMENT_ID, VEST_EQUIPMENT_ID)
 
 /** Which loaded equipment decides this exercise's weight (kettlebell first), or null for a bodyweight exercise. */
 fun ExerciseVariation.loadEquipmentId(): String? =
@@ -27,6 +29,8 @@ fun EquipmentProfile.loadGramsFor(v: ExerciseVariation): Int? = v.loadEquipmentI
 /** O5: the steps shown on a weight track. Kettlebell 8 / 12 / 16 / 20 / 24 kg; dumbbells (each) 2.5 / 5 / 7.5 / 10 / 15 / 20 kg. */
 fun loadLadder(equipmentId: String): List<Int> = when (equipmentId) {
     DUMBBELL_EQUIPMENT_ID -> listOf(2_500, 5_000, 7_500, 10_000, 15_000, 20_000)
+    BARBELL_EQUIPMENT_ID -> listOf(20_000, 30_000, 40_000, 50_000, 60_000, 80_000, 100_000)
+    VEST_EQUIPMENT_ID -> listOf(2_500, 5_000, 7_500, 10_000, 15_000, 20_000)
     else -> listOf(8_000, 12_000, 16_000, 20_000, 24_000)
 }
 

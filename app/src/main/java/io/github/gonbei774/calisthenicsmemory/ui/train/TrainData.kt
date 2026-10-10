@@ -17,12 +17,12 @@ fun loadCatalog(ctx: Context): Catalog = ctx.assets.open("catalog.json").buffere
 
 /** Starts with the self-assessed levels (instant) and swaps in the history-based progress as soon as Room answers. */
 @Composable
-fun rememberTrainData(): State<TrainData> {
+fun rememberTrainData(refresh: Int = 0): State<TrainData> {
     val ctx = LocalContext.current
     val catalog = remember { loadCatalog(ctx) }
     val routine = remember { RoutineStore.load(ctx) }
     val data = remember { mutableStateOf(TrainData(catalog, routine, LevelStore.snapshot(catalog, LevelStore.load(ctx)))) }
-    LaunchedEffect(Unit) {
+    LaunchedEffect(refresh) {
         // History unreadable (or no SQLite, as in JVM UI tests) -> keep the self-assessed levels.
         val p = try { ProgressLoader.load(ctx, catalog) } catch (_: Throwable) { null }
         if (p != null) data.value = data.value.copy(progress = p)

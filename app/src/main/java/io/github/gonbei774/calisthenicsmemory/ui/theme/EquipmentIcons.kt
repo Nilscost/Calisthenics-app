@@ -51,10 +51,13 @@ object EquipmentIcons {
     val DipSupport by lazy { icon("DipSupport") { rect(3f, 9f, 21f, 11f); rect(5f, 11f, 7f, 19f); rect(17f, 11f, 19f, 19f); rect(2f, 19f, 22f, 20.5f) } }
     val FootAnchor by lazy { icon("FootAnchor") { rect(3f, 8f, 21f, 15f); rect(5f, 15f, 8f, 19f); rect(16f, 15f, 19f, 19f); rect(2f, 19f, 22f, 20.5f) } }
 
+    val Barbell by lazy { icon("Barbell") { rect(2f, 11f, 22f, 13f); rect(3f, 7f, 5f, 17f); rect(6f, 8.5f, 8f, 15.5f); rect(16f, 8.5f, 18f, 15.5f); rect(19f, 7f, 21f, 17f) } }
+    val Vest by lazy { icon("Vest") { rect(6f, 4f, 10f, 20f); rect(14f, 4f, 18f, 20f); rect(9f, 4f, 15f, 8f); rect(5f, 10f, 19f, 12f) } }
+
     fun forId(id: String): ImageVector? = when (id) {
         "pullup-bar" -> PullUpBar; "high-bar" -> HighBar; "low-bar" -> LowBar; "resistance-band" -> Band
         "kettlebell" -> Kettlebell; "weight" -> Dumbbell; "chair" -> Chair; "wall" -> Wall; "mat" -> Mat; "parallettes" -> Parallettes
-        "dip-support" -> DipSupport; "foot-anchor" -> FootAnchor
+        "barbell" -> Barbell; "weighted-vest" -> Vest; "dip-support" -> DipSupport; "foot-anchor" -> FootAnchor
         else -> null
     }
 }

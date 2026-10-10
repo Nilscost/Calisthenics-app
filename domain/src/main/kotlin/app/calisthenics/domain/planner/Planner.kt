@@ -227,7 +227,7 @@ private class Planner(val input: PlanInput) {
         // Kettlebell weight (owner 2026-10-08): a heavier bell than the one the level was earned with restarts at tier 1.
         val load = input.profile.loadGramsFor(v)
         val recorded = input.progress.variations[v.id]?.loadGrams
-        val loadName = if (v.loadEquipmentId() == app.calisthenics.domain.load.DUMBBELL_EQUIPMENT_ID) "dumbbells" else "kettlebell"
+        val loadName = when (v.loadEquipmentId()) { app.calisthenics.domain.load.DUMBBELL_EQUIPMENT_ID -> "dumbbells"; app.calisthenics.domain.load.BARBELL_EQUIPMENT_ID -> "barbell"; app.calisthenics.domain.load.VEST_EQUIPMENT_ID -> "weighted vest"; else -> "kettlebell" }
         if (load != null && recorded != null && load > recorded) {
             tierIdx = 1
             explain += "${v.name}: heavier $loadName (${formatKg(load)} kg instead of ${formatKg(recorded)} kg) — starting again at tier 1. Your stars at ${formatKg(recorded)} kg are kept."

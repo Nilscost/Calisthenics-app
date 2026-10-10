@@ -37,6 +37,8 @@ object EquipmentOptions {
         EquipmentOption("chair", suitability = setOf("stable")),
         EquipmentOption("wall", kind = OptionKind.CAPABILITY),
         EquipmentOption("mat"),
+        EquipmentOption("barbell", weighted = true, defaultMassGrams = 20_000),          // V27: the bar and plates, in total
+        EquipmentOption("weighted-vest", weighted = true, defaultMassGrams = 5_000),     // V27: a load for push-ups, pull-ups, dips and squats
         EquipmentOption("dip-support"),       // V21b: parallel bars, two sturdy chairs or a counter corner (dips, support hold)
         EquipmentOption("foot-anchor"),       // V21b: a sofa or heavy furniture to hook the heels under (Nordic curls)
         EquipmentOption("parallettes", future = true),

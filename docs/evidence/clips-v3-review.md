@@ -71,3 +71,13 @@ Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).
 | `scapular-pull`, `arch-hang` | weak | the movement is small by nature (shoulders rise a few centimetres with straight arms; the arch is slight); both read as a hang on the bar, the cue text carries the detail |
 | `tuck-l-sit` (`l-sit-tuck`) | weak | seated with the knees tucked and a small hold sway; the lifted hips are hard to see from this angle |
 | `bridge-incline` | acceptable | hands on a chair seat behind, hips pushed up, body in a diagonal line |
+
+## V27 additions: dumbbell, barbell and vest clips (`frames-14-weights.png`)
+| Id | Verdict | Note |
+|---|---|---|
+| `goblet-squat` | acceptable | dumbbell held at the chest; the dumbbell is a tiny prop |
+| `dumbbell-rdl`, `dumbbell-single-leg-rdl` | acceptable | arms hang with the weights while the hips hinge; the dumbbells are tiny props |
+| `dumbbell-row` | acceptable | hand and knee on a stable seat, the working elbow travels to the hip; the figure is large in the frame |
+| `barbell-squat`, `barbell-rdl` | weak | the bar is a thin line across the hands/shoulders and hard to see |
+| `weighted-glute-bridge` | weak | the weight on the hips is a tiny mark |
+| `weighted-pushup`, `weighted-pullup`, `weighted-dip`, `weighted-squat` | shared | the same pose as the plain exercise (declared in `SHARED_POSES`); the vest is not drawn, the cue text carries it |

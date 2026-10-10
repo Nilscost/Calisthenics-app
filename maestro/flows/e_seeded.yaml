@@ -17,6 +17,8 @@ appId: app.calisthenics.personal
 - tapOn: { id: tab_progress }
 - extendedWaitUntil: { visible: { id: tree_area }, timeout: 10000 }
 - takeScreenshot: 04-progress-push-${VARIANT}
+# V27: a suggestion card, when there is one, pushes the tab chips down; close it so the swipes below hit the row
+- tapOn: { id: suggestion_dismiss, optional: true }
 - repeat:
     while: { notVisible: { id: tab_chip_squat } }
     times: 4

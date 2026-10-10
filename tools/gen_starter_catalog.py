@@ -638,6 +638,54 @@ strength("pullup-negative", "Negative Pull-Up", "pullup", ["PULL_VERTICAL"], ["U
 for pol in policies:
     if pol["variationId"] == "pullup-full": pol["prerequisiteRule"] = {"allOf": [[vt("pullup-band-assisted", 4), vt("pullup-negative", 4)]]}   # the band path or the negative path
 
+
+# =============================================================================================================
+# V27 (O3, D9): content for the extra equipment. Everything here is optional: the bodyweight-only profile stays complete (tested).
+# Dumbbells ("weight", the weight of each), a barbell (the bar plus plates in total) and a weighted vest are loaded equipment: the weight in the
+# profile decides the load, and a heavier one starts the exercise again at level 1 (stars at the lighter weight are kept), like the kettlebell.
+# =============================================================================================================
+DB = [{"needs": [need("weight")]}]
+BARBELL = [{"needs": [need("barbell")]}]
+VEST = [{"needs": [need("weighted-vest")]}]
+LOAD_WEIGHT = "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+strength("goblet-squat", "Goblet Squat", "db-squat", ["SQUAT"], ["LOWER_BODY"], "REPS", "standing",
+         ["Hold one dumbbell upright at the chest with both hands, feet a little wider than the hips.", "Sit down between the knees, chest tall, elbows inside the knees.", "Stand up by pushing the floor away; keep the weight close.", LOAD_WEIGHT],
+         ["Chest tall", "Weight close to the chest", "Heels down"], reps_tiers([6, 8, 10, 12, 15]), [S_NG, S_YG], LOW, eq=DB, rank=15, prereq={"allOf": [[vt("squat-air", 4)]]})
+strength("dumbbell-rdl", "Dumbbell Romanian Deadlift", "db-hinge", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Stand with a dumbbell in each hand in front of the thighs, a soft bend in the knees.", "Push the hips back and slide the weights down the legs with a flat back.", "Stand tall by driving the hips forward. The arms only hold the weights.", LOAD_WEIGHT],
+         ["Hips back", "Flat back", "Weights close to the legs"], reps_tiers([8, 10, 12, 15, 20]), [S_NG, S_YG], HAM_ST, eq=DB, rank=15, nxt=["dumbbell-single-leg-rdl"], prereq={"allOf": [[vt("rdl-bodyweight", 4)]]})
+strength("dumbbell-single-leg-rdl", "Dumbbell Single-Leg RDL (per side)", "db-hinge", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Stand on one leg with a dumbbell in the hand opposite the standing leg (or one in each hand).", "Hinge forward with the free leg reaching straight behind, back flat.", "Return by squeezing the glute; finish a side, then switch.", LOAD_WEIGHT],
+         ["Hips square", "Flat back", "Slow and controlled"], reps_tiers([4, 5, 6, 8, 10]), [S_NG, S_YG], HAM_ST, eq=DB, unilateral=True, rank=25, prereq={"allOf": [[vt("dumbbell-rdl", 4)], [vt("single-leg-deadlift", 3)]]})
+strength("weighted-glute-bridge", "Weighted Glute Bridge", "db-bridge", ["HINGE"], ["LOWER_BODY"], "REPS", "supine",
+         ["Lie on your back, feet flat, a dumbbell resting on the hips (hold it with both hands).", "Press through the heels to lift the hips until the body is straight from the shoulders to the knees.", "Lower slowly; the weight stays on the hips.", LOAD_WEIGHT],
+         ["Squeeze the glutes", "Ribs down", "Slow lowering"], reps_tiers([8, 10, 12, 15, 20]), [S_NG, S_YG], ["stretch-hip-flexor", "stretch-back"], eq=DB, rank=15, prereq={"allOf": [[vt("glute-bridge", 4)]]})
+strength("dumbbell-row", "One-Arm Dumbbell Row (per side)", "db-row", ["PULL_HORIZONTAL"], ["UPPER_BODY"], "REPS", "standing",
+         ["Put one hand and the same-side knee (or just the hand) on a stable chair or bench, back flat, a dumbbell in the other hand hanging straight down.", "Pull the elbow up and back toward the hip, shoulder blade squeezing in.", "Lower slowly to straight arm; do all reps on one side, then switch.", LOAD_WEIGHT],
+         ["Flat back", "Elbow to the hip", "No twisting"], reps_tiers([6, 8, 10, 12, 15]), [S_NG, S_YG], UP, eq=DB, unilateral=True, rank=25, prereq={"allOf": [[vt("row-band", 4)]]})
+strength("barbell-squat", "Barbell Squat", "bb-squat", ["SQUAT"], ["LOWER_BODY"], "REPS", "standing",
+         ["Rest the bar across the upper back (never on the neck), hands holding it, feet shoulder width apart.", "Sit down until the thighs are about parallel, chest up, knees over the feet.", "Stand up with the whole foot pressing the floor. Use a rack or safety pins if you can; stop a set well before failure.", LOAD_WEIGHT],
+         ["Chest up", "Knees over the feet", "Stop short of failure"], reps_tiers([5, 6, 7, 8, 10]), RR, LOW, eq=BARBELL, rank=25, prereq={"allOf": [[vt("squat-air", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Heavy load: use a rack or safety pins, keep a spotter or an escape route, and stop a set well before failure."))
+strength("barbell-rdl", "Barbell Romanian Deadlift", "bb-hinge", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Hold the bar in front of the thighs, hands just outside the legs, a soft bend in the knees.", "Push the hips back and slide the bar down the legs with a flat back until the hamstrings stretch.", "Stand tall by driving the hips forward.", LOAD_WEIGHT],
+         ["Hips back", "Bar close to the legs", "Flat back"], reps_tiers([6, 8, 10, 12, 15]), RR, HAM_ST, eq=BARBELL, rank=25, prereq={"allOf": [[vt("rdl-bodyweight", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Heavy load: keep the back flat all the time; drop the bar rather than twist if you lose it."))
+# the weighted vest as a load for push-ups, pull-ups, dips and squats: the same movement once the plain one is mastered
+strength("weighted-pushup", "Weighted Push-Up", "vest-push", ["PUSH_HORIZONTAL"], ["UPPER_BODY", "CORE"], "REPS", "floor",
+         ["Put on the vest and get into a push-up position, body in one straight line.", "Lower the chest to the floor and press back up as in a normal push-up.", LOAD_WEIGHT],
+         ["Straight body", "Full range"], reps_tiers([5, 6, 8, 10, 12]), RR, UP, eq=VEST, rank=45, prereq={"allOf": [[vt("pushup-standard", 5)]]})
+strength("weighted-pullup", "Weighted Pull-Up", "vest-pull", ["PULL_VERTICAL"], ["UPPER_BODY"], "REPS", "hang",
+         ["Put on the vest and hang from the bar with straight arms.", "Pull until the chin is over the bar, then lower slowly to straight arms.", LOAD_WEIGHT],
+         ["Straight arms at the bottom", "Chin over the bar"], reps_tiers([3, 4, 5, 6, 8]), RR, UP, eq=[{"needs": [need("pullup-bar"), need("weighted-vest")]}], rank=45, prereq={"allOf": [[vt("pullup-full", 5)]]})
+strength("weighted-dip", "Weighted Dip", "vest-dip", ["PUSH_VERTICAL"], ["UPPER_BODY"], "REPS", "standing",
+         ["Put on the vest and support yourself on the parallel bars (or two sturdy chairs / a counter corner) with straight arms.", "Lower until the upper arms are about parallel to the floor, then press back up.", DIP_NOTE, LOAD_WEIGHT],
+         ["Shoulders down", "Full lockout"], reps_tiers([3, 5, 6, 8, 10]), RR, UP, eq=[{"needs": [need("dip-support"), need("weighted-vest")]}], rank=40, prereq={"allOf": [[vt("dip-parallel", 5)]]},
+         cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; stop on shoulder or elbow pain."))
+strength("weighted-squat", "Weighted Squat", "vest-squat", ["SQUAT"], ["LOWER_BODY"], "REPS", "standing",
+         ["Put on the vest, feet shoulder width apart.", "Sit down until the thighs are about parallel, chest up, then stand.", LOAD_WEIGHT],
+         ["Chest up", "Heels down"], reps_tiers([8, 10, 12, 15, 20]), RR, LOW, eq=VEST, rank=15, prereq={"allOf": [[vt("squat-air", 5)]]})
+
 # plank no longer a dead end: top of the plank ladder leads to the hollow hold
 for pol in policies:
     if pol["variationId"] == "plank": pol["nextVariationIds"] = ["hollow-hold"]
@@ -715,6 +763,17 @@ M = {
     "pullup-negative": (["LATS", "BICEPS"], ["UPPER_BACK", "FOREARMS", "REAR_DELTS"]),
     "l-sit-tuck": (["ABS", "HIP_FLEXORS"], ["TRICEPS", "FRONT_DELTS", "QUADS"]),
     "bridge-incline": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK", "FRONT_DELTS", "TRICEPS"]),
+    "goblet-squat": (["QUADS", "GLUTES"], ["ABS", "UPPER_BACK"]),
+    "dumbbell-rdl": (["HAMSTRINGS", "GLUTES"], ["LOWER_BACK", "FOREARMS"]),
+    "dumbbell-single-leg-rdl": (["HAMSTRINGS", "GLUTES"], ["LOWER_BACK", "FOREARMS", "CALVES"]),
+    "weighted-glute-bridge": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK"]),
+    "dumbbell-row": (["LATS", "UPPER_BACK"], ["BICEPS", "REAR_DELTS", "FOREARMS"]),
+    "barbell-squat": (["QUADS", "GLUTES"], ["HAMSTRINGS", "LOWER_BACK", "ABS"]),
+    "barbell-rdl": (["HAMSTRINGS", "GLUTES"], ["LOWER_BACK", "FOREARMS"]),
+    "weighted-pushup": (["CHEST", "TRICEPS"], ["FRONT_DELTS", "ABS"]),
+    "weighted-pullup": (["LATS", "BICEPS"], ["UPPER_BACK", "FOREARMS", "REAR_DELTS"]),
+    "weighted-dip": (["TRICEPS", "CHEST"], ["FRONT_DELTS", "UPPER_BACK"]),
+    "weighted-squat": (["QUADS", "GLUTES"], ["HAMSTRINGS", "CALVES"]),
     "dip-support-hold": (["TRICEPS", "FRONT_DELTS"], ["CHEST", "UPPER_BACK"]),
     "dip-negative": (["TRICEPS", "CHEST"], ["FRONT_DELTS", "UPPER_BACK"]),
     "dip-parallel": (["TRICEPS", "CHEST"], ["FRONT_DELTS", "UPPER_BACK"]),

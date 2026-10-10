@@ -372,6 +372,53 @@ def bridge_incline(p):
 
 NEW.update({"scapular-pull": (scapular_pull, "rep"), "arch-hang": (arch_hang_hold, "hold"), "pullup-negative": (pullup_negative, "rep"),
             "l-sit-tuck": (l_sit_tuck, "hold"), "bridge-incline": (bridge_incline, "rep")})
+
+# ----------------------------------------------------------------------------------------------- V27 poses (dumbbell, barbell, vest)
+def goblet_squat(p):
+    s = rep(p); hip = (lerp(210, 172, s), lerp(124, 76, s)); a = lerp(90, 62, s); sho = sh(hip, a)
+    hand = (sho[0] + 18, sho[1] - 12 + 4 * s)
+    return dict(hip=hip, a=a, head_off=lerp(0, 18, s), arms=[("ik", hand, (0, -1))] * 2, arm_z=[6, -6], legs=[("ik", (210, 46), (1, 0))] * 2,
+                props=[("line", (hand[0] - 2, hand[1] - 7), (hand[0] - 2, hand[1] + 7), v1.PROP)])
+
+def db_rdl(p):
+    s = rep(p); hip = (lerp(150, 120, s), lerp(124, 112, s)); a = lerp(90, 24, s); sho = sh(hip, a)
+    hand = (sho[0] + 4, sho[1] - 56 + 6 * s)
+    return dict(hip=hip, a=a, head_off=lerp(0, 22, s), arms=[("ik", hand, (-1, 0))] * 2, legs=[("ik", (150, 46), (1, 0.1))] * 2,
+                props=[("line", (hand[0] - 7, hand[1]), (hand[0] + 7, hand[1]), v1.PROP)])
+
+def db_single_leg_rdl(p):
+    s = rep(p); hip = (lerp(190, 178, s), lerp(124, 118, s)); a = lerp(90, 14, s); sho = sh(hip, a)
+    r = math.radians(a); free = (hip[0] - 84 * math.cos(r) * 0.95, hip[1] - 84 * math.sin(r) * 0.95)
+    if a > 60: free = (hip[0] - 4, hip[1] - 84)
+    hand = (sho[0] + 4, sho[1] - 56 + 6 * s)
+    return dict(hip=hip, a=a, head_off=lerp(0, 22, s), arms=[("ik", hand, (-1, 0))] * 2, legs=[("ik", (190, 46), (1, 0)), ("ik", free, (0, 1))],
+                props=[("line", (hand[0] - 7, hand[1]), (hand[0] + 7, hand[1]), v1.PROP)])
+
+def db_row(p):
+    s = rep(p); hip = (128, 98); a = 34; sho = sh(hip, a)
+    work = (sho[0] + lerp(2, -16, s), sho[1] + lerp(-58, -22, s)); rest_hand = (sho[0] + 26, 78)
+    return dict(hip=hip, a=a, head_off=-14, arms=[("ik", work, (-1, 0)), ("ik", rest_hand, (0, -1))], arm_z=[Z_ARM, -Z_ARM],
+                legs=[("ik", (150, 46), (1, 0)), ("ik", (84, 46), (1, 0))], scene=[("rect", (sho[0] + 12, 46, sho[0] + 44, 78), v1.GRD)],
+                props=[("line", (work[0] - 6, work[1]), (work[0] + 6, work[1]), v1.PROP)])
+
+def bb_squat(p):
+    s = rep(p); hip = (lerp(210, 172, s), lerp(124, 76, s)); a = lerp(90, 52, s); sho = sh(hip, a)
+    hand = (sho[0] - 4, sho[1] + 4)
+    return dict(hip=hip, a=a, head_off=lerp(0, 20, s), arms=[("ik", hand, (-1, 0))] * 2, arm_z=[Z_ARM + 14, -Z_ARM - 14], legs=[("ik", (210, 46), (1, 0))] * 2,
+                props=[("line", "hand0", "hand1", v1.PROP)])
+
+def bb_rdl(p):
+    s = rep(p); hip = (lerp(150, 120, s), lerp(124, 112, s)); a = lerp(90, 22, s); sho = sh(hip, a)
+    hand = (sho[0] + 6, sho[1] - 56 + 8 * s)
+    return dict(hip=hip, a=a, head_off=lerp(0, 22, s), arms=[("ik", hand, (-1, 0))] * 2, arm_z=[Z_ARM + 10, -Z_ARM - 10], legs=[("ik", (150, 46), (1, 0.1))] * 2,
+                props=[("line", "hand0", "hand1", v1.PROP)])
+
+def weighted_bridge(p):
+    d = v1.POSES["glute-bridge"][0](p); hip = d["hip"]
+    d["props"] = [("line", (hip[0] - 7, hip[1] + 8), (hip[0] + 7, hip[1] + 8), v1.PROP)]; return d
+
+NEW.update({"goblet-squat": (goblet_squat, "rep"), "dumbbell-rdl": (db_rdl, "rep"), "dumbbell-single-leg-rdl": (db_single_leg_rdl, "rep"), "dumbbell-row": (db_row, "rep"),
+            "barbell-squat": (bb_squat, "rep"), "barbell-rdl": (bb_rdl, "rep"), "weighted-glute-bridge": (weighted_bridge, "rep")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)
@@ -431,11 +478,18 @@ OWN_POSES = {
 }
 POSES.update(OWN_POSES)
 
+# V27: the weighted-vest versions are the same movement (the vest is not drawn); declared in SHARED_POSES
+for _w, _b in (("weighted-pushup", "pushup-standard"), ("weighted-pullup", "pullup-full"), ("weighted-dip", "dip-parallel"), ("weighted-squat", "squat-air")):
+    POSES[_w] = POSES[_b]
 # V06a: a pose function may only be shared by several ids when the group is declared here with the difference that the
 # clip itself shows. V06b gives every variant of the first group its own pose (K2) and removes it from this table.
 SHARED_POSES = {
     frozenset({"dead-bug", "warmup-dead-bug"}): "the warm-up item is the same exercise for 30 s",
     frozenset({"dip-support-hold", "warmup-support-hold"}): "the RR warm-up support hold is the same hold",
+    frozenset({"pushup-standard", "weighted-pushup"}): "the vest is the only difference and is not drawn",
+    frozenset({"pullup-full", "weighted-pullup"}): "the vest is the only difference and is not drawn",
+    frozenset({"dip-parallel", "weighted-dip"}): "the vest is the only difference and is not drawn",
+    frozenset({"squat-air", "weighted-squat"}): "the vest is the only difference and is not drawn",
     frozenset({"pushup-one-arm-negative", "pushup-one-arm"}): "same one-arm push-up pose; the negative is the slow lowering half, only the cue text differs",
 }
 def pose_groups():

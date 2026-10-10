@@ -5285,6 +5285,662 @@
         "FOREARMS",
         "REAR_DELTS"
       ]
+    },
+    {
+      "id": "goblet-squat",
+      "familyId": "db-squat",
+      "name": "Goblet Squat",
+      "patterns": [
+        "SQUAT"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "weight"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Hold one dumbbell upright at the chest with both hands, feet a little wider than the hips.",
+        "Sit down between the knees, chest tall, elbows inside the knees.",
+        "Stand up by pushing the floor away; keep the weight close.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Chest tall",
+        "Weight close to the chest",
+        "Heels down"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 15,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-goblet-squat",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "ABS",
+        "UPPER_BACK"
+      ]
+    },
+    {
+      "id": "dumbbell-rdl",
+      "familyId": "db-hinge",
+      "name": "Dumbbell Romanian Deadlift",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "weight"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Stand with a dumbbell in each hand in front of the thighs, a soft bend in the knees.",
+        "Push the hips back and slide the weights down the legs with a flat back.",
+        "Stand tall by driving the hips forward. The arms only hold the weights.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Hips back",
+        "Flat back",
+        "Weights close to the legs"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 15,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-dumbbell-rdl",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK",
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "dumbbell-single-leg-rdl",
+      "familyId": "db-hinge",
+      "name": "Dumbbell Single-Leg RDL (per side)",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "weight"
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Stand on one leg with a dumbbell in the hand opposite the standing leg (or one in each hand).",
+        "Hinge forward with the free leg reaching straight behind, back flat.",
+        "Return by squeezing the glute; finish a side, then switch.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Hips square",
+        "Flat back",
+        "Slow and controlled"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-dumbbell-single-leg-rdl",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK",
+        "FOREARMS",
+        "CALVES"
+      ]
+    },
+    {
+      "id": "weighted-glute-bridge",
+      "familyId": "db-bridge",
+      "name": "Weighted Glute Bridge",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "weight"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Lie on your back, feet flat, a dumbbell resting on the hips (hold it with both hands).",
+        "Press through the heels to lift the hips until the body is straight from the shoulders to the knees.",
+        "Lower slowly; the weight stays on the hips.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Squeeze the glutes",
+        "Ribs down",
+        "Slow lowering"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 15,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-weighted-glute-bridge",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-back"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK"
+      ]
+    },
+    {
+      "id": "dumbbell-row",
+      "familyId": "db-row",
+      "name": "One-Arm Dumbbell Row (per side)",
+      "patterns": [
+        "PULL_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "weight"
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Put one hand and the same-side knee (or just the hand) on a stable chair or bench, back flat, a dumbbell in the other hand hanging straight down.",
+        "Pull the elbow up and back toward the hip, shoulder blade squeezing in.",
+        "Lower slowly to straight arm; do all reps on one side, then switch.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Flat back",
+        "Elbow to the hip",
+        "No twisting"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-dumbbell-row",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "UPPER_BACK"
+      ],
+      "secondaryMuscles": [
+        "BICEPS",
+        "REAR_DELTS",
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "barbell-squat",
+      "familyId": "bb-squat",
+      "name": "Barbell Squat",
+      "patterns": [
+        "SQUAT"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "barbell"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Rest the bar across the upper back (never on the neck), hands holding it, feet shoulder width apart.",
+        "Sit down until the thighs are about parallel, chest up, knees over the feet.",
+        "Stand up with the whole foot pressing the floor. Use a rack or safety pins if you can; stop a set well before failure.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Chest up",
+        "Knees over the feet",
+        "Stop short of failure"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Heavy load: use a rack or safety pins, keep a spotter or an escape route, and stop a set well before failure."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-barbell-squat",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "LOWER_BACK",
+        "ABS"
+      ]
+    },
+    {
+      "id": "barbell-rdl",
+      "familyId": "bb-hinge",
+      "name": "Barbell Romanian Deadlift",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "barbell"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Hold the bar in front of the thighs, hands just outside the legs, a soft bend in the knees.",
+        "Push the hips back and slide the bar down the legs with a flat back until the hamstrings stretch.",
+        "Stand tall by driving the hips forward.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Hips back",
+        "Bar close to the legs",
+        "Flat back"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Heavy load: keep the back flat all the time; drop the bar rather than twist if you lose it."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-barbell-rdl",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK",
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "weighted-pushup",
+      "familyId": "vest-push",
+      "name": "Weighted Push-Up",
+      "patterns": [
+        "PUSH_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY",
+        "CORE"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "weighted-vest"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "floor",
+      "instructions": [
+        "Put on the vest and get into a push-up position, body in one straight line.",
+        "Lower the chest to the floor and press back up as in a normal push-up.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Straight body",
+        "Full range"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 45,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-weighted-pushup",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "ABS"
+      ]
+    },
+    {
+      "id": "weighted-pullup",
+      "familyId": "vest-pull",
+      "name": "Weighted Pull-Up",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            },
+            {
+              "equipmentId": "weighted-vest"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Put on the vest and hang from the bar with straight arms.",
+        "Pull until the chin is over the bar, then lower slowly to straight arms.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Straight arms at the bottom",
+        "Chin over the bar"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 45,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-weighted-pullup",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "BICEPS"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK",
+        "FOREARMS",
+        "REAR_DELTS"
+      ]
+    },
+    {
+      "id": "weighted-dip",
+      "familyId": "vest-dip",
+      "name": "Weighted Dip",
+      "patterns": [
+        "PUSH_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "dip-support"
+            },
+            {
+              "equipmentId": "weighted-vest"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Put on the vest and support yourself on the parallel bars (or two sturdy chairs / a counter corner) with straight arms.",
+        "Lower until the upper arms are about parallel to the floor, then press back up.",
+        "Support: parallel bars, two sturdy chairs (put weight on the seats so they cannot tip), or a 90-degree kitchen-counter corner. Bench dips with the hands behind you are not used here: they carry over poorly to real dips.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Shoulders down",
+        "Full lockout"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the support is stable before every set; stop on shoulder or elbow pain."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-weighted-dip",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "TRICEPS",
+        "CHEST"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "UPPER_BACK"
+      ]
+    },
+    {
+      "id": "weighted-squat",
+      "familyId": "vest-squat",
+      "name": "Weighted Squat",
+      "patterns": [
+        "SQUAT"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "weighted-vest"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Put on the vest, feet shoulder width apart.",
+        "Sit down until the thighs are about parallel, chest up, then stand.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Chest up",
+        "Heels down"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 15,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-weighted-squat",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "CALVES"
+      ]
     }
   ],
   "policies": [
@@ -10620,6 +11276,781 @@
               "variationTierMet": {
                 "variationId": "arch-hang",
                 "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-goblet-squat",
+      "variationId": "goblet-squat",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "squat-air",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-dumbbell-rdl",
+      "variationId": "dumbbell-rdl",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 20
+          },
+          "workWindowSeconds": 135,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "dumbbell-single-leg-rdl"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "rdl-bodyweight",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-dumbbell-single-leg-rdl",
+      "variationId": "dumbbell-single-leg-rdl",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "dumbbell-rdl",
+                "tier": 4
+              }
+            }
+          ],
+          [
+            {
+              "variationTierMet": {
+                "variationId": "single-leg-deadlift",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-weighted-glute-bridge",
+      "variationId": "weighted-glute-bridge",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 20
+          },
+          "workWindowSeconds": 135,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "glute-bridge",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-dumbbell-row",
+      "variationId": "dumbbell-row",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "you-are-your-own-gym-lauren"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "row-band",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-barbell-squat",
+      "variationId": "barbell-squat",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 7
+          },
+          "workWindowSeconds": 55,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "squat-air",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-barbell-rdl",
+      "variationId": "barbell-rdl",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "rdl-bodyweight",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-weighted-pushup",
+      "variationId": "weighted-pushup",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pushup-standard",
+                "tier": 5
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-weighted-pullup",
+      "variationId": "weighted-pullup",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pullup-full",
+                "tier": 5
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-weighted-dip",
+      "variationId": "weighted-dip",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "dip-parallel",
+                "tier": 5
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-weighted-squat",
+      "variationId": "weighted-squat",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 20
+          },
+          "workWindowSeconds": 135,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "squat-air",
+                "tier": 5
               }
             }
           ]

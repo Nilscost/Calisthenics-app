@@ -33,7 +33,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(75, strength.size) // V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
+        assertEquals(86, strength.size) // V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
         assertEquals(25, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
@@ -64,7 +64,9 @@ class StarterCatalogTest {
         "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing-one-arm",
         // V21b: ends of the RR paths and single exercises of the ready-made routines
         "dip-parallel", "nordic-curl", "slide-single-leg", "pallof-press", "reverse-hyperextension", "plank-shoulder-tap", "walking-lunge",
-        "squat-shrimp" /* V25: the shrimp path is an alternative after the Bulgarian split squat */)
+        "squat-shrimp" /* V25: the shrimp path is an alternative after the Bulgarian split squat */,
+        // V27: extra-equipment exercises (dumbbells, barbell, vest)
+        "goblet-squat", "dumbbell-single-leg-rdl", "weighted-glute-bridge", "dumbbell-row", "barbell-squat", "barbell-rdl", "weighted-pushup", "weighted-pullup", "weighted-dip", "weighted-squat")
 
     @Test fun noDeadEndsExceptExplicitTops() {
         val deadEnds = catalog.policies.filter { it.nextVariationIds.isEmpty() }.map { it.variationId }.toSet()
@@ -106,7 +108,8 @@ class StarterCatalogTest {
         val succ = catalog.policies.flatMap { it.nextVariationIds }.toSet()
         // every exercise with a prerequisite is reachable as someone's successor (no orphan tree nodes)
         // Entry points of the skill chains are reached by choosing a goal, not by automatic progression.
-        val goalEntries = setOf("pike-pushup", "planche-lean", "front-lever-tuck", "plank-shoulder-tap", "walking-lunge" /* Minimalist circuit steps */)
+        val goalEntries = setOf("pike-pushup", "planche-lean", "front-lever-tuck", "plank-shoulder-tap", "walking-lunge" /* Minimalist circuit steps */,
+            "goblet-squat", "dumbbell-rdl", "weighted-glute-bridge", "dumbbell-row", "barbell-squat", "barbell-rdl", "weighted-pushup", "weighted-pullup", "weighted-dip", "weighted-squat" /* V27: unlocked by owning the equipment */)
         for (p in catalog.policies.filter { it.prerequisiteRule.allOf.isNotEmpty() && it.variationId !in goalEntries })
             assertTrue("${p.variationId} unreachable", p.variationId in succ)
     }

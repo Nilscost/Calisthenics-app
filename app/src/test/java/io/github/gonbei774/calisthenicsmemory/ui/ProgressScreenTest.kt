@@ -9,6 +9,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.progress.ProgressScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.GoalStore
 import io.github.gonbei774.calisthenicsmemory.ui.screens.LevelStore
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -72,6 +73,21 @@ class ProgressScreenTest {
         rule.onNodeWithTag("panel_open_detail").assertIsDisplayed()
         rule.onNodeWithTag("panel_close").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("node_panel").assertDoesNotExist()
+    }
+
+    @Test fun aSuggestionCardShowsOneSuggestionAndCanBeClosed() {   // V27
+        LevelStore.save(ctx, mapOf("pushup-standard" to 5))     // a solid push-up: dip support is hinted (the home profile has none)
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("suggestion_card").assertIsDisplayed()
+        rule.onNodeWithTag("suggestion_text").assertTextContains("opens", substring = true)
+        rule.onAllNodesWithTag("suggestion_card").assertCountEquals(1)
+        fun text() = rule.onNodeWithTag("suggestion_text").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
+        val first = text()
+        rule.onNodeWithTag("suggestion_dismiss").performClick(); rule.waitForIdle()
+        // the closed one does not come back; at most one other may follow, still only one card
+        rule.onAllNodesWithTag("suggestion_card").assertCountEquals(rule.onAllNodesWithTag("suggestion_card").fetchSemanticsNodes().size.coerceAtMost(1))
+        if (rule.onAllNodesWithTag("suggestion_card").fetchSemanticsNodes().isNotEmpty()) assertNotEquals(first, text())
+        rule.onNodeWithTag("tree_area").assertIsDisplayed()      // never blocks the tree
     }
 
     @Test fun aKettlebellDetailShowsTheWeightTrackFromTheBellInUseUpward() {   // V26

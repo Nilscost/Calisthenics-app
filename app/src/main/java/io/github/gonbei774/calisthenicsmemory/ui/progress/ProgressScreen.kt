@@ -25,6 +25,8 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.components.MuscleChips
 import io.github.gonbei774.calisthenicsmemory.ui.components.StarRow
 import app.calisthenics.domain.load.formatKg
+import app.calisthenics.domain.progression.Suggestion
+import app.calisthenics.domain.progression.suggest
 import app.calisthenics.domain.load.isLoaded
 import app.calisthenics.domain.load.loadGrams
 import app.calisthenics.domain.load.loadEquipmentId
@@ -56,8 +58,11 @@ private enum class ProgressMode { TYPE, SKILL }
 @Composable
 fun ProgressScreen(modifier: Modifier = Modifier) {
     val ctx = LocalContext.current
-    val data by rememberTrainData()
+    var refresh by remember { mutableIntStateOf(0) }
+    val data by rememberTrainData(refresh)
     val profile = remember { ProfileStore.selected(ctx) }
+    var dismissed by remember { mutableStateOf(SuggestionStore.dismissed(ctx)) }
+    val suggestion = remember(data, profile, dismissed) { suggest(data.catalog, profile, data.progress, dismissed) }
     val goalId = remember { GoalStore.load(ctx) }
     val goal = Goals.byId(goalId)
     val c = data.catalog
@@ -83,6 +88,12 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
     Scaffold(modifier = modifier) { pad ->
         Column(Modifier.padding(pad).fillMaxSize()) {
             Text(stringResource(R.string.tab_progress).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("progress_title"))
+            suggestion?.let { s ->
+                SuggestionCard(data.catalog, s, onDismiss = { SuggestionStore.dismiss(ctx, s.id); dismissed = dismissed + s.id },
+                    onAccept = (s as? Suggestion.RaiseLevel)?.let { r -> {
+                        SuggestionStore.accept(ctx, r.variationId, r.toTier, java.time.LocalDate.now().toEpochDay().toInt()); SuggestionStore.dismiss(ctx, r.id); dismissed = dismissed + r.id; refresh++
+                    } })
+            }
             SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(horizontal = Spacing.l).height(48.dp)) {
                 SegmentedButton(selected = mode == ProgressMode.TYPE, onClick = { modeName = ProgressMode.TYPE.name; selected = null }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("progress_mode_type")) { Text(stringResource(R.string.progress_by_type)) }
                 SegmentedButton(selected = mode == ProgressMode.SKILL, onClick = { modeName = ProgressMode.SKILL.name; selected = null }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("progress_mode_skill")) { Text(stringResource(R.string.progress_by_skill)) }
@@ -133,6 +144,27 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
         }
     }
     open?.let { id -> c.variation(id)?.let { v -> NodeSheet(c, v, data.progress, profile) { open = null } } }
+}
+
+/** V27 (R29): at most one suggestion; it can be closed and never blocks anything (D9). A raise can be accepted with one tap. */
+@Composable
+private fun SuggestionCard(c: Catalog, s: Suggestion, onDismiss: () -> Unit, onAccept: (() -> Unit)?) {
+    fun name(id: String) = c.variation(id)?.name ?: id
+    val text = when (s) {
+        is Suggestion.RaiseLevel -> stringResource(R.string.suggest_raise, name(s.variationId), s.toTier)
+        is Suggestion.HeavierWeight -> stringResource(R.string.suggest_weight, name(s.variationId), formatKg(s.nextGrams), stringResource(equipmentLabelShortPublic(s.equipmentId)))
+        is Suggestion.GetEquipment -> stringResource(R.string.suggest_equipment, stringResource(equipmentLabelShortPublic(s.equipmentId)), name(s.unlocksVariationId))
+    }
+    Card(Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.xs).testTag("suggestion_card"), shape = MaterialTheme.shapes.large) {
+        Row(Modifier.padding(start = Spacing.m, top = Spacing.xs, bottom = Spacing.xs), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                Caption(stringResource(R.string.suggest_caption))
+                Text(text, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("suggestion_text"))
+                if (onAccept != null) AppOutlinedButton(onClick = onAccept, Modifier.height(40.dp).testTag("suggestion_accept")) { Text(stringResource(R.string.suggest_accept).uppercase()) }
+            }
+            IconButton(onClick = onDismiss, modifier = Modifier.testTag("suggestion_dismiss")) { Icon(Icons.Filled.Close, stringResource(R.string.suggest_dismiss)) }
+        }
+    }
 }
 
 /** Doc 17 §2.6: the panel above the tab bar after the first tap on a node: details, OPEN EXERCISE DETAIL, close. */

@@ -113,6 +113,22 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Lying Leg Raise | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | V-Up |
 | V-Up | none | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Lying Leg Raise L3 | — (top) |
 
+## With weights
+
+| Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
+|---|---|---|---|---|---|---|---|---|
+| Goblet Squat | weight | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Air Squat L4 | — (top) |
+| Barbell Squat | barbell | 5 / 45 / 60 | 6 / 50 / 60 | 7 / 55 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Air Squat L4 | — (top) |
+| Weighted Squat | weighted-vest | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Air Squat L5 | — (top) |
+| Dumbbell Romanian Deadlift | weight | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Romanian Deadlift (bodyweight) L4 | Dumbbell Single-Leg RDL (per side) |
+| Dumbbell Single-Leg RDL (per side) | weight | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Dumbbell Romanian Deadlift L4 and Single-Leg Deadlift (per side) L3 | — (top) |
+| Barbell Romanian Deadlift | barbell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Romanian Deadlift (bodyweight) L4 | — (top) |
+| Weighted Glute Bridge | weight | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Glute Bridge L4 | — (top) |
+| One-Arm Dumbbell Row (per side) | weight | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Band Row (seated) L4 | — (top) |
+| Weighted Push-Up | weighted-vest | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Standard Push-Up L5 | — (top) |
+| Weighted Dip | dip-support + weighted-vest | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Dip L5 | — (top) |
+| Weighted Pull-Up | pullup-bar + weighted-vest | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Pull-Up L5 | — (top) |
+
 ## Automatic checks
 
 - No warnings.

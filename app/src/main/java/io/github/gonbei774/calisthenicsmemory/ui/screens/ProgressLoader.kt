@@ -49,7 +49,7 @@ object ProgressLoader {
                 { v, tier -> catalog.policyForVariation(v)?.tiers?.firstOrNull { it.index == tier }?.minQualifyingBlocks ?: 2 },
                 ruleMetOf = ruleMetOf)
         }
-        val actions = LevelStore.load(ctx).map { (v, t) -> UserAction.SelfAssessment(0, v, t) }
+        val actions = LevelStore.load(ctx).map { (v, t) -> UserAction.SelfAssessment(0, v, t) } + SuggestionStore.accepted(ctx)
         return ProgressionEngine(catalog).replay(evidence, actions, PrefsStore.load(ctx).autoProgression)
     }
 }

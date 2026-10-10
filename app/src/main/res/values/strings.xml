@@ -45,6 +45,8 @@
     <string name="eq_wall">Wall</string>
     <string name="eq_mat">Mat</string>
     <string name="eq_dip_support">Dip support (parallel bars, two sturdy chairs, or a counter corner)</string>
+    <string name="eq_barbell">Barbell (with or without a rack; the weight of the bar and plates together)</string>
+    <string name="eq_vest">Weighted vest</string>
     <string name="eq_foot_anchor">Foot anchor (a sofa or heavy furniture to hook the heels under)</string>
     <string name="eq_parallettes">Parallettes or dip bars (not used yet)</string>
     <string name="eq_other">Other</string>
@@ -58,6 +60,8 @@
     <string name="eq_wall_short">Wall</string>
     <string name="eq_mat_short">Mat</string>
     <string name="eq_dip_support_short">Dip support</string>
+    <string name="eq_barbell_short">Barbell</string>
+    <string name="eq_vest_short">Weighted vest</string>
     <string name="eq_foot_anchor_short">Foot anchor</string>
     <string name="eq_parallettes_short">Parallettes</string>
     <string name="eq_weight">Weight</string>
@@ -84,6 +88,12 @@
     <string name="routine_update">Update this routine</string>
     <string name="routine_saved">Saved as “%1$s”. Find it under Objective -> Routine on Train.</string>
     <string name="routine_updated">“%1$s” updated.</string>
+    <string name="suggest_caption">Suggestion</string>
+    <string name="suggest_raise">%1$s felt too easy twice in a row. Move up to level %2$d? Nothing changes unless you accept.</string>
+    <string name="suggest_weight">All five levels of %1$s are earned. A %2$s kg %3$s opens the next weight step.</string>
+    <string name="suggest_equipment">%1$s opens %2$s. You do not need it; the plan works without.</string>
+    <string name="suggest_accept">Move up</string>
+    <string name="suggest_dismiss">Close suggestion</string>
     <string name="detail_weight">Weight</string>
     <string name="weight_kg">%1$s kg</string>
     <string name="weight_now">Now</string>
