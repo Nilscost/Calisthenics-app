@@ -1,0 +1,29 @@
+Running on test
+ > Flow a_onboarding
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: onb_next is visible... COMPLETED
+Take screenshot 01-welcome-${VARIANT}... COMPLETED
+Tap on id: onb_next... COMPLETED
+Take screenshot 02-goal-${VARIANT}... COMPLETED
+Tap on id: onb_next... COMPLETED
+Take screenshot 03-equipment-${VARIANT}... COMPLETED
+Tap on id: onb_next... COMPLETED
+Run ${output.n = 0}... COMPLETED
+Repeat while id: onb_dont_know is visible (up to 8 times)...
+  Run ${output.n = output.n + 1}... COMPLETED
+  Take screenshot 04-family${output.n}-${VARIANT}... COMPLETED
+  Tap on id: onb_dont_know... COMPLETED
+  Tap on id: onb_guess_NORMAL... COMPLETED
+  Take screenshot 04-family${output.n}-normal-${VARIANT}... COMPLETED
+  Tap on id: onb_next... COMPLETED
+Repeat while id: onb_dont_know is visible (up to 8 times)... COMPLETED
+Take screenshot 05-style-${VARIANT}... COMPLETED
+Tap on id: onb_next... COMPLETED
+Assert that id: onb_finish is visible... COMPLETED
+Take screenshot 06-ready-${VARIANT}... COMPLETED
+Tap on id: onb_finish... COMPLETED
+Assert that id: preview_button is visible... COMPLETED

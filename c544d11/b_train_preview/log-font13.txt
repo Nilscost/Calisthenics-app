@@ -1,0 +1,35 @@
+Running on test
+ > Flow b_train_preview
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Take screenshot 01-train-${VARIANT}... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Take screenshot 02-preview-${VARIANT}... COMPLETED
+Tap on id: set_tab_2... COMPLETED
+Tap on id: level_plus_.*, Index: 0... COMPLETED
+Take screenshot 02b-preview-set2-level-${VARIANT}... COMPLETED
+Tap on id: add_after_.*, Index: 0... COMPLETED
+Assert that "Add exercise" is visible... COMPLETED
+Take screenshot 02c-add-sheet-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Tap on id: rule_REP_RANGE... COMPLETED
+Take screenshot 02e-rule-rep-range-${VARIANT}... COMPLETED
+Tap on id: rule_APP_LEVELS... COMPLETED
+Tap on id: detailed_switch... COMPLETED
+Take screenshot 02d-detailed-${VARIANT}... COMPLETED
+Tap on id: detailed_switch... COMPLETED
+Scrolling DOWN until id: timeline_toggle is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Take screenshot 03-preview-bottom-${VARIANT}... COMPLETED
+Tap on id: timeline_toggle... COMPLETED
+Take screenshot 04-timeline-${VARIANT}... COMPLETED
+Scrolling UP until id: swap_.* is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Tap on id: swap_.*, Index: 0... COMPLETED
+Assert that "Swap this exercise" is visible... COMPLETED
+Take screenshot 05-swap-sheet-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Press back... COMPLETED

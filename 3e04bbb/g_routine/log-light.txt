@@ -1,0 +1,22 @@
+Running on test
+ > Flow g_routine
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: save_routine_button is visible... COMPLETED
+Tap on id: save_routine_button... COMPLETED
+Assert that "Name" is visible... COMPLETED
+Tap on "Name"... COMPLETED
+Input text Push day... COMPLETED
+Take screenshot 01-save-dialog-${VARIANT}... COMPLETED
+Tap on "Save"... COMPLETED
+Assert that id: routine_saved_note is visible... COMPLETED
+Take screenshot 02-saved-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Assert that id: objective_type_ROUTINE is visible... COMPLETED
+Take screenshot 03-train-routine-${VARIANT}... COMPLETED
+Tap on id: objective_type_BODY_PART... COMPLETED

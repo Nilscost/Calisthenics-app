@@ -1,0 +1,26 @@
+Running on test
+ > Flow h_ready
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: train_start_button is visible... COMPLETED
+Tap on id: objective_type_ROUTINE... COMPLETED
+Assert that id: format_PAIRS, enabled is visible... COMPLETED
+Take screenshot 01-train-recommended-${VARIANT}... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Take screenshot 02-preview-recommended-${VARIANT}... COMPLETED
+Repeat 4 times...
+  Swipe from (50%, 75%) to (50%, 30%) in 400 ms... COMPLETED
+Repeat 4 times... COMPLETED
+Take screenshot 03-preview-core-triplet-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Assert that id: goal_field is visible... COMPLETED
+Tap on id: goal_field... COMPLETED
+Tap on "Minimalist Routine"... COMPLETED
+Take screenshot 04-train-minimalist-${VARIANT}... COMPLETED
+Tap on id: objective_type_BODY_PART... COMPLETED
+Tap on id: format_CIRCUIT... COMPLETED
+Tap on id: warmup_switch... COMPLETED

@@ -1,0 +1,33 @@
+Running on test
+ > Flow d_tabs
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: bottom_bar is visible... COMPLETED
+Tap on id: tab_progress... COMPLETED
+Assert that id: tree_area is visible... COMPLETED
+Take screenshot 01-progress-${VARIANT}... COMPLETED
+Tap on id: tree_node_.*, Index: 0... COMPLETED
+Assert that id: node_panel is visible... COMPLETED
+Take screenshot 02-node-panel-${VARIANT}... COMPLETED
+Tap on id: panel_open_detail... COMPLETED
+Assert that id: exercise_detail is visible... COMPLETED
+Take screenshot 02b-exercise-detail-${VARIANT}... COMPLETED
+Tap on id: detail_back... COMPLETED
+Tap on id: progress_mode_skill... COMPLETED
+Take screenshot 02c-by-skill-${VARIANT}... COMPLETED
+Tap on id: tab_history... COMPLETED
+Take screenshot 03-history-${VARIANT}... COMPLETED
+Run flow when id: session_.* is visible...
+  Tap on id: session_.*, Index: 0... COMPLETED
+  Take screenshot 04-history-detail-${VARIANT}... COMPLETED
+  Press back... COMPLETED
+Run flow when id: session_.* is visible... COMPLETED
+Tap on id: tab_settings... COMPLETED
+Take screenshot 05-settings-${VARIANT}... COMPLETED
+Scrolling DOWN until id: set_auto_progress is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Take screenshot 05b-settings-progression-${VARIANT}... COMPLETED
+Scrolling DOWN until id: settings_about is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Take screenshot 06-settings-bottom-${VARIANT}... COMPLETED
