@@ -1,19 +1,28 @@
 package io.github.gonbei774.calisthenicsmemory.ui.theme
 
-import android.graphics.Typeface
+import io.github.gonbei774.calisthenicsmemory.R
+
 import androidx.compose.material3.Typography
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 /**
  * Doc 17 typography: Barlow Condensed (screen titles, big numbers, timers, primary button labels) and IBM Plex Sans (everything else).
- * The font files are not in the repository yet (they need a download that was not approved), so the two families fall back to the
- * system condensed sans and the system sans. To switch, put the TTFs in `res/font/` and change only the two lines below.
+ * Both are SIL OFL 1.1, bundled in `res/font/` from github.com/google/fonts (owner-approved 2026-10-09; licences in `licenses/fonts/`).
+ * IBM Plex Sans ships there as one variable font; each weight is an instance of it (variable fonts need API 26 = our minSdk).
  */
+@OptIn(ExperimentalTextApi::class)
 object AppFonts {
-    val display: FontFamily = FontFamily(Typeface.create("sans-serif-condensed", Typeface.BOLD))
-    val body: FontFamily = FontFamily.Default
+    val display: FontFamily = FontFamily(
+        Font(R.font.barlow_condensed_semibold, FontWeight.SemiBold),
+        Font(R.font.barlow_condensed_bold, FontWeight.Bold),
+    )
+    private fun plex(w: FontWeight) = Font(R.font.ibm_plex_sans, w, variationSettings = FontVariation.Settings(FontVariation.weight(w.weight)))
+    val body: FontFamily = FontFamily(plex(FontWeight.Normal), plex(FontWeight.Medium), plex(FontWeight.SemiBold), plex(FontWeight.Bold))
 }
 
 private val base = Typography()

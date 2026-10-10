@@ -512,3 +512,10 @@ Done against doc 17 and the review of V12–V23 (`docs/evidence/ui/V12-V27-revie
 - **Between sets or cool-down:** new `StretchUse { BETWEEN_SETS, COOL_DOWN, BOTH }` and `optIn` on `ExerciseVariation` (appended with defaults; old catalogs decode as BOTH). The planner now draws recovery stretches only from stretches that are not cool-down-only and not opt-in; a stretch the person picks by hand still works. Cool-down only: pigeon, 90/90, frog, couch, butterfly, pancake, cobra, sleeper (sleeper also opt-in). Every strength exercise keeps at least one between-sets stretch (tested), between-sets stretches are 30 s at most, the warm-up items 30 s each. Changed because of the rotation change: the Preview test for a per-set stretch no longer expects a particular automatic stretch.
 - Not added: **Jefferson curl and German hang** (the plan lists them as opt-in extras): both are risky positions and I did not want to publish them without owner confirmation; the `optIn` flag is ready for them. Debug seed fixture regenerated (`WRITE_SEED=1`).
 - Tests: `StarterCatalogTest.l11StretchLibraryIsTaggedForBetweenSetsAndCoolDown`, `StretchUseTest` (3). Verify exit 0 (`docs/evidence/l11-verify-2026-10-10.log`). The stretch list in Progress shows the new items (e_seeded 08/09; reviewed after the run).
+
+### V08c — fonts (2026-10-10, done by the reviewer)
+- The owner approved the download directly in the reviewer's chat. Barlow Condensed SemiBold/Bold and IBM Plex Sans (the variable font, used at 400/500/600/700) came from github.com/google/fonts (`ofl/barlowcondensed`, `ofl/ibmplexsans`), unmodified, into `app/src/main/res/font/`. OFL texts are in `licenses/fonts/`, and `THIRD_PARTY_NOTICES.md` is updated.
+- `AppFonts` in `Type.kt` now uses them; the fallback system fonts are gone.
+- Sandbox `:app:testDebugUnitTest :app:lintDebug :app:assembleDebug --offline` exit 0.
+- Screenshot review of the type: left to the executor's next ui-screens run, and to the R6 review.
+- The V08c open item is closed.

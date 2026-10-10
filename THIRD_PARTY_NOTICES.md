@@ -72,3 +72,8 @@ Before adding code/data/media: add an entry with upstream URL, revision, author,
 
 ## Ready-made routines and exercise structure (V21b, V22)
 The "Recommended Routine" and "Minimalist Routine" and several exercise progressions (dips, hamstring paths, core triplet, warm-up items) follow the **structure and numbers** of the r/bodyweightfitness wiki (Recommended Routine, Minimalist Routine and the progression pages, read live on 2026-10-09; the Minimalist Routine derives from u/m092's Concept Wednesday post). The wiki states no licence, so no text, images or tables are copied: the instructions, names of our items and every clip are our own work, and the numbers are DRAFT product heuristics. Credit is shown in the app under each ready-made routine.
+
+## Fonts (bundled in `app/src/main/res/font/`)
+- **Barlow Condensed** (SemiBold, Bold): Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow). SIL Open Font License 1.1: `licenses/fonts/BarlowCondensed-OFL.txt`.
+- **IBM Plex Sans** (variable font, used at 400/500/600/700): Copyright 2017 IBM Corp., Reserved Font Name "Plex". SIL Open Font License 1.1: `licenses/fonts/IBMPlexSans-OFL.txt`.
+- Source for both: the official Google Fonts repository, github.com/google/fonts (`ofl/barlowcondensed`, `ofl/ibmplexsans`), downloaded 2026-10-10. The files are unmodified; only the file names were changed to Android resource names.
