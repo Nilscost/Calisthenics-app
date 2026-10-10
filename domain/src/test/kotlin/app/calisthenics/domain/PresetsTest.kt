@@ -72,13 +72,13 @@ class PresetsTest {
         assertTrue(plan(Presets.recommended(catalog, bare), bare).blocks.any { it.type == BlockType.WORK })
     }
 
-    @Test fun warmUpListsTheRrItemsAndOnlyWhatTheEquipmentAllows() {
+    @Test fun warmUpListsTheRrEightItemsAndThePlanKeepsOnlyWhatIsUnlockedAndUsable() {   // L12: the planner orders (RAMP) and gates them
         val full = Presets.recommended(catalog, gym).routine.warmup
-        assertEquals(listOf("warmup-shoulder-band", "warmup-squat-sky-reach", "warmup-wrist-prep", "warmup-dead-bug", "warmup-arch-hang", "warmup-support-hold"), full)
-        assertEquals(4, Presets.recommended(catalog, bare).routine.warmup.size)
+        assertEquals(listOf("warmup-shoulder-band", "warmup-squat-sky-reach", "warmup-wrist-prep", "warmup-dead-bug", "warmup-arch-hang", "warmup-support-hold", "warmup-squat-easier", "warmup-hinge-easier"), full)
         val p = plan(Presets.recommended(catalog, gym), gym)
-        assertEquals(full, p.blocks.filter { it.type == BlockType.WARMUP }.mapNotNull { it.variationId })
-        assertTrue(p.blocks.indexOfFirst { it.type == BlockType.WARMUP } < p.blocks.indexOfFirst { it.type == BlockType.WORK })
+        // nothing unlocked yet on a fresh profile: the four basic items, in RAMP order, before the first work block
+        assertEquals(listOf("warmup-squat-sky-reach", "warmup-dead-bug", "warmup-shoulder-band", "warmup-wrist-prep"), p.blocks.filter { it.type == BlockType.WARMUP }.mapNotNull { it.variationId })
+        assertTrue(p.blocks.indexOfFirst { it.type == BlockType.WORK } > p.blocks.indexOfLast { it.type == BlockType.WARMUP })
     }
 
     @Test fun minimalistIsACircuitWithLittleRest() {

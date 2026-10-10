@@ -1013,7 +1013,9 @@
   "secondary": [
    "LOWER_BACK"
   ],
-  "sharedPoseWith": []
+  "sharedPoseWith": [
+   "warmup-hinge-easier"
+  ]
  },
  "reverse-hyperextension": {
   "kind": "rep",
@@ -1170,6 +1172,7 @@
    "CALVES"
   ],
   "sharedPoseWith": [
+   "warmup-squat-easier",
    "weighted-squat"
   ]
  },
@@ -1594,6 +1597,17 @@
    "dead-bug"
   ]
  },
+ "warmup-hinge-easier": {
+  "kind": "rep",
+  "primary": [
+   "HAMSTRINGS",
+   "GLUTES"
+  ],
+  "secondary": [],
+  "sharedPoseWith": [
+   "rdl-bodyweight"
+  ]
+ },
  "warmup-shoulder-band": {
   "kind": "rep",
   "primary": [
@@ -1613,6 +1627,18 @@
    "REAR_DELTS"
   ],
   "sharedPoseWith": []
+ },
+ "warmup-squat-easier": {
+  "kind": "rep",
+  "primary": [
+   "QUADS",
+   "GLUTES"
+  ],
+  "secondary": [],
+  "sharedPoseWith": [
+   "squat-air",
+   "weighted-squat"
+  ]
  },
  "warmup-squat-sky-reach": {
   "kind": "rep",
@@ -1709,7 +1735,8 @@
    "CALVES"
   ],
   "sharedPoseWith": [
-   "squat-air"
+   "squat-air",
+   "warmup-squat-easier"
   ]
  }
 }

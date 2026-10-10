@@ -20,7 +20,7 @@ class WarmupTest {
         assertTrue(off.blocks.none { it.type == BlockType.WARMUP })
         val warm = on.blocks.filter { it.type == BlockType.WARMUP }
         assertTrue(warm.isNotEmpty())
-        assertEquals(warm.map { it.variationId }.distinct().toList(), catalog.warmupTemplate.filter { id -> warm.any { it.variationId == id } })   // the catalog's template when the routine has none
+        assertEquals(catalog.warmupTemplate.toSet(), warm.mapNotNull { it.variationId }.toSet())   // the catalog's template when the routine has none (order: RAMP, see RampTest)
         assertEquals(BlockType.WARMUP, on.blocks.first().type)                              // first in the workout
         assertTrue(on.blocks.indexOfLast { it.type == BlockType.WARMUP } < on.blocks.indexOfFirst { it.type == BlockType.WORK })
         assertTrue(on.plannedDurationSeconds >= off.plannedDurationSeconds + warm.sumOf { it.durationSeconds })

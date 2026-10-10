@@ -55,6 +55,9 @@ object Goals {
         p.variations[vt.variationId]?.let { vt.tier in it.achievedTiers || it.tier > vt.tier } ?: false
 
     /** L02: someone who has started a harder exercise that follows [id] has moved past it, so a step inserted below their level (the wall push-up) never locks them out. */
+    /** L12: has the person reached [id]: started it, or started something harder that follows it. */
+    fun reached(c: Catalog, id: String, p: ProgressSnapshot): Boolean = p.variations.containsKey(id) || movedPast(c, id, p)
+
     private fun movedPast(c: Catalog, id: String, p: ProgressSnapshot): Boolean {
         val seen = mutableSetOf(id); val queue = ArrayDeque(listOf(id))
         while (queue.isNotEmpty()) {

@@ -649,6 +649,13 @@ stretch("warmup-support-hold", "Support Hold (warm-up)", ["SHOULDER"], 30, False
         eq=[{"needs": [need("dip-support")]}], kind="MOBILITY", cues=["Straight arms", "Shoulders down"], cautions=["Make sure the support is stable; step down if the shoulders hurt."],
         primary=["TRICEPS", "FRONT_DELTS"], sources=RR)
 
+stretch("warmup-squat-easier", "Easier Squat (warm-up)", ["HIP"], 30, False, "standing",
+        ["Do ten slow squats of an easier progression than the one you train (for example air squats if you train split squats).", "Keep the heels down and the chest up.", "Move smoothly; this wakes the legs up, it is not a set."],
+        kind="MOBILITY", cues=["Heels down", "Smooth"], primary=["QUADS", "GLUTES"], sources=RR)
+stretch("warmup-hinge-easier", "Easier Hinge (warm-up)", ["HIP"], 30, False, "standing",
+        ["Do ten slow hip hinges of an easier progression than the one you train (for example bodyweight Romanian deadlifts if you train banded Nordic curls).", "Keep the back flat and push the hips back.", "Move smoothly; this wakes the hamstrings up, it is not a set."],
+        kind="MOBILITY", cues=["Flat back", "Hips back"], primary=["HAMSTRINGS", "GLUTES"], sources=RR)
+
 # --- dips: parallel-bar support hold -> negative dips -> dips (two sturdy chairs or a counter corner work; no bench dips)
 DIPEQ = [{"needs": [need("dip-support")]}]
 DIP_NOTE = "Support: parallel bars, two sturdy chairs (put weight on the seats so they cannot tip), or a 90-degree kitchen-counter corner. Bench dips with the hands behind you are not used here: they carry over poorly to real dips."

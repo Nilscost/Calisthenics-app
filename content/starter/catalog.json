@@ -5749,6 +5749,82 @@
       ]
     },
     {
+      "id": "warmup-squat-easier",
+      "familyId": "warmup-squat-easier",
+      "name": "Easier Squat (warm-up)",
+      "patterns": [
+        "MOBILITY"
+      ],
+      "kind": "MOBILITY",
+      "unilateral": false,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Do ten slow squats of an easier progression than the one you train (for example air squats if you train split squats).",
+        "Keep the heels down and the chest up.",
+        "Move smoothly; this wakes the legs up, it is not a set."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain."
+      ],
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Heels down",
+        "Smooth"
+      ],
+      "stretchAreas": [
+        "HIP"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ]
+    },
+    {
+      "id": "warmup-hinge-easier",
+      "familyId": "warmup-hinge-easier",
+      "name": "Easier Hinge (warm-up)",
+      "patterns": [
+        "MOBILITY"
+      ],
+      "kind": "MOBILITY",
+      "unilateral": false,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Do ten slow hip hinges of an easier progression than the one you train (for example bodyweight Romanian deadlifts if you train banded Nordic curls).",
+        "Keep the back flat and push the hips back.",
+        "Move smoothly; this wakes the hamstrings up, it is not a set."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain."
+      ],
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Flat back",
+        "Hips back"
+      ],
+      "stretchAreas": [
+        "HIP"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ]
+    },
+    {
       "id": "dip-support-hold",
       "familyId": "dip",
       "name": "Dip Support Hold",

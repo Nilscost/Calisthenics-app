@@ -48,9 +48,8 @@ object Presets {
             slot("rr-core-rot", if (rotation == "pallof-press") Pattern.CORE_ANTI_ROTATION else Pattern.CORE_ANTI_LATERAL, Area.CORE, rotation, group = 4, rest = 60, from = 8, to = 12),
             slot("rr-core-back", Pattern.HINGE, Area.CORE, "reverse-hyperextension", group = 4, rest = 60, from = 8, to = 12),
         )
-        val warmup = listOf("warmup-shoulder-band", "warmup-squat-sky-reach", "warmup-wrist-prep", "warmup-dead-bug") +
-            listOfNotNull("warmup-arch-hang".takeIf { c.variation(it)?.let { v -> isAvailable(v, profile) } == true },
-                "warmup-support-hold".takeIf { c.variation(it)?.let { v -> isAvailable(v, profile) } == true })
+        // the RR's eight items; the planner puts them in RAMP order and unlocks the later ones from the ladder state (Ramp.kt)
+        val warmup = listOf("warmup-shoulder-band", "warmup-squat-sky-reach", "warmup-wrist-prep", "warmup-dead-bug", "warmup-arch-hang", "warmup-support-hold", "warmup-squat-easier", "warmup-hinge-easier")
         val name = "Recommended Routine"
         val routine = Routine(RR, 1, name, slots, rule = rule, warmup = warmup)
         return SavedRoutine(RR, name, 1, routine, PlanEdits0, WorkoutFormat.PAIRS, rule, stretchOn = false, sets = 3, warmupOn = true, credit = RR_CREDIT)

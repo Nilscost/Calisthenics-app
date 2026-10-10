@@ -1,0 +1,22 @@
+# J — L12: the warm-up as RAMP blocks: the Recommended Routine starts with its warm-up (raise, activate, mobilise), each block labelled.
+appId: app.calisthenics.personal
+---
+- launchApp
+- runFlow: ../common/dismiss_system_dialogs.yaml
+- extendedWaitUntil: { visible: { id: train_start_button }, timeout: 15000 }
+- tapOn: { id: objective_type_ROUTINE }
+- extendedWaitUntil: { visible: { id: warmup_switch }, timeout: 10000 }
+- takeScreenshot: 01-train-recommended-warmup-${VARIANT}
+- tapOn: { id: train_start_button }
+- extendedWaitUntil: { visible: { id: session_note }, timeout: 20000 }
+- takeScreenshot: 02-warmup-raise-${VARIANT}
+- tapOn: { id: session_skip }
+- extendedWaitUntil: { visible: { id: session_note }, timeout: 10000 }
+- takeScreenshot: 03-warmup-activate-${VARIANT}
+- tapOn: { id: session_more }
+- tapOn: "End workout"
+- tapOn: "End workout"
+- extendedWaitUntil: { visible: { id: end_title }, timeout: 10000 }
+- tapOn: { id: end_done }
+- extendedWaitUntil: { visible: { id: objective_type_BODY_PART }, timeout: 15000 }
+- tapOn: { id: objective_type_BODY_PART }

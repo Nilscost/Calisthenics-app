@@ -668,6 +668,8 @@ OWN_POSES = {
 }
 POSES.update(OWN_POSES)
 
+# L12: the "easier" warm-up items repeat an existing exercise for ten slow reps
+POSES["warmup-squat-easier"] = POSES["squat-air"]; POSES["warmup-hinge-easier"] = POSES["rdl-bodyweight"]
 # V27: the weighted-vest versions are the same movement (the vest is not drawn); declared in SHARED_POSES
 for _w, _b in (("weighted-pushup", "pushup-standard"), ("weighted-pullup", "pullup-full"), ("weighted-dip", "dip-parallel"), ("weighted-squat", "squat-air")):
     POSES[_w] = POSES[_b]
@@ -676,10 +678,11 @@ for _w, _b in (("weighted-pushup", "pushup-standard"), ("weighted-pullup", "pull
 SHARED_POSES = {
     frozenset({"dead-bug", "warmup-dead-bug"}): "the warm-up item is the same exercise for 30 s",
     frozenset({"dip-support-hold", "warmup-support-hold"}): "the RR warm-up support hold is the same hold",
+    frozenset({"squat-air", "warmup-squat-easier", "weighted-squat"}): "the warm-up item repeats the squat for ten slow reps; the vest is not drawn",
+    frozenset({"rdl-bodyweight", "warmup-hinge-easier"}): "the warm-up item repeats the Romanian deadlift for ten slow reps",
     frozenset({"pushup-standard", "weighted-pushup"}): "the vest is the only difference and is not drawn",
     frozenset({"pullup-full", "weighted-pullup"}): "the vest is the only difference and is not drawn",
     frozenset({"dip-parallel", "weighted-dip"}): "the vest is the only difference and is not drawn",
-    frozenset({"squat-air", "weighted-squat"}): "the vest is the only difference and is not drawn",
     frozenset({"pushup-one-arm-negative", "pushup-one-arm"}): "same one-arm push-up pose; the negative is the slow lowering half, only the cue text differs",
 }
 def pose_groups():

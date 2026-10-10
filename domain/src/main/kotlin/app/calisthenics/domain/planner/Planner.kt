@@ -86,7 +86,7 @@ private class Planner(val input: PlanInput) {
         if (draft.goalId != null) warn += "A skill goal is selected, but goal-slot planning is not implemented yet — the plan ignores it."
 
         // 6–7. templates
-        val warmIds = input.routine.warmup.ifEmpty { cat.warmupTemplate }
+        val warmIds = Ramp.order(cat, input.profile, input.progress, input.routine.warmup.ifEmpty { cat.warmupTemplate }, chosen.flatMap { it.variation.patterns })   // L12: RAMP order, gated items
         val warm = if (draft.warmupOn) template(warmIds, BlockType.WARMUP, "warmup") else emptyList()
         val cool = if (draft.cooldownOn) template(cat.cooldownTemplate, BlockType.COOLDOWN, "cooldown") else emptyList()
         if (draft.warmupOn && warmIds.isEmpty()) return fail("no-warmup-template", "Warm-up is on but no reviewed warm-up template exists.",
@@ -366,8 +366,9 @@ private class Planner(val input: PlanInput) {
     private fun template(ids: List<String>, type: BlockType, prefix: String): List<TimelineBlock> = ids.flatMapIndexed { i, id ->
         val v = cat.variation(id) ?: return@flatMapIndexed emptyList()
         val secs = v.defaultSeconds ?: 30
-        if (v.unilateral) listOf(Side.LEFT, Side.RIGHT).map { TimelineBlock("$prefix-$i-${it.name.first()}", type, secs, variationId = id, side = it, mediaId = v.mediaId) }
-        else listOf(TimelineBlock("$prefix-$i", type, secs, variationId = id, side = Side.BOTH, mediaId = v.mediaId))
+        val note = if (type == BlockType.WARMUP) "Warm-up · " + Ramp.phaseOf(id).label.lowercase() else null
+        if (v.unilateral) listOf(Side.LEFT, Side.RIGHT).map { TimelineBlock("$prefix-$i-${it.name.first()}", type, secs, variationId = id, side = it, mediaId = v.mediaId, note = note) }
+        else listOf(TimelineBlock("$prefix-$i", type, secs, variationId = id, side = Side.BOTH, mediaId = v.mediaId, note = note))
     }
 
     /** 5 s setup only when the body position / equipment actually changes; 0 s otherwise (B3). */
