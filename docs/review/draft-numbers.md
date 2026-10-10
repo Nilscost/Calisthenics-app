@@ -15,6 +15,9 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Archer Push-Up (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Diamond Push-Up L3 | One-Arm Push-Up Negative (per side) |
 | One-Arm Push-Up Negative (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Archer Push-Up (per side) L3 | One-Arm Push-Up (per side) |
 | One-Arm Push-Up (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | One-Arm Push-Up Negative (per side) L4 | — (top) |
+| Dip Support Hold | dip-support | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Negative Dip |
+| Negative Dip | dip-support | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Dip Support Hold L4 | Dip |
+| Dip | dip-support | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Negative Dip L4 | — (top) |
 | Planche Lean | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Standard Push-Up L4 and Front Plank L4 | Tuck Planche |
 | Tuck Planche | none | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Planche Lean L4 | Advanced Tuck Planche |
 | Advanced Tuck Planche | none | 2s / 5 / 60 | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | Tuck Planche L4 | — (top) |
@@ -61,6 +64,7 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Shrimp Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bulgarian Split Squat (per side) L4 | Assisted Pistol Squat (per side) |
 | Assisted Pistol Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Shrimp Squat (per side) L3 | Pistol Squat (per side) |
 | Pistol Squat (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Assisted Pistol Squat (per side) L4 | — (top) |
+| Walking Lunge | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 16 / 110 / 60 | Air Squat L3 | — (top) |
 
 ## Hips and back
 
@@ -72,10 +76,20 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Superman Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Arch Hold (arms overhead, Y) |
 | Arch Hold (arms overhead, Y) | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | Superman Hold L4 | Arch Rocks |
 | Arch Rocks | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Arch Hold (arms overhead, Y) L4 | — (top) |
+| Reverse Hyperextension | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | — (top) |
 | Controlled Kettlebell Deadlift | kettlebell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | Kettlebell Single-Leg RDL (per side) |
 | Kettlebell Single-Leg RDL (per side) | kettlebell | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Controlled Kettlebell Deadlift L4 | Kettlebell Swing |
 | Kettlebell Swing | kettlebell | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Kettlebell Single-Leg RDL (per side) L3 and Controlled Kettlebell Deadlift L5 | One-Arm Kettlebell Swing (per side) |
 | One-Arm Kettlebell Swing (per side) | kettlebell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Kettlebell Swing L4 | — (top) |
+| Romanian Deadlift (bodyweight) | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | Single-Leg Deadlift (per side) |
+| Single-Leg Deadlift (per side) | none | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 7 / 55 / 60 | 8 / 65 / 60 | Romanian Deadlift (bodyweight) L4 | Banded Nordic Curl Negative, Hamstring Slide Negative |
+| Banded Nordic Curl Negative | foot-anchor + resistance-band* | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Single-Leg Deadlift (per side) L4 | Banded Nordic Curl |
+| Banded Nordic Curl | foot-anchor + resistance-band* | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Banded Nordic Curl Negative L4 | Nordic Curl |
+| Nordic Curl | foot-anchor | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Banded Nordic Curl L4 | — (top) |
+| Hamstring Slide Negative | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Single-Leg Deadlift (per side) L4 | Hamstring Slide |
+| Hamstring Slide | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Hamstring Slide Negative L4 | Single-Leg Slide Negative (per side) |
+| Single-Leg Slide Negative (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Hamstring Slide L4 | Single-Leg Slide (per side) |
+| Single-Leg Slide (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Single-Leg Slide Negative (per side) L4 | — (top) |
 
 ## Core
 
@@ -85,10 +99,12 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Hollow Body Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | Front Plank L4 or Dead Bug L5 | L-Sit (floor) |
 | L-Sit (floor) | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Hollow Body Hold L3 | V-Sit (floor) |
 | V-Sit (floor) | none | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 15s / 18 / 60 | L-Sit (floor) L4 | — (top) |
+| Plank Shoulder Taps | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 16 / 110 / 60 | Front Plank L2 | — (top) |
 | Dead Bug | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 14 / 100 / 60 | - | Hollow Body Hold |
 | Side Plank (per side) | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | - | Side Plank with Leg Raise (per side) |
 | Side Plank with Leg Raise (per side) | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Side Plank (per side) L4 | Copenhagen Side Plank (per side) |
 | Copenhagen Side Plank (per side) | chair* | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 16s / 19 / 60 | 20s / 23 / 60 | Side Plank with Leg Raise (per side) L4 | — (top) |
+| Pallof Press (per side) | resistance-band* | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | — (top) |
 | Lying Leg Raise | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | V-Up |
 | V-Up | none | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Lying Leg Raise L3 | — (top) |
 

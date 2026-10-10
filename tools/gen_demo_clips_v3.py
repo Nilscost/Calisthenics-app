@@ -200,7 +200,146 @@ NEW.update({
     "stretch-sleeper": (st_sleeper, "hold"), "stretch-wrist-flexor": (st_wrist_flexor, "hold"), "stretch-wrist-extensor": (st_wrist_extensor, "hold"),
     "stretch-thoracic": (st_thoracic, "rep"),
 })
+
+# ----------------------------------------------------------------------------------------------- V21b poses (RR warm-up, dips, hinge, core, Minimalist)
+def _arc_hand(sho, deg, r=62): d = math.radians(deg); return (sho[0] + r * math.cos(d), sho[1] + r * math.sin(d))
+
+def wu_shoulder_band(p):
+    hip = (150, 124); a = 90; sho = sh(hip, a); deg = lerp(-12, 188, (1 - math.cos(2 * math.pi * p)) / 2)
+    hand = _arc_hand(sho, deg)
+    return dict(hip=hip, a=a, arms=[("ik", hand, (0, -1))] * 2, arm_z=[Z_ARM + 20, -Z_ARM - 20], legs=[("ik", (150, 46), (1, 0))] * 2,
+                props=[("line", "hand0", "hand1", v1.PROP)])
+
+def wu_shoulder_towel(p):
+    hip = (150, 124); a = 90; sho = sh(hip, a); deg = lerp(-6, 176, (1 - math.cos(2 * math.pi * p)) / 2)
+    hand = _arc_hand(sho, deg, 56)
+    return dict(hip=hip, a=a, arms=[("ik", hand, (0, -1))] * 2, arm_z=[Z_ARM + 26, -Z_ARM - 26], legs=[("ik", (150, 46), (1, 0))] * 2,
+                props=[("line", "hand0", "hand1", (160, 140, 110))])
+
+def wu_sky_reach(p):
+    s = rep(p); hip = (lerp(150, 118, s), lerp(124, 82, s)); a = lerp(90, 66, s); sho = sh(hip, a)
+    reach = lerp(1.0, 0.0, s)   # hands overhead standing, in front of the chest in the squat, so each rep is "down, then reach for the sky"
+    hand = (lerp(sho[0] + 40, sho[0] + 4, reach), lerp(sho[1] - 4, sho[1] + 62, reach))
+    return dict(hip=hip, a=a, head_off=lerp(0, 12, s), arms=[("ik", hand, (-1, 0))] * 2, legs=[("ik", (lerp(150, 168, s), 46), (1, 0))] * 2)
+
+def wu_wrist_prep(p):
+    b = (1 - math.cos(2 * math.pi * p)) / 2; hip, a, sho = _quad(lerp(92, 128, b))
+    return dict(hip=hip, a=a, head_off=-6, arms=[("ik", (sho[0] + lerp(-2, 16, b), 44), (-1, 0))] * 2, arm_z=[Z_ARM + 10, -Z_ARM - 10],
+                legs=[("fix", (hip[0] + 2, 46), (hip[0] - 40, 46))] * 2)
+
+def wu_arch_hang(p):
+    b = (1 - math.cos(2 * math.pi * p)) / 2; sy = lerp(214, 224, b); sx = 192; hip = (sx - 4, sy - 58); sho = (sx, sy)
+    return dict(hip=hip, a=94, head_off=-8, arms=[("ik", (200, BAR_Y), (-1, -0.2))] * 2, legs=[("ik", (hip[0] - 34, hip[1] - 72), (1, 0))] * 2, scene=[("bar", 200, BAR_Y)])
+
+def _dip_pose(sy, lean, legs_back=True):
+    hand = (200, 112); sx = 196 + lean
+    hip = (sx - 4, sy - 58)
+    return dict(hip=hip, a=90, arms=[("ik", hand, (-1, -0.4))] * 2, arm_z=[22, -22],
+                legs=[("ik", (hip[0] - 26, hip[1] - 66), (1, 0)), ("ik", (hip[0] - 34, hip[1] - 62), (1, 0))], scene=[("pbars", 150, 250, 112)])
+
+def dip_support(p):
+    return _dip_pose(172 + 1.5 * math.sin(2 * math.pi * p), 0)
+
+def dip_negative(p):
+    s = min(1.0, p / 0.8) if p < 0.8 else 1 - (p - 0.8) / 0.2     # slow descent over 80 % of the loop, a quick push back up with the feet
+    return _dip_pose(lerp(172, 140, s), lerp(0, 6, s))
+
+def dip_full(p):
+    s = rep(p, 1)
+    return _dip_pose(lerp(172, 138, s), lerp(0, 8, s))
+
+def rdl_bodyweight(p):
+    s = rep(p); hip = (lerp(150, 120, s), lerp(124, 112, s)); a = lerp(90, 22, s); sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=lerp(0, 24, s), arms=[("ik", (sho[0] + 6, sho[1] - 60), (-1, 0))] * 2,
+                legs=[("ik", (150, 46), (1, 0.1))] * 2)
+
+def single_leg_deadlift(p):
+    s = rep(p); hip = (lerp(190, 176, s), lerp(124, 118, s)); a = lerp(90, 12, s); sho = sh(hip, a)
+    r = math.radians(a); free = (hip[0] - 84 * math.cos(r) * 0.95, hip[1] - 84 * math.sin(r) * 0.95)
+    if a > 60: free = (hip[0] - 4, hip[1] - 84)
+    return dict(hip=hip, a=a, head_off=lerp(0, 24, s), arms=[("ik", (sho[0] + 4, sho[1] - 60), (-1, 0))] * 2,
+                legs=[("ik", (190, 46), (1, 0)), ("ik", free, (0, 1))])
+
+NORDIC_OFF = 18
+def _nordic(phi_fn, hands_ahead=True):
+    def f(p):
+        phi = math.radians(phi_fn(p)); knee = (118, 46)
+        hip = (knee[0] + 42 * math.sin(phi), knee[1] + 42 * math.cos(phi)); sho = (hip[0] + 60 * math.sin(phi), hip[1] + 60 * math.cos(phi))
+        a = math.degrees(math.atan2(sho[1] - hip[1], sho[0] - hip[0])) + NORDIC_OFF * max(0.0, 1 - math.degrees(phi) / 45)
+        return dict(hip=hip, a=a, head_off=-4, arms=[("ik", (sho[0] + 30 + 30 * math.sin(phi), max(46, sho[1] - 52)), (0, -1))] * 2,
+                    legs=[("fix", knee, (74, 46))] * 2, scene=[("rect", (52, 44, 70, 62), v1.GRD)])
+    return f
+
+def nordic_negative_banded(p):
+    s = min(1.0, p / 0.75) if p < 0.75 else 1 - (p - 0.75) / 0.25     # lower slowly, come back up fast with the band's help
+    return _nordic(lambda q: lerp(8, 62, s))(p)
+
+def nordic_banded(p):
+    return _nordic(lambda q: lerp(8, 52, (1 - math.cos(2 * math.pi * p)) / 2))(p)
+
+def nordic_full(p):
+    return _nordic(lambda q: lerp(6, 74, (1 - math.cos(2 * math.pi * p)) / 2))(p)
+
+def _slide(ank_d, single=False):
+    """Hamstring slide: shoulders on the floor, hips in a bridge, heels on a towel sliding away from the hips (ank_d = heel distance behind the hip line)."""
+    def f(p):
+        S = (62, 50); beta = math.radians(30); hip = (S[0] + L_T * math.cos(beta), S[1] + L_T * math.sin(beta))
+        d = ank_d(p)
+        legs = [("ik", (hip[0] + d, 46), (0, 1)), ("ik", (hip[0] + d, 46), (0, 1))]
+        if single: legs[1] = ("ik", (hip[0] + 70, hip[1] + 6), (0, 1))     # the other leg is held up, straight
+        return dict(hip=hip, a=180 + math.degrees(beta), head_off=0, arms=[("ik", (S[0] + 54, 46), (0, 1))] * 2, legs=legs)
+    return f
+
+def _down_up(p, a, b):   # slow way out over 80 % of the loop, quick way back
+    s = p / 0.8 if p < 0.8 else 1 - (p - 0.8) / 0.2
+    return lerp(a, b, s)
+
+L_T = v1.L_T
+slide_negative = _slide(lambda p: _down_up(p, 42, 76))
+slide_both = _slide(lambda p: lerp(42, 76, (1 - math.cos(2 * math.pi * p)) / 2))
+slide_negative_single = _slide(lambda p: _down_up(p, 42, 76), single=True)
+slide_single = _slide(lambda p: lerp(42, 76, (1 - math.cos(2 * math.pi * p)) / 2), single=True)
+
+def pallof_press(p):
+    s = (1 - math.cos(2 * math.pi * p)) / 2; hip = (150, 124); sho = sh(hip, 90)
+    hand = (lerp(sho[0] + 16, sho[0] + 62, s), sho[1] - 14)
+    return dict(hip=hip, a=90, arms=[("ik", hand, (0, -1))] * 2, legs=[("ik", (160, 46), (1, 0)), ("ik", (134, 46), (1, 0))],
+                props=[("line", "hand0", (30, sho[1] - 14), v1.PROP)])
+
+def reverse_hyper(p):
+    s = (1 - math.cos(2 * math.pi * p)) / 2; hip = (176, 86)
+    return dict(hip=hip, a=180, head_off=0, arms=[("ik", (90, 86), (0, 1))] * 2, legs=[("ik", (hip[0] + lerp(8, 82, s), hip[1] + lerp(-80, 2, s)), (0, 1))] * 2,
+                scene=[("rect", (60, 44, 178, 84), v1.GRD)])
+
+def plank_shoulder_tap(p):
+    d = _std_pushup(104, 100)(0.0)
+    sho = sh(d["hip"], d["a"]); first = p < 0.5; q = (p % 0.5) / 0.5; lift = math.sin(math.pi * q)
+    tap = (sho[0] - 8 + 30 * (1 - lift), sho[1] + 6 - 0 * lift + 16 * (1 - lift))
+    hand = d["arms"][0]
+    arm_up = ("ik", (sho[0] - 2, sho[1] - 4 + (1 - lift) * 40 - 20 * 0), (-1, 0.3)) if lift > 0.05 else hand
+    arms = [arm_up, hand] if first else [hand, arm_up]
+    d["arms"] = arms; d["hip"] = (d["hip"][0], d["hip"][1] + 0); return d
+
+def walking_lunge(p):
+    step = (p * 2) % 1.0; s = math.sin(math.pi * step)
+    hx = lerp(112, 176, p); hip = (hx, lerp(124, 78, s)); front = (hx + 62, 46); back = (hx - 54 - 10 * (1 - s), 46 + 6 * s)
+    legs = [("ik", front, (1, 0.2)), ("ik", back, (1, 0.5))] if step < 2 and (p < 0.5) else [("ik", (hx + 62, 46), (1, 0.2)), ("ik", back, (1, 0.5))]
+    return dict(hip=hip, a=90, arms=[("ik", (hip[0] + 6, hip[1] - 8), (0, -1))] * 2, legs=legs)
+
+NEW.update({
+    "warmup-shoulder-band": (wu_shoulder_band, "rep"), "warmup-shoulder-towel": (wu_shoulder_towel, "rep"), "warmup-squat-sky-reach": (wu_sky_reach, "rep"),
+    "warmup-wrist-prep": (wu_wrist_prep, "rep"), "warmup-arch-hang": (wu_arch_hang, "rep"),
+    "dip-support-hold": (dip_support, "hold"), "dip-negative": (dip_negative, "rep"), "dip-parallel": (dip_full, "rep"),
+    "rdl-bodyweight": (rdl_bodyweight, "rep"), "single-leg-deadlift": (single_leg_deadlift, "rep"),
+    "nordic-negative-banded": (nordic_negative_banded, "rep"), "nordic-banded": (nordic_banded, "rep"), "nordic-curl": (nordic_full, "rep"),
+    "slide-negative": (slide_negative, "rep"), "slide-hamstring": (slide_both, "rep"), "slide-negative-single": (slide_negative_single, "rep"), "slide-single-leg": (slide_single, "rep"),
+    "pallof-press": (pallof_press, "rep"), "reverse-hyperextension": (reverse_hyper, "rep"), "plank-shoulder-tap": (plank_shoulder_tap, "rep"), "walking-lunge": (walking_lunge, "rep"),
+})
+# the warm-up versions of exercises that already exist are the same movement for 30 s: one pose, declared in SHARED_POSES below
+NEW["warmup-dead-bug"] = POSES_DEAD = (v1.POSES["dead-bug"][0], "rep")
+NEW["warmup-support-hold"] = NEW["dip-support-hold"]
 POSES = dict(v1.POSES); POSES.update(NEW)
+POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)
 BAR_Y = 280
 
@@ -261,6 +400,8 @@ POSES.update(OWN_POSES)
 # V06a: a pose function may only be shared by several ids when the group is declared here with the difference that the
 # clip itself shows. V06b gives every variant of the first group its own pose (K2) and removes it from this table.
 SHARED_POSES = {
+    frozenset({"dead-bug", "warmup-dead-bug"}): "the warm-up item is the same exercise for 30 s",
+    frozenset({"dip-support-hold", "warmup-support-hold"}): "the RR warm-up support hold is the same hold",
     frozenset({"pushup-one-arm-negative", "pushup-one-arm"}): "same one-arm push-up pose; the negative is the slow lowering half, only the cue text differs",
 }
 def pose_groups():
@@ -439,6 +580,11 @@ def draw_scene(cv, L, vid_scene, props, floor_x):
                      [(x0, y0, -zz), (x0, y0, zz), (x0, y1, zz), (x0, y1, -zz)]]
             shades = [EQUIP_DARK, EQUIP, (168, 174, 184), EQUIP, EQUIP_DARK]
             for f, s in zip(faces, shades): cv.poly(f, s, bias=-1000 if wall else -4)
+        elif sc[0] == "pbars":   # V21b: parallel bars (dip bars) running front to back at height y between x0 and x1
+            x0, x1, y = sc[1], sc[2], sc[3]
+            for z in (-24, 24):
+                for x in (x0 + 6, x1 - 6): cv.cap((x, GROUND, z), (x, y, z), 2.4, EQUIP, bias=-3, outline=False)
+                cv.cap((x0, y, z), (x1, y, z), 3.4, EQUIP_DARK, bias=-2)
         elif sc[0] == "bar":
             x, y = sc[1], sc[2]
             for z in (-62, 62): cv.cap((x, GROUND, z), (x, y, z), 2.6, EQUIP, bias=-3, outline=False)
@@ -467,6 +613,7 @@ def camera_for(fn, vid, margin=(420, 250)):
         ha = math.radians(L["pose"]["a"] + L["pose"].get("head_off", 0)); pts.append((L["sho"][0] + 30 * math.cos(ha), L["sho"][1] + 30 * math.sin(ha), 0))
         for sc in L["pose"].get("scene", []):
             if sc[0] == "bar": pts += [(sc[1], sc[2], -62), (sc[1], sc[2], 62)]
+            if sc[0] == "pbars": pts += [(sc[1], sc[3], -24), (sc[2], sc[3], 24)]
             if sc[0] == "rect": x0, y0, x1, y1 = sc[1]; pts += [(x0, y0, -34), (x1, min(y1, y0 + 190) if (x1 - x0) < 20 and (y1 - y0) > 100 else y1, 34)]
         for pr in L["pose"].get("props", []): pts.append((L["refs"].get(pr[1], (0, 0))[0] if isinstance(pr[1], str) else 0, 0, 0)) if pr[0] == "circle" else None
         pts.append((0, GROUND, 0))

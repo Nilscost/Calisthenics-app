@@ -39,6 +39,7 @@ object FamilyIcons {
     fun forFamily(familyId: String): ImageVector = when (familyId) {
         "pushup" -> Push; "planche" -> Planche; "hspu" -> Handstand; "pullup" -> Pull; "lever" -> Lever; "row" -> Row
         "squat" -> Squat; "bridge" -> Bridge; "superman" -> Superman; "deadlift" -> Hinge; "plank" -> Plank
+        "dip" -> Push; "lunge" -> Squat; "rdl", "nordic", "slide" -> Hinge; "reverse-hyper" -> Superman; "plank-tap", "pallof" -> Plank
         "dead-bug" -> DeadBug; "side-plank" -> SidePlank; "legraise" -> LegRaise
         else -> Stretch
     }

@@ -34,3 +34,6 @@ skill-goal planner yet (ADR B4). Add them as a later expansion pack.
 3. Confirm stretch pairings and cues.
 4. Plan counted 14 strength records but listed 13; the catalog has 13 (+7 stretch/mobility).
 5. `pushup-incline` accepts a chair only if flagged "stable"; Travel chair is unflagged, so it is excluded until you confirm it.
+
+## V21b: r/bodyweightfitness wiki (live check 2026-10-09)
+Source id `r/bodyweightfitness wiki, live check 2026-10-09`: the owner saved the wiki pages (Recommended Routine and the progression pages) as PDFs; the reviewer read them (`docs/research/rr-live-check.md`). No licence is stated, so only the structure and the numbers are used, with our own wording. Items: warm-up pieces, dips (support hold, negatives, dips between two sturdy chairs, a counter corner or parallel bars; no bench dips), the hamstring paths (RDL, single-leg deadlift, banded Nordic negatives and curls, Nordic curl; floor slides), Pallof press, reverse hyperextension, plank shoulder taps, walking lunge. All DRAFT; the numbers are still product heuristics.

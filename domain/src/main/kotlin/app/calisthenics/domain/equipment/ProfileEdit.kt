@@ -37,6 +37,8 @@ object EquipmentOptions {
         EquipmentOption("chair", suitability = setOf("stable")),
         EquipmentOption("wall", kind = OptionKind.CAPABILITY),
         EquipmentOption("mat"),
+        EquipmentOption("dip-support"),       // V21b: parallel bars, two sturdy chairs or a counter corner (dips, support hold)
+        EquipmentOption("foot-anchor"),       // V21b: a sofa or heavy furniture to hook the heels under (Nordic curls)
         EquipmentOption("parallettes", future = true),
     )
     fun byId(id: String) = all.firstOrNull { it.id == id }

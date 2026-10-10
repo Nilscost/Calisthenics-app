@@ -48,9 +48,13 @@ object EquipmentIcons {
     val Mat by lazy { icon("Mat") { rect(2f, 14f, 22f, 19f) } }
     val Parallettes by lazy { icon("Parallettes") { rect(3f, 9f, 10f, 11f); rect(4f, 11f, 6f, 19f); rect(8f, 11f, 10f, 19f); rect(14f, 9f, 21f, 11f); rect(15f, 11f, 17f, 19f); rect(19f, 11f, 21f, 19f) } }
 
+    val DipSupport by lazy { icon("DipSupport") { rect(3f, 9f, 21f, 11f); rect(5f, 11f, 7f, 19f); rect(17f, 11f, 19f, 19f); rect(2f, 19f, 22f, 20.5f) } }
+    val FootAnchor by lazy { icon("FootAnchor") { rect(3f, 8f, 21f, 15f); rect(5f, 15f, 8f, 19f); rect(16f, 15f, 19f, 19f); rect(2f, 19f, 22f, 20.5f) } }
+
     fun forId(id: String): ImageVector? = when (id) {
         "pullup-bar" -> PullUpBar; "high-bar" -> HighBar; "low-bar" -> LowBar; "resistance-band" -> Band
         "kettlebell" -> Kettlebell; "weight" -> Dumbbell; "chair" -> Chair; "wall" -> Wall; "mat" -> Mat; "parallettes" -> Parallettes
+        "dip-support" -> DipSupport; "foot-anchor" -> FootAnchor
         else -> null
     }
 }

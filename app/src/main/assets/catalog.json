@@ -3827,6 +3827,1172 @@
         "FRONT_DELTS",
         "FOREARMS"
       ]
+    },
+    {
+      "id": "warmup-shoulder-band",
+      "familyId": "warmup-shoulder-band",
+      "name": "Shoulder Band Warm-up (pass-throughs)",
+      "patterns": [
+        "MOBILITY"
+      ],
+      "kind": "MOBILITY",
+      "unilateral": false,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Hold a resistance band (or a towel) with both hands, wide enough that the arms stay straight.",
+        "Lift it forward and over your head, then behind you as far as it stays comfortable.",
+        "Reverse the same arc back to the front; move slowly and breathe.",
+        "Use a wider grip if the shoulders pinch."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stay in a pain-free range; a stick or T-shirt version is a weaker alternative."
+      ],
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Straight arms",
+        "Wider grip if it pinches"
+      ],
+      "stretchAreas": [
+        "SHOULDER"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS"
+      ],
+      "secondaryMuscles": [
+        "REAR_DELTS"
+      ]
+    },
+    {
+      "id": "warmup-shoulder-towel",
+      "familyId": "warmup-shoulder-towel",
+      "name": "Shoulder Towel Warm-up (pass-throughs)",
+      "patterns": [
+        "MOBILITY"
+      ],
+      "kind": "MOBILITY",
+      "unilateral": false,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Hold a towel stretched between both hands, wide enough that the arms stay straight.",
+        "Raise it over your head and behind you as far as it stays comfortable, then back.",
+        "Move slowly; widen the grip if the shoulders pinch."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stay in a pain-free range."
+      ],
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Straight arms",
+        "Wider grip if it pinches"
+      ],
+      "stretchAreas": [
+        "SHOULDER"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS"
+      ],
+      "secondaryMuscles": [
+        "REAR_DELTS"
+      ]
+    },
+    {
+      "id": "warmup-squat-sky-reach",
+      "familyId": "warmup-squat-sky-reach",
+      "name": "Squat Sky Reach",
+      "patterns": [
+        "MOBILITY"
+      ],
+      "kind": "MOBILITY",
+      "unilateral": false,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Stand with the feet about shoulder width apart.",
+        "Sit down into a deep squat with the chest up and hands together in front.",
+        "Stand up and reach both arms overhead; look up at your hands.",
+        "Hold on to a wall or post with one hand if the squat is hard."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Squat only as deep as is comfortable; hold on to something to assist."
+      ],
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Heels down",
+        "Reach tall at the top"
+      ],
+      "stretchAreas": [
+        "HIP"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "CALVES"
+      ]
+    },
+    {
+      "id": "warmup-wrist-prep",
+      "familyId": "warmup-wrist-prep",
+      "name": "Wrist Prep (rocking)",
+      "patterns": [
+        "MOBILITY"
+      ],
+      "kind": "MOBILITY",
+      "unilateral": false,
+      "position": "kneeling",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Kneel on hands and knees with the fingers pointing forward.",
+        "Rock the body slowly forward and back over the hands; keep the palms flat.",
+        "Then repeat with the fingers pointing to the sides and backward (small range).",
+        "Stay gentle; this is a warm-up."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stop on wrist pain or tingling in the fingers."
+      ],
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Small, slow range",
+        "Palms flat"
+      ],
+      "stretchAreas": [
+        "WRIST"
+      ],
+      "primaryMuscles": [
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "warmup-dead-bug",
+      "familyId": "warmup-dead-bug",
+      "name": "Dead Bug (warm-up)",
+      "patterns": [
+        "MOBILITY"
+      ],
+      "kind": "MOBILITY",
+      "unilateral": false,
+      "position": "supine",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Lie on your back, arms up, knees bent over the hips.",
+        "Lower the opposite arm and leg slowly while the lower back stays pressed to the floor.",
+        "Return and alternate sides for the time."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain."
+      ],
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Back flat",
+        "Slow and controlled"
+      ],
+      "primaryMuscles": [
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "HIP_FLEXORS"
+      ]
+    },
+    {
+      "id": "warmup-arch-hang",
+      "familyId": "warmup-arch-hang",
+      "name": "Arch Hang (warm-up)",
+      "patterns": [
+        "MOBILITY"
+      ],
+      "kind": "MOBILITY",
+      "unilateral": false,
+      "position": "hang",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "instructions": [
+        "Hang from a bar with straight arms and pull the shoulder blades down and back so the chest comes forward; the back arches a little.",
+        "Hold for a moment, relax, repeat for about ten pulls.",
+        "Feet may touch the floor or a chair to take weight off."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stop on shoulder pain. Take weight off with the feet if the grip tires."
+      ],
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Straight arms",
+        "Chest forward"
+      ],
+      "stretchAreas": [
+        "SHOULDER"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "UPPER_BACK"
+      ]
+    },
+    {
+      "id": "warmup-support-hold",
+      "familyId": "warmup-support-hold",
+      "name": "Support Hold (warm-up)",
+      "patterns": [
+        "MOBILITY"
+      ],
+      "kind": "MOBILITY",
+      "unilateral": false,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "dip-support"
+            }
+          ]
+        }
+      ],
+      "instructions": [
+        "Support the body on two parallel bars (or two sturdy chairs, or a counter corner) with straight arms.",
+        "Push the shoulders down away from the ears and hold.",
+        "Check that the chairs cannot tip; put some weight on the seats."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Make sure the support is stable; step down if the shoulders hurt."
+      ],
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "formCues": [
+        "Straight arms",
+        "Shoulders down"
+      ],
+      "stretchAreas": [
+        "SHOULDER"
+      ],
+      "primaryMuscles": [
+        "TRICEPS",
+        "FRONT_DELTS"
+      ]
+    },
+    {
+      "id": "dip-support-hold",
+      "familyId": "dip",
+      "name": "Dip Support Hold",
+      "patterns": [
+        "PUSH_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "dip-support"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Support the body on two parallel bars with straight arms, shoulders pushed down away from the ears.",
+        "Keep the body still and breathe; the legs can hang or be bent.",
+        "Support: parallel bars, two sturdy chairs (put weight on the seats so they cannot tip), or a 90-degree kitchen-counter corner. Bench dips with the hands behind you are not used here: they carry over poorly to real dips.",
+        "Move on when all sets reach 30 s (the wiki aims for one minute; 30 s is the app's choice)."
+      ],
+      "formCues": [
+        "Straight arms",
+        "Shoulders down",
+        "Body still"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the support is stable before every set; step down on shoulder pain."
+      ],
+      "difficultyRank": 10,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-dip-support-hold",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "TRICEPS",
+        "FRONT_DELTS"
+      ],
+      "secondaryMuscles": [
+        "CHEST",
+        "UPPER_BACK"
+      ]
+    },
+    {
+      "id": "dip-negative",
+      "familyId": "dip",
+      "name": "Negative Dip",
+      "patterns": [
+        "PUSH_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "dip-support"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Start in the support hold with straight arms.",
+        "Lower yourself slowly (about 5 seconds, working toward 10) until the upper arms are about parallel to the floor.",
+        "Step or jump back up to the top; do not push up with the arms.",
+        "Support: parallel bars, two sturdy chairs (put weight on the seats so they cannot tip), or a 90-degree kitchen-counter corner. Bench dips with the hands behind you are not used here: they carry over poorly to real dips."
+      ],
+      "formCues": [
+        "Slow lowering",
+        "Elbows close to the body",
+        "Shoulders down"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the support is stable before every set; stop on shoulder or elbow pain."
+      ],
+      "difficultyRank": 20,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-dip-negative",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "TRICEPS",
+        "CHEST"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "UPPER_BACK"
+      ]
+    },
+    {
+      "id": "dip-parallel",
+      "familyId": "dip",
+      "name": "Dip",
+      "patterns": [
+        "PUSH_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "dip-support"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Start in the support hold with straight arms.",
+        "Lower until the upper arms are about parallel to the floor, then press back up to straight arms.",
+        "Keep the shoulders down and the body slightly forward.",
+        "Support: parallel bars, two sturdy chairs (put weight on the seats so they cannot tip), or a 90-degree kitchen-counter corner. Bench dips with the hands behind you are not used here: they carry over poorly to real dips."
+      ],
+      "formCues": [
+        "Controlled lowering",
+        "Full lockout",
+        "Shoulders down"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the support is stable before every set; stop on shoulder or elbow pain."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-dip-parallel",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "TRICEPS",
+        "CHEST"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "UPPER_BACK"
+      ]
+    },
+    {
+      "id": "rdl-bodyweight",
+      "familyId": "rdl",
+      "name": "Romanian Deadlift (bodyweight)",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Stand with the feet hip width apart and a soft bend in the knees.",
+        "Push the hips back and lower the chest with a flat back until you feel the hamstrings stretch.",
+        "Stand tall by driving the hips forward; the knees barely change."
+      ],
+      "formCues": [
+        "Hips back",
+        "Flat back",
+        "Glutes squeeze at the top"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 10,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-rdl-bodyweight",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK"
+      ]
+    },
+    {
+      "id": "single-leg-deadlift",
+      "familyId": "rdl",
+      "name": "Single-Leg Deadlift (per side)",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Stand on one leg with a soft knee; hold a wall or chair with a fingertip if you need balance.",
+        "Hinge forward, the free leg reaching straight behind you and the back flat.",
+        "Return to standing by squeezing the glute. Do all reps on one side, then switch."
+      ],
+      "formCues": [
+        "Hips square",
+        "Flat back",
+        "Free leg in line with the body"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 20,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-single-leg-deadlift",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK",
+        "CALVES"
+      ]
+    },
+    {
+      "id": "nordic-negative-banded",
+      "familyId": "nordic",
+      "name": "Banded Nordic Curl Negative",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "foot-anchor"
+            },
+            {
+              "equipmentId": "resistance-band",
+              "suitability": [
+                "stable-anchor"
+              ]
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "kneeling",
+      "instructions": [
+        "Kneel on a mat with the heels anchored under something sturdy. Hold a resistance band anchored in front of you (door or post) so it takes some weight.",
+        "Keep the body straight from the knees to the head and lower yourself slowly forward; the band helps at the bottom.",
+        "Catch yourself with the hands, then push back up to the start. Use a band that lets you lower for about 3-5 seconds.",
+        "Anchor the heels under something sturdy (a sofa or heavy furniture); the anchor point is about a fist away from the ankles. Pad the knees with a mat."
+      ],
+      "formCues": [
+        "Straight body from knees to head",
+        "Slow lowering",
+        "Hands ready to catch"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-nordic-negative-banded",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "GLUTES",
+        "CALVES"
+      ]
+    },
+    {
+      "id": "nordic-banded",
+      "familyId": "nordic",
+      "name": "Banded Nordic Curl",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "foot-anchor"
+            },
+            {
+              "equipmentId": "resistance-band",
+              "suitability": [
+                "stable-anchor"
+              ]
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "kneeling",
+      "instructions": [
+        "Same set-up as the negative: heels anchored, band held in front.",
+        "Lower forward under control, then curl yourself back up using the hamstrings with the band's help.",
+        "When this feels easy, repeat with a weaker band; then try the Nordic curl.",
+        "Anchor the heels under something sturdy (a sofa or heavy furniture); the anchor point is about a fist away from the ankles. Pad the knees with a mat."
+      ],
+      "formCues": [
+        "Straight body from knees to head",
+        "Pull up with the hamstrings",
+        "Weaker band over time"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-nordic-banded",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "GLUTES",
+        "CALVES"
+      ]
+    },
+    {
+      "id": "nordic-curl",
+      "familyId": "nordic",
+      "name": "Nordic Curl",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "foot-anchor"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "kneeling",
+      "instructions": [
+        "Kneel on a mat with the heels anchored under something sturdy.",
+        "Lower the body forward as slowly as you can, keeping it straight from the knees to the head.",
+        "Use the hands to catch and help up if you need to; aim to come back up with the hamstrings.",
+        "Anchor the heels under something sturdy (a sofa or heavy furniture); the anchor point is about a fist away from the ankles. Pad the knees with a mat."
+      ],
+      "formCues": [
+        "Straight body",
+        "As slow as you can",
+        "Little help from the hands"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."
+      ],
+      "difficultyRank": 50,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-nordic-curl",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS"
+      ],
+      "secondaryMuscles": [
+        "GLUTES",
+        "CALVES"
+      ]
+    },
+    {
+      "id": "slide-negative",
+      "familyId": "slide",
+      "name": "Hamstring Slide Negative",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Lie on your back with the knees bent and the heels on towels, hips lifted in a bridge.",
+        "Slide both heels slowly away from you until the legs are straight, keeping the hips up.",
+        "Bring the heels back with the hands on the floor helping, or by lowering and restarting.",
+        "Use a towel on a smooth floor, socks on a hard floor, or sliders under the heels. A mat under the hands helps if the floor is slippery."
+      ],
+      "formCues": [
+        "Hips stay high",
+        "Slow slide",
+        "Stop when the hips drop"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-slide-negative",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "CALVES",
+        "LOWER_BACK"
+      ]
+    },
+    {
+      "id": "slide-hamstring",
+      "familyId": "slide",
+      "name": "Hamstring Slide",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Start in the bridge with the heels on towels or sliders.",
+        "Slide both heels out until the legs are straight, then pull them back using the hamstrings.",
+        "Keep the hips high all the time.",
+        "Use a towel on a smooth floor, socks on a hard floor, or sliders under the heels. A mat under the hands helps if the floor is slippery."
+      ],
+      "formCues": [
+        "Hips high",
+        "Pull the heels in with the hamstrings"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."
+      ],
+      "difficultyRank": 40,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-slide-hamstring",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "CALVES",
+        "LOWER_BACK"
+      ]
+    },
+    {
+      "id": "slide-negative-single",
+      "familyId": "slide",
+      "name": "Single-Leg Slide Negative (per side)",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "supine",
+      "instructions": [
+        "Bridge with one heel on a towel and the other foot lifted.",
+        "Slide the working heel out slowly with the hips staying level and high.",
+        "Bring the foot back and repeat; switch sides after the set.",
+        "Use a towel on a smooth floor, socks on a hard floor, or sliders under the heels. A mat under the hands helps if the floor is slippery."
+      ],
+      "formCues": [
+        "Hips level",
+        "Slow slide"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."
+      ],
+      "difficultyRank": 50,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-slide-negative-single",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "CALVES",
+        "LOWER_BACK"
+      ]
+    },
+    {
+      "id": "slide-single-leg",
+      "familyId": "slide",
+      "name": "Single-Leg Slide (per side)",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "supine",
+      "instructions": [
+        "Bridge with one heel on a towel and the other foot lifted.",
+        "Slide the working heel out and pull it back in with the hamstring; the hips stay level and high.",
+        "Switch sides after the set.",
+        "Use a towel on a smooth floor, socks on a hard floor, or sliders under the heels. A mat under the hands helps if the floor is slippery."
+      ],
+      "formCues": [
+        "Hips level and high",
+        "Pull the heel in"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."
+      ],
+      "difficultyRank": 60,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-slide-single-leg",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "CALVES",
+        "LOWER_BACK"
+      ]
+    },
+    {
+      "id": "pallof-press",
+      "familyId": "pallof",
+      "name": "Pallof Press (per side)",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "resistance-band",
+              "suitability": [
+                "stable-anchor"
+              ]
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Anchor a resistance band at chest height beside you and stand sideways to it, holding the band at the chest with both hands.",
+        "Press the hands straight out in front of you and pause for a moment with the arms straight.",
+        "Do not let the band turn you; bring the hands back to the chest. Do all reps on one side, then switch."
+      ],
+      "formCues": [
+        "Do not rotate",
+        "Pause with arms straight",
+        "Ribs down"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 20,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pallof-press",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "OBLIQUES",
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "GLUTES"
+      ]
+    },
+    {
+      "id": "reverse-hyperextension",
+      "familyId": "reverse-hyper",
+      "name": "Reverse Hyperextension",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY",
+        "CORE"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "prone",
+      "instructions": [
+        "Lie face down over the edge of a stable table, counter or bed so the hips are at the edge and the legs hang; hold the sides with your hands.",
+        "Squeeze the glutes and raise both legs until they are in line with the body.",
+        "Lower with control and repeat. Make sure the surface cannot slide or tip."
+      ],
+      "formCues": [
+        "Glutes drive the lift",
+        "Do not swing",
+        "Stop at body height"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the table or counter is stable. Stop on any pinching in the lower back; arch raises (Arch Hold) are the floor alternative."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-reverse-hyperextension",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "LOWER_BACK"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS"
+      ]
+    },
+    {
+      "id": "plank-shoulder-tap",
+      "familyId": "plank-tap",
+      "name": "Plank Shoulder Taps",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "floor",
+      "instructions": [
+        "Start in a high plank, hands under the shoulders, feet a little wider than hip width.",
+        "Lift one hand and tap the opposite shoulder without letting the hips rock.",
+        "Put it back and tap with the other hand. One tap on each side counts as two reps."
+      ],
+      "formCues": [
+        "Hips stay level",
+        "Feet wider for balance",
+        "Slow taps"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-plank-shoulder-tap",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "ABS",
+        "OBLIQUES"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "GLUTES"
+      ]
+    },
+    {
+      "id": "walking-lunge",
+      "familyId": "lunge",
+      "name": "Walking Lunge",
+      "patterns": [
+        "LUNGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Step forward into a lunge until both knees are bent at about a right angle.",
+        "Push through the front foot and bring the back foot forward into the next step.",
+        "Keep the chest up; each step counts as one rep."
+      ],
+      "formCues": [
+        "Chest up",
+        "Front knee over the foot",
+        "Controlled steps"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 15,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-walking-lunge",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-hamstring",
+        "stretch-calf-wall",
+        "stretch-pigeon",
+        "stretch-90-90",
+        "stretch-quad-couch",
+        "stretch-quad-standing",
+        "stretch-hamstring-standing",
+        "stretch-frog"
+      ],
+      "primaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "HIP_FLEXORS",
+        "CALVES"
+      ]
     }
   ],
   "policies": [
@@ -7724,6 +8890,1090 @@
               "variationTierMet": {
                 "variationId": "kettlebell-swing",
                 "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-dip-support-hold",
+      "variationId": "dip-support-hold",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 25
+          },
+          "workWindowSeconds": 28,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "dip-negative"
+      ]
+    },
+    {
+      "id": "pol-dip-negative",
+      "variationId": "dip-negative",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "dip-parallel"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "dip-support-hold",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-dip-parallel",
+      "variationId": "dip-parallel",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "dip-negative",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-rdl-bodyweight",
+      "variationId": "rdl-bodyweight",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 20
+          },
+          "workWindowSeconds": 135,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "single-leg-deadlift"
+      ]
+    },
+    {
+      "id": "pol-single-leg-deadlift",
+      "variationId": "single-leg-deadlift",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 7
+          },
+          "workWindowSeconds": 55,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "nordic-negative-banded",
+        "slide-negative"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "rdl-bodyweight",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-nordic-negative-banded",
+      "variationId": "nordic-negative-banded",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "nordic-banded"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "single-leg-deadlift",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-nordic-banded",
+      "variationId": "nordic-banded",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "nordic-curl"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "nordic-negative-banded",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-nordic-curl",
+      "variationId": "nordic-curl",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 1
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 2
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "nordic-banded",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-slide-negative",
+      "variationId": "slide-negative",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "slide-hamstring"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "single-leg-deadlift",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-slide-hamstring",
+      "variationId": "slide-hamstring",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "slide-negative-single"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "slide-negative",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-slide-negative-single",
+      "variationId": "slide-negative-single",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "slide-single-leg"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "slide-hamstring",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-slide-single-leg",
+      "variationId": "slide-single-leg",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "slide-negative-single",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-pallof-press",
+      "variationId": "pallof-press",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false
+    },
+    {
+      "id": "pol-reverse-hyperextension",
+      "variationId": "reverse-hyperextension",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false
+    },
+    {
+      "id": "pol-plank-shoulder-tap",
+      "variationId": "plank-shoulder-tap",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 16
+          },
+          "workWindowSeconds": 110,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "plank",
+                "tier": 2
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-walking-lunge",
+      "variationId": "walking-lunge",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 16
+          },
+          "workWindowSeconds": 110,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "squat-air",
+                "tier": 3
               }
             }
           ]

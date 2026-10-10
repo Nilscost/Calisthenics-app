@@ -15,6 +15,7 @@ S_OG = "overcoming-gravity-2-low"
 S_GB = "building-the-gymnastic-body-sommer"
 S_YG = "you-are-your-own-gym-lauren"
 S_NG = "never-gymless-enamait"
+S_RR = "r/bodyweightfitness wiki, live check 2026-10-09"   # V21b: structure and numbers only, own wording
 
 def rnd5(x): return int(5 * round(x / 5))
 
@@ -64,12 +65,12 @@ def strength(id, name, family, patterns, areas, kind, position, instructions, cu
     if prereq: pol["prerequisiteRule"] = prereq
     policies.append(pol)
 
-def stretch(id, name, areas, seconds, uni, position, instructions, eq=NO_EQ, kind="STRETCH", cues=(), cautions=(), primary=(), secondary=()):
+def stretch(id, name, areas, seconds, uni, position, instructions, eq=NO_EQ, kind="STRETCH", cues=(), cautions=(), primary=(), secondary=(), sources=None):
     v = {"id": id, "familyId": id, "name": name,
          "patterns": ["STRETCH" if kind == "STRETCH" else "MOBILITY"],
          "kind": kind, "unilateral": uni, "position": position, "defaultSeconds": seconds,
          "equipmentAlternatives": eq, "instructions": instructions, "cautions": [STRETCH_NOTE, *cautions],
-         "sourceIds": [S_OG, S_GB], "reviewState": "DRAFT"}
+         "sourceIds": list(sources or [S_OG, S_GB]), "reviewState": "DRAFT"}
     if cues: v["formCues"] = list(cues)
     if areas: v["stretchAreas"] = areas
     if primary: v["primaryMuscles"] = list(primary)
@@ -463,6 +464,147 @@ strength("kettlebell-swing-one-arm", "One-Arm Kettlebell Swing (per side)", "dea
          prereq={"allOf": [[vt("kettlebell-swing", 4)]]},
          cautions=(CAUTION_STRENGTH, "Ballistic movement with one hand: only after the two-hand swing feels easy at this weight; keep the shoulders level; stop on any back pain."))
 
+
+# =============================================================================================================
+# V21b: the r/bodyweightfitness Recommended Routine pieces that were missing (warm-up items, dips, hamstring paths, core, Minimalist).
+# Structure and numbers from the live wiki check (docs/research/rr-live-check.md); instructions are our own wording. All DRAFT.
+# =============================================================================================================
+RR = [S_RR]
+# --- warm-up items (30 s mobility blocks; the warm-up switch in V23 uses them)
+stretch("warmup-shoulder-band", "Shoulder Band Warm-up (pass-throughs)", ["SHOULDER"], 30, False, "standing",
+        ["Hold a resistance band (or a towel) with both hands, wide enough that the arms stay straight.", "Lift it forward and over your head, then behind you as far as it stays comfortable.",
+         "Reverse the same arc back to the front; move slowly and breathe.", "Use a wider grip if the shoulders pinch."],
+        kind="MOBILITY", cues=["Straight arms", "Wider grip if it pinches"], cautions=["Stay in a pain-free range; a stick or T-shirt version is a weaker alternative."],
+        primary=["FRONT_DELTS"], secondary=["REAR_DELTS"], sources=RR)
+stretch("warmup-shoulder-towel", "Shoulder Towel Warm-up (pass-throughs)", ["SHOULDER"], 30, False, "standing",
+        ["Hold a towel stretched between both hands, wide enough that the arms stay straight.", "Raise it over your head and behind you as far as it stays comfortable, then back.",
+         "Move slowly; widen the grip if the shoulders pinch."],
+        kind="MOBILITY", cues=["Straight arms", "Wider grip if it pinches"], cautions=["Stay in a pain-free range."],
+        primary=["FRONT_DELTS"], secondary=["REAR_DELTS"], sources=RR)
+stretch("warmup-squat-sky-reach", "Squat Sky Reach", ["HIP"], 30, False, "standing",
+        ["Stand with the feet about shoulder width apart.", "Sit down into a deep squat with the chest up and hands together in front.",
+         "Stand up and reach both arms overhead; look up at your hands.", "Hold on to a wall or post with one hand if the squat is hard."],
+        kind="MOBILITY", cues=["Heels down", "Reach tall at the top"], cautions=["Squat only as deep as is comfortable; hold on to something to assist."],
+        primary=["QUADS", "GLUTES"], secondary=["CALVES"], sources=RR)
+stretch("warmup-wrist-prep", "Wrist Prep (rocking)", ["WRIST"], 30, False, "kneeling",
+        ["Kneel on hands and knees with the fingers pointing forward.", "Rock the body slowly forward and back over the hands; keep the palms flat.",
+         "Then repeat with the fingers pointing to the sides and backward (small range).", "Stay gentle; this is a warm-up."],
+        kind="MOBILITY", cues=["Small, slow range", "Palms flat"], cautions=["Stop on wrist pain or tingling in the fingers."],
+        primary=["FOREARMS"], sources=RR)
+stretch("warmup-dead-bug", "Dead Bug (warm-up)", [], 30, False, "supine",
+        ["Lie on your back, arms up, knees bent over the hips.", "Lower the opposite arm and leg slowly while the lower back stays pressed to the floor.",
+         "Return and alternate sides for the time."],
+        kind="MOBILITY", cues=["Back flat", "Slow and controlled"], primary=["ABS"], secondary=["HIP_FLEXORS"], sources=RR)
+stretch("warmup-arch-hang", "Arch Hang (warm-up)", ["SHOULDER"], 30, False, "hang",
+        ["Hang from a bar with straight arms and pull the shoulder blades down and back so the chest comes forward; the back arches a little.", "Hold for a moment, relax, repeat for about ten pulls.",
+         "Feet may touch the floor or a chair to take weight off."],
+        eq=[{"needs": [need("pullup-bar")]}], kind="MOBILITY", cues=["Straight arms", "Chest forward"], cautions=["Stop on shoulder pain. Take weight off with the feet if the grip tires."],
+        primary=["LATS", "UPPER_BACK"], sources=RR)
+stretch("warmup-support-hold", "Support Hold (warm-up)", ["SHOULDER"], 30, False, "standing",
+        ["Support the body on two parallel bars (or two sturdy chairs, or a counter corner) with straight arms.", "Push the shoulders down away from the ears and hold.",
+         "Check that the chairs cannot tip; put some weight on the seats."],
+        eq=[{"needs": [need("dip-support")]}], kind="MOBILITY", cues=["Straight arms", "Shoulders down"], cautions=["Make sure the support is stable; step down if the shoulders hurt."],
+        primary=["TRICEPS", "FRONT_DELTS"], sources=RR)
+
+# --- dips: parallel-bar support hold -> negative dips -> dips (two sturdy chairs or a counter corner work; no bench dips)
+DIPEQ = [{"needs": [need("dip-support")]}]
+DIP_NOTE = "Support: parallel bars, two sturdy chairs (put weight on the seats so they cannot tip), or a 90-degree kitchen-counter corner. Bench dips with the hands behind you are not used here: they carry over poorly to real dips."
+strength("dip-support-hold", "Dip Support Hold", "dip", ["PUSH_VERTICAL"], ["UPPER_BODY"], "HOLD", "standing",
+         ["Support the body on two parallel bars with straight arms, shoulders pushed down away from the ears.", "Keep the body still and breathe; the legs can hang or be bent.", DIP_NOTE,
+          "Move on when all sets reach 30 s (the wiki aims for one minute; 30 s is the app's choice)."],
+         ["Straight arms", "Shoulders down", "Body still"],
+         hold_tiers([10, 15, 20, 25, 30]), RR, UP, eq=DIPEQ, rank=10, nxt=["dip-negative"],
+         cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; step down on shoulder pain."))
+strength("dip-negative", "Negative Dip", "dip", ["PUSH_VERTICAL"], ["UPPER_BODY"], "REPS", "standing",
+         ["Start in the support hold with straight arms.", "Lower yourself slowly (about 5 seconds, working toward 10) until the upper arms are about parallel to the floor.",
+          "Step or jump back up to the top; do not push up with the arms.", DIP_NOTE],
+         ["Slow lowering", "Elbows close to the body", "Shoulders down"],
+         reps_tiers([3, 4, 5, 6, 8]), RR, UP, eq=DIPEQ, rank=20, nxt=["dip-parallel"], prereq={"allOf": [[vt("dip-support-hold", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; stop on shoulder or elbow pain."))
+strength("dip-parallel", "Dip", "dip", ["PUSH_VERTICAL"], ["UPPER_BODY"], "REPS", "standing",
+         ["Start in the support hold with straight arms.", "Lower until the upper arms are about parallel to the floor, then press back up to straight arms.", "Keep the shoulders down and the body slightly forward.", DIP_NOTE],
+         ["Controlled lowering", "Full lockout", "Shoulders down"],
+         reps_tiers([3, 5, 6, 8, 10]), RR, UP, eq=DIPEQ, rank=30, prereq={"allOf": [[vt("dip-negative", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Check that the support is stable before every set; stop on shoulder or elbow pain."))
+
+# --- hinge: Romanian deadlift -> single-leg deadlift -> banded Nordic negatives -> banded Nordic curl -> Nordic curl (or the floor-slide path)
+HAM_ST = ["stretch-hamstring", "stretch-hip-flexor", "stretch-hamstring-standing"]
+ANCHOR = [{"needs": [need("foot-anchor")]}]
+ANCHOR_BAND = [{"needs": [need("foot-anchor"), need("resistance-band", suitability=["stable-anchor"])]}]
+strength("rdl-bodyweight", "Romanian Deadlift (bodyweight)", "rdl", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Stand with the feet hip width apart and a soft bend in the knees.", "Push the hips back and lower the chest with a flat back until you feel the hamstrings stretch.",
+          "Stand tall by driving the hips forward; the knees barely change."],
+         ["Hips back", "Flat back", "Glutes squeeze at the top"],
+         reps_tiers([8, 10, 12, 15, 20]), RR, HAM_ST, rank=10, nxt=["single-leg-deadlift"])
+strength("single-leg-deadlift", "Single-Leg Deadlift (per side)", "rdl", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Stand on one leg with a soft knee; hold a wall or chair with a fingertip if you need balance.", "Hinge forward, the free leg reaching straight behind you and the back flat.",
+          "Return to standing by squeezing the glute. Do all reps on one side, then switch."],
+         ["Hips square", "Flat back", "Free leg in line with the body"],
+         reps_tiers([4, 5, 6, 7, 8]), RR, HAM_ST, unilateral=True, rank=20, nxt=["nordic-negative-banded", "slide-negative"], prereq={"allOf": [[vt("rdl-bodyweight", 4)]]})
+NORDIC_NOTE = "Anchor the heels under something sturdy (a sofa or heavy furniture); the anchor point is about a fist away from the ankles. Pad the knees with a mat."
+strength("nordic-negative-banded", "Banded Nordic Curl Negative", "nordic", ["HINGE"], ["LOWER_BODY"], "REPS", "kneeling",
+         ["Kneel on a mat with the heels anchored under something sturdy. Hold a resistance band anchored in front of you (door or post) so it takes some weight.", "Keep the body straight from the knees to the head and lower yourself slowly forward; the band helps at the bottom.",
+          "Catch yourself with the hands, then push back up to the start. Use a band that lets you lower for about 3-5 seconds.", NORDIC_NOTE],
+         ["Straight body from knees to head", "Slow lowering", "Hands ready to catch"],
+         reps_tiers([3, 4, 5, 6, 8]), RR, HAM_ST, eq=ANCHOR_BAND, rank=30, nxt=["nordic-banded"], prereq={"allOf": [[vt("single-leg-deadlift", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))
+strength("nordic-banded", "Banded Nordic Curl", "nordic", ["HINGE"], ["LOWER_BODY"], "REPS", "kneeling",
+         ["Same set-up as the negative: heels anchored, band held in front.", "Lower forward under control, then curl yourself back up using the hamstrings with the band's help.",
+          "When this feels easy, repeat with a weaker band; then try the Nordic curl.", NORDIC_NOTE],
+         ["Straight body from knees to head", "Pull up with the hamstrings", "Weaker band over time"],
+         reps_tiers([3, 4, 5, 6, 8]), RR, HAM_ST, eq=ANCHOR_BAND, rank=40, nxt=["nordic-curl"], prereq={"allOf": [[vt("nordic-negative-banded", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))
+strength("nordic-curl", "Nordic Curl", "nordic", ["HINGE"], ["LOWER_BODY"], "REPS", "kneeling",
+         ["Kneel on a mat with the heels anchored under something sturdy.", "Lower the body forward as slowly as you can, keeping it straight from the knees to the head.",
+          "Use the hands to catch and help up if you need to; aim to come back up with the hamstrings.", NORDIC_NOTE],
+         ["Straight body", "As slow as you can", "Little help from the hands"],
+         reps_tiers([1, 2, 3, 4, 5]), RR, HAM_ST, eq=ANCHOR, rank=50, prereq={"allOf": [[vt("nordic-banded", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))
+SLIDE_NOTE = "Use a towel on a smooth floor, socks on a hard floor, or sliders under the heels. A mat under the hands helps if the floor is slippery."
+strength("slide-negative", "Hamstring Slide Negative", "slide", ["HINGE"], ["LOWER_BODY"], "REPS", "supine",
+         ["Lie on your back with the knees bent and the heels on towels, hips lifted in a bridge.", "Slide both heels slowly away from you until the legs are straight, keeping the hips up.",
+          "Bring the heels back with the hands on the floor helping, or by lowering and restarting.", SLIDE_NOTE],
+         ["Hips stay high", "Slow slide", "Stop when the hips drop"],
+         reps_tiers([3, 4, 5, 6, 8]), RR, HAM_ST, rank=30, nxt=["slide-hamstring"], prereq={"allOf": [[vt("single-leg-deadlift", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))
+strength("slide-hamstring", "Hamstring Slide", "slide", ["HINGE"], ["LOWER_BODY"], "REPS", "supine",
+         ["Start in the bridge with the heels on towels or sliders.", "Slide both heels out until the legs are straight, then pull them back using the hamstrings.", "Keep the hips high all the time.", SLIDE_NOTE],
+         ["Hips high", "Pull the heels in with the hamstrings"],
+         reps_tiers([4, 6, 8, 10, 12]), RR, HAM_ST, rank=40, nxt=["slide-negative-single"], prereq={"allOf": [[vt("slide-negative", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))
+strength("slide-negative-single", "Single-Leg Slide Negative (per side)", "slide", ["HINGE"], ["LOWER_BODY"], "REPS", "supine",
+         ["Bridge with one heel on a towel and the other foot lifted.", "Slide the working heel out slowly with the hips staying level and high.", "Bring the foot back and repeat; switch sides after the set.", SLIDE_NOTE],
+         ["Hips level", "Slow slide"],
+         reps_tiers([3, 4, 5, 6, 8]), RR, HAM_ST, unilateral=True, rank=50, nxt=["slide-single-leg"], prereq={"allOf": [[vt("slide-hamstring", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))
+strength("slide-single-leg", "Single-Leg Slide (per side)", "slide", ["HINGE"], ["LOWER_BODY"], "REPS", "supine",
+         ["Bridge with one heel on a towel and the other foot lifted.", "Slide the working heel out and pull it back in with the hamstring; the hips stay level and high.", "Switch sides after the set.", SLIDE_NOTE],
+         ["Hips level and high", "Pull the heel in"],
+         reps_tiers([3, 4, 5, 6, 8]), RR, HAM_ST, unilateral=True, rank=60, prereq={"allOf": [[vt("slide-negative-single", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))
+
+# --- core: anti-rotation (Pallof), extension (reverse hyperextension), plus the Minimalist circuit pieces
+strength("pallof-press", "Pallof Press (per side)", "pallof", ["CORE_ANTI_EXTENSION"], ["CORE"], "REPS", "standing",
+         ["Anchor a resistance band at chest height beside you and stand sideways to it, holding the band at the chest with both hands.", "Press the hands straight out in front of you and pause for a moment with the arms straight.",
+          "Do not let the band turn you; bring the hands back to the chest. Do all reps on one side, then switch."],
+         ["Do not rotate", "Pause with arms straight", "Ribs down"],
+         reps_tiers([6, 8, 10, 12, 15]), RR, CORE_ST, eq=[{"needs": [need("resistance-band", suitability=["stable-anchor"])]}], unilateral=True, rank=20)
+strength("reverse-hyperextension", "Reverse Hyperextension", "reverse-hyper", ["HINGE"], ["LOWER_BODY", "CORE"], "REPS", "prone",
+         ["Lie face down over the edge of a stable table, counter or bed so the hips are at the edge and the legs hang; hold the sides with your hands.", "Squeeze the glutes and raise both legs until they are in line with the body.",
+          "Lower with control and repeat. Make sure the surface cannot slide or tip."],
+         ["Glutes drive the lift", "Do not swing", "Stop at body height"],
+         reps_tiers([6, 8, 10, 12, 15]), RR, CORE_ST, rank=25,
+         cautions=(CAUTION_STRENGTH, "Check that the table or counter is stable. Stop on any pinching in the lower back; arch raises (Arch Hold) are the floor alternative."))
+strength("plank-shoulder-tap", "Plank Shoulder Taps", "plank-tap", ["CORE_ANTI_EXTENSION"], ["CORE"], "REPS", "floor",
+         ["Start in a high plank, hands under the shoulders, feet a little wider than hip width.", "Lift one hand and tap the opposite shoulder without letting the hips rock.",
+          "Put it back and tap with the other hand. One tap on each side counts as two reps."],
+         ["Hips stay level", "Feet wider for balance", "Slow taps"],
+         reps_tiers([6, 8, 10, 12, 16]), RR, CORE_ST, rank=25, prereq={"allOf": [[vt("plank", 2)]]})
+strength("walking-lunge", "Walking Lunge", "lunge", ["LUNGE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Step forward into a lunge until both knees are bent at about a right angle.", "Push through the front foot and bring the back foot forward into the next step.", "Keep the chest up; each step counts as one rep."],
+         ["Chest up", "Front knee over the foot", "Controlled steps"],
+         reps_tiers([6, 8, 10, 12, 16]), RR, LOW, rank=15, prereq={"allOf": [[vt("squat-air", 3)]]})
+
 # plank no longer a dead end: top of the plank ladder leads to the hollow hold
 for pol in policies:
     if pol["variationId"] == "plank": pol["nextVariationIds"] = ["hollow-hold"]
@@ -535,6 +677,22 @@ M = {
     "planche-lean": (["FRONT_DELTS", "CHEST"], ["TRICEPS", "ABS", "FOREARMS"]),
     "planche-tuck": (["FRONT_DELTS", "CHEST"], ["TRICEPS", "ABS", "FOREARMS"]),
     "planche-adv-tuck": (["FRONT_DELTS", "CHEST"], ["TRICEPS", "ABS", "FOREARMS"]),
+    "dip-support-hold": (["TRICEPS", "FRONT_DELTS"], ["CHEST", "UPPER_BACK"]),
+    "dip-negative": (["TRICEPS", "CHEST"], ["FRONT_DELTS", "UPPER_BACK"]),
+    "dip-parallel": (["TRICEPS", "CHEST"], ["FRONT_DELTS", "UPPER_BACK"]),
+    "rdl-bodyweight": (["HAMSTRINGS", "GLUTES"], ["LOWER_BACK"]),
+    "single-leg-deadlift": (["HAMSTRINGS", "GLUTES"], ["LOWER_BACK", "CALVES"]),
+    "nordic-negative-banded": (["HAMSTRINGS"], ["GLUTES", "CALVES"]),
+    "nordic-banded": (["HAMSTRINGS"], ["GLUTES", "CALVES"]),
+    "nordic-curl": (["HAMSTRINGS"], ["GLUTES", "CALVES"]),
+    "slide-negative": (["HAMSTRINGS", "GLUTES"], ["CALVES", "LOWER_BACK"]),
+    "slide-hamstring": (["HAMSTRINGS", "GLUTES"], ["CALVES", "LOWER_BACK"]),
+    "slide-negative-single": (["HAMSTRINGS", "GLUTES"], ["CALVES", "LOWER_BACK"]),
+    "slide-single-leg": (["HAMSTRINGS", "GLUTES"], ["CALVES", "LOWER_BACK"]),
+    "pallof-press": (["OBLIQUES", "ABS"], ["FRONT_DELTS", "GLUTES"]),
+    "reverse-hyperextension": (["GLUTES", "LOWER_BACK"], ["HAMSTRINGS"]),
+    "plank-shoulder-tap": (["ABS", "OBLIQUES"], ["FRONT_DELTS", "GLUTES"]),
+    "walking-lunge": (["QUADS", "GLUTES"], ["HAMSTRINGS", "HIP_FLEXORS", "CALVES"]),
 }
 for v in variations:
     if v["kind"] in ("REPS", "HOLD"):

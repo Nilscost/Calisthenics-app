@@ -33,8 +33,8 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(54, strength.size) // M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
-        assertEquals(18, stretches.size) // V07: 7 + 11 new stretches (C-A)
+        assertEquals(70, strength.size) // V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
+        assertEquals(25, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
     }
@@ -61,7 +61,9 @@ class StarterCatalogTest {
 
     /** Only these may end a chain; every other exercise must lead somewhere (U09, F15). */
     private val explicitTops = setOf("pushup-one-arm", "hspu-wall", "muscle-up-bar", "squat-pistol", "bridge-back", "v-sit-floor", "v-up",
-        "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing-one-arm")
+        "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing-one-arm",
+        // V21b: ends of the RR paths and single exercises of the ready-made routines
+        "dip-parallel", "nordic-curl", "slide-single-leg", "pallof-press", "reverse-hyperextension", "plank-shoulder-tap", "walking-lunge")
 
     @Test fun noDeadEndsExceptExplicitTops() {
         val deadEnds = catalog.policies.filter { it.nextVariationIds.isEmpty() }.map { it.variationId }.toSet()
@@ -103,7 +105,7 @@ class StarterCatalogTest {
         val succ = catalog.policies.flatMap { it.nextVariationIds }.toSet()
         // every exercise with a prerequisite is reachable as someone's successor (no orphan tree nodes)
         // Entry points of the skill chains are reached by choosing a goal, not by automatic progression.
-        val goalEntries = setOf("pike-pushup", "planche-lean", "front-lever-tuck")
+        val goalEntries = setOf("pike-pushup", "planche-lean", "front-lever-tuck", "plank-shoulder-tap", "walking-lunge" /* Minimalist circuit steps */)
         for (p in catalog.policies.filter { it.prerequisiteRule.allOf.isNotEmpty() && it.variationId !in goalEntries })
             assertTrue("${p.variationId} unreachable", p.variationId in succ)
     }
@@ -134,5 +136,32 @@ class StarterCatalogTest {
         }
         assertTrue(stretches.filter { it.unilateral }.all { it.defaultSeconds != null })
         assertTrue(catalog.variation("stretch-wrist-flexor")!!.stretchAreas == setOf(StretchArea.WRIST))
+    }
+
+    @Test fun rrChainsAreConnected() {   // V21b: the r/bodyweightfitness paths from docs/research/rr-live-check.md
+        fun chain(from: String): List<String> { val out = mutableListOf(from); var c = from
+            while (true) { c = catalog.policyForVariation(c)!!.nextVariationIds.firstOrNull() ?: break; out += c }; return out }
+        assertEquals(listOf("dip-support-hold", "dip-negative", "dip-parallel"), chain("dip-support-hold"))
+        assertEquals(listOf("rdl-bodyweight", "single-leg-deadlift", "nordic-negative-banded", "nordic-banded", "nordic-curl"), chain("rdl-bodyweight"))
+        assertEquals(listOf("slide-negative", "slide-hamstring", "slide-negative-single", "slide-single-leg"), chain("slide-negative"))
+        assertEquals(setOf("nordic-negative-banded", "slide-negative"), catalog.policies.first { it.variationId == "single-leg-deadlift" }.nextVariationIds.toSet())
+    }
+
+    @Test fun rrItemsNeedTheirEquipmentAndAreTagged() {
+        fun needs(id: String) = catalog.variation(id)!!.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet()
+        assertEquals(setOf("dip-support"), needs("dip-negative"))
+        assertEquals(setOf("foot-anchor"), needs("nordic-curl"))
+        assertEquals(setOf("foot-anchor", "resistance-band"), needs("nordic-banded"))
+        assertEquals(setOf("resistance-band"), needs("pallof-press"))
+        assertTrue(needs("slide-hamstring").isEmpty() && needs("rdl-bodyweight").isEmpty() && needs("reverse-hyperextension").isEmpty())
+        for (id in listOf("dip-parallel", "nordic-curl", "slide-single-leg", "pallof-press", "plank-shoulder-tap", "walking-lunge", "warmup-arch-hang"))
+            assertTrue(id, "r/bodyweightfitness wiki, live check 2026-10-09" in catalog.variation(id)!!.sourceIds)
+        // no bench dips: the dip chain is parallel bars, two chairs or a counter corner
+        assertTrue(catalog.variations.none { "bench dip" in it.name.lowercase() })
+    }
+
+    @Test fun warmUpItemsAreThirtySecondMobilityBlocks() {
+        val ids = listOf("warmup-shoulder-band", "warmup-shoulder-towel", "warmup-squat-sky-reach", "warmup-wrist-prep", "warmup-dead-bug", "warmup-arch-hang", "warmup-support-hold")
+        for (id in ids) { val v = catalog.variation(id)!!; assertEquals(id, Kind.MOBILITY, v.kind); assertEquals(id, 30, v.defaultSeconds) }
     }
 }

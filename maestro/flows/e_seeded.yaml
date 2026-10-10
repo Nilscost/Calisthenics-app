@@ -21,7 +21,7 @@ appId: app.calisthenics.personal
     while: { notVisible: { id: tab_chip_squat } }
     times: 4
     commands:
-      - swipe: { start: "90%, 16%", end: "10%, 16%" }
+      - swipe: { start: "90%, 20%", end: "10%, 20%" }
 - tapOn: { id: tab_chip_squat }
 - takeScreenshot: 05-progress-squat-${VARIANT}
 # The tab chips scroll sideways: swipe the row until the tab is on screen.
@@ -29,7 +29,7 @@ appId: app.calisthenics.personal
     while: { notVisible: { id: tab_chip_hips } }
     times: 4
     commands:
-      - swipe: { start: "90%, 16%", end: "10%, 16%" }
+      - swipe: { start: "90%, 20%", end: "10%, 20%" }
 - tapOn: { id: tab_chip_hips }
 - scrollUntilVisible: { element: { id: "tree_node_kettlebell-deadlift" }, direction: DOWN, timeout: 15000 }
 - takeScreenshot: 06-progress-hips-${VARIANT}
@@ -45,7 +45,7 @@ appId: app.calisthenics.personal
     while: { notVisible: { id: tab_chip_stretches } }
     times: 5
     commands:
-      - swipe: { start: "90%, 16%", end: "10%, 16%" }
+      - swipe: { start: "90%, 20%", end: "10%, 20%" }
 - tapOn: { id: tab_chip_stretches }
 - extendedWaitUntil: { visible: { id: "stretch_stretch-calf-wall" }, timeout: 10000 }
 - takeScreenshot: 08-stretch-list-${VARIANT}

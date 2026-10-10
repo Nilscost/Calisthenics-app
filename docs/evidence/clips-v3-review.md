@@ -45,3 +45,21 @@ Open for the owner (phone): clip smoothness, pace, and whether the new pull-up a
 | `stretch-wrist-flexor`, `stretch-wrist-extensor` | weak | the hand orientation (palms up / backs of the hands) is not drawn, so the two clips look alike; only the rocking differs |
 | `stretch-thoracic` | good | the threaded arm travels from under the body to the ceiling |
 All 18 stretches now colour the muscle that is stretched (primary) and a helper (secondary); the old 7 had none (K4). Still flat: the 7 older stretches keep their v1 poses (small sway only).
+
+## V21b additions: 23 new clips for the RR pieces (frame sheets `frames-09..12-*.png`; `frames-11` is the corrected slide sheet)
+| Id | Verdict | Note |
+|---|---|---|
+| `warmup-shoulder-band`, `warmup-shoulder-towel` | acceptable | straight arms travel over the head and back; the band or towel line between the hands is thin |
+| `warmup-squat-sky-reach` | good | deep squat with hands together, then stand and reach up |
+| `warmup-wrist-prep` | acceptable | quadruped rocking; the finger direction changes of the real prep are not drawn |
+| `warmup-arch-hang` | weak | the figure hangs from the bar; the small shoulder-blade pull and arch are hard to see |
+| `warmup-dead-bug`, `warmup-support-hold` | shared | same motion as `dead-bug` and `dip-support-hold` (declared in `SHARED_POSES`) |
+| `dip-support-hold`, `dip-negative`, `dip-parallel` | good | parallel bars (new `pbars` scene), body hangs between them, lowers and presses; the negative is slow down, quick up |
+| `rdl-bodyweight`, `single-leg-deadlift` | good | hip hinge with a flat back; the free leg rises behind |
+| `nordic-negative-banded`, `nordic-banded`, `nordic-curl` | acceptable | straight body pivots at the knees, feet under an anchor block; the three differ only in range and speed; the band is not drawn |
+| `slide-negative`, `slide-hamstring`, `slide-negative-single`, `slide-single-leg` | acceptable | bridge with the heels sliding out; the travel is short because the hip height limits the reach; single-leg versions hold one leg up |
+| `pallof-press` | acceptable | band line anchored to the side, hands press out in front of the chest |
+| `reverse-hyperextension` | good | prone over a table edge, legs swing up to body height |
+| `plank-shoulder-tap` | acceptable | the lifted hand is small but alternates |
+| `walking-lunge` | acceptable | steps forward, the back foot comes through |
+Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).

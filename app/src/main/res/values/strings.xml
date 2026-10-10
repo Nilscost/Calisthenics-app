@@ -44,6 +44,8 @@
     <string name="eq_chair">Chair (stable)</string>
     <string name="eq_wall">Wall</string>
     <string name="eq_mat">Mat</string>
+    <string name="eq_dip_support">Dip support (parallel bars, two sturdy chairs, or a counter corner)</string>
+    <string name="eq_foot_anchor">Foot anchor (a sofa or heavy furniture to hook the heels under)</string>
     <string name="eq_parallettes">Parallettes or dip bars (not used yet)</string>
     <string name="eq_other">Other</string>
     <string name="eq_pullup_bar_short">Pull-up bar</string>
@@ -55,6 +57,8 @@
     <string name="eq_chair_short">Chair</string>
     <string name="eq_wall_short">Wall</string>
     <string name="eq_mat_short">Mat</string>
+    <string name="eq_dip_support_short">Dip support</string>
+    <string name="eq_foot_anchor_short">Foot anchor</string>
     <string name="eq_parallettes_short">Parallettes</string>
     <string name="eq_weight">Weight</string>
     <string name="eq_weight_each">Weight of each</string>

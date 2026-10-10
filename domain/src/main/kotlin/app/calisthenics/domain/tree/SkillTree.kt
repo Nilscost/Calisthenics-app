@@ -15,13 +15,13 @@ data class TreeTab(val id: String, val title: String, val familyIds: List<String
 object TreeTabs {
     const val STRETCHES = "stretches"
     val all = listOf(
-        TreeTab("push", "Push", listOf("pushup", "planche")),
+        TreeTab("push", "Push", listOf("pushup", "dip", "planche")),
         TreeTab("shoulders", "Shoulders", listOf("hspu")),
         TreeTab("pull", "Pull", listOf("pullup", "lever")),
         TreeTab("row", "Row", listOf("row")),
-        TreeTab("squat", "Squat", listOf("squat")),
-        TreeTab("hips", "Hips and back", listOf("bridge", "superman", "deadlift")),
-        TreeTab("core", "Core", listOf("plank", "dead-bug", "side-plank", "legraise")),
+        TreeTab("squat", "Squat", listOf("squat", "lunge")),
+        TreeTab("hips", "Hips and back", listOf("bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide")),
+        TreeTab("core", "Core", listOf("plank", "plank-tap", "dead-bug", "side-plank", "pallof", "legraise")),
         TreeTab(STRETCHES, "Stretches", emptyList()),
     )
     fun byId(id: String) = all.firstOrNull { it.id == id }
