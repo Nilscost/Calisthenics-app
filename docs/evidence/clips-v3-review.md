@@ -126,3 +126,10 @@ Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).
 | `pallof-hold` | acceptable | the band line to the anchor, arms pressed out, held |
 | `copenhagen-side-plank-short` | acceptable | like the long lever with the knee on the chair; the figure is large in the frame |
 | `kettlebell-suitcase-carry` | weak | walking in place with a bell at the side; the bell is a short line near the knee |
+
+## L09 additions (`frames-21-back-bridge.png`)
+| Id | Verdict | Note |
+|---|---|---|
+| `bridge-table` | good | reverse tabletop, hips rise and lower |
+| `bridge-head` | acceptable | arched hold with the head down; the towel under the head is not drawn |
+| `bridge-wall-walkdown` | weak | the figure leans on a wall and the hands walk down; a standing back bend against a wall is hard to read from the side |

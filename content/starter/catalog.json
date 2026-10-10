@@ -2829,6 +2829,57 @@
       ]
     },
     {
+      "id": "bridge-table",
+      "familyId": "bridge",
+      "name": "Table Bridge (reverse tabletop)",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Sit with the knees bent and the feet flat, hands on the floor behind you with the fingers pointing toward the feet.",
+        "Press the hips up until the thighs are level and the body forms a table from the shoulders to the knees.",
+        "Lower slowly. This is the first step of the back-bridge ladder."
+      ],
+      "formCues": [
+        "Hips level with the shoulders",
+        "Arms straight",
+        "Wrists comfortable"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on wrist or shoulder pain; place the fingers wherever the wrists are comfortable."
+      ],
+      "difficultyRank": 15,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-bridge-table",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-back"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "HAMSTRINGS",
+        "FRONT_DELTS"
+      ]
+    },
+    {
       "id": "bridge-single-leg",
       "familyId": "bridge",
       "name": "Single-Leg Glute Bridge (per side)",
@@ -2935,6 +2986,114 @@
         "LOWER_BACK",
         "FRONT_DELTS",
         "TRICEPS"
+      ]
+    },
+    {
+      "id": "bridge-head",
+      "familyId": "bridge",
+      "name": "Head-Supported Bridge",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Lie on your back, feet flat near the hips, hands on the floor beside the head with the fingers toward the shoulders.",
+        "Press the hips up and rest the top of the head lightly on a folded towel or mat, the weight mostly on the feet and hands.",
+        "Hold, breathing steadily; lower slowly. Do not put your weight on the neck."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Keep the weight on the feet and hands, not on the neck; stop on any neck, shoulder or lower-back pinching."
+      ],
+      "difficultyRank": 27,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-bridge-head",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-back"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "LOWER_BACK"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "TRICEPS",
+        "QUADS"
+      ]
+    },
+    {
+      "id": "bridge-wall-walkdown",
+      "familyId": "bridge",
+      "name": "Wall Walk-Down Bridge",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "capabilities": [
+            "wall"
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Stand with your back about a foot from a wall, arms overhead.",
+        "Lean back and place the hands on the wall, then walk them slowly down the wall as the back arches; walk back up the same way.",
+        "A middle step before the full back bridge: the wall takes part of the weight. Stop when the back stops feeling even."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Needs shoulder and spine mobility; stay in a range where the back arches evenly; stop on any pinching; keep a way to stand up (a partner or a sofa within reach)."
+      ],
+      "difficultyRank": 29,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-bridge-wall-walkdown",
+      "compatibleStretchIds": [
+        "stretch-hip-flexor",
+        "stretch-back"
+      ],
+      "primaryMuscles": [
+        "GLUTES",
+        "LOWER_BACK"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "TRICEPS",
+        "QUADS"
       ]
     },
     {
@@ -7846,6 +8005,7 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
+        "bridge-table",
         "bridge-single-leg"
       ]
     },
@@ -9932,6 +10092,80 @@
       }
     },
     {
+      "id": "pol-bridge-table",
+      "variationId": "bridge-table",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "bridge-incline"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "glute-bridge",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
       "id": "pol-bridge-single-leg",
       "variationId": "bridge-single-leg",
       "version": 1,
@@ -9988,9 +10222,6 @@
       ],
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
-      "nextVariationIds": [
-        "bridge-incline"
-      ],
       "prerequisiteRule": {
         "allOf": [
           [
@@ -10062,6 +10293,154 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
+        "bridge-head"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "bridge-table",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-bridge-head",
+      "variationId": "bridge-head",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 8,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "bridge-wall-walkdown"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "bridge-incline",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-bridge-wall-walkdown",
+      "variationId": "bridge-wall-walkdown",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "building-the-gymnastic-body-sommer",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
         "bridge-back"
       ],
       "prerequisiteRule": {
@@ -10069,7 +10448,7 @@
           [
             {
               "variationTierMet": {
-                "variationId": "bridge-single-leg",
+                "variationId": "bridge-head",
                 "tier": 3
               }
             }
@@ -10139,7 +10518,7 @@
           [
             {
               "variationTierMet": {
-                "variationId": "bridge-incline",
+                "variationId": "bridge-wall-walkdown",
                 "tier": 3
               }
             }

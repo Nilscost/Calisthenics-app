@@ -86,10 +86,13 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
-| Glute Bridge | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 18 / 125 / 60 | - | Single-Leg Glute Bridge (per side) |
-| Single-Leg Glute Bridge (per side) | none | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Glute Bridge L4 | Incline Bridge (hands on a chair) |
-| Incline Bridge (hands on a chair) | chair* | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Single-Leg Glute Bridge (per side) L3 | Full Back Bridge |
-| Full Back Bridge | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Incline Bridge (hands on a chair) L3 | — (top) |
+| Glute Bridge | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 18 / 125 / 60 | - | Table Bridge (reverse tabletop), Single-Leg Glute Bridge (per side) |
+| Table Bridge (reverse tabletop) | none | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Glute Bridge L4 | Incline Bridge (hands on a chair) |
+| Single-Leg Glute Bridge (per side) | none | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Glute Bridge L4 | — (top) |
+| Incline Bridge (hands on a chair) | chair* | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Table Bridge (reverse tabletop) L4 | Head-Supported Bridge |
+| Head-Supported Bridge | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Incline Bridge (hands on a chair) L4 | Wall Walk-Down Bridge |
+| Wall Walk-Down Bridge | wall | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Head-Supported Bridge L3 | Full Back Bridge |
+| Full Back Bridge | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Wall Walk-Down Bridge L3 | — (top) |
 | Superman Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Arch Hold (arms overhead, Y) |
 | Arch Hold (arms overhead, Y) | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | Superman Hold L4 | Arch Rocks |
 | Arch Rocks | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Arch Hold (arms overhead, Y) L4 | — (top) |

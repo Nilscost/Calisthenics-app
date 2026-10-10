@@ -33,7 +33,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(109, strength.size) // L08: +6 (hollow steps and rocks, Pallof hold, short Copenhagen, suitcase carry); L07: +4 (L-sit steps); L05: +4 (shrimp steps, box and counterbalance pistol); L04: +3 (towel door row, wide inverted row, kettlebell one-arm row); L03: +4 (dead hang, flexed-arm hang, chair-assisted pull-up, chin-up); L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
+        assertEquals(112, strength.size) // L09: +3 (table bridge, head-supported bridge, wall walk-down); L08: +6 (hollow steps and rocks, Pallof hold, short Copenhagen, suitcase carry); L07: +4 (L-sit steps); L05: +4 (shrimp steps, box and counterbalance pistol); L04: +3 (towel door row, wide inverted row, kettlebell one-arm row); L03: +4 (dead hang, flexed-arm hang, chair-assisted pull-up, chin-up); L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
         assertEquals(25, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
@@ -64,7 +64,7 @@ class StarterCatalogTest {
         "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing-one-arm",
         // V21b: ends of the RR paths and single exercises of the ready-made routines
         "dip-parallel", "nordic-curl", "slide-single-leg", "pallof-press", "reverse-hyperextension", "plank-shoulder-tap", "walking-lunge",
-        "hollow-rocks", "kettlebell-suitcase-carry", "squat-shrimp-advanced" /* V25/L05: the shrimp path is an alternative end point next to the pistol */, "chinup-full" /* L03: the chin-up is a parallel option to the pull-up */, "kettlebell-one-arm-row",
+        "bridge-single-leg", "hollow-rocks", "kettlebell-suitcase-carry", "squat-shrimp-advanced" /* V25/L05: the shrimp path is an alternative end point next to the pistol */, "chinup-full" /* L03: the chin-up is a parallel option to the pull-up */, "kettlebell-one-arm-row",
         // V27: extra-equipment exercises (dumbbells, barbell, vest)
         "goblet-squat", "dumbbell-single-leg-rdl", "weighted-glute-bridge", "dumbbell-row", "barbell-squat", "barbell-rdl", "weighted-pushup", "weighted-pullup", "weighted-dip", "weighted-squat")
 
@@ -181,7 +181,7 @@ class StarterCatalogTest {
         // the pistol path and the shrimp path are alternatives after the Bulgarian split squat (wiki), the pistol path first
         assertEquals(listOf("squat-pistol-assisted", "squat-shrimp"), next("split-squat-bulgarian")); assertEquals(listOf(listOf("split-squat-bulgarian")), prereq("squat-pistol-assisted")); assertEquals(listOf("squat-shrimp-intermediate"), next("squat-shrimp"))
         // a middle step before the full back bridge
-        assertEquals(listOf("bridge-incline"), next("bridge-single-leg")); assertEquals(listOf("bridge-back"), next("bridge-incline")); assertEquals(listOf(listOf("bridge-incline")), prereq("bridge-back"))
+        assertEquals(listOf("bridge-head"), next("bridge-incline")); assertEquals(listOf(listOf("bridge-wall-walkdown")), prereq("bridge-back"))   // L09 extended the ladder
     }
 
     @Test fun l02PushUpChainFollowsTheLoadCurve() {   // Ebben 2011: wall < high incline < knee / low incline < full < diamond / 30 cm decline < archer < one-arm
@@ -275,5 +275,16 @@ class StarterCatalogTest {
         assertEquals(listOf("superman-hold", "arch-hold-y", "arch-rocks"), listOf("superman-hold").let { var c = it.last(); val out = it.toMutableList(); while (true) { c = next(c).firstOrNull() ?: break; out += c }; out })
         val carry = catalog.variation("kettlebell-suitcase-carry")!!
         assertEquals(setOf("kettlebell"), carry.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet()); assertTrue(carry.unilateral && carry.kind == Kind.HOLD)
+    }
+
+    @Test fun l09BackBridgeLadder() {
+        fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
+        fun prereq(id: String) = catalog.policyForVariation(id)!!.prerequisiteRule.allOf.map { g -> g.mapNotNull { it.variationTierMet?.variationId } }
+        // glute bridge -> table bridge -> chair (incline) bridge -> head-supported -> wall walk-down (the middle step) -> full back bridge; the single-leg bridge is a side branch
+        var c = "glute-bridge"; val out = mutableListOf(c); while (true) { c = next(c).firstOrNull() ?: break; out += c }
+        assertEquals(listOf("glute-bridge", "bridge-table", "bridge-incline", "bridge-head", "bridge-wall-walkdown", "bridge-back"), out)
+        assertEquals(listOf("bridge-table", "bridge-single-leg"), next("glute-bridge")); assertEquals(listOf(listOf("glute-bridge")), prereq("bridge-single-leg"))
+        assertEquals(setOf("wall"), catalog.variation("bridge-wall-walkdown")!!.equipmentAlternatives.flatMap { it.capabilities }.toSet())
+        assertTrue(catalog.variation("bridge-head")!!.cautions.any { "neck" in it })
     }
 }

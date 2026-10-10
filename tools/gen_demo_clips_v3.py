@@ -548,6 +548,23 @@ def suitcase_carry(p):
 
 NEW.update({"hollow-tuck": (hollow_tuck, "hold"), "hollow-one-leg": (hollow_one_leg, "hold"), "hollow-rocks": (hollow_rocks, "rep"),
             "pallof-hold": (pallof_hold, "hold"), "copenhagen-side-plank-short": (copenhagen_short, "hold"), "kettlebell-suitcase-carry": (suitcase_carry, "hold")})
+
+# ----------------------------------------------------------------------------------------------- L09 poses (back-bridge ladder)
+def bridge_table(p):
+    s = rep(p); hip = (lerp(112, 116, s), lerp(78, 100, s)); sho = (70, 112 - 6 * (1 - s)); a = math.degrees(math.atan2(sho[1] - hip[1], sho[0] - hip[0]))
+    return dict(hip=hip, a=a, head_off=-8, arms=[("ik", (60, 46), (0, 1))] * 2, legs=[("ik", (158, 46), (0, 1))] * 2)
+
+def bridge_head(p):
+    b = 2 * math.sin(2 * math.pi * p); hip = (168, 104 + b)
+    return dict(hip=hip, a=226, head_off=10, arms=[("ik", (98, 46), (0, 1))] * 2, legs=[("ik", (222, 46), (1, 0))] * 2)
+
+def bridge_wall_walkdown(p):
+    s = rep(p); hip = (lerp(112, 130, s), lerp(120, 102, s)); a = lerp(125, 168, s); sho = sh(hip, a)
+    hand = (74, lerp(156, 98, s))
+    return dict(hip=hip, a=a, head_off=-14, arms=[("ik", hand, (0, -1))] * 2, legs=[("ik", (160, 46), (1, 0))] * 2,
+                scene=[("rect", (60, 40, 70, 250), v1.GRD)])
+
+NEW.update({"bridge-table": (bridge_table, "rep"), "bridge-head": (bridge_head, "hold"), "bridge-wall-walkdown": (bridge_wall_walkdown, "rep")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)

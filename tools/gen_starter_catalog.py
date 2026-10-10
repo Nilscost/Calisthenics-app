@@ -386,16 +386,28 @@ ex("squat-pistol", "Pistol Squat (per side)", "squat", "SQUAT", L, "REPS", "stan
    ["Stand on one leg, other leg straight in front.", "Lower to full depth with the heel down.", "Stand up with control; switch sides."],
    reps_tiers([1, 2, 3, 5, 6]), [S_CC, S_OG, S_NG], LOW, uni=True, rank=60, prereq={"allOf": [[vt("squat-pistol-box", 4), vt("squat-pistol-counterbalance", 4)]]})
 # bridge
+ex("bridge-table", "Table Bridge (reverse tabletop)", "bridge", "HINGE", L, "REPS", "supine",
+   ["Sit with the knees bent and the feet flat, hands on the floor behind you with the fingers pointing toward the feet.", "Press the hips up until the thighs are level and the body forms a table from the shoulders to the knees.", "Lower slowly. This is the first step of the back-bridge ladder."],
+   reps_tiers([5, 6, 8, 10, 12]), [S_CC, S_GB, S_RR], ["stretch-hip-flexor", "stretch-back"], rank=15, nxt=["bridge-incline"], prereq={"allOf": [[vt("glute-bridge", 4)]]},
+   cues=["Hips level with the shoulders", "Arms straight", "Wrists comfortable"], cautions=(CAUTION_STRENGTH, "Stop on wrist or shoulder pain; place the fingers wherever the wrists are comfortable."))
 ex("bridge-single-leg", "Single-Leg Glute Bridge (per side)", "bridge", "HINGE", L, "REPS", "supine",
    ["Lie on your back, one foot flat, other leg straight up.", "Press through the heel to lift the hips level.", "Lower slowly; finish a side, then switch."],
-   reps_tiers([5, 6, 8, 10, 12]), [S_CC, S_YG], ["stretch-hip-flexor", "stretch-back"], uni=True, rank=20, nxt=["bridge-incline"], prereq={"allOf": [[vt("glute-bridge", 4)]]})
+   reps_tiers([5, 6, 8, 10, 12]), [S_CC, S_YG], ["stretch-hip-flexor", "stretch-back"], uni=True, rank=20, prereq={"allOf": [[vt("glute-bridge", 4)]]})   # L09: a strength branch, no longer on the back-bridge ladder
 ex("bridge-incline", "Incline Bridge (hands on a chair)", "bridge", "HINGE", L, "REPS", "supine",
    ["Sit in front of a sturdy chair seat, hands on the front edge behind you, fingers pointing toward the feet, feet flat on the floor.", "Press up so the hips rise and the arms straighten, the body arched like a small bridge.", "Lower slowly; lower the chair step by step (a sofa, then a low step) as it gets easier. This is the middle step before the full back bridge."],
-   reps_tiers([4, 6, 8, 10, 12]), [S_CC, S_GB], ["stretch-hip-flexor", "stretch-back"], eq=[{"needs": [need("chair", suitability=["stable"])]}], rank=25, nxt=["bridge-back"], prereq={"allOf": [[vt("bridge-single-leg", 3)]]},
+   reps_tiers([4, 6, 8, 10, 12]), [S_CC, S_GB], ["stretch-hip-flexor", "stretch-back"], eq=[{"needs": [need("chair", suitability=["stable"])]}], rank=25, nxt=["bridge-head"], prereq={"allOf": [[vt("bridge-table", 4)]]},
    cues=["Push the hips up", "Arms straight", "Chair cannot slide"], cautions=(CAUTION_STRENGTH, "Needs some shoulder and wrist mobility; check that the chair is stable and cannot slide; stop on any pinching."))
+ex("bridge-head", "Head-Supported Bridge", "bridge", "HINGE", L, "HOLD", "supine",
+   ["Lie on your back, feet flat near the hips, hands on the floor beside the head with the fingers toward the shoulders.", "Press the hips up and rest the top of the head lightly on a folded towel or mat, the weight mostly on the feet and hands.", "Hold, breathing steadily; lower slowly. Do not put your weight on the neck."],
+   hold_tiers([5, 10, 15, 20, 30]), [S_CC, S_GB, S_RR], ["stretch-hip-flexor", "stretch-back"], rank=27, nxt=["bridge-wall-walkdown"], prereq={"allOf": [[vt("bridge-incline", 4)]]},
+   cautions=(CAUTION_STRENGTH, "Keep the weight on the feet and hands, not on the neck; stop on any neck, shoulder or lower-back pinching."))
+ex("bridge-wall-walkdown", "Wall Walk-Down Bridge", "bridge", "HINGE", L, "REPS", "standing",
+   ["Stand with your back about a foot from a wall, arms overhead.", "Lean back and place the hands on the wall, then walk them slowly down the wall as the back arches; walk back up the same way.", "A middle step before the full back bridge: the wall takes part of the weight. Stop when the back stops feeling even."],
+   reps_tiers([3, 4, 5, 6, 8]), [S_CC, S_GB, S_RR], ["stretch-hip-flexor", "stretch-back"], eq=[{"capabilities": ["wall"]}], rank=29, nxt=["bridge-back"], prereq={"allOf": [[vt("bridge-head", 3)]]},
+   cautions=(CAUTION_STRENGTH, "Needs shoulder and spine mobility; stay in a range where the back arches evenly; stop on any pinching; keep a way to stand up (a partner or a sofa within reach)."))
 ex("bridge-back", "Full Back Bridge", "bridge", "HINGE", L, "HOLD", "supine",
    ["Lie on your back, hands by the ears, feet flat.", "Press up so arms and legs straighten and the back arches evenly.", "Hold, breathing steadily; lower slowly."],
-   hold_tiers([5, 10, 15, 20, 30]), [S_CC, S_GB], ["stretch-hip-flexor", "stretch-back"], rank=30, prereq={"allOf": [[vt("bridge-incline", 3)]]},
+   hold_tiers([5, 10, 15, 20, 30]), [S_CC, S_GB], ["stretch-hip-flexor", "stretch-back"], rank=30, prereq={"allOf": [[vt("bridge-wall-walkdown", 3)]]},
    cautions=(CAUTION_STRENGTH, "Needs shoulder and spine mobility; stop on any pinching."))
 # core
 ex("hollow-tuck", "Tucked Hollow Hold", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "supine",
@@ -810,7 +822,7 @@ for pol in policies:
     if pol["variationId"] == "pullup-band-assisted": pol["nextVariationIds"] = ["pullup-full"]
     if pol["variationId"] == "pushup-standard": pol["nextVariationIds"] = ["pushup-diamond", "pushup-feet-elevated"]   # L02: siblings (Ebben 2011: a 30 cm decline is about as hard as the diamond)
     if pol["variationId"] == "split-squat": pol["nextVariationIds"] = ["split-squat-bulgarian"]
-    if pol["variationId"] == "glute-bridge": pol["nextVariationIds"] = ["bridge-single-leg"]
+    if pol["variationId"] == "glute-bridge": pol["nextVariationIds"] = ["bridge-table", "bridge-single-leg"]
     if pol["variationId"] == "row-band": pol["nextVariationIds"] = ["inverted-row-bent-knees"]
     if pol["variationId"] == "superman-hold": pol["nextVariationIds"] = ["arch-hold-y"]
     if pol["variationId"] == "dead-bug": pol["nextVariationIds"] = ["plank"]   # L08: the supported-spine entry comes before the plank
@@ -858,6 +870,9 @@ M = {
     "squat-pistol-assisted": (["QUADS", "GLUTES"], ["HAMSTRINGS", "ADDUCTORS", "CALVES"]),
     "squat-pistol": (["QUADS", "GLUTES"], ["HAMSTRINGS", "ADDUCTORS", "CALVES"]),
     "glute-bridge": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK"]),
+    "bridge-table": (["GLUTES", "TRICEPS"], ["HAMSTRINGS", "FRONT_DELTS"]),
+    "bridge-head": (["GLUTES", "LOWER_BACK"], ["FRONT_DELTS", "TRICEPS", "QUADS"]),
+    "bridge-wall-walkdown": (["GLUTES", "LOWER_BACK"], ["FRONT_DELTS", "TRICEPS", "QUADS"]),
     "bridge-single-leg": (["GLUTES", "HAMSTRINGS"], ["LOWER_BACK", "OBLIQUES"]),
     "bridge-back": (["GLUTES", "LOWER_BACK"], ["FRONT_DELTS", "TRICEPS", "QUADS"]),
     "superman-hold": (["LOWER_BACK", "GLUTES"], ["REAR_DELTS", "HAMSTRINGS"]),

@@ -86,6 +86,19 @@
   ],
   "sharedPoseWith": []
  },
+ "bridge-head": {
+  "kind": "hold",
+  "primary": [
+   "GLUTES",
+   "LOWER_BACK"
+  ],
+  "secondary": [
+   "FRONT_DELTS",
+   "TRICEPS",
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
  "bridge-incline": {
   "kind": "rep",
   "primary": [
@@ -108,6 +121,31 @@
   "secondary": [
    "LOWER_BACK",
    "OBLIQUES"
+  ],
+  "sharedPoseWith": []
+ },
+ "bridge-table": {
+  "kind": "rep",
+  "primary": [
+   "GLUTES",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "HAMSTRINGS",
+   "FRONT_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
+ "bridge-wall-walkdown": {
+  "kind": "rep",
+  "primary": [
+   "GLUTES",
+   "LOWER_BACK"
+  ],
+  "secondary": [
+   "FRONT_DELTS",
+   "TRICEPS",
+   "QUADS"
   ],
   "sharedPoseWith": []
  },
