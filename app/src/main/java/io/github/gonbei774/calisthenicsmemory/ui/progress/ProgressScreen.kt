@@ -27,6 +27,10 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.StarRow
 import app.calisthenics.domain.load.formatKg
 import app.calisthenics.domain.load.isLoaded
 import app.calisthenics.domain.load.loadGrams
+import app.calisthenics.domain.load.loadEquipmentId
+import app.calisthenics.domain.load.weightTrack
+import app.calisthenics.domain.load.WeightState
+import app.calisthenics.domain.load.DUMBBELL_EQUIPMENT_ID
 import io.github.gonbei774.calisthenicsmemory.ui.screens.*
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import androidx.compose.foundation.background
@@ -191,6 +195,7 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
                 }
             }
         }
+        if (v.isLoaded()) WeightTrack(v, progress, profile)
         if (unlocks.isNotEmpty()) { Caption(stringResource(R.string.detail_unlocks)); Text(unlocks.joinToString(), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("detail_unlocks")) }
         if (needs.isNotEmpty() || !isAvailable(v, profile)) {
             Caption(stringResource(R.string.detail_needs))
@@ -202,6 +207,32 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
                 Text(stringResource(R.string.sheet_cautions).uppercase(), style = MaterialTheme.typography.labelLarge, color = tx)
                 v.cautions.forEach { Text(it, style = MaterialTheme.typography.bodyMedium, color = tx) }
             }
+        }
+    }
+}
+
+/** V26 (R27, O5): the weight track of a kettlebell or dumbbell exercise: the weights from the one in use upward, what is kept, what is locked. */
+@Composable
+private fun WeightTrack(v: ExerciseVariation, progress: app.calisthenics.domain.progression.ProgressSnapshot, profile: EquipmentProfile) {
+    val eq = v.loadEquipmentId() ?: return
+    val vp = progress.variations[v.id]
+    val steps = weightTrack(eq, profile.loadGrams(eq), vp?.loadGrams, vp?.earnedStars() ?: 0, vp?.starsByLoad ?: emptyMap())
+    if (steps.isEmpty()) return
+    Caption(stringResource(R.string.detail_weight), Modifier.padding(top = Spacing.s))
+    steps.forEach { st ->
+        val kg = formatKg(st.grams)
+        val label = when (st.state) {
+            WeightState.NOW -> stringResource(R.string.weight_now)
+            WeightState.DONE -> stringResource(R.string.weight_done)
+            WeightState.READY -> stringResource(R.string.weight_ready)
+            WeightState.LOCKED -> stringResource(if (eq == DUMBBELL_EQUIPMENT_ID) R.string.weight_locked_db else R.string.weight_locked_kb, kg)
+        }
+        Row(Modifier.fillMaxWidth().heightIn(min = 40.dp).semantics(mergeDescendants = true) {}.testTag("weight_step_${st.grams}"), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            Text(stringResource(R.string.weight_kg, kg), Modifier.width(72.dp), style = MaterialTheme.typography.titleMedium,
+                color = if (st.state == WeightState.NOW) AppAccentTheme.colors.text else MaterialTheme.colorScheme.onSurface)
+            if (st.state != WeightState.LOCKED) StarRow(st.stars, size = 16.dp)
+            Text(label.uppercase(), Modifier.weight(1f), style = MaterialTheme.typography.labelLarge, textAlign = androidx.compose.ui.text.style.TextAlign.End,
+                color = if (st.state == WeightState.NOW) AppAccentTheme.colors.text else MaterialTheme.colorScheme.outline)
         }
     }
 }

@@ -84,6 +84,13 @@
     <string name="routine_update">Update this routine</string>
     <string name="routine_saved">Saved as “%1$s”. Find it under Objective -> Routine on Train.</string>
     <string name="routine_updated">“%1$s” updated.</string>
+    <string name="detail_weight">Weight</string>
+    <string name="weight_kg">%1$s kg</string>
+    <string name="weight_now">Now</string>
+    <string name="weight_done">Kept</string>
+    <string name="weight_ready">Ready · starts at level 1</string>
+    <string name="weight_locked_kb">Needs a %1$s kg kettlebell</string>
+    <string name="weight_locked_db">Needs %1$s kg dumbbells</string>
     <string name="train_warmup">Warm-up first</string>
     <string name="train_warmup_hint">A few mobility moves before the workout; counted in the time.</string>
     <string name="routine_summary">%1$d exercises · %2$s</string>

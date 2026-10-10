@@ -7,7 +7,8 @@ import app.calisthenics.domain.equipment.isAvailable
 import app.calisthenics.domain.equipment.missingFor
 import app.calisthenics.domain.load.formatKg
 import app.calisthenics.domain.load.isLoaded
-import app.calisthenics.domain.load.loadGrams
+import app.calisthenics.domain.load.loadEquipmentId
+import app.calisthenics.domain.load.loadGramsFor
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.progression.ProgressSnapshot
 import app.calisthenics.domain.routine.SessionDraft
@@ -224,13 +225,14 @@ private class Planner(val input: PlanInput) {
             warn += "Welcome back — you haven't trained ${v.name} for ${app.calisthenics.domain.progression.REENTRY_DAYS}+ days. Planned at tier $lower; choose your own re-entry level before starting. Earned stars are kept."
         }
         // Kettlebell weight (owner 2026-10-08): a heavier bell than the one the level was earned with restarts at tier 1.
-        val load = if (v.isLoaded()) input.profile.loadGrams() else null
+        val load = input.profile.loadGramsFor(v)
         val recorded = input.progress.variations[v.id]?.loadGrams
+        val loadName = if (v.loadEquipmentId() == app.calisthenics.domain.load.DUMBBELL_EQUIPMENT_ID) "dumbbells" else "kettlebell"
         if (load != null && recorded != null && load > recorded) {
             tierIdx = 1
-            explain += "${v.name}: heavier kettlebell (${formatKg(load)} kg instead of ${formatKg(recorded)} kg) — starting again at tier 1. Your stars at ${formatKg(recorded)} kg are kept."
+            explain += "${v.name}: heavier $loadName (${formatKg(load)} kg instead of ${formatKg(recorded)} kg) — starting again at tier 1. Your stars at ${formatKg(recorded)} kg are kept."
         } else if (load != null && recorded != null && load < recorded) {
-            warn += "${v.name}: your kettlebell here is ${formatKg(load)} kg, lighter than the ${formatKg(recorded)} kg you train with — this session is logged but does not count towards your next tier."
+            warn += "${v.name}: your $loadName here is ${formatKg(load)} kg, lighter than the ${formatKg(recorded)} kg you train with — this session is logged but does not count towards your next tier."
         }
         draft.tierOverrides[slot.id]?.let { o ->
             val t = o.coerceIn(pol.tiers.minOf { it.index }, pol.tiers.maxOf { it.index })

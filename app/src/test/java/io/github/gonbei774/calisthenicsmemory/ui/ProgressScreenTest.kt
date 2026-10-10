@@ -74,6 +74,18 @@ class ProgressScreenTest {
         rule.onNodeWithTag("node_panel").assertDoesNotExist()
     }
 
+    @Test fun aKettlebellDetailShowsTheWeightTrackFromTheBellInUseUpward() {   // V26
+        LevelStore.save(ctx, mapOf("kettlebell-deadlift" to 2))
+        show()
+        rule.onNodeWithTag("tab_chip_hips").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("tree_node_kettlebell-deadlift").performScrollTo().performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
+        rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("weight_step_12000").performScrollTo().assertTextContains("NOW", substring = true)   // the home profile's 12 kg bell
+        rule.onNodeWithTag("weight_step_16000").performScrollTo().assertTextContains("Needs a 16 kg kettlebell", substring = true, ignoreCase = true)
+        rule.onNodeWithTag("weight_step_24000").performScrollTo().assertExists()
+        rule.onNodeWithTag("weight_step_8000").assertDoesNotExist()   // lighter than the bell in use: not shown
+    }
+
     @Test fun theExerciseDetailShowsTheFiveLevelsUnlocksAndCautionsWithoutActionButtons() {
         LevelStore.save(ctx, mapOf("pushup-standard" to 3))
         show()
