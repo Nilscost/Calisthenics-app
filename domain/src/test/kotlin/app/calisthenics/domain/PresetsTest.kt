@@ -24,11 +24,14 @@ class PresetsTest {
 
     @Test fun presetsExistAndAreCredited() {
         val all = Presets.all(catalog, gym)
-        assertEquals(listOf(Presets.RR, Presets.MINIMALIST), all.map { it.id })
+        assertEquals(listOf(Presets.RR, Presets.MINIMALIST, Presets.STRETCH, Presets.STRETCH_UPPER, Presets.STRETCH_LOWER), all.map { it.id })   // L11b added the stretch sessions
         assertTrue(all.all { Presets.isPreset(it.id) && !it.credit.isNullOrBlank() })
         assertTrue(Presets.byId("preset-nope", catalog, gym) == null && Presets.byId(null, catalog, gym) == null)
         // every exercise a preset names exists and has a policy
-        for (p in all + Presets.all(catalog, bare)) for (s in p.routine.slots) assertNotNull(s.preferredVariationId, catalog.policyForVariation(s.preferredVariationId))
+        for (p in all + Presets.all(catalog, bare)) {
+            for (s in p.routine.slots) assertNotNull(s.preferredVariationId, catalog.policyForVariation(s.preferredVariationId))
+            for (id in p.routine.stretchSession) assertNotNull(id, catalog.variation(id))
+        }
     }
 
     @Test fun recommendedRoutineIsThreePairsAndACoreTriplet() {

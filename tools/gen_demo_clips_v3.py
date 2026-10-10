@@ -602,7 +602,12 @@ def st_wrist_biceps(p):
     return dict(hip=hip, a=a, head_off=-4, arms=[("ik", (196, 134), (0, -1)), ("ik", (hip[0] + 8, hip[1] - 34), (0, -1))], arm_z=[lerp(40, 54, b), Z_ARM],
                 legs=[("ik", (130, 46), (1, 0))] * 2, scene=[("rect", (200, 44, 208, 220), v1.GRD)])
 
-NEW.update({"stretch-wrist-biceps": (st_wrist_biceps, "hold"), "stretch-butterfly": (st_butterfly, "hold"), "stretch-pancake": (st_pancake, "hold"), "stretch-pike-one-leg": (st_pike_one_leg, "hold"),
+def st_shoulder_backbend(p):
+    b = _breath(p); hip = (150, 124); a = 90 + 4 * b; sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=-6 * b, arms=[("ik", (sho[0] - 10 - 6 * b, sho[1] + 60), (0, 1))] * 2, arm_z=[Z_ARM + 10, -Z_ARM - 10],
+                legs=[("ik", (150, 46), (1, 0))] * 2)
+
+NEW.update({"stretch-shoulder-backbend": (st_shoulder_backbend, "hold"), "stretch-wrist-biceps": (st_wrist_biceps, "hold"), "stretch-butterfly": (st_butterfly, "hold"), "stretch-pancake": (st_pancake, "hold"), "stretch-pike-one-leg": (st_pike_one_leg, "hold"),
             "stretch-supine-twist": (st_supine_twist, "hold"), "stretch-rear-clasp": (st_rear_clasp, "hold"), "stretch-cobra": (st_cobra, "hold")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")

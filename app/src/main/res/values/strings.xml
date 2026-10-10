@@ -102,6 +102,8 @@
     <string name="history_best">best %1$d%2$s</string>
     <string name="history_chart_gate">Dashed line: %1$d%2$s in every set moves you up a level. The dots are the lowest set of each workout.</string>
     <string name="history_chart_desc">Lowest set of each workout: %1$s</string>
+    <string name="stretch_session_header">%1$d stretches · about %2$d min</string>
+    <string name="stretch_session_protocol">For each stretch (each side when it has sides): ease in and out 10 times, then hold 10 s; again, hold 20 s; again, hold 30 s, a little deeper each time. 2–3 times a week. Stretch after a workout or on its own, not before strength work.</string>
     <string name="detail_weight">Weight</string>
     <string name="weight_kg">%1$s kg</string>
     <string name="weight_now">Now</string>

@@ -223,12 +223,16 @@ stretch("stretch-wrist-biceps", "Wrist and Biceps Stretch (palms on a wall)", ["
         ["Stand beside a wall and place one palm on it at shoulder height, fingers pointing back behind you, arm straight.", "Slowly turn the body away from the wall until you feel a stretch in the forearm and the front of the arm.", "Keep the shoulder relaxed; hold, then switch sides."],
         eq=[{"capabilities": ["wall"]}], cues=["Small turn", "Shoulder relaxed"], cautions=["Stop on wrist or elbow pain; turn only a little at a time."],
         primary=["FOREARMS"], secondary=["BICEPS"], use="BOTH", sources=[S_RF])
+stretch("stretch-shoulder-backbend", "Shoulder Backbend (chest opener)", ["SHOULDER", "CHEST"], 30, False, "standing",
+        ["Stand tall with the arms straight up beside the ears, hands a little wider than the shoulders.", "Reach up and slightly back, letting the chest open while the ribs stay down.", "Hold, breathing slowly; do not force the arms back."],
+        cues=["Ribs down", "Reach long"], cautions=["Stop on shoulder pinching; skip it with an acute shoulder problem."],
+        primary=["FRONT_DELTS", "CHEST"], use="BOTH", sources=[S_RF])
 stretch("stretch-cobra", "Cobra (spine backbend)", ["BACK"], 30, False, "prone",
         ["Lie face down with the hands under the shoulders.", "Press the chest up gently with the hips on the floor, keeping the neck long.", "Hold, then lower slowly. Stay in a pain-free range."],
         cues=["Hips stay down", "Long neck"], cautions=["Stop on lower-back pinching; skip it with an acute back problem."],
         primary=["ABS"], secondary=["LOWER_BACK"], use="COOL_DOWN", sources=[S_RF])
 
-NEW_ST_UP = ["stretch-sleeper", "stretch-wrist-flexor", "stretch-wrist-extensor", "stretch-lat-wall", "stretch-rear-clasp", "stretch-wrist-biceps"]
+NEW_ST_UP = ["stretch-sleeper", "stretch-wrist-flexor", "stretch-wrist-extensor", "stretch-lat-wall", "stretch-rear-clasp", "stretch-wrist-biceps", "stretch-shoulder-backbend"]
 NEW_ST_LOW = ["stretch-pigeon", "stretch-90-90", "stretch-quad-couch", "stretch-quad-standing", "stretch-hamstring-standing", "stretch-frog", "stretch-butterfly", "stretch-pancake", "stretch-pike-one-leg"]
 NEW_ST_CORE = ["stretch-thoracic", "stretch-lat-wall", "stretch-supine-twist", "stretch-cobra"]
 UP = ["stretch-chest-door", "stretch-shoulder", *NEW_ST_UP]

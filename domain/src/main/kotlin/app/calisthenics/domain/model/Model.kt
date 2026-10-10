@@ -287,6 +287,8 @@ data class Routine(
     val rule: ProgressionRule = ProgressionRule(),
     /** V22: this routine's own warm-up (mobility ids, in order); empty = the catalog's warm-up template. Used when the warm-up switch is on. */
     val warmup: List<String> = emptyList(),
+    /** L11b: a stretch-only session (stretch ids in order). When set, the plan is the bump-and-hold protocol for each stretch and the strength slots are ignored. */
+    val stretchSession: List<String> = emptyList(),
 )
 
 /** Remembered preferences (spec §3, ADR 0002 §A). */
@@ -330,6 +332,8 @@ data class TimelineBlock(
     val freeTarget: Boolean = false,
     /** V19: the pair (Pairs) or the exercise number (Straight sets) this block belongs to; null in a Circuit. */
     val groupIndex: Int? = null,
+    /** L11b: a short instruction shown with the block (the stretch session's "ease in and out 10 times"). */
+    val note: String? = null,
 ) {
     init { require(durationSeconds > 0) { "block $id must have positive duration" } }
 }

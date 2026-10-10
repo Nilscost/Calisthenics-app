@@ -247,6 +247,14 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                 }
                 is PlanResult.Ready -> {
                     val p = r.plan
+                    if (routine.stretchSession.isNotEmpty()) {   // L11b: a stretch-only session has no sets, levels or rule: just the list and the protocol
+                        Text(stringResource(R.string.stretch_session_header, p.blocks.mapNotNull { it.variationId }.filter { names.containsKey(it) }.distinct().size, (p.plannedDurationSeconds + 30) / 60), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"))
+                        Text(stringResource(R.string.stretch_session_protocol), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("stretch_protocol"))
+                        p.blocks.filter { it.type == BlockType.STRETCH }.mapNotNull { it.variationId }.distinct().forEachIndexed { i, id ->
+                            Card(Modifier.fillMaxWidth().padding(vertical = 2.dp).testTag("stretch_row_$id"), shape = MaterialTheme.shapes.large) { Text("${i + 1} · ${names[id] ?: id}", Modifier.padding(Spacing.m), style = MaterialTheme.typography.titleMedium) }
+                        }
+                        return@Column
+                    }
                     val set = setTab.coerceIn(1, p.rounds)
                     Text(
                         stringResource(R.string.preview_header, p.rounds, (p.plannedDurationSeconds + 30) / 60, stringResource(if (p.timed) R.string.style_timed else R.string.style_reps)),

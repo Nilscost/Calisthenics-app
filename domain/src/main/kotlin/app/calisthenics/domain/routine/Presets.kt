@@ -14,7 +14,12 @@ object Presets {
 
     fun isPreset(id: String?) = id != null && id.startsWith("preset-")
 
-    fun all(c: Catalog, profile: EquipmentProfile): List<SavedRoutine> = listOf(recommended(c, profile), minimalist(c, profile))
+    const val STRETCH = "preset-stretch"
+    const val STRETCH_UPPER = "preset-stretch-upper"
+    const val STRETCH_LOWER = "preset-stretch-lower"
+    const val STRETCH_CREDIT = "r/flexibility wiki, Starting To Stretch (u/tykato; live check 2026-10-09)"
+
+    fun all(c: Catalog, profile: EquipmentProfile): List<SavedRoutine> = listOf(recommended(c, profile), minimalist(c, profile)) + startingToStretch(c, profile)
     fun byId(id: String?, c: Catalog, profile: EquipmentProfile): SavedRoutine? = if (isPreset(id)) all(c, profile).firstOrNull { it.id == id } else null
 
     /** The first of [ids] the profile can do, else the first one (the planner then says what is missing or substitutes). */
@@ -66,6 +71,22 @@ object Presets {
         val name = "Minimalist Routine"
         val routine = Routine(MINIMALIST, 1, name, slots, rule = rule)
         return SavedRoutine(MINIMALIST, name, 1, routine, PlanEdits0, WorkoutFormat.CIRCUIT, rule, stretchOn = false, sets = 3, warmupOn = false, credit = MINIMALIST_CREDIT)
+    }
+
+    private val UPPER = listOf("stretch-shoulder-backbend", "stretch-cobra", "stretch-rear-clasp", "stretch-supine-twist", "stretch-wrist-biceps")
+    private val LOWER = listOf("stretch-pike-one-leg", "stretch-hip-flexor", "stretch-pancake", "stretch-butterfly", "stretch-calf-wall")
+
+    /**
+     * "Starting To Stretch": ten stretches in two halves (upper body, lower body), each with the bump-and-hold protocol (about 25 minutes for both halves).
+     * The full session and each half are listed; the halves are for when time is short (alternate them). A stretch the profile cannot do (no chair, no wall) is left out.
+     */
+    fun startingToStretch(c: Catalog, profile: EquipmentProfile): List<SavedRoutine> {
+        fun make(id: String, name: String, ids: List<String>): SavedRoutine {
+            val ok = ids.filter { s -> c.variation(s)?.let { isAvailable(it, profile) } == true }
+            val routine = Routine(id, 1, name, emptyList(), stretchSession = ok)
+            return SavedRoutine(id, name, 1, routine, PlanEdits0, WorkoutFormat.CIRCUIT, ProgressionRule(), stretchOn = true, sets = 1, credit = STRETCH_CREDIT)
+        }
+        return listOf(make(STRETCH, "Starting To Stretch", UPPER + LOWER), make(STRETCH_UPPER, "Starting To Stretch: upper body", UPPER), make(STRETCH_LOWER, "Starting To Stretch: lower body", LOWER))
     }
 
     private val PlanEdits0 = app.calisthenics.domain.planner.PlanEdits()

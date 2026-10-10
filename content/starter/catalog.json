@@ -1002,6 +1002,47 @@
       ]
     },
     {
+      "id": "stretch-shoulder-backbend",
+      "familyId": "stretch-shoulder-backbend",
+      "name": "Shoulder Backbend (chest opener)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": false,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Stand tall with the arms straight up beside the ears, hands a little wider than the shoulders.",
+        "Reach up and slightly back, letting the chest open while the ribs stay down.",
+        "Hold, breathing slowly; do not force the arms back."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stop on shoulder pinching; skip it with an acute shoulder problem."
+      ],
+      "sourceIds": [
+        "r/flexibility wiki, Starting To Stretch (u/tykato), live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "stretchUse": "BOTH",
+      "formCues": [
+        "Ribs down",
+        "Reach long"
+      ],
+      "stretchAreas": [
+        "SHOULDER",
+        "CHEST"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS",
+        "CHEST"
+      ]
+    },
+    {
       "id": "stretch-cobra",
       "familyId": "stretch-cobra",
       "name": "Cobra (spine backbend)",
@@ -1103,7 +1144,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1160,7 +1202,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1218,7 +1261,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1283,7 +1327,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -1350,7 +1395,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -1846,7 +1892,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1902,7 +1949,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1968,7 +2016,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -2023,7 +2072,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "TRICEPS",
@@ -2077,7 +2127,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -2133,7 +2184,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -2189,7 +2241,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -2246,7 +2299,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2310,7 +2364,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2371,7 +2426,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2436,7 +2492,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2502,7 +2559,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2565,7 +2623,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -2627,7 +2686,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -2693,7 +2753,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -4282,7 +4343,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -4350,7 +4412,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -4418,7 +4481,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -4477,7 +4541,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -4535,7 +4600,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -4593,7 +4659,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -4657,7 +4724,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -4722,7 +4790,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -4785,7 +4854,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -4848,7 +4918,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -4911,7 +4982,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -5728,7 +5800,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "TRICEPS",
@@ -5791,7 +5864,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "TRICEPS",
@@ -5854,7 +5928,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "TRICEPS",
@@ -6750,7 +6825,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -6806,7 +6882,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -6871,7 +6948,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -6933,7 +7011,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -6995,7 +7074,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -7057,7 +7137,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -7120,7 +7201,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "BICEPS",
@@ -7188,7 +7270,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -7251,7 +7334,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "BICEPS",
@@ -7550,7 +7634,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -7735,7 +7820,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -7797,7 +7883,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "LATS",
@@ -7863,7 +7950,8 @@
         "stretch-wrist-extensor",
         "stretch-lat-wall",
         "stretch-rear-clasp",
-        "stretch-wrist-biceps"
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
       ],
       "primaryMuscles": [
         "TRICEPS",

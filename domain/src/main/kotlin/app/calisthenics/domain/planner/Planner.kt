@@ -71,6 +71,7 @@ private class Planner(val input: PlanInput) {
             return fail("duration-range", "Duration must be 10–90 minutes in whole minutes.",
                 listOf(PlanOption("set-duration", "Choose a duration between 10 and 90 minutes.")))
         }
+        if (input.routine.stretchSession.isNotEmpty()) return stretchSession()
         // 2. focus -> slots (order preserved)
         val slots = slotsForFocus(input.routine, draft.focus)
         if (slots.isEmpty()) return fail("no-slots", "The routine has no exercises for the chosen focus.",
@@ -164,6 +165,35 @@ private class Planner(val input: PlanInput) {
             stretchOn = draft.stretchOn, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed, format = draft.format, rule = draft.rule,
             changesExplained = explain.distinct(), warnings = warn.distinct(), needsAcceptance = needsAcceptance,
             usesDraftContent = usesDraft, blocks = blocks,
+        ))
+    }
+
+    /**
+     * L11b ("Starting To Stretch", r/flexibility): for every stretch (each side of a one-sided one) three rounds of
+     * 10 gentle bumps in and out, then a hold of 10, 20 and 30 s, going a little deeper each time. Stretches only, never before strength work.
+     */
+    private fun stretchSession(): PlanResult {
+        val out = mutableListOf<TimelineBlock>()
+        for ((i, id) in input.routine.stretchSession.withIndex()) {
+            val v = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH && isAvailable(it, input.profile) } ?: continue
+            val sides = if (v.unilateral) listOf(Side.LEFT, Side.RIGHT) else listOf(Side.BOTH)
+            for (side in sides) for ((k, hold) in listOf(10, 20, 30).withIndex()) {
+                val tag = "ss$i-${side.name.first()}-${k + 1}"
+                out += TimelineBlock("$tag-bump", BlockType.STRETCH, 10, null, "ss$i", id, side, mediaId = v.mediaId, groupIndex = i + 1,
+                    note = "Gently ease in and out of the stretch 10 times: small and never forced. Skip the bumping with an acute injury.")
+                out += TimelineBlock("$tag-hold", BlockType.STRETCH, hold, null, "ss$i", id, side, mediaId = v.mediaId, groupIndex = i + 1,
+                    note = "Hold for $hold seconds" + if (k > 0) ", a little deeper than before." else ".")
+            }
+        }
+        if (out.isEmpty()) return fail("nothing-available", "None of the stretches in this session can be done with the current equipment.", listOf(PlanOption("change-profile", "Switch equipment profile.")))
+        val blocks = withTransitions(out)
+        val total = blocks.sumOf { it.durationSeconds }
+        return PlanResult.Ready(WorkoutPlan(
+            id = input.planId, routineId = input.routine.id, routineRevision = input.routine.revision, catalogVersion = cat.catalogVersion,
+            createdAtEpochMs = input.createdAtEpochMs, profileId = input.profile.id, requestedDurationSeconds = total, plannedDurationSeconds = total,
+            focus = draft.focus, stretchOn = true, goalId = null, rounds = 1, timed = false, format = WorkoutFormat.CIRCUIT, rule = ProgressionRule(),
+            changesExplained = listOf("Stretch session: 10 gentle bumps, then holds of 10, 20 and 30 s for each stretch. Not for before a workout."),
+            warnings = emptyList(), needsAcceptance = false, usesDraftContent = blocks.mapNotNull { it.variationId }.distinct().any { cat.variation(it)?.reviewState == ReviewState.DRAFT }, blocks = blocks,
         ))
     }
 

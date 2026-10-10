@@ -34,7 +34,7 @@ class StarterCatalogTest {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
         assertEquals(112, strength.size) // L09: +3 (table bridge, head-supported bridge, wall walk-down); L08: +6 (hollow steps and rocks, Pallof hold, short Copenhagen, suitcase carry); L07: +4 (L-sit steps); L05: +4 (shrimp steps, box and counterbalance pistol); L04: +3 (towel door row, wide inverted row, kettlebell one-arm row); L03: +4 (dead hang, flexed-arm hang, chair-assisted pull-up, chin-up); L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
-        assertEquals(32, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
+        assertEquals(33, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
     }
@@ -300,7 +300,7 @@ class StarterCatalogTest {
 
     @Test fun l11StretchLibraryIsTaggedForBetweenSetsAndCoolDown() {
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH }
-        assertEquals(24, stretches.size)                                          // L11: 17 + 7 = 24 stretches (the ankle one is a mobility item)
+        assertEquals(25, stretches.size)                                          // L11: 17 + 7 = 24 stretches (the ankle one is a mobility item); L11b added the shoulder backbend
         val cd = stretches.filter { it.stretchUse == StretchUse.COOL_DOWN }.map { it.id }.toSet()
         assertTrue(cd.containsAll(setOf("stretch-pigeon", "stretch-90-90", "stretch-frog", "stretch-quad-couch", "stretch-butterfly", "stretch-pancake", "stretch-cobra", "stretch-sleeper")))
         assertTrue(catalog.variation("stretch-sleeper")!!.optIn)

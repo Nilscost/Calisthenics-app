@@ -196,8 +196,9 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                             val sideText = when (b.side) { Side.LEFT -> stringResource(R.string.side_left); Side.RIGHT -> stringResource(R.string.side_right); else -> "" }
                             val targetText = b.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it) }.orEmpty()
                             val sub = listOf(io.github.gonbei774.calisthenicsmemory.ui.train.withLoad(targetText, b.loadGrams), sideText).filter { it.isNotEmpty() }.joinToString(" · ")
-                            if (b.type == BlockType.WORK) Text(names[b.variationId] ?: "", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
+                            if (b.type == BlockType.WORK || b.note != null) Text(names[b.variationId] ?: "", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
                             if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_target"))
+                            b.note?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center, modifier = Modifier.testTag("session_note")) }
                         }
                         Row(Modifier.fillMaxWidth().padding(top = Spacing.xs), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
                             if (paused) AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_RESUME) }, Modifier.weight(1f).height(54.dp).testTag("session_resume")) { Text(stringResource(R.string.session_resume)) }

@@ -1436,6 +1436,15 @@
   "secondary": [],
   "sharedPoseWith": []
  },
+ "stretch-shoulder-backbend": {
+  "kind": "hold",
+  "primary": [
+   "FRONT_DELTS",
+   "CHEST"
+  ],
+  "secondary": [],
+  "sharedPoseWith": []
+ },
  "stretch-sleeper": {
   "kind": "hold",
   "primary": [
