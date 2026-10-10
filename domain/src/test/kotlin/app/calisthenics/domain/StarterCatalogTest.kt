@@ -33,7 +33,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(103, strength.size) // L07: +4 (L-sit steps); L05: +4 (shrimp steps, box and counterbalance pistol); L04: +3 (towel door row, wide inverted row, kettlebell one-arm row); L03: +4 (dead hang, flexed-arm hang, chair-assisted pull-up, chin-up); L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
+        assertEquals(109, strength.size) // L08: +6 (hollow steps and rocks, Pallof hold, short Copenhagen, suitcase carry); L07: +4 (L-sit steps); L05: +4 (shrimp steps, box and counterbalance pistol); L04: +3 (towel door row, wide inverted row, kettlebell one-arm row); L03: +4 (dead hang, flexed-arm hang, chair-assisted pull-up, chin-up); L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
         assertEquals(25, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
@@ -64,7 +64,7 @@ class StarterCatalogTest {
         "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing-one-arm",
         // V21b: ends of the RR paths and single exercises of the ready-made routines
         "dip-parallel", "nordic-curl", "slide-single-leg", "pallof-press", "reverse-hyperextension", "plank-shoulder-tap", "walking-lunge",
-        "squat-shrimp-advanced" /* V25/L05: the shrimp path is an alternative end point next to the pistol */, "chinup-full" /* L03: the chin-up is a parallel option to the pull-up */, "kettlebell-one-arm-row",
+        "hollow-rocks", "kettlebell-suitcase-carry", "squat-shrimp-advanced" /* V25/L05: the shrimp path is an alternative end point next to the pistol */, "chinup-full" /* L03: the chin-up is a parallel option to the pull-up */, "kettlebell-one-arm-row",
         // V27: extra-equipment exercises (dumbbells, barbell, vest)
         "goblet-squat", "dumbbell-single-leg-rdl", "weighted-glute-bridge", "dumbbell-row", "barbell-squat", "barbell-rdl", "weighted-pushup", "weighted-pullup", "weighted-dip", "weighted-squat")
 
@@ -87,9 +87,9 @@ class StarterCatalogTest {
             while (true) { c = catalog.policyForVariation(c)!!.nextVariationIds.firstOrNull() ?: break; out += c }; return out }
         assertEquals(listOf("row-band", "inverted-row-bent-knees", "inverted-row", "inverted-row-wide", "inverted-row-feet-elevated", "archer-row"), chain("row-band"))   // L04 added the wide row
         assertEquals(listOf("superman-hold", "arch-hold-y", "arch-rocks"), chain("superman-hold"))
-        assertEquals(listOf("side-plank", "side-plank-leg-raise", "copenhagen-side-plank"), chain("side-plank"))
+        assertEquals(listOf("side-plank", "side-plank-leg-raise", "copenhagen-side-plank-short", "copenhagen-side-plank"), chain("side-plank"))
         assertEquals(listOf("kettlebell-deadlift", "kettlebell-single-leg-rdl", "kettlebell-swing", "kettlebell-swing-one-arm"), chain("kettlebell-deadlift"))
-        assertEquals("hollow-hold", chain("dead-bug")[1]) // dead bug hands over to the hollow hold
+        assertEquals(listOf("dead-bug", "plank", "hollow-tuck", "hollow-one-leg", "hollow-hold"), chain("dead-bug").take(5)) // L08: the dead bug comes before the plank, the hollow hold has two easier steps
         for (id in listOf("inverted-row-bent-knees", "inverted-row", "inverted-row-feet-elevated", "archer-row"))
             assertTrue(id, catalog.variation(id)!!.equipmentAlternatives.single().needs.single().equipmentId == "low-bar")
         assertTrue(catalog.variation("copenhagen-side-plank")!!.equipmentAlternatives.single().needs.single().suitability == setOf("stable"))
@@ -104,7 +104,7 @@ class StarterCatalogTest {
     }
 
     @Test fun plankAndEveryChainTopLeadsSomewhere() {
-        assertEquals(listOf("hollow-hold"), catalog.policyForVariation("plank")!!.nextVariationIds)
+        assertEquals(listOf("hollow-tuck"), catalog.policyForVariation("plank")!!.nextVariationIds)
         val succ = catalog.policies.flatMap { it.nextVariationIds }.toSet()
         // every exercise with a prerequisite is reachable as someone's successor (no orphan tree nodes)
         // Entry points of the skill chains are reached by choosing a goal, not by automatic progression.
@@ -177,7 +177,7 @@ class StarterCatalogTest {
         assertEquals(listOf(listOf("pullup-band-assisted", "pullup-negative", "chair-assisted-pullup", "flexed-arm-hang")), prereq("pullup-full"))
         for (id in listOf("scapular-pull", "arch-hang", "pullup-negative")) assertEquals(id, setOf("pullup-bar"), catalog.variation(id)!!.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet())
         // tuck L-sit sits between the hollow hold and the floor L-sit
-        assertEquals(listOf("l-sit-foot-supported"), next("hollow-hold")); assertEquals(listOf("l-sit-advanced-tuck"), next("l-sit-tuck")); assertEquals(listOf(listOf("l-sit-one-leg")), prereq("l-sit-floor"))
+        assertEquals(listOf("l-sit-foot-supported", "hollow-rocks"), next("hollow-hold")); assertEquals(listOf("l-sit-advanced-tuck"), next("l-sit-tuck")); assertEquals(listOf(listOf("l-sit-one-leg")), prereq("l-sit-floor"))
         // the pistol path and the shrimp path are alternatives after the Bulgarian split squat (wiki), the pistol path first
         assertEquals(listOf("squat-pistol-assisted", "squat-shrimp"), next("split-squat-bulgarian")); assertEquals(listOf(listOf("split-squat-bulgarian")), prereq("squat-pistol-assisted")); assertEquals(listOf("squat-shrimp-intermediate"), next("squat-shrimp"))
         // a middle step before the full back bridge
@@ -263,5 +263,17 @@ class StarterCatalogTest {
             assertEquals(id, app.calisthenics.domain.model.TierProfile.H60, p.tierProfile); assertEquals(id, listOf(10, 15, 20, 30, 60), p.tiers.map { it.target.value })
             assertEquals(Kind.HOLD, catalog.variation(id)!!.kind); assertTrue(id, p.tierNote!!.contains("accumulated minute"))
         }
+    }
+
+    @Test fun l08CorePlanes() {
+        fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
+        fun prereq(id: String) = catalog.policyForVariation(id)!!.prerequisiteRule.allOf.map { g -> g.mapNotNull { it.variationTierMet?.variationId } }
+        assertEquals(listOf(listOf("dead-bug")), prereq("plank"))                                  // dead bug before the plank
+        assertEquals(listOf("l-sit-foot-supported", "hollow-rocks"), next("hollow-hold")); assertTrue(next("hollow-rocks").isEmpty())
+        assertEquals(listOf("pallof-press"), next("pallof-hold")); assertTrue(catalog.variation("pallof-press")!!.instructions.any { "Stance rule" in it })
+        assertEquals(listOf(listOf("copenhagen-side-plank-short")), prereq("copenhagen-side-plank"))
+        assertEquals(listOf("superman-hold", "arch-hold-y", "arch-rocks"), listOf("superman-hold").let { var c = it.last(); val out = it.toMutableList(); while (true) { c = next(c).firstOrNull() ?: break; out += c }; out })
+        val carry = catalog.variation("kettlebell-suitcase-carry")!!
+        assertEquals(setOf("kettlebell"), carry.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet()); assertTrue(carry.unilateral && carry.kind == Kind.HOLD)
     }
 }

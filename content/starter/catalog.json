@@ -2989,6 +2989,157 @@
       ]
     },
     {
+      "id": "hollow-tuck",
+      "familyId": "plank",
+      "name": "Tucked Hollow Hold",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Lie on your back and press the lower back into the floor.",
+        "Lift the shoulders a few centimetres and pull the knees over the hips, arms by the ears or sides.",
+        "Hold with the lower back flat; breathe steadily."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 18,
+      "sourceIds": [
+        "building-the-gymnastic-body-sommer",
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-hollow-tuck",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "HIP_FLEXORS"
+      ]
+    },
+    {
+      "id": "hollow-one-leg",
+      "familyId": "plank",
+      "name": "One-Leg Hollow Hold",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "From the tucked hollow hold, straighten one leg a few centimetres above the floor while the other stays tucked.",
+        "Keep the lower back pressed down; switch legs between holds.",
+        "Hold, breathing steadily."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 20,
+      "sourceIds": [
+        "building-the-gymnastic-body-sommer",
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-hollow-one-leg",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "HIP_FLEXORS",
+        "QUADS"
+      ]
+    },
+    {
+      "id": "hollow-rocks",
+      "familyId": "plank",
+      "name": "Hollow Rocks",
+      "patterns": [
+        "CORE_ANTI_EXTENSION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "supine",
+      "instructions": [
+        "Get into the hollow body hold, arms by the ears.",
+        "Rock slowly back and forth like a boat, keeping the hollow shape and the lower back pressed down.",
+        "Stop the set when the lower back starts to arch."
+      ],
+      "formCues": [
+        "Controlled tempo",
+        "Full range or clean position",
+        "Stop if form breaks"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "building-the-gymnastic-body-sommer",
+        "overcoming-gravity-2-low"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-hollow-rocks",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "HIP_FLEXORS",
+        "QUADS"
+      ]
+    },
+    {
       "id": "hollow-hold",
       "familyId": "plank",
       "name": "Hollow Body Hold",
@@ -3017,7 +3168,7 @@
       "cautions": [
         "Stop the set on sharp or joint pain; do not push through it."
       ],
-      "difficultyRank": 20,
+      "difficultyRank": 22,
       "sourceIds": [
         "building-the-gymnastic-body-sommer",
         "overcoming-gravity-2-low"
@@ -4337,9 +4488,70 @@
       ]
     },
     {
+      "id": "copenhagen-side-plank-short",
+      "familyId": "side-plank",
+      "name": "Short-Lever Copenhagen Side Plank (per side)",
+      "patterns": [
+        "CORE_ANTI_LATERAL"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "chair",
+              "suitability": [
+                "stable"
+              ]
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "floor",
+      "instructions": [
+        "Lie on your side, forearm on the floor, the top knee (not the foot) resting on a stable chair seat.",
+        "Lift the hips so the body forms a line from the head to the knee; the lower leg hangs free or tucks.",
+        "Hold, then switch sides. This short lever comes before the long one."
+      ],
+      "formCues": [
+        "Straight line",
+        "Hips high",
+        "Knee on the seat"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on groin or inner-thigh pain; build up slowly; check that the chair is stable."
+      ],
+      "difficultyRank": 35,
+      "sourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-copenhagen-side-plank-short",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "ADDUCTORS",
+        "OBLIQUES"
+      ],
+      "secondaryMuscles": [
+        "ABS",
+        "GLUTES"
+      ]
+    },
+    {
       "id": "copenhagen-side-plank",
       "familyId": "side-plank",
-      "name": "Copenhagen Side Plank (per side)",
+      "name": "Copenhagen Side Plank (long lever, per side)",
       "patterns": [
         "CORE_ANTI_LATERAL"
       ],
@@ -5529,6 +5741,127 @@
       ]
     },
     {
+      "id": "kettlebell-suitcase-carry",
+      "familyId": "carry",
+      "name": "Kettlebell Suitcase Carry (per side)",
+      "patterns": [
+        "CORE_ANTI_LATERAL"
+      ],
+      "areas": [
+        "CORE",
+        "LOWER_BODY"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "kettlebell",
+              "minMassGrams": 8000
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Hold the kettlebell in one hand at your side like a suitcase and stand tall, shoulders level.",
+        "Walk slowly in a straight line (or on the spot) without leaning toward the bell; the trunk resists being pulled sideways.",
+        "Walk for the time, then switch hands.",
+        "Weight: use a bell you can move with a flat back on every rep (most people start with 8-12 kg; swings often 12-16 kg). The app counts levels per weight: set a heavier kettlebell in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Stand tall",
+        "Shoulders level",
+        "Do not lean"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Controlled tempo only; no ballistic or swinging work."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-kettlebell-suitcase-carry",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "OBLIQUES",
+        "FOREARMS"
+      ],
+      "secondaryMuscles": [
+        "ABS",
+        "GLUTES",
+        "UPPER_BACK"
+      ]
+    },
+    {
+      "id": "pallof-hold",
+      "familyId": "pallof",
+      "name": "Pallof Hold (per side)",
+      "patterns": [
+        "CORE_ANTI_ROTATION"
+      ],
+      "areas": [
+        "CORE"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "resistance-band",
+              "suitability": [
+                "stable-anchor"
+              ]
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Anchor a resistance band at chest height beside you and stand sideways to it, hands at the chest.",
+        "Press the hands straight out in front of you and hold with the arms straight while the band tries to turn you.",
+        "Stance rule: feet wide apart is easiest, feet together is harder, a split stance is the hardest. Switch sides after the hold."
+      ],
+      "formCues": [
+        "Do not rotate",
+        "Ribs down",
+        "Breathe steadily"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 15,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pallof-hold",
+      "compatibleStretchIds": [
+        "stretch-back",
+        "stretch-hip-flexor",
+        "stretch-thoracic",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "OBLIQUES",
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "GLUTES"
+      ]
+    },
+    {
       "id": "pallof-press",
       "familyId": "pallof",
       "name": "Pallof Press (per side)",
@@ -5556,7 +5889,8 @@
       "instructions": [
         "Anchor a resistance band at chest height beside you and stand sideways to it, holding the band at the chest with both hands.",
         "Press the hands straight out in front of you and pause for a moment with the arms straight.",
-        "Do not let the band turn you; bring the hands back to the chest. Do all reps on one side, then switch."
+        "Do not let the band turn you; bring the hands back to the chest. Do all reps on one side, then switch.",
+        "Stance rule: feet wide apart is easiest, feet together is harder, one foot in front of the other (split stance) is the hardest. Change the stance before you change the band."
       ],
       "formCues": [
         "Do not rotate",
@@ -7696,8 +8030,20 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "hollow-hold"
-      ]
+        "hollow-tuck"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "dead-bug",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
     },
     {
       "id": "pol-side-plank",
@@ -7818,7 +8164,7 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "hollow-hold"
+        "plank"
       ]
     },
     {
@@ -9802,6 +10148,228 @@
       }
     },
     {
+      "id": "pol-hollow-tuck",
+      "variationId": "hollow-tuck",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 25
+          },
+          "workWindowSeconds": 28,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "building-the-gymnastic-body-sommer",
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "hollow-one-leg"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "plank",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      },
+      "tierProfile": "H30",
+      "tierNote": "Tiers 10 / 15 / 20 / 25 / 30 s: the 30 s gate is sourced (RR, owner decision); the steps between are DRAFT."
+    },
+    {
+      "id": "pol-hollow-one-leg",
+      "variationId": "hollow-one-leg",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 25
+          },
+          "workWindowSeconds": 28,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "building-the-gymnastic-body-sommer",
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "hollow-hold"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "hollow-tuck",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      },
+      "tierProfile": "H30",
+      "tierNote": "Tiers 10 / 15 / 20 / 25 / 30 s: the 30 s gate is sourced (RR, owner decision); the steps between are DRAFT."
+    },
+    {
+      "id": "pol-hollow-rocks",
+      "variationId": "hollow-rocks",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "building-the-gymnastic-body-sommer",
+        "overcoming-gravity-2-low"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "hollow-hold",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
       "id": "pol-hollow-hold",
       "variationId": "hollow-hold",
       "version": 1,
@@ -9859,21 +10427,16 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "l-sit-foot-supported"
+        "l-sit-foot-supported",
+        "hollow-rocks"
       ],
       "prerequisiteRule": {
         "allOf": [
           [
             {
               "variationTierMet": {
-                "variationId": "plank",
+                "variationId": "hollow-one-leg",
                 "tier": 4
-              }
-            },
-            {
-              "variationTierMet": {
-                "variationId": "dead-bug",
-                "tier": 5
               }
             }
           ]
@@ -11578,7 +12141,7 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "copenhagen-side-plank"
+        "copenhagen-side-plank-short"
       ],
       "prerequisiteRule": {
         "allOf": [
@@ -11586,6 +12149,79 @@
             {
               "variationTierMet": {
                 "variationId": "side-plank",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-copenhagen-side-plank-short",
+      "variationId": "copenhagen-side-plank-short",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 8,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 8
+          },
+          "workWindowSeconds": 11,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 12
+          },
+          "workWindowSeconds": 15,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 16
+          },
+          "workWindowSeconds": 19,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "overcoming-gravity-2-low",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "copenhagen-side-plank"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "side-plank-leg-raise",
                 "tier": 4
               }
             }
@@ -11655,7 +12291,7 @@
           [
             {
               "variationTierMet": {
-                "variationId": "side-plank-leg-raise",
+                "variationId": "copenhagen-side-plank-short",
                 "tier": 4
               }
             }
@@ -12720,6 +13356,126 @@
           ]
         ]
       }
+    },
+    {
+      "id": "pol-kettlebell-suitcase-carry",
+      "variationId": "kettlebell-suitcase-carry",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 40
+          },
+          "workWindowSeconds": 43,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 50
+          },
+          "workWindowSeconds": 53,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 60
+          },
+          "workWindowSeconds": 63,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false
+    },
+    {
+      "id": "pol-pallof-hold",
+      "variationId": "pallof-hold",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 25
+          },
+          "workWindowSeconds": 28,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pallof-press"
+      ],
+      "tierProfile": "H30",
+      "tierNote": "Tiers 10 / 15 / 20 / 25 / 30 s: the 30 s gate is sourced (RR, owner decision); the steps between are DRAFT."
     },
     {
       "id": "pol-pallof-press",

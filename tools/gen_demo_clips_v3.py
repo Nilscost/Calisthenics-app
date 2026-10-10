@@ -511,6 +511,43 @@ l_sit_one_leg = _lsit_pose(70, lambda h: (h[0] + 84, h[1] - 2), lambda h: (h[0] 
 
 NEW.update({"l-sit-foot-supported": (l_sit_foot_supported, "hold"), "l-sit-one-foot": (l_sit_one_foot, "hold"),
             "l-sit-advanced-tuck": (l_sit_advanced_tuck, "hold"), "l-sit-one-leg": (l_sit_one_leg, "hold")})
+
+# ----------------------------------------------------------------------------------------------- L08 poses (core planes)
+def hollow_tuck(p):
+    b = 1.5 * math.sin(2 * math.pi * p); hip = (200, 52); a = 160; sho = sh(hip, a)
+    return dict(hip=hip, a=a, arms=[("ik", (sho[0] - 62, sho[1] + 10 + b), (0, 1))] * 2, legs=[("ik", (hip[0] + 40, 76 + b), (0, 1))] * 2)
+
+def hollow_one_leg(p):
+    b = 1.5 * math.sin(2 * math.pi * p); hip = (200, 52); a = 160; sho = sh(hip, a)
+    return dict(hip=hip, a=a, arms=[("ik", (sho[0] - 62, sho[1] + 10 + b), (0, 1))] * 2, legs=[("ik", (282, 84 + b), (0, 1)), ("ik", (hip[0] + 40, 76 + b), (0, 1))])
+
+def hollow_rocks(p):
+    r = math.sin(2 * math.pi * p); hip = (200 + 6 * r, 52); a = 160 + 6 * r; sho = sh(hip, a)
+    return dict(hip=hip, a=a, arms=[("ik", (sho[0] - 62, sho[1] + 10), (0, 1))] * 2, legs=[("ik", (282 + 6 * r, 84 + 4 * r), (0, 1))] * 2)
+
+def pallof_hold(p):
+    b = 1.2 * math.sin(2 * math.pi * p); hip = (150, 124); sho = sh(hip, 90); hand = (sho[0] + 62, sho[1] - 14 + b)
+    return dict(hip=hip, a=90, arms=[("ik", hand, (0, -1))] * 2, legs=[("ik", (160, 46), (1, 0)), ("ik", (134, 46), (1, 0))],
+                props=[("line", "hand0", (30, sho[1] - 14), v1.PROP)])
+
+def copenhagen_short(p):
+    b = math.sin(2 * math.pi * p); pivot = (96, 88); sy = 108 + 1.5 * b; Lp = 112
+    phi = math.asin((sy - 88) / Lp)
+    hip = (pivot[0] + 60 * math.cos(phi), pivot[1] + 60 * math.sin(phi)); sx = pivot[0] + Lp * math.cos(phi); sho = (sx, sy)
+    return dict(hip=hip, a=math.degrees(phi), head_off=10,
+                arms=[("ik", (sx + 2, 46), (1, 0)), ("ik", (sho[0] + 4, sho[1] + 14), (1, 0))],
+                legs=[("ik", pivot, (0, 1)), ("ik", (hip[0] - 18, 50), (0, 1))], scene=[("rect", (55, 44, 125, 84), v1.GRD)])
+
+def suitcase_carry(p):
+    t = 2 * math.pi * p * 2; hip = (150, 124 + 1.2 * abs(math.sin(t)))
+    step = math.sin(t); lift = max(0.0, math.sin(t)); lift2 = max(0.0, -math.sin(t))
+    hand = (hip[0] + 8, hip[1] - 34)
+    return dict(hip=hip, a=90, arms=[("ik", hand, (0, -1))] * 2, arm_z=[Z_ARM + 6, -Z_ARM - 6],
+                legs=[("ik", (150 + 18 * step, 46 + 14 * lift), (1, 0)), ("ik", (150 - 18 * step, 46 + 14 * lift2), (1, 0))],
+                props=[("line", (hand[0] - 7, hand[1] - 5), (hand[0] + 7, hand[1] - 5), v1.PROP)])
+
+NEW.update({"hollow-tuck": (hollow_tuck, "hold"), "hollow-one-leg": (hollow_one_leg, "hold"), "hollow-rocks": (hollow_rocks, "rep"),
+            "pallof-hold": (pallof_hold, "hold"), "copenhagen-side-plank-short": (copenhagen_short, "hold"), "kettlebell-suitcase-carry": (suitcase_carry, "hold")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)

@@ -398,9 +398,18 @@ ex("bridge-back", "Full Back Bridge", "bridge", "HINGE", L, "HOLD", "supine",
    hold_tiers([5, 10, 15, 20, 30]), [S_CC, S_GB], ["stretch-hip-flexor", "stretch-back"], rank=30, prereq={"allOf": [[vt("bridge-incline", 3)]]},
    cautions=(CAUTION_STRENGTH, "Needs shoulder and spine mobility; stop on any pinching."))
 # core
+ex("hollow-tuck", "Tucked Hollow Hold", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "supine",
+   ["Lie on your back and press the lower back into the floor.", "Lift the shoulders a few centimetres and pull the knees over the hips, arms by the ears or sides.", "Hold with the lower back flat; breathe steadily."],
+   hold_tiers([10, 15, 20, 25, 30]), [S_GB, S_OG, S_RR], CORE_ST, rank=18, nxt=["hollow-one-leg"], prereq={"allOf": [[vt("plank", 4)]]}, tier_profile="H30", tier_note="Tiers 10 / 15 / 20 / 25 / 30 s: the 30 s gate is sourced (RR, owner decision); the steps between are DRAFT.")
+ex("hollow-one-leg", "One-Leg Hollow Hold", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "supine",
+   ["From the tucked hollow hold, straighten one leg a few centimetres above the floor while the other stays tucked.", "Keep the lower back pressed down; switch legs between holds.", "Hold, breathing steadily."],
+   hold_tiers([10, 15, 20, 25, 30]), [S_GB, S_OG, S_RR], CORE_ST, rank=20, nxt=["hollow-hold"], prereq={"allOf": [[vt("hollow-tuck", 4)]]}, tier_profile="H30", tier_note="Tiers 10 / 15 / 20 / 25 / 30 s: the 30 s gate is sourced (RR, owner decision); the steps between are DRAFT.")
+ex("hollow-rocks", "Hollow Rocks", "plank", "CORE_ANTI_EXTENSION", C, "REPS", "supine",
+   ["Get into the hollow body hold, arms by the ears.", "Rock slowly back and forth like a boat, keeping the hollow shape and the lower back pressed down.", "Stop the set when the lower back starts to arch."],
+   reps_tiers([6, 8, 10, 12, 15]), [S_GB, S_OG], CORE_ST, rank=25, prereq={"allOf": [[vt("hollow-hold", 4)]]})
 ex("hollow-hold", "Hollow Body Hold", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "supine",
    ["Lie on your back, press the lower back into the floor.", "Lift shoulders and straight legs a few centimetres, arms by the ears or sides.", "Hold; make it easier by bending the knees."],
-   hold_tiers([10, 15, 20, 30, 40]), [S_GB, S_OG], CORE_ST, rank=20, prereq={"allOf": [[vt("plank", 4)]]}, nxt=["l-sit-foot-supported"])
+   hold_tiers([10, 15, 20, 30, 40]), [S_GB, S_OG], CORE_ST, rank=22, prereq={"allOf": [[vt("hollow-one-leg", 4)]]}, nxt=["l-sit-foot-supported", "hollow-rocks"])
 ex("l-sit-foot-supported", "Foot-Supported L-Sit", "plank", "CORE_ANTI_EXTENSION", C, "HOLD", "seated",
    ["Sit with straight legs and the hands beside the hips, fingers forward, heels on the floor.", "Press down, lift the hips off the floor while the heels stay on it and carry some of the weight.", "Hold with straight arms and the shoulders pushed down."],
    hold_tiers([10, 15, 20, 30, 60]), [S_OG, S_GB, S_RR], CORE_ST, rank=22, nxt=["l-sit-one-foot"], prereq={"allOf": [[vt("hollow-hold", 3)]]}, tier_profile="H60", tier_note="One accumulated minute: the numbers are the length of one hold (10 / 15 / 20 / 30 / 60 s); do as many holds as you need to add up to a minute, and make them longer over the weeks. The one-minute total is sourced for the L-sit (Antranik); applying it to every step is DRAFT.",
@@ -508,11 +517,16 @@ strength("arch-rocks", "Arch Rocks", "superman", ["HINGE"], ["LOWER_BODY", "CORE
 strength("side-plank-leg-raise", "Side Plank with Leg Raise (per side)", "side-plank", ["CORE_ANTI_LATERAL"], ["CORE"], "REPS", "floor",
          ["Get into a side plank on the forearm.", "Raise the top leg a little, lower it slowly.", "Keep the hips high all the time; switch sides after the set."],
          ["Hips high", "Slow leg"],
-         reps_tiers([4, 6, 8, 10, 12]), [S_OG, S_YG], CORE_ST, unilateral=True, rank=30, nxt=["copenhagen-side-plank"], prereq={"allOf": [[vt("side-plank", 4)]]})
-strength("copenhagen-side-plank", "Copenhagen Side Plank (per side)", "side-plank", ["CORE_ANTI_LATERAL"], ["CORE"], "HOLD", "floor",
+         reps_tiers([4, 6, 8, 10, 12]), [S_OG, S_YG], CORE_ST, unilateral=True, rank=30, nxt=["copenhagen-side-plank-short"], prereq={"allOf": [[vt("side-plank", 4)]]})
+strength("copenhagen-side-plank-short", "Short-Lever Copenhagen Side Plank (per side)", "side-plank", ["CORE_ANTI_LATERAL"], ["CORE"], "HOLD", "floor",
+         ["Lie on your side, forearm on the floor, the top knee (not the foot) resting on a stable chair seat.", "Lift the hips so the body forms a line from the head to the knee; the lower leg hangs free or tucks.", "Hold, then switch sides. This short lever comes before the long one."],
+         ["Straight line", "Hips high", "Knee on the seat"],
+         hold_tiers([5, 8, 12, 16, 20]), [S_OG, S_RR], CORE_ST, eq=CHAIR_STABLE, unilateral=True, rank=35, nxt=["copenhagen-side-plank"], prereq={"allOf": [[vt("side-plank-leg-raise", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Stop on groin or inner-thigh pain; build up slowly; check that the chair is stable."))
+strength("copenhagen-side-plank", "Copenhagen Side Plank (long lever, per side)", "side-plank", ["CORE_ANTI_LATERAL"], ["CORE"], "HOLD", "floor",
          ["Lie on your side, forearm on the floor, top leg resting on a stable chair seat.", "Lift the hips so the body forms a line; the lower leg hangs free or tucks.", "Hold, then switch sides."],
          ["Straight line", "Hips high"],
-         hold_tiers([5, 8, 12, 16, 20]), [S_OG, S_GB], CORE_ST, eq=CHAIR_STABLE, unilateral=True, rank=40, prereq={"allOf": [[vt("side-plank-leg-raise", 4)]]},
+         hold_tiers([5, 8, 12, 16, 20]), [S_OG, S_GB], CORE_ST, eq=CHAIR_STABLE, unilateral=True, rank=40, prereq={"allOf": [[vt("copenhagen-side-plank-short", 4)]]},
          cautions=(CAUTION_STRENGTH, "Stop on groin or inner-thigh pain; build up slowly."))
 
 # kettlebell hinge: deadlift -> single-leg RDL -> swing (ballistic: only after the two before)
@@ -658,9 +672,18 @@ strength("slide-single-leg", "Single-Leg Slide (per side)", "slide", ["HINGE"], 
          cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))
 
 # --- core: anti-rotation (Pallof), extension (reverse hyperextension), plus the Minimalist circuit pieces
+strength("kettlebell-suitcase-carry", "Kettlebell Suitcase Carry (per side)", "carry", ["CORE_ANTI_LATERAL"], ["CORE", "LOWER_BODY"], "HOLD", "standing",
+         ["Hold the kettlebell in one hand at your side like a suitcase and stand tall, shoulders level.", "Walk slowly in a straight line (or on the spot) without leaning toward the bell; the trunk resists being pulled sideways.", "Walk for the time, then switch hands.", KB_WEIGHT],
+         ["Stand tall", "Shoulders level", "Do not lean"],
+         hold_tiers([20, 30, 40, 50, 60]), [S_NG, S_RR], CORE_ST, eq=KB, unilateral=True, rank=30,
+         cautions=(CAUTION_STRENGTH, "Controlled tempo only; no ballistic or swinging work."))
+strength("pallof-hold", "Pallof Hold (per side)", "pallof", ["CORE_ANTI_ROTATION"], ["CORE"], "HOLD", "standing",
+         ["Anchor a resistance band at chest height beside you and stand sideways to it, hands at the chest.", "Press the hands straight out in front of you and hold with the arms straight while the band tries to turn you.", "Stance rule: feet wide apart is easiest, feet together is harder, a split stance is the hardest. Switch sides after the hold."],
+         ["Do not rotate", "Ribs down", "Breathe steadily"],
+         hold_tiers([10, 15, 20, 25, 30]), RR, CORE_ST, eq=[{"needs": [need("resistance-band", suitability=["stable-anchor"])]}], unilateral=True, rank=15, nxt=["pallof-press"], tier_profile="H30", tier_note="Tiers 10 / 15 / 20 / 25 / 30 s: the 30 s gate is sourced (RR, owner decision); the steps between are DRAFT.")
 strength("pallof-press", "Pallof Press (per side)", "pallof", ["CORE_ANTI_ROTATION"], ["CORE"], "REPS", "standing",
          ["Anchor a resistance band at chest height beside you and stand sideways to it, holding the band at the chest with both hands.", "Press the hands straight out in front of you and pause for a moment with the arms straight.",
-          "Do not let the band turn you; bring the hands back to the chest. Do all reps on one side, then switch."],
+          "Do not let the band turn you; bring the hands back to the chest. Do all reps on one side, then switch.", "Stance rule: feet wide apart is easiest, feet together is harder, one foot in front of the other (split stance) is the hardest. Change the stance before you change the band."],
          ["Do not rotate", "Pause with arms straight", "Ribs down"],
          reps_tiers([6, 8, 10, 12, 15]), RR, CORE_ST, eq=[{"needs": [need("resistance-band", suitability=["stable-anchor"])]}], unilateral=True, rank=20, tier_profile="C", tier_note="Core reps 8 to 12: the range is sourced (RR); the steps and the 12-rep gate are DRAFT.")
 strength("reverse-hyperextension", "Reverse Hyperextension", "reverse-hyper", ["HINGE"], ["LOWER_BODY", "CORE"], "REPS", "prone",
@@ -783,18 +806,19 @@ strength("weighted-squat", "Weighted Squat", "vest-squat", ["SQUAT"], ["LOWER_BO
 
 # plank no longer a dead end: top of the plank ladder leads to the hollow hold
 for pol in policies:
-    if pol["variationId"] == "plank": pol["nextVariationIds"] = ["hollow-hold"]
+    if pol["variationId"] == "plank": pol["nextVariationIds"] = ["hollow-tuck"]
     if pol["variationId"] == "pullup-band-assisted": pol["nextVariationIds"] = ["pullup-full"]
     if pol["variationId"] == "pushup-standard": pol["nextVariationIds"] = ["pushup-diamond", "pushup-feet-elevated"]   # L02: siblings (Ebben 2011: a 30 cm decline is about as hard as the diamond)
     if pol["variationId"] == "split-squat": pol["nextVariationIds"] = ["split-squat-bulgarian"]
     if pol["variationId"] == "glute-bridge": pol["nextVariationIds"] = ["bridge-single-leg"]
     if pol["variationId"] == "row-band": pol["nextVariationIds"] = ["inverted-row-bent-knees"]
     if pol["variationId"] == "superman-hold": pol["nextVariationIds"] = ["arch-hold-y"]
-    if pol["variationId"] == "dead-bug": pol["nextVariationIds"] = ["hollow-hold"]
+    if pol["variationId"] == "dead-bug": pol["nextVariationIds"] = ["plank"]   # L08: the supported-spine entry comes before the plank
     if pol["variationId"] == "side-plank": pol["nextVariationIds"] = ["side-plank-leg-raise"]
     if pol["variationId"] == "kettlebell-deadlift": pol["nextVariationIds"] = ["kettlebell-single-leg-rdl"]
     # dead bug top hands over to the hollow hold (alternative to a plank-4 prerequisite)
-    if pol["variationId"] == "hollow-hold": pol["prerequisiteRule"] = {"allOf": [[vt("plank", 4), vt("dead-bug", 5)]]}
+    if pol["variationId"] == "hollow-hold": pol["prerequisiteRule"] = {"allOf": [[vt("hollow-one-leg", 4)]]}
+    if pol["variationId"] == "plank": pol["prerequisiteRule"] = {"allOf": [[vt("dead-bug", 3)]]}
 
 
 # ---------------- U09: muscles worked (F9). Drives the clip colouring, the preview chips and the tree sheet. ----------------
@@ -898,6 +922,12 @@ M = {
     "slide-hamstring": (["HAMSTRINGS", "GLUTES"], ["CALVES", "LOWER_BACK"]),
     "slide-negative-single": (["HAMSTRINGS", "GLUTES"], ["CALVES", "LOWER_BACK"]),
     "slide-single-leg": (["HAMSTRINGS", "GLUTES"], ["CALVES", "LOWER_BACK"]),
+    "hollow-tuck": (["ABS"], ["HIP_FLEXORS"]),
+    "hollow-one-leg": (["ABS"], ["HIP_FLEXORS", "QUADS"]),
+    "hollow-rocks": (["ABS"], ["HIP_FLEXORS", "QUADS"]),
+    "pallof-hold": (["OBLIQUES", "ABS"], ["FRONT_DELTS", "GLUTES"]),
+    "copenhagen-side-plank-short": (["ADDUCTORS", "OBLIQUES"], ["ABS", "GLUTES"]),
+    "kettlebell-suitcase-carry": (["OBLIQUES", "FOREARMS"], ["ABS", "GLUTES", "UPPER_BACK"]),
     "pallof-press": (["OBLIQUES", "ABS"], ["FRONT_DELTS", "GLUTES"]),
     "reverse-hyperextension": (["GLUTES", "LOWER_BACK"], ["HAMSTRINGS"]),
     "plank-shoulder-tap": (["ABS", "OBLIQUES"], ["FRONT_DELTS", "GLUTES"]),

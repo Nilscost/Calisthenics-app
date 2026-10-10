@@ -53,8 +53,9 @@ class SkillTreeTest {
     @Test fun independentChainsAreStackedNotOverlapped() {
         val l = layoutTree(catalog, TreeTabs.byId("core")!!.familyIds)
         assertTrue(l.rows >= 3)
-        // dead bug now leads into the hollow-hold chain
-        assertTrue(l.edges.any { it.from == "dead-bug" && it.to == "hollow-hold" })
+        // L08: the dead bug leads into the plank, the plank into the hollow steps
+        assertTrue(l.edges.any { it.from == "dead-bug" && it.to == "plank" })
+        assertTrue(l.edges.any { it.from == "plank" && it.to == "hollow-tuck" })
     }
 
     @Test fun nodeStatesFollowProgressPrerequisitesAndEquipment() {

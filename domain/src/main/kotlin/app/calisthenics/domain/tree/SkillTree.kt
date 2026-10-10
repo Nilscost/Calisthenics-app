@@ -21,7 +21,7 @@ object TreeTabs {
         TreeTab("row", "Row", listOf("row", "kb-row")),
         TreeTab("squat", "Squat", listOf("squat", "lunge")),
         TreeTab("hips", "Hips and back", listOf("bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide")),
-        TreeTab("core", "Core", listOf("plank", "plank-tap", "dead-bug", "side-plank", "pallof", "legraise")),
+        TreeTab("core", "Core", listOf("plank", "plank-tap", "dead-bug", "side-plank", "pallof", "carry", "legraise")),
         // V27: everything that needs dumbbells, a barbell or a weighted vest, kept apart so the other tabs stay narrow
         TreeTab("weights", "With weights", listOf("db-squat", "bb-squat", "vest-squat", "db-hinge", "bb-hinge", "db-bridge", "db-row", "vest-push", "vest-dip", "vest-pull")),
         TreeTab(STRETCHES, "Stretches", emptyList()),

@@ -149,6 +149,18 @@
   ],
   "sharedPoseWith": []
  },
+ "copenhagen-side-plank-short": {
+  "kind": "hold",
+  "primary": [
+   "ADDUCTORS",
+   "OBLIQUES"
+  ],
+  "secondary": [
+   "ABS",
+   "GLUTES"
+  ],
+  "sharedPoseWith": []
+ },
  "dead-bug": {
   "kind": "rep",
   "primary": [
@@ -340,6 +352,38 @@
   ],
   "sharedPoseWith": []
  },
+ "hollow-one-leg": {
+  "kind": "hold",
+  "primary": [
+   "ABS"
+  ],
+  "secondary": [
+   "HIP_FLEXORS",
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
+ "hollow-rocks": {
+  "kind": "rep",
+  "primary": [
+   "ABS"
+  ],
+  "secondary": [
+   "HIP_FLEXORS",
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
+ "hollow-tuck": {
+  "kind": "hold",
+  "primary": [
+   "ABS"
+  ],
+  "secondary": [
+   "HIP_FLEXORS"
+  ],
+  "sharedPoseWith": []
+ },
  "hspu-wall": {
   "kind": "rep",
   "primary": [
@@ -454,6 +498,19 @@
   "secondary": [
    "LOWER_BACK",
    "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
+ "kettlebell-suitcase-carry": {
+  "kind": "hold",
+  "primary": [
+   "OBLIQUES",
+   "FOREARMS"
+  ],
+  "secondary": [
+   "ABS",
+   "GLUTES",
+   "UPPER_BACK"
   ],
   "sharedPoseWith": []
  },
@@ -616,6 +673,18 @@
   "secondary": [
    "GLUTES",
    "CALVES"
+  ],
+  "sharedPoseWith": []
+ },
+ "pallof-hold": {
+  "kind": "hold",
+  "primary": [
+   "OBLIQUES",
+   "ABS"
+  ],
+  "secondary": [
+   "FRONT_DELTS",
+   "GLUTES"
   ],
   "sharedPoseWith": []
  },

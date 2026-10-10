@@ -112,21 +112,27 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
-| Front Plank | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | - | Hollow Body Hold |
-| Hollow Body Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | Front Plank L4 or Dead Bug L5 | Foot-Supported L-Sit |
+| Front Plank | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | Dead Bug L3 | Tucked Hollow Hold |
+| Tucked Hollow Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | Front Plank L4 | One-Leg Hollow Hold |
+| One-Leg Hollow Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | Tucked Hollow Hold L4 | Hollow Body Hold |
+| Hollow Body Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | One-Leg Hollow Hold L4 | Foot-Supported L-Sit, Hollow Rocks |
 | Foot-Supported L-Sit | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | Hollow Body Hold L3 | One-Foot L-Sit |
 | One-Foot L-Sit | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | Foot-Supported L-Sit L4 | Tuck L-Sit |
+| Hollow Rocks | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Hollow Body Hold L4 | — (top) |
 | Tuck L-Sit | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | One-Foot L-Sit L4 | Advanced Tuck L-Sit |
 | Advanced Tuck L-Sit | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | Tuck L-Sit L4 | One-Leg Extended L-Sit |
 | One-Leg Extended L-Sit | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | Advanced Tuck L-Sit L4 | L-Sit (floor) |
 | L-Sit (floor) | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | One-Leg Extended L-Sit L4 | V-Sit (floor) |
 | V-Sit (floor) | none | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 15s / 18 / 60 | L-Sit (floor) L4 | — (top) |
 | Plank Shoulder Taps | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 16 / 110 / 60 | Front Plank L2 | — (top) |
-| Dead Bug | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 14 / 100 / 60 | - | Hollow Body Hold |
+| Dead Bug | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 14 / 100 / 60 | - | Front Plank |
 | Side Plank (per side) | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | - | Side Plank with Leg Raise (per side) |
-| Side Plank with Leg Raise (per side) | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Side Plank (per side) L4 | Copenhagen Side Plank (per side) |
-| Copenhagen Side Plank (per side) | chair* | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 16s / 19 / 60 | 20s / 23 / 60 | Side Plank with Leg Raise (per side) L4 | — (top) |
+| Side Plank with Leg Raise (per side) | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Side Plank (per side) L4 | Short-Lever Copenhagen Side Plank (per side) |
+| Short-Lever Copenhagen Side Plank (per side) | chair* | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 16s / 19 / 60 | 20s / 23 / 60 | Side Plank with Leg Raise (per side) L4 | Copenhagen Side Plank (long lever, per side) |
+| Copenhagen Side Plank (long lever, per side) | chair* | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 16s / 19 / 60 | 20s / 23 / 60 | Short-Lever Copenhagen Side Plank (per side) L4 | — (top) |
+| Pallof Hold (per side) | resistance-band* | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Pallof Press (per side) |
 | Pallof Press (per side) | resistance-band* | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 80 / 60 | 12 / 85 / 60 | - | — (top) |
+| Kettlebell Suitcase Carry (per side) | kettlebell | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | 60s / 63 / 60 | - | — (top) |
 | Lying Leg Raise | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | V-Up |
 | V-Up | none | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Lying Leg Raise L3 | — (top) |
 
@@ -148,4 +154,5 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 ## Automatic checks
 
-- No warnings.
+- ⚠️ Short-Lever Copenhagen Side Plank (per side): looks like a bar exercise but equipment is "chair*"
+- ⚠️ Copenhagen Side Plank (long lever, per side): looks like a bar exercise but equipment is "chair*"

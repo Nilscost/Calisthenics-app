@@ -117,3 +117,12 @@ Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).
 | `l-sit-foot-supported`, `l-sit-one-foot` | weak | seated with the hips just off the floor; the heels on the floor and the one lifted leg are small differences from the side view |
 | `l-sit-tuck`, `l-sit-advanced-tuck` | acceptable | the knees move from the chest to level thighs |
 | `l-sit-one-leg` | acceptable | one leg straight, one tucked |
+
+## L08 additions (`frames-20-core-planes.png`)
+| Id | Verdict | Note |
+|---|---|---|
+| `hollow-tuck`, `hollow-one-leg` | acceptable | supine, shoulders lifted, knees over the hips; one leg extended in the second |
+| `hollow-rocks` | weak | the rocking is a small sway of the whole body; reads as a hollow hold with movement |
+| `pallof-hold` | acceptable | the band line to the anchor, arms pressed out, held |
+| `copenhagen-side-plank-short` | acceptable | like the long lever with the knee on the chair; the figure is large in the frame |
+| `kettlebell-suitcase-carry` | weak | walking in place with a bell at the side; the bell is a short line near the knee |
