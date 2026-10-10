@@ -37,9 +37,10 @@ object ProgressLoader {
                     val hold = plan.blocks.any { it.variationId == vid && it.target?.type == app.calisthenics.domain.model.TargetType.HOLD_SECONDS }
                     val perSet = effectiveRounds(plan, vid, achieved, fbRows).groupBy { it.round }.toSortedMap().values
                         .map { sides -> if (sides.any { it.value == null }) null else sides.mapNotNull { it.value }.min() }
-                    val values = resolveSetValues(perSet, lastNumbers[vid], ruleBottom(plan.rule, hold))
+                    val (bottom, top) = plannedRange(plan, vid, hold)
+                    val values = resolveSetValues(perSet, lastNumbers[vid], bottom)
                     if (values.isNotEmpty()) lastNumbers[vid] = values
-                    ruleMet(plan.rule, hold, values)
+                    ruleMet(plan.rule, hold, values, top)
                 }
             }
             val day = Instant.ofEpochMilli(s.startedAtEpochMs).atZone(zone).toLocalDate().toEpochDay().toInt()

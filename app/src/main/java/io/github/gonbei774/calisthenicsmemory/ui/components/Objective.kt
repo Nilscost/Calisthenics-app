@@ -54,7 +54,7 @@ fun ObjectivePicker(goalId: String, onPick: (String) -> Unit, modifier: Modifier
         ExposedDropdownMenuBox(expanded = open, onExpandedChange = { open = it }) {
             OutlinedTextField(
                 value = if (type == ObjectiveType.ROUTINE) saved?.name ?: "" else goal.name, onValueChange = {}, readOnly = true, singleLine = true,
-                supportingText = { Text(if (type == ObjectiveType.ROUTINE) saved?.let { stringResource(R.string.routine_summary, it.routine.slots.size, stringResource(formatName(it.format))) }.orEmpty() else goal.description, maxLines = 1) },
+                supportingText = { Text(if (type == ObjectiveType.ROUTINE) saved?.let { stringResource(if (it.credit != null) R.string.routine_summary_ready else R.string.routine_summary, it.routine.slots.size, stringResource(formatName(it.format))) }.orEmpty() else goal.description, maxLines = 1) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(open) },
                 modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth().semantics { contentDescription = fieldDescription }.testTag("goal_field"),
             )

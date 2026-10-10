@@ -198,7 +198,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     val haptic = LocalHapticFeedback.current
     val data by rememberTrainData()
     val stored = remember { TrainSettingsStore.load(ctx) }
-    val resolved = remember(data) { resolveTrain(ctx, data.routine, stored) }   // V18: the usual plan, or the saved routine chosen on Train
+    val resolved = remember(data) { resolveTrain(ctx, data.routine, stored, data.catalog) }   // V18: the usual plan, or the saved routine chosen on Train
     val settings = resolved.settings
     val profile = remember { ProfileStore.selected(ctx) }
     var routine by remember(data) { mutableStateOf(resolved.routine) }

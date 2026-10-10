@@ -67,6 +67,7 @@ private sealed interface Page {
 /** Everything the questionnaire collects. Plain state so the pages stay stateless. */
 private class Form(val catalog: Catalog, start: EquipmentProfile, goal: String) {
     var goalId by mutableStateOf(goal)
+    var routineId by mutableStateOf<String?>(null)   // V22: a ready-made routine as the objective
     var profileName by mutableStateOf(start.name)
     var picked by mutableStateOf(selectionOf(start).map { it.id })
     var weights by mutableStateOf(selectionOf(start).filter { it.massGrams != null }.associate { it.id to it.massGrams!! })
@@ -114,7 +115,7 @@ fun OnboardingScreen(modifier: Modifier = Modifier, onBack: (() -> Unit)?, onDon
         val lv = form.levels(pages)
         val pullLevel = lv.firstOrNull { l -> catalog.variation(l.variationId)?.familyId.let { it == "pullup" || it == "row" } }
         OnboardingSave.save(ctx, catalog, OnboardingResult(form.goalId, form.profile(ProfileStore.load(ctx).firstOrNull { it.id == "home" }?.id ?: "home"), lv, pullLevel,
-            form.timed, form.effectiveRounds(), form.stretch))
+            form.timed, form.effectiveRounds(), form.stretch, form.routineId))
         onDone()
     }
 
@@ -176,7 +177,10 @@ private fun StepHeader(page: Page, modifier: Modifier) {
 
 @Composable private fun GoalPage(form: Form) {
     Title(stringResource(R.string.onb_goal_title), stringResource(R.string.onb_goal_text))
-    io.github.gonbei774.calisthenicsmemory.ui.components.ObjectivePicker(form.goalId, { form.goalId = it })
+    val ctx = LocalContext.current
+    val ready = remember(form.catalog) { app.calisthenics.domain.routine.Presets.all(form.catalog, ProfileStore.selected(ctx)) }
+    io.github.gonbei774.calisthenicsmemory.ui.components.ObjectivePicker(form.goalId, { form.goalId = it; form.routineId = null },
+        routines = ready, routineId = form.routineId, onPickRoutine = { form.routineId = it })
 }
 
 @Composable private fun EquipmentPage(form: Form) {

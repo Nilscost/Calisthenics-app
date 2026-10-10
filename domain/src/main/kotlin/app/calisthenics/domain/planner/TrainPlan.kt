@@ -25,6 +25,8 @@ data class TrainSettings(
     val format: WorkoutFormat = WorkoutFormat.CIRCUIT,
     /** V18: a saved routine is chosen as the objective (null = a body part or a skill). */
     val routineId: String? = null,
+    /** V22/V23: the warm-up block before the workout (the routine's own warm-up, else the catalog's). */
+    val warmupOn: Boolean = false,
 ) {
     fun effectiveFocus(): Set<StrengthFocus> = focus ?: Goals.focusFor(goalId)
 }
@@ -64,7 +66,7 @@ fun buildTrainPlan(
     edits: PlanEdits = PlanEdits(),
 ): PlanResult {
     val routine = applyEdits(trainRoutine(catalog, baseRoutine, progress, s.goalId), edits)
-    val draft = SessionDraft.from(prefs.copy(stretchOn = s.stretchOn, selectedProfileId = profile.id), routine)
+    val draft = SessionDraft.from(prefs.copy(stretchOn = s.stretchOn, selectedProfileId = profile.id, warmupOn = s.warmupOn), routine)
         .copy(focus = s.effectiveFocus(), swaps = swaps + edits.swaps, rounds = (if ((edits.rule ?: routine.rule).isRange) (edits.rule ?: routine.rule).sets else s.rounds).coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed, format = s.format,
             tierOverrides = edits.tierOverrides, stretchPicks = edits.stretchPicks, extraStretches = edits.extraStretches,
             roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, rule = edits.rule ?: routine.rule)

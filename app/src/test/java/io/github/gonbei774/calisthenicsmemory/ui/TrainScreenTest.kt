@@ -68,11 +68,11 @@ class TrainScreenTest {
         rule.onNodeWithTag("between_stretch").assertIsNotSelected()
     }
 
-    @Test fun objectiveHasBodyPartAndSkillButRoutineIsHiddenUntilPresetsExist() {
+    @Test fun objectiveHasBodyPartSkillAndRoutine() {
         show()
         rule.onNodeWithTag("objective_type_BODY_PART").assertIsSelected()
         rule.onNodeWithTag("objective_type_SKILL").assertIsDisplayed()
-        rule.onNodeWithTag("objective_type_ROUTINE").assertDoesNotExist()
+        rule.onNodeWithTag("objective_type_ROUTINE").assertIsDisplayed()   // V22: the ready-made routines are always there
     }
 
     @Test fun pickingTheSkillTypeChoosesASkillAndTheDropdownListsOnlySkills() {
@@ -141,15 +141,27 @@ class TrainScreenTest {
         io.github.gonbei774.calisthenicsmemory.ui.screens.SavedRoutineStore.upsert(ctx, r); return r
     }
 
-    @Test fun routineAppearsAsAnObjectiveTypeOnlyOnceSomethingIsSaved() {
-        show(); rule.waitForIdle()
-        rule.onNodeWithTag("objective_type_ROUTINE").assertDoesNotExist()
+    @Test fun readyMadeRoutinesAreListedFirstAndLoadTheirStructure() {   // V22
+        saveRoutine(); show(); rule.waitForIdle()
+        rule.onNodeWithTag("objective_type_ROUTINE").performClick(); rule.waitForIdle()
+        // the first ready-made routine is chosen: the Recommended Routine = pairs, plain rest, 9 exercises, 3 sets
+        rule.onNodeWithTag("goal_field").assertTextContains("Recommended Routine")
+        rule.onNodeWithTag("format_PAIRS").assertIsSelected(); rule.onNodeWithTag("between_rest").assertIsSelected()
+        rule.onNodeWithTag("exercise_count").assertTextEquals("9")
+        assertEquals("preset-rr", ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getString("routine", null))
+        rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("routine_preset-minimalist").assertIsDisplayed()
+        rule.onNodeWithTag("routine_rt-1").assertIsDisplayed()          // the person's own routines follow the ready-made ones
+        rule.onNodeWithTag("routine_preset-minimalist").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("format_CIRCUIT").assertIsSelected(); rule.onNodeWithTag("exercise_count").assertTextEquals("4")
     }
 
     @Test fun choosingASavedRoutineLoadsItsFormatRestAndSetsAndItsExercises() {
         saveRoutine(); show(); rule.waitForIdle()
         rule.onNodeWithTag("objective_type_ROUTINE").assertIsDisplayed().performClick(); rule.waitForIdle()
         rule.onNodeWithTag("objective_type_ROUTINE").assertIsSelected()
+        rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("routine_rt-1").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("goal_field").assertTextContains("Push day")
         rule.onNodeWithTag("format_PAIRS").assertIsSelected()
         rule.onNodeWithTag("between_rest").assertIsSelected()
@@ -170,5 +182,15 @@ class TrainScreenTest {
         rule.onNodeWithTag("exercise_core2").assertDoesNotExist()
         rule.onNodeWithTag("save_routine_button").assertIsDisplayed().assertIsEnabled()
         rule.onNodeWithTag("start_button").assertIsDisplayed()
+    }
+
+    @Test fun warmUpSwitchIsOffByDefaultPersistsAndAddsTime() {   // V23
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("warmup_switch").assertIsDisplayed().assertIsOff()
+        val before = minutes()
+        rule.onNodeWithTag("warmup_switch").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("warmup_switch").assertIsOn()
+        assertTrue(minutes() >= before)   // counted in the time
+        assertTrue(ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getBoolean("warmup", false))
     }
 }

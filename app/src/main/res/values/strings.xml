@@ -84,7 +84,10 @@
     <string name="routine_update">Update this routine</string>
     <string name="routine_saved">Saved as “%1$s”. Find it under Objective -> Routine on Train.</string>
     <string name="routine_updated">“%1$s” updated.</string>
+    <string name="train_warmup">Warm-up first</string>
+    <string name="train_warmup_hint">A few mobility moves before the workout; counted in the time.</string>
     <string name="routine_summary">%1$d exercises · %2$s</string>
+    <string name="routine_summary_ready">Ready-made · %1$d exercises · %2$s</string>
     <string name="train_equipment_caption">Equipment</string>
     <string name="train_new_profile">New profile</string>
     <string name="train_sets_caption">Sets</string>

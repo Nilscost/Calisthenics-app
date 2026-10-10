@@ -252,6 +252,13 @@ data class RoutineSlot(
     val preferredVariationId: String,
     /** Optional slots may be dropped to fit a short session; mandatory ones may not. */
     val optional: Boolean = false,
+    /** V22: an explicit group for the Pairs format (a pair, or a triplet like the RR core); slots without one pair up in order. */
+    val group: Int? = null,
+    /** V22: this slot's own rep range under a Rep range rule (the RR core triplet is 8-12 while the pairs are 5-8). */
+    val repFrom: Int? = null,
+    val repTo: Int? = null,
+    /** V22: this slot's rest after a set in seconds (RR pairs 90, core 60, Minimalist 0 = none); null = the exercise's own recovery. */
+    val restSeconds: Int? = null,
 )
 
 @Serializable
@@ -264,6 +271,8 @@ data class Routine(
     val goalId: String? = null,
     /** V21: the progression rule is a property of the routine (O2). Appended last; older routines use App levels. */
     val rule: ProgressionRule = ProgressionRule(),
+    /** V22: this routine's own warm-up (mobility ids, in order); empty = the catalog's warm-up template. Used when the warm-up switch is on. */
+    val warmup: List<String> = emptyList(),
 )
 
 /** Remembered preferences (spec §3, ADR 0002 §A). */

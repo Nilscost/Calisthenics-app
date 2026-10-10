@@ -73,8 +73,8 @@ fun TrainScreen(
     var settings by remember { mutableStateOf(TrainSettingsStore.load(ctx)) }
     fun change(s: TrainSettings) { settings = s; TrainSettingsStore.save(ctx, s) }
     val profile = profiles.firstOrNull { it.id == settings.profileId } ?: profiles.first()
-    val saved = remember(settings.routineId) { SavedRoutineStore.load(ctx) }
-    val resolved = remember(settings, data, saved) { resolveTrain(ctx, data.routine, settings) }
+    val saved = remember(settings.routineId, settings.profileId) { routinesFor(ctx, data.catalog) }
+    val resolved = remember(settings, data, saved) { resolveTrain(ctx, data.routine, settings, data.catalog) }
     val result = remember(resolved, data, profile) { buildTrainPlan(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = resolved.edits) }
     val plan = (result as? PlanResult.Ready)?.plan
     val minutes = plan?.plannedDurationSeconds?.let { (it + 30) / 60 }
@@ -159,6 +159,16 @@ fun TrainScreen(
                         }
                     }
                 }
+            }
+
+            val warmupLabel = stringResource(R.string.train_warmup)
+            // V23: a warm-up before any workout (the routine's own list when it has one, else the catalog's)
+            Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(stringResource(R.string.train_warmup), style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(R.string.train_warmup_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Switch(checked = settings.warmupOn, onCheckedChange = { change(settings.copy(warmupOn = it)) }, modifier = Modifier.semantics { contentDescription = warmupLabel }.testTag("warmup_switch"))
             }
 
             Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {

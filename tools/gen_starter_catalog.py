@@ -584,7 +584,7 @@ strength("slide-single-leg", "Single-Leg Slide (per side)", "slide", ["HINGE"], 
          cautions=(CAUTION_STRENGTH, "Hamstring strain risk: build up slowly; stop on a pulling pain behind the thigh."))
 
 # --- core: anti-rotation (Pallof), extension (reverse hyperextension), plus the Minimalist circuit pieces
-strength("pallof-press", "Pallof Press (per side)", "pallof", ["CORE_ANTI_EXTENSION"], ["CORE"], "REPS", "standing",
+strength("pallof-press", "Pallof Press (per side)", "pallof", ["CORE_ANTI_ROTATION"], ["CORE"], "REPS", "standing",
          ["Anchor a resistance band at chest height beside you and stand sideways to it, holding the band at the chest with both hands.", "Press the hands straight out in front of you and pause for a moment with the arms straight.",
           "Do not let the band turn you; bring the hands back to the chest. Do all reps on one side, then switch."],
          ["Do not rotate", "Pause with arms straight", "Ribs down"],
@@ -727,7 +727,7 @@ onboarding_families = [
 
 catalog = {"catalogVersion": 1, "variations": variations, "policies": policies,
            "skillNodes": nodes, "skillEdges": edges,
-           "warmupTemplate": ["stretch-ankle-mobility"], "cooldownTemplate": ["stretch-back", "stretch-hamstring"],
+           "warmupTemplate": ["warmup-shoulder-band", "warmup-squat-sky-reach", "warmup-wrist-prep", "warmup-dead-bug"], "cooldownTemplate": ["stretch-back", "stretch-hamstring"],
            "onboardingFamilies": onboarding_families}
 
 OUT.write_text(json.dumps(catalog, indent=2, ensure_ascii=False) + "\n")

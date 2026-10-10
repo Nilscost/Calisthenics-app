@@ -18,6 +18,8 @@ data class OnboardingResult(
     val timed: Boolean,
     val rounds: Int,
     val stretchOn: Boolean,
+    /** V22: a ready-made routine chosen as the objective (the questionnaire's levels still say where each exercise starts). */
+    val routineId: String? = null,
 )
 
 object OnboardingSave {
@@ -26,7 +28,9 @@ object OnboardingSave {
         ProfileStore.upsert(ctx, r.profile)
         ProfileStore.select(ctx, r.profile.id)
         RoutineStore.save(ctx, routineFromAnswers(catalog, RoutineStore.load(ctx), r.pull))
-        TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(goalId = r.goalId, profileId = r.profile.id, rounds = r.rounds, timed = r.timed, stretchOn = r.stretchOn))
+        val base = TrainSettingsStore.load(ctx).copy(goalId = r.goalId, profileId = r.profile.id, rounds = r.rounds, timed = r.timed, stretchOn = r.stretchOn, routineId = null)
+        val preset = app.calisthenics.domain.routine.Presets.byId(r.routineId, catalog, r.profile)
+        TrainSettingsStore.save(ctx, if (preset != null) app.calisthenics.domain.routine.settingsFor(preset, base) else base)
         OnboardingStore.setDone(ctx)
     }
 }

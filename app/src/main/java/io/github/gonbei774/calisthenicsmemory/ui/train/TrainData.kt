@@ -44,6 +44,7 @@ object TrainSettingsStore {
             format = runCatching { app.calisthenics.domain.model.WorkoutFormat.valueOf(p(ctx).getString("format", "CIRCUIT")!!) }.getOrDefault(app.calisthenics.domain.model.WorkoutFormat.CIRCUIT),
             timed = ModeStore.timed(ctx),
             stretchOn = prefs.stretchOn,
+            warmupOn = p(ctx).getBoolean("warmup", false),
         )
     }
 
@@ -52,7 +53,7 @@ object TrainSettingsStore {
         ProfileStore.select(ctx, s.profileId)
         ModeStore.setTimed(ctx, s.timed)
         PrefsStore.save(ctx, PrefsStore.load(ctx).copy(stretchOn = s.stretchOn))
-        p(ctx).edit().putInt("rounds", s.rounds).putString("format", s.format.name).putString("routine", s.routineId).apply()
+        p(ctx).edit().putInt("rounds", s.rounds).putString("format", s.format.name).putString("routine", s.routineId).putBoolean("warmup", s.warmupOn).apply()
     }
 }
 
@@ -63,8 +64,12 @@ fun startPlan(ctx: Context, plan: app.calisthenics.domain.model.WorkoutPlan) {
     io.github.gonbei774.calisthenicsmemory.ui.session.startWorkout(ctx, json, java.util.UUID.randomUUID().toString(), PrefsStore.load(ctx).audioEnabled)
 }
 
+/** V22: the ready-made routines (built for the selected equipment profile) followed by the person's saved ones. */
+fun routinesFor(ctx: Context, catalog: Catalog): List<app.calisthenics.domain.routine.SavedRoutine> =
+    app.calisthenics.domain.routine.Presets.all(catalog, ProfileStore.selected(ctx)) + SavedRoutineStore.load(ctx)
+
 /** V18: the routine, settings and edits the plan is built from: the usual plan, or the saved routine chosen as the objective. */
-fun resolveTrain(ctx: Context, base: Routine, s: TrainSettings): app.calisthenics.domain.routine.ResolvedRoutine {
-    val saved = SavedRoutineStore.get(ctx, s.routineId) ?: return app.calisthenics.domain.routine.ResolvedRoutine(base, s.copy(routineId = null), app.calisthenics.domain.planner.PlanEdits())
+fun resolveTrain(ctx: Context, base: Routine, s: TrainSettings, catalog: Catalog): app.calisthenics.domain.routine.ResolvedRoutine {
+    val saved = routinesFor(ctx, catalog).firstOrNull { it.id == s.routineId } ?: return app.calisthenics.domain.routine.ResolvedRoutine(base, s.copy(routineId = null), app.calisthenics.domain.planner.PlanEdits())
     return app.calisthenics.domain.routine.resolveSaved(saved, s)
 }

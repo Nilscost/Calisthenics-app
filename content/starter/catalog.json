@@ -4783,7 +4783,7 @@
       "familyId": "pallof",
       "name": "Pallof Press (per side)",
       "patterns": [
-        "CORE_ANTI_EXTENSION"
+        "CORE_ANTI_ROTATION"
       ],
       "areas": [
         "CORE"
@@ -10047,7 +10047,10 @@
     }
   ],
   "warmupTemplate": [
-    "stretch-ankle-mobility"
+    "warmup-shoulder-band",
+    "warmup-squat-sky-reach",
+    "warmup-wrist-prep",
+    "warmup-dead-bug"
   ],
   "cooldownTemplate": [
     "stretch-back",

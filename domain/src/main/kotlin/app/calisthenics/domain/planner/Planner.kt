@@ -84,9 +84,10 @@ private class Planner(val input: PlanInput) {
         if (draft.goalId != null) warn += "A skill goal is selected, but goal-slot planning is not implemented yet — the plan ignores it."
 
         // 6–7. templates
-        val warm = if (draft.warmupOn) template(cat.warmupTemplate, BlockType.WARMUP, "warmup") else emptyList()
+        val warmIds = input.routine.warmup.ifEmpty { cat.warmupTemplate }
+        val warm = if (draft.warmupOn) template(warmIds, BlockType.WARMUP, "warmup") else emptyList()
         val cool = if (draft.cooldownOn) template(cat.cooldownTemplate, BlockType.COOLDOWN, "cooldown") else emptyList()
-        if (draft.warmupOn && cat.warmupTemplate.isEmpty()) return fail("no-warmup-template", "Warm-up is on but no reviewed warm-up template exists.",
+        if (draft.warmupOn && warmIds.isEmpty()) return fail("no-warmup-template", "Warm-up is on but no reviewed warm-up template exists.",
             listOf(PlanOption("warmup-off", "Turn warm-up off.")))
         if (draft.cooldownOn && cat.cooldownTemplate.isEmpty()) return fail("no-cooldown-template", "Cooldown is on but no reviewed cooldown template exists.",
             listOf(PlanOption("cooldown-off", "Turn cooldown off.")))
@@ -258,11 +259,19 @@ private class Planner(val input: PlanInput) {
     }
 
     /** One entry per (set, exercise, group) in the order of the chosen format (V19). */
-    private fun sequenceOf(n: Int, sets: Int): List<Triple<Int, Int, Int?>> = when (draft.format) {
+    private fun sequenceOf(n: Int, sets: Int, groups: List<Int?> = emptyList()): List<Triple<Int, Int, Int?>> = when (draft.format) {
         WorkoutFormat.CIRCUIT -> (1..sets).flatMap { r -> (0 until n).map { Triple(r, it, null) } }
         WorkoutFormat.STRAIGHT -> (0 until n).flatMap { i -> (1..sets).map { r -> Triple(r, i, i + 1) } }
+        // V22: slots with an explicit group (RR: three pairs and a core triplet) alternate inside their group; a slot without one stands alone
+        WorkoutFormat.PAIRS -> if (groups.any { it != null }) {
+            val keys = (0 until n).map { groups.getOrNull(it) ?: (1000 + it) }.distinct()
+            keys.flatMapIndexed { gi, key ->
+                val members = (0 until n).filter { (groups.getOrNull(it) ?: (1000 + it)) == key }
+                (1..sets).flatMap { r -> members.map { Triple(r, it, gi + 1) } }
+            }
+        } else
         // two exercises alternate for all their sets, then the next pair; an odd last exercise is a straight exercise on its own
-        WorkoutFormat.PAIRS -> (0 until n step 2).flatMap { a ->
+        (0 until n step 2).flatMap { a ->
             val pair = if (a + 1 < n) listOf(a, a + 1) else listOf(a)
             (1..sets).flatMap { r -> pair.map { Triple(r, it, a / 2 + 1) } }
         }
@@ -270,7 +279,7 @@ private class Planner(val input: PlanInput) {
 
     private fun rounds(sl: List<Chosen>, rounds: Int): List<TimelineBlock> {
         val out = mutableListOf<TimelineBlock>()
-        val order = sequenceOf(sl.size, rounds)
+        val order = sequenceOf(sl.size, rounds, sl.map { it.slot.group })
         for ((pos, item) in order.withIndex()) {
             val (r, si, group) = item
             val c = sl[si]
@@ -287,7 +296,7 @@ private class Planner(val input: PlanInput) {
                 workTotal += secs
                 val free = draft.freeTargets["$r:${c.slot.id}"] ?: draft.freeTargets[c.slot.id]
                 val rng = draft.rule
-                val ruleTarget = if (rng.isRange) (if (isHold) Target(t.target.type, rng.holdFrom, rng.holdTo) else Target(t.target.type, rng.from, rng.to)) else null
+                val ruleTarget = if (rng.isRange) (if (isHold) Target(t.target.type, rng.holdFrom, rng.holdTo) else Target(t.target.type, c.slot.repFrom ?: rng.from, maxOf(c.slot.repTo ?: rng.to, c.slot.repFrom ?: rng.from))) else null
                 val target = if (free != null) Target(t.target.type, free.coerceIn(1, 999)) else ruleTarget ?: t.target
                 val dur = if ((free != null || ruleTarget != null) && isHold) maxOf(secs, (target.max ?: target.value) + 3) else secs
                 out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, t.index,
@@ -302,9 +311,10 @@ private class Planner(val input: PlanInput) {
                     else out += TimelineBlock("r$r-${c.slot.id}-x$i", BlockType.STRETCH, secs, r, c.slot.id, x.id, Side.BOTH, recoveryForBlockIds = workIds, mediaId = x.mediaId, groupIndex = group)
                 }
             }
-            if (isLast || t.minRecoverySeconds <= 0) { extras(); continue }
+            val restSecs = c.slot.restSeconds ?: t.minRecoverySeconds   // V22: a routine can set its own rest (0 = none)
+            if (isLast || restSecs <= 0) { extras(); continue }
             // Timed mode keeps one 60 s cycle per exercise: the time a short hold does not use goes to the recovery (the stretch when stretch is on).
-            val window = if (draft.timed) TIMED_REST_SECONDS + (TIMED_WORK_SECONDS - workTotal).coerceAtLeast(0) else t.minRecoverySeconds
+            val window = if (draft.timed) TIMED_REST_SECONDS + (TIMED_WORK_SECONDS - workTotal).coerceAtLeast(0) else restSecs
             if (!draft.stretchOn) {
                 out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.PASSIVE_RECOVERY, window, r, c.slot.id, recoveryForBlockIds = workIds, groupIndex = group)
             } else {

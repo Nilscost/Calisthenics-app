@@ -69,3 +69,6 @@ Before adding code/data/media: add an entry with upstream URL, revision, author,
 
 ## Material Symbols (icon paths)
 `ui/theme/AppIcons.kt` contains vector paths copied from Google's Material Symbols/Icons (Apache License 2.0). Further icons are added there as screens need them.
+
+## Ready-made routines and exercise structure (V21b, V22)
+The "Recommended Routine" and "Minimalist Routine" and several exercise progressions (dips, hamstring paths, core triplet, warm-up items) follow the **structure and numbers** of the r/bodyweightfitness wiki (Recommended Routine, Minimalist Routine and the progression pages, read live on 2026-10-09; the Minimalist Routine derives from u/m092's Concept Wednesday post). The wiki states no licence, so no text, images or tables are copied: the instructions, names of our items and every clip are our own work, and the numbers are DRAFT product heuristics. Credit is shown in the app under each ready-made routine.
