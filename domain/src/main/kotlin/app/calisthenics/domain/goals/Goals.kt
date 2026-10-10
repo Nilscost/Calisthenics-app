@@ -54,10 +54,23 @@ object Goals {
     private fun met(vt: VariationTier, p: ProgressSnapshot) =
         p.variations[vt.variationId]?.let { vt.tier in it.achievedTiers || it.tier > vt.tier } ?: false
 
+    /** L02: someone who has started a harder exercise that follows [id] has moved past it, so a step inserted below their level (the wall push-up) never locks them out. */
+    private fun movedPast(c: Catalog, id: String, p: ProgressSnapshot): Boolean {
+        val seen = mutableSetOf(id); val queue = ArrayDeque(listOf(id))
+        while (queue.isNotEmpty()) {
+            for (n in c.policyForVariation(queue.removeFirst())?.nextVariationIds.orEmpty()) {
+                if (!seen.add(n)) continue
+                if (p.variations.containsKey(n)) return true
+                queue += n
+            }
+        }
+        return false
+    }
+
     fun unmet(c: Catalog, v: String, p: ProgressSnapshot): List<VariationTier> =
         (c.policyForVariation(v)?.prerequisiteRule?.allOf ?: emptyList()).mapNotNull { group ->
             val preds = group.mapNotNull { it.variationTierMet }
-            if (preds.isEmpty() || preds.any { met(it, p) }) null else preds.first()
+            if (preds.isEmpty() || preds.any { met(it, p) || movedPast(c, it.variationId, p) }) null else preds.first()
         }
 
     private fun mastered(v: String, p: ProgressSnapshot) = 5 in (p.variations[v]?.achievedTiers ?: emptySet())

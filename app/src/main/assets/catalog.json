@@ -1469,6 +1469,119 @@
       ]
     },
     {
+      "id": "pushup-wall",
+      "familyId": "pushup",
+      "name": "Wall Push-Up",
+      "patterns": [
+        "PUSH_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY",
+        "CORE"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "capabilities": [
+            "wall"
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Stand an arm's length from a wall, hands on it at shoulder height a little wider than the shoulders.",
+        "Bend the elbows and bring the chest toward the wall, body in one straight line.",
+        "Press back to straight arms."
+      ],
+      "formCues": [
+        "Straight body",
+        "Elbows about 45 degrees",
+        "Feet do not slide"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it."
+      ],
+      "difficultyRank": 5,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "you-are-your-own-gym-lauren",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pushup-wall",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS"
+      ]
+    },
+    {
+      "id": "pushup-incline-high",
+      "familyId": "pushup",
+      "name": "High Incline Push-Up (table or counter)",
+      "patterns": [
+        "PUSH_HORIZONTAL"
+      ],
+      "areas": [
+        "UPPER_BODY",
+        "CORE"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Put your hands on a sturdy table or kitchen counter (about 60 cm high), feet back, body in one straight line.",
+        "Lower the chest to the edge, elbows about 45 degrees, then press back up.",
+        "The lower the support, the harder it gets: this is the step between the wall and the low incline."
+      ],
+      "formCues": [
+        "Straight body",
+        "Support cannot slide or tip"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Use a sturdy table or counter that cannot slide or tip."
+      ],
+      "difficultyRank": 8,
+      "sourceIds": [
+        "convict-conditioning-wade",
+        "you-are-your-own-gym-lauren",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-pushup-incline-high",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "CHEST",
+        "TRICEPS"
+      ],
+      "secondaryMuscles": [
+        "FRONT_DELTS",
+        "ABS"
+      ]
+    },
+    {
       "id": "pushup-feet-elevated",
       "familyId": "pushup",
       "name": "Feet-Elevated Push-Up",
@@ -6009,7 +6122,19 @@
       "approved": false,
       "nextVariationIds": [
         "pushup-standard"
-      ]
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pushup-incline-high",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
     },
     {
       "id": "pol-pushup-knee",
@@ -6076,7 +6201,19 @@
       "approved": false,
       "nextVariationIds": [
         "pushup-standard"
-      ]
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pushup-incline-high",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
     },
     {
       "id": "pol-pushup-standard",
@@ -6161,6 +6298,7 @@
         ]
       },
       "nextVariationIds": [
+        "pushup-diamond",
         "pushup-feet-elevated"
       ]
     },
@@ -6793,6 +6931,153 @@
       ]
     },
     {
+      "id": "pol-pushup-wall",
+      "variationId": "pushup-wall",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 20
+          },
+          "workWindowSeconds": 135,
+          "minRecoverySeconds": 60,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "you-are-your-own-gym-lauren",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pushup-incline-high"
+      ]
+    },
+    {
+      "id": "pol-pushup-incline-high",
+      "variationId": "pushup-incline-high",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 12
+          },
+          "workWindowSeconds": 85,
+          "minRecoverySeconds": 60,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60,
+          "earlyCompletionStretchId": "stretch-chest-door"
+        }
+      ],
+      "evidenceSourceIds": [
+        "convict-conditioning-wade",
+        "you-are-your-own-gym-lauren",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pushup-incline",
+        "pushup-knee"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pushup-wall",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
       "id": "pol-pushup-feet-elevated",
       "variationId": "pushup-feet-elevated",
       "version": 1,
@@ -6856,7 +7141,7 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "pushup-diamond"
+        "pushup-archer"
       ],
       "prerequisiteRule": {
         "allOf": [
@@ -6941,8 +7226,8 @@
           [
             {
               "variationTierMet": {
-                "variationId": "pushup-feet-elevated",
-                "tier": 3
+                "variationId": "pushup-standard",
+                "tier": 4
               }
             }
           ]
@@ -7020,6 +7305,14 @@
             {
               "variationTierMet": {
                 "variationId": "pushup-diamond",
+                "tier": 3
+              }
+            }
+          ],
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pushup-feet-elevated",
                 "tier": 3
               }
             }

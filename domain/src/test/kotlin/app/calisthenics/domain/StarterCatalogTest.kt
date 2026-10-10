@@ -33,7 +33,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(86, strength.size) // V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
+        assertEquals(88, strength.size) // L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
         assertEquals(25, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
@@ -182,5 +182,18 @@ class StarterCatalogTest {
         assertEquals(listOf("squat-pistol-assisted", "squat-shrimp"), next("split-squat-bulgarian")); assertEquals(listOf(listOf("split-squat-bulgarian")), prereq("squat-pistol-assisted")); assertTrue(next("squat-shrimp").isEmpty())
         // a middle step before the full back bridge
         assertEquals(listOf("bridge-incline"), next("bridge-single-leg")); assertEquals(listOf("bridge-back"), next("bridge-incline")); assertEquals(listOf(listOf("bridge-incline")), prereq("bridge-back"))
+    }
+
+    @Test fun l02PushUpChainFollowsTheLoadCurve() {   // Ebben 2011: wall < high incline < knee / low incline < full < diamond / 30 cm decline < archer < one-arm
+        fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
+        fun prereq(id: String) = catalog.policyForVariation(id)!!.prerequisiteRule.allOf.map { g -> g.mapNotNull { it.variationTierMet?.variationId } }
+        assertEquals(listOf("pushup-incline-high"), next("pushup-wall")); assertEquals(listOf("pushup-incline", "pushup-knee"), next("pushup-incline-high"))
+        assertEquals(listOf(listOf("pushup-incline", "pushup-knee")), prereq("pushup-standard"))
+        assertEquals(listOf("pushup-diamond", "pushup-feet-elevated"), next("pushup-standard"))
+        assertEquals(listOf(listOf("pushup-standard")), prereq("pushup-diamond")); assertEquals(listOf(listOf("pushup-standard")), prereq("pushup-feet-elevated"))
+        assertEquals(listOf("pushup-archer"), next("pushup-diamond")); assertEquals(listOf("pushup-archer"), next("pushup-feet-elevated"))
+        assertEquals(listOf(listOf("pushup-diamond"), listOf("pushup-feet-elevated")), prereq("pushup-archer"))   // both siblings
+        val rank = { id: String -> catalog.variation(id)!!.difficultyRank }
+        assertTrue(rank("pushup-wall") < rank("pushup-incline-high") && rank("pushup-incline-high") < rank("pushup-incline") && rank("pushup-standard") < rank("pushup-diamond"))
     }
 }

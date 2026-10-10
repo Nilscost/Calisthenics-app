@@ -419,6 +419,15 @@ def weighted_bridge(p):
 
 NEW.update({"goblet-squat": (goblet_squat, "rep"), "dumbbell-rdl": (db_rdl, "rep"), "dumbbell-single-leg-rdl": (db_single_leg_rdl, "rep"), "dumbbell-row": (db_row, "rep"),
             "barbell-squat": (bb_squat, "rep"), "barbell-rdl": (bb_rdl, "rep"), "weighted-glute-bridge": (weighted_bridge, "rep")})
+
+# ----------------------------------------------------------------------------------------------- L02 poses (push-up chain)
+def pushup_wall(p):
+    return v1.plank_like((110, 46), 144, (190, 176), 189, 177, incline_bench=None)(p) | {"scene": [("rect", (196, 40, 206, 262), v1.GRD)]}
+
+def pushup_incline_high(p):
+    return v1.plank_like((95, 46), 144, (182, 134), 186, 156, incline_bench=(168, 40, 232, 130))(p)
+
+NEW.update({"pushup-wall": (pushup_wall, "rep"), "pushup-incline-high": (pushup_incline_high, "rep")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)

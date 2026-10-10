@@ -216,13 +216,13 @@ strength("pushup-incline", "Incline Push-Up", "pushup", ["PUSH_HORIZONTAL"], ["U
          ["Straight line head to heels", "Elbows about 45°", "Full range"],
          reps_tiers([6, 8, 10, 12, 15], stretch="stretch-chest-door"), [S_CC, S_YG, S_NG], UP,
          eq=[{"capabilities": ["wall"]}, {"needs": [need("chair", suitability=["stable"])]}],
-         rank=10, nxt=["pushup-standard"])
+         rank=10, nxt=["pushup-standard"], prereq={"allOf": [[vt("pushup-incline-high", 3)]]})
 strength("pushup-knee", "Knee Push-Up", "pushup", ["PUSH_HORIZONTAL"], ["UPPER_BODY", "CORE"], "REPS", "floor",
          ["Kneel on a mat, hands under the shoulders, body straight from head to knees.", "Lower the chest toward the floor, elbows about 45°.",
           "Press up to straight arms; keep the hips in line.", "Count only full-range reps."],
          ["Straight line head to knees", "Do not sag the hips"],
          reps_tiers([5, 7, 9, 11, 14], stretch="stretch-chest-door"), [S_CC, S_YG, S_NG], UP,
-         eq=[{}], rank=20, nxt=["pushup-standard"])
+         eq=[{}], rank=20, nxt=["pushup-standard"], prereq={"allOf": [[vt("pushup-incline-high", 3)]]})
 strength("pushup-standard", "Standard Push-Up", "pushup", ["PUSH_HORIZONTAL"], ["UPPER_BODY", "CORE"], "REPS", "floor",
          ["Plank position, hands slightly wider than the shoulders.", "Lower the chest to just above the floor, elbows about 45°.",
           "Press up to full lockout with a straight body.", "Count only full-range reps."],
@@ -305,15 +305,23 @@ def ex(id, name, fam, pat, area, kind, pos, steps, tiers, src, st, eq=NO_EQ, ran
              tiers, src, st, eq=eq, unilateral=uni, rank=rank, nxt=nxt, prereq=prereq, cautions=cautions)
 U, L, C = ["UPPER_BODY"], ["LOWER_BODY"], ["CORE"]
 # push (horizontal)
+ex("pushup-wall", "Wall Push-Up", "pushup", "PUSH_HORIZONTAL", [ "UPPER_BODY", "CORE"], "REPS", "standing",
+   ["Stand an arm's length from a wall, hands on it at shoulder height a little wider than the shoulders.", "Bend the elbows and bring the chest toward the wall, body in one straight line.", "Press back to straight arms."],
+   reps_tiers([8, 10, 12, 15, 20], stretch="stretch-chest-door"), [S_CC, S_YG, S_RR], UP, eq=[{"capabilities": ["wall"]}], rank=5, nxt=["pushup-incline-high"],
+   cues=["Straight body", "Elbows about 45 degrees", "Feet do not slide"])
+ex("pushup-incline-high", "High Incline Push-Up (table or counter)", "pushup", "PUSH_HORIZONTAL", [ "UPPER_BODY", "CORE"], "REPS", "standing",
+   ["Put your hands on a sturdy table or kitchen counter (about 60 cm high), feet back, body in one straight line.", "Lower the chest to the edge, elbows about 45 degrees, then press back up.", "The lower the support, the harder it gets: this is the step between the wall and the low incline."],
+   reps_tiers([6, 8, 10, 12, 15], stretch="stretch-chest-door"), [S_CC, S_YG, S_RR], UP, rank=8, nxt=["pushup-incline", "pushup-knee"], prereq={"allOf": [[vt("pushup-wall", 4)]]},
+   cues=["Straight body", "Support cannot slide or tip"], cautions=(CAUTION_STRENGTH, "Use a sturdy table or counter that cannot slide or tip."))
 ex("pushup-feet-elevated", "Feet-Elevated Push-Up", "pushup", "PUSH_HORIZONTAL", [ "UPPER_BODY", "CORE"], "REPS", "floor",
    ["Feet on a stable chair or step, hands on the floor, body in one straight line.", "Lower the chest to the floor, elbows about 45 degrees from the body.", "Press to straight arms without sagging the hips."],
-   reps_tiers([4, 6, 8, 10, 12], stretch="stretch-chest-door"), [S_CC, S_OG, S_YG], UP, eq=[{"needs": [need("chair", suitability=["stable"])]}], rank=35, nxt=["pushup-diamond"], prereq={"allOf": [[vt("pushup-standard", 4)]]})
+   reps_tiers([4, 6, 8, 10, 12], stretch="stretch-chest-door"), [S_CC, S_OG, S_YG], UP, eq=[{"needs": [need("chair", suitability=["stable"])]}], rank=35, nxt=["pushup-archer"], prereq={"allOf": [[vt("pushup-standard", 4)]]})
 ex("pushup-diamond", "Diamond Push-Up", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
    ["Plank position, hands together under the chest, thumbs and index fingers forming a diamond.", "Lower the chest to the hands, elbows close to the body.", "Press to full lockout."],
-   reps_tiers([4, 6, 8, 10, 12], stretch="stretch-chest-door"), [S_CC, S_YG], UP, rank=40, nxt=["pushup-archer"], prereq={"allOf": [[vt("pushup-feet-elevated", 3)]]})
+   reps_tiers([4, 6, 8, 10, 12], stretch="stretch-chest-door"), [S_CC, S_YG], UP, rank=40, nxt=["pushup-archer"], prereq={"allOf": [[vt("pushup-standard", 4)]]})
 ex("pushup-archer", "Archer Push-Up (per side)", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
    ["Wide hand position, hands turned slightly out.", "Lower toward one hand while the other arm stays straight.", "Press back up, alternate sides. Count each side."],
-   reps_tiers([3, 4, 6, 8, 10], stretch="stretch-chest-door"), [S_CC, S_OG], UP, rank=50, nxt=["pushup-one-arm-negative"], prereq={"allOf": [[vt("pushup-diamond", 3)]]})
+   reps_tiers([3, 4, 6, 8, 10], stretch="stretch-chest-door"), [S_CC, S_OG], UP, rank=50, nxt=["pushup-one-arm-negative"], prereq={"allOf": [[vt("pushup-diamond", 3)], [vt("pushup-feet-elevated", 3)]]})
 ex("pushup-one-arm-negative", "One-Arm Push-Up Negative (per side)", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
    ["Feet wide, one hand under the chest, other hand behind the back.", "Lower slowly for about 4 seconds to just above the floor.", "Reset with both hands; repeat, then switch sides."],
    reps_tiers([2, 3, 4, 5, 6], stretch="stretch-chest-door"), [S_CC, S_OG], UP, uni=True, rank=60, nxt=["pushup-one-arm"], prereq={"allOf": [[vt("pushup-archer", 3)]]},
@@ -712,7 +720,7 @@ strength("weighted-squat", "Weighted Squat", "vest-squat", ["SQUAT"], ["LOWER_BO
 for pol in policies:
     if pol["variationId"] == "plank": pol["nextVariationIds"] = ["hollow-hold"]
     if pol["variationId"] == "pullup-band-assisted": pol["nextVariationIds"] = ["pullup-full"]
-    if pol["variationId"] == "pushup-standard": pol["nextVariationIds"] = ["pushup-feet-elevated"]
+    if pol["variationId"] == "pushup-standard": pol["nextVariationIds"] = ["pushup-diamond", "pushup-feet-elevated"]   # L02: siblings (Ebben 2011: a 30 cm decline is about as hard as the diamond)
     if pol["variationId"] == "split-squat": pol["nextVariationIds"] = ["split-squat-bulgarian"]
     if pol["variationId"] == "glute-bridge": pol["nextVariationIds"] = ["bridge-single-leg"]
     if pol["variationId"] == "row-band": pol["nextVariationIds"] = ["inverted-row-bent-knees"]
@@ -726,6 +734,8 @@ for pol in policies:
 
 # ---------------- U09: muscles worked (F9). Drives the clip colouring, the preview chips and the tree sheet. ----------------
 M = {
+    "pushup-wall": (["CHEST", "TRICEPS"], ["FRONT_DELTS"]),
+    "pushup-incline-high": (["CHEST", "TRICEPS"], ["FRONT_DELTS", "ABS"]),
     "pushup-incline": (["CHEST", "TRICEPS"], ["FRONT_DELTS", "ABS"]),
     "pushup-knee": (["CHEST", "TRICEPS"], ["FRONT_DELTS"]),
     "pushup-standard": (["CHEST", "TRICEPS"], ["FRONT_DELTS", "ABS"]),

@@ -7,12 +7,14 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
-| Incline Push-Up | wall or chair* | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | Standard Push-Up |
-| Knee Push-Up | none | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 11 / 80 / 60 | 14 / 100 / 60 | - | Standard Push-Up |
-| Standard Push-Up | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Incline Push-Up L5 or Knee Push-Up L5 | Feet-Elevated Push-Up |
-| Feet-Elevated Push-Up | chair* | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Standard Push-Up L4 | Diamond Push-Up |
-| Diamond Push-Up | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Feet-Elevated Push-Up L3 | Archer Push-Up (per side) |
-| Archer Push-Up (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Diamond Push-Up L3 | One-Arm Push-Up Negative (per side) |
+| Wall Push-Up | wall | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | High Incline Push-Up (table or counter) |
+| High Incline Push-Up (table or counter) | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Wall Push-Up L4 | Incline Push-Up, Knee Push-Up |
+| Incline Push-Up | wall or chair* | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | High Incline Push-Up (table or counter) L3 | Standard Push-Up |
+| Knee Push-Up | none | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 11 / 80 / 60 | 14 / 100 / 60 | High Incline Push-Up (table or counter) L3 | Standard Push-Up |
+| Standard Push-Up | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Incline Push-Up L5 or Knee Push-Up L5 | Diamond Push-Up, Feet-Elevated Push-Up |
+| Feet-Elevated Push-Up | chair* | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Standard Push-Up L4 | Archer Push-Up (per side) |
+| Diamond Push-Up | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Standard Push-Up L4 | Archer Push-Up (per side) |
+| Archer Push-Up (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Diamond Push-Up L3 and Feet-Elevated Push-Up L3 | One-Arm Push-Up Negative (per side) |
 | One-Arm Push-Up Negative (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Archer Push-Up (per side) L3 | One-Arm Push-Up (per side) |
 | One-Arm Push-Up (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | One-Arm Push-Up Negative (per side) L4 | — (top) |
 | Dip Support Hold | dip-support | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Negative Dip |

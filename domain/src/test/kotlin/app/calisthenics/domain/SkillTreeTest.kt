@@ -67,6 +67,17 @@ class SkillTreeTest {
         assertEquals(TreeNodeState.NEEDS_EQUIPMENT, nodeState(catalog, "pushup-feet-elevated", snap("pushup-feet-elevated" to 3), SeedProfiles.travel.copy(items = emptyList()), emptySet()))
     }
 
+    @Test fun aStepInsertedBelowYourLevelNeverLocksYouOut() {   // L02: levels are kept by exercise id; the new wall / high incline steps count as passed
+        val home = SeedProfiles.home
+        val p = snap("pushup-standard" to 3, "pushup-incline" to 4)
+        assertEquals(TreeNodeState.AVAILABLE, nodeState(catalog, "pushup-knee", p, home, emptySet()))      // a sibling step with a prerequisite below the person's level
+        assertEquals(0, Goals.unmet(catalog, "pushup-knee", p).size)
+        assertEquals(3, p.variations.getValue("pushup-standard").tier); assertEquals(4, p.variations.getValue("pushup-incline").tier)   // nothing moved, no star lost
+        // a beginner who has not started anything still sees the first steps in order
+        assertEquals(TreeNodeState.LOCKED, nodeState(catalog, "pushup-knee", empty, home, emptySet()))
+        assertEquals(TreeNodeState.AVAILABLE, nodeState(catalog, "pushup-wall", empty, SeedProfiles.home, emptySet()))
+    }
+
     private fun snapAll() = engine.replay(emptyList(), catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }.map { UserAction.SelfAssessment(0, it.id, 5) })
 
     @Test fun masteredNeedsAllFiveStepsAndStarsComeFromEarnedStars() {

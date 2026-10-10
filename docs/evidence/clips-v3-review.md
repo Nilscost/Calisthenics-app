@@ -81,3 +81,9 @@ Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).
 | `barbell-squat`, `barbell-rdl` | weak | the bar is a thin line across the hands/shoulders and hard to see |
 | `weighted-glute-bridge` | weak | the weight on the hips is a tiny mark |
 | `weighted-pushup`, `weighted-pullup`, `weighted-dip`, `weighted-squat` | shared | the same pose as the plain exercise (declared in `SHARED_POSES`); the vest is not drawn, the cue text carries it |
+
+## L02 additions (`frames-15-pushup-steps.png`)
+| Id | Verdict | Note |
+|---|---|---|
+| `pushup-wall` | good | standing against a wall, the chest travels toward it, straight body |
+| `pushup-incline-high` | good | hands on a table-height block, the same body line as the low incline but a higher support |

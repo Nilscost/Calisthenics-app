@@ -690,6 +690,18 @@
   ],
   "sharedPoseWith": []
  },
+ "pushup-incline-high": {
+  "kind": "rep",
+  "primary": [
+   "CHEST",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "FRONT_DELTS",
+   "ABS"
+  ],
+  "sharedPoseWith": []
+ },
  "pushup-knee": {
   "kind": "rep",
   "primary": [
@@ -744,6 +756,17 @@
   "sharedPoseWith": [
    "weighted-pushup"
   ]
+ },
+ "pushup-wall": {
+  "kind": "rep",
+  "primary": [
+   "CHEST",
+   "TRICEPS"
+  ],
+  "secondary": [
+   "FRONT_DELTS"
+  ],
+  "sharedPoseWith": []
  },
  "rdl-bodyweight": {
   "kind": "rep",
