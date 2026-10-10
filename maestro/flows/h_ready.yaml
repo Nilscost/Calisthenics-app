@@ -10,7 +10,10 @@ appId: app.calisthenics.personal
 - tapOn: { id: preview_button }
 - extendedWaitUntil: { visible: { id: start_button }, timeout: 15000 }
 - takeScreenshot: 02-preview-recommended-${VARIANT}
-- scrollUntilVisible: { element: { id: "exercise_rr-core-back.*" }, direction: DOWN, timeout: 10000, visibilityPercentage: 50 }
+- repeat:
+    times: 4
+    commands:
+      - swipe: { start: "50%, 75%", end: "50%, 30%" }
 - takeScreenshot: 03-preview-core-triplet-${VARIANT}
 - back
 - extendedWaitUntil: { visible: { id: goal_field }, timeout: 10000 }
