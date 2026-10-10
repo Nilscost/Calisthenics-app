@@ -133,3 +133,13 @@ Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).
 | `bridge-table` | good | reverse tabletop, hips rise and lower |
 | `bridge-head` | acceptable | arched hold with the head down; the towel under the head is not drawn |
 | `bridge-wall-walkdown` | weak | the figure leans on a wall and the hands walk down; a standing back bend against a wall is hard to read from the side |
+
+## L11 additions (`frames-22-stretches-l11.png`): 7 stretches
+| Id | Verdict | Note |
+|---|---|---|
+| `stretch-butterfly`, `stretch-pancake` | acceptable | seated, soles together / legs wide, folding forward |
+| `stretch-pike-one-leg` | good | heel on a chair, hinge toward it |
+| `stretch-supine-twist` | acceptable | lying on the back, one knee across the body |
+| `stretch-rear-clasp` | weak | hands behind the back; the towel line is thin |
+| `stretch-cobra` | weak | prone press-up; the head sits low on the arms |
+| `stretch-wrist-biceps` | acceptable | palm on a wall, body turning away |

@@ -192,7 +192,14 @@ data class ExerciseVariation(
     /** U09 (F9): muscles worked. Primary = the main movers (clips colour them saturated), secondary = helpers (light). */
     val primaryMuscles: List<Muscle> = emptyList(),
     val secondaryMuscles: List<Muscle> = emptyList(),
+    /** L11: where a stretch may be used. Default BOTH = as before. Appended last; old catalogs decode. */
+    val stretchUse: StretchUse = StretchUse.BOTH,
+    /** L11: an intense stretch that is never picked automatically (the person adds it by hand). */
+    val optIn: Boolean = false,
 )
+
+/** L11: BETWEEN_SETS = short and gentle enough to go between sets; COOL_DOWN = a deeper hold for after the workout only; BOTH = either. */
+@Serializable enum class StretchUse { BETWEEN_SETS, COOL_DOWN, BOTH }
 
 @Serializable enum class EdgeRelation { PREREQUISITE, RECOMMENDED_PREPARATION }
 

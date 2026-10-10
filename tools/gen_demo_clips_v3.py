@@ -565,6 +565,45 @@ def bridge_wall_walkdown(p):
                 scene=[("rect", (60, 40, 70, 250), v1.GRD)])
 
 NEW.update({"bridge-table": (bridge_table, "rep"), "bridge-head": (bridge_head, "hold"), "bridge-wall-walkdown": (bridge_wall_walkdown, "rep")})
+
+# ----------------------------------------------------------------------------------------------- L11 poses (six stretches)
+def st_butterfly(p):
+    b = _breath(p); hip = (150, 50); a = lerp(78, 44, b); sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=-8, arms=[("ik", (hip[0] + 34, 48), (0, 1))] * 2,
+                legs=[("fix", (hip[0] + 38, 52), (hip[0] + 26, 46))] * 2, leg_z=[(58, 10), (-58, -10)])
+
+def st_pancake(p):
+    b = _breath(p); hip = (120, 48); a = lerp(76, 30, b); sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=-8, arms=[("ik", (sho[0] + 52, 48), (0, 1))] * 2, arm_z=[Z_ARM, -Z_ARM],
+                legs=[("ik", (hip[0] + 82, 48), (0, 1))] * 2, leg_z=[(44, 72), (-44, -72)])
+
+def st_pike_one_leg(p):
+    b = _breath(p); hip = (130, 112); a = lerp(60, 36, b); sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=-10, arms=[("ik", (hip[0] + 40, 82), (-1, 0))] * 2,
+                legs=[("ik", (hip[0] + 62, 66), (0, 1)), ("ik", (hip[0] - 16, 46), (1, 0))], scene=[("rect", (hip[0] + 46, 44, hip[0] + 86, 62), v1.GRD)])
+
+def st_supine_twist(p):
+    b = _breath(p); hip = (170, 50); a = 180; sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=0, arms=[("ik", (sho[0] + 2, 52), (0, 1))] * 2, arm_z=[62, -62],
+                legs=[("ik", (hip[0] + 78, 52), (0, 1)), ("fix", (hip[0] + 38, 80 - 4 * b), (hip[0] + 14, 50))], leg_z=[(8, 8), (-lerp(20, 46, b), -lerp(34, 60, b))])
+
+def st_rear_clasp(p):
+    b = _breath(p); hip = (150, 124); sho = sh(hip, 90)
+    return dict(hip=hip, a=90, arms=[("ik", (hip[0] - 36, hip[1] + 8 + 2 * b), (1, 0)), ("ik", (hip[0] - 34, hip[1] - 4 - 2 * b), (1, 0))],
+                legs=[("ik", (150, 46), (1, 0))] * 2, props=[("line", "hand0", "hand1", v1.PROP)])
+
+def st_cobra(p):
+    b = _breath(p); hip = (150, 48); a = lerp(12, 42, b); sho = sh(hip, a)
+    return dict(hip=hip, a=a, head_off=lerp(0, -14, b), arms=[("ik", (sho[0] - 2, 46), (0, 1))] * 2, arm_z=[Z_ARM, -Z_ARM],
+                legs=[("ik", (hip[0] - 80, 48), (0, 1))] * 2)
+
+def st_wrist_biceps(p):
+    b = _breath(p); hip = (130, 124); a = 90; turn = lerp(0, 24, b)
+    return dict(hip=hip, a=a, head_off=-4, arms=[("ik", (196, 134), (0, -1)), ("ik", (hip[0] + 8, hip[1] - 34), (0, -1))], arm_z=[lerp(40, 54, b), Z_ARM],
+                legs=[("ik", (130, 46), (1, 0))] * 2, scene=[("rect", (200, 44, 208, 220), v1.GRD)])
+
+NEW.update({"stretch-wrist-biceps": (st_wrist_biceps, "hold"), "stretch-butterfly": (st_butterfly, "hold"), "stretch-pancake": (st_pancake, "hold"), "stretch-pike-one-leg": (st_pike_one_leg, "hold"),
+            "stretch-supine-twist": (st_supine_twist, "hold"), "stretch-rear-clasp": (st_rear_clasp, "hold"), "stretch-cobra": (st_cobra, "hold")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)

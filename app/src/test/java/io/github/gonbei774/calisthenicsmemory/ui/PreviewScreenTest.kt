@@ -198,7 +198,7 @@ class PreviewScreenTest {
         rule.onNodeWithTag("break_push_s2").performScrollTo().performClick(); rule.waitForIdle(); rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle()
         rule.onNodeWithTag("break_option_stretch-frog").performSemanticsAction(click); rule.waitForIdle()
         rule.onNodeWithTag("break_push_s2").performScrollTo().assertTextContains("Frog", substring = true)
-        rule.onNodeWithTag("break_push_s3").performScrollTo().assertTextContains("Shoulder", substring = true) // the other sets keep their own stretch
+        rule.onNodeWithTag("break_push_s3").performScrollTo().assert(!hasText("Frog", substring = true)) // the other sets keep their own (automatic) stretch
     }
 
     // The "type a number" dialog has a text field. Robolectric's Compose clock never goes idle while a dialog with a text field is open

@@ -255,7 +255,7 @@ private class Planner(val input: PlanInput) {
     private fun stretchesFor(v: ExerciseVariation): List<ExerciseVariation> {
         val areas = normalizeStretchAreas(draft.stretchAreas)
         return v.compatibleStretchIds.mapNotNull { cat.variation(it) }
-            .filter { it.kind == Kind.STRETCH && it.id !in input.excludedVariationIds &&
+            .filter { it.kind == Kind.STRETCH && it.id !in input.excludedVariationIds && it.stretchUse != StretchUse.COOL_DOWN && !it.optIn &&   // L11: only gentle ones go between sets; opt-in ones are picked by hand
                 (StretchArea.FULL_BODY in areas || it.stretchAreas.any { a -> a in areas || a == StretchArea.FULL_BODY }) }
             .sortedBy { it.id }
     }

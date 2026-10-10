@@ -308,7 +308,8 @@
       ],
       "secondaryMuscles": [
         "HIP_FLEXORS"
-      ]
+      ],
+      "stretchUse": "COOL_DOWN"
     },
     {
       "id": "stretch-90-90",
@@ -351,7 +352,8 @@
       ],
       "secondaryMuscles": [
         "ADDUCTORS"
-      ]
+      ],
+      "stretchUse": "COOL_DOWN"
     },
     {
       "id": "stretch-frog",
@@ -391,7 +393,8 @@
       ],
       "primaryMuscles": [
         "ADDUCTORS"
-      ]
+      ],
+      "stretchUse": "COOL_DOWN"
     },
     {
       "id": "stretch-quad-couch",
@@ -444,7 +447,8 @@
       ],
       "secondaryMuscles": [
         "HIP_FLEXORS"
-      ]
+      ],
+      "stretchUse": "COOL_DOWN"
     },
     {
       "id": "stretch-quad-standing",
@@ -612,7 +616,9 @@
       ],
       "primaryMuscles": [
         "REAR_DELTS"
-      ]
+      ],
+      "optIn": true,
+      "stretchUse": "COOL_DOWN"
     },
     {
       "id": "stretch-wrist-flexor",
@@ -738,6 +744,306 @@
       ]
     },
     {
+      "id": "stretch-butterfly",
+      "familyId": "stretch-butterfly",
+      "name": "Butterfly Stretch",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": false,
+      "position": "seated",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Sit tall with the soles of the feet together and the knees dropped out to the sides.",
+        "Hold the feet and lean forward from the hips with a long back until you feel the inner thighs stretch.",
+        "Breathe slowly; do not push the knees down with your hands."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stop on groin or knee pain; sit on a folded towel if the hips are tight."
+      ],
+      "sourceIds": [
+        "r/flexibility wiki, Starting To Stretch (u/tykato), live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "stretchUse": "COOL_DOWN",
+      "formCues": [
+        "Sit tall before you lean",
+        "Let the knees fall, do not push"
+      ],
+      "stretchAreas": [
+        "HIP"
+      ],
+      "primaryMuscles": [
+        "ADDUCTORS"
+      ]
+    },
+    {
+      "id": "stretch-pancake",
+      "familyId": "stretch-pancake",
+      "name": "Pancake (seated straddle)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": false,
+      "position": "seated",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Sit with the legs wide apart and the knees pointing up.",
+        "Walk the hands forward between the legs, hinging from the hips with a long back.",
+        "Stay where you feel a stretch inside the thighs and behind the knees; do not round hard."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "A deep stretch: ease in over weeks; stop on knee or groin pain."
+      ],
+      "sourceIds": [
+        "r/flexibility wiki, Starting To Stretch (u/tykato), live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "stretchUse": "COOL_DOWN",
+      "formCues": [
+        "Hinge from the hips",
+        "Knees point up"
+      ],
+      "stretchAreas": [
+        "HIP",
+        "HAMSTRING"
+      ],
+      "primaryMuscles": [
+        "ADDUCTORS",
+        "HAMSTRINGS"
+      ]
+    },
+    {
+      "id": "stretch-pike-one-leg",
+      "familyId": "stretch-pike-one-leg",
+      "name": "One-Leg Pike (foot on a chair)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": true,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "chair",
+              "suitability": [
+                "stable"
+              ]
+            }
+          ]
+        }
+      ],
+      "instructions": [
+        "Stand facing a stable chair and put one heel on the seat, leg straight, toes up.",
+        "Hinge forward from the hips with a long back toward the raised foot.",
+        "Hold, then switch sides."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Check that the chair is stable; stop on sharp pain behind the knee."
+      ],
+      "sourceIds": [
+        "r/flexibility wiki, Starting To Stretch (u/tykato), live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "stretchUse": "BOTH",
+      "formCues": [
+        "Long back",
+        "Soft knee is fine"
+      ],
+      "stretchAreas": [
+        "HAMSTRING"
+      ],
+      "primaryMuscles": [
+        "HAMSTRINGS"
+      ]
+    },
+    {
+      "id": "stretch-supine-twist",
+      "familyId": "stretch-supine-twist",
+      "name": "Lying Cross (supine twist)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": true,
+      "position": "supine",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Lie on your back with the arms out to the sides.",
+        "Bring one knee across the body toward the opposite side, keeping both shoulders on the floor.",
+        "Breathe slowly and let the knee rest; then switch sides."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Skip it with an acute back problem; never force the knee down."
+      ],
+      "sourceIds": [
+        "r/flexibility wiki, Starting To Stretch (u/tykato), live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "stretchUse": "BOTH",
+      "formCues": [
+        "Shoulders stay down",
+        "No forcing"
+      ],
+      "stretchAreas": [
+        "BACK"
+      ],
+      "primaryMuscles": [
+        "LOWER_BACK"
+      ],
+      "secondaryMuscles": [
+        "GLUTES"
+      ]
+    },
+    {
+      "id": "stretch-rear-clasp",
+      "familyId": "stretch-rear-clasp",
+      "name": "Rear Hand Clasp (towel)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": false,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Stand tall and hold a towel with both hands behind your back, the top hand reaching down over the shoulder.",
+        "Draw the hands toward each other along the towel until you feel the chest and shoulders open.",
+        "Hold, then switch which hand is on top."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stop on shoulder pinching; use a longer towel."
+      ],
+      "sourceIds": [
+        "r/flexibility wiki, Starting To Stretch (u/tykato), live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "stretchUse": "BOTH",
+      "formCues": [
+        "Chest open",
+        "Do not shrug"
+      ],
+      "stretchAreas": [
+        "SHOULDER",
+        "CHEST"
+      ],
+      "primaryMuscles": [
+        "FRONT_DELTS",
+        "CHEST"
+      ]
+    },
+    {
+      "id": "stretch-wrist-biceps",
+      "familyId": "stretch-wrist-biceps",
+      "name": "Wrist and Biceps Stretch (palms on a wall)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": true,
+      "position": "standing",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {
+          "capabilities": [
+            "wall"
+          ]
+        }
+      ],
+      "instructions": [
+        "Stand beside a wall and place one palm on it at shoulder height, fingers pointing back behind you, arm straight.",
+        "Slowly turn the body away from the wall until you feel a stretch in the forearm and the front of the arm.",
+        "Keep the shoulder relaxed; hold, then switch sides."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stop on wrist or elbow pain; turn only a little at a time."
+      ],
+      "sourceIds": [
+        "r/flexibility wiki, Starting To Stretch (u/tykato), live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "stretchUse": "BOTH",
+      "formCues": [
+        "Small turn",
+        "Shoulder relaxed"
+      ],
+      "stretchAreas": [
+        "WRIST",
+        "SHOULDER"
+      ],
+      "primaryMuscles": [
+        "FOREARMS"
+      ],
+      "secondaryMuscles": [
+        "BICEPS"
+      ]
+    },
+    {
+      "id": "stretch-cobra",
+      "familyId": "stretch-cobra",
+      "name": "Cobra (spine backbend)",
+      "patterns": [
+        "STRETCH"
+      ],
+      "kind": "STRETCH",
+      "unilateral": false,
+      "position": "prone",
+      "defaultSeconds": 30,
+      "equipmentAlternatives": [
+        {}
+      ],
+      "instructions": [
+        "Lie face down with the hands under the shoulders.",
+        "Press the chest up gently with the hips on the floor, keeping the neck long.",
+        "Hold, then lower slowly. Stay in a pain-free range."
+      ],
+      "cautions": [
+        "Stretch gently; mild tension is normal, pain is not. Stop if you feel sharp or pinching pain.",
+        "Stop on lower-back pinching; skip it with an acute back problem."
+      ],
+      "sourceIds": [
+        "r/flexibility wiki, Starting To Stretch (u/tykato), live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "stretchUse": "COOL_DOWN",
+      "formCues": [
+        "Hips stay down",
+        "Long neck"
+      ],
+      "stretchAreas": [
+        "BACK"
+      ],
+      "primaryMuscles": [
+        "ABS"
+      ],
+      "secondaryMuscles": [
+        "LOWER_BACK"
+      ]
+    },
+    {
       "id": "pushup-incline",
       "familyId": "pushup",
       "name": "Incline Push-Up",
@@ -795,7 +1101,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -850,7 +1158,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -906,7 +1216,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -969,7 +1281,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -1034,7 +1348,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -1093,7 +1409,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -1150,7 +1469,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -1358,7 +1680,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS"
@@ -1408,7 +1732,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "OBLIQUES"
@@ -1458,7 +1784,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS"
@@ -1516,7 +1844,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1570,7 +1900,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1634,7 +1966,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1687,7 +2021,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "TRICEPS",
@@ -1739,7 +2075,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1793,7 +2131,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1847,7 +2187,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -1902,7 +2244,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -1964,7 +2308,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2023,7 +2369,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2086,7 +2434,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2150,7 +2500,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -2211,7 +2563,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -2271,7 +2625,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -2335,7 +2691,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -2401,7 +2759,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -2459,7 +2820,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -2516,7 +2880,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -2573,7 +2940,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -2632,7 +3002,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -2700,7 +3073,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -2758,7 +3134,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -2816,7 +3195,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -3188,7 +3570,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS"
@@ -3238,7 +3622,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS"
@@ -3288,7 +3674,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS"
@@ -3338,7 +3726,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS"
@@ -3389,7 +3779,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS",
@@ -3442,7 +3834,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS",
@@ -3495,7 +3889,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS",
@@ -3548,7 +3944,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS",
@@ -3601,7 +3999,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS",
@@ -3655,7 +4055,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS",
@@ -3707,7 +4109,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS",
@@ -3759,7 +4163,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS",
@@ -3809,7 +4215,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS",
@@ -3872,7 +4280,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -3938,7 +4348,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -4004,7 +4416,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -4061,7 +4475,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -4117,7 +4533,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -4173,7 +4591,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "FRONT_DELTS",
@@ -4235,7 +4655,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -4298,7 +4720,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -4359,7 +4783,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -4420,7 +4846,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -4481,7 +4909,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -4535,7 +4965,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "LOWER_BACK",
@@ -4586,7 +5018,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "LOWER_BACK",
@@ -4635,7 +5069,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "OBLIQUES",
@@ -4696,7 +5132,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ADDUCTORS",
@@ -4756,7 +5194,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ADDUCTORS",
@@ -5286,7 +5726,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "TRICEPS",
@@ -5347,7 +5789,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "TRICEPS",
@@ -5408,7 +5852,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "TRICEPS",
@@ -5952,7 +6398,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "OBLIQUES",
@@ -6012,7 +6460,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "OBLIQUES",
@@ -6072,7 +6522,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "OBLIQUES",
@@ -6124,7 +6576,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "GLUTES",
@@ -6173,7 +6627,9 @@
         "stretch-back",
         "stretch-hip-flexor",
         "stretch-thoracic",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-supine-twist",
+        "stretch-cobra"
       ],
       "primaryMuscles": [
         "ABS",
@@ -6228,7 +6684,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -6289,7 +6748,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -6343,7 +6804,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "UPPER_BACK",
@@ -6406,7 +6869,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -6466,7 +6931,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -6526,7 +6993,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -6586,7 +7055,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -6647,7 +7118,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "BICEPS",
@@ -6713,7 +7186,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -6774,7 +7249,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "BICEPS",
@@ -6838,7 +7315,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -7068,7 +7548,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -7132,7 +7614,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",
@@ -7248,7 +7733,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "CHEST",
@@ -7308,7 +7795,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "LATS",
@@ -7372,7 +7861,9 @@
         "stretch-sleeper",
         "stretch-wrist-flexor",
         "stretch-wrist-extensor",
-        "stretch-lat-wall"
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps"
       ],
       "primaryMuscles": [
         "TRICEPS",
@@ -7432,7 +7923,10 @@
         "stretch-quad-couch",
         "stretch-quad-standing",
         "stretch-hamstring-standing",
-        "stretch-frog"
+        "stretch-frog",
+        "stretch-butterfly",
+        "stretch-pancake",
+        "stretch-pike-one-leg"
       ],
       "primaryMuscles": [
         "QUADS",

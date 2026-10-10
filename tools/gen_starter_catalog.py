@@ -15,6 +15,7 @@ S_OG = "overcoming-gravity-2-low"
 S_GB = "building-the-gymnastic-body-sommer"
 S_YG = "you-are-your-own-gym-lauren"
 S_NG = "never-gymless-enamait"
+S_RF = "r/flexibility wiki, Starting To Stretch (u/tykato), live check 2026-10-09"
 S_RR = "r/bodyweightfitness wiki, live check 2026-10-09"   # V21b: structure and numbers only, own wording
 
 def rnd5(x): return int(5 * round(x / 5))
@@ -87,12 +88,14 @@ def strength(id, name, family, patterns, areas, kind, position, instructions, cu
         if tier_note: pol["tierNote"] = tier_note
     policies.append(pol)
 
-def stretch(id, name, areas, seconds, uni, position, instructions, eq=NO_EQ, kind="STRETCH", cues=(), cautions=(), primary=(), secondary=(), sources=None):
+def stretch(id, name, areas, seconds, uni, position, instructions, eq=NO_EQ, kind="STRETCH", cues=(), cautions=(), primary=(), secondary=(), sources=None, use=None, opt_in=False):
     v = {"id": id, "familyId": id, "name": name,
          "patterns": ["STRETCH" if kind == "STRETCH" else "MOBILITY"],
          "kind": kind, "unilateral": uni, "position": position, "defaultSeconds": seconds,
          "equipmentAlternatives": eq, "instructions": instructions, "cautions": [STRETCH_NOTE, *cautions],
          "sourceIds": list(sources or [S_OG, S_GB]), "reviewState": "DRAFT"}
+    if use: v["stretchUse"] = use
+    if opt_in: v["optIn"] = True
     if cues: v["formCues"] = list(cues)
     if areas: v["stretchAreas"] = areas
     if primary: v["primaryMuscles"] = list(primary)
@@ -194,9 +197,40 @@ stretch("stretch-thoracic", "Thoracic Rotation (thread the needle)", ["BACK"], 3
         cautions=["Stay in a pain-free range; skip if a shoulder or the neck complains."],
         primary=["UPPER_BACK"], secondary=["OBLIQUES"])
 
-NEW_ST_UP = ["stretch-sleeper", "stretch-wrist-flexor", "stretch-wrist-extensor", "stretch-lat-wall"]
-NEW_ST_LOW = ["stretch-pigeon", "stretch-90-90", "stretch-quad-couch", "stretch-quad-standing", "stretch-hamstring-standing", "stretch-frog"]
-NEW_ST_CORE = ["stretch-thoracic", "stretch-lat-wall"]
+
+# L11: stretch library to 24 (r/flexibility "Starting To Stretch" and the report): deeper holds are cool-down only
+stretch("stretch-butterfly", "Butterfly Stretch", ["HIP"], 30, False, "seated",
+        ["Sit tall with the soles of the feet together and the knees dropped out to the sides.", "Hold the feet and lean forward from the hips with a long back until you feel the inner thighs stretch.", "Breathe slowly; do not push the knees down with your hands."],
+        cues=["Sit tall before you lean", "Let the knees fall, do not push"], cautions=["Stop on groin or knee pain; sit on a folded towel if the hips are tight."],
+        primary=["ADDUCTORS"], use="COOL_DOWN", sources=[S_RF])
+stretch("stretch-pancake", "Pancake (seated straddle)", ["HIP", "HAMSTRING"], 30, False, "seated",
+        ["Sit with the legs wide apart and the knees pointing up.", "Walk the hands forward between the legs, hinging from the hips with a long back.", "Stay where you feel a stretch inside the thighs and behind the knees; do not round hard."],
+        cues=["Hinge from the hips", "Knees point up"], cautions=["A deep stretch: ease in over weeks; stop on knee or groin pain."],
+        primary=["ADDUCTORS", "HAMSTRINGS"], use="COOL_DOWN", sources=[S_RF])
+stretch("stretch-pike-one-leg", "One-Leg Pike (foot on a chair)", ["HAMSTRING"], 30, True, "standing",
+        ["Stand facing a stable chair and put one heel on the seat, leg straight, toes up.", "Hinge forward from the hips with a long back toward the raised foot.", "Hold, then switch sides."],
+        eq=[{"needs": [need("chair", suitability=["stable"])]}], cues=["Long back", "Soft knee is fine"], cautions=["Check that the chair is stable; stop on sharp pain behind the knee."],
+        primary=["HAMSTRINGS"], use="BOTH", sources=[S_RF])
+stretch("stretch-supine-twist", "Lying Cross (supine twist)", ["BACK"], 30, True, "supine",
+        ["Lie on your back with the arms out to the sides.", "Bring one knee across the body toward the opposite side, keeping both shoulders on the floor.", "Breathe slowly and let the knee rest; then switch sides."],
+        cues=["Shoulders stay down", "No forcing"], cautions=["Skip it with an acute back problem; never force the knee down."],
+        primary=["LOWER_BACK"], secondary=["GLUTES"], use="BOTH", sources=[S_RF])
+stretch("stretch-rear-clasp", "Rear Hand Clasp (towel)", ["SHOULDER", "CHEST"], 30, False, "standing",
+        ["Stand tall and hold a towel with both hands behind your back, the top hand reaching down over the shoulder.", "Draw the hands toward each other along the towel until you feel the chest and shoulders open.", "Hold, then switch which hand is on top."],
+        cues=["Chest open", "Do not shrug"], cautions=["Stop on shoulder pinching; use a longer towel."],
+        primary=["FRONT_DELTS", "CHEST"], use="BOTH", sources=[S_RF])
+stretch("stretch-wrist-biceps", "Wrist and Biceps Stretch (palms on a wall)", ["WRIST", "SHOULDER"], 30, True, "standing",
+        ["Stand beside a wall and place one palm on it at shoulder height, fingers pointing back behind you, arm straight.", "Slowly turn the body away from the wall until you feel a stretch in the forearm and the front of the arm.", "Keep the shoulder relaxed; hold, then switch sides."],
+        eq=[{"capabilities": ["wall"]}], cues=["Small turn", "Shoulder relaxed"], cautions=["Stop on wrist or elbow pain; turn only a little at a time."],
+        primary=["FOREARMS"], secondary=["BICEPS"], use="BOTH", sources=[S_RF])
+stretch("stretch-cobra", "Cobra (spine backbend)", ["BACK"], 30, False, "prone",
+        ["Lie face down with the hands under the shoulders.", "Press the chest up gently with the hips on the floor, keeping the neck long.", "Hold, then lower slowly. Stay in a pain-free range."],
+        cues=["Hips stay down", "Long neck"], cautions=["Stop on lower-back pinching; skip it with an acute back problem."],
+        primary=["ABS"], secondary=["LOWER_BACK"], use="COOL_DOWN", sources=[S_RF])
+
+NEW_ST_UP = ["stretch-sleeper", "stretch-wrist-flexor", "stretch-wrist-extensor", "stretch-lat-wall", "stretch-rear-clasp", "stretch-wrist-biceps"]
+NEW_ST_LOW = ["stretch-pigeon", "stretch-90-90", "stretch-quad-couch", "stretch-quad-standing", "stretch-hamstring-standing", "stretch-frog", "stretch-butterfly", "stretch-pancake", "stretch-pike-one-leg"]
+NEW_ST_CORE = ["stretch-thoracic", "stretch-lat-wall", "stretch-supine-twist", "stretch-cobra"]
 UP = ["stretch-chest-door", "stretch-shoulder", *NEW_ST_UP]
 LOW = ["stretch-hip-flexor", "stretch-hamstring", "stretch-calf-wall", *NEW_ST_LOW]
 CORE_ST = ["stretch-back", "stretch-hip-flexor", *NEW_ST_CORE]
@@ -208,6 +242,13 @@ for _v in variations:
     if _v["id"] in _MUSCLES:
         _v["primaryMuscles"], _v["secondaryMuscles"] = _MUSCLES[_v["id"]][0], _MUSCLES[_v["id"]][1]
         if not _v["secondaryMuscles"]: del _v["secondaryMuscles"]
+
+
+# L11: which of the older stretches go between sets (BS), which only after the workout (CD); the sleeper stays opt-in
+_CD = {"stretch-pigeon", "stretch-90-90", "stretch-frog", "stretch-quad-couch"}
+for _v in variations:
+    if _v["id"] in _CD: _v["stretchUse"] = "COOL_DOWN"
+    if _v["id"] == "stretch-sleeper": _v["optIn"] = True; _v["stretchUse"] = "COOL_DOWN"
 
 # ---------------- push ----------------
 strength("pushup-incline", "Incline Push-Up", "pushup", ["PUSH_HORIZONTAL"], ["UPPER_BODY"], "REPS", "floor",
