@@ -70,3 +70,12 @@ Defects: Train font-1.3 flaws as above.
 
 ## Defects below 3
 None. Defects at 3 are listed per task and fixed or logged in V27b.
+
+## V25 — content gaps C-E (run 38024512654 at `520f50e`: 24 PASS, 0 FAIL)
+Content task; the screens it changes are the Progress tabs (new nodes) and the clips (`clips-v3-review.md`).
+| Screen | Light | Dark | Font 1.3 | Notes |
+|---|---|---|---|---|
+| Squat tab: Air squat → split squat → Bulgarian split squat → **shrimp ‖ assisted pistol side by side** → pistol | 4 | 4 | 3 | the branch is visible; font 1.3 wraps names to 3 lines |
+| Hips and back tab (single-leg slide, superman, arch, kettlebell chain) | 4 | 4 | 3 | the new bridge step is below the visible part in this capture |
+Not captured by any flow: the Pull tab (scapular pull → arch hang → negative → pull-up), the Core tab (tuck L-sit) and the incline bridge node. **Defect (process, 3):** the flows do not open those tabs; `e_seeded` gets two more tab shots in V27b so later runs show them.
+Defects below 3: none.
