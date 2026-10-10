@@ -15,7 +15,8 @@ appId: app.calisthenics.personal
 - back
 - extendedWaitUntil: { visible: { id: goal_field }, timeout: 10000 }
 - tapOn: { id: goal_field }
-- tapOn: { id: routine_preset-minimalist }
+- tapOn: "Minimalist Routine"
 - takeScreenshot: 04-train-minimalist-${VARIANT}
 - tapOn: { id: objective_type_BODY_PART }
 - tapOn: { id: format_CIRCUIT }
+- tapOn: { id: warmup_switch }
