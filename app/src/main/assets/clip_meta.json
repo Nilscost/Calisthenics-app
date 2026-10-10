@@ -149,6 +149,38 @@
   ],
   "sharedPoseWith": []
  },
+ "calf-raise": {
+  "kind": "rep",
+  "primary": [
+   "CALVES"
+  ],
+  "secondary": [
+   "GLUTES"
+  ],
+  "sharedPoseWith": []
+ },
+ "calf-raise-single": {
+  "kind": "rep",
+  "primary": [
+   "CALVES"
+  ],
+  "secondary": [
+   "GLUTES",
+   "ADDUCTORS"
+  ],
+  "sharedPoseWith": []
+ },
+ "calf-raise-single-loaded": {
+  "kind": "rep",
+  "primary": [
+   "CALVES"
+  ],
+  "secondary": [
+   "GLUTES",
+   "FOREARMS"
+  ],
+  "sharedPoseWith": []
+ },
  "chair-assisted-pullup": {
   "kind": "rep",
   "primary": [
@@ -1511,6 +1543,27 @@
   "secondary": [
    "REAR_DELTS",
    "HAMSTRINGS"
+  ],
+  "sharedPoseWith": []
+ },
+ "tibialis-raise": {
+  "kind": "rep",
+  "primary": [
+   "CALVES"
+  ],
+  "secondary": [
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
+ "tibialis-raise-single": {
+  "kind": "rep",
+  "primary": [
+   "CALVES"
+  ],
+  "secondary": [
+   "QUADS",
+   "GLUTES"
   ],
   "sharedPoseWith": []
  },

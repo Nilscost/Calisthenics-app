@@ -143,3 +143,9 @@ Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).
 | `stretch-rear-clasp` | weak | hands behind the back; the towel line is thin |
 | `stretch-cobra` | weak | prone press-up; the head sits low on the arms |
 | `stretch-wrist-biceps` | acceptable | palm on a wall, body turning away |
+
+## L13 additions (`frames-23-lower-legs.png`)
+| Id | Verdict | Note |
+|---|---|---|
+| `calf-raise`, `calf-raise-single`, `calf-raise-single-loaded` | weak | the heel lift is only a few centimetres and the foot is not drawn rising on its toes; the one-leg and the weight are visible |
+| `tibialis-raise`, `tibialis-raise-single` | weak | leaning against a wall with the feet forward reads as a wall sit; the toe lift cannot be seen from the side |

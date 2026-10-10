@@ -24,6 +24,7 @@ object TreeTabs {
         TreeTab("core", "Core", listOf("plank", "plank-tap", "dead-bug", "side-plank", "pallof", "carry", "legraise")),
         // V27: everything that needs dumbbells, a barbell or a weighted vest, kept apart so the other tabs stay narrow
         TreeTab("weights", "With weights", listOf("db-squat", "bb-squat", "vest-squat", "db-hinge", "bb-hinge", "db-bridge", "db-row", "vest-push", "vest-dip", "vest-pull")),
+        TreeTab("calves", "Lower legs", listOf("calf", "tibialis")),
         TreeTab(STRETCHES, "Stretches", emptyList()),
     )
     fun byId(id: String) = all.firstOrNull { it.id == id }

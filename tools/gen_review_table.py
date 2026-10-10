@@ -20,6 +20,7 @@ TABS = [  # keep in sync with TreeTabs
     ("Squat", ["squat", "lunge"]),
     ("Hips and back", ["bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide"]),
     ("Core", ["plank", "plank-tap", "dead-bug", "side-plank", "pallof", "carry", "legraise"]),
+    ("Lower legs", ["calf", "tibialis"]),
     ("With weights", ["db-squat", "bb-squat", "vest-squat", "db-hinge", "bb-hinge", "db-bridge", "db-row", "vest-push", "vest-dip", "vest-pull"]),
 ]
 

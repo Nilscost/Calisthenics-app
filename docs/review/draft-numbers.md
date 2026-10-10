@@ -139,6 +139,16 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Lying Leg Raise | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | V-Up |
 | V-Up | none | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Lying Leg Raise L3 | — (top) |
 
+## Lower legs
+
+| Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
+|---|---|---|---|---|---|---|---|---|
+| Calf Raise | none | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | - | Single-Leg Calf Raise (per side) |
+| Single-Leg Calf Raise (per side) | none | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | Calf Raise L4 | Loaded Single-Leg Calf Raise (per side) |
+| Loaded Single-Leg Calf Raise (per side) | weight | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | Single-Leg Calf Raise (per side) L4 | — (top) |
+| Wall Tibialis Raise | wall | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | - | Single-Leg Wall Tibialis Raise (per side) |
+| Single-Leg Wall Tibialis Raise (per side) | wall | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | Wall Tibialis Raise L4 | — (top) |
+
 ## With weights
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |

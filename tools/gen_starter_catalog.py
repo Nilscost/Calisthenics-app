@@ -869,6 +869,32 @@ strength("weighted-squat", "Weighted Squat", "vest-squat", ["SQUAT"], ["LOWER_BO
          ["Put on the vest, feet shoulder width apart.", "Sit down until the thighs are about parallel, chest up, then stand.", LOAD_WEIGHT],
          ["Chest up", "Heels down"], reps_tiers([8, 10, 12, 15, 20]), RR, LOW, eq=VEST, rank=15, prereq={"allOf": [[vt("squat-air", 5)]]})
 
+# =============================================================================================================
+# L13: calves and tibialis mini-ladder on the endurance profile E (15 to 25 reps); the loaded step uses the dumbbells ("weight" = the weight of each).
+# =============================================================================================================
+CALF_ST = ["stretch-calf-wall", "stretch-hamstring", "stretch-hip-flexor"]
+E_NOTE = "Endurance reps 15 to 25: 2-4 sets of 15-25 is sourced for the tibialis raise; the steps between are DRAFT."
+strength("calf-raise", "Calf Raise", "calf", ["CALF_RAISE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Stand tall on the balls of both feet (a step edge is fine, a wall or chair for balance).", "Rise as high as you can, pause for a moment at the top, then lower slowly past level if you are on a step.", "Keep the knees straight and the movement smooth."],
+         ["Rise tall", "Pause at the top", "Slow lowering"], reps_tiers([15, 18, 20, 22, 25]), [S_RR], CALF_ST, rank=10, nxt=["calf-raise-single"], tier_profile="E", tier_note=E_NOTE,
+         cautions=(CAUTION_STRENGTH, "Stop on pain in the Achilles tendon or the calf; build up slowly."))
+strength("calf-raise-single", "Single-Leg Calf Raise (per side)", "calf", ["CALF_RAISE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Stand on one foot (hold a wall or chair lightly for balance) and rise onto the ball of the foot.", "Pause at the top, lower slowly, finish a side, then switch.", "Keep the knee straight."],
+         ["Rise tall", "Slow lowering", "Light touch for balance"], reps_tiers([15, 18, 20, 22, 25]), [S_RR], CALF_ST, unilateral=True, rank=20, nxt=["calf-raise-single-loaded"], prereq={"allOf": [[vt("calf-raise", 4)]]}, tier_profile="E", tier_note=E_NOTE,
+         cautions=(CAUTION_STRENGTH, "Stop on pain in the Achilles tendon or the calf; build up slowly."))
+strength("calf-raise-single-loaded", "Loaded Single-Leg Calf Raise (per side)", "calf", ["CALF_RAISE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Hold a dumbbell in the hand on the working side and a wall or chair with the other, and stand on that foot.", "Rise onto the ball of the foot, pause, lower slowly; finish a side, then switch.", LOAD_WEIGHT],
+         ["Rise tall", "Slow lowering", "Weight at your side"], reps_tiers([15, 18, 20, 22, 25]), [S_RR], CALF_ST, eq=DB, unilateral=True, rank=30, prereq={"allOf": [[vt("calf-raise-single", 4)]]}, tier_profile="E", tier_note=E_NOTE,
+         cautions=(CAUTION_STRENGTH, "Stop on pain in the Achilles tendon or the calf; build up slowly."))
+strength("tibialis-raise", "Wall Tibialis Raise", "tibialis", ["CALF_RAISE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Lean your back against a wall with the feet a foot or so in front of it, legs straight.", "Lift the toes and the front of the feet toward the shins as high as you can, keeping the heels on the floor; pause, lower slowly.", "Move the feet further from the wall to make it harder."],
+         ["Heels stay down", "Toes up high", "Slow lowering"], reps_tiers([15, 18, 20, 22, 25]), [S_RR], CALF_ST, eq=[{"capabilities": ["wall"]}], rank=15, nxt=["tibialis-raise-single"], tier_profile="E", tier_note=E_NOTE,
+         cautions=(CAUTION_STRENGTH, "Stop on pain at the front of the shin."))
+strength("tibialis-raise-single", "Single-Leg Wall Tibialis Raise (per side)", "tibialis", ["CALF_RAISE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Lean against a wall with the feet in front, then lift one foot off the floor.", "Lift the toes of the standing foot toward the shin, pause, lower slowly; finish a side, then switch.", "Keep the heel on the floor."],
+         ["Heel stays down", "Toes up high", "Slow lowering"], reps_tiers([15, 18, 20, 22, 25]), [S_RR], CALF_ST, eq=[{"capabilities": ["wall"]}], unilateral=True, rank=25, prereq={"allOf": [[vt("tibialis-raise", 4)]]}, tier_profile="E", tier_note=E_NOTE,
+         cautions=(CAUTION_STRENGTH, "Stop on pain at the front of the shin."))
+
 # plank no longer a dead end: top of the plank ladder leads to the hollow hold
 for pol in policies:
     if pol["variationId"] == "plank": pol["nextVariationIds"] = ["hollow-tuck"]
@@ -958,6 +984,11 @@ M = {
     "inverted-row-wide": (["UPPER_BACK", "LATS"], ["BICEPS", "REAR_DELTS", "ABS", "FOREARMS"]),
     "towel-door-row": (["UPPER_BACK", "LATS"], ["BICEPS", "REAR_DELTS", "FOREARMS"]),
     "kettlebell-one-arm-row": (["LATS", "UPPER_BACK"], ["BICEPS", "REAR_DELTS", "FOREARMS"]),
+    "calf-raise": (["CALVES"], ["GLUTES"]),
+    "calf-raise-single": (["CALVES"], ["GLUTES", "ADDUCTORS"]),
+    "calf-raise-single-loaded": (["CALVES"], ["GLUTES", "FOREARMS"]),
+    "tibialis-raise": (["CALVES"], ["QUADS"]),
+    "tibialis-raise-single": (["CALVES"], ["QUADS", "GLUTES"]),
     "scapular-pull": (["LATS", "UPPER_BACK"], ["BICEPS", "FOREARMS", "REAR_DELTS"]),
     "arch-hang": (["LATS", "UPPER_BACK"], ["REAR_DELTS", "FOREARMS", "BICEPS"]),
     "pullup-negative": (["LATS", "BICEPS"], ["UPPER_BACK", "FOREARMS", "REAR_DELTS"]),

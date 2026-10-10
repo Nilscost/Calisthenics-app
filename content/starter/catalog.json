@@ -8100,6 +8100,263 @@
         "HAMSTRINGS",
         "CALVES"
       ]
+    },
+    {
+      "id": "calf-raise",
+      "familyId": "calf",
+      "name": "Calf Raise",
+      "patterns": [
+        "CALF_RAISE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Stand tall on the balls of both feet (a step edge is fine, a wall or chair for balance).",
+        "Rise as high as you can, pause for a moment at the top, then lower slowly past level if you are on a step.",
+        "Keep the knees straight and the movement smooth."
+      ],
+      "formCues": [
+        "Rise tall",
+        "Pause at the top",
+        "Slow lowering"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on pain in the Achilles tendon or the calf; build up slowly."
+      ],
+      "difficultyRank": 10,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-calf-raise",
+      "compatibleStretchIds": [
+        "stretch-calf-wall",
+        "stretch-hamstring",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "CALVES"
+      ],
+      "secondaryMuscles": [
+        "GLUTES"
+      ]
+    },
+    {
+      "id": "calf-raise-single",
+      "familyId": "calf",
+      "name": "Single-Leg Calf Raise (per side)",
+      "patterns": [
+        "CALF_RAISE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Stand on one foot (hold a wall or chair lightly for balance) and rise onto the ball of the foot.",
+        "Pause at the top, lower slowly, finish a side, then switch.",
+        "Keep the knee straight."
+      ],
+      "formCues": [
+        "Rise tall",
+        "Slow lowering",
+        "Light touch for balance"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on pain in the Achilles tendon or the calf; build up slowly."
+      ],
+      "difficultyRank": 20,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-calf-raise-single",
+      "compatibleStretchIds": [
+        "stretch-calf-wall",
+        "stretch-hamstring",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "CALVES"
+      ],
+      "secondaryMuscles": [
+        "GLUTES",
+        "ADDUCTORS"
+      ]
+    },
+    {
+      "id": "calf-raise-single-loaded",
+      "familyId": "calf",
+      "name": "Loaded Single-Leg Calf Raise (per side)",
+      "patterns": [
+        "CALF_RAISE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "weight"
+            }
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Hold a dumbbell in the hand on the working side and a wall or chair with the other, and stand on that foot.",
+        "Rise onto the ball of the foot, pause, lower slowly; finish a side, then switch.",
+        "Weight: use a load you can move with a clean position on every rep. The app counts levels per weight: set a heavier weight in your equipment profile and this exercise starts again at level 1, your stars at the old weight are kept."
+      ],
+      "formCues": [
+        "Rise tall",
+        "Slow lowering",
+        "Weight at your side"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on pain in the Achilles tendon or the calf; build up slowly."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-calf-raise-single-loaded",
+      "compatibleStretchIds": [
+        "stretch-calf-wall",
+        "stretch-hamstring",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "CALVES"
+      ],
+      "secondaryMuscles": [
+        "GLUTES",
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "tibialis-raise",
+      "familyId": "tibialis",
+      "name": "Wall Tibialis Raise",
+      "patterns": [
+        "CALF_RAISE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "capabilities": [
+            "wall"
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Lean your back against a wall with the feet a foot or so in front of it, legs straight.",
+        "Lift the toes and the front of the feet toward the shins as high as you can, keeping the heels on the floor; pause, lower slowly.",
+        "Move the feet further from the wall to make it harder."
+      ],
+      "formCues": [
+        "Heels stay down",
+        "Toes up high",
+        "Slow lowering"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on pain at the front of the shin."
+      ],
+      "difficultyRank": 15,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-tibialis-raise",
+      "compatibleStretchIds": [
+        "stretch-calf-wall",
+        "stretch-hamstring",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "CALVES"
+      ],
+      "secondaryMuscles": [
+        "QUADS"
+      ]
+    },
+    {
+      "id": "tibialis-raise-single",
+      "familyId": "tibialis",
+      "name": "Single-Leg Wall Tibialis Raise (per side)",
+      "patterns": [
+        "CALF_RAISE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "capabilities": [
+            "wall"
+          ]
+        }
+      ],
+      "unilateral": true,
+      "position": "standing",
+      "instructions": [
+        "Lean against a wall with the feet in front, then lift one foot off the floor.",
+        "Lift the toes of the standing foot toward the shin, pause, lower slowly; finish a side, then switch.",
+        "Keep the heel on the floor."
+      ],
+      "formCues": [
+        "Heel stays down",
+        "Toes up high",
+        "Slow lowering"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on pain at the front of the shin."
+      ],
+      "difficultyRank": 25,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-tibialis-raise-single",
+      "compatibleStretchIds": [
+        "stretch-calf-wall",
+        "stretch-hamstring",
+        "stretch-hip-flexor"
+      ],
+      "primaryMuscles": [
+        "CALVES"
+      ],
+      "secondaryMuscles": [
+        "QUADS",
+        "GLUTES"
+      ]
     }
   ],
   "policies": [
@@ -16180,6 +16437,346 @@
           ]
         ]
       }
+    },
+    {
+      "id": "pol-calf-raise",
+      "variationId": "calf-raise",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 18
+          },
+          "workWindowSeconds": 125,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 20
+          },
+          "workWindowSeconds": 135,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 22
+          },
+          "workWindowSeconds": 145,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 25
+          },
+          "workWindowSeconds": 165,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "calf-raise-single"
+      ],
+      "tierProfile": "E",
+      "tierNote": "Endurance reps 15 to 25: 2-4 sets of 15-25 is sourced for the tibialis raise; the steps between are DRAFT."
+    },
+    {
+      "id": "pol-calf-raise-single",
+      "variationId": "calf-raise-single",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 18
+          },
+          "workWindowSeconds": 125,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 20
+          },
+          "workWindowSeconds": 135,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 22
+          },
+          "workWindowSeconds": 145,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 25
+          },
+          "workWindowSeconds": 165,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "calf-raise-single-loaded"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "calf-raise",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      },
+      "tierProfile": "E",
+      "tierNote": "Endurance reps 15 to 25: 2-4 sets of 15-25 is sourced for the tibialis raise; the steps between are DRAFT."
+    },
+    {
+      "id": "pol-calf-raise-single-loaded",
+      "variationId": "calf-raise-single-loaded",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 18
+          },
+          "workWindowSeconds": 125,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 20
+          },
+          "workWindowSeconds": 135,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 22
+          },
+          "workWindowSeconds": 145,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 25
+          },
+          "workWindowSeconds": 165,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "calf-raise-single",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      },
+      "tierProfile": "E",
+      "tierNote": "Endurance reps 15 to 25: 2-4 sets of 15-25 is sourced for the tibialis raise; the steps between are DRAFT."
+    },
+    {
+      "id": "pol-tibialis-raise",
+      "variationId": "tibialis-raise",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 18
+          },
+          "workWindowSeconds": 125,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 20
+          },
+          "workWindowSeconds": 135,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 22
+          },
+          "workWindowSeconds": 145,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 25
+          },
+          "workWindowSeconds": 165,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "tibialis-raise-single"
+      ],
+      "tierProfile": "E",
+      "tierNote": "Endurance reps 15 to 25: 2-4 sets of 15-25 is sourced for the tibialis raise; the steps between are DRAFT."
+    },
+    {
+      "id": "pol-tibialis-raise-single",
+      "variationId": "tibialis-raise-single",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 15
+          },
+          "workWindowSeconds": 105,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 18
+          },
+          "workWindowSeconds": 125,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 20
+          },
+          "workWindowSeconds": 135,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 22
+          },
+          "workWindowSeconds": 145,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 25
+          },
+          "workWindowSeconds": 165,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "tibialis-raise",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      },
+      "tierProfile": "E",
+      "tierNote": "Endurance reps 15 to 25: 2-4 sets of 15-25 is sourced for the tibialis raise; the steps between are DRAFT."
     }
   ],
   "skillNodes": [

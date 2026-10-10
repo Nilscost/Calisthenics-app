@@ -81,6 +81,14 @@ appId: app.calisthenics.personal
       - swipe: { start: "10%, 20%", end: "90%, 20%" }
 - tapOn: { id: tab_chip_row }
 - takeScreenshot: 07f-progress-row-${VARIANT}
+# L13: the Lower legs tab
+- repeat:
+    while: { notVisible: { id: tab_chip_calves } }
+    times: 8
+    commands:
+      - swipe: { start: "90%, 20%", end: "10%, 20%" }
+- tapOn: { id: tab_chip_calves }
+- takeScreenshot: 07g-progress-lower-legs-${VARIANT}
 # V07: the stretch library tab and one new stretch (sheet with clip, steps and cautions).
 - repeat:
     while: { notVisible: { id: tab_chip_stretches } }

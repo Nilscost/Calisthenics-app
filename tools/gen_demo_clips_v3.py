@@ -609,6 +609,30 @@ def st_shoulder_backbend(p):
 
 NEW.update({"stretch-shoulder-backbend": (st_shoulder_backbend, "hold"), "stretch-wrist-biceps": (st_wrist_biceps, "hold"), "stretch-butterfly": (st_butterfly, "hold"), "stretch-pancake": (st_pancake, "hold"), "stretch-pike-one-leg": (st_pike_one_leg, "hold"),
             "stretch-supine-twist": (st_supine_twist, "hold"), "stretch-rear-clasp": (st_rear_clasp, "hold"), "stretch-cobra": (st_cobra, "hold")})
+
+# ----------------------------------------------------------------------------------------------- L13 poses (calves and tibialis)
+def calf_raise(p):
+    s = rep(p, 1); lift = 14 * s; hip = (150, 124 + lift)
+    return dict(hip=hip, a=90, arms=[("ik", (hip[0] + 20, hip[1] - 30), (0, -1))] * 2, legs=[("ik", (150, 46 + lift), (1, 0))] * 2, scene=[("rect", (196, 44, 204, 190), v1.GRD)])
+
+def calf_raise_single(p):
+    s = rep(p, 1); lift = 14 * s; hip = (150, 124 + lift)
+    return dict(hip=hip, a=90, arms=[("ik", (196, 150), (0, -1))] * 2, legs=[("ik", (150, 46 + lift), (1, 0)), ("ik", (126, 84 + lift), (-1, 0))], scene=[("rect", (196, 44, 204, 190), v1.GRD)])
+
+def calf_raise_loaded(p):
+    d = calf_raise_single(p); hand = (d["hip"][0] - 4, d["hip"][1] - 34)
+    d["arms"] = [("ik", (196, 150), (0, -1)), ("ik", hand, (0, -1))]; d["props"] = [("line", (hand[0] - 7, hand[1] - 4), (hand[0] + 7, hand[1] - 4), v1.PROP)]; return d
+
+def tibialis_raise(p):
+    s = rep(p, 1); hip = (120, 96); a = 118
+    return dict(hip=hip, a=a, head_off=-4, arms=[("ik", (hip[0] - 20, hip[1] - 8), (0, 1))] * 2, legs=[("ik", (182, 46 + 8 * s), (0, 1))] * 2, scene=[("rect", (66, 40, 76, 220), v1.GRD)])
+
+def tibialis_raise_single(p):
+    s = rep(p, 1); d = tibialis_raise(p); hip = d["hip"]
+    d["legs"] = [("ik", (182, 46 + 8 * s), (0, 1)), ("ik", (hip[0] + 56, 76), (0, 1))]; return d
+
+NEW.update({"calf-raise": (calf_raise, "rep"), "calf-raise-single": (calf_raise_single, "rep"), "calf-raise-single-loaded": (calf_raise_loaded, "rep"),
+            "tibialis-raise": (tibialis_raise, "rep"), "tibialis-raise-single": (tibialis_raise_single, "rep")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)
