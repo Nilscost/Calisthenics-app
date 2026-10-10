@@ -87,3 +87,11 @@ Pose uniqueness check passes (`--check`: 95 poses; shared pairs declared).
 |---|---|---|
 | `pushup-wall` | good | standing against a wall, the chest travels toward it, straight body |
 | `pushup-incline-high` | good | hands on a table-height block, the same body line as the low incline but a higher support |
+
+## L03 additions (`frames-16-pullup-path.png`)
+| Id | Verdict | Note |
+|---|---|---|
+| `dead-hang` | acceptable | straight-arm hang with a small sway; reads as a hang |
+| `flexed-arm-hang` | acceptable | the top of a pull-up held; legs bent behind |
+| `chair-assisted-pullup` | good | a chair under the feet, the body rises with the arms and the legs help |
+| `chinup-full` | weak | the same movement as the pull-up with a little more lean; the underhand grip is not drawn (cue text carries it) |

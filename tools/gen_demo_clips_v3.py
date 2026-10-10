@@ -428,6 +428,28 @@ def pushup_incline_high(p):
     return v1.plank_like((95, 46), 144, (182, 134), 186, 156, incline_bench=(168, 40, 232, 130))(p)
 
 NEW.update({"pushup-wall": (pushup_wall, "rep"), "pushup-incline-high": (pushup_incline_high, "rep")})
+
+# ----------------------------------------------------------------------------------------------- L03 poses (pull-up path)
+def dead_hang(p):
+    sway = 1.2 * math.sin(2 * math.pi * p); sx = 192; sy = 216 + sway; hip = (sx - 2, sy - L_T)
+    return dict(hip=hip, a=90, head_off=-2, arms=[("ik", (200, BAR_Y), (-1, -0.2))] * 2,
+                legs=[("ik", (hip[0] - 4, hip[1] - 84), (1, 0))] * 2, scene=[("bar", 200, BAR_Y)])
+
+def flexed_arm_hang(p):
+    b = 1.0 * math.sin(2 * math.pi * p); d = pull_hang(218, 274, 6)(0.25)    # top of a pull-up, held
+    d["hip"] = (d["hip"][0], d["hip"][1] + b); return d
+
+def chair_assisted_pullup(p):
+    s = rep(p, 1); sx = 192; sy = lerp(222, 272, s); a = 90 + 4 * s
+    hip = (sx - L_T * math.cos(math.radians(a)), sy - L_T * math.sin(math.radians(a)))
+    return dict(hip=hip, a=a, head_off=-5 * s, arms=[("ik", (200, BAR_Y), (-1, -0.2))] * 2,
+                legs=[("ik", (hip[0] - 30, max(46 + 30, hip[1] - 70)), (1, 0)), ("ik", (hip[0] - 26, max(46 + 30, hip[1] - 66)), (1, 0))],
+                scene=[("bar", 200, BAR_Y), ("rect", (120, 40, 176, 76), v1.GRD)])
+
+def chinup(p):
+    return pull_hang(218, 280, 12)(p)
+
+NEW.update({"dead-hang": (dead_hang, "hold"), "flexed-arm-hang": (flexed_arm_hang, "hold"), "chair-assisted-pullup": (chair_assisted_pullup, "rep"), "chinup-full": (chinup, "rep")})
 POSES = dict(v1.POSES); POSES.update(NEW)
 POSES["warmup-dead-bug"] = (v1.POSES["dead-bug"][0], "rep")
 # ----------------------------------------------------------------------------------------------- V06b: own poses (K2, K5)

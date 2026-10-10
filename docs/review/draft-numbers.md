@@ -38,11 +38,15 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
+| Dead Hang | pullup-bar | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | - | Scapular Pull |
 | Scapular Pull | pullup-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | - | Arch Hang |
-| Arch Hang | pullup-bar | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Scapular Pull L4 | Negative Pull-Up |
+| Arch Hang | pullup-bar | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Scapular Pull L4 | Negative Pull-Up, Chair-Assisted Pull-Up, Flexed-Arm Hang |
 | Band-Assisted Pull-Up | pullup-bar + resistance-band | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | - | Pull-Up |
+| Chair-Assisted Pull-Up | pullup-bar + chair* | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Arch Hang L3 | Pull-Up |
 | Negative Pull-Up | pullup-bar | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Arch Hang L4 | Pull-Up |
-| Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Band-Assisted Pull-Up L4 or Negative Pull-Up L4 | Chest-to-Bar Pull-Up |
+| Flexed-Arm Hang | pullup-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 15s / 18 / 60 | Arch Hang L3 | Pull-Up |
+| Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Band-Assisted Pull-Up L4 or Negative Pull-Up L4 or Chair-Assisted Pull-Up L4 or Flexed-Arm Hang L4 | Chest-to-Bar Pull-Up |
+| Chin-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Band-Assisted Pull-Up L4 or Negative Pull-Up L4 or Chair-Assisted Pull-Up L4 or Flexed-Arm Hang L4 | — (top) |
 | Chest-to-Bar Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Pull-Up L4 | Bar Muscle-Up |
 | Bar Muscle-Up | pullup-bar + high-bar | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Chest-to-Bar Pull-Up L4 | — (top) |
 | Tuck Front Lever | pullup-bar + high-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Pull-Up L3 and Hollow Body Hold L3 | Advanced Tuck Front Lever |

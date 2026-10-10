@@ -111,6 +111,32 @@
   ],
   "sharedPoseWith": []
  },
+ "chair-assisted-pullup": {
+  "kind": "rep",
+  "primary": [
+   "LATS",
+   "BICEPS"
+  ],
+  "secondary": [
+   "UPPER_BACK",
+   "FOREARMS",
+   "QUADS"
+  ],
+  "sharedPoseWith": []
+ },
+ "chinup-full": {
+  "kind": "rep",
+  "primary": [
+   "BICEPS",
+   "LATS"
+  ],
+  "secondary": [
+   "UPPER_BACK",
+   "FOREARMS",
+   "REAR_DELTS"
+  ],
+  "sharedPoseWith": []
+ },
  "copenhagen-side-plank": {
   "kind": "hold",
   "primary": [
@@ -135,6 +161,18 @@
   "sharedPoseWith": [
    "warmup-dead-bug"
   ]
+ },
+ "dead-hang": {
+  "kind": "hold",
+  "primary": [
+   "LATS",
+   "FOREARMS"
+  ],
+  "secondary": [
+   "UPPER_BACK",
+   "BICEPS"
+  ],
+  "sharedPoseWith": []
  },
  "dip-negative": {
   "kind": "rep",
@@ -211,6 +249,18 @@
    "LOWER_BACK",
    "FOREARMS",
    "CALVES"
+  ],
+  "sharedPoseWith": []
+ },
+ "flexed-arm-hang": {
+  "kind": "hold",
+  "primary": [
+   "BICEPS",
+   "LATS"
+  ],
+  "secondary": [
+   "UPPER_BACK",
+   "FOREARMS"
   ],
   "sharedPoseWith": []
  },

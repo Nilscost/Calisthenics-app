@@ -5220,6 +5220,66 @@
       ]
     },
     {
+      "id": "dead-hang",
+      "familyId": "pullup",
+      "name": "Dead Hang",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Hang from a bar with straight arms, hands a little wider than the shoulders, feet off the floor (or just touching it).",
+        "Let the shoulders stay active: do not shrug up to the ears and do not swing.",
+        "Hold, then step down. Use a band or a chair under the feet to take weight off if you need to."
+      ],
+      "formCues": [
+        "Straight arms",
+        "Active shoulders",
+        "Breathe steadily"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on shoulder pain or if the grip is failing; step down rather than drop."
+      ],
+      "difficultyRank": 2,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-dead-hang",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "FOREARMS"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK",
+        "BICEPS"
+      ]
+    },
+    {
       "id": "scapular-pull",
       "familyId": "pullup",
       "name": "Scapular Pull",
@@ -5392,6 +5452,194 @@
       "primaryMuscles": [
         "LATS",
         "BICEPS"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK",
+        "FOREARMS",
+        "REAR_DELTS"
+      ]
+    },
+    {
+      "id": "flexed-arm-hang",
+      "familyId": "pullup",
+      "name": "Flexed-Arm Hang",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Step or jump up so the chin is over the bar, arms bent, elbows close to the body.",
+        "Hold the chin above the bar without swinging, breathing steadily.",
+        "Lower slowly to straight arms when the hold ends."
+      ],
+      "formCues": [
+        "Chin over the bar",
+        "Elbows in",
+        "No swinging"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Use a stable chair or step to get up; stop on shoulder or elbow pain."
+      ],
+      "difficultyRank": 26,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-flexed-arm-hang",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "BICEPS",
+        "LATS"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK",
+        "FOREARMS"
+      ]
+    },
+    {
+      "id": "chair-assisted-pullup",
+      "familyId": "pullup",
+      "name": "Chair-Assisted Pull-Up",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            },
+            {
+              "equipmentId": "chair",
+              "suitability": [
+                "stable"
+              ]
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Stand a sturdy chair under the bar and put one or both feet on it, so the legs take part of the weight.",
+        "Pull the chin over the bar with the arms first; use the legs only as much as you must.",
+        "Lower slowly to straight arms. Use less leg over the weeks."
+      ],
+      "formCues": [
+        "Arms do the work",
+        "Slow lowering",
+        "Less leg each week"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Check that the chair is stable and cannot slide; stop on shoulder or elbow pain."
+      ],
+      "difficultyRank": 24,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-chair-assisted-pullup",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "LATS",
+        "BICEPS"
+      ],
+      "secondaryMuscles": [
+        "UPPER_BACK",
+        "FOREARMS",
+        "QUADS"
+      ]
+    },
+    {
+      "id": "chinup-full",
+      "familyId": "pullup",
+      "name": "Chin-Up",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Hang from the bar with the palms facing you, hands about shoulder width.",
+        "Pull until the chin is over the bar, then lower slowly to straight arms.",
+        "A parallel option to the pull-up: the wiki treats them as either-or; the grip changes the load a little toward the biceps."
+      ],
+      "formCues": [
+        "Straight arms at the bottom",
+        "Chin over the bar",
+        "No swinging"
+      ],
+      "cautions": [
+        "Stop the set on sharp or joint pain; do not push through it.",
+        "Stop on elbow pain."
+      ],
+      "difficultyRank": 30,
+      "sourceIds": [
+        "never-gymless-enamait",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-chinup-full",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall"
+      ],
+      "primaryMuscles": [
+        "BICEPS",
+        "LATS"
       ],
       "secondaryMuscles": [
         "UPPER_BACK",
@@ -7943,6 +8191,18 @@
             {
               "variationTierMet": {
                 "variationId": "pullup-negative",
+                "tier": 4
+              }
+            },
+            {
+              "variationTierMet": {
+                "variationId": "chair-assisted-pullup",
+                "tier": 4
+              }
+            },
+            {
+              "variationTierMet": {
+                "variationId": "flexed-arm-hang",
                 "tier": 4
               }
             }
@@ -11378,6 +11638,67 @@
       }
     },
     {
+      "id": "pol-dead-hang",
+      "variationId": "dead-hang",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 30
+          },
+          "workWindowSeconds": 33,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 40
+          },
+          "workWindowSeconds": 43,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "scapular-pull"
+      ]
+    },
+    {
       "id": "pol-scapular-pull",
       "variationId": "scapular-pull",
       "version": 1,
@@ -11494,7 +11815,9 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "pullup-negative"
+        "pullup-negative",
+        "chair-assisted-pullup",
+        "flexed-arm-hang"
       ],
       "prerequisiteRule": {
         "allOf": [
@@ -11574,6 +11897,240 @@
             {
               "variationTierMet": {
                 "variationId": "arch-hang",
+                "tier": 4
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-flexed-arm-hang",
+      "variationId": "flexed-arm-hang",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 3
+          },
+          "workWindowSeconds": 6,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 8,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 8
+          },
+          "workWindowSeconds": 11,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 12
+          },
+          "workWindowSeconds": 15,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pullup-full"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "arch-hang",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-chair-assisted-pullup",
+      "variationId": "chair-assisted-pullup",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 10
+          },
+          "workWindowSeconds": 75,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "nextVariationIds": [
+        "pullup-full"
+      ],
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "arch-hang",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-chinup-full",
+      "variationId": "chinup-full",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 1
+          },
+          "workWindowSeconds": 30,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "never-gymless-enamait",
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "pullup-band-assisted",
+                "tier": 4
+              }
+            },
+            {
+              "variationTierMet": {
+                "variationId": "pullup-negative",
+                "tier": 4
+              }
+            },
+            {
+              "variationTierMet": {
+                "variationId": "chair-assisted-pullup",
+                "tier": 4
+              }
+            },
+            {
+              "variationTierMet": {
+                "variationId": "flexed-arm-hang",
                 "tier": 4
               }
             }
@@ -12460,6 +13017,7 @@
       "ladder": [
         "row-band",
         "pullup-band-assisted",
+        "flexed-arm-hang",
         "pullup-full"
       ],
       "anchorVariationId": "pullup-band-assisted"

@@ -647,6 +647,11 @@ strength("walking-lunge", "Walking Lunge", "lunge", ["LUNGE"], ["LOWER_BODY"], "
 # =============================================================================================================
 # V25 (C-E): the pull-up path without a band, from the r/bodyweightfitness wiki (live check 2026-10-09): scapular pulls -> arch hangs -> negatives -> pull-ups.
 # =============================================================================================================
+strength("dead-hang", "Dead Hang", "pullup", ["PULL_VERTICAL"], ["UPPER_BODY"], "HOLD", "hang",
+         ["Hang from a bar with straight arms, hands a little wider than the shoulders, feet off the floor (or just touching it).", "Let the shoulders stay active: do not shrug up to the ears and do not swing.", "Hold, then step down. Use a band or a chair under the feet to take weight off if you need to."],
+         ["Straight arms", "Active shoulders", "Breathe steadily"],
+         hold_tiers([10, 15, 20, 30, 40]), [S_NG, S_RR], UP, eq=BAR, rank=2, nxt=["scapular-pull"],
+         cautions=(CAUTION_STRENGTH, "Stop on shoulder pain or if the grip is failing; step down rather than drop."))
 strength("scapular-pull", "Scapular Pull", "pullup", ["PULL_VERTICAL"], ["UPPER_BODY"], "REPS", "hang",
          ["Hang from a bar with straight arms (feet may rest on the floor or a chair to take weight off).", "Without bending the elbows, pull the shoulder blades down and together so the body rises a little.",
           "Hold for 3-5 seconds at the top, then lower slowly. Use a band or your feet to help if you cannot do it yet."],
@@ -657,7 +662,7 @@ strength("arch-hang", "Arch Hang", "pullup", ["PULL_VERTICAL"], ["UPPER_BODY"], 
          ["Hang from a bar and pull the shoulder blades down and back, so the chest comes forward and the back arches a little.", "Work toward the arms reaching about 90 degrees at the shoulder.",
           "Hold, then relax; feet may take weight off at first."],
          ["Straight arms", "Chest forward", "Shoulders away from the ears"],
-         hold_tiers([5, 10, 15, 20, 30]), RR, UP, eq=BAR, rank=10, nxt=["pullup-negative"], prereq={"allOf": [[vt("scapular-pull", 4)]]},
+         hold_tiers([5, 10, 15, 20, 30]), RR, UP, eq=BAR, rank=10, nxt=["pullup-negative", "chair-assisted-pullup", "flexed-arm-hang"], prereq={"allOf": [[vt("scapular-pull", 4)]]},
          cautions=(CAUTION_STRENGTH, "Stop on shoulder pain; take weight off with the feet if the grip tires."))
 strength("pullup-negative", "Negative Pull-Up", "pullup", ["PULL_VERTICAL"], ["UPPER_BODY"], "REPS", "hang",
          ["Step or jump up so the chin is over the bar, arms bent.", "Lower yourself as slowly as you can, about 3-5 seconds at first and working toward 10 seconds, to straight arms.",
@@ -665,8 +670,23 @@ strength("pullup-negative", "Negative Pull-Up", "pullup", ["PULL_VERTICAL"], ["U
          ["Slow lowering", "Chin over the bar to start", "Shoulders stay active"],
          reps_tiers([3, 4, 5, 6, 8]), RR, UP, eq=BAR, rank=25, nxt=["pullup-full"], prereq={"allOf": [[vt("arch-hang", 4)]]},
          cautions=(CAUTION_STRENGTH, "Stop on shoulder or elbow pain; use a stable chair or step to get up."))
+strength("flexed-arm-hang", "Flexed-Arm Hang", "pullup", ["PULL_VERTICAL"], ["UPPER_BODY"], "HOLD", "hang",
+         ["Step or jump up so the chin is over the bar, arms bent, elbows close to the body.", "Hold the chin above the bar without swinging, breathing steadily.", "Lower slowly to straight arms when the hold ends."],
+         ["Chin over the bar", "Elbows in", "No swinging"],
+         hold_tiers([3, 5, 8, 12, 15]), [S_NG, S_RR], UP, eq=BAR, rank=26, nxt=["pullup-full"], prereq={"allOf": [[vt("arch-hang", 3)]]},
+         cautions=(CAUTION_STRENGTH, "Use a stable chair or step to get up; stop on shoulder or elbow pain."))
+strength("chair-assisted-pullup", "Chair-Assisted Pull-Up", "pullup", ["PULL_VERTICAL"], ["UPPER_BODY"], "REPS", "hang",
+         ["Stand a sturdy chair under the bar and put one or both feet on it, so the legs take part of the weight.", "Pull the chin over the bar with the arms first; use the legs only as much as you must.", "Lower slowly to straight arms. Use less leg over the weeks."],
+         ["Arms do the work", "Slow lowering", "Less leg each week"],
+         reps_tiers([3, 5, 6, 8, 10]), [S_NG, S_RR], UP, eq=[{"needs": [need("pullup-bar"), need("chair", suitability=["stable"])]}], rank=24, nxt=["pullup-full"], prereq={"allOf": [[vt("arch-hang", 3)]]},
+         cautions=(CAUTION_STRENGTH, "Check that the chair is stable and cannot slide; stop on shoulder or elbow pain."))
+strength("chinup-full", "Chin-Up", "pullup", ["PULL_VERTICAL"], ["UPPER_BODY"], "REPS", "hang",
+         ["Hang from the bar with the palms facing you, hands about shoulder width.", "Pull until the chin is over the bar, then lower slowly to straight arms.", "A parallel option to the pull-up: the wiki treats them as either-or; the grip changes the load a little toward the biceps."],
+         ["Straight arms at the bottom", "Chin over the bar", "No swinging"],
+         reps_tiers([1, 3, 5, 6, 8]), [S_NG, S_RR], UP, eq=BAR, rank=30, prereq={"allOf": [[vt("pullup-band-assisted", 4), vt("pullup-negative", 4), vt("chair-assisted-pullup", 4), vt("flexed-arm-hang", 4)]]},
+         cautions=(CAUTION_STRENGTH, "Stop on elbow pain."))
 for pol in policies:
-    if pol["variationId"] == "pullup-full": pol["prerequisiteRule"] = {"allOf": [[vt("pullup-band-assisted", 4), vt("pullup-negative", 4)]]}   # the band path or the negative path
+    if pol["variationId"] == "pullup-full": pol["prerequisiteRule"] = {"allOf": [[vt("pullup-band-assisted", 4), vt("pullup-negative", 4), vt("chair-assisted-pullup", 4), vt("flexed-arm-hang", 4)]]}   # the band path, the negative path, or the chair / hang options
 
 
 # =============================================================================================================
@@ -790,6 +810,10 @@ M = {
     "planche-lean": (["FRONT_DELTS", "CHEST"], ["TRICEPS", "ABS", "FOREARMS"]),
     "planche-tuck": (["FRONT_DELTS", "CHEST"], ["TRICEPS", "ABS", "FOREARMS"]),
     "planche-adv-tuck": (["FRONT_DELTS", "CHEST"], ["TRICEPS", "ABS", "FOREARMS"]),
+    "dead-hang": (["LATS", "FOREARMS"], ["UPPER_BACK", "BICEPS"]),
+    "flexed-arm-hang": (["BICEPS", "LATS"], ["UPPER_BACK", "FOREARMS"]),
+    "chair-assisted-pullup": (["LATS", "BICEPS"], ["UPPER_BACK", "FOREARMS", "QUADS"]),
+    "chinup-full": (["BICEPS", "LATS"], ["UPPER_BACK", "FOREARMS", "REAR_DELTS"]),
     "scapular-pull": (["LATS", "UPPER_BACK"], ["BICEPS", "FOREARMS", "REAR_DELTS"]),
     "arch-hang": (["LATS", "UPPER_BACK"], ["REAR_DELTS", "FOREARMS", "BICEPS"]),
     "pullup-negative": (["LATS", "BICEPS"], ["UPPER_BACK", "FOREARMS", "REAR_DELTS"]),
@@ -848,7 +872,7 @@ edges = [
 onboarding_families = [
     {"id": "pushup", "title": "Push-up", "ladder": ["pushup-incline", "pushup-knee", "pushup-standard", "pushup-feet-elevated"], "anchorVariationId": "pushup-standard"},
     {"id": "squat", "title": "Squat", "ladder": ["squat-air", "split-squat", "split-squat-bulgarian"], "anchorVariationId": "split-squat"},
-    {"id": "pull", "title": "Pull and row", "ladder": ["row-band", "pullup-band-assisted", "pullup-full"], "anchorVariationId": "pullup-band-assisted"},
+    {"id": "pull", "title": "Pull and row", "ladder": ["row-band", "pullup-band-assisted", "flexed-arm-hang", "pullup-full"], "anchorVariationId": "pullup-band-assisted"},
     {"id": "core", "title": "Core", "ladder": ["plank", "hollow-hold"], "anchorVariationId": "plank"},
     {"id": "hinge", "title": "Hips and back", "ladder": ["glute-bridge", "bridge-single-leg"], "anchorVariationId": "glute-bridge"},
     {"id": "shoulders", "title": "Shoulders", "ladder": ["pike-pushup", "pike-pushup-elevated"], "anchorVariationId": "pike-pushup", "requiresPushupAtLeast": "pushup-standard"},

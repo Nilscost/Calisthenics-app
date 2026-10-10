@@ -33,7 +33,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(88, strength.size) // L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
+        assertEquals(92, strength.size) // L03: +4 (dead hang, flexed-arm hang, chair-assisted pull-up, chin-up); L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
         assertEquals(25, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
@@ -64,7 +64,7 @@ class StarterCatalogTest {
         "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing-one-arm",
         // V21b: ends of the RR paths and single exercises of the ready-made routines
         "dip-parallel", "nordic-curl", "slide-single-leg", "pallof-press", "reverse-hyperextension", "plank-shoulder-tap", "walking-lunge",
-        "squat-shrimp" /* V25: the shrimp path is an alternative after the Bulgarian split squat */,
+        "squat-shrimp" /* V25: the shrimp path is an alternative after the Bulgarian split squat */, "chinup-full" /* L03: the chin-up is a parallel option to the pull-up */,
         // V27: extra-equipment exercises (dumbbells, barbell, vest)
         "goblet-squat", "dumbbell-single-leg-rdl", "weighted-glute-bridge", "dumbbell-row", "barbell-squat", "barbell-rdl", "weighted-pushup", "weighted-pullup", "weighted-dip", "weighted-squat")
 
@@ -109,7 +109,7 @@ class StarterCatalogTest {
         // every exercise with a prerequisite is reachable as someone's successor (no orphan tree nodes)
         // Entry points of the skill chains are reached by choosing a goal, not by automatic progression.
         val goalEntries = setOf("pike-pushup", "planche-lean", "front-lever-tuck", "plank-shoulder-tap", "walking-lunge" /* Minimalist circuit steps */,
-            "goblet-squat", "dumbbell-rdl", "weighted-glute-bridge", "dumbbell-row", "barbell-squat", "barbell-rdl", "weighted-pushup", "weighted-pullup", "weighted-dip", "weighted-squat" /* V27: unlocked by owning the equipment */)
+            "goblet-squat", "dumbbell-rdl", "weighted-glute-bridge", "dumbbell-row", "barbell-squat", "barbell-rdl", "weighted-pushup", "weighted-pullup", "weighted-dip", "weighted-squat" /* V27: unlocked by owning the equipment */, "chinup-full")
         for (p in catalog.policies.filter { it.prerequisiteRule.allOf.isNotEmpty() && it.variationId !in goalEntries })
             assertTrue("${p.variationId} unreachable", p.variationId in succ)
     }
@@ -173,8 +173,8 @@ class StarterCatalogTest {
         fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
         fun prereq(id: String) = catalog.policyForVariation(id)!!.prerequisiteRule.allOf.map { g -> g.mapNotNull { it.variationTierMet?.variationId } }
         // pull-up path without a band (wiki main path); the band path stays an alternative way to the full pull-up
-        assertEquals(listOf("arch-hang"), next("scapular-pull")); assertEquals(listOf("pullup-negative"), next("arch-hang")); assertEquals(listOf("pullup-full"), next("pullup-negative"))
-        assertEquals(listOf(listOf("pullup-band-assisted", "pullup-negative")), prereq("pullup-full"))
+        assertEquals(listOf("arch-hang"), next("scapular-pull")); assertEquals(listOf("pullup-negative", "chair-assisted-pullup", "flexed-arm-hang"), next("arch-hang")); assertEquals(listOf("pullup-full"), next("pullup-negative"))
+        assertEquals(listOf(listOf("pullup-band-assisted", "pullup-negative", "chair-assisted-pullup", "flexed-arm-hang")), prereq("pullup-full"))
         for (id in listOf("scapular-pull", "arch-hang", "pullup-negative")) assertEquals(id, setOf("pullup-bar"), catalog.variation(id)!!.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet())
         // tuck L-sit sits between the hollow hold and the floor L-sit
         assertEquals(listOf("l-sit-tuck"), next("hollow-hold")); assertEquals(listOf("l-sit-floor"), next("l-sit-tuck")); assertEquals(listOf(listOf("l-sit-tuck")), prereq("l-sit-floor"))
@@ -195,5 +195,18 @@ class StarterCatalogTest {
         assertEquals(listOf(listOf("pushup-diamond"), listOf("pushup-feet-elevated")), prereq("pushup-archer"))   // both siblings
         val rank = { id: String -> catalog.variation(id)!!.difficultyRank }
         assertTrue(rank("pushup-wall") < rank("pushup-incline-high") && rank("pushup-incline-high") < rank("pushup-incline") && rank("pushup-standard") < rank("pushup-diamond"))
+    }
+
+    @Test fun l03PullUpPathWithoutABand() {
+        fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
+        fun needs(id: String) = catalog.variation(id)!!.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet()
+        assertEquals(listOf("scapular-pull"), next("dead-hang"))
+        assertEquals(listOf("pullup-full"), next("flexed-arm-hang")); assertEquals(listOf("pullup-full"), next("chair-assisted-pullup"))
+        assertEquals(setOf("pullup-bar", "chair"), needs("chair-assisted-pullup")); assertEquals(setOf("pullup-bar"), needs("dead-hang")); assertEquals(Kind.HOLD, catalog.variation("flexed-arm-hang")!!.kind)
+        // chin-up and pull-up are parallel: same way in, neither leads to the other
+        assertEquals(catalog.policyForVariation("pullup-full")!!.prerequisiteRule, catalog.policyForVariation("chinup-full")!!.prerequisiteRule)
+        assertTrue(next("chinup-full").isEmpty() && "chinup-full" !in next("pullup-full"))
+        // the questionnaire's pull ladder has a hold step between the assisted and the full pull-up (placement for people who can hang with the chin over the bar)
+        assertEquals(listOf("row-band", "pullup-band-assisted", "flexed-arm-hang", "pullup-full"), catalog.onboardingFamilies.first { it.id == "pull" }.ladder)
     }
 }
