@@ -14,8 +14,8 @@ Why both: the report argues that a rigged Blender figure fixes form, loops and l
 
 ## 0. Ground rules
 - **Nothing ships from this bake-off.** Today's clips stay in the app until the owner picks a route (step 6).
-- **Never print or commit API keys.** Key file: `/Users/nils/Documents/hermes/.secrets/openrouter_key` (mode 600).
-- **Spend cap: $30 for the whole AI side.** Set it as the key's credit limit on OpenRouter. Stop and ask the owner before spending more.
+- **Never print or commit API keys.** The script reads `OPENROUTER_API_KEY` from the environment and never logs it.
+- **Spend cap: $30 for the whole AI side,** enforced by the script (step 3). Stop and ask the owner before spending more.
 - Work files live in `work/clips-bakeoff/` (outside git; add it to `.gitignore`). Only the review file, contact sheets, manifest and comparison videos are committed, under `docs/evidence/clips-bakeoff/`.
 - `manifest.csv` records:
   - for each AI clip: model, prompt, seed, attempts and cost;
@@ -50,13 +50,9 @@ Each route makes all four clips. For a fair comparison, every route uses the sam
 5. **Log the hours spent per exercise.** For this route the real cost is agent time per clip, and that decides whether ~140 clips are feasible.
 
 ## 3. Route B: AI video, two models (≤ $30)
-Owner setup (once):
-1. On https://openrouter.ai, buy **$30 of credits** and create a key at https://openrouter.ai/settings/keys with a **$30 limit**.
-2. Save it for scripts:
-   - `printf %s 'KEY' > /Users/nils/Documents/hermes/.secrets/openrouter_key` (replace KEY with the key);
-   - then `chmod 600 /Users/nils/Documents/hermes/.secrets/openrouter_key`.
+Key: the owner's existing OpenRouter key, already forwarded into the sandbox as `OPENROUTER_API_KEY` (a placeholder the Hermes egress proxy swaps for the real key, so the sandbox never holds it). No new key or key file. Needs the egress proxy running (`hermes egress start` on the Mac). Hermes's `video_generate` tool sends only a first frame, so loops need the script below.
 
-   Nothing else needs to be set up in Hermes. Hermes's `video_generate` tool sends only a first frame, so loops need the script below.
+**Spend cap without a key limit:** the key is shared with other Hermes use, so a $30 key limit would also cap that. Instead the script reads `usage` from `GET /api/v1/key` before the first clip and before every new one, and stops when the bake-off has used $30. The owner can still add a key limit as a backstop.
 
 Agent:
 1. **Check the models live** with `GET https://openrouter.ai/api/v1/videos/models`.
@@ -65,7 +61,7 @@ Agent:
 2. **Character.** One fixed description, reused word for word in every prompt: *"a neutral athletic adult mannequin-like figure, plain light-grey fitted clothing, no logos, no face detail, pure white seamless background, soft even light, full body always in frame, side-on 3/4 camera, fixed camera, no camera motion"*.
    - **Preferred start image:** render the start pose with the route A rig and use it here. Both routes then start from the same frame, and no image model is needed.
    - **Fallback:** make one reference image with an image model, then a start-pose image per exercise. Check each by eye: contact points, limb count, bar and chair in place.
-3. **Generate** with `tools/gen_clips_ai.py`. It reads the key from the file and never logs it. Field names come from Hermes's plugin `~/.hermes/hermes-agent/plugins/video_gen/openrouter/__init__.py`. The request:
+3. **Generate** with `tools/gen_clips_ai.py`. It reads the key from the environment and never logs it. Field names come from Hermes's plugin `~/.hermes/hermes-agent/plugins/video_gen/openrouter/__init__.py`. The request:
    ```json
    { "model": "bytedance/seedance-2.0",
      "prompt": "<character description>. <one full rep, start and end in the same pose, steady tempo, form cues>",
