@@ -24,3 +24,6 @@ Observations:
 - Both AI models kept the Blender start frame's look (same mannequin, chair, bar), so an AI route still needs the Blender (or another) start pose per exercise.
 - Seedance followed the motion text best; Kling broke the anatomy on the hardest contact case (feet on the chair) and refused the floor stretch.
 - Blender is exact where the pose code is right and wrong where it is wrong (pistol free foot); fixes are a number edit and a re-render.
+
+## Owner test: Seedance text-only, real person (2026-10-12)
+`pullup-full-seedance-human.mp4`: no start image; the prompt asks for a real athlete in plain sports clothes on a white background. Cost $0.348, 151 s. Agent review: photoreal and convincing; overhand grip, hands stay on the bar, a full rep from dead hang to the chin at the bar and back, fixed camera, no visible anatomy errors at this size. Defects: background light grey rather than white, the figure is small in the frame, the feet hang close to the floor (low bar). Loop: starts and ends in a dead hang, but not frame-identical (no first/last frame was sent). Score 4. Without a start image, every exercise would come out with a different person, bar and framing unless the prompt pins them down; consistency across ~140 clips is the open risk.
