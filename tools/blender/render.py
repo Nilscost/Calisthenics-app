@@ -137,7 +137,6 @@ def place_basis(ob, center, up, left=(0, 1, 0)):
 LIMBS = {  # name: (from, to, r_from, r_to)
     "upper_l": ("shoulder_l", "elbow_l", 0.052, 0.042), "upper_r": ("shoulder_r", "elbow_r", 0.052, 0.042),
     "fore_l": ("elbow_l", "wrist_l", 0.040, 0.030), "fore_r": ("elbow_r", "wrist_r", 0.040, 0.030),
-    "hand_l": ("wrist_l", "hand_l", 0.032, 0.024), "hand_r": ("wrist_r", "hand_r", 0.032, 0.024),
     "thigh_l": ("hip_l", "knee_l", 0.078, 0.054), "thigh_r": ("hip_r", "knee_r", 0.078, 0.054),
     "shin_l": ("knee_l", "ankle_l", 0.052, 0.038), "shin_r": ("knee_r", "ankle_r", 0.052, 0.038),
     "neck": ("chest", "neck", 0.045, 0.042),
@@ -156,6 +155,46 @@ def foot_points(fr, side):
     return heel, tip
 
 
+FINGERS = (  # (offset across the palm, proximal length, distal length)
+    (0.030, 0.042, 0.036), (0.010, 0.047, 0.040), (-0.010, 0.045, 0.038), (-0.029, 0.037, 0.030))
+PALM_LEN = 0.085
+
+
+def hand_frame(fr, side):
+    """Unit axes of a hand: u along the palm (wrist -> knuckles), n palm normal, s across."""
+    wr, tip = Vector(fr["wrist_" + side]), Vector(fr["hand_" + side])
+    u = (tip - wr).normalized()
+    n = Vector(fr["palmn_" + side])
+    n = (n - u * n.dot(u))
+    n = n.normalized() if n.length > 1e-6 else Vector((0, 0, -1))
+    s = u.cross(n).normalized()
+    # make s point towards the body midline (thumb side)
+    inward = Vector((0, -1 if side == "l" else 1, 0))
+    if s.dot(inward) < 0:
+        s = -s
+    return wr, u, n, s
+
+
+def hand_segments(fr, side):
+    """Palm centre/axes and finger + thumb segments (a, b) for one hand."""
+    wr, u, n, s = hand_frame(fr, side)
+    g = max(0.0, min(1.0, fr["grip_" + side][0]))
+    a = math.radians(85) * g
+    segs = []
+    for off, l1, l2 in FINGERS:
+        base = wr + u * PALM_LEN - s * off
+        d1 = u * math.cos(a) + n * math.sin(a)
+        e1 = base + d1 * l1
+        d2 = u * math.cos(2 * a) + n * math.sin(2 * a)
+        segs.append((base, e1))
+        segs.append((e1, e1 + d2 * l2))
+    tb = wr + u * 0.025 + s * 0.032
+    td = (u * 0.75 + s * 0.55 + n * (0.15 + 0.7 * g)).normalized()
+    segs.append((tb, tb + td * 0.055))
+    palm_c = wr + u * (PALM_LEN * 0.55) + n * 0.004
+    return palm_c, u, n, s, segs
+
+
 class Figure:
     def __init__(self, f0):
         skin, joint = material("figure", FIGURE), material("joint", JOINT)
@@ -166,6 +205,11 @@ class Figure:
         for side in ("l", "r"):
             h, t = foot_points(f0, side)
             self.parts["foot_" + side] = capsule("foot_" + side, (t - h).length, 0.036, 0.026, skin)
+            _, _, _, _, segs = hand_segments(f0, side)
+            self.parts["palm_" + side] = ellipsoid("palm_" + side, 0.042, 0.016, 0.052, skin)
+            for i, (a, b) in enumerate(segs):
+                r = 0.0105 if i == len(segs) - 1 else 0.0088
+                self.parts[f"fing_{side}_{i}"] = capsule(f"fing_{side}_{i}", (b - a).length, r, r * 0.92, skin, seg=12, rings=4)
             for j, r in (("knee", 0.056), ("elbow", 0.044), ("ankle", 0.040), ("wrist", 0.032)):
                 self.parts[f"{j}_{side}_ball"] = ellipsoid(f"{j}_{side}_ball", r, r, r, joint)
         self.parts["pelvis"] = ellipsoid("pelvis", 0.105, 0.165, 0.11, skin)
@@ -181,6 +225,13 @@ class Figure:
             place_segment(self.parts["foot_" + side], h, t)
             for j in ("knee", "elbow", "ankle", "wrist"):
                 self.parts[f"{j}_{side}_ball"].location = fr[f"{j}_{side}"]
+            pc, u, n, sv, segs = hand_segments(fr, side)
+            palm = self.parts["palm_" + side]
+            palm.location = pc
+            # ellipsoid axes: x = across (s), y = thickness (n), z = along (u)
+            palm.rotation_quaternion = Matrix((sv, n, u)).transposed().to_quaternion()
+            for i, (a, b) in enumerate(segs):
+                place_segment(self.parts[f"fing_{side}_{i}"], a, b)
         up1, up2 = Vector(fr["pelvis_up"]), Vector(fr["chest_up"])
         P, S, C = Vector(fr["pelvis"]), Vector(fr["spine"]), Vector(fr["chest"])
         place_basis(self.parts["pelvis"], P + up1 * 0.03, up1)
@@ -328,7 +379,7 @@ def render(ex_id, engine, start_only):
     fig = Figure(data["frames"][0])
     for fr in data["frames"]:
         for k, v in fr.items():
-            if not k.endswith("_up"):
+            if not (k.endswith("_up") or k.startswith(("palmn_", "grip_"))):
                 pts.append(tuple(v))
     # pad every point by the body's thickness so limbs and head stay inside the frame
     pad = 0.12

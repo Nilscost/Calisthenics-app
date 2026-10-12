@@ -113,6 +113,9 @@ def solve(k, report):
         elb, wr = two_bone(sh, tgt, L["upper"], L["fore"], k["elbow_" + side], report, "arm_" + side)
         J["elbow_" + side], J["wrist_" + side] = elb, wr
         J["hand_" + side] = add(wr, mul(unit(k["hand_" + side]), L["hand"]))
+        # palm normal (direction the palm faces) and finger curl 0..1, for render.py's hands
+        J["palmn_" + side] = unit(k.get("palm_" + side, [0, 0, -1]))
+        J["grip_" + side] = [k.get("grip_" + side, 0.15), 0.0, 0.0]
     return J
 
 
@@ -123,17 +126,18 @@ DOWN = [0, 0, -1]
 
 def pullup():
     grip = 0.25
-    w = BAR_Z - 0.035  # wrist just under the bar centre
+    w = BAR_Z - 0.065  # wrist below and just behind the bar: the palm faces it, fingers wrap over
     def key(pz, px, p1, p2, legs_fwd):
         return dict(pelvis=[px, 0, pz], p1=p1, p2=p2, hp=0,
-                    wrist_l=[0, grip, w], wrist_r=[0, -grip, w],
+                    wrist_l=[-0.045, grip, w], wrist_r=[-0.045, -grip, w],
+                    palm_l=[1, 0, 0], palm_r=[1, 0, 0], grip_l=0.95, grip_r=0.95,
                     elbow_l=[0.35, 1, -0.2], elbow_r=[0.35, -1, -0.2],
                     hand_l=[0, 0, 1], hand_r=[0, 0, 1],
                     ankle_l_rel=[legs_fwd, -0.01, -0.84], ankle_r_rel=[legs_fwd, 0.01, -0.84],
                     knee_l=[1, 0, 0], knee_r=[1, 0, 0],
                     foot_l=[0.45, 0, -1], foot_r=[0.45, 0, -1])
-    hang = key(BAR_Z - 1.068, -0.02, -3, -6, 0.10)
-    top = key(BAR_Z - 0.62, -0.10, 4, -14, 0.18)
+    hang = key(BAR_Z - 1.094, -0.04, -3, -6, 0.10)
+    top = key(BAR_Z - 0.56, -0.10, 2, -6, 0.18)
     keys = [(0.0, hang), (0.12, hang), (0.48, top), (0.58, top), (1.0, hang)]
     return dict(seconds=3.0, keys=keys, cam_az=35, cam_el=8,
                 props=[dict(kind="bar", z=BAR_Z, half=0.65, r=0.017)])
@@ -159,7 +163,7 @@ def pushup_fe():
         return dict(pelvis=pelvis, p1=pitch, p2=pitch, hp=-8,
                     wrist_l=[-0.10, 0.27, 0.035], wrist_r=[-0.10, -0.27, 0.035],
                     elbow_l=[-0.6, 0.7, 1.0], elbow_r=[-0.6, -0.7, 1.0],
-                    hand_l=[1, 0.15, 0], hand_r=[1, -0.15, 0],
+                    hand_l=[1, 0.15, 0], hand_r=[1, -0.15, 0], grip_l=0.0, grip_r=0.0,
                     ankle_l=add(ankle, [0, 0.08, 0]), ankle_r=add(ankle, [0, -0.08, 0]),
                     knee_l=[0, 0, -1], knee_r=[0, 0, -1],
                     foot_l=fd, foot_r=fd)
@@ -184,7 +188,7 @@ def pistol():
                     wrist_l_rel=[0.565, 0.04, -0.02], wrist_r_rel=[0.565, -0.04, -0.02],
                     elbow_l=[0, 0.3, -1], elbow_r=[0, -0.3, -1],
                     hand_l=[1, 0, 0], hand_r=[1, 0, 0])
-    top = {"pz": 0.955, "px": 0.0, "p1": 2, "p2": 4, "lift": 30}
+    top = {"pz": 0.955, "px": 0.0, "p1": 2, "p2": 4, "lift": 42}
     bottom = {"pz": 0.36, "px": -0.27, "p1": 38, "p2": 48, "lift": 78}
     keyed = [(0.0, top), (0.1, top), (0.48, bottom), (0.58, bottom)]
     return dict(seconds=4.0, keys=dense(key, keyed, 64), cam_az=22, cam_el=10, props=[])
@@ -197,7 +201,7 @@ def pigeon():
         return dict(pelvis=[px, 0.0, pz], p1=pitch * 0.8, p2=pitch, hp=-15 if pitch > 40 else 0,
                     ankle_r=[0.31, 0.10, 0.07], knee_r=[0.4, -0.6, -0.1], foot_r=[0.1, 1, 0.0],
                     ankle_l=[-0.885, 0.12, 0.075], knee_l=[0, 0.1, -1], foot_l=[-1, 0, -0.32],
-                    wrist_l=[hands_x, 0.24, 0.035], wrist_r=[hands_x, -0.27, 0.035],
+                    wrist_l=[hands_x, 0.24, 0.035], wrist_r=[hands_x, -0.27, 0.035], grip_l=0.0, grip_r=0.0,
                     elbow_l=[-0.3, elbow_out, -1], elbow_r=[-0.3, -elbow_out, -1],
                     hand_l=[1, 0, 0], hand_r=[1, 0, 0])
     up = key(0.15, -0.02, 35, 0.44, 0.3)

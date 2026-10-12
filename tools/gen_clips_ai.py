@@ -1,6 +1,8 @@
 """Generate AI video clips for the bake-off via OpenRouter (docs/16-video-clips-plan.md).
 
-    python3 tools/gen_clips_ai.py <model> <id> [--tries N] [--dry]
+    python3 tools/gen_clips_ai.py <model> <id> [--tries N] [--dry] [--text]
+
+--text: no start image; a real person is prompted instead (owner test 2026-10-12).
 
 Start image = the Blender start frame (work/clips-bakeoff/<id>/blender/start.png),
 sent as BOTH first and last frame so the clip loops. The key is read from
@@ -111,15 +113,31 @@ def manifest(row):
         w.writerow(row)
 
 
-def generate(model, ex, n, dry=False):
+HUMAN = ("A real athletic adult in plain dark grey sports clothes (fitted t-shirt, shorts, trainers, no logos) "
+         "on a pure white seamless studio background with a soft floor shadow, soft even light, side-on 3/4 view, "
+         "full body always in frame, fixed camera, no camera motion, no cuts, no text")
+HUMAN_MOTION = {
+    "pullup-full": "The person hangs from a simple black pull-up bar with an overhand grip, arms straight, then does "
+                   "one slow strict pull-up until the chin is clearly above the bar and lowers with control back to a "
+                   "dead hang. Hands stay fixed on the bar, legs together, no swinging, no kipping.",
+}
+
+
+def generate(model, ex, n, dry=False, text_only=False):
     m = MODELS[model]
-    img = start_image(ex, m["square"])
-    prompt = f"{CHARACTER}. {MOTION[ex]} The clip starts and ends in exactly the same pose."
-    body = {"model": m["id"], "prompt": prompt, "resolution": m["resolution"], "duration": 5,
-            "aspect_ratio": m["aspect"], "generate_audio": False,
-            "frame_images": [
-                {"type": "image_url", "image_url": {"url": img}, "frame_type": "first_frame"},
-                {"type": "image_url", "image_url": {"url": img}, "frame_type": "last_frame"}]}
+    if text_only:
+        prompt = f"{HUMAN}. {HUMAN_MOTION[ex]}"
+        body = {"model": m["id"], "prompt": prompt, "resolution": m["resolution"], "duration": 5,
+                "aspect_ratio": m["aspect"], "generate_audio": False}
+        model = model + "-text"
+    else:
+        img = start_image(ex, m["square"])
+        prompt = f"{CHARACTER}. {MOTION[ex]} The clip starts and ends in exactly the same pose."
+        body = {"model": m["id"], "prompt": prompt, "resolution": m["resolution"], "duration": 5,
+                "aspect_ratio": m["aspect"], "generate_audio": False,
+                "frame_images": [
+                    {"type": "image_url", "image_url": {"url": img}, "frame_type": "first_frame"},
+                    {"type": "image_url", "image_url": {"url": img}, "frame_type": "last_frame"}]}
     if dry:
         print(json.dumps({k: v for k, v in body.items() if k != "frame_images"}, indent=1))
         return
@@ -155,6 +173,7 @@ def main(argv):
     model, ex = argv[0], argv[1]
     tries = int(argv[argv.index("--tries") + 1]) if "--tries" in argv else 1
     dry = "--dry" in argv
+    text_only = "--text" in argv
     base_file = os.path.join(WORK, "ai-budget.json")
     if not os.path.exists(base_file) and not dry:
         json.dump({"usage_at_start": usage()}, open(base_file, "w"))
@@ -168,8 +187,9 @@ def main(argv):
                 print(f"OpenRouter account has only ${account_left():.2f} left; stopping")
                 return 3
         done = [f for f in os.listdir(os.path.join(WORK, ex, "ai"))] if os.path.isdir(os.path.join(WORK, ex, "ai")) else []
-        n = 1 + len([f for f in done if f.startswith(f"raw-{model}-")])
-        generate(model, ex, n, dry)
+        tag = model + ("-text" if text_only else "")
+        n = 1 + len([f for f in done if f.startswith(f"raw-{tag}-")])
+        generate(model, ex, n, dry, text_only)
     return 0
 
 

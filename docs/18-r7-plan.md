@@ -1,6 +1,6 @@
 # 18 — R7 batch: owner phone feedback of 2026-10-12 (on 0.9.0-r6)
 
-Status: **plan, decisions mostly answered (2026-10-12).** Open: O1–O3 below.
+Status: **plan, all decisions answered (2026-10-12).** Executor handoff: `docs/19-r7-executor-handoff.md`.
 Delivery: owner decision D0 — all changes in ONE batch, one owner phone test at the end (`owner-check-r7.md`). Work still goes in small verified slices (verify, ui-screens run, screenshot review, commit each).
 
 Code facts were checked by three read-only code reviews on 2026-10-12 (file:line references below are from 0.9.0-r6).
@@ -38,11 +38,11 @@ Code facts were checked by three read-only code reviews on 2026-10-12 (file:line
 - **D11 Add-exercise sheet:** choose a category first (Push, Pull, Row, Squat, Hips, Core, Lower legs, Stretches), then the list of that category.
 - **D12 Level stepper shows the new level's numbers** in the preview (owner: "if you move the level up you should see the new level"). See O1.
 
-## Open (O) — with recommendation
+## Answered (O)
 
-- **O1 Level stepper under a Rep-range routine** (Recommended Routine uses 3 × 5–8): when the user moves an exercise's level in the preview, that exercise switches to App levels so its reps follow the level (recommended), or the stepper is greyed out with a note.
-- **O2 Planche lean placement:** keep it in Push as the first planche step; its prerequisite "plank level 4" (Core tab) is listed in the detail as a tappable "Needs" entry and shown on the tile as a small "needs Plank" note (recommended). Today the Push tree only draws links inside Push, so the plank requirement is invisible.
-- **O3 Weighted exercises in the chain:** at the bottom of each movement chain as "add load" after the top bodyweight step (e.g. squat → … → pistol, then goblet squat → barbell squat) (recommended), or as intermediate steps between bodyweight levels.
+- **O1 Level stepper under a range rule — ANSWERED.** Code fact (`ProgressionEngine.kt:166-172`, `moveOnByRule` `:268-280`, `Presets.recommended`): in the Recommended Routine (Rep range 3 × 5–8, holds 10–30 s, `sessions = 1`) ONE session in which every planned set reaches the top (8 reps / 30 s) moves the user straight on to the next exercise of the chain, starting again at the bottom of the range (5 reps); the five levels are marked done. There are no levels under a range rule. Decision: in a range-rule routine the preview stepper steps through the **exercises of the chain** (easier / harder exercise, numbers = the range); under App levels it steps through levels and the reps follow the level. Owner asked to be told this; he can veto at the phone test.
+- **O2 Planche lean — ANSWERED (yes):** stays in Push as the first planche step; tile shows a small "needs Plank" note, tappable; the detail lists it under Needs (D6).
+- **O3 Weighted exercises — ANSWERED:** each weighted exercise sits **right after its bodyweight counterpart** in that movement's tab (e.g. goblet squat after the air squat, weighted pull-up after the pull-up, dumbbell RDL after the bodyweight RDL), drawn as a side branch from that node (its existing prerequisite edge), not at the bottom of the whole chain.
 
 ## Implementation slices (each: verify, ui-screens, screenshot review, commit)
 
