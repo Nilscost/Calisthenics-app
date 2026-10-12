@@ -14,7 +14,7 @@ Why both: the report argues that a rigged Blender figure fixes form, loops and l
 
 ## 0. Ground rules
 - **Nothing ships from this bake-off.** Today's clips stay in the app until the owner picks a route (step 6).
-- **Never print or commit API keys.** The script reads `OPENROUTER_API_KEY` from the environment and never logs it.
+- **Never print or commit API keys.** The script reads `.secrets/openrouter_key` and never logs it.
 - **Spend cap: $30 for the whole AI side,** enforced by the script (step 3). Stop and ask the owner before spending more.
 - Work files live in `work/clips-bakeoff/` (outside git; add it to `.gitignore`). Only the review file, contact sheets, manifest and comparison videos are committed, under `docs/evidence/clips-bakeoff/`.
 - `manifest.csv` records:
@@ -37,7 +37,7 @@ Each route makes all four clips. For a fair comparison, every route uses the sam
 
 ## 2. Route A: Blender (no spend)
 1. **Install.**
-   - First try Blender headless in the sandbox, under `/root/toolchain/blender` (never `/opt` or `/usr`). Check whether an official Linux arm64 build exists for the current version.
+   - Checked 2026-10-12: blender.org ships Linux builds for x64 only (5.2.2), none for arm64, and the sandbox is arm64. Running x64 Blender under emulation is possible in theory but slow and fragile.
    - If there is none, the owner installs Blender on the Mac (`brew install --cask blender`) and runs one render script that the agent writes: `blender -b -P tools/blender/render.py -- <id>`.
 2. **Rig.** One CC0 humanoid rig (e.g. Quaternius; check the licence of each asset), neutral grey, no face detail.
    - Not Mixamo: its terms forbid sharing raw files in a public repo.
@@ -50,18 +50,24 @@ Each route makes all four clips. For a fair comparison, every route uses the sam
 5. **Log the hours spent per exercise.** For this route the real cost is agent time per clip, and that decides whether ~140 clips are feasible.
 
 ## 3. Route B: AI video, two models (≤ $30)
-Key: the owner's existing OpenRouter key, already forwarded into the sandbox as `OPENROUTER_API_KEY` (a placeholder the Hermes egress proxy swaps for the real key, so the sandbox never holds it). No new key or key file. Needs the egress proxy running (`hermes egress start` on the Mac). Hermes's `video_generate` tool sends only a first frame, so loops need the script below.
+Key (2026-10-12): the Hermes egress proxy rejects OpenRouter at its secrets step (`rejected_by: secrets`, CONNECT 403) even with the key present in `.env`, so the script does NOT use the proxy. The owner made a separate key `calisthenics-clips` (OpenRouter limit $50; delete it after the bake-off), saved via `pbpaste` to `/Users/nils/Documents/hermes/.secrets/openrouter_key` (600). The script reads that file, calls OpenRouter with `--noproxy` / `proxies=None`, and never prints the key.
 
-**Spend cap without a key limit:** the key is shared with other Hermes use, so a $30 key limit would also cap that. Instead the script reads `usage` from `GET /api/v1/key` before the first clip and before every new one, and stops when the bake-off has used $30. The owner can still add a key limit as a backstop.
+**Spend cap:** the script reads `usage` from `GET /api/v1/key` before every clip and stops at $30 for the bake-off.
+
+**Live model facts (checked 2026-10-12):**
+| Model | Frames | Sizes / ratios | Price | ≈ per 5 s clip, no audio |
+|---|---|---|---|---|
+| `bytedance/seedance-2.0` | first + last | 480p incl. 640×480 (4:3) | $7 per M video tokens | ≈ $0.25 (640×480×24 fps×5 s/1024 ≈ 36k tokens) |
+| `kwaivgi/kling-v3.0-std` | first + last | 720p only, 16:9 / 9:16 / 1:1 (no 4:3) | $0.084/s | $0.42 |
+
+So the old plan's Seedance estimate was about right and the report's $0.30/s was wrong for 480p. Kling clips are generated 1:1 at 720×720 and cropped to 4:3 in post. Worst case for the bake-off (24 clips): ≈ $8. Also listed and available if a third contender is wanted: `bytedance/seedance-2.0-mini` (half the Seedance price), `kwaivgi/kling-v3.0-pro` ($0.112/s), `bytedance/seedance-2.5`.
 
 Agent:
-1. **Check the models live** with `GET https://openrouter.ai/api/v1/videos/models`.
-   - Confirm that `bytedance/seedance-2.0` and `kwaivgi/kling-v3.0-std` (or the current ids) accept a first and a last frame, 4:3, 480p and 5 s.
-   - Record the listed prices.
+1. **Re-check the models live** with `GET https://openrouter.ai/api/v1/videos/models` before the run (table above).
 2. **Character.** One fixed description, reused word for word in every prompt: *"a neutral athletic adult mannequin-like figure, plain light-grey fitted clothing, no logos, no face detail, pure white seamless background, soft even light, full body always in frame, side-on 3/4 camera, fixed camera, no camera motion"*.
    - **Preferred start image:** render the start pose with the route A rig and use it here. Both routes then start from the same frame, and no image model is needed.
    - **Fallback:** make one reference image with an image model, then a start-pose image per exercise. Check each by eye: contact points, limb count, bar and chair in place.
-3. **Generate** with `tools/gen_clips_ai.py`. It reads the key from the environment and never logs it. Field names come from Hermes's plugin `~/.hermes/hermes-agent/plugins/video_gen/openrouter/__init__.py`. The request:
+3. **Generate** with `tools/gen_clips_ai.py`. It reads the key from the secrets file and never logs it. Field names come from Hermes's plugin `~/.hermes/hermes-agent/plugins/video_gen/openrouter/__init__.py`. The request:
    ```json
    { "model": "bytedance/seedance-2.0",
      "prompt": "<character description>. <one full rep, start and end in the same pose, steady tempo, form cues>",
