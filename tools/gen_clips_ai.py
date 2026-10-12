@@ -120,12 +120,37 @@ HUMAN_MOTION = {
     "pullup-full": "The person hangs from a simple black pull-up bar with an overhand grip, arms straight, then does "
                    "one slow strict pull-up until the chin is clearly above the bar and lowers with control back to a "
                    "dead hang. Hands stay fixed on the bar, legs together, no swinging, no kipping.",
+    "squat-pistol": "The man does one slow pistol squat on his standing leg: the lifted leg stays straight and in front, "
+                    "off the floor; he sits down to full depth with the standing heel flat on the floor, arms forward "
+                    "for balance, then stands back up to exactly the start pose.",
 }
 
 
-def generate(model, ex, n, dry=False, text_only=False):
+def human_start(ex, square=False):
+    im = Image.open(os.path.join(WORK, ex, "human", "start-1.png")).convert("RGB").resize((640, 480), Image.LANCZOS)
+    if square:
+        sq = Image.new("RGB", (640, 640), "white")
+        sq.paste(im, (0, 80))
+        im = sq.resize((720, 720), Image.LANCZOS)
+    buf = io.BytesIO()
+    im.save(buf, "PNG")
+    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
+def generate(model, ex, n, dry=False, text_only=False, human=False):
     m = MODELS[model]
-    if text_only:
+    if human:
+        img = human_start(ex, m["square"])
+        prompt = (f"The man in the image, same person and clothes, on the same pure white seamless studio background, "
+                  f"fixed camera, no camera motion, no cuts, no text. {HUMAN_MOTION[ex]} "
+                  f"The clip starts and ends in exactly the same pose as the image.")
+        body = {"model": m["id"], "prompt": prompt, "resolution": m["resolution"], "duration": 5,
+                "aspect_ratio": m["aspect"], "generate_audio": False,
+                "frame_images": [
+                    {"type": "image_url", "image_url": {"url": img}, "frame_type": "first_frame"},
+                    {"type": "image_url", "image_url": {"url": img}, "frame_type": "last_frame"}]}
+        model = model + "-human"
+    elif text_only:
         prompt = f"{HUMAN}. {HUMAN_MOTION[ex]}"
         body = {"model": m["id"], "prompt": prompt, "resolution": m["resolution"], "duration": 5,
                 "aspect_ratio": m["aspect"], "generate_audio": False}
@@ -174,6 +199,7 @@ def main(argv):
     tries = int(argv[argv.index("--tries") + 1]) if "--tries" in argv else 1
     dry = "--dry" in argv
     text_only = "--text" in argv
+    human = "--human" in argv
     base_file = os.path.join(WORK, "ai-budget.json")
     if not os.path.exists(base_file) and not dry:
         json.dump({"usage_at_start": usage()}, open(base_file, "w"))
@@ -187,9 +213,9 @@ def main(argv):
                 print(f"OpenRouter account has only ${account_left():.2f} left; stopping")
                 return 3
         done = [f for f in os.listdir(os.path.join(WORK, ex, "ai"))] if os.path.isdir(os.path.join(WORK, ex, "ai")) else []
-        tag = model + ("-text" if text_only else "")
+        tag = model + ("-human" if human else "-text" if text_only else "")
         n = 1 + len([f for f in done if f.startswith(f"raw-{tag}-")])
-        generate(model, ex, n, dry, text_only)
+        generate(model, ex, n, dry, text_only, human)
     return 0
 
 
