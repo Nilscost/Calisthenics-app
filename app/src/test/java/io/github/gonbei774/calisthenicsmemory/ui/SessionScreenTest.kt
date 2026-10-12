@@ -8,6 +8,12 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import app.calisthenics.domain.equipment.SeedProfiles
 import app.calisthenics.domain.model.BlockType
+import app.calisthenics.domain.model.EquipmentItem
+import app.calisthenics.domain.model.EquipmentProfile
+import app.calisthenics.domain.model.WorkoutPlan
+import app.calisthenics.domain.routine.Presets
+import app.calisthenics.domain.routine.resolveSaved
+import app.calisthenics.domain.routine.settingsFor
 import app.calisthenics.domain.model.WorkoutFormat
 import app.calisthenics.domain.planner.PlanResult
 import app.calisthenics.domain.planner.TrainSettings
@@ -49,6 +55,14 @@ class SessionScreenTest {
         var s = reduce(newSession("S", plan), SessionEvent.Start(0)).state
         var now = 0L
         repeat(index) { now += plan.blocks[it].durationSeconds * 1000L; s = reduce(s, SessionEvent.Tick(now)).state }
+        return s
+    }
+
+    /** The session at the start of block [index] of [p]. */
+    private fun stateAt(p: WorkoutPlan, index: Int): SessionState {
+        var s = reduce(newSession("S", p), SessionEvent.Start(0)).state
+        var now = 0L
+        repeat(index) { now += p.blocks[it].durationSeconds * 1000L; s = reduce(s, SessionEvent.Tick(now)).state }
         return s
     }
 
@@ -206,4 +220,26 @@ class SessionScreenTest {
     }
 
     @Test fun pairsNameThePairAndTheSet() = headerFor(WorkoutFormat.PAIRS, "PAIR 1 · SET 1 OF 2")
+
+    // R7-T01 (B2): a hold under the Recommended Routine's 10-30 s range shows "30 s" and the logger starts at 30
+    @Test fun aSupportHoldUnderTheRecommendedRoutineShowsThirtySecondsAndPrefillsThirty() {
+        val gym = EquipmentProfile("gym", "Gym", listOf(
+            EquipmentItem("pullup-bar"), EquipmentItem("low-bar"), EquipmentItem("dip-support"),
+            EquipmentItem("foot-anchor"), EquipmentItem("mat")), setOf("floor-space", "wall"))
+        val none = ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
+        val rr = Presets.recommended(catalog, gym)
+        val r = resolveSaved(rr, settingsFor(rr, TrainSettings()))
+        val p = (buildTrainPlan(catalog, r.routine, none, gym, r.settings, edits = r.edits) as PlanResult.Ready).plan.copy(id = "plan-rr")
+        val i = p.blocks.indexOfFirst { it.type == BlockType.WORK && it.variationId == "dip-support-hold" }
+        assertTrue(i >= 0)
+        assertEquals(10, p.blocks[i].target!!.value); assertEquals(30, p.blocks[i].target!!.max)
+        SessionBus.names = catalog.variations.associate { it.id to it.name }
+        SessionBus.publish(stateAt(p, i))
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = {}) } }
+        rule.waitForIdle()
+        rule.onNodeWithTag("session_target").assertTextEquals("30 s")
+        rule.runOnIdle { SessionBus.publish(stateAt(p, i + 1)) }
+        rule.waitForIdle()
+        rule.onNodeWithTag("logger_value").assertTextEquals("30")
+    }
 }

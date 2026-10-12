@@ -85,6 +85,8 @@ data class EquipmentProfile(
 data class Target(val type: TargetType, val value: Int, /** V21: the top of a rep range (5-8): [value] is the bottom, [max] the top that moves you on. Null = a single number. */ val max: Int? = null) {
     init { require(value > 0) { "target must be positive" }; require(max == null || max >= value) { "range top below its bottom" } }
     override fun toString(): String = (if (max != null && max != value) "$value-$max" else "$value") + if (type == TargetType.REPS) " reps" else "s hold"
+    /** R7-T01 (B2, B3): the one number the person sees or starts from: the top of a range, else the single value. Holds show it as "30 s"; the logger and the end editor pre-fill it. */
+    fun shownValue(): Int = max ?: value
 }
 
 /** O2: how progress is judged for a routine. App levels = today's five-target tiers; Rep range = sets x from-to (a session where every set reaches the top moves you on); Custom = the same, with everything editable. */

@@ -33,7 +33,7 @@ fun RoundEditor(
     onChange: (List<RoundCorrection>) -> Unit,
 ) {
     val hold = target?.type == TargetType.HOLD_SECONDS
-    val values = remember(tag, rounds.map { it.blockId }) { mutableStateListOf<Int>().apply { rounds.forEach { add(it.value ?: target?.value ?: 0) } } }
+    val values = remember(tag, rounds.map { it.blockId }) { mutableStateListOf<Int>().apply { rounds.forEach { add(it.value ?: target?.shownValue() ?: 0) } } }
     val typed = remember(tag, rounds.map { it.blockId }) { mutableStateListOf<Boolean>().apply { rounds.forEach { add(it.value != null) } } }
     var tooHard by remember(tag) { mutableStateOf(tooHard0) }
     var tooEasy by remember(tag) { mutableStateOf(tooEasy0) }
@@ -54,7 +54,7 @@ fun RoundEditor(
                     ).joinToString(" · ")
                     if (note.isNotEmpty()) Text(note, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                Stepper(values[i], { values[i] = it; typed[i] = true; push() }, 0..999, step = if (hold && (target?.value ?: 0) >= 30) 5 else 1, tag = "${tag}_round${i + 1}")
+                Stepper(values[i], { values[i] = it; typed[i] = true; push() }, 0..999, step = if (hold && (target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "${tag}_round${i + 1}")
             }
         }
         Text(stringResource(if (hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)

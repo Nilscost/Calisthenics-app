@@ -95,7 +95,7 @@ fun SessionScreen(modifier: Modifier = Modifier, onExit: () -> Unit) {
 private class LoggerState(val ctx: android.content.Context, val work: TimelineBlock, saved: app.calisthenics.domain.session.BlockLog?) {
     val target: Target? = work.target
     val hold = target?.type == TargetType.HOLD_SECONDS
-    var reps by mutableIntStateOf(saved?.reps ?: target?.value ?: 0)
+    var reps by mutableIntStateOf(saved?.reps ?: target?.shownValue() ?: 0)
     var typed by mutableStateOf(saved?.reps != null)
     var confirmed by mutableStateOf(false)
     // The ratings (Too hard / Too easy / Pain) are given on the end screen (doc 17 §2.3); what the logger keeps is passed through unchanged.
@@ -255,7 +255,7 @@ private fun RepLogger(l: LoggerState, work: TimelineBlock, st: SessionState) {
             }
         } else {
             Text(stringResource(if (l.hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
-            BigStepper(l.reps, { l.reps = it; l.typed = true; l.push() }, 0..999, Modifier.fillMaxWidth(), step = if (l.hold && (l.target?.value ?: 0) >= 30) 5 else 1, tag = "logger")
+            BigStepper(l.reps, { l.reps = it; l.typed = true; l.push() }, 0..999, Modifier.fillMaxWidth(), step = if (l.hold && (l.target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "logger")
         }
     }
 }
