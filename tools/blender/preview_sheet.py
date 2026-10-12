@@ -35,9 +35,35 @@ def projectors(data):
     ]
 
 
-def prop_lines(props):
+def _p(spec, fr):
+    if isinstance(spec, dict):
+        j, o = fr[spec["joint"]], spec.get("off", (0, 0, 0))
+        return [j[0] + o[0], j[1] + o[1], j[2] + o[2]]
+    return spec
+
+
+def prop_lines(props, fr=None):
     out = []
     for pr in props:
+        if pr["kind"] == "box":
+            c, s = pr["center"], pr["size"]
+            xs, ys, zs = (c[0] - s[0] / 2, c[0] + s[0] / 2), (c[1] - s[1] / 2, c[1] + s[1] / 2), (c[2] - s[2] / 2, c[2] + s[2] / 2)
+            for x in xs:
+                for y in ys:
+                    out.append(([x, y, zs[0]], [x, y, zs[1]]))
+                for z in zs:
+                    out.append(([x, ys[0], z], [x, ys[1], z]))
+            for y in ys:
+                for z in zs:
+                    out.append(([xs[0], y, z], [xs[1], y, z]))
+        if pr["kind"] == "rod" and fr is not None:
+            out.append((_p(pr["a"], fr), _p(pr["b"], fr)))
+        if pr["kind"] == "weight" and fr is not None:
+            w = fr[pr["joint"]]
+            out.append(([w[0], w[1] - 0.09, w[2] - 0.05], [w[0], w[1] + 0.09, w[2] - 0.05]))
+        if pr["kind"] == "plate":
+            c, r = pr["center"], pr.get("r", 0.2)
+            out.append(([c[0] - r, c[1], c[2]], [c[0] + r, c[1], c[2]]))
         if pr["kind"] == "bar":
             out.append(([0, -pr["half"], pr["z"]], [0, pr["half"], pr["z"]]))
             for y in (-pr["half"], pr["half"]):
@@ -55,11 +81,11 @@ def prop_lines(props):
 def sheet(data, path, moments=(0.0, 0.2, 0.35, 0.5, 0.75, 0.9)):
     frames = data["frames"]
     projs = projectors(data)
-    props = prop_lines(data["props"])
+    props = prop_lines(data["props"], frames[0])
     img = Image.new("RGB", (CELL * len(projs), CELL * len(moments)), "white")
     d = ImageDraw.Draw(img)
     for ci, (name, pj) in enumerate(projs):
-        pts = [pj(p) for fr in frames for k, p in fr.items() if not (k.endswith("_up") or k.startswith(("palmn_", "grip_")))]
+        pts = [pj(p) for fr in frames for k, p in fr.items() if not (k.endswith(("_up", "_left")) or k.startswith(("palmn_", "grip_")))]
         pts += [pj(p) for ln in props for p in ln] + [pj([0, 0, 0])]
         xs, ys = [p[0] for p in pts], [p[1] for p in pts]
         span = max(max(xs) - min(xs), max(ys) - min(ys)) * 1.15
@@ -75,7 +101,7 @@ def sheet(data, path, moments=(0.0, 0.2, 0.35, 0.5, 0.75, 0.9)):
             # floor
             for a, b in (([-3, 0, 0], [3, 0, 0]), ([0, -3, 0], [0, 3, 0])):
                 d.line([T(a), T(b)], fill=(170, 170, 170), width=1)
-            for a, b in props:
+            for a, b in prop_lines(data["props"], fr):
                 d.line([T(a), T(b)], fill=(60, 110, 220), width=3)
             for a, b in SEGS:
                 col = (40, 40, 40) if a.endswith("_l") or b.endswith("_l") else (230, 120, 20)

@@ -75,6 +75,10 @@ def lerp(a, b, s):
 def sample(keys, t):
     """keys: list of (t, dict); loops back to keys[0] at t = 1."""
     ks = keys + [(1.0, keys[0][1])]
+    names = set(keys[0][1])
+    for _, k in keys:
+        if set(k) != names:
+            raise ValueError(f"every key needs the same fields; differs: {sorted(names ^ set(k))}")
     for (t0, k0), (t1, k1) in zip(ks, ks[1:]):
         if t0 <= t <= t1:
             s = 0.0 if t1 == t0 else ease((t - t0) / (t1 - t0))
@@ -82,22 +86,41 @@ def sample(keys, t):
     return dict(keys[0][1])
 
 
+def rot(v, axis, deg):
+    """Rotate v about a unit axis (Rodrigues)."""
+    a = math.radians(deg)
+    c, s_ = math.cos(a), math.sin(a)
+    return add(add(mul(v, c), mul(cross(axis, v), s_)), mul(axis, dot(axis, v) * (1 - c)))
+
+
+def trunk_frame(pitch, yaw=0.0, roll=0.0):
+    """(up, left) of a trunk segment: pitch about the left axis (0 up, +90 face down head +X),
+    then roll about the body's long axis (+90 = lying on the left side when pitch 90), then yaw about Z."""
+    up, left = [0.0, 0.0, 1.0], [0.0, 1.0, 0.0]
+    up, left = rot(up, [0, 0, 1], roll), rot(left, [0, 0, 1], roll)
+    up, left = rot(up, [0, 1, 0], pitch), rot(left, [0, 1, 0], pitch)
+    up, left = rot(up, [0, 0, 1], yaw), rot(left, [0, 0, 1], yaw)
+    return up, left
+
+
 def solve(k, report):
     """Joint positions from one interpolated pose dict."""
     J = {}
     P = k["pelvis"]
-    up1, up2 = pitch_dir(k["p1"]), pitch_dir(k["p2"])
-    left = [0.0, 1.0, 0.0]
+    yaw, roll = k.get("yaw", 0.0), k.get("roll", 0.0)
+    up1, left1 = trunk_frame(k["p1"], yaw, roll)
+    up2, left2 = trunk_frame(k["p2"], yaw, roll)
     J["pelvis"] = P
     J["spine"] = add(P, mul(up1, L["lumbar"]))
     J["chest"] = add(J["spine"], mul(up2, L["thorax"]))
-    uph = pitch_dir(k["p2"] + k.get("hp", 0.0))
+    uph, _ = trunk_frame(k["p2"] + k.get("hp", 0.0), yaw, roll)
     J["neck"] = add(J["chest"], mul(uph, L["neck"]))
     J["head"] = add(J["neck"], mul(uph, L["head_r"] * 0.9))
     J["pelvis_up"], J["chest_up"] = up1, up2
+    J["pelvis_left"], J["chest_left"] = left1, left2
     for side, sgn in (("l", 1), ("r", -1)):
-        hip = add(add(P, mul(left, sgn * L["hip_w"])), mul(up1, -0.03))
-        sh = add(add(J["chest"], mul(left, sgn * L["sh_w"])), mul(up2, -0.03))
+        hip = add(add(P, mul(left1, sgn * L["hip_w"])), mul(up1, -0.03))
+        sh = add(add(J["chest"], mul(left2, sgn * L["sh_w"])), mul(up2, -0.03))
         J["hip_" + side], J["shoulder_" + side] = hip, sh
         # legs
         tgt = k.get("ankle_" + side)
@@ -117,6 +140,73 @@ def solve(k, report):
         J["palmn_" + side] = unit(k.get("palm_" + side, [0, 0, -1]))
         J["grip_" + side] = [k.get("grip_" + side, 0.15), 0.0, 0.0]
     return J
+
+
+# --- helpers for exercise modules (tools/blender/families/*.py) ------------------
+def base_pose(**over):
+    """A neutral standing pose with every field solve() needs; override what changes.
+
+    Fields: pelvis [x,y,z]; p1/p2 pitch of the lower/upper trunk (deg, 0 = upright, +90 = lying face down
+    with the head toward +X, -90 = lying on the back with the head toward -X); yaw (deg, turn about Z,
+    +90 = facing +Y); roll (deg, about the body's long axis: with p 90, roll +90 turns the LEFT side up = lying on the right side;
+    roll -90 turns the RIGHT (camera-near) side up = lying on the left side); hp head pitch relative to the trunk;
+    per side s in (l, r): ankle_s (world) OR ankle_s_rel (from the hip), knee_s (knee pole direction),
+    foot_s (ankle -> toe direction), wrist_s (world) OR wrist_s_rel (from the shoulder),
+    elbow_s (elbow pole), hand_s (wrist -> fingertips), palm_s (palm normal), grip_s (0 flat .. 1 fist).
+    Use the SAME field names in every key of one exercise (sample() checks this).
+    """
+    k = dict(pelvis=[0.0, 0.0, 0.955], p1=1.0, p2=2.0, hp=0.0, yaw=0.0, roll=0.0)
+    for s_, sg in (("l", 1), ("r", -1)):
+        k["ankle_" + s_] = [0.0, sg * 0.10, 0.08]
+        k["knee_" + s_] = [1.0, 0.0, 0.0]
+        k["foot_" + s_] = [1.0, sg * 0.08, 0.0]
+        k["wrist_" + s_ + "_rel"] = [0.02, sg * 0.04, -0.565]
+        k["elbow_" + s_] = [-1.0, sg * 0.2, 0.0]
+        k["hand_" + s_] = [0.0, 0.0, -1.0]
+        k["palm_" + s_] = [0.0, -sg * 1.0, 0.0]
+        k["grip_" + s_] = 0.25
+    for name, v in over.items():
+        if name.endswith("_rel") and name.replace("_rel", "") in k:
+            del k[name.replace("_rel", "")]
+        elif (name + "_rel") in k:
+            del k[name + "_rel"]
+        k[name] = v
+    return k
+
+
+def both(**per_side):
+    """both(wrist=[x, y, z]) -> wrist_l=[x, +y, z], wrist_r=[x, -y, z] (y mirrored).
+    both(wrist_rel=v) -> wrist_l_rel / wrist_r_rel. Scalars (grip=0.9) are copied to both sides."""
+    out = {}
+    for name, v in per_side.items():
+        base, suffix = (name[:-4], "_rel") if name.endswith("_rel") else (name, "")
+        if isinstance(v, (int, float)):
+            out[f"{base}_l{suffix}"], out[f"{base}_r{suffix}"] = v, v
+        else:
+            out[f"{base}_l{suffix}"] = [v[0], v[1], v[2]]
+            out[f"{base}_r{suffix}"] = [v[0], -v[1], v[2]]
+    return out
+
+
+def rep(keys_top, keys_bottom, hold_top=0.1, down_end=0.48, hold_bottom=0.1):
+    """Typical rep timing: hold the top, go down, hold the bottom, come back up (loops)."""
+    return [(0.0, keys_top), (hold_top, keys_top), (down_end, keys_bottom),
+            (min(down_end + hold_bottom, 0.95), keys_bottom)]
+
+
+def pt(joint, off=(0, 0, 0)):
+    """A prop end point attached to a joint (moves with the figure)."""
+    return {"joint": joint, "off": list(off)}
+
+
+# Prop kinds (render.py and preview_sheet.py draw them):
+#   dict(kind="bar", z=2.3, half=0.65, r=0.017[, x=0])     pull-up bar with posts (bar along Y at x)
+#   dict(kind="chair", x=-1.5, seat=0.45)                   chair, seat centre at x, back on the -X side
+#   dict(kind="box", center=[x,y,z], size=[sx,sy,sz])       step, bench, wall (thin box), mat (thin)
+#   dict(kind="rod", a=P, b=P, r=0.017)                     bar, dip bar, band, towel, barbell, door edge;
+#                                                           P = [x,y,z] or pt("wrist_r", (0, 0, 0))
+#   dict(kind="weight", type="dumbbell"|"kettlebell", joint="wrist_r", off=[0,0,-0.05])
+#   dict(kind="plate", center=[x,y,z], r=0.2, normal=[0,1,0])  sliders/plates/discs
 
 
 # --- exercises ---------------------------------------------------------------
@@ -200,7 +290,7 @@ def pigeon():
         # folding forward = walking the hands out along the floor (the usual cue)
         return dict(pelvis=[px, 0.0, pz], p1=pitch * 0.8, p2=pitch, hp=-15 if pitch > 40 else 0,
                     ankle_r=[0.31, 0.10, 0.07], knee_r=[0.4, -0.6, -0.1], foot_r=[0.1, 1, 0.0],
-                    ankle_l=[-0.885, 0.12, 0.075], knee_l=[0, 0.1, -1], foot_l=[-1, 0, -0.32],
+                    ankle_l=[-0.894, 0.12, 0.075], knee_l=[0, 0.1, -1], foot_l=[-1, 0, -0.32],
                     wrist_l=[hands_x, 0.24, 0.035], wrist_r=[hands_x, -0.27, 0.035], grip_l=0.0, grip_r=0.0,
                     elbow_l=[-0.3, elbow_out, -1], elbow_r=[-0.3, -elbow_out, -1],
                     hand_l=[1, 0, 0], hand_r=[1, 0, 0])
@@ -218,6 +308,25 @@ EXERCISES = {
 }
 
 
+def load_families():
+    """Merge EXERCISES dicts from tools/blender/families/*.py into EXERCISES."""
+    import importlib
+    here = os.path.dirname(os.path.abspath(__file__))
+    fam_dir = os.path.join(here, "families")
+    if here not in sys.path:
+        sys.path.insert(0, here)
+    sys.modules.setdefault("poses", sys.modules[__name__])
+    if not os.path.isdir(fam_dir):
+        return
+    for f in sorted(os.listdir(fam_dir)):
+        if f.endswith(".py") and not f.startswith("_"):
+            mod = importlib.import_module("families." + f[:-3])
+            for k, v in getattr(mod, "EXERCISES", {}).items():
+                if k in EXERCISES and EXERCISES[k] is not v:
+                    raise ValueError(f"{k} defined twice ({f})")
+                EXERCISES[k] = v
+
+
 def build(ex_id):
     spec = EXERCISES[ex_id]()
     n = int(round(spec["seconds"] * FPS))
@@ -226,26 +335,35 @@ def build(ex_id):
         J = solve(sample(spec["keys"], f / n), report)
         frames.append({k: [round(x, 5) for x in v] for k, v in J.items()})
     msgs = [f"{k}: target up to {v:.3f} m out of reach" for k, v in sorted(report.items())]
-    return dict(id=ex_id, fps=FPS, frames=frames, props=spec["props"],
+    return dict(id=ex_id, fps=FPS, frames=frames, props=spec.get("props", []),
                 cam_az=spec["cam_az"], cam_el=spec["cam_el"],
                 lengths=L), msgs
 
 
+# body surface radius around each joint (render.py shapes), for the floor check
+RADIUS = dict(toe_l=0.02, toe_r=0.02, ankle_l=0.04, ankle_r=0.04, knee_l=0.05, knee_r=0.05, wrist_l=0.025,
+              wrist_r=0.025, hand_l=0.012, hand_r=0.012, elbow_l=0.04, elbow_r=0.04, hip_l=0.07, hip_r=0.07,
+              shoulder_l=0.05, shoulder_r=0.05, chest=0.10, spine=0.09, pelvis=0.09, head=0.10)
+
+
 def checks(data):
-    """Contact and floor checks: list of strings (empty = OK)."""
+    """Floor checks: a joint's body surface more than 2 cm below the floor (list of strings; empty = OK)."""
     out, seen = [], set()
-    pts = ["toe_l", "toe_r", "ankle_l", "ankle_r", "knee_l", "knee_r", "wrist_l",
-           "wrist_r", "hand_l", "hand_r", "pelvis", "head", "elbow_l", "elbow_r"]
+    pts = list(RADIUS)
     for i, fr in enumerate(data["frames"]):
         for p in pts:
-            if fr[p][2] < -0.005 and p not in seen:
+            if fr[p][2] - RADIUS.get(p, 0.0) < -0.02 and p not in seen:
                 seen.add(p)
-                out.append(f"{p} below floor from frame {i} ({fr[p][2]:.3f})")
+                out.append(f"{p} sinks into the floor from frame {i} (surface {fr[p][2] - RADIUS.get(p, 0.0):+.3f} m)")
     return out
 
 
 def main(argv):
     root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    load_families()
+    if "--list" in argv:
+        print("\n".join(sorted(EXERCISES)))
+        return 0
     preview = argv[argv.index("--preview") + 1] if "--preview" in argv else None
     ids = [a for a in argv if a in EXERCISES] or list(EXERCISES)
     ok = True

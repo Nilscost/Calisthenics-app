@@ -23,7 +23,7 @@ from mathutils import Matrix, Quaternion, Vector
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 WORK = os.path.join(ROOT, "work", "clips-bakeoff")
-RES = (960, 720)
+RES = (640, 480)  # the app shows 480x360; 640x480 keeps edges clean and halves render time
 
 FIGURE = (0.60, 0.61, 0.64)
 JOINT = (0.50, 0.51, 0.55)
@@ -233,37 +233,120 @@ class Figure:
             for i, (a, b) in enumerate(segs):
                 place_segment(self.parts[f"fing_{side}_{i}"], a, b)
         up1, up2 = Vector(fr["pelvis_up"]), Vector(fr["chest_up"])
+        l1 = Vector(fr.get("pelvis_left", (0, 1, 0)))
+        l2 = Vector(fr.get("chest_left", (0, 1, 0)))
         P, S, C = Vector(fr["pelvis"]), Vector(fr["spine"]), Vector(fr["chest"])
-        place_basis(self.parts["pelvis"], P + up1 * 0.03, up1)
-        place_basis(self.parts["belly"], (P + S) / 2 + up1 * 0.06, (up1 + up2).normalized())
-        place_basis(self.parts["chest"], C - up2 * 0.11, up2)
+        place_basis(self.parts["pelvis"], P + up1 * 0.03, up1, l1)
+        place_basis(self.parts["belly"], (P + S) / 2 + up1 * 0.06, (up1 + up2).normalized(), (l1 + l2).normalized())
+        place_basis(self.parts["chest"], C - up2 * 0.11, up2, l2)
         head_up = (Vector(fr["head"]) - Vector(fr["neck"])).normalized()
-        place_basis(self.parts["head"], Vector(fr["head"]) + head_up * 0.02, head_up)
+        place_basis(self.parts["head"], Vector(fr["head"]) + head_up * 0.02, head_up, l2)
 
 
 # ---------------------------------------------------------------- props
-def props(spec, mat):
-    pts = []
-    for pr in spec:
-        if pr["kind"] == "bar":
-            z, half, r = pr["z"], pr["half"], pr["r"]
-            bar = capsule("bar", 2 * half, r, r, mat)
-            place_segment(bar, (0, -half, z), (0, half, z))
-            for y in (-half, half):
-                post = capsule("post", z, 0.028, 0.028, mat)
-                place_segment(post, (0, y, 0), (0, y, z))
-            pts += [(0, -half, z), (0, half, z)]
-        if pr["kind"] == "chair":
-            x, s = pr["x"], pr["seat"]
-            box("seat", (x, 0, s - 0.02), (0.44, 0.44, 0.04), mat)
-            for dx in (-0.2, 0.2):
+def P(spec, fr):
+    """Prop point: [x,y,z] or {"joint": name, "off": [dx,dy,dz]} (follows the figure)."""
+    if isinstance(spec, dict):
+        return Vector(fr[spec["joint"]]) + Vector(spec.get("off", (0, 0, 0)))
+    return Vector(spec)
+
+
+class Props:
+    """Static props are built once; joint-attached ones are re-placed every frame."""
+
+    def __init__(self, spec, mat, f0):
+        self.dynamic = []
+        self.points = []
+        for pr in spec:
+            k = pr["kind"]
+            if k == "bar":
+                x, z, half, r = pr.get("x", 0.0), pr["z"], pr["half"], pr.get("r", 0.017)
+                bar = capsule("bar", 2 * half, r, r, mat)
+                place_segment(bar, (x, -half, z), (x, half, z))
+                for y in (-half, half):
+                    post = capsule("post", z, 0.028, 0.028, mat)
+                    place_segment(post, (x, y, 0), (x, y, z))
+                self.points += [(x, -half, z), (x, half, z), (x, -half, 0), (x, half, 0)]
+            elif k == "chair":
+                x, s_ = pr["x"], pr["seat"]
+                box("seat", (x, 0, s_ - 0.02), (0.44, 0.44, 0.04), mat)
+                for dx in (-0.2, 0.2):
+                    for dy in (-0.2, 0.2):
+                        box("leg", (x + dx, dy, (s_ - 0.04) / 2), (0.035, 0.035, s_ - 0.04), mat)
+                box("back", (x - 0.2, 0, s_ + 0.25), (0.035, 0.44, 0.40), mat)
                 for dy in (-0.2, 0.2):
-                    box("leg", (x + dx, dy, (s - 0.04) / 2), (0.035, 0.035, s - 0.04), mat)
-            box("back", (x - 0.2, 0, s + 0.25), (0.035, 0.44, 0.40), mat)
-            for dy in (-0.2, 0.2):
-                box("back_post", (x - 0.2, dy, s + 0.2), (0.035, 0.035, 0.42), mat)
-            pts += [(x - 0.22, -0.22, 0), (x + 0.22, 0.22, s + 0.45)]
-    return pts
+                    box("back_post", (x - 0.2, dy, s_ + 0.2), (0.035, 0.035, 0.42), mat)
+                self.points += [(x - 0.22, -0.22, 0), (x + 0.22, 0.22, s_ + 0.45)]
+            elif k == "box":
+                c, sz = pr["center"], pr["size"]
+                box("box", c, sz, material("box", tuple(pr["color"])) if "color" in pr else mat)
+                for dx in (-0.5, 0.5):
+                    for dy in (-0.5, 0.5):
+                        for dz in (-0.5, 0.5):
+                            self.points.append((c[0] + dx * sz[0], c[1] + dy * sz[1], c[2] + dz * sz[2]))
+            elif k == "rod":
+                a_, b_ = P(pr["a"], f0), P(pr["b"], f0)
+                r = pr.get("r", 0.017)
+                ob = capsule("rod", 1.0, r, r, material("rod", tuple(pr["color"])) if "color" in pr else mat)
+                self.dynamic.append(("rod", ob, pr))
+                self._rod(ob, pr, f0)
+                if not isinstance(pr["a"], dict):
+                    self.points.append(tuple(a_))
+                if not isinstance(pr["b"], dict):
+                    self.points.append(tuple(b_))
+            elif k == "weight":
+                obs = self._weight(pr["type"], mat)
+                self.dynamic.append(("weight", obs, pr))
+                self._place_weight(obs, pr, f0)
+            elif k == "plate":
+                c = Vector(pr["center"])
+                ob = ellipsoid("plate", pr.get("r", 0.2), pr.get("r", 0.2), 0.012, mat)
+                ob.location = c
+                ob.rotation_quaternion = Vector((0, 0, 1)).rotation_difference(Vector(pr.get("normal", (0, 0, 1))))
+                self.points.append(tuple(c))
+
+    @staticmethod
+    def _rod(ob, pr, fr):
+        a_, b_ = P(pr["a"], fr), P(pr["b"], fr)
+        place_segment(ob, a_, b_)
+        ob.scale = (1, 1, max((b_ - a_).length, 1e-4))
+
+    @staticmethod
+    def _weight(kind, mat):
+        if kind == "kettlebell":
+            body = ellipsoid("kb", 0.085, 0.085, 0.08, mat)
+            handle = capsule("kb_handle", 0.12, 0.014, 0.014, mat)
+            return [body, handle]
+        bar = capsule("db_bar", 0.16, 0.016, 0.016, mat)
+        h1 = ellipsoid("db_head", 0.045, 0.045, 0.03, mat)
+        h2 = ellipsoid("db_head", 0.045, 0.045, 0.03, mat)
+        return [bar, h1, h2]
+
+    @staticmethod
+    def _place_weight(obs, pr, fr):
+        w = Vector(fr[pr["joint"]])
+        side = pr["joint"][-1]
+        hand = Vector(fr["hand_" + side]) if ("hand_" + side) in fr else w + Vector((0, 0, -0.17))
+        c = w + (hand - w) * 0.45 + Vector(pr.get("off", (0, 0, 0)))
+        if pr["type"] == "kettlebell":
+            body, handle = obs
+            body.location = c + Vector((0, 0, -0.13))
+            body.rotation_quaternion = Quaternion()
+            place_segment(handle, c + Vector((0, -0.06, -0.02)), c + Vector((0, 0.06, -0.02)))
+        else:
+            bar, h1, h2 = obs
+            axis = Vector((0, 1, 0))
+            place_segment(bar, c - axis * 0.08, c + axis * 0.08)
+            for h, sgn in ((h1, -1), (h2, 1)):
+                h.location = c + axis * (0.09 * sgn)
+                h.rotation_quaternion = Vector((0, 0, 1)).rotation_difference(axis)
+
+    def pose(self, fr):
+        for kind, ob, pr in self.dynamic:
+            if kind == "rod":
+                self._rod(ob, pr, fr)
+            else:
+                self._place_weight(ob, pr, fr)
 
 
 # ---------------------------------------------------------------- camera
@@ -344,7 +427,7 @@ def scene_setup(engine):
         sc.display.render_aa = "16"
     else:
         sc.render.engine = "CYCLES"
-        sc.cycles.samples = 48
+        sc.cycles.samples = 24
         sc.cycles.use_denoising = True
         try:  # Apple GPU if available
             prefs = bpy.context.preferences.addons["cycles"].preferences
@@ -375,11 +458,12 @@ def render(ex_id, engine, start_only):
     with open(path) as fh:
         data = json.load(fh)
     sc = scene_setup(engine)
-    pts = props(data["props"], material("prop", PROP))
+    props_ = Props(data["props"], material("prop", PROP), data["frames"][0])
+    pts = list(props_.points)
     fig = Figure(data["frames"][0])
     for fr in data["frames"]:
         for k, v in fr.items():
-            if not (k.endswith("_up") or k.startswith(("palmn_", "grip_"))):
+            if not (k.endswith(("_up", "_left")) or k.startswith(("palmn_", "grip_"))):
                 pts.append(tuple(v))
     # pad every point by the body's thickness so limbs and head stay inside the frame
     pad = 0.12
@@ -392,12 +476,25 @@ def render(ex_id, engine, start_only):
     t0 = time.time()
     for i, fr in enumerate(frames):
         fig.pose(fr)
+        props_.pose(fr)
         sc.render.filepath = os.path.join(out, f"{i:04d}.png")
         bpy.ops.render.render(write_still=True)
         if i == 0:
             sc.render.filepath = os.path.join(WORK, ex_id, "blender", "start.png")
             bpy.ops.render.render(write_still=True)
     print(f"[bakeoff] {ex_id}: {len(frames)} frames in {time.time() - t0:.0f} s -> {out}")
+
+
+def done_already(ex_id):
+    """Resume: all frames exist and are newer than joints.json."""
+    j = os.path.join(WORK, ex_id, "joints.json")
+    out = os.path.join(WORK, ex_id, "blender", "frames")
+    if not os.path.isdir(out):
+        return False
+    with open(j) as fh:
+        n = len(json.load(fh)["frames"])
+    names = [f for f in os.listdir(out) if f.endswith(".png")]
+    return len(names) >= n and min(os.path.getmtime(os.path.join(out, f)) for f in names) > os.path.getmtime(j)
 
 
 def main():
@@ -411,9 +508,28 @@ def main():
         ids = sorted(d for d in os.listdir(WORK) if os.path.exists(os.path.join(WORK, d, "joints.json")))
     with open(os.path.join(WORK, "blender-version.txt"), "w") as fh:
         fh.write(f"{bpy.app.version_string} engine={engine}\n")
-    for ex in ids:
-        render(ex, engine, start_only)
-    print("[bakeoff] done:", ", ".join(ids))
+    resume = "--resume" in argv
+    ok, skipped, failed = [], [], []
+    t_all = time.time()
+    for n, ex in enumerate(ids, 1):
+        if resume and not start_only and done_already(ex):
+            skipped.append(ex)
+            continue
+        print(f"[bakeoff] {n}/{len(ids)} {ex} (elapsed {(time.time() - t_all) / 60:.0f} min)", flush=True)
+        try:
+            render(ex, engine, start_only)
+            ok.append(ex)
+        except Exception as exc:  # keep going overnight; report at the end
+            import traceback
+            traceback.print_exc()
+            failed.append(f"{ex}: {exc}")
+    summary = (f"[bakeoff] done in {(time.time() - t_all) / 60:.0f} min: {len(ok)} rendered, "
+               f"{len(skipped)} already done, {len(failed)} failed")
+    print(summary)
+    for f in failed:
+        print("[bakeoff] FAILED", f)
+    with open(os.path.join(WORK, "render-summary.txt"), "w") as fh:
+        fh.write(summary + "\n" + "\n".join("FAILED " + f for f in failed) + "\n")
 
 
 main()
