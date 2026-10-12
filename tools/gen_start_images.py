@@ -59,7 +59,7 @@ def run(ex, ref=None, model=MODEL):
     if ref:
         content[0]["text"] += " Image 2 shows the person: keep the same face, hair, build and clothes exactly."
         content.append({"type": "image_url", "image_url": {"url": png_data_url(Image.open(ref).convert("RGB"))}})
-    body = {"model": model, "modalities": ["image", "text"],
+    body = {"model": model, "modalities": ["image"] if "seedream" in model or "flux" in model else ["image", "text"],
             "messages": [{"role": "user", "content": content}],
             "image_config": {"aspect_ratio": "4:3"}}
     t0 = time.time()

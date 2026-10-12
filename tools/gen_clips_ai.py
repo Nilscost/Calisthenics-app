@@ -127,7 +127,10 @@ HUMAN_MOTION = {
 
 
 def human_start(ex, square=False):
-    im = Image.open(os.path.join(WORK, ex, "human", "start-1.png")).convert("RGB").resize((640, 480), Image.LANCZOS)
+    d = os.path.join(WORK, ex, "human")
+    latest = max((f for f in os.listdir(d) if f.startswith("start-")), key=lambda f: int(f[6:-4]))
+    print("   start image:", latest)
+    im = Image.open(os.path.join(d, latest)).convert("RGB").resize((640, 480), Image.LANCZOS)
     if square:
         sq = Image.new("RGB", (640, 640), "white")
         sq.paste(im, (0, 80))
