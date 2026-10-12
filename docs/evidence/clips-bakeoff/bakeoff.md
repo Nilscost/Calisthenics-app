@@ -40,3 +40,9 @@ Seedance's input check (`InputImageSensitiveContentDetected.PrivacyInformation`)
 Test: the pistol start image made with **ByteDance Seedream 5.0 lite** (`bytedance-seed/seedream-5-0-lite`, $0.035, same pose guide and person reference) was **accepted** by Seedance through OpenRouter (the Gemini image of the same pose was refused twice). One test only: not proof that every Seedream image passes.
 Clip (`squat-pistol-seedance-seedreamstart.mp4`, $0.35): free leg straight, forward and off the floor all the way, standing heel down, same man, white background, loops. Depth is about thighs parallel, not a full pistol (hips not below the knee). Score 3–4 (best pistol of the bake-off).
 Blender pull-up with modelled hands: `pullup-full-blender-vs-photo.mp4` (side by side with the photo-start Seedance pull-up).
+
+## Keyframed clip: forcing the middle pose (2026-10-12)
+Seedance on OpenRouter accepts only `first_frame` and `last_frame` (no middle frames; checked on the live model list, same for every video model there except Runway Aleph's passthrough `keyframes`, untested). Workaround: one rep = two segments between key poses, joined (`tools/gen_keyframe_clip.py`).
+- Key poses: top (Seedream image from before) and **bottom** (Seedream, $0.035, guided by Blender frame 47 = the deepest frame, same man as reference): hips below the knee, free leg straight, heel down.
+- Segments: top → bottom and bottom → top, Seedance 2.0, 4 s each, $0.28 each. Joined: `squat-pistol-seedance-keyframed.mp4` (8 s, 57 KB).
+- Result: the "down" clip ends exactly on the bottom keyframe (full depth, checked against the image), the join at the bottom is seamless (both segments share that frame), the free leg stays straight and off the floor, same man, loops at the top. Score 4: the first real full-depth pistol of the bake-off. Cost per clip about $0.63 (2 images + 2 segments) instead of $0.38; 8 s long (trim or speed up to 4–5 s for the app).
