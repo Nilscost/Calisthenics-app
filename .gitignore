@@ -33,3 +33,4 @@ research-checkouts/
 # Transient build logs (evidence lives in docs/evidence/, not these)
 verify-run.log
 build-gate.log
+work/

@@ -1,124 +1,130 @@
-# 16 — Exercise clips with AI video (Seedance via OpenRouter): steps
+# 16 — Exercise clips: Blender vs AI video bake-off, then the owner chooses
 
-Status: **plan, not started.** The owner runs it from Hermes later. Written 2026-10-09 by the reviewer.
+Status: **plan, not started.** Rewritten 2026-10-12 at the owner's request: try both routes on four exercises, then the owner decides. The 2026-10-09 version planned AI video only (see git history).
 
 Background:
-- research report `/Users/nils/Documents/hermes/Apps/reports/Exercise demo video options.md`;
-- live OpenRouter model list checked on 2026-10-09.
+- research report `/Users/nils/Documents/hermes/Apps/reports/Exercise demo video options.md` (recommends Blender; AI only as an experiment);
+- today's clips: procedural Python + Pillow generator (`tools/gen_demo_clips_v2.py`); weak ones are listed in `docs/evidence/clips-v3-review.md`.
 
-Why AI video is back on the table:
-- Seedance 2.0 / 2.0 Fast / 2.0 Mini, Kling v3 and Veo 3.1 on OpenRouter all accept a **first and a last frame**. The same image for both gives a clean loop.
-- The worked muscles no longer need to be in the clip, because the body figure (v2 task V08) shows them next to it.
+Why both: the report argues that a rigged Blender figure fixes form, loops and licences, but nobody has seen either route on our hardest exercises. Comparing three versions of the same four exercises is cheaper than arguing about it. The worked muscles don't have to be in the clip, because the body figure (v2 task V08) shows them next to it.
+
+## Known conflicts (flagged, not resolved here)
+- **Cost per AI clip.** The old plan estimated Seedance 2.0 at ≈ $0.34 per 5 s clip, using its own token maths. The report quotes ≈ $0.30 per *second*, which is ≈ $1.50 per clip. Step 3.4 measures the real price on the first clip before generating the rest.
+- **Provider.** The report chose fal.ai (Kling v3 Pro, where end-frame support is confirmed). The old plan chose OpenRouter (one key for Seedance and Kling, with first and last frame listed). This plan uses **OpenRouter**, so there is one key and one script. If a model rejects `last_frame`, record that as a finding rather than working around it.
 
 ## 0. Ground rules
-- **Do not replace the shipped clips until the bake-off (step 3) has been reviewed by the owner.** Today's clips stay the fallback.
-- **Never print or commit API keys.** The key lives in `/Users/nils/Documents/hermes/.secrets/openrouter_key` (mode 600) and in Hermes's `.env`.
-- Generated clips are **DRAFT** like all content.
-- Record the model, prompt, seed and cost per clip in `docs/evidence/clips-ai/manifest.csv`.
-- Rights: before shipping, read OpenRouter's terms and ByteDance's Seedance (or Kling's) output terms. Record in `THIRD_PARTY_NOTICES.md` what applies. The repo is public and GPL-3.0. If the terms don't allow redistribution, stop and ask the owner.
-- Coordinate with the executor:
-  - Clips live in `app/src/main/assets/demos/<exerciseId>.mp4`. Thumbnails live in `app/src/main/assets/thumbs/<id>.webp` (after v2 task V06a).
-  - `ClipAssetsTest` caps a clip at **120 KB**. AI clips need a higher cap (e.g. 300 KB) and a total cap (e.g. 30 MB). Change the test in the same commit and say why.
-  - Check `git status` first, and don't work in the repo while the executor is in the middle of a task.
+- **Nothing ships from this bake-off.** Today's clips stay in the app until the owner picks a route (step 6).
+- **Never print or commit API keys.** Key file: `/Users/nils/Documents/hermes/.secrets/openrouter_key` (mode 600).
+- **Spend cap: $30 for the whole AI side.** Set it as the key's credit limit on OpenRouter. Stop and ask the owner before spending more.
+- Work files live in `work/clips-bakeoff/` (outside git; add it to `.gitignore`). Only the review file, contact sheets, manifest and comparison videos are committed, under `docs/evidence/clips-bakeoff/`.
+- `manifest.csv` records:
+  - for each AI clip: model, prompt, seed, attempts and cost;
+  - for each Blender clip: Blender version, rig source and licence.
+- Check `git status` first, and don't work in the repo while another agent is in the middle of a task.
 
-## 1. One-time setup (owner)
-1. On https://openrouter.ai, sign in, buy **$20–25 of credits**, and create an API key at https://openrouter.ai/settings/keys. Optionally set a credit limit on the key (e.g. $25).
-2. Hermes:
-   - run `hermes config env-path` to see which `.env` Hermes uses;
-   - add the line `OPENROUTER_API_KEY=<key>` there;
-   - run `hermes tools` → **Video Generation** → choose **OpenRouter**;
-   - optionally, in the same menu, choose OpenRouter for **Image Generation** too.
-3. For scripts, save the same key: `printf %s '<key>' > /Users/nils/Documents/hermes/.secrets/openrouter_key && chmod 600 /Users/nils/Documents/hermes/.secrets/openrouter_key`.
-4. Check that it works, without printing the key:
+## 1. Exercises (4, the hardest for today's clips)
+| id | Why it's hard |
+|---|---|
+| `pullup-full` | hands stay fixed on a bar while the body moves under them |
+| `pushup-feet-elevated` | the variant's difference (feet on a chair) must be visible |
+| `squat-pistol` | one-leg balance, other leg held straight in front |
+| `stretch-pigeon` | floor stretch where the legs cross the body (occlusion) |
+
+Each route makes all four clips. For a fair comparison, every route uses the same output spec:
+- 4:3, 480 px wide, white background, no audio;
+- a seamless loop of 2–4 s;
+- H.264 Main, yuv420p, `-movflags +faststart`.
+
+## 2. Route A: Blender (no spend)
+1. **Install.**
+   - First try Blender headless in the sandbox, under `/root/toolchain/blender` (never `/opt` or `/usr`). Check whether an official Linux arm64 build exists for the current version.
+   - If there is none, the owner installs Blender on the Mac (`brew install --cask blender`) and runs one render script that the agent writes: `blender -b -P tools/blender/render.py -- <id>`.
+2. **Rig.** One CC0 humanoid rig (e.g. Quaternius; check the licence of each asset), neutral grey, no face detail.
+   - Not Mixamo: its terms forbid sharing raw files in a public repo.
+   - Record the source and licence in the manifest.
+3. **Poses.** 3–6 keyed poses per rep, with cyclic F-curves so the loop is seamless by construction.
+   - Use IK for the hands on the bar and the feet on the chair.
+   - The bar, chair and floor are simple boxes.
+   - Keyframe data goes in `tools/blender/poses/<id>.json` (our own data, GPL like the rest).
+4. **Render.** Workbench or Eevee, flat shading, fixed 3/4 camera, then the step 4 encode. Optionally, colour the worked muscles on one exercise (via a vertex-group mask) to show whether it is worth doing.
+5. **Log the hours spent per exercise.** For this route the real cost is agent time per clip, and that decides whether ~140 clips are feasible.
+
+## 3. Route B: AI video, two models (≤ $30)
+Owner setup (once):
+1. On https://openrouter.ai, buy **$30 of credits** and create a key at https://openrouter.ai/settings/keys with a **$30 limit**.
+2. Save it for scripts:
+   - `printf %s 'KEY' > /Users/nils/Documents/hermes/.secrets/openrouter_key` (replace KEY with the key);
+   - then `chmod 600 /Users/nils/Documents/hermes/.secrets/openrouter_key`.
+
+   Nothing else needs to be set up in Hermes. Hermes's `video_generate` tool sends only a first frame, so loops need the script below.
+
+Agent:
+1. **Check the models live** with `GET https://openrouter.ai/api/v1/videos/models`.
+   - Confirm that `bytedance/seedance-2.0` and `kwaivgi/kling-v3.0-std` (or the current ids) accept a first and a last frame, 4:3, 480p and 5 s.
+   - Record the listed prices.
+2. **Character.** One fixed description, reused word for word in every prompt: *"a neutral athletic adult mannequin-like figure, plain light-grey fitted clothing, no logos, no face detail, pure white seamless background, soft even light, full body always in frame, side-on 3/4 camera, fixed camera, no camera motion"*.
+   - **Preferred start image:** render the start pose with the route A rig and use it here. Both routes then start from the same frame, and no image model is needed.
+   - **Fallback:** make one reference image with an image model, then a start-pose image per exercise. Check each by eye: contact points, limb count, bar and chair in place.
+3. **Generate** with `tools/gen_clips_ai.py`. It reads the key from the file and never logs it. Field names come from Hermes's plugin `~/.hermes/hermes-agent/plugins/video_gen/openrouter/__init__.py`. The request:
+   ```json
+   { "model": "bytedance/seedance-2.0",
+     "prompt": "<character description>. <one full rep, start and end in the same pose, steady tempo, form cues>",
+     "resolution": "480p", "duration": 5, "aspect_ratio": "4:3",
+     "frame_images": [
+       { "type": "image_url", "image_url": { "url": "data:image/png;base64,<start.png>" }, "frame_type": "first_frame" },
+       { "type": "image_url", "image_url": { "url": "data:image/png;base64,<start.png>" }, "frame_type": "last_frame" } ] }
    ```
-   curl -s https://openrouter.ai/api/v1/videos/models | python3 -c 'import json,sys; d=json.load(sys.stdin); d=d.get("data",d); print([m["id"] for m in d if "seedance" in m["id"]])'
-   ```
-   For a credit check: `curl -s -H "Authorization: Bearer $(cat /Users/nils/Documents/hermes/.secrets/openrouter_key)" https://openrouter.ai/api/v1/credits`.
+   Then the script:
+   - polls `GET /api/v1/videos/{id}` every 10 s and gives up after 15 min;
+   - downloads `GET /api/v1/videos/{id}/content`;
+   - keeps the raw file as `work/clips-bakeoff/<id>/raw-<model>-<n>.mp4`;
+   - writes a manifest row;
+   - skips ids that already have an accepted clip, so it can resume.
+4. **Check the price after the first clip** on the OpenRouter activity page. The budget is 4 exercises × 2 models × up to 3 tries = 24 clips. If the real price would take 24 clips past $30, cut to 2 tries and tell the owner.
+5. **Rights.** Read OpenRouter's terms and the output terms of the model owners (ByteDance, Kuaishou). Note in the review whether their output may be shipped in a public GPL-3.0 repo. A clip with unclear rights can still be compared, but not shipped.
 
-**Hermes limit:** Hermes's `video_generate` tool (OpenRouter plugin) sends only a **first** frame. It is fine for quick looks, but looping clips need the script in step 4, which also sends `last_frame`.
-
-## 2. A consistent character (once)
-1. Write one character description and reuse it verbatim in every prompt. Suggestion: *"a neutral athletic adult mannequin-like figure, plain light-grey fitted clothing, no logos, no face detail, pure white seamless background (#FFFFFF, no floor line or shadow edge), soft even light, full body always in frame, side-on 3/4 camera, fixed camera, no camera motion"*.
-2. Make a **reference image** of that character (Hermes image generation, or an OpenRouter image model that accepts a reference image).
-3. Per exercise, make a **start-pose image** from the reference: same character, same background and camera, in the exercise's start position (e.g. "top of a feet-elevated push-up, feet on a chair, hands on the floor"). Check it by eye: correct contact points, the right number of limbs, and equipment (chair, bar) in the right place.
-4. Save it as `work/clips-ai/<exerciseId>/start.png`. The `work/` folder is outside git; add it to `.gitignore` if needed.
-
-## 3. Bake-off (about $5–10), before anything else
-- **Exercises**, the five hardest for today's clips:
-  - `pullup` (or the catalog's pull-up id);
-  - the feet-elevated push-up;
-  - a pigeon or other floor hip stretch;
-  - the pistol squat;
-  - plank shoulder taps (if not in the catalog yet, use a plank variant).
-- **Models**, all at 480p, 5 s, no audio, first frame = last frame = the start pose:
-
-  | Model | Est. cost per 5 s clip |
-  |---|---|
-  | `bytedance/seedance-2.0` | ≈ $0.34 |
-  | `bytedance/seedance-2.0-mini` | ≈ $0.17 |
-  | `kwaivgi/kling-v3.0-std` | ≈ $0.42 |
-
-  The Seedance figures are estimates (billing is per video token, assumed to be w×h×fps×s/1024); the Kling figure is the listed $0.084/s × 5 s. Check the real cost in the OpenRouter activity page after the first clip.
-- **Review every clip**, frame by frame (extract ~12 frames with ffmpeg and look at them), against the quality bar of plan §5.1:
-  - Does the movement read within one loop?
-  - Is the anatomy plausible: limb count, contact points, feet on or off the floor as they should be, the bar or chair in the right place?
-  - Is the variant's difference visible?
-  - Is the loop seamless?
-  
-  Score each 1–5 next to today's clip in `docs/evidence/clips-ai/bakeoff.md`, with contact sheets.
-- **Owner decision:** go or no-go, and which model.
-
-## 4. Generation script (direct API, supports loops)
-`tools/gen_clips_ai.py`:
-- reads the key from the secrets file;
-- never logs the key;
-- for each exercise, POSTs to `https://openrouter.ai/api/v1/videos`.
-
-```json
-{ "model": "bytedance/seedance-2.0",
-  "prompt": "<character description>. <exercise motion: one full rep, start and end in the same pose, steady tempo, correct form cues>",
-  "resolution": "480p", "duration": 5, "aspect_ratio": "4:3",
-  "frame_images": [
-    { "type": "image_url", "image_url": { "url": "data:image/png;base64,<start.png>" }, "frame_type": "first_frame" },
-    { "type": "image_url", "image_url": { "url": "data:image/png;base64,<start.png>" }, "frame_type": "last_frame" } ] }
+## 4. Post-processing (both routes)
 ```
-
-Then:
-1. Poll `GET /api/v1/videos/{id}` every 10 s until the status is `completed` or `failed` (give up after 15 min).
-2. Download `GET /api/v1/videos/{id}/content` with the bearer key.
-3. Keep the raw file in `work/clips-ai/<id>/raw-<model>-<n>.mp4`.
-4. Write a manifest row.
-5. Skip ids that already have an accepted clip, so the script can resume.
-
-The field names come from Hermes's OpenRouter plugin (`~/.hermes/hermes-agent/plugins/video_gen/openrouter/__init__.py`). Check `aspect_ratio` against the model's `supported_aspect_ratios` in `/videos/models`.
-
-## 5. Post-processing (keeps the APK light)
-Trim to the cleanest 2–4 s loop, scale to 480 wide, remove audio, and encode H.264 for Android minSdk 26:
-
+ffmpeg -i raw.mp4 -ss START -t LEN -an -vf "scale=480:-2,fps=24" -c:v libx264 -profile:v main -pix_fmt yuv420p -crf 30 -preset slow -movflags +faststart out.mp4
 ```
-ffmpeg -i raw.mp4 -ss <start> -t <len> -an -vf "scale=480:-2,fps=24" -c:v libx264 -profile:v main -pix_fmt yuv420p -crf 30 -preset slow -movflags +faststart out.mp4
-```
-
-- Target ≤ 250 KB per clip, and ≤ 30 MB for all clips. Raise the CRF to 32–34 if a clip is bigger.
-- Make the thumbnail from a key frame: `ffmpeg -ss <t> -i out.mp4 -frames:v 1 -vf scale=240:-2 thumb.webp`.
+- Target ≤ 250 KB per clip; if a clip is bigger, raise the CRF to 32–34.
 - Check the loop seam: the last frame should be close to the first. Re-trim if it jumps.
+- Note that `ClipAssetsTest` caps clips at 120 KB today. Record the measured sizes; the cap is only changed in the full run.
 
-## 6. Full run (after a "go")
-1. Generate in batches of about 20.
-2. Review each clip, using the same 1–5 scoring as the bake-off.
-3. Retry failures up to 3 times with a better start image or prompt, then fall back to today's clip and list it as rejected.
-4. Budget: about $50–100 for ~100 clips with retries at Seedance 2.0 / Mini prices. Stop and ask the owner if the spend passes $100.
+## 5. Review (agent) and what the owner gets
+For each exercise, in `docs/evidence/clips-bakeoff/`:
+- `<id>-compare.mp4`: one looping video with four labelled panels side by side: **today · Blender · Seedance · Kling**;
+- a 12-frame contact sheet per clip, judged with vision;
+- a 1–5 score per clip on each of these:
+  - the movement reads within one loop;
+  - anatomy: limb count, contact points, feet on or off the floor, bar and chair in place;
+  - the variant's difference is visible;
+  - the loop is seamless;
+  - the character stays consistent.
 
-Ship as one commit:
-- the clips and thumbnails;
-- `ClipAssetsTest` caps updated;
-- the manifest and review file;
-- `THIRD_PARTY_NOTICES.md`.
+`bakeoff.md` ends with a decision table:
 
-Then:
-1. Run the full verify and the ui-screens run.
-2. Do a screenshot review of the workout screen with several clips.
-3. Build the APK.
+| Route | Avg score | Worst failure | KB per clip | Cost for ~140 clips | Agent time for ~140 clips | Rights | How a wrong clip gets fixed |
+|---|---|---|---|---|---|---|---|
+| Today | | | | $0 | — | ours | edit poses in Python |
+| Blender | | | | $0 | (measured) | ours if the rig is CC0 | edit keys, re-render |
+| Seedance 2.0 | | | | (measured price × tries) | | (step 3.5) | re-roll |
+| Kling v3 | | | | | | | re-roll |
+
+Plus a test APK, `Apps/builds/app-debug-bakeoff.apk`. It is a debug build, not a release. A hidden debug setting swaps the four exercises to the best clip from each route, so the owner can see them on the S21 at workout size. Skip the APK if it would take more than half a day; the comparison videos then carry the decision.
+
+## 6. Owner decision
+The options:
+- **Blender for all**;
+- **one AI model for all**;
+- **a mix**: Blender by default, AI for clips Blender can't pose well;
+- **keep today's clips**.
+
+After the decision, a separate plan covers the full run:
+- ~140 clips in batches of 20;
+- `ClipAssetsTest` caps raised in the same commit, with the reason;
+- `THIRD_PARTY_NOTICES.md` updated;
+- full verify, ui-screens run, screenshot review, APK.
 
 ## 7. What stays the owner's check
-Whether the clips feel right on the phone, and whether the technique shown is correct for the owner. The agent can catch obvious anatomy errors, not coaching subtleties.
+Whether the clips feel right on the phone, and whether the technique is correct for the owner. The agent can catch obvious anatomy errors, not coaching detail.
