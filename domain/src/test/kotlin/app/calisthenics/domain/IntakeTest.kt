@@ -106,3 +106,36 @@ class FullProgressionTest {
         assertTrue(ids.containsAll(listOf("pushup-diamond", "pushup-archer", "pushup-one-arm")))
     }
 }
+
+/** R7-T04 (B1): an answer above the top step completes the ladder and starts the successor. */
+class QuestionnaireTopLevelTest {
+    private val catalog = app.calisthenics.domain.content.parseCatalog(java.io.File(System.getProperty("repo.root"), "content/starter/catalog.json").readText())
+    private fun replay(l: StartLevel) = app.calisthenics.domain.progression.ProgressionEngine(catalog).replay(emptyList(),
+        listOf(app.calisthenics.domain.progression.UserAction.SelfAssessment(0, l.variationId, l.storedTier)))
+
+    @Test fun plankSixtySecondsIsFiveStarsAndTheSuccessorStartsAtLevelOne() {
+        val l = levelFromDoes(catalog, FamilyAnswer.Does("plank", 60, 3))!!
+        assertTrue(l.completed); assertEquals(5, l.tier)
+        val snap = replay(l)
+        assertEquals(5, snap.variations["plank"]!!.earnedStars())
+        val next = catalog.policyForVariation("plank")!!.nextVariationIds.first()
+        assertEquals(next, snap.activeInFamily[catalog.variation("plank")!!.familyId])
+        assertEquals(1, snap.tierFor(next))
+    }
+
+    @Test fun plankFiftySecondsIsLevelFiveWithFourStars() {
+        val l = levelFromDoes(catalog, FamilyAnswer.Does("plank", 50, 3))!!
+        assertFalse(l.completed); assertEquals(5, l.tier)
+        val snap = replay(l)
+        assertEquals(4, snap.variations["plank"]!!.earnedStars())
+        assertEquals("plank", snap.activeInFamily[catalog.variation("plank")!!.familyId])
+    }
+
+    @Test fun everyExerciseFollowsTheSameRule() {
+        for (id in listOf("pushup-standard", "squat-air", "pullup-band-assisted")) {
+            val top = catalog.policyForVariation(id)!!.tiers.maxOf { it.target.value }
+            assertTrue("$id above the top", levelFromDoes(catalog, FamilyAnswer.Does(id, top + 1, 3))!!.completed)
+            assertFalse("$id at the top", levelFromDoes(catalog, FamilyAnswer.Does(id, top, 3))!!.completed)
+        }
+    }
+}

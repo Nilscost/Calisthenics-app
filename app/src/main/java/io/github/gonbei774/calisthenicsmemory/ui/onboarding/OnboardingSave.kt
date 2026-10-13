@@ -24,7 +24,7 @@ data class OnboardingResult(
 
 object OnboardingSave {
     fun save(ctx: Context, catalog: Catalog, r: OnboardingResult) {
-        LevelStore.save(ctx, r.levels.associate { it.variationId to it.tier }) // overwrites: a redo replaces the old levels
+        LevelStore.save(ctx, r.levels.associate { it.variationId to it.storedTier }) // overwrites: a redo replaces the old levels
         ProfileStore.upsert(ctx, r.profile)
         ProfileStore.select(ctx, r.profile.id)
         RoutineStore.save(ctx, routineFromAnswers(catalog, RoutineStore.load(ctx), r.pull))

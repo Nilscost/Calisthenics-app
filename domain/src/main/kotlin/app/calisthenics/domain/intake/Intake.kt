@@ -8,6 +8,7 @@ import app.calisthenics.domain.model.OnboardingFamily
 import app.calisthenics.domain.model.Pattern
 import app.calisthenics.domain.model.Routine
 import app.calisthenics.domain.model.Tier
+import app.calisthenics.domain.progression.ALL_TIERS_DONE
 
 /** Highest tier index whose target value is <= [value]; 1 when below the first step. */
 fun suggestStartingStep(tiers: List<Tier>, value: Int): Int =
@@ -21,7 +22,11 @@ fun exceedsLadder(tiers: List<Tier>, value: Int): Boolean = value > tiers.maxOf 
 
 enum class Guess { EASY, NORMAL, HARD }
 
-data class StartLevel(val variationId: String, val tier: Int)
+/** [completed] (R7-T04, B1): the answer was above the top step, so the whole ladder of this exercise counts as achieved and the successor starts at level 1. [tier] is then the top step. */
+data class StartLevel(val variationId: String, val tier: Int, val completed: Boolean = false) {
+    /** What the level store keeps: the step, or [ALL_TIERS_DONE] when the ladder is completed. */
+    val storedTier: Int get() = if (completed) ALL_TIERS_DONE else tier
+}
 
 /** What the person said for one family. */
 sealed interface FamilyAnswer {
@@ -34,7 +39,7 @@ sealed interface FamilyAnswer {
 /** "I do this": the step whose target the person already meets (see [suggestStartingStep]). */
 fun levelFromDoes(c: Catalog, a: FamilyAnswer.Does): StartLevel? {
     val pol = c.policyForVariation(a.variationId) ?: return null
-    return StartLevel(a.variationId, suggestStartingStep(pol.tiers, a.value))
+    return StartLevel(a.variationId, suggestStartingStep(pol.tiers, a.value), completed = exceedsLadder(pol.tiers, a.value))
 }
 
 /**

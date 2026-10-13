@@ -28,6 +28,9 @@ const val BELOW_SUGGEST_AFTER = 2 // ADR 0002 C6
 /** V02 / D7: this many sessions in a row rated "too easy" suggest one level up (never applied without the user). */
 const val ABOVE_SUGGEST_AFTER = 2
 
+/** R7-T04 (B1): a self-assessed tier above the top step = the whole ladder of that exercise is achieved (five stars) and its successor starts at level 1. */
+const val ALL_TIERS_DONE = 6
+
 /** Explicit user actions that change progression (all optional; silence never clears a hold). */
 sealed interface UserAction {
     val day: Int
@@ -215,9 +218,22 @@ class ProgressionEngine(private val catalog: Catalog) {
         for ((i, a) in actions.withIndex()) items += Item(a.day, 2, "a%06d".format(i)) {
             when (a) {
                 is UserAction.SelfAssessment -> {
-                    val p = ensure(a.variationId, a.day, a.tier, a.tier)
-                    vars[a.variationId] = p.copy(tier = a.tier, baselineTier = a.tier, enrolledAtDay = a.day)
-                    active.putIfAbsent(p.familyId, a.variationId)
+                    val top = policy(a.variationId)?.tiers?.maxOfOrNull { it.index } ?: 5
+                    if (a.tier > top) {
+                        // R7-T04 (B1): above the top step: the top step is achieved too (five stars) and the successor is active at level 1
+                        val p = ensure(a.variationId, a.day, top, top)
+                        vars[a.variationId] = p.copy(tier = top, baselineTier = top, enrolledAtDay = a.day, achievedTiers = (1..top).toSet())
+                        active.putIfAbsent(p.familyId, a.variationId)
+                        val next = policy(a.variationId)?.nextVariationIds.orEmpty().firstOrNull { catalog.variation(it) != null && prerequisitesMet(it, vars) }
+                        if (next != null) {
+                            if (!vars.containsKey(next)) vars[next] = VariationProgress(next, family(next), 1, a.day, null, emptySet(), null, emptyList(), 0, 0, false, false, null, null)
+                            active[p.familyId] = next
+                        }
+                    } else {
+                        val p = ensure(a.variationId, a.day, a.tier, a.tier)
+                        vars[a.variationId] = p.copy(tier = a.tier, baselineTier = a.tier, enrolledAtDay = a.day)
+                        active.putIfAbsent(p.familyId, a.variationId)
+                    }
                 }
                 is UserAction.AcceptHarder -> {
                     val p = ensure(a.variationId, a.day)

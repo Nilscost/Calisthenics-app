@@ -296,6 +296,7 @@
     <string name="onb_default_rounds">Rounds per workout</string>
     <string name="onb_summary_title">You are ready</string>
     <string name="onb_summary_text">You start here. Stars fill as you master each exercise.</string>
+    <string name="onb_summary_done">All steps done · the next exercise starts at level 1</string>
     <string name="onb_summary_line">Step %1$d · %2$s</string>
     <string name="settings_redo_title">Redo the starting questionnaire?</string>
     <string name="settings_redo_text">Your answers replace your current starting levels. Your workout history stays.</string>

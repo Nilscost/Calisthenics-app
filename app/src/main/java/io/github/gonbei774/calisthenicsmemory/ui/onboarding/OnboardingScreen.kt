@@ -301,9 +301,10 @@ private fun StepHeader(page: Page, modifier: Modifier) {
             Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(v?.name.orEmpty(), style = MaterialTheme.typography.titleMedium)
-                    Text(stringResource(R.string.onb_summary_line, l.tier, target?.let { targetLabel(it) }.orEmpty()), style = MaterialTheme.typography.bodyMedium)
+                    if (l.completed) Text(stringResource(R.string.onb_summary_done), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("onb_sum_done_${l.variationId}"))
+                    else Text(stringResource(R.string.onb_summary_line, l.tier, target?.let { targetLabel(it) }.orEmpty()), style = MaterialTheme.typography.bodyMedium)
                 }
-                StarRow(l.tier - 1) // D8: the levels below the chosen one are shown as stars
+                StarRow(if (l.completed) l.tier else l.tier - 1) // D8: the levels below the chosen one are shown as stars; R7-T04: a completed ladder shows all of them
             }
         }
     }
