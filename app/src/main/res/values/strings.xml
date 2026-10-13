@@ -206,6 +206,10 @@
     <string name="preview_other_hint">Another movement type is not the same movement: you will be asked to confirm before starting.</string>
     <string name="preview_levels_line">5 levels: %1$d to %2$d %3$s</string>
     <string name="preview_add_title">Add to the workout</string>
+    <string name="preview_chain_pos">Exercise %1$d of %2$d</string>
+    <string name="rule_range_note">Rep range: all sets at the top → next exercise</string>
+    <string name="preview_add_stretches">Stretches</string>
+    <string name="preview_add_pick_category">Choose a category.</string>
     <string name="preview_add_exercise">Add exercise</string>
     <string name="preview_add_stretch">Add stretch</string>
     <string name="preview_start">Start</string>

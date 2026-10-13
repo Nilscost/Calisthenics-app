@@ -171,7 +171,9 @@ class PreviewScreenTest {
     @Test fun thePlusBetweenBlocksAddsAnExerciseAfterThatSlot() {
         show(); rule.waitForIdle()
         rule.onNodeWithTag("add_after_squat").performScrollTo().performClick(); rule.waitForIdle(); rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle()
-        rule.onNodeWithTag("add_exercise").performSemanticsAction(click); rule.waitForIdle()
+        rule.onNodeWithTag("add_option_pushup-diamond").assertDoesNotExist()   // R7-T10 (D11): nothing is listed before a category is chosen
+        rule.onNodeWithTag("add_cat_push").performSemanticsAction(click); rule.waitForIdle()
+        rule.onNodeWithTag("add_option_squat-air").assertDoesNotExist()        // only that category's list
         rule.onNodeWithTag("add_option_pushup-diamond").performSemanticsAction(click); rule.waitForIdle()
         rule.onNodeWithTag("exercise_add-pushup-diamond").assertExists()
         val order = mutableListOf<String>()
@@ -189,12 +191,13 @@ class PreviewScreenTest {
         rule.onNodeWithTag("swap_option_squat-air").assertExists()
     }
 
-    // ---- V17: Detailed edit
-    @Test fun detailedEditListsEverySetAndAStretchCanDifferPerSet() {
+    // ---- R7-T10 (D4): the full timeline is the editor (it replaces the V17 "Detailed edit" switch)
+    @Test fun theFullTimelineListsEverySetWithItsNumberAndAStretchCanDifferPerSet() {
         show(); rule.waitForIdle()
-        rule.onNodeWithTag("detailed_switch").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detailed_switch").assertDoesNotExist()
+        rule.onNodeWithTag("timeline_toggle").performScrollTo().performClick(); rule.waitForIdle()
         for (st in 1..4) rule.onNodeWithTag("set_header_$st").performScrollTo().assertExists()
-        rule.onNodeWithTag("set_tab_1").assertDoesNotExist()
+        rule.onNodeWithTag("round_badge_push_s3", useUnmergedTree = true).performScrollTo().assertTextEquals("3")
         rule.onNodeWithTag("break_push_s2").performScrollTo().performClick(); rule.waitForIdle(); rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle()
         rule.onNodeWithTag("break_option_stretch-frog").performSemanticsAction(click); rule.waitForIdle()
         rule.onNodeWithTag("break_push_s2").performScrollTo().assertTextContains("Frog", substring = true)
@@ -204,12 +207,26 @@ class PreviewScreenTest {
     // The "type a number" dialog has a text field. Robolectric's Compose clock never goes idle while a dialog with a text field is open
     // (the test hangs for minutes), so the dialog itself is not driven here. What it produces is covered by the planner tests
     // (DetailedEditTest: the free number is marked, shown, and excluded from progression) and the target cell's tag is checked.
-    @Test fun inTheDetailedEditEachSetsNumberIsATapTarget() {
+    @Test fun inTheFullTimelineEachSetsNumberIsATapTargetAndEveryTileHasItsControls() {
         show(); rule.waitForIdle()
-        rule.onNodeWithTag("detailed_switch").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("timeline_toggle").performScrollTo().performClick(); rule.waitForIdle()
         for (st in 1..4) rule.onNodeWithTag("exercise_target_push_s$st").performScrollTo().assertHasClickAction()
         rule.onNodeWithTag("level_push_s2").performScrollTo().assertTextContains("Level", substring = true)
-        rule.onNodeWithTag("exercise_target_push").assertDoesNotExist() // the plain Preview tag only exists outside the Detailed edit
+        for (t in listOf("swap_push_s2", "level_plus_push_s2", "level_minus_push_s2")) rule.onNodeWithTag(t).performScrollTo().assertExists()
+    }
+
+    // R7-T10 (O1, D12): under a range rule the stepper steps through the exercises of the chain and the numbers stay the range
+    @Test fun underARepRangeTheStepperMovesToTheNextExerciseOfTheChainAndKeepsTheRange() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("rule_REP_RANGE").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("rule_range_note").assertExists()
+        val nameBefore = rule.onNodeWithTag("exercise_name_push").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
+        val targetBefore = rule.onNodeWithTag("exercise_target_push").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
+        rule.onNodeWithTag("level_plus_push").performScrollTo().performClick(); rule.waitForIdle()
+        val nameAfter = rule.onNodeWithTag("exercise_name_push").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
+        assertNotEquals(nameBefore, nameAfter)
+        rule.onNodeWithTag("exercise_target_push").assertTextEquals(targetBefore)
+        rule.onNodeWithTag("level_push").assertTextContains("Exercise", substring = true)
     }
 
     // ---- V21: the progression rule picker

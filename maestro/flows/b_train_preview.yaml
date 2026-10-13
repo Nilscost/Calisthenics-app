@@ -17,20 +17,19 @@ appId: app.calisthenics.personal
 - tapOn: { id: "level_plus_.*", index: 0 }
 - takeScreenshot: 02b-preview-set2-level-${VARIANT}
 - tapOn: { id: "add_after_.*", index: 0 }
-- extendedWaitUntil: { visible: "Add exercise", timeout: 5000 }
+- extendedWaitUntil: { visible: { id: add_cat_push }, timeout: 5000 }
 - takeScreenshot: 02c-add-sheet-${VARIANT}
+- tapOn: { id: add_cat_push }
+- takeScreenshot: 02c2-add-sheet-push-${VARIANT}
 - back
 # V21: the progression rule picker (Rep range shows ranges and three sets), then back to App levels
 - tapOn: { id: rule_REP_RANGE }
 - takeScreenshot: 02e-rule-rep-range-${VARIANT}
 - tapOn: { id: rule_APP_LEVELS }
-# V17: the Detailed edit lists every set
-- tapOn: { id: detailed_switch }
-- takeScreenshot: 02d-detailed-${VARIANT}
-- tapOn: { id: detailed_switch }
 - scrollUntilVisible: { element: { id: timeline_toggle }, direction: DOWN, timeout: 10000 }
 - takeScreenshot: 03-preview-bottom-${VARIANT}
 - tapOn: { id: timeline_toggle }
+- scrollUntilVisible: { element: { id: round_badge_.*_s2 }, direction: DOWN, timeout: 10000 }
 - takeScreenshot: 04-timeline-${VARIANT}
 - scrollUntilVisible: { element: { id: "swap_.*" }, direction: UP, timeout: 10000 }
 - tapOn: { id: "swap_.*", index: 0 }

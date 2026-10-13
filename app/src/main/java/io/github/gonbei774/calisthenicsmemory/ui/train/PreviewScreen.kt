@@ -19,7 +19,9 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
 import io.github.gonbei774.calisthenicsmemory.ui.components.appSegmentedColors
 import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -104,24 +106,6 @@ private fun InfoRow(p: WorkoutPlan) {
     }
 }
 
-@Composable
-private fun TimelineCard(p: WorkoutPlan, names: Map<String, String>, open: Boolean, toggle: () -> Unit) {
-    Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
-        Column {
-            Row(Modifier.fillMaxWidth().clickable(onClick = toggle).heightIn(min = Spacing.touch).padding(horizontal = Spacing.m).testTag("timeline_toggle"), verticalAlignment = Alignment.CenterVertically) {
-                Text(stringResource(R.string.preview_timeline, p.blocks.size), Modifier.weight(1f), style = MaterialTheme.typography.titleSmall)
-                Icon(if (open) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown, contentDescription = null)
-            }
-            if (open) Column(Modifier.padding(horizontal = Spacing.m, vertical = Spacing.s).testTag("timeline_list"), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                p.blocks.forEach { b ->
-                    val target = b.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it) }.orEmpty()
-                    Text("${formatClock(b.durationSeconds)}  ${CueText.label(p, b.id, names)} ${withLoad(target, b.loadGrams)}".trim(), style = MaterialTheme.typography.bodyMedium)
-                }
-            }
-        }
-    }
-}
-
 private fun movementTag(v: ExerciseVariation?): Int = when (v?.patterns?.firstOrNull()) {
     Pattern.PUSH_HORIZONTAL, Pattern.PUSH_VERTICAL -> R.string.tag_push
     Pattern.PULL_HORIZONTAL, Pattern.PULL_VERTICAL -> R.string.tag_pull
@@ -134,12 +118,15 @@ private fun movementTag(v: ExerciseVariation?): Int = when (v?.patterns?.firstOr
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name: String, levels: Int, onLevel: (Int) -> Unit, onSwap: () -> Unit, onRemove: () -> Unit, sfx: String = "", onTypeNumber: (() -> Unit)? = null) {
+private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name: String, levels: Int, onStep: (Int) -> Unit, onSwap: () -> Unit, onRemove: () -> Unit, sfx: String = "", onTypeNumber: (() -> Unit)? = null, badge: Int? = null, chain: Pair<Int, Int>? = null) {
     val removeLabel = stringResource(R.string.preview_remove)
     Card(Modifier.fillMaxWidth().pointerInput(Unit) { detectTapGestures(onLongPress = { onRemove() }) }
         .semantics { onLongClick(label = removeLabel) { onRemove(); true } }.testTag("exercise_${e.slotId}$sfx"), shape = MaterialTheme.shapes.large) {
         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                if (badge != null) Box(Modifier.size(28.dp).clip(androidx.compose.foundation.shape.CircleShape).background(AppAccentTheme.colors.accent), contentAlignment = Alignment.Center) {
+                    Text(badge.toString(), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.background, modifier = Modifier.testTag("round_badge_${e.slotId}$sfx"))
+                }
                 io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(e.variationId, name, 56.dp)
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text(stringResource(R.string.preview_slot_tag, index + 1, stringResource(movementTag(v))), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("slot_tag_${e.slotId}$sfx"))
@@ -150,13 +137,13 @@ private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name
             }
             // D3: the level stepper; the number between - and + is the target of that level
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                FilledTonalIconButton(onClick = { onLevel(stepLevel(e.tier, -1, levels)) }, enabled = e.tier > 1, modifier = Modifier.size(Spacing.touch).testTag("level_minus_${e.slotId}$sfx")) { Icon(io.github.gonbei774.calisthenicsmemory.ui.theme.AppIcons.Remove, stringResource(R.string.stepper_decrease)) }
+                FilledTonalIconButton(onClick = { onStep(-1) }, enabled = if (chain != null) chain.first > 0 else e.tier > 1, modifier = Modifier.size(Spacing.touch).testTag("level_minus_${e.slotId}$sfx")) { Icon(io.github.gonbei774.calisthenicsmemory.ui.theme.AppIcons.Remove, stringResource(R.string.stepper_decrease)) }
                 Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(targetText(e.target, e.perSide, e.loadGrams), style = MaterialTheme.typography.headlineMedium, color = if (e.free) AppAccentTheme.colors.text else MaterialTheme.colorScheme.onSurface,
                         modifier = (if (onTypeNumber != null) Modifier.clickable(onClick = onTypeNumber).heightIn(min = Spacing.touch).wrapContentHeight(Alignment.CenterVertically) else Modifier).testTag("exercise_target_${e.slotId}$sfx"))
-                    Text(if (e.free) stringResource(R.string.preview_free_number) else stringResource(R.string.preview_level, e.tier, levels), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("level_${e.slotId}$sfx"))
+                    Text(if (e.free) stringResource(R.string.preview_free_number) else if (chain != null) stringResource(R.string.preview_chain_pos, chain.first + 1, chain.second) else stringResource(R.string.preview_level, e.tier, levels), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("level_${e.slotId}$sfx"))
                 }
-                FilledTonalIconButton(onClick = { onLevel(stepLevel(e.tier, 1, levels)) }, enabled = e.tier < levels, modifier = Modifier.size(Spacing.touch).testTag("level_plus_${e.slotId}$sfx")) { Icon(Icons.Filled.Add, stringResource(R.string.stepper_increase)) }
+                FilledTonalIconButton(onClick = { onStep(1) }, enabled = if (chain != null) chain.first < chain.second - 1 else e.tier < levels, modifier = Modifier.size(Spacing.touch).testTag("level_plus_${e.slotId}$sfx")) { Icon(Icons.Filled.Add, stringResource(R.string.stepper_increase)) }
             }
         }
     }
@@ -210,7 +197,6 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     var swapSlot by remember { mutableStateOf<String?>(null) }
     var removeSlot by remember { mutableStateOf<String?>(null) }
     var breakSlot by remember { mutableStateOf<Pair<String, Int?>?>(null) }   // slot and, in the Detailed edit, the one set it is for
-    var detailed by rememberSaveable { mutableStateOf(false) }
     var typeFor by remember { mutableStateOf<Pair<String, Int>?>(null) }      // slot and set of the number being typed
     var addAfter by remember { mutableStateOf<String?>("") }   // "" = closed, null = at the start, else after that slot
     var setTab by rememberSaveable { mutableIntStateOf(1) }
@@ -263,37 +249,49 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                     )
                     InfoRow(p)
                     savedNote?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("routine_saved_note")) }
-                    Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch).toggleable(detailed, role = androidx.compose.ui.semantics.Role.Switch) { detailed = it }.testTag("detailed_switch"), verticalAlignment = Alignment.CenterVertically) {
-                        Column(Modifier.weight(1f)) {
-                            Text(stringResource(R.string.preview_detailed), style = MaterialTheme.typography.bodyLarge)
-                            Text(stringResource(R.string.preview_detailed_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
-                        }
-                        Switch(checked = detailed, onCheckedChange = null)
+                    val rule = edits.rule ?: routine.rule
+                    RulePicker(rule) { edits = edits.copy(rule = it) }
+                    // R7-T10 (O1): under a range rule the numbers are the range, so the stepper steps through the exercises of the chain
+                    if (rule.isRange) Text(stringResource(R.string.rule_range_note), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("rule_range_note"))
+                    // one tile: the same design in the round view and in the full timeline
+                    @Composable fun Tile(i: Int, e: CircuitEntry, st: Int, sfx: String, badge: Int?, typed: Boolean) {
+                        val options = if (rule.isRange) swapFamilyOptions(data.catalog, e.variationId, profile) else emptyList()
+                        val idx = options.indexOfFirst { it.id == e.variationId }
+                        ExerciseRow(i, e, data.catalog.variation(e.variationId), names[e.variationId] ?: e.variationId, data.catalog.policyForVariation(e.variationId)?.tiers?.size ?: 5,
+                            onStep = { d ->
+                                if (rule.isRange) options.getOrNull(idx + d)?.let { o -> edits = edits.copy(swaps = edits.swaps + (e.slotId to o.id), tierOverrides = edits.tierOverrides - e.slotId, freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) }) }
+                                else edits = edits.copy(tierOverrides = edits.tierOverrides + (e.slotId to stepLevel(e.tier, d, data.catalog.policyForVariation(e.variationId)?.tiers?.size ?: 5)), freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) })
+                            },
+                            onSwap = { swapSlot = e.slotId }, onRemove = { removeSlot = e.slotId }, sfx = sfx,
+                            onTypeNumber = if (typed) ({ typeFor = e.slotId to st }) else null, badge = badge,
+                            chain = if (rule.isRange && idx >= 0) idx to options.size else null)
+                        BreakRow(e.slotId, p, st, names, onChange = { breakSlot = e.slotId to (if (typed) st else null) }, onAdd = { addAfter = e.slotId }, sfx = sfx)
                     }
-                    RulePicker(edits.rule ?: routine.rule) { edits = edits.copy(rule = it) }
-                    // one set at a time (doc 17 §2.2); the Detailed edit lists every set
-                    if (!detailed) Row(verticalAlignment = Alignment.CenterVertically) {
+                    // one set at a time (doc 17 §2.2); the full timeline below lists every set
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         SingleChoiceSegmentedButtonRow(Modifier.weight(1f)) {
                             for (i in 1..p.rounds.coerceAtMost(6)) SegmentedButton(selected = i == set, onClick = { setTab = i }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(i - 1, p.rounds.coerceAtMost(6)), icon = {}, modifier = Modifier.testTag("set_tab_$i")) { Text(stringResource(R.string.preview_set, i), maxLines = 1) }
                         }
                         Text(stringResource(R.string.train_minutes, (p.blocks.filter { it.roundIndex == set }.sumOf { it.durationSeconds } + 30) / 60), Modifier.padding(start = Spacing.s).testTag("set_time"), style = MaterialTheme.typography.labelLarge)
                     }
-                    Caption(stringResource(if (detailed) R.string.preview_detailed_caption else R.string.preview_applies_to_all))
+                    Caption(stringResource(R.string.preview_applies_to_all))
                     AddButton({ addAfter = null }, Modifier.align(Alignment.End).testTag("add_start"))
-                    for (st in if (detailed) 1..p.rounds else set..set) {
-                        if (detailed) Caption(stringResource(R.string.preview_set, st), Modifier.padding(top = Spacing.s).testTag("set_header_$st"))
-                        val sfx = if (detailed) "_s$st" else ""
-                        circuitOf(p, st).forEachIndexed { i, e ->
-                            val v = data.catalog.variation(e.variationId)
-                            ExerciseRow(i, e, v, names[e.variationId] ?: e.variationId, data.catalog.policyForVariation(e.variationId)?.tiers?.size ?: 5,
-                                onLevel = { t -> edits = edits.copy(tierOverrides = edits.tierOverrides + (e.slotId to t), freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) }) },
-                                onSwap = { swapSlot = e.slotId }, onRemove = { removeSlot = e.slotId }, sfx = sfx,
-                                onTypeNumber = if (detailed) ({ typeFor = e.slotId to st }) else null)
-                            BreakRow(e.slotId, p, st, names, onChange = { breakSlot = e.slotId to (if (detailed) st else null) }, onAdd = { addAfter = e.slotId }, sfx = sfx)
+                    circuitOf(p, set).forEachIndexed { i, e -> Tile(i, e, set, "", null, false) }
+                    if (!edits.isEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
+                    // R7-T10 (D4): the full timeline is the editor: every set's tiles, each with its set number; a stretch or a typed number can differ per set
+                    Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
+                        Row(Modifier.fillMaxWidth().clickable { timelineOpen = !timelineOpen }.heightIn(min = Spacing.touch).padding(horizontal = Spacing.m).testTag("timeline_toggle"), verticalAlignment = Alignment.CenterVertically) {
+                            Text(stringResource(R.string.preview_timeline, p.blocks.size), Modifier.weight(1f), style = MaterialTheme.typography.titleSmall)
+                            Icon(if (timelineOpen) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown, contentDescription = null)
                         }
                     }
-                    if (!edits.isEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
-                    TimelineCard(p, names, timelineOpen) { timelineOpen = !timelineOpen }
+                    if (timelineOpen) Column(Modifier.fillMaxWidth().testTag("timeline_list"), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                        Caption(stringResource(R.string.preview_detailed_caption))
+                        for (st in 1..p.rounds) {
+                            Caption(stringResource(R.string.preview_set, st), Modifier.padding(top = Spacing.s).testTag("set_header_$st"))
+                            circuitOf(p, st).forEachIndexed { i, e -> Tile(i, e, st, "_s$st", st, true) }
+                        }
+                    }
                 }
             }
         }
@@ -439,22 +437,23 @@ private fun StretchPickerSheet(title: Int, options: List<ExerciseVariation>, aut
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 private fun AddSheet(exercises: List<Pair<app.calisthenics.domain.tree.TreeTab, List<ExerciseVariation>>>, stretches: List<ExerciseVariation>, onDismiss: () -> Unit, onExercise: (ExerciseVariation) -> Unit, onStretch: (String) -> Unit) {
-    var mode by remember { mutableStateOf("") }
+    // R7-T10 (D11): the category first (the Progress tab names), then only that category's list
+    var category by remember { mutableStateOf("") }
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         Column(Modifier.padding(horizontal = Spacing.l).padding(bottom = Spacing.xl).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(stringResource(R.string.preview_add_title), style = MaterialTheme.typography.titleLarge)
-            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                AppOutlinedButton(onClick = { mode = "exercise" }, Modifier.weight(1f).height(52.dp).testTag("add_exercise")) { Text(stringResource(R.string.preview_add_exercise)) }
-                AppOutlinedButton(onClick = { mode = "stretch" }, Modifier.weight(1f).height(52.dp).testTag("add_stretch")) { Text(stringResource(R.string.preview_add_stretch)) }
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s), modifier = Modifier.testTag("add_categories")) {
+                exercises.forEach { (tab, _) -> FilterChip(selected = category == tab.id, onClick = { category = tab.id }, label = { Text(tab.title) }, modifier = Modifier.testTag("add_cat_${tab.id}")) }
+                FilterChip(selected = category == "stretches", onClick = { category = "stretches" }, label = { Text(stringResource(R.string.preview_add_stretches)) }, modifier = Modifier.testTag("add_cat_stretches"))
             }
-            if (mode == "exercise") exercises.forEach { (tab, list) ->
-                Caption(tab.title, Modifier.padding(top = Spacing.s))
-                list.forEach { o -> ListItem(headlineContent = { Text(o.name) }, leadingContent = { io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(o.id, o.name, 44.dp) }, modifier = Modifier.clickable { onExercise(o) }.testTag("add_option_${o.id}")) }
+            if (category.isEmpty()) Text(stringResource(R.string.preview_add_pick_category), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            exercises.firstOrNull { it.first.id == category }?.second?.forEach { o ->
+                ListItem(headlineContent = { Text(o.name) }, leadingContent = { io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(o.id, o.name, 44.dp) }, modifier = Modifier.clickable { onExercise(o) }.testTag("add_option_${o.id}"))
             }
-            if (mode == "stretch") stretches.forEach { o ->
+            if (category == "stretches") stretches.forEach { o ->
                 ListItem(headlineContent = { Text(o.name) }, leadingContent = { io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(o.id, o.name, 44.dp) }, modifier = Modifier.clickable { onStretch(o.id) }.testTag("add_stretch_${o.id}"))
             }
         }
