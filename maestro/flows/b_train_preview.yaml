@@ -48,5 +48,9 @@ appId: app.calisthenics.personal
 - tapOn: { id: "swap_.*", index: 0 }
 - extendedWaitUntil: { visible: "Swap this exercise", timeout: 5000 }
 - takeScreenshot: 05-swap-sheet-${VARIANT}
+# R7.2-T02: Other types opens a list the sheet scrolls to; the own tab comes first in an accent box
+- tapOn: "Other types"
+- extendedWaitUntil: { visible: "Same family.*", timeout: 5000 }
+- takeScreenshot: 05b-swap-other-types-${VARIANT}
 - back
 - back

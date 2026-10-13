@@ -61,13 +61,15 @@ fun swapFamilyOptions(catalog: Catalog, currentId: String, profile: EquipmentPro
         .sortedWith(compareBy({ it.difficultyRank }, { it.id }))
 }
 
-/** D1: "Other types": every other movement type (the Progress tabs) with its whole progression, usable with this equipment. */
+/** D1 / R7.2-T02 (F3, O3): "Other types": every other movement type (the Progress tabs) with its whole progression, usable with this equipment.
+ *  The current exercise's own tab comes first (its other families, for example the kettlebell and dumbbell rows for an inverted row); nothing is dropped. */
 fun swapOtherTypes(catalog: Catalog, currentId: String, profile: EquipmentProfile): List<Pair<TreeTab, List<ExerciseVariation>>> {
     val cur = catalog.variation(currentId) ?: return emptyList()
-    return TreeTabs.all.filter { it.familyIds.isNotEmpty() }.mapNotNull { tab ->
+    val groups = TreeTabs.all.filter { it.familyIds.isNotEmpty() }.mapNotNull { tab ->
         val list = catalog.variations.filter { it.familyId in tab.familyIds && it.familyId != cur.familyId && usableStrength(catalog, it, profile) }.sortedWith(compareBy({ it.familyId }, { it.difficultyRank }, { it.id }))
         if (list.isEmpty()) null else tab to list
     }
+    return groups.sortedBy { (tab, _) -> if (cur.familyId in tab.familyIds) 0 else 1 }   // stable: the other tabs keep their order
 }
 
 /** R14: exercises that can be added (not already in the plan), grouped by movement type. */

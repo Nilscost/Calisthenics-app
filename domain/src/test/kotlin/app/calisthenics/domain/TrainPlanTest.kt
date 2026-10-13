@@ -144,6 +144,17 @@ class PlanEditsTest {
         assertTrue(others.flatMap { it.second }.all { app.calisthenics.domain.equipment.isAvailable(it, home) })
     }
 
+    @Test fun theCurrentTabComesFirstInOtherTypesAndNothingIsDropped() {   // R7.2-T02 (F3, O3): the inverted row
+        val others = swapOtherTypes(catalog, "inverted-row", home)
+        assertEquals("row", others.first().first.id)
+        val rowIds = others.first().second.map { it.id }
+        assertTrue("kettlebell and dumbbell row in $rowIds", "kettlebell-one-arm-row" in rowIds && "dumbbell-row" in rowIds)
+        assertTrue(others.first().second.none { it.familyId == "row" })
+        val tabs = others.map { it.first.id }
+        for (t in listOf("push", "pull", "squat", "hips", "core", "calves")) assertTrue("$t still present", t in tabs)
+        assertEquals(tabs.size, tabs.toSet().size)
+    }
+
     @Test fun addableExercisesAndStretchChoicesAreOfferedForThisEquipmentWithoutDuplicates() {
         val inPlan = work(plan()).mapNotNull { it.variationId }.toSet()
         val add = addableExercises(catalog, home, inPlan)

@@ -30,7 +30,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -48,6 +47,9 @@ import app.calisthenics.domain.model.Target
 import app.calisthenics.domain.planner.*
 import app.calisthenics.domain.routine.saveSwapsToRoutine
 import app.calisthenics.domain.session.CueText
+import app.calisthenics.domain.tree.TreeTabs
+import androidx.compose.foundation.relocation.bringIntoViewRequester
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.components.MuscleChips
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore
@@ -415,7 +417,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun SwapSheet(family: List<ExerciseVariation>, others: List<Pair<app.calisthenics.domain.tree.TreeTab, List<ExerciseVariation>>>, currentId: String, catalog: Catalog, onDismiss: () -> Unit, onPick: (String, Boolean) -> Unit) {
     var keep by remember { mutableStateOf(false) }
@@ -429,12 +431,24 @@ private fun SwapSheet(family: List<ExerciseVariation>, others: List<Pair<app.cal
                 Checkbox(checked = keep, onCheckedChange = null)
                 Text(stringResource(R.string.preview_swap_keep))
             }
-            AppOutlinedButton(onClick = { showOthers = !showOthers }, Modifier.fillMaxWidth().height(52.dp).testTag("swap_other_types")) { Text(stringResource(R.string.preview_other_types)) }
+            // R7.2-T02 (F2): the button is a header (▾/▴); opening it scrolls the sheet to the first newly shown item
+            AppOutlinedButton(onClick = { showOthers = !showOthers }, Modifier.fillMaxWidth().height(52.dp).testTag("swap_other_types")) {
+                Text(stringResource(R.string.preview_other_types), Modifier.weight(1f))
+                Icon(if (showOthers) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown, contentDescription = null)
+            }
+            val firstShown = remember { androidx.compose.foundation.relocation.BringIntoViewRequester() }
+            LaunchedEffect(showOthers) { if (showOthers) { androidx.compose.runtime.withFrameNanos { }; firstShown.bringIntoView() } }
             if (showOthers) {
-                Text(stringResource(R.string.preview_other_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
-                others.forEach { (tab, list) ->
-                    Caption(tab.title, Modifier.padding(top = Spacing.s))
-                    list.forEach { o -> SwapItem(o, catalog, false, onPick = { onPick(o.id, false) }) }
+                // O3: the current exercise's own tab first, in a light accent box; every other tab stays plain below it
+                val ownTab = TreeTabs.tabForVariation(catalog, currentId)
+                others.forEachIndexed { gi, (tab, list) ->
+                    val same = tab.id == ownTab?.id
+                    val groupMod = if (same) Modifier.fillMaxWidth().padding(top = Spacing.s).clip(RoundedCornerShape(Radius.card)).background(AppAccentTheme.colors.accent.copy(alpha = 0.14f)).padding(vertical = Spacing.xs).testTag("swap_same_family") else Modifier.fillMaxWidth()
+                    Column(groupMod.then(if (gi == 0) Modifier.bringIntoViewRequester(firstShown) else Modifier)) {
+                        if (gi == 0) Text(stringResource(R.string.preview_other_hint), Modifier.padding(horizontal = if (same) Spacing.m else 0.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                        Caption(if (same) stringResource(R.string.preview_same_family, tab.title) else tab.title, Modifier.padding(top = Spacing.s, start = if (same) Spacing.m else 0.dp).testTag(if (same) "swap_same_family_caption" else "swap_group_${tab.id}"))
+                        list.forEach { o -> SwapItem(o, catalog, false, onPick = { onPick(o.id, false) }, transparent = same) }
+                    }
                 }
             }
         }
@@ -442,13 +456,14 @@ private fun SwapSheet(family: List<ExerciseVariation>, others: List<Pair<app.cal
 }
 
 @Composable
-private fun SwapItem(o: ExerciseVariation, catalog: Catalog, current: Boolean, onPick: () -> Unit) {
+private fun SwapItem(o: ExerciseVariation, catalog: Catalog, current: Boolean, onPick: () -> Unit, transparent: Boolean = false) {
     val tiers = catalog.policyFor(o)?.tiers.orEmpty()
     ListItem(
         headlineContent = { Text(o.name) },
         supportingContent = if (tiers.isNotEmpty()) ({ Text(stringResource(R.string.preview_levels_line, tiers.first().target.value, tiers.last().target.value, stringResource(if (tiers.first().target.type == TargetType.REPS) R.string.unit_reps else R.string.unit_seconds))) }) else null,
         leadingContent = { io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(o.id, o.name, 48.dp) },
         trailingContent = { if (current) Text(stringResource(R.string.preview_swap_current), style = MaterialTheme.typography.labelLarge) },
+        colors = if (transparent) ListItemDefaults.colors(containerColor = androidx.compose.ui.graphics.Color.Transparent) else ListItemDefaults.colors(),
         modifier = Modifier.clickable { onPick() }.testTag("swap_option_${o.id}"),
     )
 }

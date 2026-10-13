@@ -206,6 +206,20 @@ class PreviewScreenTest {
         rule.onNodeWithTag("swap_option_squat-air").assertExists()
     }
 
+    @Test fun tappingOtherTypesShowsTheSameFamilyGroupFirstInAnAccentBoxAndEveryOtherTabStays() {   // R7.2-T02 (F2, F3, O3)
+        show(); rule.waitForIdle()
+        openSwap("push")
+        rule.onNodeWithTag("swap_same_family").assertDoesNotExist()
+        rule.onNodeWithTag("swap_other_types").performSemanticsAction(click); rule.waitForIdle(); rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle()
+        rule.onNodeWithTag("swap_same_family").assertExists()
+        rule.onNodeWithTag("swap_same_family_caption", useUnmergedTree = true).assertTextContains("SAME FAMILY: PUSH", ignoreCase = true)
+        rule.onNodeWithTag("swap_same_family").assertIsDisplayed()       // the sheet scrolled to the first new item
+        for (tab in listOf("pull", "row", "squat", "hips", "core", "calves")) rule.onNodeWithTag("swap_group_$tab", useUnmergedTree = true).assertExists()
+        rule.onNodeWithTag("swap_option_squat-air").assertExists()
+        rule.onNodeWithTag("swap_other_types").performSemanticsAction(click); rule.waitForIdle()    // closes again
+        rule.onNodeWithTag("swap_same_family").assertDoesNotExist()
+    }
+
     // ---- R7-T10 (D4): the full timeline is the editor (it replaces the V17 "Detailed edit" switch)
     @Test fun theFullTimelineListsEverySetWithItsNumberAndAStretchCanDifferPerSet() {
         show(); rule.waitForIdle()
