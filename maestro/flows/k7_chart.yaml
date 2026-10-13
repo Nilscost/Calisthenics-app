@@ -1,0 +1,13 @@
+# K7 — R7.2-T08 (F8): the History progression chart with 7 seeded session(s): dates under the dots.
+# scripts/ui_shots.sh runs maestro/hooks/k7_chart.pre.sh first (pm clear + the debug seed with only the newest 7 sessions).
+appId: app.calisthenics.personal
+---
+- launchApp
+- runFlow: ../common/dismiss_system_dialogs.yaml
+- extendedWaitUntil: { visible: { id: bottom_bar }, timeout: 20000 }
+- tapOn: { id: tab_history }
+- extendedWaitUntil: { visible: { id: "session_.*" }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "progression_.*" }, direction: DOWN, timeout: 8000 }
+- tapOn: { id: "progression_.*", index: 0 }
+- scrollUntilVisible: { element: { id: "chart_.*" }, direction: DOWN, timeout: 8000 }
+- takeScreenshot: 01-chart-7-sessions-${VARIANT}

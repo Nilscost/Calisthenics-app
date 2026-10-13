@@ -85,4 +85,11 @@ class HistoryStatsTest {
         val s = session("a", LocalDate.of(2026, 10, 2), "COMPLETED", work("1", "pushup-standard", 30, 7), work("2", "pushup-standard", 30, null))
         assertEquals(7, effectiveSetSeries(listOf(SessionWithPlan(s, null)), zone).getValue("pushup-standard").single().lowest)
     }
+
+    @Test fun theChartDatesAreOnEveryDotUpToSixThenEverySecondOneCountedBackFromTheLast() {   // R7.2-T08 (F8)
+        assertEquals(setOf(0), chartDateIndexes(1)); assertEquals(setOf(0, 1), chartDateIndexes(2)); assertEquals((0..5).toSet(), chartDateIndexes(6))
+        assertEquals(setOf(0, 2, 4, 6), chartDateIndexes(7))
+        assertEquals(setOf(1, 3, 5, 7), chartDateIndexes(8))
+        for (n in 7..12) { val idx = chartDateIndexes(n); assertTrue("last dot is dated for $n", n - 1 in idx); assertTrue("no neighbours for $n", idx.none { it + 1 in idx }) }
+    }
 }

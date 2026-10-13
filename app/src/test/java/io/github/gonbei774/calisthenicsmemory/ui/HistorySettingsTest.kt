@@ -76,6 +76,9 @@ class HistorySettingsTest {
         rule.onNodeWithTag("chart_pushup-standard", useUnmergedTree = true).assertDoesNotExist()
         rule.onNodeWithTag("progression_pushup-standard").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("chart_pushup-standard", useUnmergedTree = true).assertExists()
+        // R7.2-T08 (F8): the dates are under the dots (the drawn text is also in the chart's description)
+        val desc = rule.onNodeWithTag("chart_pushup-standard", useUnmergedTree = true).fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].single()
+        assertTrue(desc, desc.contains(io.github.gonbei774.calisthenicsmemory.ui.history.chartDateLabel(LocalDate.of(2026, 10, 5))) && desc.contains(io.github.gonbei774.calisthenicsmemory.ui.history.chartDateLabel(LocalDate.of(2026, 10, 7))))
     }
 
     // R7-T06 (B7): sets left "as planned" count as their target, and one session shows the hint instead of a bare dot

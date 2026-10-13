@@ -136,7 +136,7 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
                             }
                             if (open) {
                                 val gate = tier?.let { t -> catalog.policyFor(v)?.tiers?.firstOrNull { it.index == t }?.target?.value }
-                                LowestSetChart(pts.takeLast(12).map { it.lowest }, gate, Modifier.fillMaxWidth().height(160.dp).testTag("chart_$vid"))
+                                LowestSetChart(pts.takeLast(12).map { it.lowest }, pts.takeLast(12).map { it.day }, gate, Modifier.fillMaxWidth().height(160.dp).testTag("chart_$vid"))
                                 if (pts.size < 2) Text(stringResource(R.string.history_chart_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("chart_hint_$vid"))
                                 io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton(onClick = { onOpenExercise(vid) }, modifier = Modifier.testTag("open_exercise_$vid")) { Text(stringResource(R.string.history_open_exercise)) }
                                 if (gate != null) Text(stringResource(R.string.history_chart_gate, gate, unit), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -159,27 +159,45 @@ private fun StatTile(value: String, caption: Int, tag: String, modifier: Modifie
     }
 }
 
-/** The lowest set of each session as a line with big dots and their values; the dashed line is the number that gates the level. */
+/** The date under a chart dot, short and in the phone's locale order ("13 Oct" / "Oct 13"). */
+internal fun chartDateLabel(day: java.time.LocalDate, locale: java.util.Locale = java.util.Locale.getDefault()): String =
+    DateTimeFormatter.ofPattern(android.text.format.DateFormat.getBestDateTimePattern(locale, "dMMM"), locale).format(day)
+
+/**
+ * The lowest set of each session as a line with big dots and their values; the dashed line is the number that gates the level.
+ * R7.2-T08 (F8): a short date under each dot (with more than 6 dots, under every second one and always the last).
+ */
 @Composable
-private fun LowestSetChart(values: List<Int>, gate: Int?, modifier: Modifier) {
+private fun LowestSetChart(values: List<Int>, days: List<java.time.LocalDate>, gate: Int?, modifier: Modifier) {
     val line = AppAccentTheme.colors.accent; val grid = MaterialTheme.colorScheme.outlineVariant; val gateColor = MaterialTheme.colorScheme.outline
     val labelColor = MaterialTheme.colorScheme.onSurface
     val labelStyle = MaterialTheme.typography.labelLarge.copy(color = labelColor)
+    val dateStyle = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
     val measurer = androidx.compose.ui.text.rememberTextMeasurer()
-    val desc = stringResource(R.string.history_chart_desc, values.joinToString(", "))
+    val labels = days.map { chartDateLabel(it) }
+    val desc = stringResource(R.string.history_chart_desc, values.zip(labels).joinToString(", ") { (v, d) -> "$d: $v" })
     androidx.compose.foundation.Canvas(modifier.semantics { contentDescription = desc }) {
+        val dateH = measurer.measure("13 Oct", dateStyle).size.height
+        val bottom = dateH + 8.dp.toPx()                       // room for the dates under the axis
         val top = (values + listOfNotNull(gate)).max().toFloat().coerceAtLeast(1f); val pad = 22.dp.toPx(); val dot = 7.dp.toPx()
-        fun y(v: Float) = size.height - pad - (size.height - 2 * pad) * (v / top)
-        drawLine(grid, androidx.compose.ui.geometry.Offset(0f, size.height - pad), androidx.compose.ui.geometry.Offset(size.width, size.height - pad), 1.dp.toPx())
+        val axisY = size.height - bottom
+        fun y(v: Float) = axisY - (axisY - pad) * (v / top)
+        drawLine(grid, androidx.compose.ui.geometry.Offset(0f, axisY), androidx.compose.ui.geometry.Offset(size.width, axisY), 1.dp.toPx())
         gate?.let { drawLine(gateColor, androidx.compose.ui.geometry.Offset(0f, y(it.toFloat())), androidx.compose.ui.geometry.Offset(size.width, y(it.toFloat())), 1.dp.toPx(), pathEffect = androidx.compose.ui.graphics.PathEffect.dashPathEffect(floatArrayOf(10f, 10f))) }
-        val xs = values.indices.map { i -> pad + (size.width - 2 * pad) * (if (values.size == 1) 0.5f else i / (values.size - 1f)) }
+        val side = 28.dp.toPx()
+        val xs = values.indices.map { i -> side + (size.width - 2 * side) * (if (values.size == 1) 0.5f else i / (values.size - 1f)) }
         for (i in 0 until values.size - 1) drawLine(line, androidx.compose.ui.geometry.Offset(xs[i], y(values[i].toFloat())), androidx.compose.ui.geometry.Offset(xs[i + 1], y(values[i + 1].toFloat())), 3.dp.toPx())
+        val dated = chartDateIndexes(values.size)
         values.forEachIndexed { i, v ->
             drawCircle(line, dot, androidx.compose.ui.geometry.Offset(xs[i], y(v.toFloat())))   // 14 dp across (R7-T06)
             val t = measurer.measure(v.toString(), labelStyle)
             val tx = (xs[i] - t.size.width / 2f).coerceIn(0f, size.width - t.size.width)
             val ty = (y(v.toFloat()) - dot - t.size.height - 2.dp.toPx()).coerceAtLeast(0f)
             drawText(t, topLeft = androidx.compose.ui.geometry.Offset(tx, ty))
+            if (i in dated && i < labels.size) {
+                val d = measurer.measure(labels[i], dateStyle)
+                drawText(d, topLeft = androidx.compose.ui.geometry.Offset((xs[i] - d.size.width / 2f).coerceIn(0f, size.width - d.size.width), axisY + 4.dp.toPx()))
+            }
         }
     }
 }

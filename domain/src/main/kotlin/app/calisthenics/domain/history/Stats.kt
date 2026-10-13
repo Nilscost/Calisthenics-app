@@ -32,6 +32,10 @@ fun historyTiles(sessions: List<SessionRecord>, levelUpDays: List<LocalDate>, to
 
 data class SetPoint(val day: LocalDate, val lowest: Int)
 
+/** R7.2-T08 (F8): which dots of the progression chart get a date under them: all up to 6, else every second one counted back from the last, so the newest always has its date and no two labels sit side by side. */
+fun chartDateIndexes(count: Int): Set<Int> =
+    if (count <= 6) (0 until count).toSet() else (0 until count).filter { (count - 1 - it) % 2 == 0 }.toSet()
+
 /**
  * For every exercise, the lowest number (reps or seconds) of any set of each finished session, oldest first. The lowest set is the one
  * that gates a level, so it is what the chart shows. Uses what was logged per block; later corrections are not applied here.
