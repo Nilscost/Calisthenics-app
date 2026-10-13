@@ -183,6 +183,19 @@ class PreviewScreenTest {
         rule.onNodeWithTag("break_push").assertTextContains("Pigeon", substring = true)
     }
 
+    @Test fun theBreakIsABoxWithTheSwapIconAndThePlusSitsBelowItWithAGap() {   // R7.2-T03 (F4)
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("break_push").performScrollTo().assertExists()
+        rule.onNodeWithText("change").assertDoesNotExist()                               // the word is gone, the icon stays
+        rule.onNodeWithTag("break_push").assertContentDescriptionEquals("change")
+        val card = rule.onNodeWithTag("break_push").fetchSemanticsNode().boundsInRoot
+        val plus = rule.onNodeWithTag("add_after_push").fetchSemanticsNode().boundsInRoot
+        assertTrue("the + is below the card", plus.top >= card.bottom)
+        val gap = (plus.top - card.bottom) / rule.density.density
+        assertTrue("gap $gap dp >= 8", gap >= 7.5f)
+        assertTrue("the + is at the right edge", plus.right > card.right - 20 * rule.density.density)
+    }
+
     @Test fun thePlusBetweenBlocksAddsAnExerciseAfterThatSlot() {
         show(); rule.waitForIdle()
         rule.onNodeWithTag("add_after_squat").performScrollTo().performClick(); rule.waitForIdle(); rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle()

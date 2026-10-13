@@ -20,6 +20,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
 import io.github.gonbei774.calisthenicsmemory.ui.components.appSegmentedColors
 import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.foundation.rememberScrollState
@@ -157,15 +158,24 @@ private fun BreakRow(slotId: String, p: WorkoutPlan, round: Int, names: Map<Stri
     val blocks = p.blocks.filter { it.slotId == slotId && it.roundIndex == round && (it.type == BlockType.STRETCH || it.type == BlockType.PASSIVE_RECOVERY) }
     val secs = blocks.sumOf { it.durationSeconds }
     val stretches = blocks.filter { it.type == BlockType.STRETCH }.mapNotNull { it.variationId }.distinct().mapNotNull { names[it] }
-    Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
-        if (blocks.isNotEmpty()) Row(Modifier.weight(1f).clickable(onClick = onChange).heightIn(min = Spacing.touch).testTag("break_$slotId$sfx"), verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                if (stretches.isNotEmpty()) stringResource(R.string.preview_break_stretch, stretches.joinToString(" + "), formatClock(secs)) else stringResource(R.string.preview_break_rest, formatClock(secs)),
-                Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2,
-            )
-            Text(stringResource(R.string.preview_change), Modifier.padding(start = Spacing.s), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text)
-        } else Spacer(Modifier.weight(1f))
-        AddButton(onAdd, Modifier.testTag("add_after_$slotId$sfx"))
+    // R7.2-T03 (F4): the break is a small outlined card with the same swap icon as the tiles; the + sits on its own line below it
+    Column(Modifier.fillMaxWidth()) {
+        if (blocks.isNotEmpty()) {
+            val changeLabel = stringResource(R.string.preview_change)
+            OutlinedCard(
+                onClick = onChange, Modifier.fillMaxWidth().testTag("break_$slotId$sfx"), shape = MaterialTheme.shapes.large,
+                colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surface), border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant),
+            ) {
+                Row(Modifier.padding(start = Spacing.m, top = Spacing.xs, bottom = Spacing.xs), verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        if (stretches.isNotEmpty()) stringResource(R.string.preview_break_stretch, stretches.joinToString(" + "), formatClock(secs)) else stringResource(R.string.preview_break_rest, formatClock(secs)),
+                        Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2,
+                    )
+                    Box(Modifier.size(Spacing.touch), contentAlignment = Alignment.Center) { Icon(Icons.Filled.Refresh, changeLabel) }
+                }
+            }
+        }
+        AddButton(onAdd, Modifier.align(Alignment.End).padding(top = Spacing.s).testTag("add_after_$slotId$sfx"))
     }
 }
 
