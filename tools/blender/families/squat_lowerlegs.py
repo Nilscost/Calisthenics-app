@@ -157,7 +157,7 @@ def calf_raise_single_loaded():
                          wrist_l=[0.42, 0.18, 1.15], hand_l=[0, 0, 1], palm_l=[1, 0, 0])
     flat = key(0.975, [0.0, -0.10, 0.08], [1, 0, 0])
     rise = key(1.015, [0.0, -0.10, 0.12], [0.82, 0, -0.57])
-    return dict(seconds=3.0, keys=rep(rise, flat), cam_az=35, cam_el=8, props=[wall, weight])
+    return dict(seconds=3.0, keys=rep(rise, flat), cam_az=-30, cam_el=8, props=[wall, weight])
 
 
 def _tibialis(single):

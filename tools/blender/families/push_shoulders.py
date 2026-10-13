@@ -76,7 +76,7 @@ def pushup_wall():
     wall = [dict(kind="box", center=[0.125, 0, 1.2], size=[0.05, 1.6, 2.4])]
     top = _stand_line(-1.15, 60, 0.10, 1.25)
     bottom = _stand_line(-1.15, 44, 0.10, 1.25)
-    return dict(seconds=2.5, keys=rep(top, bottom), cam_az=30, cam_el=10, props=wall)
+    return dict(seconds=2.5, keys=rep(top, bottom), cam_az=-30, cam_el=10, props=wall)
 
 
 def pushup_diamond():
@@ -204,10 +204,10 @@ def pike_pushup_elevated():
     return dict(seconds=3.0, keys=rep(top, bottom), cam_az=30, cam_el=10, props=chair)
 
 
-def _inv(px, pz, p, ax=-0.10, az=1.97, wx=-0.10, wy=0.20):
+def _inv(px, pz, p, ax=-0.20, az=1.97, wx=-0.20, wy=0.20):
     """Inverted body: hands on the floor, feet on the wall, belly to the wall (wall face at x = 0)."""
     return base_pose(pelvis=[px, 0.0, pz], p1=p, p2=p, hp=0,
-                     **both(ankle=[ax, 0.08, az], foot=[0, 0, 1], knee=[1, 0, 0], wrist=[wx, wy, 0.035],
+                     **both(ankle=[ax, 0.08, az], foot=[1, 0, 0], knee=[1, 0, 0], wrist=[wx, wy, 0.035],
                             elbow=[0, 1, 0], hand=[1, 0, 0], palm=[0, 0, -1], grip=0.0))
 
 
@@ -217,26 +217,26 @@ def _wall_props():
 
 def wall_handstand_hold():
     # Chest to the wall, arms straight, body tight; the breath moves the hips about 1 cm.
-    a = _inv(-0.10, 1.07, 172, az=1.96)
-    b = _inv(-0.10, 1.065, 174, az=1.96)
-    return dict(seconds=3.0, keys=rep(a, b), cam_az=30, cam_el=10, props=_wall_props())
+    a = _inv(-0.20, 1.07, 180, ax=-0.20, az=1.965)
+    b = _inv(-0.20, 1.07, 180, ax=-0.20, az=1.965)
+    return dict(seconds=3.0, keys=rep(a, b), cam_az=-30, cam_el=10, props=_wall_props())
 
 
 def hspu_wall_negative():
     # Kick up to the wall, then lower slowly (about 4 s) until the head touches the folded mat.
-    top = _inv(-0.10, 1.07, 172)
-    bottom = _inv(-0.10, 0.80, 150, az=1.30)
+    top = _inv(-0.20, 1.07, 180, ax=-0.20, az=1.965)
+    bottom = _inv(-0.20, 0.84, 180, ax=-0.20, az=1.735)
     mat = [dict(kind="box", center=[-0.25, 0, 0.02], size=[0.45, 0.60, 0.04])]
-    return dict(seconds=4.0, keys=rep(top, bottom, down_end=0.80), cam_az=30, cam_el=10,
+    return dict(seconds=4.0, keys=rep(top, bottom, down_end=0.80), cam_az=-30, cam_el=10,
                 props=_wall_props() + mat)
 
 
 def hspu_wall():
     # Same wall handstand: lower to the mat, then press to full lockout.
-    top = _inv(-0.10, 1.07, 172)
-    bottom = _inv(-0.10, 0.85, 152, az=1.40)
+    top = _inv(-0.20, 1.07, 180, ax=-0.20, az=1.965)
+    bottom = _inv(-0.20, 0.85, 180, ax=-0.20, az=1.745)
     mat = [dict(kind="box", center=[-0.25, 0, 0.02], size=[0.45, 0.60, 0.04])]
-    return dict(seconds=3.0, keys=rep(top, bottom), cam_az=30, cam_el=10, props=_wall_props() + mat)
+    return dict(seconds=3.0, keys=rep(top, bottom), cam_az=-30, cam_el=10, props=_wall_props() + mat)
 
 
 EXERCISES = {

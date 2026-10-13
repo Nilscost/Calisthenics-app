@@ -234,6 +234,24 @@ def rdl_bodyweight():
     return dict(seconds=3.5, keys=rep(top, bottom), cam_az=35, cam_el=12, props=[])
 
 
+def jefferson_curl():
+    # Unloaded standing roll-down: the head tucks first, then the trunk folds, knees stay soft.
+    def key(p1, p2, hp):
+        return base_pose(pelvis=[0.0, 0.0, 0.955], p1=p1, p2=p2, hp=hp,
+                         wrist_l_rel=[0.02, 0.10, -0.56], wrist_r_rel=[0.02, -0.10, -0.56],
+                         elbow_l=[-1, 0.4, 0], elbow_r=[-1, -0.4, 0],
+                         palm_l=[0, 0, -1], palm_r=[0, 0, -1], grip_l=0.0, grip_r=0.0,
+                         ankle_l=[0.0, 0.10, 0.08], ankle_r=[0.0, -0.10, 0.08],
+                         knee_l=[1, 0, 0.3], knee_r=[1, 0, 0.3], foot_l=[1, 0, 0], foot_r=[1, 0, 0])
+    upright = key(0, 0, 0)
+    chin_tuck = key(0, 8, -25)
+    roll = key(30, 45, -20)
+    bottom = key(70, 145, 30)
+    return dict(seconds=4.0, keys=[(0.0, upright), (0.12, chin_tuck), (0.38, roll),
+                                   (0.58, bottom), (0.66, bottom), (0.88, roll)],
+                cam_az=35, cam_el=12, props=[])
+
+
 def _single_leg_hinge(pz_top, px_bot, pz_bot, p_bot, arms_top, arms_bot, props):
     """Right leg stands; the left leg hangs behind and lifts in line with the body at the bottom."""
     def key(pz, px, p, free_leg, arms):
@@ -376,6 +394,7 @@ EXERCISES = {
     "kettlebell-swing": kettlebell_swing,
     "kettlebell-swing-one-arm": kettlebell_swing_one_arm,
     "rdl-bodyweight": rdl_bodyweight,
+    "jefferson-curl": jefferson_curl,
     "single-leg-deadlift": single_leg_deadlift,
     "nordic-negative-banded": nordic_negative_banded,
     "nordic-banded": nordic_banded,

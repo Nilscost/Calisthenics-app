@@ -1,0 +1,174 @@
+# Blender render review — 2026-10-13
+
+Snapshot: 2026-10-13 15:26:31 CEST. I read `tools/blender/POSES.md`. This is a visual pass over rendered Blender outputs, not a joint-data or source-pose validation. The contact sheets paired each available `blender/start.png` with motion samples near 25%, 50%, and 75% of the available frame sequence. I checked the six known-limit cases first where renders existed. The render was still progressing during this pass; IDs marked pending were not accepted as reviewed output.
+
+At this snapshot there are 154 `joints.json` directories on disk. **100 IDs are OK, 6 need a fix and rerender, and 48 are pending** (five stale frame sets and 43 with no start/frames). The handoff doc listed 152 IDs; the live directory count differed, so the list below follows the directories actually present. Five fully written frame sets are older than their current joints and remain pending. Of the accepted known limits, only `scapular-pull` and `planche-adv-tuck` had current renders; `stretch-sleeper`, the four weighted variants, `stretch-thoracic`, and `stretch-wrist-flexor` remain pending with no start image. Contact sheets and sampled frames were temporary review aids under `/tmp/blender-review/` and are not committed evidence.
+
+Severe visible defects: the six `fix / rerender pending` cases below have the wall or door hiding most or all of the model. The root task has assigned camera/prop corrections and will recheck the rerenders. These six are not marked OK.
+
+- `arch-hang` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `arch-hold-y` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `arch-rocks` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `archer-row` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `barbell-rdl` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `barbell-squat` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `bridge-back` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `bridge-head` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `bridge-incline` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `bridge-single-leg` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `bridge-table` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `bridge-wall-walkdown` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `calf-raise` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `calf-raise-single` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `calf-raise-single-loaded` — **fix / rerender pending** — the wall covers virtually the whole figure; only a small body sliver is visible.
+- `chair-assisted-pullup` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `chinup-full` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `copenhagen-side-plank` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `copenhagen-side-plank-short` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `dead-bug` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `dead-hang` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `dip-negative` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `dip-parallel` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `dip-support-hold` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `dumbbell-rdl` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `dumbbell-row` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `dumbbell-single-leg-rdl` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `flexed-arm-hang` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `front-lever-adv-tuck` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `front-lever-straddle` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `front-lever-tuck` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `german-hang` — **pending** — no Blender `start.png` or frames yet (0/72 frames).
+- `glute-bridge` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `goblet-squat` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `hollow-hold` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `hollow-one-leg` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `hollow-rocks` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `hollow-tuck` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `hspu-wall` — **fix / rerender pending** — the wall fully occludes the figure in the start frame; only two small limb markers show.
+- `hspu-wall-negative` — **fix / rerender pending** — the wall fully occludes the figure in the start frame; only two small limb markers show.
+- `inverted-row` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `inverted-row-bent-knees` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `inverted-row-feet-elevated` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `inverted-row-wide` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `jefferson-curl` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `kettlebell-deadlift` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `kettlebell-one-arm-row` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `kettlebell-single-leg-rdl` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `kettlebell-suitcase-carry` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `kettlebell-swing` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `kettlebell-swing-one-arm` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `l-sit-advanced-tuck` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `l-sit-floor` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `l-sit-foot-supported` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `l-sit-one-foot` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `l-sit-one-leg` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `l-sit-tuck` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `leg-raise-lying` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `muscle-up-bar` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `nordic-banded` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `nordic-curl` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `nordic-negative-banded` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pallof-hold` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pallof-press` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pike-pushup` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pike-pushup-elevated` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `planche-adv-tuck` — **OK with known limit** — static advanced tuck hold without breathing; sampled frames show no major framing defect.
+- `planche-lean` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `planche-tuck` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `plank` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `plank-shoulder-tap` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pullup-band-assisted` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pullup-chest-to-bar` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pullup-full` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pullup-negative` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pushup-archer` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pushup-diamond` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pushup-feet-elevated` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pushup-incline` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pushup-incline-high` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pushup-knee` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pushup-one-arm` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pushup-one-arm-negative` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pushup-standard` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `pushup-wall` — **fix / rerender pending** — the wall hides the torso and working arms; only the head and lower legs peek around it.
+- `rdl-bodyweight` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `reverse-hyperextension` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `row-band` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `scapular-pull` — **OK with known limit** — the body rises only about 1 cm and elbows bend slightly; contact and framing read clearly.
+- `side-plank` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `side-plank-leg-raise` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `single-leg-deadlift` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `slide-hamstring` — **pending** — frames predate the current `joints.json`; rerender and review the current output.
+- `slide-negative` — **pending** — frames predate the current `joints.json`; rerender and review the current output.
+- `slide-negative-single` — **pending** — frames predate the current `joints.json`; rerender and review the current output.
+- `slide-single-leg` — **pending** — frames predate the current `joints.json`; rerender and review the current output.
+- `split-squat` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `split-squat-bulgarian` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `squat-air` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `squat-pistol` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `squat-pistol-assisted` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `squat-pistol-box` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `squat-pistol-counterbalance` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `squat-shrimp` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `squat-shrimp-advanced` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `squat-shrimp-intermediate` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `stretch-90-90` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-ankle-mobility` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-back` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-butterfly` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-calf-wall` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-chest-door` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-cobra` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-frog` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-hamstring` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-hamstring-standing` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-hip-flexor` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-lat-wall` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-pancake` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-pigeon` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `stretch-pike-one-leg` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-quad-couch` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-quad-standing` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-rear-clasp` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-shoulder` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-shoulder-backbend` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-sleeper` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-supine-twist` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-thoracic` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-wrist-biceps` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-wrist-extensor` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `stretch-wrist-flexor` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `superman-hold` — **pending** — frames predate the current `joints.json`; rerender and review the current output.
+- `tibialis-raise` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `tibialis-raise-single` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `towel-door-row` — **fix / rerender pending** — the door blocks most of the body; the start shows only a partial torso and legs.
+- `v-sit-floor` — **pending** — no Blender `start.png` or frames yet (0/72 frames).
+- `v-up` — **pending** — no Blender `start.png` or frames yet (0/72 frames).
+- `walking-lunge` — **OK** — start plus sampled motion frames at roughly 25%, 50%, and 75%; no major motion or framing defect visible.
+- `wall-handstand-hold` — **fix / rerender pending** — the wall fills nearly the entire frame and hides the handstand figure.
+- `warmup-arch-hang` — **pending** — no Blender `start.png` or frames yet (0/72 frames).
+- `warmup-dead-bug` — **pending** — no Blender `start.png` or frames yet (0/72 frames).
+- `warmup-hinge-easier` — **pending** — no Blender `start.png` or frames yet (0/84 frames).
+- `warmup-shoulder-band` — **pending** — no Blender `start.png` or frames yet (0/84 frames).
+- `warmup-shoulder-towel` — **pending** — no Blender `start.png` or frames yet (0/84 frames).
+- `warmup-squat-easier` — **pending** — no Blender `start.png` or frames yet (0/72 frames).
+- `warmup-squat-sky-reach` — **pending** — no Blender `start.png` or frames yet (0/84 frames).
+- `warmup-support-hold` — **pending** — no Blender `start.png` or frames yet (0/72 frames).
+- `warmup-wrist-prep` — **pending** — no Blender `start.png` or frames yet (0/96 frames).
+- `weighted-dip` — **pending** — no Blender `start.png` or frames yet (0/72 frames).
+- `weighted-glute-bridge` — **pending** — no Blender `start.png` or frames yet (0/72 frames).
+- `weighted-pullup` — **pending** — no Blender `start.png` or frames yet (0/72 frames).
+- `weighted-pushup` — **pending** — no Blender `start.png` or frames yet (0/60 frames).
+- `weighted-squat` — **pending** — no Blender `start.png` or frames yet (0/72 frames).
+
+## Corrections prepared after the render snapshot
+
+The continuation's Luna implementer corrected the six occlusion cases by moving their cameras to the subject side (`cam_az=-30`). The coordinator independently regenerated only the eight changed/new IDs and re-ran the geometry checks: all print OK. The coordinator inspected the German hang, Jefferson curl and corrected HSPU stick sheets; these checks accept pose drafts, not the still-pending Blender renders or training technique.
+
+- `jefferson-curl`: new unloaded roll-down, planted feet, straight dangling arms; bottom upper trunk/head now curl below the pelvis rather than showing only a hinge.
+- `german-hang`: new foot-supported hold, bar behind the torso; elbows 170–179 degrees at sampled moments. The preview helper was corrected to respect a bar's x offset, matching the renderer.
+- `calf-raise-single-loaded`, `pushup-wall`, `towel-door-row`: camera correction, contact targets retained.
+- `hspu-wall`, `hspu-wall-negative`: camera correction plus straight body/legs throughout descent (hips/knees about 168 degrees, elbows about 74/73 at bottom); toes slide along the wall rather than folding the legs into an inverted crouch.
+- `wall-handstand-hold`: camera correction, toes meet the wall, near-straight body/limbs. Static hold: breathing movement omitted to preserve contact/reach geometry.
+
+All eight require a new Blender render, visual recheck, seam/size checks and installation. The two new IDs were absent when the owner's current render enumerated its input list; rerun `--resume` after that process finishes. No shipped media or app aliases were changed.

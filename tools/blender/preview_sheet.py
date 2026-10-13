@@ -65,9 +65,10 @@ def prop_lines(props, fr=None):
             c, r = pr["center"], pr.get("r", 0.2)
             out.append(([c[0] - r, c[1], c[2]], [c[0] + r, c[1], c[2]]))
         if pr["kind"] == "bar":
-            out.append(([0, -pr["half"], pr["z"]], [0, pr["half"], pr["z"]]))
+            x = pr.get("x", 0)
+            out.append(([x, -pr["half"], pr["z"]], [x, pr["half"], pr["z"]]))
             for y in (-pr["half"], pr["half"]):
-                out.append(([0, y, 0], [0, y, pr["z"]]))
+                out.append(([x, y, 0], [x, y, pr["z"]]))
         if pr["kind"] == "chair":
             x, s = pr["x"], pr["seat"]
             for y in (-0.22, 0.22):

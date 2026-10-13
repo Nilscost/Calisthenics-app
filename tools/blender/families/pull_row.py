@@ -84,6 +84,26 @@ def dead_hang():
     return dict(seconds=3.0, keys=rep(a, b), cam_az=35, cam_el=8, props=[_bar()])
 
 
+def german_hang():
+    # A shallow, foot-supported shoulder-extension hold; feet remain planted to unload the shoulders.
+    bar_z = 1.72
+    bar_x = -0.62
+    bar = dict(kind="bar", x=bar_x, z=bar_z, half=0.65, r=0.017)
+
+    def key(pz, pitch, px=-0.08):
+        return base_pose(pelvis=[px, 0.0, pz], p1=pitch, p2=pitch - 8, hp=0,
+                         wrist_l=[bar_x, 0.18, bar_z - 0.06], wrist_r=[bar_x, -0.18, bar_z - 0.06],
+                         palm_l=[1, 0, 0], palm_r=[1, 0, 0], hand_l=[0, 0, 1], hand_r=[0, 0, 1],
+                         grip_l=0.95, grip_r=0.95, elbow_l=[0, 1, -0.2], elbow_r=[0, -1, -0.2],
+                         ankle_l=[0.18, 0.10, 0.08], ankle_r=[0.18, -0.10, 0.08],
+                         knee_l=[1, 0, 0.5], knee_r=[1, 0, 0.5], foot_l=[1, 0, 0], foot_r=[1, 0, 0],
+                         yaw=0, roll=0)
+
+    supported = key(0.78, -22)
+    active = key(0.80, -22, -0.05)
+    return dict(seconds=3.0, keys=rep(supported, active), cam_az=35, cam_el=12, props=[bar])
+
+
 def scapular_pull():
     # Straight arms; shoulder blades pull down so the body rises a few centimetres.
     a = _pose(*HANG, _hands(), _hang_legs())
@@ -282,7 +302,7 @@ def towel_door_row():
                          ankle_l=ankles[0], ankle_r=ankles[1], knee_l=[1, 0, 0], knee_r=[1, 0, 0],
                          foot_l=[0.3, 0.95, 0], foot_r=[0.3, -0.95, 0])
 
-    return dict(seconds=4.0, keys=rep(key(75), key(88)), cam_az=35, cam_el=10, props=[door] + towel)
+    return dict(seconds=4.0, keys=rep(key(75), key(88)), cam_az=-30, cam_el=10, props=[door] + towel)
 
 
 def kettlebell_one_arm_row():
@@ -330,6 +350,7 @@ EXERCISES = {
     "front-lever-adv-tuck": front_lever_adv_tuck,
     "front-lever-straddle": front_lever_straddle,
     "dead-hang": dead_hang,
+    "german-hang": german_hang,
     "scapular-pull": scapular_pull,
     "arch-hang": arch_hang,
     "pullup-negative": pullup_negative,
