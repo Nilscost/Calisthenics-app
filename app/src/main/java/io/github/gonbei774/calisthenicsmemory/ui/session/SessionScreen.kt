@@ -219,7 +219,7 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                             if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_target"))
                             RepLogger(logger, repWork, showName = false)
                         } else {
-                            if (b.type == BlockType.WORK || b.note != null) Text(names[b.variationId] ?: "", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
+                            if ((b.type == BlockType.WORK || b.note != null) && names[b.variationId] != null) Text(names[b.variationId] ?: "", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
                             if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_target"))
                             b.note?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center, modifier = Modifier.testTag("session_note")) }
                         }

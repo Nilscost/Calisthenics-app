@@ -9,6 +9,10 @@ appId: app.calisthenics.personal
 - scrollUntilVisible: { element: { id: exercises_plus }, direction: DOWN, timeout: 8000 }
 - takeScreenshot: 01b-train-exercises-${VARIANT}
 - tapOn: { id: exercises_plus }
+# R7-T13 (D10): the cool-down switch with its modes, then the Preview shows it
+- scrollUntilVisible: { element: { id: cooldown_switch }, direction: DOWN, timeout: 8000 }
+- tapOn: { id: cooldown_switch }
+- takeScreenshot: 01c-train-cooldown-${VARIANT}
 - tapOn: { id: preview_button }
 - extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
 - takeScreenshot: 02-preview-${VARIANT}
@@ -26,6 +30,8 @@ appId: app.calisthenics.personal
 - tapOn: { id: rule_REP_RANGE }
 - takeScreenshot: 02e-rule-rep-range-${VARIANT}
 - tapOn: { id: rule_APP_LEVELS }
+- scrollUntilVisible: { element: { id: cooldown_caption }, direction: DOWN, timeout: 10000 }
+- takeScreenshot: 02f-preview-cooldown-${VARIANT}
 - scrollUntilVisible: { element: { id: timeline_toggle }, direction: DOWN, timeout: 10000 }
 - takeScreenshot: 03-preview-bottom-${VARIANT}
 - tapOn: { id: timeline_toggle }

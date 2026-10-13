@@ -18,6 +18,7 @@ object CueText {
             BlockType.PASSIVE_RECOVERY -> if (plan.stretchOn) "Recover" else "Rest"
             BlockType.TRANSITION -> nextExercise(plan, i)?.let { "Get ready: ${names[it.variationId] ?: it.variationId}" } ?: "Get ready"
             BlockType.STRETCH -> "Stretch: " + (name ?: "")
+            BlockType.COOLDOWN -> name?.let { "Cool-down: $it" } ?: "Relax"
             else -> name ?: "Go"
         }.trim()
     }

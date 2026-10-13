@@ -202,6 +202,23 @@ fun TrainScreen(
                 Switch(checked = settings.warmupOn, onCheckedChange = { change(settings.copy(warmupOn = it)) }, modifier = Modifier.semantics { contentDescription = warmupLabel }.testTag("warmup_switch"))
             }
 
+            // R7-T13 (D10): the cool-down after the workout: stretches matched to the session, or a timed relax block
+            val cooldownLabel = stringResource(R.string.train_cooldown)
+            Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(stringResource(R.string.train_cooldown), style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(R.string.train_cooldown_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Switch(checked = settings.cooldownOn, onCheckedChange = { change(settings.copy(cooldownOn = it)) }, modifier = Modifier.semantics { contentDescription = cooldownLabel }.testTag("cooldown_switch"))
+            }
+            if (settings.cooldownOn) SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+                app.calisthenics.domain.model.CooldownMode.entries.forEachIndexed { i, m ->
+                    SegmentedButton(selected = settings.cooldownMode == m, onClick = { change(settings.copy(cooldownMode = m)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(i, 2), icon = {}, modifier = Modifier.testTag("cooldown_mode_${m.name}")) {
+                        Text(stringResource(if (m == app.calisthenics.domain.model.CooldownMode.STRETCHING) R.string.cooldown_stretching else R.string.cooldown_timed), maxLines = 1)
+                    }
+                }
+            }
+
             Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                 SummaryTile(R.string.train_time_caption, minutes?.let { stringResource(R.string.train_minutes, it) } ?: stringResource(R.string.train_minutes_unknown), null, "minutes", Modifier.weight(1f))
                 SummaryTile(R.string.train_exercises_caption, exercises?.toString() ?: stringResource(R.string.train_minutes_unknown), stringResource(R.string.train_exercises_per_round), "exercise_count", Modifier.weight(1f))

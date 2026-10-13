@@ -47,6 +47,9 @@ object TrainSettingsStore {
             stretchOn = prefs.stretchOn,
             warmupOn = p(ctx).getBoolean("warmup", false),
             exercisesPerRound = p(ctx).getInt("exercises", -1).takeIf { it > 0 },
+            cooldownOn = p(ctx).getBoolean("cooldown", false),
+            cooldownMode = runCatching { app.calisthenics.domain.model.CooldownMode.valueOf(p(ctx).getString("cooldown_mode", "STRETCHING")!!) }.getOrDefault(app.calisthenics.domain.model.CooldownMode.STRETCHING),
+            cooldownMinutes = p(ctx).getInt("cooldown_minutes", 5),
         )
     }
 
@@ -55,7 +58,7 @@ object TrainSettingsStore {
         ProfileStore.select(ctx, s.profileId)
         ModeStore.setTimed(ctx, s.timed)
         PrefsStore.save(ctx, PrefsStore.load(ctx).copy(stretchOn = s.stretchOn))
-        p(ctx).edit().putInt("rounds", s.rounds).putString("format", s.format.name).putString("routine", s.routineId).putBoolean("warmup", s.warmupOn).putInt("exercises", s.exercisesPerRound ?: -1).apply()
+        p(ctx).edit().putInt("rounds", s.rounds).putString("format", s.format.name).putString("routine", s.routineId).putBoolean("warmup", s.warmupOn).putInt("exercises", s.exercisesPerRound ?: -1).putBoolean("cooldown", s.cooldownOn).putString("cooldown_mode", s.cooldownMode.name).putInt("cooldown_minutes", s.cooldownMinutes).apply()
     }
 }
 

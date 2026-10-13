@@ -75,6 +75,11 @@ data class SessionDraft(
     val format: WorkoutFormat = WorkoutFormat.CIRCUIT,
     /** V21: the rule that decides the targets (ranges) and, through the plan, how sessions are judged. */
     val rule: app.calisthenics.domain.model.ProgressionRule = app.calisthenics.domain.model.ProgressionRule(),
+    /** R7-T13 (D10): null = the catalog's two-stretch template (older behaviour); else the cool-down is built from the session (stretches) or is one timed block. */
+    val cooldownMode: app.calisthenics.domain.model.CooldownMode? = null,
+    val cooldownMinutes: Int = 5,
+    /** R7-T13: the stretches picked by hand in the Preview, in order (null = chosen automatically). */
+    val cooldownStretches: List<String>? = null,
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(

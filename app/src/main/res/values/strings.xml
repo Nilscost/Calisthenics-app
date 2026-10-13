@@ -134,6 +134,13 @@
     <string name="train_time_caption">Time</string>
     <string name="train_exercises_caption">Exercises</string>
     <string name="train_skill_exercises">For %1$s: %2$s</string>
+    <string name="train_cooldown">Cool-down</string>
+    <string name="train_cooldown_hint">After the workout: stretches for what you trained, or a few quiet minutes</string>
+    <string name="cooldown_stretching">Stretching</string>
+    <string name="cooldown_timed">Timed</string>
+    <string name="preview_cooldown_caption">Cool-down</string>
+    <string name="preview_cooldown_timed">Relax and breathe · %1$d min</string>
+    <string name="preview_cooldown_minutes">Minutes</string>
     <string name="train_exercises_stepper_caption">Exercises per round</string>
     <string name="train_exercises_per_round">in each set</string>
     <string name="train_start">Start workout</string>

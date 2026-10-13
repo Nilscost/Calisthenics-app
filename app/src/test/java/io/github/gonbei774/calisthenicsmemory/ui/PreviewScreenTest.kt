@@ -41,6 +41,23 @@ class PreviewScreenTest {
         CalisthenicsMemoryTheme(darkTheme = false) { PreviewScreen(onBack = {}, onStarted = onStarted) }
     }
 
+    // R7-T13 (D10): the cool-down is part of the Preview: timed minutes with - / +, or stretches that can be swapped
+    @Test fun aTimedCooldownShowsItsMinutesAndTheyCanBeChanged() {
+        app.getSharedPreferences("train", Context.MODE_PRIVATE).edit().putBoolean("cooldown", true).putString("cooldown_mode", "TIMED").commit()
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("cooldown_timed").performScrollTo().assertExists()
+        rule.onNodeWithText("Relax and breathe · 5 min").assertExists()
+        rule.onNodeWithTag("cooldown_minutes_plus").performClick(); rule.waitForIdle()
+        rule.onNodeWithText("Relax and breathe · 6 min").assertExists()
+    }
+
+    @Test fun aStretchingCooldownListsStretchesWithASwapButton() {
+        app.getSharedPreferences("train", Context.MODE_PRIVATE).edit().putBoolean("cooldown", true).putString("cooldown_mode", "STRETCHING").commit()
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("cooldown_stretch_0").performScrollTo().assertExists()
+        rule.onNodeWithTag("cooldown_swap_0").assertExists()
+    }
+
     @Test fun headerSaysRoundsMinutesAndStyle() {
         show(); rule.waitForIdle()
         rule.onNodeWithTag("preview_header").assertTextContains("4 rounds", substring = true)

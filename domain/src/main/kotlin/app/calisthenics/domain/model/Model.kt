@@ -34,6 +34,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable enum class Side { NONE, LEFT, RIGHT, BOTH }
 
+/** R7-T13 (D10): the cool-down after the workout: stretches matched to the session, or a timed relax block. */
+@Serializable enum class CooldownMode { STRETCHING, TIMED }
+
 @Serializable enum class BlockType { WORK, STRETCH, PASSIVE_RECOVERY, WARMUP, COOLDOWN, TRANSITION }
 
 @Serializable enum class TargetType { REPS, HOLD_SECONDS }

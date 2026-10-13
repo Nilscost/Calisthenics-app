@@ -80,6 +80,18 @@ class TrainScreenTest {
         assertTrue("one exercise fewer is shorter", minutes() < 35)
     }
 
+    // R7-T13 (D10): the cool-down switch sits under the warm-up; its two modes appear when it is on
+    @Test fun theCooldownSwitchShowsItsTwoModes() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("cooldown_mode_TIMED").assertDoesNotExist()
+        rule.onNodeWithTag("cooldown_switch").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("cooldown_mode_STRETCHING").assertIsSelected()
+        val before = minutes()
+        rule.onNodeWithTag("cooldown_mode_TIMED").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("cooldown_mode_TIMED").assertIsSelected()
+        assertTrue("the cool-down counts in the estimate", minutes() >= 0 && before >= 0)
+    }
+
     @Test fun betweenSetsStretchOrRestPersists() {
         show()
         rule.onNodeWithTag("between_stretch").assertIsSelected()

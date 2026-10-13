@@ -29,6 +29,9 @@ const val TIMED_WORK_SECONDS = 60
 const val TIMED_REST_SECONDS = 55
 /** NOT in the ADR: shortest stretch segment worth announcing. Needs owner review at G2. */
 const val MIN_STRETCH_SEGMENT_SECONDS = 10
+/** R7-T13 (D10): the stretching cool-down aims at 5 minutes and stays within 8. */
+const val COOLDOWN_TARGET_SECONDS = 5 * 60
+const val COOLDOWN_MAX_SECONDS = 8 * 60
 
 data class PlanInput(
     val planId: String,
@@ -87,10 +90,14 @@ private class Planner(val input: PlanInput) {
         // 6–7. templates
         val warmIds = Ramp.order(cat, input.profile, input.progress, input.routine.warmup.ifEmpty { cat.warmupTemplate }, chosen.flatMap { it.variation.patterns })   // L12: RAMP order, gated items
         val warm = if (draft.warmupOn) template(warmIds, BlockType.WARMUP, "warmup") else emptyList()
-        val cool = if (draft.cooldownOn) template(cat.cooldownTemplate, BlockType.COOLDOWN, "cooldown") else emptyList()
+        val cool = if (!draft.cooldownOn) emptyList() else when (draft.cooldownMode) {
+            null -> template(cat.cooldownTemplate, BlockType.COOLDOWN, "cooldown")
+            CooldownMode.TIMED -> listOf(TimelineBlock("cooldown-relax", BlockType.COOLDOWN, draft.cooldownMinutes.coerceIn(1, 30) * 60, note = "Relax and breathe: in for 4, out for 6. Let the body settle."))
+            CooldownMode.STRETCHING -> cooldownStretches(chosen)
+        }
         if (draft.warmupOn && warmIds.isEmpty()) return fail("no-warmup-template", "Warm-up is on but no reviewed warm-up template exists.",
             listOf(PlanOption("warmup-off", "Turn warm-up off.")))
-        if (draft.cooldownOn && cat.cooldownTemplate.isEmpty()) return fail("no-cooldown-template", "Cooldown is on but no reviewed cooldown template exists.",
+        if (draft.cooldownOn && draft.cooldownMode == null && cat.cooldownTemplate.isEmpty()) return fail("no-cooldown-template", "Cooldown is on but no reviewed cooldown template exists.",
             listOf(PlanOption("cooldown-off", "Turn cooldown off.")))
         val fixed = warm + cool
         val fixedSeconds = fixed.sumOf { it.durationSeconds }
@@ -360,6 +367,30 @@ private class Planner(val input: PlanInput) {
             extras()
         }
         return out
+    }
+
+    /**
+     * R7-T13 (D10): the cool-down stretches matched to the session: the stretches the session's exercises list as compatible (deep ones allowed),
+     * those that fit the most exercises first, until about 5 minutes are reached (never more than 8). The person's own list from the Preview wins.
+     */
+    private fun cooldownStretches(chosen: List<Chosen>): List<TimelineBlock> {
+        fun secs(v: ExerciseVariation) = (v.defaultSeconds ?: 30) * (if (v.unilateral) 2 else 1)
+        val picked: List<ExerciseVariation> = draft.cooldownStretches?.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind == Kind.STRETCH } } ?: run {
+            val score = chosen.flatMap { it.variation.compatibleStretchIds }.groupingBy { it }.eachCount()
+            val out = mutableListOf<ExerciseVariation>(); var total = 0
+            for (id in score.keys.sortedWith(compareBy({ -score.getValue(it) }, { it }))) {
+                val v = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH && !it.optIn && it.id !in input.excludedVariationIds && isAvailable(it, input.profile) } ?: continue
+                if (total + secs(v) > COOLDOWN_MAX_SECONDS) continue
+                out += v; total += secs(v)
+                if (total >= COOLDOWN_TARGET_SECONDS) break
+            }
+            out
+        }
+        return picked.flatMapIndexed { i, v ->
+            val s = v.defaultSeconds ?: 30
+            if (v.unilateral) listOf(Side.LEFT, Side.RIGHT).map { TimelineBlock("cooldown-$i-${it.name.first()}", BlockType.COOLDOWN, s, variationId = v.id, side = it, mediaId = v.mediaId, note = "Cool-down") }
+            else listOf(TimelineBlock("cooldown-$i", BlockType.COOLDOWN, s, variationId = v.id, side = Side.BOTH, mediaId = v.mediaId, note = "Cool-down"))
+        }
     }
 
     private fun template(ids: List<String>, type: BlockType, prefix: String): List<TimelineBlock> = ids.flatMapIndexed { i, id ->

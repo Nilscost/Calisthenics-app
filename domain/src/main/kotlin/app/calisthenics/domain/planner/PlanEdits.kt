@@ -29,6 +29,10 @@ data class PlanEdits(
     val freeTargets: Map<String, Int> = emptyMap(),
     /** V21: the progression rule chosen in the Preview (null = the routine's own). */
     val rule: ProgressionRule? = null,
+    /** R7-T13: minutes of a timed cool-down chosen in the Preview (null = the setting). */
+    val cooldownMinutes: Int? = null,
+    /** R7-T13: the cool-down stretches chosen by hand in the Preview, in order (null = automatic). */
+    val cooldownStretches: List<String>? = null,
 ) {
     fun isEmpty() = this == PlanEdits()
 }
