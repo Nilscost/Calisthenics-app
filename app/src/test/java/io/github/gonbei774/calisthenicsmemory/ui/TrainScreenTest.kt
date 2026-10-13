@@ -60,6 +60,26 @@ class TrainScreenTest {
         assertTrue(minutes() < at4)
     }
 
+    private fun exercises(): Int = rule.onNodeWithTag("exercises_value", useUnmergedTree = true).fetchSemanticsNode().config
+        .first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }.toInt()
+
+    // R7-T08 (D1): the stepper next to the rounds; a body-part session starts at the count that makes it 30 minutes, a tap overrides it
+    @Test fun exercisesPerRoundStepperDefaultsToThirtyMinutesAndCanBeChanged() {
+        show()
+        rule.waitForIdle()
+        rule.onNodeWithTag("objective_type_BODY_PART").assertIsSelected()
+        rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
+        rule.onNodeWithText("Focus: upper body").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("rounds_minus").performClick(); rule.waitForIdle()   // 3 rounds
+        rule.onNodeWithTag("exercises_plus", useUnmergedTree = true).performScrollTo().assertExists()
+        assertTrue("upper body, 3 rounds: ${minutes()} min", minutes() >= 30)
+        val n = exercises()
+        assertTrue(n >= 3)
+        rule.onNodeWithTag("exercises_minus", useUnmergedTree = true).performClick(); rule.waitForIdle()
+        assertEquals(n - 1, exercises())
+        assertTrue("one exercise fewer is shorter", minutes() < 35)
+    }
+
     @Test fun betweenSetsStretchOrRestPersists() {
         show()
         rule.onNodeWithTag("between_stretch").assertIsSelected()

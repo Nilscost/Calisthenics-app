@@ -5,6 +5,10 @@ appId: app.calisthenics.personal
 - runFlow: ../common/dismiss_system_dialogs.yaml
 - extendedWaitUntil: { visible: { id: preview_button }, timeout: 15000 }
 - takeScreenshot: 01-train-${VARIANT}
+# R7-T08 (D1): exercises per round, next to the rounds
+- scrollUntilVisible: { element: { id: exercises_plus }, direction: DOWN, timeout: 8000 }
+- takeScreenshot: 01b-train-exercises-${VARIANT}
+- tapOn: { id: exercises_plus }
 - tapOn: { id: preview_button }
 - extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
 - takeScreenshot: 02-preview-${VARIANT}

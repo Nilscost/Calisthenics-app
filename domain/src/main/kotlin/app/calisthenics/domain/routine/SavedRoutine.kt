@@ -27,6 +27,8 @@ data class SavedRoutine(
     val warmupOn: Boolean = false,
     /** V22: where a ready-made routine comes from (shown under its name); null for the person's own routines. */
     val credit: String? = null,
+    /** R7-T08 (D1): the exercises per round the routine was saved with (its slots already hold them); null for older routines. */
+    val exercisesPerRound: Int? = null,
 )
 
 /** Builds what is saved from the Preview's state. [base] is the routine the plan was made from, [edits] the Preview's changes. */
@@ -35,7 +37,7 @@ fun savedFrom(id: String, name: String, revision: Int, base: Routine, edits: Pla
     val slots = applied.slots.map { s -> edits.swaps[s.id]?.let { s.copy(preferredVariationId = it) } ?: s }
     val overlay = edits.copy(swaps = emptyMap(), removed = emptySet(), added = emptyList(), rule = null)
     return SavedRoutine(id, name.trim().ifBlank { "My routine" }, revision, applied.copy(id = id, revision = revision, name = name.trim().ifBlank { "My routine" }, slots = slots, rule = rule),
-        overlay, settings.format, rule, settings.stretchOn, settings.rounds, createdAt, now, settings.warmupOn)
+        overlay, settings.format, rule, settings.stretchOn, settings.rounds, createdAt, now, settings.warmupOn, exercisesPerRound = settings.exercisesPerRound)
 }
 
 /** Everything the planner needs to rebuild the saved workout: the routine, the Train settings and the Preview edits it was saved with. */
@@ -49,7 +51,7 @@ fun resolveSaved(saved: SavedRoutine, today: TrainSettings): ResolvedRoutine = R
 
 /** Choosing a saved routine on Train copies its format, rest type and sets into today's settings (the person can still change them there). */
 fun settingsFor(saved: SavedRoutine, today: TrainSettings): TrainSettings =
-    today.copy(goalId = "general", format = saved.format, stretchOn = saved.stretchOn, rounds = saved.sets, focus = null, routineId = saved.id, warmupOn = saved.warmupOn)
+    today.copy(goalId = "general", format = saved.format, stretchOn = saved.stretchOn, rounds = saved.sets, focus = null, routineId = saved.id, warmupOn = saved.warmupOn, exercisesPerRound = saved.exercisesPerRound)
 
 /** D5: "Update this routine" keeps the id and bumps the revision (older plans keep their own snapshot); "Save as new" gets a new id. */
 fun updateSaved(old: SavedRoutine, new: SavedRoutine) = new.copy(id = old.id, revision = old.revision + 1, createdAtEpochMs = old.createdAtEpochMs, routine = new.routine.copy(id = old.id, revision = old.revision + 1))

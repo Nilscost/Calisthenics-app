@@ -45,6 +45,7 @@ object TrainSettingsStore {
             timed = ModeStore.timed(ctx),
             stretchOn = prefs.stretchOn,
             warmupOn = p(ctx).getBoolean("warmup", false),
+            exercisesPerRound = p(ctx).getInt("exercises", -1).takeIf { it > 0 },
         )
     }
 
@@ -53,7 +54,7 @@ object TrainSettingsStore {
         ProfileStore.select(ctx, s.profileId)
         ModeStore.setTimed(ctx, s.timed)
         PrefsStore.save(ctx, PrefsStore.load(ctx).copy(stretchOn = s.stretchOn))
-        p(ctx).edit().putInt("rounds", s.rounds).putString("format", s.format.name).putString("routine", s.routineId).putBoolean("warmup", s.warmupOn).apply()
+        p(ctx).edit().putInt("rounds", s.rounds).putString("format", s.format.name).putString("routine", s.routineId).putBoolean("warmup", s.warmupOn).putInt("exercises", s.exercisesPerRound ?: -1).apply()
     }
 }
 

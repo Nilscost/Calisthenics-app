@@ -75,7 +75,9 @@ fun TrainScreen(
     val profile = profiles.firstOrNull { it.id == settings.profileId } ?: profiles.first()
     val saved = remember(settings.routineId, settings.profileId) { routinesFor(ctx, data.catalog) }
     val resolved = remember(settings, data, saved) { resolveTrain(ctx, data.routine, settings, data.catalog) }
-    val result = remember(resolved, data, profile) { buildTrainPlan(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = resolved.edits) }
+    // R7-T08 (D1): the default number of exercises per round (30 minutes at least) unless the person set one
+    val eff = remember(resolved, data, profile) { withDefaultLength(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = resolved.edits) }
+    val result = remember(eff, resolved, data, profile) { buildTrainPlan(data.catalog, resolved.routine, data.progress, profile, eff, edits = resolved.edits) }
     val plan = (result as? PlanResult.Ready)?.plan
     val minutes = plan?.plannedDurationSeconds?.let { (it + 30) / 60 }
     val exercises = plan?.blocks?.filter { it.type == BlockType.WORK || (resolved.routine.stretchSession.isNotEmpty() && it.type == BlockType.STRETCH) }?.mapNotNull { it.variationId }?.distinct()?.size
@@ -105,7 +107,7 @@ fun TrainScreen(
             Text(stringResource(R.string.train_title).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("train_title"))
             UnfinishedBanner(onStarted)
 
-            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null)) }, routines = saved, routineId = settings.routineId, onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } })
+            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, exercisesPerRound = null)) }, routines = saved, routineId = settings.routineId, onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } })
 
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Caption(stringResource(R.string.train_equipment_caption))
@@ -164,9 +166,23 @@ fun TrainScreen(
                     }
                 }
             }
-            if (stacked) { setsCard(Modifier.fillMaxWidth()); betweenCard(Modifier.fillMaxWidth()) }
-            else Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-                setsCard(Modifier.weight(1f).fillMaxHeight()); betweenCard(Modifier.weight(1f).fillMaxHeight())
+            // R7-T08 (D1): exercises per round, next to the rounds; the default makes the session at least 30 minutes, a tap overrides it
+            val exercisesCard: @Composable (Modifier) -> Unit = { m ->
+                val maxEx = remember(resolved, data, profile) { maxExercisesPerRound(data.catalog, trainRoutine(data.catalog, resolved.routine, data.progress, resolved.settings.goalId), resolved.settings.effectiveFocus(), profile, data.progress, resolved.settings.stretchOn) }
+                val shown = (eff.exercisesPerRound ?: plan?.let { exercisesPerRoundOf(it) } ?: 1).coerceIn(1, maxOf(maxEx, 1))
+                Card(m, shape = MaterialTheme.shapes.large) {
+                    Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                        Caption(stringResource(R.string.train_exercises_stepper_caption))
+                        Stepper(shown, { change(settings.copy(exercisesPerRound = it)) }, 1..maxOf(maxEx, shown), tag = "exercises")
+                    }
+                }
+            }
+            if (stacked) { setsCard(Modifier.fillMaxWidth()); exercisesCard(Modifier.fillMaxWidth()); betweenCard(Modifier.fillMaxWidth()) }
+            else {
+                Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                    setsCard(Modifier.weight(1f).fillMaxHeight()); exercisesCard(Modifier.weight(1f).fillMaxHeight())
+                }
+                betweenCard(Modifier.fillMaxWidth())
             }
 
             val warmupLabel = stringResource(R.string.train_warmup)

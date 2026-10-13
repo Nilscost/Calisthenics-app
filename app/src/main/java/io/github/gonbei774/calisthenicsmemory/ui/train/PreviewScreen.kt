@@ -199,8 +199,9 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     val data by rememberTrainData()
     val stored = remember { TrainSettingsStore.load(ctx) }
     val resolved = remember(data) { resolveTrain(ctx, data.routine, stored, data.catalog) }   // V18: the usual plan, or the saved routine chosen on Train
-    val settings = resolved.settings
     val profile = remember { ProfileStore.selected(ctx) }
+    // R7-T08 (D1): frozen when the Preview opens, so removing or adding an exercise here does not re-fill the list
+    val settings = remember(data) { withDefaultLength(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = resolved.edits) }
     var routine by remember(data) { mutableStateOf(resolved.routine) }
     var edits by remember(data) { mutableStateOf(resolved.edits) }
     var saveDialog by remember { mutableStateOf(false) }
@@ -303,7 +304,8 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
         fun save(asNew: Boolean) {
             val now = System.currentTimeMillis()
             val rule = edits.rule ?: routine.rule
-            val fresh = savedFrom(java.util.UUID.randomUUID().toString(), name, 1, routine, edits, settings, rule, now)
+            val countNow = (result as? PlanResult.Ready)?.plan?.let { exercisesPerRoundOf(it) }   // the saved list already holds the hand edits
+            val fresh = savedFrom(java.util.UUID.randomUUID().toString(), name, 1, routineForPlan(data.catalog, routine, data.progress, profile, settings), edits, settings.copy(exercisesPerRound = countNow ?: settings.exercisesPerRound), rule, now)
             val toStore = if (!asNew && editing != null) updateSaved(editing, fresh.copy(name = name.trim().ifBlank { editing.name })) else fresh
             SavedRoutineStore.upsert(ctx, toStore)
             TrainSettingsStore.save(ctx, settingsFor(toStore, stored))
