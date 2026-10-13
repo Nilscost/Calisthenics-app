@@ -25,6 +25,9 @@ appId: app.calisthenics.personal
 # R7-T02 (B4, B5): the break has a readable caption with the stretch name; DONE moves on to the next block.
 - takeScreenshot: 04-stretch-block-${VARIANT}
 - tapOn: { id: break_done }
+- extendedWaitUntil: { visible: { id: session_caption }, timeout: 10000 }
+- takeScreenshot: 04b-stretch-caption-${VARIANT}
+- tapOn: { id: break_done }
 - extendedWaitUntil: { visible: { id: session_title }, timeout: 10000 }
 - repeat:
     while: { notVisible: { id: session_done, enabled: true } }

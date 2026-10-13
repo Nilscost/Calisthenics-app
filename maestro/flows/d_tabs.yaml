@@ -14,6 +14,14 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: { id: exercise_detail }, timeout: 10000 }
 - takeScreenshot: 02b-exercise-detail-${VARIANT}
 - tapOn: { id: detail_back }
+# R7-T11 (D5, D6, O2): the planche lean says it needs the plank (a link); the detail has an Edit mode
+- scrollUntilVisible: { element: { id: tree_need_planche-lean }, direction: DOWN, timeout: 12000, optional: true }
+- takeScreenshot: 02b2-planche-needs-plank-${VARIANT}
+- tapOn: { id: tree_need_planche-lean, optional: true }
+- extendedWaitUntil: { visible: { id: detail_edit }, timeout: 8000, optional: true }
+- tapOn: { id: detail_edit, optional: true }
+- takeScreenshot: 02b3-detail-edit-${VARIANT}
+- tapOn: { id: detail_back, optional: true }
 - tapOn: { id: progress_mode_skill }
 - takeScreenshot: 02c-by-skill-${VARIANT}
 - tapOn: { id: tab_history }
