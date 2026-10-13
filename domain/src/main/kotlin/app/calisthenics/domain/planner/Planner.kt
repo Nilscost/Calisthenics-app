@@ -83,7 +83,6 @@ private class Planner(val input: PlanInput) {
         if (chosen.isEmpty()) return fail("nothing-available",
             "No exercise in this routine can be done with the current equipment, exclusions and holds.",
             listOf(PlanOption("change-profile", "Switch equipment profile."), PlanOption("clear-exclusions", "Review excluded exercises.")))
-        if (draft.goalId != null) warn += "A skill goal is selected, but goal-slot planning is not implemented yet — the plan ignores it."
 
         // 6–7. templates
         val warmIds = Ramp.order(cat, input.profile, input.progress, input.routine.warmup.ifEmpty { cat.warmupTemplate }, chosen.flatMap { it.variation.patterns })   // L12: RAMP order, gated items

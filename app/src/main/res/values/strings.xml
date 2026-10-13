@@ -132,6 +132,7 @@
     <string name="between_rest">Rest</string>
     <string name="train_time_caption">Time</string>
     <string name="train_exercises_caption">Exercises</string>
+    <string name="train_skill_exercises">For %1$s: %2$s</string>
     <string name="train_exercises_stepper_caption">Exercises per round</string>
     <string name="train_exercises_per_round">in each set</string>
     <string name="train_start">Start workout</string>

@@ -29,10 +29,20 @@ class GoalsTest {
         val r2 = Goals.routineFor(c, StarterRoutine.routine, "hspu", snap("pushup-standard" to 4))
         assertEquals("pike-pushup", r2.slots.first().preferredVariationId)
     }
-    @Test fun goalSlotReplacesTheMatchingBaseSlotAndKeepsTheRest() {
+    // R7-T09: the old assertion (one goal slot replaces one base slot, size unchanged) is replaced: a skill builds the session from its own exercises
+    @Test fun aSkillBuildsTheSessionFromItsOwnExercises() {
         val r = Goals.routineFor(c, StarterRoutine.routine, "pistol", snap())
-        assertEquals(StarterRoutine.routine.slots.size, r.slots.size)
         assertEquals("goal", r.slots.first().id)
+        assertTrue(r.slots.drop(1).all { Goals.isSkillSlot(it.id) })
+        assertTrue(r.slots.map { it.preferredVariationId }.containsAll(listOf("rdl-bodyweight", "calf-raise")))
+    }
+    @Test fun frontLeverAndHandstandGiveDifferentSkillRelevantSessions() {
+        val fl = Goals.routineFor(c, StarterRoutine.routine, "front-lever", snap()).slots.map { it.preferredVariationId }
+        val hs = Goals.routineFor(c, StarterRoutine.routine, "hspu", snap()).slots.map { it.preferredVariationId }
+        assertNotEquals(fl, hs)
+        assertTrue("a core line exercise (hollow chain, at the entry level for a beginner): $fl", fl.any { Area.CORE in c.variation(it)!!.areas })
+        assertTrue("a pull in the front lever session: $fl", fl.any { c.variation(it)!!.patterns.any { p -> p.name.startsWith("PULL") } })
+        assertTrue("a push in the handstand session: $hs", hs.any { c.variation(it)!!.patterns.any { p -> p.name.startsWith("PUSH") } })
     }
     @Test fun generalAndBodyPartGoalsLeaveRoutineAlone() {
         assertEquals(StarterRoutine.routine.slots, Goals.routineFor(c, StarterRoutine.routine, "general", snap()).slots)

@@ -109,6 +109,13 @@ fun TrainScreen(
 
             ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, exercisesPerRound = null)) }, routines = saved, routineId = settings.routineId, onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } })
 
+            // R7-T09 (D2): a skill brings in its own exercises; show which
+            val skillGoal = Goals.byId(settings.goalId)?.takeIf { it.entryVariationId != null && settings.routineId == null }
+            if (skillGoal != null && plan != null) {
+                val names = plan.blocks.filter { it.type == BlockType.WORK && it.roundIndex == 1 && it.slotId != null && Goals.isSkillSlot(it.slotId!!) }.mapNotNull { data.catalog.variation(it.variationId ?: "")?.name }.distinct()
+                if (names.isNotEmpty()) Text(stringResource(R.string.train_skill_exercises, skillGoal.name, names.joinToString(", ")), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("skill_exercises"))
+            }
+
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Caption(stringResource(R.string.train_equipment_caption))
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -168,7 +175,7 @@ fun TrainScreen(
             }
             // R7-T08 (D1): exercises per round, next to the rounds; the default makes the session at least 30 minutes, a tap overrides it
             val exercisesCard: @Composable (Modifier) -> Unit = { m ->
-                val maxEx = remember(resolved, data, profile) { maxExercisesPerRound(data.catalog, trainRoutine(data.catalog, resolved.routine, data.progress, resolved.settings.goalId), resolved.settings.effectiveFocus(), profile, data.progress, resolved.settings.stretchOn) }
+                val maxEx = remember(resolved, data, profile) { val r = trainRoutine(data.catalog, resolved.routine, data.progress, resolved.settings.goalId, profile); maxExercisesPerRound(data.catalog, r, fillFocusOf(r, resolved.settings), profile, data.progress, resolved.settings.stretchOn) }
                 val shown = (eff.exercisesPerRound ?: plan?.let { exercisesPerRoundOf(it) } ?: 1).coerceIn(1, maxOf(maxEx, 1))
                 Card(m, shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {

@@ -54,6 +54,14 @@ class TrainPlanTest {
         assertNotEquals("hspu-wall", p.blocks.first { it.type == BlockType.WORK }.variationId)
     }
 
+    @Test fun changingTheSkillChangesThePlanAndTheStaleWarningIsGone() {
+        val a = plan(TrainSettings(goalId = "front-lever", rounds = 2)) as PlanResult.Ready
+        val b = plan(TrainSettings(goalId = "hspu", rounds = 2)) as PlanResult.Ready
+        fun ids(p: PlanResult.Ready) = p.plan.blocks.filter { it.type == BlockType.WORK }.mapNotNull { it.variationId }.distinct()
+        assertNotEquals(ids(a), ids(b))
+        assertTrue(a.plan.warnings.none { "not implemented" in it } && b.plan.warnings.none { "not implemented" in it })
+    }
+
     @Test fun swapsApplyToTodayOnly() {
         val base = (plan() as PlanResult.Ready).plan.blocks.first { it.slotId == "push" && it.type == BlockType.WORK }.variationId
         val swapped = (plan(swaps = mapOf("push" to "pushup-knee")) as PlanResult.Ready).plan.blocks.first { it.slotId == "push" && it.type == BlockType.WORK }.variationId

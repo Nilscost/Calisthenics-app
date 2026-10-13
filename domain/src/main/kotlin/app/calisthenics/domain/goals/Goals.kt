@@ -11,6 +11,8 @@ data class Goal(
     val id: String, val name: String, val description: String,
     val entryVariationId: String? = null, val targetVariationId: String? = null,
     val focus: Set<StrengthFocus> = setOf(StrengthFocus.FULL_BODY),
+    /** R7-T09 (D2): exercises of the supporting chains that help the skill (their current step at the person's level is trained too). DRAFT. */
+    val supports: List<String> = emptyList(),
 )
 
 /** R1 / doc 17: the three top-level kinds of objective. ROUTINE (ready-made and saved routines) only appears once presets exist (V22). */
@@ -25,14 +27,14 @@ object Goals {
 
     val all = listOf(
         Goal("general", "General strength", "Balanced full-body work; no skill target.", focus = setOf(StrengthFocus.FULL_BODY)),
-        Goal("hspu", "Handstand push-up", "Pike push-up to wall handstand push-up.", "pike-pushup", "hspu-wall"),
-        Goal("muscle-up", "Pull-up to muscle-up", "Band-assisted pull-up to bar muscle-up.", "pullup-band-assisted", "muscle-up-bar"),
-        Goal("pistol", "Pistol squat", "Bulgarian split squat to pistol squat.", "split-squat-bulgarian", "squat-pistol"),
-        Goal("one-arm-pushup", "One-arm push-up", "Standard push-up to one-arm push-up.", "pushup-standard", "pushup-one-arm"),
-        Goal("l-sit", "L-sit and V-sit", "Hollow hold to V-sit.", "hollow-hold", "v-sit-floor"),
-        Goal("front-lever", "Front lever", "Tuck lever to straddle lever. Hard skill.", "front-lever-tuck", "front-lever-straddle"),
-        Goal("planche", "Planche", "Planche lean to advanced tuck planche. Hard skill.", "planche-lean", "planche-adv-tuck"),
-        Goal("back-bridge", "Back bridge", "Glute bridge to full back bridge.", "glute-bridge", "bridge-back"),
+        Goal("hspu", "Handstand push-up", "Pike push-up to wall handstand push-up.", "pike-pushup", "hspu-wall", supports = listOf("plank", "dip-support-hold")),
+        Goal("muscle-up", "Pull-up to muscle-up", "Band-assisted pull-up to bar muscle-up.", "pullup-band-assisted", "muscle-up-bar", supports = listOf("dip-support-hold", "hollow-hold")),
+        Goal("pistol", "Pistol squat", "Bulgarian split squat to pistol squat.", "split-squat-bulgarian", "squat-pistol", supports = listOf("rdl-bodyweight", "calf-raise")),
+        Goal("one-arm-pushup", "One-arm push-up", "Standard push-up to one-arm push-up.", "pushup-standard", "pushup-one-arm", supports = listOf("plank", "side-plank")),
+        Goal("l-sit", "L-sit and V-sit", "Hollow hold to V-sit.", "hollow-hold", "v-sit-floor", supports = listOf("dip-support-hold", "plank")),
+        Goal("front-lever", "Front lever", "Tuck lever to straddle lever. Hard skill.", "front-lever-tuck", "front-lever-straddle", supports = listOf("hollow-hold", "inverted-row-wide", "pullup-full")),
+        Goal("planche", "Planche", "Planche lean to advanced tuck planche. Hard skill.", "planche-lean", "planche-adv-tuck", supports = listOf("hollow-hold", "dip-support-hold")),
+        Goal("back-bridge", "Back bridge", "Glute bridge to full back bridge.", "glute-bridge", "bridge-back", supports = listOf("superman-hold", "plank")),
         Goal("body-upper", "Focus: upper body", "Only upper-body exercises.", focus = setOf(StrengthFocus.UPPER_BODY)),
         Goal("body-lower", "Focus: lower body", "Only lower-body exercises.", focus = setOf(StrengthFocus.LOWER_BODY)),
         Goal("body-core", "Focus: core", "Only core exercises.", focus = setOf(StrengthFocus.CORE)),
@@ -99,15 +101,45 @@ object Goals {
         return v
     }
 
-    fun routineFor(c: Catalog, base: Routine, goalId: String?, p: ProgressSnapshot): Routine {
+    /** R7-T09 (B11, D2): the exercise to train for [v] at the person's level: itself if started or unlocked, else the first prerequisite that unlocks it (recursively). */
+    private fun trainable(c: Catalog, v: String, p: ProgressSnapshot): String {
+        var cur = v
+        repeat(10) {
+            if (p.variations.containsKey(cur)) return cur
+            cur = unmet(c, cur, p).firstOrNull()?.variationId ?: return cur
+        }
+        return cur
+    }
+
+    /**
+     * R7-T09 (D2): what a session for the skill [g] is made of, at the person's level and in this order: the chain's current step (once its
+     * prerequisites are met or it was started), else its unmet prerequisites (also from other tabs), then the current step of each supporting chain.
+     * With [profile] set, exercises the equipment cannot do are left out.
+     */
+    fun skillExercises(c: Catalog, g: Goal, p: ProgressSnapshot, profile: EquipmentProfile? = null): List<String> {
+        val ch = chain(c, g); if (ch.isEmpty()) return emptyList()
+        val step = ch.firstOrNull { !mastered(it, p) } ?: ch.last()
+        val out = LinkedHashSet<String>()
+        val missing = unmet(c, step, p)
+        if (missing.isEmpty() || p.variations.containsKey(step)) out += step
+        if (missing.isNotEmpty()) missing.forEach { out += trainable(c, it.variationId, p) }
+        g.supports.forEach { out += trainable(c, it, p) }
+        return out.filter { id -> c.variation(id)?.let { (it.kind == Kind.REPS || it.kind == Kind.HOLD) && c.policyFor(it) != null && (profile == null || app.calisthenics.domain.equipment.isAvailable(it, profile)) } == true }
+    }
+
+    /** Slot ids of the exercises a skill brought in: the first is "goal", the rest "skill-n". */
+    fun isSkillSlot(id: String) = id == "goal" || id.startsWith("skill-")
+
+    /**
+     * A body-part goal keeps the usual plan with its focus. A skill goal (B11) builds the session from the exercises that make the skill
+     * possible ([skillExercises]); the planner and the exercises-per-round default then fill it up to the session length.
+     */
+    fun routineFor(c: Catalog, base: Routine, goalId: String?, p: ProgressSnapshot, profile: EquipmentProfile? = null): Routine {
         val g = byId(goalId) ?: return base
         val focused = base.copy(goalId = g.id, defaultFocus = g.focus)
-        val target = nextToTrain(c, g, p)?.let { c.variation(it) } ?: return focused
-        val area = target.areas.firstOrNull() ?: return focused
-        val intent = target.patterns.first()
-        val drop = base.slots.firstOrNull { it.area == area && it.intent == intent }
-            ?: base.slots.firstOrNull { it.area == area } ?: return focused
-        val slot = RoutineSlot("goal", intent, area, target.id)
-        return focused.copy(slots = listOf(slot) + base.slots.filter { it !== drop })
+        if (g.entryVariationId == null) return focused
+        val ex = skillExercises(c, g, p, profile).mapNotNull { c.variation(it) }
+        if (ex.isEmpty()) return focused
+        return focused.copy(slots = ex.mapIndexed { i, v -> RoutineSlot(if (i == 0) "goal" else "skill-${i + 1}", v.patterns.first(), v.areas.firstOrNull() ?: Area.UPPER_BODY, v.id) })
     }
 }

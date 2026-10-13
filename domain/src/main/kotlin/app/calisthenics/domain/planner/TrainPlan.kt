@@ -35,8 +35,16 @@ data class TrainSettings(
 }
 
 /** The routine the plan is built from: the usual plan, with the goal's next step in front. */
-fun trainRoutine(catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, goalId: String): Routine =
-    Goals.routineFor(catalog, baseRoutine, goalId, progress)
+fun trainRoutine(catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, goalId: String, profile: EquipmentProfile? = null): Routine =
+    Goals.routineFor(catalog, baseRoutine, goalId, progress, profile)
+
+/** The areas to fill a session from: a skill session is filled with exercises of the areas its own exercises use (front lever: pull and core), else the chosen focus. */
+fun fillFocusOf(routine: Routine, s: TrainSettings): Set<StrengthFocus> {
+    val skill = routine.slots.filter { Goals.isSkillSlot(it.id) }
+    if (skill.isEmpty()) return s.effectiveFocus()
+    val areas = skill.map { it.area }.toSet()
+    return areas.map { when (it) { Area.UPPER_BODY -> StrengthFocus.UPPER_BODY; Area.LOWER_BODY -> StrengthFocus.LOWER_BODY; Area.CORE -> StrengthFocus.CORE } }.toSet()
+}
 
 /**
  * Exercises that can stand in for the slot today: same movement and area, usable with this equipment, strength kinds only.
@@ -81,8 +89,8 @@ fun defaultExercisesPerRound(
     swaps: Map<String, String> = emptyMap(), prefs: Preferences = Preferences(), edits: PlanEdits = PlanEdits(),
 ): Int? {
     if (s.routineId != null || baseRoutine.stretchSession.isNotEmpty() || edits.removed.isNotEmpty() || edits.added.isNotEmpty()) return null
-    val routine = trainRoutine(catalog, baseRoutine, progress, s.goalId)
-    val focus = s.effectiveFocus()
+    val routine = trainRoutine(catalog, baseRoutine, progress, s.goalId, profile)
+    val focus = fillFocusOf(routine, s)
     val base = slotsForFocus(routine, focus).size
     val top = maxExercisesPerRound(catalog, routine, focus, profile, progress, s.stretchOn)
     fun build(n: Int) = planFor(catalog, baseRoutine, progress, profile, s, swaps, 0L, 0, prefs, edits, n)
@@ -106,8 +114,8 @@ private fun planFor(
     catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, profile: EquipmentProfile, s: TrainSettings,
     swaps: Map<String, String>, nowEpochMs: Long, nowDay: Int, prefs: Preferences, edits: PlanEdits, count: Int?,
 ): PlanResult {
-    var withGoal = trainRoutine(catalog, baseRoutine, progress, s.goalId)
-    if (count != null) withGoal = withExerciseCount(catalog, withGoal, s.effectiveFocus(), count, profile, progress, s.stretchOn)
+    var withGoal = trainRoutine(catalog, baseRoutine, progress, s.goalId, profile)
+    if (count != null) withGoal = withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s), count, profile, progress, s.stretchOn)
     val routine = applyEdits(withGoal, edits)
     val draft = SessionDraft.from(prefs.copy(stretchOn = s.stretchOn, selectedProfileId = profile.id, warmupOn = s.warmupOn), routine)
         .copy(focus = s.effectiveFocus(), swaps = swaps + edits.swaps, rounds = (if ((edits.rule ?: routine.rule).isRange) (edits.rule ?: routine.rule).sets else s.rounds).coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed, format = s.format,
@@ -118,8 +126,8 @@ private fun planFor(
 
 /** The routine as the plan uses it before hand edits: the goal's step in front and the exercises per round brought to [TrainSettings.exercisesPerRound]. A saved routine keeps exactly this list. */
 fun routineForPlan(catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, profile: EquipmentProfile, s: TrainSettings): Routine {
-    val withGoal = trainRoutine(catalog, baseRoutine, progress, s.goalId)
-    return s.exercisesPerRound?.let { withExerciseCount(catalog, withGoal, s.effectiveFocus(), it, profile, progress, s.stretchOn) } ?: withGoal
+    val withGoal = trainRoutine(catalog, baseRoutine, progress, s.goalId, profile)
+    return s.exercisesPerRound?.let { withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s), it, profile, progress, s.stretchOn) } ?: withGoal
 }
 
 /** The exercises one round has in [plan]: what the stepper shows. */
