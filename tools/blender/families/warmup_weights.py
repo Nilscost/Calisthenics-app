@@ -9,7 +9,7 @@ Vests have no prop kind: the load is shown as a kettlebell-type weight on the ch
 """
 import math
 
-from poses import base_pose, both, pt, rep
+from poses import base_pose, both, dense, pt, rep
 
 FLOOR_WRIST_Z = 0.035
 BAR_Z = 2.30
@@ -110,8 +110,24 @@ def _shoulder_loop(half, top_z, behind_x, rod_r):
 
 
 def shoulder_band():
-    # Thin resistance band, grip just wider than the shoulders; overhead, then behind the back.
-    return _shoulder_loop(half=0.30, top_z=0.556, behind_x=-0.555, rod_r=0.008)
+    # R7.2-T09 (F10): band pass-through. Wide overhand grip, arms kept straight the whole way: from the hips in front of the thighs, up in
+    # front, over the head, down behind the back, and the same way back. The wrists travel on an arc about the shoulders (dense keys),
+    # so the arms never bend; the band is a visible thin rod between the hands. Three-quarter camera so the band across the body and the arc both read.
+    half = 0.44                      # half the grip width: well outside the shoulders (0.18)
+    dy = half - 0.18
+    rxz = math.sqrt(0.567 ** 2 - dy ** 2)   # in-plane radius: shoulder -> wrist 0.567 of the 0.57 reach (straight arms)
+
+    def key(phi):
+        # phi = arm angle about the shoulder axis: 0 hanging in front of the thighs, 90 forward, 180 overhead, 320 behind the back (down and back)
+        r = math.radians(phi)
+        d = [math.sin(r), 0.0, -math.cos(r)]
+        n = [-math.cos(r), 0.0, -math.sin(r)]        # overhand grip: palms toward the body at the hips, down at 90, forward overhead
+        return base_pose(pelvis=[0.0, 0.0, 0.975], p1=0.0, p2=0.0, hp=0.0,
+                         **both(wrist_rel=[rxz * d[0], dy, rxz * d[2]], hand=d, palm=n, grip=0.9, elbow=[-n[0], 0.3, -n[2]]))   # a tiny bend, outward of the arc
+    phi = lambda phi: dict(phi=phi)
+    keyed = [(0.0, phi(0.0)), (0.06, phi(0.0)), (0.46, phi(320.0)), (0.56, phi(320.0))]
+    rod = dict(kind="rod", a=pt("wrist_l"), b=pt("wrist_r"), r=0.012)
+    return dict(seconds=3.5, keys=dense(key, keyed, 84), cam_az=55, cam_el=10, props=[rod])
 
 
 def shoulder_towel():

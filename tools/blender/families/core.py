@@ -291,29 +291,33 @@ def suitcase_carry():
     return dict(seconds=3.0, keys=rep(key(0.002), key(-0.002)), cam_az=30, cam_el=8, props=kb)
 
 
-PALLOF_BAND = dict(kind="rod", a=[0.0, -1.4, 1.25], b=pt("wrist_r"), r=0.008)
+PALLOF_BAND = dict(kind="rod", a=[0.0, -1.4, 1.25], b=pt("wrist_r"), r=0.010)
 
 
-def _pallof(hx, hy, bump=0.0):
-    # Wide stance (feet 0.25 m either side), hands at x = hx, y = +-hy, height 1.25.
+def _pallof(hx, bump=0.0, sway=0.0):
+    # R7.2-T09 (F11): side-on to the anchor (it is on the figure's right, so the band pulls sideways), wide stance, both hands held together at
+    # chest height on the midline. hx = how far in front of the chest the hands are: 0.20 = at the sternum, 0.53 = arms straight.
+    # The band runs from the hands straight to the side, so the press (forward) is at a right angle to it.
+    out = hx > 0.4
     return base_pose(pelvis=[0.0, 0.0, 0.955 + bump], hp=0,
-                     wrist_l=[hx, hy, 1.25], wrist_r=[hx, -hy, 1.25], hand_l=[1, 0, 0], hand_r=[1, 0, 0],
+                     wrist_l=[hx, 0.045 + sway, 1.25], wrist_r=[hx, -0.045 + sway, 1.25], hand_l=[1, 0, 0], hand_r=[1, 0, 0],
                      palm_l=[0, -1, 0], palm_r=[0, 1, 0], grip_l=0.9, grip_r=0.9,
+                     elbow_l=[0, 0.7, -1] if not out else [0, 0.2, -1], elbow_r=[0, -0.7, -1] if not out else [0, -0.2, -1],
                      ankle_l=[0.0, 0.20, 0.08], ankle_r=[0.0, -0.20, 0.08])
 
 
 def pallof_hold():
-    # Arms pressed straight out and held; the band tries to turn the body.
-    a = _pallof(0.55, 0.12, 0.003)
-    b = _pallof(0.55, 0.11, -0.003)
-    return dict(seconds=3.0, keys=rep(a, b), cam_az=30, cam_el=10, props=[PALLOF_BAND])
+    # Arms pressed straight out and held; the band pulls the hands toward the anchor (a small sideways give), the body resists.
+    a = _pallof(0.53, 0.003, 0.0)
+    b = _pallof(0.53, -0.003, -0.012)
+    return dict(seconds=3.0, keys=rep(a, b), cam_az=58, cam_el=10, props=[PALLOF_BAND])
 
 
 def pallof_press():
-    # Hands at the chest, press out straight, pause, return.
-    a = _pallof(0.12, 0.06)
-    b = _pallof(0.55, 0.12)
-    return dict(seconds=3.5, keys=rep(a, b, down_end=0.45), cam_az=30, cam_el=10, props=[PALLOF_BAND])
+    # Start with the hands at the sternum, press straight forward (away from the chest, at a right angle to the band) until the arms are straight, pause, return.
+    a = _pallof(0.20)
+    b = _pallof(0.53)
+    return dict(seconds=3.5, keys=rep(a, b, hold_top=0.12, down_end=0.46, hold_bottom=0.14), cam_az=58, cam_el=10, props=[PALLOF_BAND])
 
 
 EXERCISES = {
