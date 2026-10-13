@@ -42,6 +42,15 @@ class ProgressScreenTest {
         rule.onNodeWithTag("tree_node_planche-lean").assertExists() // the planche chain sits under the push-ups
     }
 
+    // R7-T05 (B9): the exercise detail shows the "Too easy" counter of a started exercise
+    @Test fun theDetailShowsTheTooEasyCounter() {
+        LevelStore.save(ctx, mapOf("pushup-standard" to 3))
+        show()
+        rule.onNodeWithTag("tree_node_pushup-standard").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
+        rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_too_easy").assertTextEquals("Too easy: 0 of 2")
+    }
+
     @Test fun theGoalPicksTheFamilyTabAndOutlinesItsChain() {
         GoalStore.save(ctx, "hspu")
         show()

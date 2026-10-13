@@ -47,10 +47,11 @@ class TooEasyTest {
         assertEquals(3, acc.tier); assertFalse(acc.raiseSuggested); assertEquals(0, acc.consecutiveAbove)
     }
 
-    @Test fun `no suggestion at the top tier`() {
+    @Test fun `no level raise at the top tier but the too-easy count is kept (R7-T05 suggests the next exercise from it)`() {
         val top = UserAction.SelfAssessment(0, V, 5)
         val p = engine.replay(listOf(ev(0, above = true, tier = 5), ev(2, above = true, tier = 5)), listOf(top)).variations.getValue(V)
         assertFalse(p.raiseSuggested)
+        assertEquals(2, p.consecutiveAbove); assertEquals(2, p.tooEasyCount())
     }
 
     @Test fun `too easy never speeds up the normal progression gate`() {

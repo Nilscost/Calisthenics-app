@@ -25,6 +25,7 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.components.MuscleChips
 import io.github.gonbei774.calisthenicsmemory.ui.components.StarRow
 import app.calisthenics.domain.load.formatKg
+import app.calisthenics.domain.progression.ABOVE_SUGGEST_AFTER
 import app.calisthenics.domain.progression.Suggestion
 import app.calisthenics.domain.progression.suggest
 import app.calisthenics.domain.load.isLoaded
@@ -90,9 +91,15 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
             Text(stringResource(R.string.tab_progress).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("progress_title"))
             suggestion?.let { s ->
                 SuggestionCard(data.catalog, s, onDismiss = { SuggestionStore.dismiss(ctx, s.id); dismissed = dismissed + s.id },
-                    onAccept = (s as? Suggestion.RaiseLevel)?.let { r -> {
-                        SuggestionStore.accept(ctx, r.variationId, r.toTier, java.time.LocalDate.now().toEpochDay().toInt()); SuggestionStore.dismiss(ctx, r.id); dismissed = dismissed + r.id; refresh++
-                    } })
+                    onAccept = when (s) {
+                        is Suggestion.RaiseLevel -> { {
+                            SuggestionStore.accept(ctx, s.variationId, s.toTier, java.time.LocalDate.now().toEpochDay().toInt()); SuggestionStore.dismiss(ctx, s.id); dismissed = dismissed + s.id; refresh++
+                        } }
+                        is Suggestion.NextExercise -> { {
+                            SuggestionStore.acceptNext(ctx, s.variationId, s.toVariationId, java.time.LocalDate.now().toEpochDay().toInt()); SuggestionStore.dismiss(ctx, s.id); dismissed = dismissed + s.id; refresh++
+                        } }
+                        else -> null
+                    })
             }
             SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(horizontal = Spacing.l).height(48.dp)) {
                 SegmentedButton(selected = mode == ProgressMode.TYPE, onClick = { modeName = ProgressMode.TYPE.name; selected = null }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("progress_mode_type")) { Text(stringResource(R.string.progress_by_type)) }
@@ -161,7 +168,8 @@ private fun SuggestionCard(c: Catalog, s: Suggestion, onDismiss: () -> Unit, onA
     fun name(id: String) = c.variation(id)?.name ?: id
     val text = when (s) {
         is Suggestion.RaiseLevel -> stringResource(R.string.suggest_raise, name(s.variationId), s.toTier)
-        is Suggestion.HeavierWeight -> stringResource(R.string.suggest_weight, name(s.variationId), formatKg(s.nextGrams), stringResource(equipmentLabelShortPublic(s.equipmentId)))
+        is Suggestion.HeavierWeight -> stringResource(if (s.round > 0) R.string.suggest_weight_easy else R.string.suggest_weight, name(s.variationId), formatKg(s.nextGrams), stringResource(equipmentLabelShortPublic(s.equipmentId)))
+        is Suggestion.NextExercise -> stringResource(R.string.suggest_next, name(s.variationId), name(s.toVariationId))
         is Suggestion.GetEquipment -> stringResource(R.string.suggest_equipment, stringResource(equipmentLabelShortPublic(s.equipmentId)), name(s.unlocksVariationId))
     }
     Card(Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.xs).testTag("suggestion_card"), shape = MaterialTheme.shapes.large) {
@@ -236,6 +244,8 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
                 }
             }
         }
+        // R7-T05 (B9): two "too easy" in a row move you on; the counter shows where you are
+        progress.variations[v.id]?.let { Text(stringResource(R.string.detail_too_easy, it.tooEasyCount(), ABOVE_SUGGEST_AFTER), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("detail_too_easy")) }
         if (v.isLoaded()) WeightTrack(v, progress, profile)
         if (unlocks.isNotEmpty()) { Caption(stringResource(R.string.detail_unlocks)); Text(unlocks.joinToString(), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("detail_unlocks")) }
         if (needs.isNotEmpty() || !isAvailable(v, profile)) {

@@ -92,6 +92,9 @@
     <string name="suggest_raise">%1$s felt too easy twice in a row. Move up to level %2$d? Nothing changes unless you accept.</string>
     <string name="suggest_weight">All five levels of %1$s are earned. A %2$s kg %3$s opens the next weight step.</string>
     <string name="suggest_equipment">%1$s opens %2$s. You do not need it; the plan works without.</string>
+    <string name="suggest_next">%1$s felt too easy twice in a row. Move on to %2$s? Nothing changes unless you accept.</string>
+    <string name="suggest_weight_easy">%1$s felt too easy twice in a row. A %2$s kg %3$s opens the next weight step.</string>
+    <string name="detail_too_easy">Too easy: %1$d of %2$d</string>
     <string name="suggest_accept">Move up</string>
     <string name="suggest_dismiss">Close suggestion</string>
     <string name="history_tile_sessions">Sessions this week</string>

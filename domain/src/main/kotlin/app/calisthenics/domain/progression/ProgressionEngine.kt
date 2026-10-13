@@ -39,6 +39,8 @@ sealed interface UserAction {
     /** Accept the app's lower-target suggestion or the easier adjustment after discomfort. */
     /** D7: the user confirms the "too easy" suggestion and moves up to [tier]. Never created by the app itself. */
     data class AcceptHarder(override val day: Int, val variationId: String, val tier: Int) : UserAction
+    /** R7-T05 (B9): at the top level, two "too easy" in a row offered the next exercise and the person accepted: this one counts as done, [toVariationId] starts at level 1. */
+    data class AcceptNextExercise(override val day: Int, val variationId: String, val toVariationId: String) : UserAction
     data class AcceptEasier(override val day: Int, val variationId: String, val tier: Int) : UserAction
     /** "I'm comfortable progressing again" for a family (C7). Does not advance immediately. */
     data class ComfortClearance(override val day: Int, val familyId: String) : UserAction
@@ -74,6 +76,9 @@ data class VariationProgress(
     /** V02 / D7: one level up is suggested; it only changes when the user accepts. */
     val raiseSuggested: Boolean = false,
 ) {
+    /** R7-T05: the "Too easy: n of 2" counter shown on the exercise: 0, 1 or 2 (a third in a row starts the next pair at 1). */
+    fun tooEasyCount(): Int = if (consecutiveAbove <= 0) 0 else (consecutiveAbove - 1) % ABOVE_SUGGEST_AFTER + 1
+
     /** Highest consecutive achieved tier counted from the tier the variation was started at. */
     fun earnedStars(): Int {
         val start = baselineTier ?: 1
@@ -240,6 +245,14 @@ class ProgressionEngine(private val catalog: Catalog) {
                     vars[a.variationId] = p.copy(tier = a.tier, enrolledAtDay = a.day, streakDays = emptyList(),
                         streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false)
                     events += ProgressEvent(a.day, a.variationId, "You accepted a harder target (tier ${a.tier}).")
+                }
+                is UserAction.AcceptNextExercise -> {
+                    val p = ensure(a.variationId, a.day)
+                    val top = policy(a.variationId)?.tiers?.maxOfOrNull { it.index } ?: 5
+                    vars[a.variationId] = p.copy(achievedTiers = (1..top).toSet(), streakDays = emptyList(), streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false)
+                    if (!vars.containsKey(a.toVariationId)) vars[a.toVariationId] = VariationProgress(a.toVariationId, family(a.toVariationId), 1, a.day, null, emptySet(), null, emptyList(), 0, 0, false, false, null, null)
+                    active[p.familyId] = a.toVariationId
+                    events += ProgressEvent(a.day, a.variationId, "You accepted the next exercise: ${catalog.variation(a.toVariationId)?.name ?: a.toVariationId} (level 1).")
                 }
                 is UserAction.AcceptEasier -> {
                     val p = ensure(a.variationId, a.day)

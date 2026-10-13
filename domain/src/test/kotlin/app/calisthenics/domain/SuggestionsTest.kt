@@ -74,4 +74,39 @@ class SuggestionsTest {
             assertTrue(preset.id, buildTrainPlan(catalog, r.routine, none, bare, r.settings, edits = r.edits) is PlanResult.Ready)
         }
     }
+
+    // ---- R7-T05 (B9): "too easy" at the top level
+    private fun easy(v: VariationProgress, n: Int) = v.copy(consecutiveAbove = n)
+    private val planksNext = catalog.policyFor(catalog.variation("plank")!!)!!.nextVariationIds.first()
+
+    @Test fun twoTooEasyAtTheTopLevelSuggestTheNextExercise() {
+        assertNull("one is not enough", suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 5), 1)), emptySet()))
+        assertEquals(Suggestion.NextExercise("plank", planksNext, 1), suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 5), 2)), emptySet()))
+    }
+
+    @Test fun belowTheTopLevelItStaysTheRaiseSuggestion() {
+        assertNull(suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 4), 2)), emptySet()))
+    }
+
+    @Test fun aClosedSuggestionComesBackWhenTheCountReachesTwoOnceMore() {
+        val first = suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 5), 2)), emptySet())!!
+        assertNull(suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 5), 3)), setOf(first.id)))
+        val again = suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 5), 4)), setOf(first.id))
+        assertEquals(Suggestion.NextExercise("plank", planksNext, 2), again)
+    }
+
+    @Test fun aLoadedExerciseSuggestsTheNextWeightStep() {
+        val s = suggest(catalog, SeedProfiles.home, snap(easy(vp("kettlebell-deadlift", 5, load = 12_000), 2)), emptySet())
+        assertTrue(s is Suggestion.HeavierWeight && s.round == 1)
+    }
+
+    @Test fun theCounterReadsOneOrTwoOfTwo() {
+        assertEquals(listOf(0, 1, 2, 1, 2), (0..4).map { vp("plank", 5).copy(consecutiveAbove = it).tooEasyCount() })
+    }
+
+    @Test fun acceptingTheNextExerciseMarksItDoneAndStartsTheSuccessor() {
+        val s = ProgressionEngine(catalog).replay(emptyList(), listOf(UserAction.SelfAssessment(0, "plank", 5), UserAction.AcceptNextExercise(3, "plank", planksNext)))
+        assertEquals(5, s.variations["plank"]!!.earnedStars())
+        assertEquals(planksNext, s.activeInFamily[catalog.variation("plank")!!.familyId]); assertEquals(1, s.tierFor(planksNext))
+    }
 }
