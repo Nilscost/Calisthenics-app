@@ -200,7 +200,6 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     var breakSlot by remember { mutableStateOf<Pair<String, Int?>?>(null) }   // slot and, in the Detailed edit, the one set it is for
     var typeFor by remember { mutableStateOf<Pair<String, Int>?>(null) }      // slot and set of the number being typed
     var addAfter by remember { mutableStateOf<String?>("") }   // "" = closed, null = at the start, else after that slot
-    var setTab by rememberSaveable { mutableIntStateOf(1) }
     var timelineOpen by remember { mutableStateOf(false) }
     val result = remember(data, routine, edits) {
         buildTrainPlan(data.catalog, routine, data.progress, profile, settings, edits = edits, nowEpochMs = System.currentTimeMillis())
@@ -243,7 +242,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                         }
                         return@Column
                     }
-                    val set = setTab.coerceIn(1, p.rounds)
+                    val set = 1
                     Text(
                         stringResource(R.string.preview_header, p.rounds, (p.plannedDurationSeconds + 30) / 60, stringResource(if (p.timed) R.string.style_timed else R.string.style_reps)),
                         style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"),
@@ -268,13 +267,8 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                             chain = if (rule.isRange && idx >= 0) idx to options.size else null)
                         BreakRow(e.slotId, p, st, names, onChange = { breakSlot = e.slotId to (if (typed) st else null) }, onAdd = { addAfter = e.slotId }, sfx = sfx)
                     }
-                    // one set at a time (doc 17 §2.2); the full timeline below lists every set
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        SingleChoiceSegmentedButtonRow(Modifier.weight(1f)) {
-                            for (i in 1..p.rounds.coerceAtMost(6)) SegmentedButton(selected = i == set, onClick = { setTab = i }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(i - 1, p.rounds.coerceAtMost(6)), icon = {}, modifier = Modifier.testTag("set_tab_$i")) { Text(stringResource(R.string.preview_set, i), maxLines = 1) }
-                        }
-                        Text(stringResource(R.string.train_minutes, (p.blocks.filter { it.roundIndex == set }.sumOf { it.durationSeconds } + 30) / 60), Modifier.padding(start = Spacing.s).testTag("set_time"), style = MaterialTheme.typography.labelLarge)
-                    }
+                    // R7.2-T01 (F1): one round view for all sets (the edits apply to every set), no set tabs; the full timeline below lists every set
+                    Text(stringResource(R.string.preview_all_sets, (p.blocks.filter { it.roundIndex == set }.sumOf { it.durationSeconds } + 30) / 60), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("all_sets_header").padding(top = Spacing.xs))
                     Caption(stringResource(R.string.preview_applies_to_all))
                     AddButton({ addAfter = null }, Modifier.align(Alignment.End).testTag("add_start"))
                     circuitOf(p, set).forEachIndexed { i, e -> Tile(i, e, set, "", null, false) }

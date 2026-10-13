@@ -167,13 +167,11 @@ class PreviewScreenTest {
         rule.onNodeWithTag("exercise_core").assertExists()
     }
 
-    @Test fun setTabsShowOneSetAtATimeWithTheTimeOfThatSet() {
+    @Test fun theRoundViewHasNoSetTabsAndOneAllSetsHeader() {
         show(); rule.waitForIdle()
-        rule.onNodeWithTag("set_tab_1").assertIsSelected()
-        for (i in 1..4) rule.onNodeWithTag("set_tab_$i").assertExists()
-        rule.onNodeWithTag("set_tab_3").performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("set_tab_3").assertIsSelected()
-        rule.onNodeWithTag("set_time").assertExists()
+        for (i in 1..4) rule.onNodeWithTag("set_tab_$i").assertDoesNotExist()
+        rule.onNodeWithTag("all_sets_header").assertExists().assertTextContains("All sets", substring = true)
+        rule.onNodeWithTag("all_sets_header").assertTextContains("min each", substring = true)
         rule.onNodeWithText("Changes apply to all sets", ignoreCase = true).assertExists()
     }
 
