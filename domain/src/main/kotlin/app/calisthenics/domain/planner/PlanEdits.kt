@@ -33,6 +33,10 @@ data class PlanEdits(
     val cooldownMinutes: Int? = null,
     /** R7-T13: the cool-down stretches chosen by hand in the Preview, in order (null = automatic). */
     val cooldownStretches: List<String>? = null,
+    /** R7.2-T04 (F5): cool-down stretches the person removed (applied after the automatic or hand-picked list). */
+    val cooldownRemoved: Set<String> = emptySet(),
+    /** R7.2-T04 (F5): cool-down stretches the person added with the +, in order, after the others. */
+    val cooldownAdded: List<String> = emptyList(),
 ) {
     fun isEmpty() = this == PlanEdits()
 }

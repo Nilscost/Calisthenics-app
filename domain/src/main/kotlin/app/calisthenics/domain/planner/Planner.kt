@@ -375,7 +375,7 @@ private class Planner(val input: PlanInput) {
      */
     private fun cooldownStretches(chosen: List<Chosen>): List<TimelineBlock> {
         fun secs(v: ExerciseVariation) = (v.defaultSeconds ?: 30) * (if (v.unilateral) 2 else 1)
-        val picked: List<ExerciseVariation> = draft.cooldownStretches?.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind == Kind.STRETCH } } ?: run {
+        val base: List<ExerciseVariation> = draft.cooldownStretches?.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind == Kind.STRETCH } } ?: run {
             val score = chosen.flatMap { it.variation.compatibleStretchIds }.groupingBy { it }.eachCount()
             val out = mutableListOf<ExerciseVariation>(); var total = 0
             for (id in score.keys.sortedWith(compareBy({ -score.getValue(it) }, { it }))) {
@@ -386,6 +386,9 @@ private class Planner(val input: PlanInput) {
             }
             out
         }
+        // R7.2-T04 (F5): the hand removals and additions come last, so they also apply to a hand-picked list
+        val kept = base.filter { it.id !in draft.cooldownRemoved }
+        val picked = kept + draft.cooldownAdded.distinct().filter { id -> kept.none { it.id == id } }.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind == Kind.STRETCH } }
         return picked.flatMapIndexed { i, v ->
             val s = v.defaultSeconds ?: 30
             if (v.unilateral) listOf(Side.LEFT, Side.RIGHT).map { TimelineBlock("cooldown-$i-${it.name.first()}", BlockType.COOLDOWN, s, variationId = v.id, side = it, mediaId = v.mediaId, note = "Cool-down") }

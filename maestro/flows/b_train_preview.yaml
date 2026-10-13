@@ -38,6 +38,14 @@ appId: app.calisthenics.personal
 - tapOn: { id: rule_APP_LEVELS }
 - scrollUntilVisible: { element: { id: cooldown_caption }, direction: DOWN, timeout: 10000 }
 - takeScreenshot: 02f-preview-cooldown-${VARIANT}
+# R7.2-T04 (F5): remove a cool-down stretch with its x, then the + opens the stretch picker
+- tapOn: { id: cooldown_remove_0 }
+- takeScreenshot: 02g-cooldown-removed-${VARIANT}
+- scrollUntilVisible: { element: { id: cooldown_add }, direction: DOWN, timeout: 8000 }
+- tapOn: { id: cooldown_add }
+- extendedWaitUntil: { visible: "Stretch after this exercise", timeout: 5000 }
+- takeScreenshot: 02h-cooldown-add-sheet-${VARIANT}
+- back
 - scrollUntilVisible: { element: { id: timeline_toggle }, direction: DOWN, timeout: 10000 }
 - takeScreenshot: 03-preview-bottom-${VARIANT}
 - tapOn: { id: timeline_toggle }

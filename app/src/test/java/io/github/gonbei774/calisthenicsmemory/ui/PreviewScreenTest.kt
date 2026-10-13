@@ -51,6 +51,22 @@ class PreviewScreenTest {
         rule.onNodeWithText("Relax and breathe · 6 min").assertExists()
     }
 
+    @Test fun aCooldownStretchCanBeRemovedAndOneAddedWithThePlus() {   // R7.2-T04 (F5)
+        app.getSharedPreferences("train", Context.MODE_PRIVATE).edit().putBoolean("cooldown", true).putString("cooldown_mode", "STRETCHING").commit()
+        show(); rule.waitForIdle()
+        fun count() = (0..20).count { rule.onAllNodesWithTag("cooldown_stretch_$it").fetchSemanticsNodes().isNotEmpty() }
+        val before = count()
+        assertTrue(before >= 2)
+        rule.onNodeWithTag("cooldown_remove_0").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(before - 1, count())
+        rule.onNodeWithTag("cooldown_stretch_0").performScrollTo().performTouchInput { longClick() }; rule.waitForIdle()   // long press removes too
+        assertEquals(before - 2, count())
+        rule.onNodeWithTag("cooldown_add").performScrollTo().performClick(); rule.waitForIdle(); rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle()
+        rule.onNodeWithTag("break_option_stretch-frog").performSemanticsAction(click); rule.waitForIdle()
+        assertEquals(before - 1, count())
+        rule.onNodeWithTag("cooldown_add").assertExists()
+    }
+
     @Test fun aStretchingCooldownListsStretchesWithASwapButton() {
         app.getSharedPreferences("train", Context.MODE_PRIVATE).edit().putBoolean("cooldown", true).putString("cooldown_mode", "STRETCHING").commit()
         show(); rule.waitForIdle()

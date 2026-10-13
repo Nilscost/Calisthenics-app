@@ -29,6 +29,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Refresh
@@ -207,6 +208,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     var savedNote by remember { mutableStateOf<String?>(null) }
     val editing = remember { SavedRoutineStore.get(ctx, stored.routineId) }
     var swapSlot by remember { mutableStateOf<String?>(null) }
+    var coolAdd by remember { mutableStateOf(false) }   // R7.2-T04: the picker for a stretch added to the cool-down
     var coolSwap by remember { mutableStateOf<Int?>(null) }   // R7-T13: the cool-down stretch being swapped
     var removeSlot by remember { mutableStateOf<String?>(null) }
     var breakSlot by remember { mutableStateOf<Pair<String, Int?>?>(null) }   // slot and, in the Detailed edit, the one set it is for
@@ -286,9 +288,9 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                     circuitOf(p, set).forEachIndexed { i, e -> Tile(i, e, set, "", null, false) }
                     // R7-T13 (D10): the cool-down after the last set: timed minutes with - / +, or stretches that can be swapped
                     val cool = p.blocks.filter { it.type == BlockType.COOLDOWN }
-                    if (cool.isNotEmpty() && settings.cooldownOn) {
+                    if (settings.cooldownOn) {
                         Caption(stringResource(R.string.preview_cooldown_caption), Modifier.padding(top = Spacing.s).testTag("cooldown_caption"))
-                        if (cool.all { it.variationId == null }) {
+                        if (cool.isNotEmpty() && cool.all { it.variationId == null }) {
                             val minutes = (cool.sumOf { it.durationSeconds } + 30) / 60
                             Card(Modifier.fillMaxWidth().testTag("cooldown_timed"), shape = MaterialTheme.shapes.large) {
                                 Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically) {
@@ -298,9 +300,13 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                             }
                         } else {
                             val ids = cool.mapNotNull { it.variationId }.distinct()
+                            val removeLabel = stringResource(R.string.preview_remove)
                             ids.forEachIndexed { i, id ->
                                 val secs = cool.filter { it.variationId == id }.sumOf { it.durationSeconds }
-                                Card(Modifier.fillMaxWidth().testTag("cooldown_stretch_$i"), shape = MaterialTheme.shapes.large) {
+                                val removeThis = { edits = edits.copy(cooldownRemoved = edits.cooldownRemoved + id, cooldownAdded = edits.cooldownAdded - id) }
+                                // R7.2-T04 (F5): a long press removes the stretch; the visible x does the same
+                                Card(Modifier.fillMaxWidth().pointerInput(id) { detectTapGestures(onLongPress = { removeThis() }) }
+                                    .semantics { onLongClick(label = removeLabel) { removeThis(); true } }.testTag("cooldown_stretch_$i"), shape = MaterialTheme.shapes.large) {
                                     Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                                         io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(id, names[id] ?: id, 44.dp)
                                         Column(Modifier.weight(1f)) {
@@ -308,9 +314,11 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                                             Text(formatClock(secs), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
                                         }
                                         IconButton(onClick = { coolSwap = i }, modifier = Modifier.testTag("cooldown_swap_$i")) { Icon(Icons.Filled.Refresh, stringResource(R.string.preview_swap, names[id] ?: id)) }
+                                        IconButton(onClick = removeThis, modifier = Modifier.testTag("cooldown_remove_$i")) { Icon(Icons.Filled.Close, stringResource(R.string.preview_cooldown_remove, names[id] ?: id)) }
                                     }
                                 }
                             }
+                            AddButton({ coolAdd = true }, Modifier.align(Alignment.End).testTag("cooldown_add"))
                         }
                     }
                     if (!edits.isEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
@@ -392,6 +400,13 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
         StretchPickerSheet(title = R.string.preview_pick_stretch, options = stretchChoices(data.catalog, profile).filter { it.id !in current || it.id == current.getOrNull(idx) }, autoLabel = false, onDismiss = { coolSwap = null }) { pick ->
             if (pick != null && idx < current.size) edits = edits.copy(cooldownStretches = current.toMutableList().also { it[idx] = pick })
             coolSwap = null
+        }
+    }
+    if (coolAdd) {
+        val current = (result as? PlanResult.Ready)?.plan?.blocks?.filter { it.type == BlockType.COOLDOWN }?.mapNotNull { it.variationId }?.toSet().orEmpty()
+        StretchPickerSheet(title = R.string.preview_pick_stretch, options = stretchChoices(data.catalog, profile).filter { it.id !in current }, autoLabel = false, onDismiss = { coolAdd = false }) { pick ->
+            if (pick != null) edits = edits.copy(cooldownAdded = (edits.cooldownAdded - pick) + pick, cooldownRemoved = edits.cooldownRemoved - pick)
+            coolAdd = false
         }
     }
     breakSlot?.let { (id, onlySet) ->

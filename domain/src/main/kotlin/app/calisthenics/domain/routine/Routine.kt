@@ -80,6 +80,9 @@ data class SessionDraft(
     val cooldownMinutes: Int = 5,
     /** R7-T13: the stretches picked by hand in the Preview, in order (null = chosen automatically). */
     val cooldownStretches: List<String>? = null,
+    /** R7.2-T04 (F5): cool-down stretches removed / added by hand in the Preview. */
+    val cooldownRemoved: Set<String> = emptySet(),
+    val cooldownAdded: List<String> = emptyList(),
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(

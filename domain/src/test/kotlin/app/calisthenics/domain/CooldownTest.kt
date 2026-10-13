@@ -51,6 +51,33 @@ class CooldownTest {
         assertEquals(swapped, c)
     }
 
+    // R7.2-T04 (F5): remove, then add, then plan
+    @Test fun aRemovedStretchLeavesTheCooldownAndAnAddedOneJoinsAtTheEnd() {
+        val settings = TrainSettings(rounds = 2, cooldownOn = true)
+        val auto = cool(plan(settings)).mapNotNull { it.variationId }.distinct()
+        val gone = auto[1]
+        val removed = cool(plan(settings, PlanEdits(cooldownRemoved = setOf(gone)))).mapNotNull { it.variationId }.distinct()
+        assertEquals(auto - gone, removed)
+        val extra = catalog.variations.first { it.kind == Kind.STRETCH && it.id !in auto }.id
+        val both = cool(plan(settings, PlanEdits(cooldownRemoved = setOf(gone), cooldownAdded = listOf(extra)))).mapNotNull { it.variationId }.distinct()
+        assertEquals(auto - gone + extra, both)
+        // a one-sided stretch keeps both sides when added
+        val sided = catalog.variations.first { it.kind == Kind.STRETCH && it.unilateral && it.id !in auto }
+        assertEquals(2, cool(plan(settings, PlanEdits(cooldownAdded = listOf(sided.id)))).count { it.variationId == sided.id })
+        // everything removed leaves an empty cool-down; adding a removed one again (removal wins only on the base list) brings it back
+        assertTrue(cool(plan(settings, PlanEdits(cooldownRemoved = auto.toSet()))).isEmpty())
+        assertEquals(listOf(gone), cool(plan(settings, PlanEdits(cooldownRemoved = auto.toSet() - gone))).mapNotNull { it.variationId }.distinct())
+        // the total time follows
+        assertTrue(plan(settings, PlanEdits(cooldownRemoved = setOf(gone))).plannedDurationSeconds < plan(settings).plannedDurationSeconds)
+    }
+
+    @Test fun removalsApplyToAHandPickedListToo() {
+        val settings = TrainSettings(rounds = 2, cooldownOn = true)
+        val auto = cool(plan(settings)).mapNotNull { it.variationId }.distinct()
+        val c = cool(plan(settings, PlanEdits(cooldownStretches = auto, cooldownRemoved = setOf(auto.first())))).mapNotNull { it.variationId }.distinct()
+        assertEquals(auto.drop(1), c)
+    }
+
     @Test fun theHeaderCountsTheCooldownBlocks() {
         val p = plan(TrainSettings(rounds = 2, cooldownOn = true))
         val i = p.blocks.indexOfFirst { it.type == BlockType.COOLDOWN }

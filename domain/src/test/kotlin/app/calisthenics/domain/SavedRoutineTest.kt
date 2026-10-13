@@ -34,6 +34,28 @@ class SavedRoutineTest {
         assertTrue(back.blocks.none { it.slotId == "core2" })
     }
 
+    @Test fun theCooldownEditsAreSavedWithTheRoutineAndSurviveABackupRoundTrip() {   // R7.2-T04 (F5)
+        val cd = settings.copy(cooldownOn = true, cooldownMode = CooldownMode.STRETCHING)
+        val withCool = edits.copy(cooldownRemoved = setOf("stretch-pigeon"), cooldownAdded = listOf("stretch-frog"))
+        val saved = savedFrom("rt-2", "Cool", 1, base, withCool, cd, rule, 10L)
+        assertEquals(setOf("stretch-pigeon"), saved.edits.cooldownRemoved); assertEquals(listOf("stretch-frog"), saved.edits.cooldownAdded)
+        val payload = BackupPayload(Preferences(), emptyList(), emptyList(), emptyList(), emptyList(), emptyList(), savedRoutines = listOf(saved))
+        val back = (importBackup(exportBackup(payload, "0.10.2", 1L)) as ImportResult.Ok).payload.savedRoutines.single()
+        assertEquals(saved, back)
+        assertEquals(setOf("stretch-pigeon"), back.edits.cooldownRemoved); assertEquals(listOf("stretch-frog"), back.edits.cooldownAdded)
+        val plan = planOf(resolveSaved(back, settingsFor(back, TrainSettings())))
+        val ids = plan.blocks.filter { it.type == BlockType.COOLDOWN }.mapNotNull { it.variationId }
+        assertTrue("stretch-frog" in ids && "stretch-pigeon" !in ids)
+    }
+
+    @Test fun anOlderSavedRoutineWithoutTheCooldownFieldsStillDecodes() {
+        val old = kotlinx.serialization.json.Json { encodeDefaults = true }.encodeToString(PlanEdits.serializer(), PlanEdits(stretchPicks = mapOf("core" to "stretch-frog")))
+            .replace(Regex(",?\"cooldownRemoved\":\\[\\]"), "").replace(Regex(",?\"cooldownAdded\":\\[\\]"), "")
+        assertFalse(old.contains("cooldownRemoved"))
+        val e = kotlinx.serialization.json.Json.decodeFromString(PlanEdits.serializer(), old)
+        assertTrue(e.cooldownRemoved.isEmpty() && e.cooldownAdded.isEmpty()); assertEquals("stretch-frog", e.stretchPicks["core"])
+    }
+
     @Test fun savedStructureLivesInTheSlotsNotInTheOverlay() {
         val saved = savedFrom("rt-1", "x", 1, base, edits, settings, rule, 10L)
         assertTrue(saved.edits.swaps.isEmpty() && saved.edits.removed.isEmpty() && saved.edits.added.isEmpty())
