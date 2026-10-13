@@ -22,16 +22,55 @@ from encode import FFMPEG, WORK, ROOT, flat  # noqa: E402
 
 DEMOS = os.path.join(ROOT, "app", "src", "main", "assets", "demos")
 THUMBS = os.path.join(ROOT, "app", "src", "main", "assets", "thumbs")
+CATALOG = os.path.join(ROOT, "app", "src", "main", "assets", "catalog.json")
 CAP = 120 * 1024
 
 
-def complete(ex):
+def catalog_ids():
+    with open(CATALOG) as f:
+        catalog = json.load(f)
+    return {item["id"] for item in catalog["variations"]}
+
+
+def frame_problem(ex):
     src = os.path.join(WORK, ex, "blender", "frames")
     j = os.path.join(WORK, ex, "joints.json")
-    if not (os.path.isdir(src) and os.path.exists(j)):
-        return False
-    n = len(json.load(open(j))["frames"])
-    return len([f for f in os.listdir(src) if f.endswith(".png")]) >= n
+    if not os.path.isdir(src) or not os.path.isfile(j):
+        return "missing joints.json or Blender frames directory"
+    try:
+        with open(j) as f:
+            frames = json.load(f)["frames"]
+    except (OSError, ValueError, KeyError, TypeError):
+        return "invalid joints.json"
+    if not isinstance(frames, list) or not frames:
+        return "joints.json has no expected frames"
+
+    expected = {f"{i:04d}.png" for i in range(len(frames))}
+    actual = {name for name in os.listdir(src) if name.endswith(".png")}
+    if actual != expected:
+        missing = sorted(expected - actual)
+        extra = sorted(actual - expected)
+        details = []
+        if missing:
+            details.append(f"missing {missing[0]}")
+        if extra:
+            details.append(f"unexpected {extra[0]}")
+        return "frame names do not exactly match the expected contiguous sequence" + (
+            f" ({', '.join(details)})" if details else ""
+        )
+
+    joints_mtime = os.stat(j).st_mtime_ns
+    for name in sorted(expected):
+        path = os.path.join(src, name)
+        if not os.path.isfile(path):
+            return f"{name} is not a regular file"
+        if os.stat(path).st_mtime_ns <= joints_mtime:
+            return f"{name} is not newer than joints.json"
+    return None
+
+
+def complete(ex):
+    return frame_problem(ex) is None
 
 
 def thumb(ex, out):
@@ -50,43 +89,68 @@ def thumb(ex, out):
 def install(ex, dry=False):
     src = os.path.join(WORK, ex, "blender", "frames")
     names = sorted(f for f in os.listdir(src) if f.endswith(".png"))
-    out = os.path.join(DEMOS, ex + ".mp4") if not dry else os.path.join("/tmp", ex + ".mp4")
-    for crf in (30, 32, 34):
-        with tempfile.TemporaryDirectory() as tmp:
+    problem = frame_problem(ex)
+    if problem:
+        raise ValueError(f"{ex}: {problem}")
+
+    # Stage each output on the destination filesystem so a successful os.replace
+    # is atomic. Dry runs stage under the system temp directory and never touch
+    # shipped files.
+    mp4_stage_parent = None if dry else DEMOS
+    thumb_stage_parent = None if dry else THUMBS
+    with tempfile.TemporaryDirectory(dir=mp4_stage_parent) as mp4_tmp, \
+            tempfile.TemporaryDirectory(dir=thumb_stage_parent) as thumb_tmp:
+        mp4_stage = os.path.join(mp4_tmp, ex + ".mp4")
+        thumb_stage = os.path.join(thumb_tmp, ex + ".webp")
+        frames_tmp = tempfile.TemporaryDirectory()
+        try:
             for i, n in enumerate(names):
-                flat(os.path.join(src, n)).save(os.path.join(tmp, f"{i:04d}.png"))
-            subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-framerate", "24", "-i",
-                            os.path.join(tmp, "%04d.png"), "-an", "-c:v", "libx264", "-profile:v", "main",
-                            "-pix_fmt", "yuv420p", "-crf", str(crf), "-preset", "slow", "-movflags", "+faststart",
-                            out], check=True)
-        if os.path.getsize(out) < CAP:
-            break
-    t_out = os.path.join(THUMBS, ex + ".webp") if not dry else os.path.join("/tmp", ex + ".webp")
-    thumb(ex, t_out)
-    return os.path.getsize(out), crf, os.path.getsize(t_out)
+                flat(os.path.join(src, n)).save(os.path.join(frames_tmp.name, f"{i:04d}.png"))
+            for crf in (30, 32, 34):
+                subprocess.run([FFMPEG, "-y", "-loglevel", "error", "-framerate", "24", "-i",
+                                os.path.join(frames_tmp.name, "%04d.png"), "-an", "-c:v", "libx264",
+                                "-profile:v", "main", "-pix_fmt", "yuv420p", "-crf", str(crf),
+                                "-preset", "slow", "-movflags", "+faststart", mp4_stage], check=True)
+                if os.path.getsize(mp4_stage) < CAP:
+                    break
+        finally:
+            frames_tmp.cleanup()
+
+        size = os.path.getsize(mp4_stage)
+        thumb(ex, thumb_stage)
+        thumb_size = os.path.getsize(thumb_stage)
+        if size < CAP and not dry:
+            os.replace(mp4_stage, os.path.join(DEMOS, ex + ".mp4"))
+            os.replace(thumb_stage, os.path.join(THUMBS, ex + ".webp"))
+        return size, crf, thumb_size
 
 
 def main(argv):
     dry = "--dry" in argv
     ids = [a for a in argv if not a.startswith("--")]
-    catalog_ids = {f[:-4] for f in os.listdir(DEMOS) if f.endswith(".mp4")}
+    ids_in_catalog = catalog_ids()
     if not ids:
-        ids = sorted(d for d in os.listdir(WORK) if d in catalog_ids)
+        ids = sorted(d for d in os.listdir(WORK) if d in ids_in_catalog)
     problems = []
+    completed = 0
     for ex in ids:
-        if ex not in catalog_ids:
-            problems.append(f"{ex}: not a shipped clip id")
+        if ex not in ids_in_catalog:
+            problems.append(f"{ex}: not a catalog exercise id")
             continue
-        if not complete(ex):
-            problems.append(f"{ex}: frames incomplete or missing (kept the old clip)")
+        problem = frame_problem(ex)
+        if problem:
+            problems.append(f"{ex}: {problem} (kept the old clip)")
             continue
         size, crf, tsize = install(ex, dry)
         flag = "" if size < CAP else "  OVER CAP"
         print(f"{ex:40s} {size // 1024:4d} KB (crf {crf})  thumb {tsize // 1024} KB{flag}")
         if size >= CAP:
             problems.append(f"{ex}: {size // 1024} KB over the cap")
-    missing = sorted(catalog_ids - set(ids))
-    print(f"\ninstalled {len(ids) - len(problems)}; problems {len(problems)}; ids without a Blender clip {len(missing)}")
+        else:
+            completed += 1
+    missing = sorted(ids_in_catalog - set(ids))
+    action = "prepared" if dry else "installed"
+    print(f"\n{action} {completed}; problems {len(problems)}; ids without a Blender clip {len(missing)}")
     for p in problems:
         print("  PROBLEM", p)
     return 1 if problems else 0
