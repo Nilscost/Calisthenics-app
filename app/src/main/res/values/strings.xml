@@ -88,6 +88,8 @@
     <string name="routine_update">Update this routine</string>
     <string name="routine_saved">Saved as “%1$s”. Find it under Objective -> Routine on Train.</string>
     <string name="routine_updated">“%1$s” updated.</string>
+    <string name="unit_suffix_s">s</string>
+    <string name="unit_suffix_x">x</string>
     <string name="suggest_caption">Suggestion</string>
     <string name="suggest_raise">Move on to %1$s level %2$d? Nothing changes unless you accept.</string>
     <string name="suggest_weight">All five levels of %1$s are earned. A %2$s kg %3$s opens the next weight step.</string>

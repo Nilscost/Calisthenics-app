@@ -54,7 +54,7 @@ fun RoundEditor(
                     ).joinToString(" · ")
                     if (note.isNotEmpty()) Text(note, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
-                Stepper(values[i], { values[i] = it; typed[i] = true; push() }, 0..999, step = if (hold && (target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "${tag}_round${i + 1}")
+                Stepper(values[i], { values[i] = it; typed[i] = true; push() }, 0..999, step = if (hold && (target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "${tag}_round${i + 1}", suffix = stringResource(if (hold) R.string.unit_suffix_s else R.string.unit_suffix_x))
             }
         }
         Text(stringResource(if (hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)

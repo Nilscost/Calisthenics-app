@@ -119,6 +119,7 @@ class HistorySettingsTest {
         rule.onNodeWithTag("detail_summary").assertTextContains("3 rounds", substring = true)
         rule.onNodeWithTag("fix_pushup-standard_round1").assertTextContains("Round 1")
         rule.onNodeWithTag("fix_pushup-standard_round1_value").assertTextEquals("8")
+        rule.onNodeWithTag("fix_pushup-standard_round1_unit").assertTextEquals("x")   // R7.2-T07 (F12)
         rule.onNodeWithTag("fix_pushup-standard_round2_value").assertTextEquals("6")
         rule.onNodeWithTag("fix_pushup-standard_round3").assertTextContains("as planned", substring = true)
         rule.onNodeWithTag("fix_pushup-standard_round3_value").assertTextEquals("8") // untyped = the target

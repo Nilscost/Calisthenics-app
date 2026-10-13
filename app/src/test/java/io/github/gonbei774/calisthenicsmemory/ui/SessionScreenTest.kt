@@ -85,6 +85,7 @@ class SessionScreenTest {
         // R7-T03 (D3): a rep exercise is logged on its own work screen, prefilled with the target; no break DONE here
         rule.onNodeWithTag("logger").assertIsDisplayed()
         rule.onNodeWithTag("logger_value").assertTextEquals(plan.blocks[0].target!!.shownValue().toString())
+        rule.onNodeWithTag("logger_unit").assertTextEquals("x")   // R7.2-T07 (F12): "8 x"
         rule.onNodeWithTag("session_next").assertExists()
     }
 
@@ -108,6 +109,7 @@ class SessionScreenTest {
         rule.onNodeWithTag("logger").assertIsDisplayed()
         rule.onNodeWithTag("logger_name").assertTextContains(SessionBus.names[holdPlan.blocks[i].variationId]!!, substring = true)
         rule.onNodeWithTag("logger_value").assertTextEquals(holdPlan.blocks[i].target!!.shownValue().toString())
+        rule.onNodeWithTag("logger_unit").assertTextEquals("s")   // R7.2-T07 (F12): "30 s"
         rule.onNodeWithTag("session_done").assertDoesNotExist()
     }
 

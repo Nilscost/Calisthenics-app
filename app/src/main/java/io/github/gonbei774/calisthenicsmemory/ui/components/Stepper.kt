@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -36,6 +37,8 @@ fun Stepper(
     step: Int = 1,
     valueText: (Int) -> String = { it.toString() },
     tag: String = "stepper",
+    /** R7.2-T07 (F12): a unit shown right after the number ("s", "x"); the number keeps its own node. */
+    suffix: String? = null,
 ) {
     val haptic = LocalHapticFeedback.current
     fun set(v: Int) {
@@ -48,8 +51,9 @@ fun Stepper(
         }
         Text(
             valueText(value), style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center,
-            modifier = Modifier.defaultMinSize(minWidth = 40.dp).semantics { contentDescription = valueText(value) }.testTag("${tag}_value"),
+            modifier = Modifier.defaultMinSize(minWidth = if (suffix == null) 40.dp else 28.dp).semantics { contentDescription = valueText(value) }.testTag("${tag}_value"),
         )
+        if (suffix != null) Text(suffix, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, modifier = Modifier.padding(end = Spacing.xs).testTag("${tag}_unit"))
         FilledTonalIconButton(onClick = { set(value + step) }, enabled = value < range.last, modifier = Modifier.size(Spacing.touch).testTag("${tag}_plus")) {
             Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.stepper_increase))
         }
@@ -68,6 +72,8 @@ fun BigStepper(
     modifier: Modifier = Modifier,
     step: Int = 1,
     tag: String = "stepper",
+    /** R7.2-T07 (F12): a unit right after the big number ("s" for holds, "x" for reps); the number keeps its own node and tag. */
+    suffix: String? = null,
 ) {
     val haptic = LocalHapticFeedback.current
     fun set(v: Int) {
@@ -78,10 +84,16 @@ fun BigStepper(
         FilledTonalIconButton(onClick = { set(value - step) }, enabled = value > range.first, modifier = Modifier.size(64.dp).testTag("${tag}_minus")) {
             Icon(AppIcons.Remove, contentDescription = stringResource(R.string.stepper_decrease), modifier = Modifier.size(32.dp))
         }
-        Text(
+        if (suffix == null) Text(
             value.toString(), style = MaterialTheme.typography.displayMedium, textAlign = TextAlign.Center, maxLines = 1,
             modifier = Modifier.weight(1f).semantics { contentDescription = value.toString() }.testTag("${tag}_value"),
-        )
+        ) else Row(Modifier.weight(1f), horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
+            Text(
+                value.toString(), style = MaterialTheme.typography.displayMedium, textAlign = TextAlign.Center, maxLines = 1,
+                modifier = Modifier.semantics { contentDescription = value.toString() }.testTag("${tag}_value"),
+            )
+            Text(suffix, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, modifier = Modifier.padding(start = Spacing.xs, bottom = 6.dp).testTag("${tag}_unit"))
+        }
         FilledTonalIconButton(onClick = { set(value + step) }, enabled = value < range.last, modifier = Modifier.size(64.dp).testTag("${tag}_plus")) {
             Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.stepper_increase), modifier = Modifier.size(32.dp))
         }
