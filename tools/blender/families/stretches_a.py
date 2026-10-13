@@ -114,7 +114,8 @@ def stretch_cobra():
                  hand_l=[1, 0, 0], hand_r=[1, 0, 0], palm_l=[0, 0, -1], palm_r=[0, 0, -1], grip_l=0.0, grip_r=0.0,
                  elbow_l=[0, 1, 0.5], elbow_r=[0, -1, 0.5])
     a = base_pose(pelvis=[0.0, 0.0, 0.11], p1=90, p2=90, hp=0, **legs, **hands)
-    b = base_pose(pelvis=[0.0, 0.0, 0.11], p1=88, p2=70, hp=-10, **legs, **hands)
+    # A clear lumbar and upper-back extension lifts the chest while the fixed pelvis and legs stay grounded.
+    b = base_pose(pelvis=[0.0, 0.0, 0.11], p1=74, p2=32, hp=-8, **legs, **hands)
     return dict(seconds=4.0, keys=rep(a, b), cam_az=35, cam_el=20, props=[])
 
 
@@ -142,7 +143,7 @@ def stretch_ankle_mobility():
                 knee_r=[1, 0, 0], knee_l=[1, 0, 0])
     a = base_pose(pelvis=[-0.05, 0.0, 0.86], p1=0, p2=0, hp=0, **feet)
     b = base_pose(pelvis=[0.20, 0.0, 0.80], p1=0, p2=0, hp=0, **feet)
-    return dict(seconds=4.0, keys=rep(a, b), cam_az=30, cam_el=10, props=[WALL])
+    return dict(seconds=4.0, keys=rep(a, b), cam_az=-30, cam_el=10, props=[WALL])
 
 
 def stretch_calf_wall():
@@ -154,13 +155,15 @@ def stretch_calf_wall():
                 ankle_l=[0.30, 0.10, 0.08], foot_l=[1, 0, 0], knee_l=[1, 0, 0])
     a = base_pose(pelvis=[-0.03, 0.0, 0.89], p1=2, p2=2, hp=0, **feet, **hands)
     b = base_pose(pelvis=[0.08, 0.0, 0.82], p1=10, p2=10, hp=0, **feet, **hands)
-    return dict(seconds=4.0, keys=rep(a, b), cam_az=35, cam_el=10, props=[WALL])
+    return dict(seconds=4.0, keys=rep(a, b), cam_az=-30, cam_el=10, props=[WALL])
 
 
 def stretch_chest_door():
     # Right forearm vertical on the frame (thin box, inner face at y = -0.55), elbow at shoulder height, out to the side.
     # Key a: facing forward. Key b: body turned away from the frame (yaw +30), chest opens.
-    frame = dict(kind="box", center=[0.0, -0.575, 1.2], size=[1.6, 0.05, 2.4])
+    frame = [dict(kind="box", center=[x, -0.575, 1.2], size=[0.08, 0.05, 2.4])
+             for x in (-0.75, 0.0)]
+    frame.append(dict(kind="box", center=[-0.375, -0.575, 2.36], size=[0.83, 0.05, 0.08]))
     feet = dict(ankle_r=[0.0, -0.10, 0.08], ankle_l=[0.0, 0.10, 0.08], foot_r=[1, 0, 0], foot_l=[1, 0, 0],
                 knee_r=[1, 0, 0], knee_l=[1, 0, 0])
     arm = dict(wrist_r=[0.0, -0.52, 1.58], palm_r=[0, -1, 0], hand_r=[0, 0, 1], elbow_r=[0.2, -1, 0],
@@ -168,7 +171,7 @@ def stretch_chest_door():
                palm_l=[0, -1, 0], grip_l=0.25)
     a = base_pose(pelvis=[0.0, 0.0, 0.975], p1=0, p2=0, hp=0, yaw=0, **feet, **arm)
     b = base_pose(pelvis=[0.0, 0.0, 0.975], p1=0, p2=0, hp=0, yaw=30, **feet, **arm)
-    return dict(seconds=4.0, keys=rep(a, b), cam_az=35, cam_el=10, props=[frame])
+    return dict(seconds=4.0, keys=rep(a, b), cam_az=150, cam_el=10, props=frame)
 
 
 def stretch_hamstring_standing():
