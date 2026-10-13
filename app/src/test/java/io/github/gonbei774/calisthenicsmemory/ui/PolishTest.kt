@@ -141,14 +141,15 @@ class AccessibilityTest {
         checkClickables("preview"); rule.onNodeWithTag("start_button").assertIsDisplayed() // the Start button is sticky, never scrolled away
     }
 
-    @Test fun sessionWorkBlock() { SessionBus.publish(sessionAt(0)); bothThemes({ SessionScreen(onExit = {}) }) { checkClickables("session work"); rule.onNodeWithTag("session_time").assertIsDisplayed(); rule.onNodeWithTag("session_done").assertIsDisplayed() } }
+    @Test fun sessionWorkBlock() { SessionBus.publish(sessionAt(0)); bothThemes({ SessionScreen(onExit = {}) }) { checkClickables("session work"); rule.onNodeWithTag("session_time").assertIsDisplayed(); rule.onNodeWithTag("session_done").assertIsDisplayed(); rule.onNodeWithTag("logger").assertIsDisplayed() } }
 
+    // R7-T03: after reps the break has DONE but no logger (the reps are logged on the work block)
     @Test fun sessionRecoveryWithLogger() {
         val none = ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
         val plan = (buildTrainPlan(catalog, StarterRoutine.routine, none, SeedProfiles.home, TrainSettings(rounds = 2)) as PlanResult.Ready).plan
         val s = sessionAt(plan.blocks.indexOfFirst { it.type == BlockType.STRETCH }); assertEquals(BlockType.STRETCH, s.currentBlock!!.type)
         SessionBus.publish(s)
-        bothThemes({ SessionScreen(onExit = {}) }) { checkClickables("session recovery"); rule.onNodeWithTag("logger").assertIsDisplayed(); rule.onNodeWithTag("session_skip").assertIsDisplayed() }
+        bothThemes({ SessionScreen(onExit = {}) }) { checkClickables("session recovery"); rule.onNodeWithTag("break_done").assertIsDisplayed(); rule.onNodeWithTag("session_skip").assertIsDisplayed() }
     }
 
     @Test fun settingsTab() = bothThemes({ SettingsScreen(onLevels = {}, onBackup = {}, onLicenses = {}) }) { checkClickables("settings") }

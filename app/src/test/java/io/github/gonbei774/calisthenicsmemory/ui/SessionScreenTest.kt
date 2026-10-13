@@ -10,6 +10,7 @@ import app.calisthenics.domain.equipment.SeedProfiles
 import app.calisthenics.domain.model.BlockType
 import app.calisthenics.domain.model.EquipmentItem
 import app.calisthenics.domain.model.EquipmentProfile
+import app.calisthenics.domain.model.TargetType
 import app.calisthenics.domain.model.WorkoutPlan
 import app.calisthenics.domain.routine.Presets
 import app.calisthenics.domain.routine.resolveSaved
@@ -75,31 +76,50 @@ class SessionScreenTest {
     private fun firstRecovery() = plan.blocks.indexOfFirst { it.type == BlockType.STRETCH || it.type == BlockType.PASSIVE_RECOVERY }
     private fun lastIntent(): Intent { val i = shadowOf(app).nextStartedService; assertNotNull("no service command was sent", i); return i }
 
-    @Test fun workBlockShowsNameTargetRingAndDoneButNoLogger() {
+    @Test fun workBlockShowsNameTargetRingDoneAndTheRepLogger() {
         show(stateAt(0))
         rule.onNodeWithTag("session_title").assertTextEquals("Incline Push-Up")
         rule.onNodeWithTag("session_target").assertTextContains("reps", substring = true)
         rule.onNodeWithTag("session_time").assertExists()
         rule.onNodeWithTag("session_done").assertIsDisplayed().assertIsEnabled()
-        rule.onNodeWithTag("logger").assertDoesNotExist()
+        // R7-T03 (D3): a rep exercise is logged on its own work screen, prefilled with the target; no break DONE here
+        rule.onNodeWithTag("logger").assertIsDisplayed()
+        rule.onNodeWithTag("logger_value").assertTextEquals(plan.blocks[0].target!!.shownValue().toString())
         rule.onNodeWithTag("session_next").assertExists()
     }
 
-    @Test fun afterTheWorkTheRecoveryIsTheStretchWithTheLoggerOnTop() {
-        val i = firstRecovery()
-        assertEquals(BlockType.STRETCH, plan.blocks[i].type) // stretch is the recovery
-        show(stateAt(i))
-        rule.onNodeWithTag("session_title").assertTextContains("Stretch:", substring = true)
+    // R7-T03: holds keep logging on the break that follows (the rep exercises are logged on the work block)
+    private val gym = EquipmentProfile("gym", "Gym", listOf(EquipmentItem("pullup-bar"), EquipmentItem("low-bar"), EquipmentItem("dip-support"),
+        EquipmentItem("foot-anchor"), EquipmentItem("mat")), setOf("floor-space", "wall"))
+    private val holdPlan by lazy {
+        val none = ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
+        val rr = Presets.recommended(catalog, gym)
+        val r = resolveSaved(rr, settingsFor(rr, TrainSettings()))
+        (buildTrainPlan(catalog, r.routine, none, gym, r.settings, edits = r.edits) as PlanResult.Ready).plan.copy(id = "plan-hold")
+    }
+    private val holdIdx get() = holdPlan.blocks.indexOfFirst { it.type == BlockType.WORK && it.target?.type == TargetType.HOLD_SECONDS }
+
+    @Test fun afterAHoldTheBreakCarriesTheLoggerOnTop() {
+        val i = holdIdx
+        assertTrue(i >= 0)
+        SessionBus.publish(stateAt(holdPlan, i + 1))
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = {}) } }
+        rule.waitForIdle()
         rule.onNodeWithTag("logger").assertIsDisplayed()
-        rule.onNodeWithTag("logger_name").assertTextEquals("Incline Push-Up · set 1")
-        rule.onNodeWithTag("logger_value").assertTextEquals(plan.blocks[0].target!!.value.toString()) // prefilled with the target
+        rule.onNodeWithTag("logger_name").assertTextContains(SessionBus.names[holdPlan.blocks[i].variationId]!!, substring = true)
+        rule.onNodeWithTag("logger_value").assertTextEquals(holdPlan.blocks[i].target!!.shownValue().toString())
         rule.onNodeWithTag("session_done").assertDoesNotExist()
     }
 
+    @Test fun afterRepsTheBreakHasNoLoggerBecauseTheNumberWasLoggedOnTheWorkBlock() {
+        show(stateAt(firstRecovery()))
+        rule.onNodeWithTag("logger").assertDoesNotExist()
+        rule.onNodeWithTag("break_done").assertIsDisplayed()
+    }
+
     @Test fun typingRepsSendsALogCommandForTheWorkBlock() {
-        val i = firstRecovery()
-        show(stateAt(i))
-        val target = plan.blocks[0].target!!.value
+        show(stateAt(0))
+        val target = plan.blocks[0].target!!.shownValue()
         rule.onNodeWithTag("logger_minus").performClick()
         rule.waitForIdle()
         val intent = lastIntent()
@@ -109,11 +129,41 @@ class SessionScreenTest {
         rule.onNodeWithTag("logger_value").assertTextEquals((target - 1).toString())
     }
 
-    @Test fun noRatingChipsDuringTheWorkoutTheyLiveOnTheEndScreen() {
-        // doc 17 §2.3: Too hard / Too easy / Pain moved to the end screen (V10); the logger keeps - number + and DONE
-        show(stateAt(firstRecovery()))
-        for (t in listOf("logger_too_hard", "logger_too_easy", "logger_pain")) rule.onNodeWithTag(t).assertDoesNotExist()
-        rule.onNodeWithTag("logger_minus").assertExists(); rule.onNodeWithTag("logger_plus").assertExists(); rule.onNodeWithTag("logger_done").assertExists()
+    // R7-T03 (D3): DONE on a rep block saves the number, then ends the set
+    @Test fun doneOnARepBlockSavesTheNumberThenEndsTheSet() {
+        show(stateAt(0))
+        val target = plan.blocks[0].target!!.shownValue()
+        rule.onNodeWithTag("logger_plus").performClick(); rule.waitForIdle()
+        shadowOf(app).clearStartedServices()
+        rule.onNodeWithTag("session_done").performClick(); rule.waitForIdle()
+        val intents = generateSequence { shadowOf(app).nextStartedService }.toList()
+        assertEquals(listOf(WorkoutSessionService.ACTION_LOG, WorkoutSessionService.ACTION_DONE), intents.map { it.action })
+        assertEquals(target + 1, intents[0].getIntExtra(WorkoutSessionService.EXTRA_REPS, -2))
+    }
+
+    // R7-T03 (D3, B9): "Too easy" next to the stepper feeds the same tooEasy flag as the end screen
+    @Test fun tooEasyNextToTheStepperIsSentWithTheLog() {
+        show(stateAt(0))
+        rule.onNodeWithTag("logger_too_easy").performClick(); rule.waitForIdle()
+        val intent = lastIntent()
+        assertEquals(WorkoutSessionService.ACTION_LOG, intent.action)
+        assertTrue(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_EASY, false))
+        assertFalse(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_HARD, true))
+    }
+
+    @Test fun noHoldBreakLoggerForRepsAndHoldsKeepTheirLoggerOnTheBreak() {
+        val i = holdIdx
+        SessionBus.publish(stateAt(holdPlan, i))
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = {}) } }
+        rule.waitForIdle()
+        rule.onNodeWithTag("logger").assertDoesNotExist() // a hold is not logged while it runs
+    }
+
+    @Test fun noRatingChipsDuringTheWorkoutExceptTooEasy() {
+        // doc 17 §2.3: Too hard / Pain stay on the end screen; R7-T03: Too easy is next to the stepper
+        show(stateAt(0))
+        for (t in listOf("logger_too_hard", "logger_pain")) rule.onNodeWithTag(t).assertDoesNotExist()
+        rule.onNodeWithTag("logger_minus").assertExists(); rule.onNodeWithTag("logger_plus").assertExists(); rule.onNodeWithTag("logger_too_easy").assertExists(); rule.onNodeWithTag("session_done").assertExists()
     }
 
     @Test fun theBottomRowIsPauseDoneSkipWithDoneInTheMiddle() {
@@ -132,7 +182,7 @@ class SessionScreenTest {
     }
 
     @Test fun loggedValuesComeBackFromTheSessionState() {
-        val s0 = stateAt(firstRecovery())
+        val s0 = stateAt(0)
         val s = reduce(s0, SessionEvent.LogBlock(plan.blocks[0].id, BlockLog(reps = 4, tooHard = true))).state
         show(s)
         rule.onNodeWithTag("logger_value").assertTextEquals("4")
@@ -164,7 +214,8 @@ class SessionScreenTest {
     @Test fun doneSkipAndPauseSendTheirCommands() {
         show(stateAt(0))
         rule.onNodeWithTag("session_done").performClick(); rule.waitForIdle()
-        assertEquals(WorkoutSessionService.ACTION_DONE, lastIntent().action)
+        // R7-T03: DONE on a rep block first saves the number (ACTION_LOG), then ends the set
+        assertEquals(WorkoutSessionService.ACTION_DONE, generateSequence { shadowOf(app).nextStartedService }.last().action)
         rule.onNodeWithTag("session_skip").performClick(); rule.waitForIdle()
         assertEquals(WorkoutSessionService.ACTION_SKIP, lastIntent().action)
         rule.onNodeWithTag("session_pause").performClick(); rule.waitForIdle()
@@ -245,7 +296,9 @@ class SessionScreenTest {
 
     // R7-T02 (B4): DONE in a break saves the pending log, then skips to the next block
     @Test fun doneInABreakWithTheLoggerSavesTheLogAndSkips() {
-        show(stateAt(firstRecovery()))
+        SessionBus.publish(stateAt(holdPlan, holdIdx + 1))
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = {}) } }
+        rule.waitForIdle()
         rule.onNodeWithTag("logger_minus").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("logger_done").performClick(); rule.waitForIdle()
         val actions = generateSequence { shadowOf(app).nextStartedService }.map { it.action }.toList()

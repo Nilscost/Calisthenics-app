@@ -63,7 +63,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-/** The finished WORK block the logger belongs to: the last one before [st]'s current block, only while a recovery-type block runs. */
+/**
+ * The finished WORK block the break logger belongs to: the last one before [st]'s current block, only while a recovery-type block runs.
+ * R7-T03 (D3): rep blocks are logged on their own work screen; only holds are logged on the break that follows.
+ */
 fun loggerBlock(st: SessionState): TimelineBlock? {
     val cur = st.currentBlock ?: return null
     if (cur.type != BlockType.STRETCH && cur.type != BlockType.PASSIVE_RECOVERY && cur.type != BlockType.TRANSITION) return null
@@ -72,8 +75,13 @@ fun loggerBlock(st: SessionState): TimelineBlock? {
     val between = st.plan.blocks.subList(st.plan.blocks.indexOf(last) + 1, st.blockIndex)
     if (between.any { it.type == BlockType.WORK }) return null
     val ex = st.executions[last.id]
+    if (last.target?.type != TargetType.HOLD_SECONDS) return null
     return last.takeIf { ex == Execution.COMPLETED || ex == Execution.PARTIAL }
 }
+
+/** R7-T03 (D3): the rep work block that is running now carries its own logger (− number +, Too easy). */
+fun repLoggerBlock(st: SessionState): TimelineBlock? =
+    st.currentBlock?.takeIf { it.type == BlockType.WORK && it.variationId != null && it.target?.type == TargetType.REPS }
 
 @Composable
 fun SessionScreen(modifier: Modifier = Modifier, onExit: () -> Unit) {
@@ -99,7 +107,7 @@ private class LoggerState(val ctx: android.content.Context, val work: TimelineBl
     var typed by mutableStateOf(saved?.reps != null)
     // The ratings (Too hard / Too easy / Pain) are given on the end screen (doc 17 §2.3); what the logger keeps is passed through unchanged.
     private val tooHard = saved?.tooHard ?: false
-    private val tooEasy = saved?.tooEasy ?: false
+    var tooEasy by mutableStateOf(saved?.tooEasy ?: false)
     private val pain = saved?.discomfort ?: false
     fun push() { logBlock(ctx, work.id, if (typed) reps else null, tooHard, pain, tooEasy) }
 }
@@ -137,7 +145,8 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
     var menu by remember { mutableStateOf(false) }
     var confirmEnd by remember { mutableStateOf(false) }
     val logFor = loggerBlock(st)
-    val logger = rememberLogger(st, logFor)
+    val repWork = repLoggerBlock(st)
+    val logger = rememberLogger(st, logFor ?: repWork)
     val haptic = LocalHapticFeedback.current
     val clip = remember(b.variationId) { b.variationId?.let { DemoClips.file(ctx, it) } }
     val elapsed = (st.activeElapsedMs / 1000).toInt()
@@ -194,11 +203,16 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                         )
                         LinearProgressIndicator(progress = { progress }, Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(3.dp)), color = AppAccentTheme.colors.accent, trackColor = MaterialTheme.colorScheme.surfaceVariant)
                         if (paused) Text(stringResource(R.string.session_paused), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("session_paused"))
-                        if (logger != null && logFor != null) RepLogger(logger, logFor, st)
-                        else {
-                            val sideText = when (b.side) { Side.LEFT -> stringResource(R.string.side_left); Side.RIGHT -> stringResource(R.string.side_right); else -> "" }
-                            val targetText = b.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it) }.orEmpty()
-                            val sub = listOf(io.github.gonbei774.calisthenicsmemory.ui.train.withLoad(targetText, b.loadGrams), sideText).filter { it.isNotEmpty() }.joinToString(" · ")
+                        val sideText = when (b.side) { Side.LEFT -> stringResource(R.string.side_left); Side.RIGHT -> stringResource(R.string.side_right); else -> "" }
+                        val targetText = b.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it) }.orEmpty()
+                        val sub = listOf(io.github.gonbei774.calisthenicsmemory.ui.train.withLoad(targetText, b.loadGrams), sideText).filter { it.isNotEmpty() }.joinToString(" · ")
+                        if (logger != null && logFor != null) RepLogger(logger, logFor, showName = true)
+                        else if (logger != null && repWork != null) {
+                            // R7-T03: the rep work block: name, target, then the number to log with Too easy beside it
+                            Text(names[b.variationId] ?: "", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
+                            if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_target"))
+                            RepLogger(logger, repWork, showName = false)
+                        } else {
                             if (b.type == BlockType.WORK || b.note != null) Text(names[b.variationId] ?: "", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
                             if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_target"))
                             b.note?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center, modifier = Modifier.testTag("session_note")) }
@@ -208,7 +222,7 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                             else AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_PAUSE) }, Modifier.weight(1f).height(54.dp).testTag("session_pause")) { Text(stringResource(R.string.session_pause)) }
                             // DONE in the middle, gold and a little wider: ends the set during work; in any other block (R7-T02, B4) it saves the pending log and moves on.
                             if (b.type == BlockType.WORK) Button(
-                                onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_DONE) }, enabled = st.phase == Phase.RUNNING,
+                                onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); if (repWork != null) logger?.push(); sessionCommand(ctx, WorkoutSessionService.ACTION_DONE) }, enabled = st.phase == Phase.RUNNING,
                                 modifier = Modifier.weight(1.3f).height(58.dp).testTag("session_done"), shape = RoundedCornerShape(Radius.button),
                             ) { Text(stringResource(R.string.session_done).uppercase(), style = MaterialTheme.typography.titleLarge) }
                             else Button(
@@ -246,13 +260,17 @@ private fun SetMarkers(total: Int, current: Int) {
  * saves the number and moves on to the next block (R7-T02).
  */
 @Composable
-private fun RepLogger(l: LoggerState, work: TimelineBlock, st: SessionState) {
+private fun RepLogger(l: LoggerState, work: TimelineBlock, showName: Boolean) {
     val name = SessionBus.names[work.variationId] ?: work.variationId.orEmpty()
     val setNo = work.roundIndex
     Column(Modifier.fillMaxWidth().testTag("logger"), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-        Text(if (setNo != null) stringResource(R.string.logger_name_set, name, setNo) else name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, maxLines = 1, modifier = Modifier.testTag("logger_name"))
+        if (showName) Text(if (setNo != null) stringResource(R.string.logger_name_set, name, setNo) else name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, maxLines = 1, modifier = Modifier.testTag("logger_name"))
         Text(stringResource(if (l.hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
-        BigStepper(l.reps, { l.reps = it; l.typed = true; l.push() }, 0..999, Modifier.fillMaxWidth(), step = if (l.hold && (l.target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "logger")
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            BigStepper(l.reps, { l.reps = it; l.typed = true; l.push() }, 0..999, Modifier.weight(1f), step = if (l.hold && (l.target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "logger")
+            // R7-T03 (D3, B9): the same "Too easy" as on the end screen, so two of them in a row count towards moving on
+            FilterChip(selected = l.tooEasy, onClick = { l.tooEasy = !l.tooEasy; l.push() }, label = { Text(stringResource(R.string.logger_too_easy)) }, modifier = Modifier.testTag("logger_too_easy"))
+        }
     }
 }
 
