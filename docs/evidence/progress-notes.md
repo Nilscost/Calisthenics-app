@@ -659,3 +659,13 @@ Process notes for the whole batch: every task was verified in the Hermes contain
 - Poses re-written (`warmup_weights.shoulder_band`, `core._pallof`/`pallof_hold`/`pallof_press`), checked with `poses.py <ids> --describe` and stick sheets (`docs/evidence/clips-r7.2/`). **NOT rendered:** the Blender render runs on the owner's Mac, so the installed clips are the R7.1 ones and F10/F11 are **not done** in this release. The owner's one-line render command and the install steps are in `docs/evidence/clips-r7.2/review.md`.
 - **Slip, fixed:** `poses.py` was run once without ids in the sandbox (the full 154-id check, to confirm all ids still print OK); that rewrote every `joints.json`. The modification times of the 151 unchanged ones were set back to just before their frames, so `--resume` still skips them. Contents are identical.
 - **Choice:** `warmup-shoulder-towel` shares the old pass-through pose and was left unchanged (outside the plan).
+
+### R7.2-T10 — CI screenshots
+- `ui-screens` runs: `b251212` (T01-T03) 30/30 PASS; `7da78b4` 39/39 PASS; `da9d667` one dark `b_train_preview` failure (the flow's scroll to the cool-down caption overshot it, twice; the screenshot showed the caption on screen), so the scroll got `speed: 20`; final run on `f1f7993` **39/39 PASS** (13 flows incl. the new `k1/k2/k7_chart`, three variants). Review: `docs/evidence/ui/R7.2-review.md`.
+- Defect found and fixed: the cool-down swap/add pickers used the break wording; they now have their own title and hint.
+- **NOT done:** no screenshot of the "Move on to ..." card (the seed has no Too easy session, seeding one would depend on the seed's prescribed tiers); the card text is only covered by Robolectric tests.
+
+### R7.2-T11 — release 0.10.2-r7 (2026-10-13)
+- `versionCode` 12, `versionName` `0.10.2-r7`; `STATUS.md`, `docs/evidence/owner-check-r7.2.md`; APK `Apps/builds/app-debug-R7.2.apk` (built in a fresh clone of `da9d667`; `f1f7993` only changes a Maestro flow).
+- Verification: fresh-clone full verify exit 0 (`docs/evidence/r7.2-t11-verify-2026-10-13.log`), Python tests 27 OK; per-task logs `r7.2-tNN-verify-2026-10-13.log`; GitHub `verify` and `connected` green on the pushed commits.
+- **NOT done:** F10 and F11 clips (re-posed, not rendered: needs the owner's Blender render, command in `docs/evidence/clips-r7.2/review.md`); phone check; the Move-on card screenshot. No owner gate was approved.
