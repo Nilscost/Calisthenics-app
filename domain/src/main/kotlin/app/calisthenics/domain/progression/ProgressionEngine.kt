@@ -31,11 +31,18 @@ const val ABOVE_SUGGEST_AFTER = 2
 /** R7-T04 (B1): a self-assessed tier above the top step = the whole ladder of that exercise is achieved (five stars) and its successor starts at level 1. */
 const val ALL_TIERS_DONE = 6
 
+/** R7-T11 (D5): stored level of a hand edit "levels 1..n are done": 10 + n (n = 1..4); n = 5 is [ALL_TIERS_DONE]. Plain values are the usual self-assessed tier. */
+fun storedForLevelsDone(n: Int): Int = if (n >= 5) ALL_TIERS_DONE else 10 + n.coerceAtLeast(1)
+
+/** The self-assessment a stored level stands for. */
+fun selfAssessmentFor(variationId: String, stored: Int): UserAction.SelfAssessment =
+    if (stored in 11..14) UserAction.SelfAssessment(0, variationId, stored - 10 + 1, stored - 10) else UserAction.SelfAssessment(0, variationId, stored)
+
 /** Explicit user actions that change progression (all optional; silence never clears a hold). */
 sealed interface UserAction {
     val day: Int
     /** Initial self-assessment / manual pick of a familiar variation (ONB-01). */
-    data class SelfAssessment(override val day: Int, val variationId: String, val tier: Int) : UserAction
+    data class SelfAssessment(override val day: Int, val variationId: String, val tier: Int, /** R7-T11 (D5): levels 1..this are done (stars); 0 = the plain self-assessment (levels below [tier] count). */ val achievedUpTo: Int = 0) : UserAction
     /** Accept the app's lower-target suggestion or the easier adjustment after discomfort. */
     /** D7: the user confirms the "too easy" suggestion and moves up to [tier]. Never created by the app itself. */
     data class AcceptHarder(override val day: Int, val variationId: String, val tier: Int) : UserAction
@@ -234,6 +241,11 @@ class ProgressionEngine(private val catalog: Catalog) {
                             if (!vars.containsKey(next)) vars[next] = VariationProgress(next, family(next), 1, a.day, null, emptySet(), null, emptyList(), 0, 0, false, false, null, null)
                             active[p.familyId] = next
                         }
+                    } else if (a.achievedUpTo > 0) {
+                        // R7-T11 (D5): set by hand: levels 1..achievedUpTo are done, [tier] is the one trained next
+                        val p = ensure(a.variationId, a.day, a.tier, 1)
+                        vars[a.variationId] = p.copy(tier = a.tier, baselineTier = 1, enrolledAtDay = a.day, achievedTiers = (1..a.achievedUpTo).toSet())
+                        active.putIfAbsent(p.familyId, a.variationId)
                     } else {
                         val p = ensure(a.variationId, a.day, a.tier, a.tier)
                         vars[a.variationId] = p.copy(tier = a.tier, baselineTier = a.tier, enrolledAtDay = a.day)

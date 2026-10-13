@@ -109,7 +109,8 @@ class SkillTreeTest {
             assertEquals("${tab.id} overlap", l.nodes.size, l.nodes.map { it.col to it.row }.toSet().size)
             assertTrue(l.nodes.all { it.col < l.cols && it.row < l.rows })
             for (e in l.edges) assertTrue("${tab.id}: ${e.from} -> ${e.to}", l.node(e.from)!!.row < l.node(e.to)!!.row)
-            assertTrue("${tab.id} is wider than a phone can show (${l.cols} columns)", l.cols <= 3)
+            // R7-T11: the Push tab gained the weighted push-up and dip as side branches (4 columns), the Squat tab 5; the tree area scrolls sideways, so up to 5 is allowed (was 3)
+            assertTrue("${tab.id} is wider than the tree area scrolls comfortably (${l.cols} columns)", l.cols <= 5)
         }
     }
 
@@ -142,5 +143,30 @@ class SkillTreeTest {
         assertEquals(0, displayStars(catalog, s, "pushup-feet-elevated")) // the current one shows its own stars
         assertEquals(0, displayStars(catalog, s, "pushup-one-arm"))
         assertEquals(1, displayStars(catalog, snap("pushup-standard" to 2), "pushup-standard"))
+    }
+
+    // ---- R7-T11 (D7, O3): no "With weights" tab; each weighted exercise sits right after its bodyweight counterpart
+    @Test fun noWeightsTabAndEachWeightedExerciseFollowsItsBodyweightCounterpart() {
+        assertNull(TreeTabs.byId("weights"))
+        for ((weighted, base, tab) in listOf(
+            Triple("goblet-squat", "squat-air", "squat"), Triple("dumbbell-rdl", "rdl-bodyweight", "hips"), Triple("weighted-pullup", "pullup-full", "pull"),
+            Triple("weighted-dip", "dip-parallel", "push"), Triple("dumbbell-row", "row-band", "row"), Triple("weighted-pushup", "pushup-standard", "push"),
+        )) {
+            assertEquals(weighted, tab, TreeTabs.tabForVariation(catalog, weighted)?.id)
+            val l = layoutTreeVertical(catalog, TreeTabs.byId(tab)!!.familyIds)
+            assertTrue("$weighted is a branch off $base", l.edges.any { it.from == base && it.to == weighted })
+            assertTrue("$weighted sits below $base", l.node(weighted)!!.row > l.node(base)!!.row)
+        }
+    }
+
+    // R7-T11 (D5): set by hand: levels up to the pick are done and the stars follow
+    @Test fun aLevelSetByHandGivesThatManyStars() {
+        val engine = app.calisthenics.domain.progression.ProgressionEngine(catalog)
+        for (n in 1..4) {
+            val s = engine.replay(emptyList(), listOf(app.calisthenics.domain.progression.selfAssessmentFor("v-up", app.calisthenics.domain.progression.storedForLevelsDone(n))))
+            assertEquals(n, displayStars(catalog, s, "v-up")); assertEquals(n + 1, s.tierFor("v-up"))
+        }
+        val all = engine.replay(emptyList(), listOf(app.calisthenics.domain.progression.selfAssessmentFor("v-up", app.calisthenics.domain.progression.storedForLevelsDone(5))))
+        assertEquals(5, displayStars(catalog, all, "v-up"))
     }
 }

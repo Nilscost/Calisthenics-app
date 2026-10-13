@@ -23,6 +23,8 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Planche Lean | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Standard Push-Up L4 and Front Plank L4 | Tuck Planche |
 | Tuck Planche | none | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Planche Lean L4 | Advanced Tuck Planche |
 | Advanced Tuck Planche | none | 2s / 5 / 60 | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | Tuck Planche L4 | — (top) |
+| Weighted Push-Up | weighted-vest | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Standard Push-Up L5 | — (top) |
+| Weighted Dip | dip-support + weighted-vest | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Dip L5 | — (top) |
 
 ## Shoulders
 
@@ -52,6 +54,7 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Tuck Front Lever | pullup-bar + high-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Pull-Up L3 and Hollow Body Hold L3 and Wide Inverted Row L4 | Advanced Tuck Front Lever |
 | Advanced Tuck Front Lever | pullup-bar + high-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Tuck Front Lever L4 | Straddle Front Lever |
 | Straddle Front Lever | pullup-bar + high-bar | 2s / 5 / 60 | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | Advanced Tuck Front Lever L4 | — (top) |
+| Weighted Pull-Up | pullup-bar + weighted-vest | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Pull-Up L5 | — (top) |
 
 ## Row
 
@@ -65,6 +68,7 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Inverted Row (feet elevated) | low-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Wide Inverted Row L4 | Archer Row (per side) |
 | Archer Row (per side) | low-bar | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Inverted Row (feet elevated) L4 | — (top) |
 | Kettlebell One-Arm Row (per side) | kettlebell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Band Row (seated) L4 | — (top) |
+| One-Arm Dumbbell Row (per side) | weight | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Band Row (seated) L4 | — (top) |
 
 ## Squat
 
@@ -81,6 +85,9 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Advanced Shrimp Squat (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Intermediate Shrimp Squat (per side) L4 | — (top) |
 | Pistol Squat (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Box Pistol Squat (per side) L4 or Counterbalance Pistol Squat (per side) L4 | — (top) |
 | Walking Lunge | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 16 / 110 / 60 | Air Squat L3 | — (top) |
+| Goblet Squat | weight | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Air Squat L4 | — (top) |
+| Barbell Squat | barbell | 5 / 45 / 60 | 6 / 50 / 60 | 7 / 55 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Air Squat L4 | — (top) |
+| Weighted Squat | weighted-vest | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Air Squat L5 | — (top) |
 
 ## Hips and back
 
@@ -110,6 +117,10 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Hamstring Slide | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Hamstring Slide Negative L4 | Single-Leg Slide Negative (per side) |
 | Single-Leg Slide Negative (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Hamstring Slide L4 | Single-Leg Slide (per side) |
 | Single-Leg Slide (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Single-Leg Slide Negative (per side) L4 | — (top) |
+| Dumbbell Romanian Deadlift | weight | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Romanian Deadlift (bodyweight) L4 | Dumbbell Single-Leg RDL (per side) |
+| Dumbbell Single-Leg RDL (per side) | weight | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Dumbbell Romanian Deadlift L4 and Single-Leg Deadlift (per side) L3 | — (top) |
+| Barbell Romanian Deadlift | barbell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Romanian Deadlift (bodyweight) L4 | — (top) |
+| Weighted Glute Bridge | weight | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Glute Bridge L4 | — (top) |
 
 ## Core
 
@@ -148,22 +159,6 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Loaded Single-Leg Calf Raise (per side) | weight | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | Single-Leg Calf Raise (per side) L4 | — (top) |
 | Wall Tibialis Raise | wall | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | - | Single-Leg Wall Tibialis Raise (per side) |
 | Single-Leg Wall Tibialis Raise (per side) | wall | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | Wall Tibialis Raise L4 | — (top) |
-
-## With weights
-
-| Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
-|---|---|---|---|---|---|---|---|---|
-| Goblet Squat | weight | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Air Squat L4 | — (top) |
-| Barbell Squat | barbell | 5 / 45 / 60 | 6 / 50 / 60 | 7 / 55 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Air Squat L4 | — (top) |
-| Weighted Squat | weighted-vest | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Air Squat L5 | — (top) |
-| Dumbbell Romanian Deadlift | weight | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Romanian Deadlift (bodyweight) L4 | Dumbbell Single-Leg RDL (per side) |
-| Dumbbell Single-Leg RDL (per side) | weight | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Dumbbell Romanian Deadlift L4 and Single-Leg Deadlift (per side) L3 | — (top) |
-| Barbell Romanian Deadlift | barbell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Romanian Deadlift (bodyweight) L4 | — (top) |
-| Weighted Glute Bridge | weight | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Glute Bridge L4 | — (top) |
-| One-Arm Dumbbell Row (per side) | weight | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Band Row (seated) L4 | — (top) |
-| Weighted Push-Up | weighted-vest | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Standard Push-Up L5 | — (top) |
-| Weighted Dip | dip-support + weighted-vest | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Dip L5 | — (top) |
-| Weighted Pull-Up | pullup-bar + weighted-vest | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Pull-Up L5 | — (top) |
 
 ## Automatic checks
 

@@ -43,13 +43,13 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.StarRow
 import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
 
 val CellWidth = 120.dp
-val CellHeight = 128.dp
+val CellHeight = 138.dp
 private val TileWidth = 108.dp
 private val TileHeight = 52.dp
 private val TopGap = 6.dp
 
 /** [tier] is the level the person is at (1..5), shown in the tile's number cell. */
-data class NodeUi(val id: String, val name: String, val familyId: String, val state: TreeNodeState, val stars: Int, val inGoal: Boolean, val missingEquipmentId: String?, val tier: Int = 1)
+data class NodeUi(val id: String, val name: String, val familyId: String, val state: TreeNodeState, val stars: Int, val inGoal: Boolean, val missingEquipmentId: String?, val tier: Int = 1, /** R7-T11 (O2): a prerequisite from another tab that is still open: its id and name, shown as a tappable "needs X" note. */ val needs: Pair<String, String>? = null)
 
 @Composable
 fun stateLabel(s: TreeNodeState) = stringResource(
@@ -63,7 +63,7 @@ fun stateLabel(s: TreeNodeState) = stringResource(
 )
 
 @Composable
-fun SkillTreeCanvas(layout: TreeLayout, nodes: Map<String, NodeUi>, mastered: Set<String>, selected: String?, onNode: (String) -> Unit, modifier: Modifier = Modifier) {
+fun SkillTreeCanvas(layout: TreeLayout, nodes: Map<String, NodeUi>, mastered: Set<String>, selected: String?, onNode: (String) -> Unit, modifier: Modifier = Modifier, onNeed: (String) -> Unit = {}) {
     val edgeColor = MaterialTheme.colorScheme.outlineVariant
     val doneColor = AppAccentTheme.colors.accent
     val w: Dp = CellWidth * layout.cols
@@ -84,14 +84,14 @@ fun SkillTreeCanvas(layout: TreeLayout, nodes: Map<String, NodeUi>, mastered: Se
         layout.nodes.forEach { pos ->
             val n = nodes[pos.variationId] ?: return@forEach
             Box(Modifier.offset(CellWidth * pos.col, CellHeight * pos.row).size(CellWidth, CellHeight), contentAlignment = Alignment.TopCenter) {
-                TreeNode(n, n.id == selected) { onNode(n.id) }
+                TreeNode(n, n.id == selected, onNeed) { onNode(n.id) }
             }
         }
     }
 }
 
 @Composable
-private fun TreeNode(n: NodeUi, selected: Boolean, onClick: () -> Unit) {
+private fun TreeNode(n: NodeUi, selected: Boolean, onNeed: (String) -> Unit, onClick: () -> Unit) {
     val locked = n.state == TreeNodeState.LOCKED || n.state == TreeNodeState.NEEDS_EQUIPMENT
     val gold = AppAccentTheme.colors.accent
     val label = stringResource(R.string.node_description, n.name, n.stars, 5, stateLabel(n.state))
@@ -121,5 +121,7 @@ private fun TreeNode(n: NodeUi, selected: Boolean, onClick: () -> Unit) {
         }
         Text(n.name, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center, maxLines = 2, modifier = Modifier.padding(horizontal = 2.dp))
         StarRow(n.stars, size = 13.dp)
+        n.needs?.let { (id, name) -> Text(stringResource(R.string.node_needs_note, name), style = MaterialTheme.typography.labelSmall, color = AppAccentTheme.colors.text, textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline, maxLines = 1,
+            modifier = Modifier.heightIn(min = 24.dp).clickable(role = Role.Button) { onNeed(id) }.testTag("tree_need_${n.id}")) }
     }
 }

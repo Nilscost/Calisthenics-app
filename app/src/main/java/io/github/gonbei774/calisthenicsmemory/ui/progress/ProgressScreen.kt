@@ -26,6 +26,10 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.MuscleChips
 import io.github.gonbei774.calisthenicsmemory.ui.components.StarRow
 import app.calisthenics.domain.load.formatKg
 import app.calisthenics.domain.progression.ABOVE_SUGGEST_AFTER
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
+import app.calisthenics.domain.progression.storedForLevelsDone
+import io.github.gonbei774.calisthenicsmemory.ui.nav.OpenExercise
+import io.github.gonbei774.calisthenicsmemory.ui.screens.LevelStore
 import app.calisthenics.domain.progression.Suggestion
 import app.calisthenics.domain.progression.suggest
 import app.calisthenics.domain.load.isLoaded
@@ -77,12 +81,20 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
     val skill = skills.firstOrNull { it.id == skillId } ?: skills.first()
     var open by remember { mutableStateOf<String?>(null) }          // a stretch sheet
     var selected by rememberSaveable { mutableStateOf<String?>(null) }  // the ringed node, its panel is open
-    var detailId by rememberSaveable { mutableStateOf<String?>(null) }  // the exercise detail page
+    // R7-T11 (D6): the exercise detail pages open on a small stack, so Back returns to the detail you came from
+    var detailStack by rememberSaveable { mutableStateOf(OpenExercise.take() ?: "") }   // ids joined by ","
+    val stack = detailStack.split(',').filter { it.isNotEmpty() }
+    fun openDetail(id: String) { detailStack = (stack + id).joinToString(",") }
+    fun closeDetail() { detailStack = stack.dropLast(1).joinToString(",") }
 
-    val detail = detailId?.let { c.variation(it) }
+    val detail = stack.lastOrNull()?.let { c.variation(it) }
     if (detail != null) {
-        androidx.activity.compose.BackHandler { detailId = null }
-        ExerciseDetail(c, detail, data.progress, profile, TreeTabs.tabForVariation(c, detail.id)?.title.orEmpty(), modifier) { detailId = null }
+        androidx.activity.compose.BackHandler { closeDetail() }
+        ExerciseDetail(c, detail, data.progress, profile, TreeTabs.tabForVariation(c, detail.id)?.title.orEmpty(), modifier, onOpen = { openDetail(it) }, onLevelsDone = { n ->
+            val levels = LevelStore.load(ctx).toMutableMap()
+            if (n == null) levels.remove(detail.id) else levels[detail.id] = storedForLevelsDone(n)
+            LevelStore.save(ctx, levels); refresh++
+        }) { closeDetail() }
         return
     }
 
@@ -133,20 +145,21 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
                 val layout = remember(c, tab.id, mode, skill.id) { if (mode == ProgressMode.SKILL) skillLayout(c, skill) else layoutTreeVertical(c, tab.familyIds) }
                 val now = remember(c, data.progress, goalId) { trainingNow(c, data.progress, goalId) }
                 val goalChain = remember(c, goalId) { goal?.let { Goals.chain(c, it).toSet() } ?: emptySet() }
-                val nodes = remember(layout, data.progress, profile, now, goalChain) {
+                val nodes = remember(layout, data.progress, profile, now, goalChain, mode, tab.id) {
                     layout.nodes.associate { pos ->
                         val v = c.variation(pos.variationId)!!
                         val state = nodeState(c, v.id, data.progress, profile, now)
                         val missing = v.equipmentAlternatives.minByOrNull { s -> s.needs.count { n -> !app.calisthenics.domain.equipment.needSatisfied(n, profile) } }
                             ?.needs?.firstOrNull { n -> !app.calisthenics.domain.equipment.needSatisfied(n, profile) }?.equipmentId
-                        v.id to NodeUi(v.id, v.name, v.familyId, state, displayStars(c, data.progress, v.id), v.id in goalChain, missing, data.progress.tierFor(v.id) ?: 1)
+                        val needs = if (mode == ProgressMode.TYPE && v.id !in data.progress.variations) Goals.unmet(c, v.id, data.progress).map { it.variationId }.firstOrNull { c.variation(it)?.familyId !in tab.familyIds }?.let { it to (c.variation(it)?.name ?: it) } else null
+                        v.id to NodeUi(v.id, v.name, v.familyId, state, displayStars(c, data.progress, v.id), v.id in goalChain, missing, data.progress.tierFor(v.id) ?: 1, needs)
                     }
                 }
                 val mastered = remember(nodes) { nodes.filterValues { it.state == TreeNodeState.MASTERED }.keys }
                 Box(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).horizontalScroll(rememberScrollState()).testTag("tree_area")) {
-                    SkillTreeCanvas(layout, nodes, mastered, selected, onNode = { selected = if (selected == it) null else it })
+                    SkillTreeCanvas(layout, nodes, mastered, selected, onNode = { selected = if (selected == it) null else it }, onNeed = { detailStack = it })
                 }
-                selected?.let { id -> c.variation(id)?.let { v -> nodes[id]?.let { n -> NodePanel(c, v, n, data.progress, profile, onOpen = { detailId = id }, onClose = { selected = null }) } } }
+                selected?.let { id -> c.variation(id)?.let { v -> nodes[id]?.let { n -> NodePanel(c, v, n, data.progress, profile, onOpen = { detailStack = id }, onOpenOther = { o -> detailStack = o }, onClose = { selected = null }) } } }
             }
         }
     }
@@ -186,12 +199,12 @@ private fun SuggestionCard(c: Catalog, s: Suggestion, onDismiss: () -> Unit, onA
 
 /** Doc 17 §2.6: the panel above the tab bar after the first tap on a node: details, OPEN EXERCISE DETAIL, close. */
 @Composable
-private fun NodePanel(c: Catalog, v: ExerciseVariation, n: NodeUi, progress: app.calisthenics.domain.progression.ProgressSnapshot, profile: EquipmentProfile, onOpen: () -> Unit, onClose: () -> Unit) {
+private fun NodePanel(c: Catalog, v: ExerciseVariation, n: NodeUi, progress: app.calisthenics.domain.progression.ProgressSnapshot, profile: EquipmentProfile, onOpen: () -> Unit, onOpenOther: (String) -> Unit, onClose: () -> Unit) {
     val policy = c.policyFor(v)
     val tier = progress.tierFor(v.id) ?: 1
     val target = policy?.tiers?.firstOrNull { it.index == tier }?.target
-    val unlocks = policy?.nextVariationIds.orEmpty().mapNotNull { c.variation(it)?.name }
-    val unmet = Goals.unmet(c, v.id, progress).map { stringResource(R.string.sheet_step_name, c.variation(it.variationId)?.name ?: it.variationId, it.tier) }
+    val unlocks = policy?.nextVariationIds.orEmpty().mapNotNull { id -> c.variation(id)?.let { id to it.name } }
+    val unmet = Goals.unmet(c, v.id, progress).map { it.variationId to stringResource(R.string.sheet_step_name, c.variation(it.variationId)?.name ?: it.variationId, it.tier) }
     Card(Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("node_panel"), shape = MaterialTheme.shapes.large) {
         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -202,23 +215,38 @@ private fun NodePanel(c: Catalog, v: ExerciseVariation, n: NodeUi, progress: app
                 IconButton(onClick = onClose, modifier = Modifier.testTag("panel_close")) { Icon(Icons.Filled.Close, stringResource(R.string.close)) }
             }
             if (target != null) Text(stringResource(R.string.panel_level, tier, 5, if (target.type == TargetType.REPS) stringResource(R.string.target_reps, target.value) else stringResource(R.string.target_seconds, target.value)), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("panel_level"))
-            if (unlocks.isNotEmpty()) Text(stringResource(R.string.panel_unlocks, unlocks.joinToString()), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("panel_unlocks"))
-            if (unmet.isNotEmpty() && v.id !in progress.variations) Text(stringResource(R.string.panel_needs, unmet.joinToString()), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("panel_needs"))
+            // R7-T11 (D6): the next exercises and the prerequisites (also from other tabs) are links
+            if (unlocks.isNotEmpty()) LinkLine(stringResource(R.string.panel_unlocks_label), unlocks, "panel_unlocks", "panel_unlock_", MaterialTheme.colorScheme.onSurfaceVariant, onOpenOther)
+            if (unmet.isNotEmpty() && v.id !in progress.variations) LinkLine(stringResource(R.string.panel_needs_label), unmet, "panel_needs", "panel_need_", MaterialTheme.colorScheme.error, onOpenOther)
             if (!isAvailable(v, profile)) Text(stringResource(R.string.sheet_missing, missingLabel(v, profile)), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error)
             AppOutlinedButton(onClick = onOpen, Modifier.fillMaxWidth().height(48.dp).testTag("panel_open_detail")) { Text(stringResource(R.string.panel_open_detail).uppercase()) }
         }
     }
 }
 
+/** R7-T11 (D6): "Label: A, B" where every name opens that exercise. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun LinkLine(label: String, items: List<Pair<String, String>>, tag: String, itemTag: String, color: androidx.compose.ui.graphics.Color, onOpen: (String) -> Unit) {
+    FlowRow(Modifier.fillMaxWidth().testTag(tag), horizontalArrangement = Arrangement.spacedBy(Spacing.xs), verticalArrangement = Arrangement.Center) {
+        Text(label, style = MaterialTheme.typography.bodyMedium, color = color, modifier = Modifier.align(Alignment.CenterVertically))
+        items.forEach { (id, name) ->
+            Text(name, style = MaterialTheme.typography.bodyMedium.copy(textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline), color = AppAccentTheme.colors.text,
+                modifier = Modifier.heightIn(min = 40.dp).wrapContentHeight(Alignment.CenterVertically).clickable(role = androidx.compose.ui.semantics.Role.Button) { onOpen(id) }.testTag(itemTag + id))
+        }
+    }
+}
+
 /** Doc 17 §2.7: the exercise detail, a sub-page of Progress. No action buttons here. */
 @Composable
-private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calisthenics.domain.progression.ProgressSnapshot, profile: EquipmentProfile, familyTitle: String, modifier: Modifier, onBack: () -> Unit) {
+private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calisthenics.domain.progression.ProgressSnapshot, profile: EquipmentProfile, familyTitle: String, modifier: Modifier, onOpen: (String) -> Unit, onLevelsDone: (Int?) -> Unit, onBack: () -> Unit) {
     val ctx = LocalContext.current
+    var editing by remember(v.id) { mutableStateOf(false) }
     val policy = c.policyFor(v)
     val tier = progress.tierFor(v.id) ?: 1
     val achieved = progress.variations[v.id]?.achievedTiers ?: emptySet()
-    val unlocks = policy?.nextVariationIds.orEmpty().mapNotNull { c.variation(it)?.name }
-    val needs = Goals.unmet(c, v.id, progress).map { stringResource(R.string.sheet_step_name, c.variation(it.variationId)?.name ?: it.variationId, it.tier) }
+    val unlocks = policy?.nextVariationIds.orEmpty().mapNotNull { id -> c.variation(id)?.let { id to it.name } }
+    val needs = Goals.unmet(c, v.id, progress).map { it.variationId to stringResource(R.string.sheet_step_name, c.variation(it.variationId)?.name ?: it.variationId, it.tier) }
     val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
     Column(modifier.fillMaxSize().verticalScroll(rememberScrollState()).statusBarsPadding().padding(horizontal = Spacing.l).padding(bottom = Spacing.xl).testTag("exercise_detail"), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -226,7 +254,19 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
             Caption(stringResource(R.string.detail_breadcrumb, familyTitle, tier, 5), Modifier.testTag("detail_breadcrumb"))
         }
         Text(v.name.uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("detail_title"))
-        StarRow(displayStars(c, progress, v.id), size = 22.dp)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            StarRow(displayStars(c, progress, v.id), size = 22.dp)
+            Spacer(Modifier.weight(1f))
+            if (policy != null) AppTextButton(onClick = { editing = !editing }, modifier = Modifier.testTag("detail_edit")) { Text(stringResource(if (editing) R.string.detail_edit_done else R.string.detail_edit)) }
+        }
+        // R7-T11 (D5): set the level by hand; the levels up to the chosen one count as done and the stars follow
+        if (editing && policy != null) Column(Modifier.fillMaxWidth().testTag("detail_edit_panel"), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            Text(stringResource(R.string.detail_edit_hint), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                for (n in 1..5) FilterChip(selected = displayStars(c, progress, v.id) == n, onClick = { onLevelsDone(n) }, label = { Text("$n") }, modifier = Modifier.testTag("detail_set_level_$n"))
+                if (v.id in progress.variations) AppTextButton(onClick = { onLevelsDone(null) }, modifier = Modifier.testTag("detail_set_level_none")) { Text(stringResource(R.string.detail_edit_clear)) }
+            }
+        }
         Row(horizontalArrangement = Arrangement.spacedBy(Spacing.m), verticalAlignment = Alignment.CenterVertically) {
             // the clip stays on its white background in both themes (doc 17)
             Box(Modifier.weight(1f).clip(RoundedCornerShape(12.dp)).background(Color.White)) { DemoClips.file(ctx, v.id)?.let { DemoPlayer(it, controls = false) } }
@@ -247,10 +287,11 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
         // R7-T05 (B9): two "too easy" in a row move you on; the counter shows where you are
         progress.variations[v.id]?.let { Text(stringResource(R.string.detail_too_easy, it.tooEasyCount(), ABOVE_SUGGEST_AFTER), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("detail_too_easy")) }
         if (v.isLoaded()) WeightTrack(v, progress, profile)
-        if (unlocks.isNotEmpty()) { Caption(stringResource(R.string.detail_unlocks)); Text(unlocks.joinToString(), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("detail_unlocks")) }
+        if (unlocks.isNotEmpty()) { Caption(stringResource(R.string.detail_unlocks)); LinkLine("", unlocks, "detail_unlocks", "detail_unlock_", MaterialTheme.colorScheme.onSurface, onOpen) }
         if (needs.isNotEmpty() || !isAvailable(v, profile)) {
             Caption(stringResource(R.string.detail_needs))
-            Text((needs + if (!isAvailable(v, profile)) listOf(missingLabel(v, profile)) else emptyList()).joinToString(), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("detail_needs"))
+            LinkLine("", needs, "detail_needs", "detail_need_", MaterialTheme.colorScheme.onSurface, onOpen)
+            if (!isAvailable(v, profile)) Text(missingLabel(v, profile), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("detail_missing"))
         }
         if (v.cautions.isNotEmpty()) {
             val bg = if (dark) CautionDarkSurface else CautionLightSurface; val br = if (dark) CautionDarkBorder else CautionLightBorder; val tx = if (dark) CautionDarkText else CautionLightText

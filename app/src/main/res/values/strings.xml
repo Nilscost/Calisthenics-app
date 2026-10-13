@@ -103,6 +103,7 @@
     <string name="history_progressions">Progressions</string>
     <string name="history_level_of">Level %1$d of 5</string>
     <string name="history_best">best %1$d%2$s</string>
+    <string name="history_open_exercise">Open exercise</string>
     <string name="history_chart_hint">A line appears after 2 sessions.</string>
     <string name="history_chart_gate">Dashed line: %1$d%2$s in every set moves you up a level. The dots are the lowest set of each workout.</string>
     <string name="history_chart_desc">Lowest set of each workout: %1$s</string>
@@ -333,6 +334,13 @@
     <string name="progress_by_type">By type</string>
     <string name="progress_by_skill">By skill</string>
     <string name="panel_level">Level %1$d of %2$d · now %3$s</string>
+    <string name="panel_unlocks_label">Unlocks:</string>
+    <string name="panel_needs_label">Needs first:</string>
+    <string name="detail_edit">Edit</string>
+    <string name="detail_edit_done">Done</string>
+    <string name="detail_edit_hint">Set your level: the levels up to the one you pick count as done.</string>
+    <string name="detail_edit_clear">Clear</string>
+    <string name="node_needs_note">needs %1$s</string>
     <string name="panel_unlocks">Unlocks: %1$s</string>
     <string name="panel_needs">Needs first: %1$s</string>
     <string name="panel_open_detail">Open exercise detail</string>

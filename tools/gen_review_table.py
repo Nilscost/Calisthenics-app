@@ -13,15 +13,14 @@ CATALOG = ROOT / "app/src/main/assets/catalog.json"
 OUT = ROOT / "docs/review/draft-numbers.md"
 
 TABS = [  # keep in sync with TreeTabs
-    ("Push", ["pushup", "dip", "planche"]),
+    ("Push", ["pushup", "dip", "planche", "vest-push", "vest-dip"]),
     ("Shoulders", ["hspu"]),
-    ("Pull", ["pullup", "lever"]),
-    ("Row", ["row", "kb-row"]),
-    ("Squat", ["squat", "lunge"]),
-    ("Hips and back", ["bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide"]),
+    ("Pull", ["pullup", "lever", "vest-pull"]),
+    ("Row", ["row", "kb-row", "db-row"]),
+    ("Squat", ["squat", "lunge", "db-squat", "bb-squat", "vest-squat"]),
+    ("Hips and back", ["bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide", "db-hinge", "bb-hinge", "db-bridge"]),
     ("Core", ["plank", "plank-tap", "dead-bug", "side-plank", "pallof", "carry", "legraise"]),
     ("Lower legs", ["calf", "tibialis"]),
-    ("With weights", ["db-squat", "bb-squat", "vest-squat", "db-hinge", "bb-hinge", "db-bridge", "db-row", "vest-push", "vest-dip", "vest-pull"]),
 ]
 
 

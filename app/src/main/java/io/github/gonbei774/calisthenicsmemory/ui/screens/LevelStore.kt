@@ -20,5 +20,5 @@ object LevelStore {
         ctx.getSharedPreferences("levels", Context.MODE_PRIVATE).edit().putString("v", Json.encodeToString(ser, m)).apply()
     }
     fun snapshot(catalog: Catalog, levels: Map<String, Int>): ProgressSnapshot =
-        ProgressionEngine(catalog).replay(emptyList(), levels.map { (v, t) -> UserAction.SelfAssessment(0, v, t) })
+        ProgressionEngine(catalog).replay(emptyList(), levels.map { (v, t) -> app.calisthenics.domain.progression.selfAssessmentFor(v, t) })
 }

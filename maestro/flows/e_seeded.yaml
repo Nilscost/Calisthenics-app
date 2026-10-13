@@ -58,7 +58,7 @@ appId: app.calisthenics.personal
 - scrollUntilVisible: { element: { id: "weight_step_.*" }, direction: DOWN, timeout: 8000, optional: true }
 - takeScreenshot: 07c-kettlebell-weights-${VARIANT}
 - tapOn: { id: detail_back }
-# V25: the core tab with the tuck L-sit; V27: the "With weights" tab
+# V25: the core tab with the tuck L-sit; R7-T11: the weighted exercises sit in the movement tabs (no "With weights" tab)
 - repeat:
     while: { notVisible: { id: tab_chip_core } }
     times: 5
@@ -67,12 +67,26 @@ appId: app.calisthenics.personal
 - tapOn: { id: tab_chip_core }
 - takeScreenshot: 07d-progress-core-${VARIANT}
 - repeat:
-    while: { notVisible: { id: tab_chip_weights } }
-    times: 5
+    while: { notVisible: { id: tab_chip_squat } }
+    times: 6
     commands:
-      - swipe: { start: "90%, 20%", end: "10%, 20%" }
-- tapOn: { id: tab_chip_weights }
-- takeScreenshot: 07e-progress-weights-${VARIANT}
+      - swipe: { start: "10%, 20%", end: "90%, 20%" }
+- tapOn: { id: tab_chip_squat }
+- takeScreenshot: 07e-progress-squat-weighted-${VARIANT}
+# R7-T11 (D5, D6, O2): the push tab's planche lean says it needs the plank (a link); the detail has Edit and tappable Needs
+- repeat:
+    while: { notVisible: { id: tab_chip_push } }
+    times: 6
+    commands:
+      - swipe: { start: "10%, 20%", end: "90%, 20%" }
+- tapOn: { id: tab_chip_push }
+- scrollUntilVisible: { element: { id: tree_need_planche-lean }, direction: DOWN, timeout: 8000, optional: true }
+- takeScreenshot: 07f-progress-push-planche-note-${VARIANT}
+- tapOn: { id: tree_need_planche-lean, optional: true }
+- extendedWaitUntil: { visible: { id: detail_edit }, timeout: 8000, optional: true }
+- tapOn: { id: detail_edit, optional: true }
+- takeScreenshot: 07g-detail-edit-${VARIANT}
+- tapOn: { id: detail_back, optional: true }
 # L04: the Row tab (swipe the chip row back)
 - repeat:
     while: { notVisible: { id: tab_chip_row } }

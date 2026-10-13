@@ -130,8 +130,8 @@ fun AppNav(theme: AppTheme = AppTheme.SYSTEM, onTheme: (AppTheme) -> Unit = {}) 
                 onEditProfile = { id -> editId = id; editFrom = Route.TRAIN.route; go(Route.PROFILE_EDIT) })
             Route.PREVIEW -> { BackHandler { go(Route.TRAIN) }; PreviewScreen(m, onBack = { go(Route.TRAIN) }, onStarted = { go(Route.SESSION) }) }
             Route.PROGRESS -> ProgressScreen(m)
-            Route.HISTORY -> HistoryScreen(m, onOpen = { id -> detailId = id; go(Route.HISTORY_DETAIL) })
-            Route.HISTORY_DETAIL -> { BackHandler { go(Route.HISTORY) }; SessionDetailScreen(detailId, m, onBack = { go(Route.HISTORY) }) }
+            Route.HISTORY -> HistoryScreen(m, onOpenExercise = { OpenExercise.request(it); go(Route.PROGRESS) }, onOpen = { id -> detailId = id; go(Route.HISTORY_DETAIL) })
+            Route.HISTORY_DETAIL -> { BackHandler { go(Route.HISTORY) }; SessionDetailScreen(detailId, m, onOpenExercise = { OpenExercise.request(it); go(Route.PROGRESS) }, onBack = { go(Route.HISTORY) }) }
             Route.PRIVACY -> { BackHandler { go(Route.SETTINGS) }; PrivacyScreen(m, onBack = { go(Route.SETTINGS) }) }
             Route.SETTINGS -> SettingsScreen(m, onLevels = { go(Route.ONBOARDING) }, onBackup = { go(Route.BACKUP) }, onLicenses = { go(Route.LICENSES) }, onProfiles = { go(Route.PROFILES) }, onPrivacy = { go(Route.PRIVACY) }, theme = theme, onTheme = onTheme)
             Route.SESSION -> { BackHandler { go(Route.TRAIN) }; SessionScreen(m, onExit = { go(Route.TRAIN) }) }

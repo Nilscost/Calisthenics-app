@@ -25,7 +25,8 @@ fun rememberTrainData(refresh: Int = 0): State<TrainData> {
     LaunchedEffect(refresh) {
         // History unreadable (or no SQLite, as in JVM UI tests) -> keep the self-assessed levels.
         val p = try { ProgressLoader.load(ctx, catalog) } catch (_: Throwable) { null }
-        if (p != null) data.value = data.value.copy(progress = p)
+        // no history database: the self-assessed levels are the progress, re-read so a level edited by hand shows at once (R7-T11)
+        data.value = data.value.copy(progress = p ?: LevelStore.snapshot(catalog, LevelStore.load(ctx)))
     }
     return data
 }

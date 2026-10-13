@@ -11,6 +11,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.screens.LevelStore
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -49,6 +50,47 @@ class ProgressScreenTest {
         rule.onNodeWithTag("tree_node_pushup-standard").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
         rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("detail_too_easy").assertTextEquals("Too easy: 0 of 2")
+    }
+
+    private fun openDetailOf(id: String) {
+        rule.onNodeWithTag("tree_node_$id").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
+        rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
+    }
+
+    // R7-T11 (D5): Edit mode sets the level by hand; V-up at level 3 shows 3 stars
+    @Test fun editModeSetsTheLevelByHandAndTheStarsFollow() {
+        show()
+        rule.onNodeWithTag("tab_chip_core").performScrollTo().performClick(); rule.waitForIdle()
+        openDetailOf("v-up")
+        rule.onNodeWithTag("detail_edit").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_set_level_3").performClick(); rule.waitForIdle()
+        assertEquals(3, io.github.gonbei774.calisthenicsmemory.ui.screens.LevelStore.load(ctx).let { app.calisthenics.domain.progression.selfAssessmentFor("v-up", it["v-up"]!!).achievedUpTo })
+        rule.waitUntil(5_000) { runCatching { rule.onNodeWithTag("detail_level_4").assertTextContains("NOW", substring = true, ignoreCase = true) }.isSuccess }   // the progress is re-read in the background
+        rule.onNodeWithTag("detail_level_4").assertTextContains("NOW", substring = true, ignoreCase = true)
+        rule.onNodeWithTag("detail_level_3").assertTextContains("DONE", substring = true, ignoreCase = true)
+    }
+
+    // R7-T11 (D6): Needs and Unlocks open that exercise; Back returns to the previous detail (a stack)
+    @Test fun needsAndUnlocksAreLinksAndBackWalksTheStack() {
+        show()
+        openDetailOf("pushup-standard")
+        rule.onNodeWithTag("detail_title").assertTextContains("Standard Push-Up", substring = true, ignoreCase = true)
+        val next = rule.onAllNodes(hasTestTag("detail_unlocks")).fetchSemanticsNodes().size
+        assertEquals(1, next)
+        rule.onNodeWithTag("detail_unlock_pushup-feet-elevated", useUnmergedTree = true).performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_title").assertTextContains("Feet-Elevated", substring = true, ignoreCase = true)
+        rule.onNodeWithTag("detail_back").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_title").assertTextContains("Standard Push-Up", substring = true, ignoreCase = true)
+        rule.onNodeWithTag("detail_back").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_title").assertDoesNotExist()
+    }
+
+    // R7-T11 (O2): the planche lean tile says it needs the plank, and tapping it opens the plank
+    @Test fun plancheLeanNeedsPlankIsATappableNote() {
+        show()
+        rule.onNodeWithTag("tree_need_planche-lean", useUnmergedTree = true).performScrollTo().assertTextContains("Plank", substring = true)
+        rule.onNodeWithTag("tree_need_planche-lean", useUnmergedTree = true).performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_title").assertTextContains("Plank", substring = true, ignoreCase = true)
     }
 
     @Test fun theGoalPicksTheFamilyTabAndOutlinesItsChain() {

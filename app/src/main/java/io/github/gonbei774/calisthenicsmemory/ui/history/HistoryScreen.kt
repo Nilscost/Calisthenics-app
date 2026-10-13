@@ -50,7 +50,7 @@ private val dateFmt: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(Forma
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, today: LocalDate = LocalDate.now(), onOpen: (String) -> Unit) {
+fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, today: LocalDate = LocalDate.now(), onOpenExercise: (String) -> Unit = {}, onOpen: (String) -> Unit) {
     val ctx = LocalContext.current
     val src = source ?: remember { RoomHistorySource(ctx) }
     val zone = remember { ZoneId.systemDefault() }
@@ -138,6 +138,7 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
                                 val gate = tier?.let { t -> catalog.policyFor(v)?.tiers?.firstOrNull { it.index == t }?.target?.value }
                                 LowestSetChart(pts.takeLast(12).map { it.lowest }, gate, Modifier.fillMaxWidth().height(160.dp).testTag("chart_$vid"))
                                 if (pts.size < 2) Text(stringResource(R.string.history_chart_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("chart_hint_$vid"))
+                                io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton(onClick = { onOpenExercise(vid) }, modifier = Modifier.testTag("open_exercise_$vid")) { Text(stringResource(R.string.history_open_exercise)) }
                                 if (gate != null) Text(stringResource(R.string.history_chart_gate, gate, unit), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
@@ -185,7 +186,7 @@ private fun LowestSetChart(values: List<Int>, gate: Int?, modifier: Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source: HistorySource? = null, onBack: () -> Unit) {
+fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source: HistorySource? = null, onOpenExercise: (String) -> Unit = {}, onBack: () -> Unit) {
     val ctx = LocalContext.current
     val src = source ?: remember { RoomHistorySource(ctx) }
     val scope = rememberCoroutineScope()
@@ -217,7 +218,7 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
                     Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                             io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(d.variationId, name, 48.dp)
-                            Text(name, style = MaterialTheme.typography.titleMedium)
+                            Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f).heightIn(min = 48.dp).wrapContentHeight(Alignment.CenterVertically).clickable { onOpenExercise(d.variationId) }.testTag("open_exercise_${d.variationId}"))
                         }
                         RoundEditor(
                             d.target, rounds.map { EditorRound(it.blockId, it.round, it.side, it.value, it.corrected) }, sets = s.plan.format != app.calisthenics.domain.model.WorkoutFormat.CIRCUIT,
