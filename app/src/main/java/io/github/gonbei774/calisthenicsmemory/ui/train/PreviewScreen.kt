@@ -397,14 +397,14 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     }
     coolSwap?.let { idx ->
         val current = (result as? PlanResult.Ready)?.plan?.blocks?.filter { it.type == BlockType.COOLDOWN }?.mapNotNull { it.variationId }?.distinct().orEmpty()
-        StretchPickerSheet(title = R.string.preview_pick_stretch, options = stretchChoices(data.catalog, profile).filter { it.id !in current || it.id == current.getOrNull(idx) }, autoLabel = false, onDismiss = { coolSwap = null }) { pick ->
+        StretchPickerSheet(title = R.string.preview_pick_cooldown, options = stretchChoices(data.catalog, profile).filter { it.id !in current || it.id == current.getOrNull(idx) }, autoLabel = false, onDismiss = { coolSwap = null }, hint = R.string.preview_pick_cooldown_hint) { pick ->
             if (pick != null && idx < current.size) edits = edits.copy(cooldownStretches = current.toMutableList().also { it[idx] = pick })
             coolSwap = null
         }
     }
     if (coolAdd) {
         val current = (result as? PlanResult.Ready)?.plan?.blocks?.filter { it.type == BlockType.COOLDOWN }?.mapNotNull { it.variationId }?.toSet().orEmpty()
-        StretchPickerSheet(title = R.string.preview_pick_stretch, options = stretchChoices(data.catalog, profile).filter { it.id !in current }, autoLabel = false, onDismiss = { coolAdd = false }) { pick ->
+        StretchPickerSheet(title = R.string.preview_pick_cooldown, options = stretchChoices(data.catalog, profile).filter { it.id !in current }, autoLabel = false, onDismiss = { coolAdd = false }, hint = R.string.preview_pick_cooldown_hint) { pick ->
             if (pick != null) edits = edits.copy(cooldownAdded = (edits.cooldownAdded - pick) + pick, cooldownRemoved = edits.cooldownRemoved - pick)
             coolAdd = false
         }
@@ -495,11 +495,11 @@ private fun SwapItem(o: ExerciseVariation, catalog: Catalog, current: Boolean, o
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun StretchPickerSheet(title: Int, options: List<ExerciseVariation>, autoLabel: Boolean, onDismiss: () -> Unit, onPick: (String?) -> Unit) {
+private fun StretchPickerSheet(title: Int, options: List<ExerciseVariation>, autoLabel: Boolean, onDismiss: () -> Unit, hint: Int = R.string.preview_pick_stretch_hint, onPick: (String?) -> Unit) {
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         Column(Modifier.padding(horizontal = Spacing.l).padding(bottom = Spacing.xl).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(stringResource(title), style = MaterialTheme.typography.titleLarge)
-            Text(stringResource(R.string.preview_pick_stretch_hint), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(stringResource(hint), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             if (autoLabel) ListItem(headlineContent = { Text(stringResource(R.string.preview_automatic)) }, modifier = Modifier.clickable { onPick(null) }.testTag("break_option_auto"))
             options.forEach { o ->
                 ListItem(headlineContent = { Text(o.name) }, leadingContent = { io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(o.id, o.name, 44.dp) }, modifier = Modifier.clickable { onPick(o.id) }.testTag("break_option_${o.id}"))

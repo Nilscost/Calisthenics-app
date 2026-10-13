@@ -43,7 +43,7 @@ appId: app.calisthenics.personal
 - takeScreenshot: 02g-cooldown-removed-${VARIANT}
 - scrollUntilVisible: { element: { id: cooldown_add }, direction: DOWN, timeout: 8000 }
 - tapOn: { id: cooldown_add }
-- extendedWaitUntil: { visible: "Stretch after this exercise", timeout: 5000 }
+- extendedWaitUntil: { visible: "Cool-down stretch", timeout: 5000 }
 - takeScreenshot: 02h-cooldown-add-sheet-${VARIANT}
 - back
 - scrollUntilVisible: { element: { id: timeline_toggle }, direction: DOWN, timeout: 10000 }

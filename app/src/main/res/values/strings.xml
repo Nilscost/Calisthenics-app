@@ -214,6 +214,8 @@
     <string name="preview_automatic">Automatic</string>
     <string name="preview_other_types">Other types</string>
     <string name="preview_cooldown_remove">Remove %1$s from the cool-down</string>
+    <string name="preview_pick_cooldown">Cool-down stretch</string>
+    <string name="preview_pick_cooldown_hint">Used once, after the last set. Stretches already in the cool-down are not listed.</string>
     <string name="preview_same_family">Same family: %1$s</string>
     <string name="preview_other_hint">Another movement type is not the same movement: you will be asked to confirm before starting.</string>
     <string name="preview_levels_line">5 levels: %1$d to %2$d %3$s</string>
