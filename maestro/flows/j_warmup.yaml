@@ -15,8 +15,8 @@ appId: app.calisthenics.personal
 - takeScreenshot: 03-warmup-activate-${VARIANT}
 # R7-T01 (B2, B3): a hold under the RR's 10-30 s range shows "30 s", the logger starts at 30, and so does the end editor.
 - repeat:
-    while: { notVisible: "Dip Support Hold" }
-    times: 60
+    while: { notVisible: { id: session_target, text: "30 s" } }
+    times: 80
     commands:
       - tapOn: { id: session_skip }
 - takeScreenshot: 04-dip-hold-block-${VARIANT}

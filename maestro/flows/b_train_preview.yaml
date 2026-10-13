@@ -21,9 +21,9 @@ appId: app.calisthenics.personal
 - tapOn: { id: "level_plus_.*", index: 0 }
 - takeScreenshot: 02b-preview-set2-level-${VARIANT}
 - tapOn: { id: "add_after_.*", index: 0 }
-- extendedWaitUntil: { visible: { id: add_cat_push }, timeout: 5000 }
+- extendedWaitUntil: { visible: "Add to the workout", timeout: 5000 }
 - takeScreenshot: 02c-add-sheet-${VARIANT}
-- tapOn: { id: add_cat_push }
+- tapOn: "Push"
 - takeScreenshot: 02c2-add-sheet-push-${VARIANT}
 - back
 # V21: the progression rule picker (Rep range shows ranges and three sets), then back to App levels

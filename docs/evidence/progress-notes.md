@@ -535,3 +535,67 @@ Done against doc 17 and the review of V12–V23 (`docs/evidence/ui/V12-V27-revie
 ### L13 — calves and tibialis mini-ladder (2026-10-10)
 - Tab **Lower legs**: `calf-raise` → `calf-raise-single` → `calf-raise-single-loaded` (the 2.5 kg dumbbells as load; it is a loaded exercise with a weight track, so a heavier dumbbell restarts it at level 1 like the kettlebell) and `tibialis-raise` → `tibialis-raise-single` (wall). All on tier profile **E** (15 / 18 / 20 / 22 / 25 reps; "2–4 × 15–25" sourced for the tibialis raise, the steps between DRAFT). Achilles and shin-pain cautions. Five clips (both ladders weak in the side view, see `clips-v3-review.md`).
 - Tests `StarterCatalogTest.l13CalvesAndTibialisUseTheEnduranceProfileAndTheDumbbellsAsLoad`; count 117; debug seed regenerated. Verify exit 0 (`docs/evidence/l13-verify-2026-10-10.log`). `e_seeded` gets a Lower legs tab shot.
+
+## R7 (0.10.0-r7, from the owner's phone feedback of 2026-10-12; plan `docs/18-r7-plan.md`, handoff `docs/19-r7-executor-handoff.md`)
+Process notes for the whole batch: every task was verified in the Hermes container (`docker exec hermes-f5da05b7 ...`, build tree synced from the Mac checkout) with the full verify command, exit 0, log `docs/evidence/r7-tNN-verify-2026-10-13.log`. The CI job `verify` (android.yml) fails before it builds, at `tools/preflight.py`, because of "machine path" findings in the clip track's files (`tools/blender/HAIKU-TASK.md`, `tools/blender/POSES.md`, `tools/gen_clips_ai.py`); that is not R7 code and was reported to the coordinator. ui-screens ran once per task through a `ui-check/r7-tNN` branch plus a workflow dispatch, because a push to `main` cancels the previous main run (including the clip track's pushes). Nothing was tested on a phone.
+
+### R7-T01 — hold targets and logger defaults (B2, B3)
+- `Target.shownValue()` (= `max ?: value`) in `:domain`; `targetLabel`, `LoggerState` and `RoundEditor` use it. A hold under the Recommended Routine reads "30 s"; the logger and the end editor start at 30. Rep ranges still read "5–8 reps" on the card; the logger starts at the top. `ruleMet` is unchanged.
+- Tests: `TargetShownValueTest`, `SessionScreenTest.aSupportHoldUnderTheRecommendedRoutineShowsThirtySecondsAndPrefillsThirty`; flow `j_warmup` (dip hold block, logger, end editor).
+- **NOT done:** none. **Choice not in the plan:** the flow waits for the hold to run to its end (a DONE before the target makes it partial and it is not in the end editor); the first version of the flow failed on that, fixed in `a683ea0`.
+
+### R7-T02 — DONE in breaks, readable captions, headers (B4, B5, B6)
+- DONE on any non-work block saves the pending log and sends skip (`logger_done` with a logger, new tag `break_done` without). Caption is `titleMedium` in the on-background colour and a stretch block reads "STRETCH · <name>". Header kinds WARMUP and COOLDOWN count only their own blocks (a 5 s get-ready inside them reads like the block it leads to).
+- Tests: `SessionScreenTest` (break DONE with and without logger, caption, warm-up header), `HeaderTest.warmupAndCooldownCountOnlyTheirOwnBlocks` (**replaces** `warmupBlocksWithoutASetAreSteps`: a warm-up block is no longer "step n of N"). Flow `c_session`.
+- **NOT done:** none.
+
+### R7-T03 — rep logging on the exercise screen (D3)
+- Rep work blocks carry the − number + stepper (pre-filled per T01) and a "Too easy" chip; DONE saves the number, then ends the set. Holds keep logging on the following break. The break logger no longer shows for reps, and the old "Logged: N · Change" fold is gone (DONE now moves on).
+- Tests: `SessionScreenTest` rewritten around the work-block logger and a hold plan; `PolishTest`; flows `c_session`, `f_pairs`.
+- **NOT done:** "Too hard" and "Pain" stay on the end screen (as the owner decided in doc 17).
+
+### R7-T04 — questionnaire at or beyond the top level (B1)
+- `StartLevel.completed` (answer **above** the top target, `exceedsLadder`); stored as tier 6 (`ALL_TIERS_DONE`); the engine marks all steps achieved (5 stars) and makes `nextVariationIds` first available successor active at level 1. Applies to every exercise. The summary page says "All steps done · the next exercise starts at level 1".
+- Tests: `QuestionnaireTopLevelTest` (plank 60 s → 5 stars + successor; 50 s → level 5, 4 stars).
+- **Choice not in the plan:** the task text says "at or above the top" but also "50 s gives level 5, 4 stars, as today"; strictly above (`exceedsLadder`) satisfies both. **NOT done:** no Maestro step types a number above the top (the page change is one text line).
+
+### R7-T05 — "Too easy" and suggestions (B9)
+- At the top level two consecutive "Too easy" suggest the next exercise (`Suggestion.NextExercise`, accept = new `UserAction.AcceptNextExercise`) or, for loaded exercises, the next weight step. The detail shows "Too easy: n of 2"; each new pair has a new suggestion id, so a closed card returns when the count reaches 2 once more.
+- Tests: `SuggestionsTest` (5 new), `TooEasyTest`, `ProgressScreenTest.theDetailShowsTheTooEasyCounter`.
+- **Choice:** the counter shows 1 or 2 (a third in a row starts the next pair at 1).
+
+### R7-T06 — Progressions chart and corrections (B7, B8)
+- `effectiveSetSeries`: as-planned sets count as their target (the top of a range), corrections applied, holds in seconds; points 14 dp with value labels; hint "A line appears after 2 sessions"; History reloads progress after the sessions reload.
+- Tests: `HistoryStatsTest` (4), `HistorySettingsTest.oneSessionShowsTheHintAndAsPlannedSetsCountAsTheTarget`.
+- **Choice:** "as planned" under a range uses the top (what the logger pre-filled). The progression engine still judges the bottom for unlogged sets (unchanged).
+
+### R7-T07 — clip cache (B10)
+- `DemoClips.cachedClip`: file name `<id>-<versionCode>-<assetSize>.mp4`, the first run of a new version clears the folder. Test with a temp dir (`DemoClipsCacheTest`, 4).
+
+### R7-T08 — exercises per round (D1)
+- `TrainSettings.exercisesPerRound`, `SavedRoutine.exercisesPerRound`; `withDefaultLength` fills a body part or skill to 30 minutes (`SessionLength.kt`: fillers one family at a time by movement type per area, then other exercises of the same movements, never one twice). Saved or ready-made routines, stretch sessions and hand-edited lists keep their own list. The Preview freezes the count when it opens; saving a routine keeps the filled list.
+- Tests: `SessionLengthTest` (7), `TrainScreenTest.exercisesPerRoundStepperDefaultsToThirtyMinutesAndCanBeChanged`; flow `b_train_preview`. `StarterPlanTest` was **not** changed (it calls `generate` directly).
+- **NOT done / limits:** with a small equipment profile the pool of fillers ends before 30 minutes (home, upper body, 3 rounds reaches 33 min at 6 exercises; core with a bar-less profile stops at about 19 min at 3 rounds). The train settings (shared preferences) were never part of the backup; saved routines (which carry the count) are. Hand "keep for next time" swaps of a filler exercise are not persisted.
+
+### R7-T09 — skill sessions (D2, B11)
+- `Goals.skillExercises`: the chain's current step (once unlocked or started), else its unmet prerequisites (also from other tabs, recursively to what the person can train), then each supporting chain's step (`Goal.supports`, DRAFT, curated per skill); `routineFor` builds the session from these (slot ids `goal`, `skill-2`...), fillers come from the areas those exercises use. The stale planner warning is removed; Train shows "For <skill>: ...".
+- Tests: `GoalsTest` (**replaces** `goalSlotReplacesTheMatchingBaseSlotAndKeepsTheRest`: a skill no longer swaps one base slot), `TrainPlanTest.changingTheSkillChangesThePlanAndTheStaleWarningIsGone`.
+- **Choice:** the supporting chains per skill are my list (front lever: hollow hold, wide row, pull-up; handstand: plank, dips; ...), to be reviewed with the other DRAFT content. No Maestro step for the skill line.
+
+### R7-T10 — Preview (D4, D11, D12, O1)
+- The Detailed-edit switch is gone; the Full timeline lists every set with a set-number badge and the same tiles. Add sheet: category chips (the Progress tab names, plus Stretches), then that list. Under a range rule the tile stepper swaps along the chain ("Exercise 2 of 6") and the note "Rep range: all sets at the top → next exercise" shows.
+- Tests: `PreviewScreenTest` (add by category, timeline, range stepper). **Choice:** level, swap and remove still apply to the exercise in all sets (the planner keys them by slot); the number and the stretch are per set.
+
+### R7-T11 — Progress (D5, D6, D7, O2, O3)
+- Edit mode sets "levels 1..n done" (stored 10+n, 5 = ladder done), stack of detail pages (Back walks it), Needs/Unlocks links (also in the node panel), `OpenExercise` request from History, "With weights" tab removed (weighted exercises in their tabs; Push is 4 columns wide, Squat 5, the tree scrolls sideways; the width test now allows 5), planche lean "needs Plank" note. `tools/gen_review_table.py` and `docs/review/draft-numbers.md` regenerated.
+- Tests: `SkillTreeTest` (weighted placement, hand-set level), `ProgressScreenTest` (edit, link stack, planche note). **Choice:** the level chosen by hand counts itself as done (level 3 = 3 stars, level 4 is trained next), following the test sentence "V-up at level 3 gives 3 stars".
+- **NOT done:** Back from an exercise opened from History returns to the Progress list, not to History.
+
+### R7-T12 — content (D8, D9)
+- The planner now allows deep stretches between sets (only opt-in ones stay out) and a stretch gets `max(window, own time)`, per side when one-sided; deep stretches carry 45–60 s. Jefferson curl (Hips and back, after the bodyweight RDL) and German hang (Pull, after the dead hang) with "Pay attention to" cautions in a new light-red box (detail and workout screen). Catalog regenerated and copied; debug seed regenerated (plans changed).
+- Tests: `StretchUseTest` (the old "never cool-down-only between sets" test is **replaced**), `StarterCatalogTest` (the "≤30 s between sets" rule is now split: gentle ≤30 s, deep 45–60 s; counts 119; new Jefferson/German test; `dead-hang` has two successors), `ClipAssetsTest` (the two have no clip/thumbnail of their own).
+- **NOT done:** clips for the two: the app shows the closest existing clip (`ClipAlias`: Romanian deadlift, dead hang; `SHARED_POSES` in `tools/gen_demo_clips_v3.py`), `clip_meta.json` has entries. No source is cited for either exercise (the catalog source tag is the generic wiki one); the numbers are product heuristics.
+
+### R7-T13 — cool-down (D10)
+- Train switch and mode (Stretching / Timed), `TrainSettings` + saved routines carry it; Stretching picks stretches the session's exercises list (deep ones allowed), most shared first, to about 5 minutes (never over 8); Timed is one block with no clip and a breathing cue, default 5 min; the Preview shows the cool-down (swap a stretch, − / + minutes via `PlanEdits`). Header COOL-DOWN n OF N (T02).
+- Tests: `CooldownTest` (5), Train and Preview tests, flow `b_train_preview`. **Choice:** the timed block has no catalog item (it is a `COOLDOWN` block without exercise, title "Relax").
