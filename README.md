@@ -15,6 +15,8 @@ I built it as the product owner. AI coding agents wrote most of the code; I set 
 - **History:** a week view and per-workout details, with corrections saved as new revisions so nothing is overwritten.
 - **Data:** checksummed backup and restore, crash-safe workout recovery, and a schema-checked database with no destructive migrations.
 
+**Version 2 (release R7, 0.10.0-r7):** R7 adds, on top of R6, rep logging on the exercise screen, an exercises-per-round stepper (sessions of at least 30 minutes), skill sessions built around the skill, a full-timeline editor, an Edit mode and links in Progress, Jefferson curl and German hang, and a cool-down switch; see `docs/evidence/owner-check-r7.md`. Nothing has been tested on a phone and the exercise content is an unreviewed draft.
+
 **Version 2 (release R6, 0.9.0-r6):** a redesigned Train and workout screen, a round preview you can edit (levels, stretches, per-set numbers), three workout formats (circuit, pairs, straight sets), progression rules (levels or rep ranges), saved routines and the ready-made Recommended and Minimalist routines, an optional warm-up, History charts, weight tracks and suggestions for extra equipment, a 24-stretch library with a "Starting To Stretch" session, a RAMP warm-up and the Barlow Condensed and IBM Plex Sans type. See `STATUS.md` and `docs/evidence/owner-check-final.md`. Exercise content is still an unreviewed draft and nothing has been tested on a phone yet.
 
 ## How the project was run
