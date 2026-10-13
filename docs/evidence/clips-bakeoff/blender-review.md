@@ -253,3 +253,22 @@ Method: for each id, a sheet of `start.png` and the frames at 25 %, 50 % and 75 
 - `weighted-squat` — **OK (known limit)** — squat to depth with the weight at the chest.
 - `towel-door-row` — **OK** — leaning back from the door edge, pulling to the chest; the door no longer hides the figure.
 - `wall-handstand-hold` — **OK** — belly toward the wall, body vertical, hands on the floor; the wall stays behind the figure.
+
+## Addendum — the 11 outstanding clips and `stretch-lat-wall`, rendered on the owner's Mac (2026-10-13, 18:42)
+
+`render-summary.txt` (18:42): 12 rendered, 142 already done, 0 failed (the twelfth is `stretch-lat-wall`, whose camera I changed at about 18:20). Every frame set is newer than its `joints.json`. Same method as above: start frame plus 25 %, 50 % and 75 %.
+
+- `calf-raise-single-loaded` — **OK** — the figure is visible beside the wall with a hand on it; the wall no longer hides the body. The heel-raise motion is small.
+- `german-hang` — **OK (shallow, foot-supported version)** — hands on a bar behind the body, shoulders extended, feet on the floor. The pose file deliberately shows the easier foot-supported hold, not the full inverted German hang.
+- `hspu-wall` — **OK** — handstand on a pad facing the wall, head lowering toward the pad and back; the figure is readable beside the wall.
+- `hspu-wall-negative` — **OK** — same set-up, slow lowering; the descent reads.
+- `jefferson-curl` — **OK** — standing, then rolling down one vertebra at a time to a hanging fold, hands toward the floor.
+- `pushup-wall` — **OK** — hands on the wall at chest height, straight body line at a slant, elbows bending.
+- `stretch-ankle-mobility` — **OK** — front knee driving toward the wall with the heel down, rear foot planted.
+- `stretch-calf-wall` — **OK** — hands on the wall, rear leg straight with the heel down; the figure is clear.
+- `stretch-chest-door` — **OK** — forearm on the door frame, body turning away; the doorway is an open frame and does not hide the figure.
+- `stretch-cobra` — **OK** — chest lifts with the pelvis on the floor and the arms pressing; reads as a cobra now.
+- `stretch-hamstring-standing` — **OK** — front heel forward, trunk hinging with the front leg nearly straight.
+- `stretch-lat-wall` — **OK** — after the camera change the figure shows beside the wall: hands on the wall, trunk near horizontal, feet back.
+
+Totals after this review: all 154 ids accepted. Known limits are unchanged.
