@@ -7,6 +7,7 @@
 set -uo pipefail
 APK="$1"; OUT="$2"; ROOT=$(pwd); PKG=app.calisthenics.personal
 export MAESTRO_CLI_NO_ANALYTICS=1
+# FLOWS (default: all) is a glob over maestro/flows names, e.g. FLOWS=j_warmup, for debugging a single flow.
 # VARIANTS (default: all three) lets CI run one variant per job; the results file is then results-<variant>.txt.
 VARIANTS="${VARIANTS:-light dark font13}"
 RES="$OUT/results.txt"; [ "$VARIANTS" = "light dark font13" ] || RES="$OUT/results-${VARIANTS// /_}.txt"
@@ -33,7 +34,7 @@ for variant in $VARIANTS; do
   adb shell input keyevent KEYCODE_HOME
   sleep 3
   # Flows run in file order; a_* starts from a fresh install (clearState), the others continue from it.
-  for flow in maestro/flows/*.yaml; do
+  for flow in maestro/flows/${FLOWS:-*}.yaml; do
     name=$(basename "$flow" .yaml)
     mkdir -p "$OUT/$name"
     # Optional hook before a flow (maestro/hooks/<flow>.pre.sh), e.g. the debug seed for e_seeded.

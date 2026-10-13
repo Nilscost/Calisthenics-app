@@ -10,9 +10,9 @@ URL="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 for attempt in 1 2 3 4 5 6; do
   W=$(mktemp -d)
   if git ls-remote --exit-code --heads "$URL" ui-shots > /dev/null; then
-    git clone -q --depth 1 --branch ui-shots "$URL" "$W"
+    git clone -q --depth 1 --branch ui-shots "$URL" "$W"; LEASE=$(git -C "$W" rev-parse HEAD)
   else
-    git init -q "$W"; git -C "$W" checkout -q --orphan ui-shots
+    git init -q "$W"; git -C "$W" checkout -q --orphan ui-shots; LEASE=''
   fi
   # Parallel matrix jobs publish into the same <sha>/ folder: merge, never wipe.
   mkdir -p "$W/$SHA"; cp -R "$SRC"/. "$W/$SHA/"
@@ -44,7 +44,7 @@ PY
   git checkout -q --orphan publish
   git add -A
   git -c user.name="ui-screens" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -q -m "ui-shots: $SHA ($REF)"
-  if git push -q -f "$URL" publish:ui-shots; then echo "published $SHA"; exit 0; fi
+  if git push -q --force-with-lease="ui-shots:$LEASE" "$URL" publish:ui-shots; then echo "published $SHA"; exit 0; fi
   cd /; rm -rf "$W"; sleep $((attempt * 5 + RANDOM % 10))
 done
 echo "could not publish"; exit 1

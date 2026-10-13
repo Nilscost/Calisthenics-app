@@ -5,7 +5,8 @@ appId: app.calisthenics.personal
 - runFlow: ../common/dismiss_system_dialogs.yaml
 - extendedWaitUntil: { visible: { id: train_start_button }, timeout: 15000 }
 - tapOn: { id: objective_type_ROUTINE }
-- extendedWaitUntil: { visible: { id: warmup_switch }, timeout: 10000 }
+# the switch is below the fold (and further down with a larger font)
+- scrollUntilVisible: { element: { id: warmup_switch }, direction: DOWN, timeout: 10000 }
 - takeScreenshot: 01-train-recommended-warmup-${VARIANT}
 - tapOn: { id: train_start_button }
 - extendedWaitUntil: { visible: { id: session_note }, timeout: 20000 }
@@ -13,13 +14,12 @@ appId: app.calisthenics.personal
 - tapOn: { id: session_skip }
 - extendedWaitUntil: { visible: { id: session_note }, timeout: 10000 }
 - takeScreenshot: 03-warmup-activate-${VARIANT}
-# R7-T01 (B2, B3): a hold under the RR's 10-30 s range shows "30 s", the logger starts at 30, and so does the end editor.
+# The first hold block of the session (the RR no longer starts with the dip hold for a top-level start). R7-T01 (B2, B3): a hold under the RR's 10-30 s range shows "30 s", the logger starts at 30, and so does the end editor.
 - repeat:
-    while: { notVisible: { text: "Dip Support Hold" } }
-    times: 120
+    while: { notVisible: { id: session_target, text: "\\d+ s" } }
+    times: 150
     commands:
       - tapOn: { id: session_skip }
-- extendedWaitUntil: { visible: { id: session_target, text: "30 s" }, timeout: 10000 }
 - takeScreenshot: 04-dip-hold-block-${VARIANT}
 # the hold runs to its end (a DONE before the target would make it partial and it would not appear in the end editor)
 - extendedWaitUntil: { visible: { id: logger }, timeout: 60000 }
@@ -29,7 +29,7 @@ appId: app.calisthenics.personal
 - tapOn: "End workout"
 - extendedWaitUntil: { visible: { id: end_title }, timeout: 10000 }
 - tapOn: { id: end_edit }
-- scrollUntilVisible: { element: { id: "end_fix_dip-support-hold" }, direction: DOWN, timeout: 8000 }
+- scrollUntilVisible: { element: { id: "end_fix_.*" }, direction: DOWN, timeout: 8000 }
 - takeScreenshot: 06-end-editor-dip-hold-${VARIANT}
 - tapOn: { id: end_done }
 - extendedWaitUntil: { visible: { id: objective_type_BODY_PART }, timeout: 15000 }

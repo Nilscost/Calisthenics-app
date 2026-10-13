@@ -11,8 +11,12 @@ appId: app.calisthenics.personal
 - tapOn: { id: exercises_plus }
 # R7-T13 (D10): the cool-down switch with its modes, then the Preview shows it
 - scrollUntilVisible: { element: { id: cooldown_switch }, direction: DOWN, visibilityPercentage: 100, centerElement: true, timeout: 8000 }
-- tapOn: { id: cooldown_switch }
-- scrollUntilVisible: { element: { id: cooldown_mode_STRETCHING }, direction: DOWN, visibilityPercentage: 100, centerElement: true, timeout: 8000 }
+# idempotent: the retry after a failed first attempt starts with the switch already on
+- runFlow:
+    when: { notVisible: { id: cooldown_mode_STRETCHING } }
+    commands:
+      - tapOn: { id: cooldown_switch }
+- extendedWaitUntil: { visible: { id: cooldown_mode_STRETCHING }, timeout: 8000 }
 - takeScreenshot: 01c-train-cooldown-${VARIANT}
 - tapOn: { id: preview_button }
 - extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
