@@ -6,7 +6,7 @@
 
 Start image = the Blender start frame (work/clips-bakeoff/<id>/blender/start.png),
 sent as BOTH first and last frame so the clip loops. The key is read from
-/Users/nils/Documents/hermes/.secrets/openrouter_key and never printed. Calls
+the workspace .secrets/openrouter_key file (or OPENROUTER_KEY_FILE) and never printed. Calls
 go direct (no egress proxy: it rejects OpenRouter). Stops when the bake-off
 has spent BUDGET dollars (OpenRouter /key usage, measured from the first run).
 Raw clips: work/clips-bakeoff/<id>/ai/raw-<model>-<n>.mp4; one manifest row
@@ -27,7 +27,8 @@ from PIL import Image
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORK = os.path.join(ROOT, "work", "clips-bakeoff")
 EVID = os.path.join(ROOT, "docs", "evidence", "clips-bakeoff")
-KEY_FILE = "/Users/nils/Documents/hermes/.secrets/openrouter_key"
+KEY_FILE = os.environ.get("OPENROUTER_KEY_FILE",
+                          os.path.join(os.path.dirname(os.path.dirname(ROOT)), ".secrets", "openrouter_key"))
 API = "https://openrouter.ai/api/v1"
 BUDGET = 30.0
 OPENER = urllib.request.build_opener(urllib.request.ProxyHandler({}))

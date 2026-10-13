@@ -57,7 +57,7 @@ Rules:
 
 ## 3. Check: text only
 ```
-cd /Users/nils/Documents/hermes/Apps/calisthenics && source /root/toolchain/env.sh && export PYTHONDONTWRITEBYTECODE=1
+cd <repo-root> && source /root/toolchain/env.sh && export PYTHONDONTWRITEBYTECODE=1
 python3 tools/blender/poses.py <id> [<id> ...] --describe
 ```
 For each id it prints `OK` or problems, then 4 moments (t = 0, 0.25, 0.5, 0.75). Each moment lists:

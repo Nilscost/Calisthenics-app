@@ -10,7 +10,7 @@ Every exercise clip in the app is rendered from **joint motion that you write in
 
 ## Commands (sandbox)
 ```
-cd /Users/nils/Documents/hermes/Apps/calisthenics
+cd <repo-root>
 source /root/toolchain/env.sh
 export PYTHONDONTWRITEBYTECODE=1
 python3 tools/blender/poses.py <id> [<id> ...] --preview /workspace/pv-<group>   # writes joints.json + a PNG sheet per id
