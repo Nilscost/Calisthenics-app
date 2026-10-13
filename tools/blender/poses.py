@@ -358,6 +358,32 @@ def checks(data):
     return out
 
 
+def _angle(a, b, c):
+    u, v = sub(a, b), sub(c, b)
+    return math.degrees(math.acos(max(-1.0, min(1.0, dot(u, v) / (norm(u) * norm(v) + 1e-9)))))
+
+
+def describe(data, moments=(0.0, 0.25, 0.5, 0.75)):
+    """Text check of a clip, for reviewing poses without images."""
+    out = []
+    fr_all = data["frames"]
+    for m in moments:
+        f = fr_all[int(m * len(fr_all)) % len(fr_all)]
+        on_floor = [j for j in ("toe_l", "toe_r", "ankle_l", "ankle_r", "knee_l", "knee_r", "hand_l", "hand_r",
+                                "wrist_l", "wrist_r", "elbow_l", "elbow_r", "pelvis", "chest", "head")
+                    if f[j][2] - RADIUS.get(j, 0.0) < 0.05]
+        up = f["chest_up"]
+        trunk = math.degrees(math.atan2(math.hypot(up[0], up[1]), up[2]))
+        out.append(
+            f"  t={m:.2f} pelvis z={f['pelvis'][2]:.2f} x={f['pelvis'][0]:+.2f} | head z={f['head'][2]:.2f} | "
+            f"trunk {trunk:.0f} deg from vertical | knee L/R {_angle(f['hip_l'], f['knee_l'], f['ankle_l']):.0f}/"
+            f"{_angle(f['hip_r'], f['knee_r'], f['ankle_r']):.0f} | elbow L/R "
+            f"{_angle(f['shoulder_l'], f['elbow_l'], f['wrist_l']):.0f}/{_angle(f['shoulder_r'], f['elbow_r'], f['wrist_r']):.0f}"
+            f" | hip(thigh-trunk) R {_angle(f['knee_r'], f['hip_r'], f['chest']):.0f} | "
+            f"wrist R z={f['wrist_r'][2]:.2f} ankle R z={f['ankle_r'][2]:.2f} | on floor: {', '.join(on_floor) or 'nothing'}")
+    return "\n".join(out)
+
+
 def main(argv):
     root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     load_families()
@@ -378,6 +404,8 @@ def main(argv):
         for p in problems:
             print("   ", p)
         ok = ok and not problems
+        if "--describe" in argv:
+            print(describe(data))
         if preview:
             import preview_sheet
             preview_sheet.sheet(data, os.path.join(preview, ex + ".png"))
