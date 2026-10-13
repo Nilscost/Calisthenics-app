@@ -226,6 +226,8 @@
     <string name="session_round">Round %1$d of %2$d</string>
     <string name="session_pair_set">Pair %1$d · Set %2$d of %3$d</string>
     <string name="session_exercise_set">Exercise %1$d · Set %2$d of %3$d</string>
+    <string name="session_warmup">Warm-up %1$d of %2$d</string>
+    <string name="session_cooldown">Cool-down %1$d of %2$d</string>
     <string name="session_step">Step %1$d of %2$d</string>
     <string name="session_more">More</string>
     <string name="session_end">End workout</string>

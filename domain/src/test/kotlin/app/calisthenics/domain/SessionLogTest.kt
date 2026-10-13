@@ -133,9 +133,19 @@ class HeaderTest {
         for ((i, b) in p.blocks.withIndex()) if (b.roundIndex != null) assertNotNull("block ${b.id} (${b.type}) has no pair number", headerFor(p, b, i).group)
     }
 
-    @Test fun warmupBlocksWithoutASetAreSteps() {
-        val b = TimelineBlock("w", BlockType.WARMUP, 30)
-        val p = plan(WorkoutFormat.CIRCUIT)
-        assertEquals(HeaderKind.STEP, headerFor(p, b, 4).kind)
+    // R7-T02 (B6): the old assertion (a warm-up block is "step n of N") is replaced: warm-up and cool-down count their own blocks
+    @Test fun warmupAndCooldownCountOnlyTheirOwnBlocks() {
+        val w = (1..3).map { TimelineBlock("w$it", BlockType.WARMUP, 30) }
+        val work = TimelineBlock("x", BlockType.WORK, 40, 1, "s", "v")
+        val tr = TimelineBlock("tr", BlockType.TRANSITION, 5)
+        val c = (1..2).map { TimelineBlock("c$it", BlockType.COOLDOWN, 30) }
+        val p = plan(WorkoutFormat.CIRCUIT).copy(blocks = w.take(2) + tr + w.drop(2) + work + c)
+        val h2 = headerFor(p, p.blocks[1], 1)
+        assertEquals(HeaderKind.WARMUP, h2.kind); assertEquals(2, h2.set); assertEquals(3, h2.sets)
+        val ht = headerFor(p, p.blocks[2], 2) // the get-ready inside the warm-up reads like the block it leads to
+        assertEquals(HeaderKind.WARMUP, ht.kind); assertEquals(3, ht.set)
+        val hc = headerFor(p, p.blocks[6], 6)
+        assertEquals(HeaderKind.COOLDOWN, hc.kind); assertEquals(2, hc.set); assertEquals(2, hc.sets)
+        assertEquals(HeaderKind.ROUND, headerFor(p, p.blocks[4], 4).kind)
     }
 }

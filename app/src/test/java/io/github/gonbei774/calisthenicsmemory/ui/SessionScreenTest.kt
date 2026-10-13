@@ -242,4 +242,45 @@ class SessionScreenTest {
         rule.waitForIdle()
         rule.onNodeWithTag("logger_value").assertTextEquals("30")
     }
+
+    // R7-T02 (B4): DONE in a break saves the pending log, then skips to the next block
+    @Test fun doneInABreakWithTheLoggerSavesTheLogAndSkips() {
+        show(stateAt(firstRecovery()))
+        rule.onNodeWithTag("logger_minus").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("logger_done").performClick(); rule.waitForIdle()
+        val actions = generateSequence { shadowOf(app).nextStartedService }.map { it.action }.toList()
+        assertEquals(WorkoutSessionService.ACTION_SKIP, actions.last())
+        assertTrue("the log is saved before the skip", actions.dropLast(1).contains(WorkoutSessionService.ACTION_LOG))
+    }
+
+    @Test fun aBreakWithoutALoggerStillOffersDoneAndSkips() {
+        val none = ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
+        val p = (buildTrainPlan(catalog, StarterRoutine.routine, none, SeedProfiles.home, TrainSettings(rounds = 2, stretchOn = true, warmupOn = true)) as PlanResult.Ready).plan.copy(id = "plan-w2")
+        SessionBus.publish(stateAt(p, p.blocks.indexOfFirst { it.type == BlockType.WARMUP }))
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = {}) } }
+        rule.waitForIdle()
+        rule.onNodeWithTag("logger").assertDoesNotExist()
+        rule.onNodeWithTag("break_done").assertIsDisplayed().performClick(); rule.waitForIdle()
+        assertEquals(WorkoutSessionService.ACTION_SKIP, lastIntent().action)
+    }
+
+    // R7-T02 (B5): the caption is readable and a stretch block names the stretch
+    @Test fun aStretchBlockCaptionNamesTheStretch() {
+        val i = firstRecovery()
+        show(stateAt(i))
+        val name = SessionBus.names[plan.blocks[i].variationId]!!
+        rule.onNodeWithTag("session_caption").assertTextContains("STRETCH · $name")
+    }
+
+    // R7-T02 (B6): WARM-UP n OF N counts the warm-up blocks only
+    @Test fun theWarmupHeaderCountsOnlyWarmupBlocks() {
+        val none = ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
+        val p = (buildTrainPlan(catalog, StarterRoutine.routine, none, SeedProfiles.home, TrainSettings(rounds = 2, stretchOn = true, warmupOn = true)) as PlanResult.Ready).plan.copy(id = "plan-w")
+        val n = p.blocks.count { it.type == BlockType.WARMUP }
+        assertTrue(n >= 2)
+        SessionBus.publish(stateAt(p, p.blocks.withIndex().filter { it.value.type == BlockType.WARMUP }[1].index))
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = {}) } }
+        rule.waitForIdle()
+        rule.onNodeWithTag("session_round").assertTextContains("WARM-UP 2 OF $n")
+    }
 }

@@ -1,4 +1,4 @@
-# C — a workout: first block, Done, the logger during recovery, stretch and next work block, pause, end with confirm, end screen, per-round editor.
+# C — a workout: first block, Done, the logger during recovery (the stretch block, R7-T02: readable caption with the stretch name), Done in the break, stretch and next work block, pause, end with confirm, end screen, per-round editor.
 appId: app.calisthenics.personal
 ---
 - launchApp
@@ -20,10 +20,10 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: { id: logger }, timeout: 10000 }
 - takeScreenshot: 03-logger-${VARIANT}
 - tapOn: { id: logger_plus }
-# K1 (V01): the clip must change with the block. Shot 04 = the stretch block's clip, shot 05 = the next work block's clip.
-- tapOn: { id: session_skip }
+# R7-T02 (B4): DONE in the break saves the number and moves on to the next block. Shot 04 = the block after it.
+- tapOn: { id: logger_done }
 - extendedWaitUntil: { visible: { id: session_title }, timeout: 10000 }
-- takeScreenshot: 04-stretch-block-${VARIANT}
+- takeScreenshot: 04-after-break-done-${VARIANT}
 - repeat:
     while: { notVisible: { id: session_done, enabled: true } }
     times: 6

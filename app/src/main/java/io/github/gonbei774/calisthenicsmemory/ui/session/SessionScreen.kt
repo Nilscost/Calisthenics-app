@@ -97,7 +97,6 @@ private class LoggerState(val ctx: android.content.Context, val work: TimelineBl
     val hold = target?.type == TargetType.HOLD_SECONDS
     var reps by mutableIntStateOf(saved?.reps ?: target?.shownValue() ?: 0)
     var typed by mutableStateOf(saved?.reps != null)
-    var confirmed by mutableStateOf(false)
     // The ratings (Too hard / Too easy / Pain) are given on the end screen (doc 17 §2.3); what the logger keeps is passed through unchanged.
     private val tooHard = saved?.tooHard ?: false
     private val tooEasy = saved?.tooEasy ?: false
@@ -159,6 +158,8 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                                         HeaderKind.PAIR -> stringResource(R.string.session_pair_set, hd.group ?: 1, hd.set, hd.sets)
                                         HeaderKind.EXERCISE -> stringResource(R.string.session_exercise_set, hd.group ?: 1, hd.set, hd.sets)
                                         HeaderKind.STEP -> stringResource(R.string.session_step, hd.set, hd.sets)
+                                        HeaderKind.WARMUP -> stringResource(R.string.session_warmup, hd.set, hd.sets)
+                                        HeaderKind.COOLDOWN -> stringResource(R.string.session_cooldown, hd.set, hd.sets)
                                     }.uppercase(),
                                     style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_round"),
                                 )
@@ -184,7 +185,9 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
             CompositionLocalProvider(LocalAppAccent provides DarkAccent) {
                 CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) { Box(Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background, RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp))) {
                     Column(Modifier.navigationBarsPadding().padding(horizontal = Spacing.l).padding(top = Spacing.m, bottom = Spacing.m), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                        Text(stringResource(blockLabel(b)).uppercase(), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
+                        // R7-T02 (B5): the block caption is readable (titleMedium, full contrast) and a stretch block names its stretch
+                        val caption = stringResource(blockLabel(b)).uppercase() + if (b.type == BlockType.STRETCH) (names[b.variationId]?.let { " · $it" } ?: "") else ""
+                        Text(caption, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center, modifier = Modifier.testTag("session_caption"))
                         Text(
                             formatClock(remSec), style = MaterialTheme.typography.displayLarge.copy(fontSize = 60.sp), color = AppAccentTheme.colors.accent, maxLines = 1,
                             modifier = Modifier.semantics { contentDescription = ctx.getString(R.string.session_time_description, title, remSec / 60, remSec % 60) }.testTag("session_time"),
@@ -203,14 +206,14 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                         Row(Modifier.fillMaxWidth().padding(top = Spacing.xs), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
                             if (paused) AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_RESUME) }, Modifier.weight(1f).height(54.dp).testTag("session_resume")) { Text(stringResource(R.string.session_resume)) }
                             else AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_PAUSE) }, Modifier.weight(1f).height(54.dp).testTag("session_pause")) { Text(stringResource(R.string.session_pause)) }
-                            // DONE in the middle, gold and a little wider: ends the set during work, confirms the logged number during recovery.
+                            // DONE in the middle, gold and a little wider: ends the set during work; in any other block (R7-T02, B4) it saves the pending log and moves on.
                             if (b.type == BlockType.WORK) Button(
                                 onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_DONE) }, enabled = st.phase == Phase.RUNNING,
                                 modifier = Modifier.weight(1.3f).height(58.dp).testTag("session_done"), shape = RoundedCornerShape(Radius.button),
                             ) { Text(stringResource(R.string.session_done).uppercase(), style = MaterialTheme.typography.titleLarge) }
-                            else if (logger != null) Button(
-                                onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); logger.push(); logger.confirmed = true }, enabled = !logger.confirmed,
-                                modifier = Modifier.weight(1.3f).height(58.dp).testTag("logger_done"), shape = RoundedCornerShape(Radius.button),
+                            else Button(
+                                onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); logger?.push(); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, enabled = st.phase == Phase.RUNNING,
+                                modifier = Modifier.weight(1.3f).height(58.dp).testTag(if (logger != null) "logger_done" else "break_done"), shape = RoundedCornerShape(Radius.button),
                             ) { Text(stringResource(R.string.logger_done).uppercase(), style = MaterialTheme.typography.titleLarge) }
                             AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, Modifier.weight(1f).height(54.dp).testTag("session_skip")) { Text(stringResource(R.string.session_skip)) }
                         }
@@ -239,8 +242,8 @@ private fun SetMarkers(total: Int, current: Int) {
 
 /**
  * V03/V10 (R17): the logger during the recovery, in the bottom sheet: the exercise and set, then - [big number] +.
- * Prefilled with the target; every change is saved at once and untouched = as planned. DONE (in the bottom row) only confirms:
- * it folds the logger into one "Logged: N · Change" line (the timer is not touched).
+ * Prefilled with the target; every change is saved at once and untouched = as planned. DONE (in the bottom row)
+ * saves the number and moves on to the next block (R7-T02).
  */
 @Composable
 private fun RepLogger(l: LoggerState, work: TimelineBlock, st: SessionState) {
@@ -248,15 +251,8 @@ private fun RepLogger(l: LoggerState, work: TimelineBlock, st: SessionState) {
     val setNo = work.roundIndex
     Column(Modifier.fillMaxWidth().testTag("logger"), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
         Text(if (setNo != null) stringResource(R.string.logger_name_set, name, setNo) else name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, maxLines = 1, modifier = Modifier.testTag("logger_name"))
-        if (l.confirmed) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(stringResource(R.string.logger_logged, l.reps), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("logger_summary"))
-                AppTextButton(onClick = { l.confirmed = false }, modifier = Modifier.testTag("logger_change")) { Text(stringResource(R.string.logger_edit)) }
-            }
-        } else {
-            Text(stringResource(if (l.hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
-            BigStepper(l.reps, { l.reps = it; l.typed = true; l.push() }, 0..999, Modifier.fillMaxWidth(), step = if (l.hold && (l.target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "logger")
-        }
+        Text(stringResource(if (l.hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
+        BigStepper(l.reps, { l.reps = it; l.typed = true; l.push() }, 0..999, Modifier.fillMaxWidth(), step = if (l.hold && (l.target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "logger")
     }
 }
 
