@@ -25,8 +25,8 @@ import app.calisthenics.domain.ProgressionPolicy as SeedPolicy
 
 const val REENTRY_DAYS = 14 // ADR 0002 C8
 const val BELOW_SUGGEST_AFTER = 2 // ADR 0002 C6
-/** V02 / D7: this many sessions in a row rated "too easy" suggest one level up (never applied without the user). */
-const val ABOVE_SUGGEST_AFTER = 2
+/** V02 / D7, changed by R7.2-T06 (F7, owner decision O1, 2026-10-13): one session rated "too easy" already offers a move on (a card the person accepts, never applied without the user). */
+const val ABOVE_SUGGEST_AFTER = 1
 
 /** R7-T04 (B1): a self-assessed tier above the top step = the whole ladder of that exercise is achieved (five stars) and its successor starts at level 1. */
 const val ALL_TIERS_DONE = 6
@@ -80,12 +80,11 @@ data class VariationProgress(
     val starsByLoad: Map<Int, Int> = emptyMap(),
     /** V02: sessions in a row rated "too easy" at this tier. */
     val consecutiveAbove: Int = 0,
-    /** V02 / D7: one level up is suggested; it only changes when the user accepts. */
+    /** V02 / D7: a move on is suggested (R7.2-T06: after one "too easy"); it only changes when the user accepts. */
     val raiseSuggested: Boolean = false,
+    /** R7.2-T06: the "too easy" session was under a Rep range / Custom rule (no levels): the move on is the next exercise. */
+    val ruleAbove: Boolean = false,
 ) {
-    /** R7-T05: the "Too easy: n of 2" counter shown on the exercise: 0, 1 or 2 (a third in a row starts the next pair at 1). */
-    fun tooEasyCount(): Int = if (consecutiveAbove <= 0) 0 else (consecutiveAbove - 1) % ABOVE_SUGGEST_AFTER + 1
-
     /** Highest consecutive achieved tier counted from the tier the variation was started at. */
     fun earnedStars(): Int {
         val start = baselineTier ?: 1
@@ -207,12 +206,13 @@ class ProgressionEngine(private val catalog: Catalog) {
                 }
                 else -> Unit
             }
-            // V02 / D7: "too easy" in a row suggests one level up; the tier itself never changes here.
-            val tooEasy = ev.anyAbove && ev.prescribedTier == start.tier && !ev.anyBelow && !ev.discomfort && !ev.skippedOrPartial && !lighter
+            // V02 / D7, R7.2-T06 (F7, O1): "too easy" (once is enough) suggests a move on; the tier itself never changes here. What the move is (two levels, or the next exercise) is decided in [suggest].
+            val byRule = ev.ruleMet != null
+            val tooEasy = ev.anyAbove && (byRule || ev.prescribedTier == start.tier) && !ev.anyBelow && !ev.discomfort && !ev.skippedOrPartial && !lighter
             val above = if (tooEasy && p.tier == start.tier) p.consecutiveAbove + 1 else 0
-            val suggest = above >= ABOVE_SUGGEST_AFTER && !p.raiseSuggested && p.tier < 5 && p.tier == start.tier
-            p = p.copy(consecutiveAbove = above, raiseSuggested = if (p.tier != start.tier) false else p.raiseSuggested || suggest)
-            if (suggest) events += ProgressEvent(ev.day, vid, "Two sessions in a row too easy — a harder target (tier ${p.tier + 1}) is suggested. Nothing changes unless you accept.")
+            val suggest = above >= ABOVE_SUGGEST_AFTER && !p.raiseSuggested && p.tier == start.tier
+            p = p.copy(consecutiveAbove = above, raiseSuggested = if (p.tier != start.tier) false else p.raiseSuggested || suggest, ruleAbove = if (above > 0) byRule else false)
+            if (suggest) events += ProgressEvent(ev.day, vid, "Marked too easy — a move on is suggested. Nothing changes unless you accept.")
             vars[vid] = p
         }
         for (ev in evidence.filter { it.discomfort }) {
@@ -254,14 +254,16 @@ class ProgressionEngine(private val catalog: Catalog) {
                 }
                 is UserAction.AcceptHarder -> {
                     val p = ensure(a.variationId, a.day)
+                    // R7.2-T06 (F7): the levels jumped over count as done (stars), the same way the hand edit (D5) does
+                    val skipped = if (a.tier > p.tier) (p.tier until a.tier).toSet() else emptySet()
                     vars[a.variationId] = p.copy(tier = a.tier, enrolledAtDay = a.day, streakDays = emptyList(),
-                        streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false)
+                        streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false, ruleAbove = false, achievedTiers = p.achievedTiers + skipped)
                     events += ProgressEvent(a.day, a.variationId, "You accepted a harder target (tier ${a.tier}).")
                 }
                 is UserAction.AcceptNextExercise -> {
                     val p = ensure(a.variationId, a.day)
                     val top = policy(a.variationId)?.tiers?.maxOfOrNull { it.index } ?: 5
-                    vars[a.variationId] = p.copy(achievedTiers = (1..top).toSet(), streakDays = emptyList(), streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false)
+                    vars[a.variationId] = p.copy(achievedTiers = (1..top).toSet(), streakDays = emptyList(), streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false, ruleAbove = false)
                     if (!vars.containsKey(a.toVariationId)) vars[a.toVariationId] = VariationProgress(a.toVariationId, family(a.toVariationId), 1, a.day, null, emptySet(), null, emptyList(), 0, 0, false, false, null, null)
                     active[p.familyId] = a.toVariationId
                     events += ProgressEvent(a.day, a.variationId, "You accepted the next exercise: ${catalog.variation(a.toVariationId)?.name ?: a.toVariationId} (level 1).")

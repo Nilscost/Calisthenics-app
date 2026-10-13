@@ -14,8 +14,8 @@ sealed interface Suggestion {
     /** Stable key: dismissing a suggestion stores it, so the same one does not come back (a different step or weight is a different suggestion). */
     val id: String
 
-    /** D7: two sessions in a row felt too easy; the next level is offered and only changes when the person accepts. */
-    data class RaiseLevel(val variationId: String, val toTier: Int) : Suggestion { override val id get() = "raise:$variationId:$toTier" }
+    /** D7, R7.2-T06: a session felt too easy; a jump of two levels (or to the top) is offered and only changes when the person accepts. [round] counts further "too easy" sessions, so a closed card returns. */
+    data class RaiseLevel(val variationId: String, val toTier: Int, val round: Int = 1) : Suggestion { override val id get() = "raise:$variationId:$toTier" + if (round > 1) ":$round" else "" }
     /** All five stars at the weight in use; the next weight step of the ladder opens more. */
     data class HeavierWeight(val variationId: String, val equipmentId: String, val nextGrams: Int, /** R7-T05: >0 = offered because of "too easy" at the top level; each new pair of "too easy" is a new suggestion. */ val round: Int = 0) : Suggestion {
         override val id get() = "weight:$equipmentId:$nextGrams" + if (round > 0) ":$round" else ""
@@ -39,26 +39,34 @@ private fun mastered(p: ProgressSnapshot, v: String, tier: Int) = p.variations[v
 private fun missingEquipment(v: ExerciseVariation, profile: EquipmentProfile): List<String> =
     v.equipmentAlternatives.map { set -> set.needs.filter { !needSatisfied(it, profile) }.map { it.equipmentId } }.minByOrNull { it.size } ?: emptyList()
 
+/** The move on offered after "too easy" (R7.2-T06), or null when there is none. */
+private fun moveOn(c: Catalog, profile: EquipmentProfile, p: ProgressSnapshot, v: ExerciseVariation, vp: VariationProgress): Suggestion? {
+    val pol = c.policyFor(v)
+    val top = pol?.tiers?.maxOfOrNull { it.index } ?: 5
+    val round = vp.consecutiveAbove.coerceAtLeast(1)
+    fun next(): String? = pol?.nextVariationIds.orEmpty().firstOrNull { n -> c.variation(n)?.let { isAvailable(it, profile) } == true && Goals.unmet(c, n, p).filter { it.variationId != v.id }.isEmpty() }
+    if (vp.ruleAbove) return next()?.let { Suggestion.NextExercise(v.id, it, round) }        // a Rep range rule has no levels
+    val eq = v.loadEquipmentId()
+    if (vp.tier + 2 <= top) return Suggestion.RaiseLevel(v.id, vp.tier + 2, round)
+    if (eq != null) {
+        if (vp.tier < top) return Suggestion.RaiseLevel(v.id, top, round)                    // weighted: 4 -> 5
+        val inUse = vp.loadGrams ?: profile.loadGramsFor(v) ?: return null
+        val next = loadLadder(eq).firstOrNull { it > inUse } ?: return null
+        if ((profile.loadGramsFor(v) ?: 0) > inUse) return null
+        return Suggestion.HeavierWeight(v.id, eq, next, round)
+    }
+    next()?.let { return Suggestion.NextExercise(v.id, it, round) }
+    return if (vp.tier < top) Suggestion.RaiseLevel(v.id, top, round) else null              // no next exercise: 4 -> 5, nothing at 5
+}
+
 /** At most one suggestion; [dismissed] are the ids the person closed. Order: a raise they can accept, a heavier weight, then new equipment. */
 fun suggest(c: Catalog, profile: EquipmentProfile, p: ProgressSnapshot, dismissed: Set<String>): Suggestion? {
-    // 1. D7
-    p.variations.values.filter { it.raiseSuggested && it.tier < 5 }.sortedBy { it.variationId }
-        .map { Suggestion.RaiseLevel(it.variationId, it.tier + 1) }.firstOrNull { it.id !in dismissed }?.let { return it }
-    // 1b. R7-T05 (B9): top level and two "too easy" in a row: the next exercise (or the next weight step of a loaded one)
-    for (vp in p.variations.values.sortedBy { it.variationId }) {
-        if (vp.tier < 5 || vp.consecutiveAbove < ABOVE_SUGGEST_AFTER) continue
+    // 1. D7 / R7.2-T06 (F7, O1): one "too easy" offers a move on. Level 1 -> 3, 2 -> 4, 3 -> 5; level 4 or 5 -> level 1 of the next exercise.
+    //    No next exercise: 4 -> 5 and nothing at 5. Weighted exercises: 4 -> 5, and at 5 the heavier weight. Under a Rep range rule (no levels): the next exercise.
+    for (vp in p.variations.values.filter { it.raiseSuggested }.sortedBy { it.variationId }) {
         val v = c.variation(vp.variationId) ?: continue
-        val round = vp.consecutiveAbove / ABOVE_SUGGEST_AFTER
-        val eq = v.loadEquipmentId()
-        if (eq != null) {
-            val inUse = vp.loadGrams ?: profile.loadGramsFor(v) ?: continue
-            val next = loadLadder(eq).firstOrNull { it > inUse } ?: continue
-            if ((profile.loadGramsFor(v) ?: 0) > inUse) continue
-            Suggestion.HeavierWeight(v.id, eq, next, round).takeIf { it.id !in dismissed }?.let { return it }
-        } else {
-            val to = c.policyFor(v)?.nextVariationIds.orEmpty().firstOrNull { n -> c.variation(n)?.let { isAvailable(it, profile) } == true && Goals.unmet(c, n, p).filter { it.variationId != v.id }.isEmpty() } ?: continue
-            Suggestion.NextExercise(v.id, to, round).takeIf { it.id !in dismissed }?.let { return it }
-        }
+        if (p.activeInFamily[v.familyId]?.let { it != v.id } == true) continue         // already moved on to the successor
+        moveOn(c, profile, p, v, vp)?.takeIf { it.id !in dismissed }?.let { return it }
     }
     // 2. a heavier weight when every level is earned at the weight in use
     for (v in c.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }.sortedBy { it.id }) {

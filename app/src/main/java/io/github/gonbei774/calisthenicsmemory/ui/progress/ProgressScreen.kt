@@ -25,7 +25,6 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.components.MuscleChips
 import io.github.gonbei774.calisthenicsmemory.ui.components.StarRow
 import app.calisthenics.domain.load.formatKg
-import app.calisthenics.domain.progression.ABOVE_SUGGEST_AFTER
 import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
 import app.calisthenics.domain.progression.storedForLevelsDone
 import io.github.gonbei774.calisthenicsmemory.ui.nav.OpenExercise
@@ -177,12 +176,12 @@ private fun missingLabel(v: ExerciseVariation, profile: EquipmentProfile): Strin
 
 /** V27 (R29): at most one suggestion; it can be closed and never blocks anything (D9). A raise can be accepted with one tap. */
 @Composable
-private fun SuggestionCard(c: Catalog, s: Suggestion, onDismiss: () -> Unit, onAccept: (() -> Unit)?) {
+internal fun SuggestionCard(c: Catalog, s: Suggestion, onDismiss: () -> Unit, onAccept: (() -> Unit)?) {
     fun name(id: String) = c.variation(id)?.name ?: id
     val text = when (s) {
         is Suggestion.RaiseLevel -> stringResource(R.string.suggest_raise, name(s.variationId), s.toTier)
         is Suggestion.HeavierWeight -> stringResource(if (s.round > 0) R.string.suggest_weight_easy else R.string.suggest_weight, name(s.variationId), formatKg(s.nextGrams), stringResource(equipmentLabelShortPublic(s.equipmentId)))
-        is Suggestion.NextExercise -> stringResource(R.string.suggest_next, name(s.variationId), name(s.toVariationId))
+        is Suggestion.NextExercise -> stringResource(R.string.suggest_next, name(s.toVariationId))
         is Suggestion.GetEquipment -> stringResource(R.string.suggest_equipment, stringResource(equipmentLabelShortPublic(s.equipmentId)), name(s.unlocksVariationId))
     }
     Card(Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.xs).testTag("suggestion_card"), shape = MaterialTheme.shapes.large) {
@@ -284,8 +283,6 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
                 }
             }
         }
-        // R7-T05 (B9): two "too easy" in a row move you on; the counter shows where you are
-        progress.variations[v.id]?.let { Text(stringResource(R.string.detail_too_easy, it.tooEasyCount(), ABOVE_SUGGEST_AFTER), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("detail_too_easy")) }
         if (v.isLoaded()) WeightTrack(v, progress, profile)
         if (unlocks.isNotEmpty()) { Caption(stringResource(R.string.detail_unlocks)); LinkLine("", unlocks, "detail_unlocks", "detail_unlock_", MaterialTheme.colorScheme.onSurface, onOpen) }
         if (needs.isNotEmpty() || !isAvailable(v, profile)) {

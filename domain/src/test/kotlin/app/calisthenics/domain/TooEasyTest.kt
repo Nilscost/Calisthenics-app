@@ -6,52 +6,56 @@ import app.calisthenics.domain.progression.*
 import org.junit.Assert.*
 import org.junit.Test
 
-/** V02 / D7: two sessions in a row "too easy" suggest one level up; nothing changes without the owner. */
+/** V02 / D7, changed by R7.2-T06 (owner decision O1, 2026-10-13): ONE session rated "too easy" suggests a move on; nothing changes without the owner. */
 class TooEasyTest {
     private val engine = ProgressionEngine(Fx.catalog())
     private val V = "pushup-knee"
     private val start = UserAction.SelfAssessment(0, V, 2)
-    private fun ev(day: Int, above: Boolean = false, below: Boolean = false, discomfort: Boolean = false, tier: Int = 2, skipped: Boolean = false) =
-        SessionEvidence("s$day", V, "pushup", day, tier, 2, skipped, below, discomfort, if (discomfort) day else null, false, 2, 0, 2, anyAbove = above)
+    private fun ev(day: Int, above: Boolean = false, below: Boolean = false, discomfort: Boolean = false, tier: Int = 2, skipped: Boolean = false, ruleMet: Boolean? = null) =
+        SessionEvidence("s$day", V, "pushup", day, tier, 2, skipped, below, discomfort, if (discomfort) day else null, false, 2, 0, 2, anyAbove = above, ruleMet = ruleMet)
 
-    @Test fun `one too easy session suggests nothing`() {
-        val p = engine.replay(listOf(ev(0, above = true)), listOf(start)).variations.getValue(V)
-        assertEquals(1, p.consecutiveAbove); assertFalse(p.raiseSuggested)
-    }
-
-    @Test fun `two in a row suggest one level up and leave the tier alone`() {
-        val s = engine.replay(listOf(ev(0, above = true), ev(2, above = true)), listOf(start))
+    @Test fun `one too easy session suggests a move on and leaves the tier alone`() {   // was: one suggests nothing, two suggest (D7 / B9)
+        val s = engine.replay(listOf(ev(0, above = true)), listOf(start))
         val p = s.variations.getValue(V)
-        assertTrue(p.raiseSuggested); assertEquals(2, p.tier)
-        assertEquals(1, s.events.count { it.message.contains("too easy") && it.message.contains("tier 3") })
+        assertEquals(1, p.consecutiveAbove); assertTrue(p.raiseSuggested); assertFalse(p.ruleAbove); assertEquals(2, p.tier)
+        assertEquals(1, s.events.count { it.message.contains("too easy") })
     }
 
-    @Test fun `a normal session between breaks the row`() {
+    @Test fun `a normal session between restarts the count and a new too easy counts again`() {   // was: asserted raiseSuggested false (it needed two in a row)
         val p = engine.replay(listOf(ev(0, above = true), ev(2), ev(4, above = true)), listOf(start)).variations.getValue(V)
-        assertFalse(p.raiseSuggested); assertEquals(1, p.consecutiveAbove)
+        assertEquals(1, p.consecutiveAbove); assertTrue(p.raiseSuggested)
+        assertEquals(0, engine.replay(listOf(ev(0, above = true), ev(2)), listOf(start)).variations.getValue(V).consecutiveAbove)
     }
 
-    @Test fun `below target or discomfort or skipped never counts as too easy`() {
+    @Test fun `below target or discomfort or skipped in the same session never counts as too easy`() {   // was: a first too easy, then the bad one
         for (bad in listOf(ev(2, above = true, below = true), ev(2, above = true, discomfort = true), ev(2, above = true, skipped = true))) {
-            val p = engine.replay(listOf(ev(0, above = true), bad), listOf(start)).variations.getValue(V)
-            assertFalse(p.raiseSuggested)
+            val p = engine.replay(listOf(bad), listOf(start)).variations.getValue(V)
+            assertFalse(p.raiseSuggested); assertEquals(0, p.consecutiveAbove)
         }
     }
 
-    @Test fun `the suggestion is made once and only the owner's acceptance moves the tier`() {
+    @Test fun `the suggestion is made once and only the owner's acceptance moves the tier and counts the skipped levels as done`() {
         val e = listOf(ev(0, above = true), ev(2, above = true), ev(4, above = true))
         val s = engine.replay(e, listOf(start))
         assertEquals(1, s.events.count { it.message.contains("too easy") })
-        assertEquals(2, s.tierFor(V))
-        val acc = engine.replay(e, listOf(start, UserAction.AcceptHarder(5, V, 3))).variations.getValue(V)
-        assertEquals(3, acc.tier); assertFalse(acc.raiseSuggested); assertEquals(0, acc.consecutiveAbove)
+        assertEquals(2, s.tierFor(V)); assertEquals(3, s.variations.getValue(V).consecutiveAbove)
+        val acc = engine.replay(e, listOf(start, UserAction.AcceptHarder(5, V, 4))).variations.getValue(V)
+        assertEquals(4, acc.tier); assertFalse(acc.raiseSuggested); assertEquals(0, acc.consecutiveAbove)
+        assertTrue("the jumped levels 2 and 3 are done", acc.achievedTiers.containsAll(setOf(2, 3)))
+        assertEquals(3, acc.earnedStars())   // baseline 2: levels 2 and 3 done, 1 counts below the start
     }
 
-    @Test fun `no level raise at the top tier but the too-easy count is kept (R7-T05 suggests the next exercise from it)`() {
+    @Test fun `at the top tier the move on is flagged too and the count is kept`() {   // was: no raise at the top tier
         val top = UserAction.SelfAssessment(0, V, 5)
         val p = engine.replay(listOf(ev(0, above = true, tier = 5), ev(2, above = true, tier = 5)), listOf(top)).variations.getValue(V)
-        assertFalse(p.raiseSuggested)
-        assertEquals(2, p.consecutiveAbove); assertEquals(2, p.tooEasyCount())
+        assertTrue(p.raiseSuggested); assertEquals(2, p.consecutiveAbove)
+    }
+
+    @Test fun `under a rep range rule the session is flagged as rule based so the move on is the next exercise`() {
+        val p = engine.replay(listOf(ev(0, above = true, ruleMet = false)), listOf(start)).variations.getValue(V)
+        assertTrue(p.raiseSuggested); assertTrue(p.ruleAbove)
+        val levels = engine.replay(listOf(ev(0, above = true)), listOf(start)).variations.getValue(V)
+        assertFalse(levels.ruleAbove)
     }
 
     @Test fun `too easy never speeds up the normal progression gate`() {

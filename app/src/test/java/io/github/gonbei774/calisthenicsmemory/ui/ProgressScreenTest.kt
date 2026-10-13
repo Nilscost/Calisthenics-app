@@ -43,13 +43,29 @@ class ProgressScreenTest {
         rule.onNodeWithTag("tree_node_planche-lean").assertExists() // the planche chain sits under the push-ups
     }
 
-    // R7-T05 (B9): the exercise detail shows the "Too easy" counter of a started exercise
-    @Test fun theDetailShowsTheTooEasyCounter() {
+    // R7.2-T06 (F7): the "Too easy: n of 2" line is gone from the exercise detail (it was R7-T05)
+    @Test fun theDetailNoLongerShowsATooEasyCounter() {
         LevelStore.save(ctx, mapOf("pushup-standard" to 3))
         show()
         rule.onNodeWithTag("tree_node_pushup-standard").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
         rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("detail_too_easy").assertTextEquals("Too easy: 0 of 2")
+        rule.onNodeWithTag("detail_too_easy").assertDoesNotExist()
+        rule.onNodeWithText("Too easy:", substring = true).assertDoesNotExist()
+    }
+
+    // R7.2-T06 (F7): the cards read "Move on to <exercise> level <n>?" and "Move on to <next exercise>?"
+    private fun card(s: app.calisthenics.domain.progression.Suggestion) {
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx)
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { io.github.gonbei774.calisthenicsmemory.ui.progress.SuggestionCard(catalog, s, onDismiss = {}, onAccept = {}) } }
+    }
+    @Test fun theRaiseCardReadsMoveOnToTheExerciseAndLevel() {
+        card(app.calisthenics.domain.progression.Suggestion.RaiseLevel("pushup-standard", 5))
+        rule.onNodeWithTag("suggestion_text").assertTextContains("Move on to Standard Push-Up level 5?", substring = true)
+    }
+    @Test fun theNextExerciseCardReadsMoveOnToTheNextExercise() {
+        card(app.calisthenics.domain.progression.Suggestion.NextExercise("pushup-standard", "pushup-diamond", 1))
+        rule.onNodeWithTag("suggestion_text").assertTextContains("Move on to Diamond Push-Up?", substring = true)
+        rule.onNodeWithText("twice", substring = true).assertDoesNotExist()
     }
 
     private fun openDetailOf(id: String) {

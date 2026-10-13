@@ -2,6 +2,7 @@ package app.calisthenics.domain
 
 import app.calisthenics.domain.equipment.SeedProfiles
 import app.calisthenics.domain.goals.Goals
+import app.calisthenics.domain.load.loadEquipmentId
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.planner.*
 import app.calisthenics.domain.progression.*
@@ -27,7 +28,7 @@ class SuggestionsTest {
     @Test fun aTooEasySuggestionComesFirstAndCanBeDismissed() {
         val p = snap(vp("pushup-standard", 3, raise = true), vp("row-band", 5, setOf(1, 2, 3, 4, 5)))
         val s = suggest(catalog, bare, p, emptySet())
-        assertEquals(Suggestion.RaiseLevel("pushup-standard", 4), s)
+        assertEquals(Suggestion.RaiseLevel("pushup-standard", 5), s)   // R7.2-T06: two levels (was 4, one level)
         // dismissed: the next kind of suggestion (here the low bar the mastered band row opens) is next; never two at once
         val after = suggest(catalog, bare, p, setOf(s!!.id))
         assertTrue(after is Suggestion.GetEquipment)
@@ -75,38 +76,67 @@ class SuggestionsTest {
         }
     }
 
-    // ---- R7-T05 (B9): "too easy" at the top level
-    private fun easy(v: VariationProgress, n: Int) = v.copy(consecutiveAbove = n)
+    // ---- R7-T05 (B9), changed by R7.2-T06 (F7, owner decision O1): one "too easy" jumps two levels; at level 4 or 5 it offers the next exercise
+    private fun easy(v: VariationProgress, n: Int = 1, rule: Boolean = false) = v.copy(raiseSuggested = true, consecutiveAbove = n, ruleAbove = rule)
     private val planksNext = catalog.policyFor(catalog.variation("plank")!!)!!.nextVariationIds.first()
+    private fun s(v: VariationProgress, dismissed: Set<String> = emptySet(), profile: EquipmentProfile = SeedProfiles.home) = suggest(catalog, profile, snap(v), dismissed)
 
-    @Test fun twoTooEasyAtTheTopLevelSuggestTheNextExercise() {
-        assertNull("one is not enough", suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 5), 1)), emptySet()))
-        assertEquals(Suggestion.NextExercise("plank", planksNext, 1), suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 5), 2)), emptySet()))
+    @Test fun oneTooEasyJumpsTwoLevelsAndAtLevelFourOrFiveOffersTheNextExercise() {
+        assertEquals(Suggestion.RaiseLevel("plank", 3), s(easy(vp("plank", 1))))
+        assertEquals(Suggestion.RaiseLevel("plank", 4), s(easy(vp("plank", 2))))
+        assertEquals(Suggestion.RaiseLevel("plank", 5), s(easy(vp("plank", 3))))
+        assertEquals(Suggestion.NextExercise("plank", planksNext, 1), s(easy(vp("plank", 4))))
+        assertEquals(Suggestion.NextExercise("plank", planksNext, 1), s(easy(vp("plank", 5))))
+        assertNull("no suggestion without a too easy", s(vp("plank", 4)))
     }
 
-    @Test fun belowTheTopLevelItStaysTheRaiseSuggestion() {
-        assertNull(suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 4), 2)), emptySet()))
+    @Test fun withoutANextExerciseLevelFourGoesToFiveAndFiveOffersNothing() {
+        val last = catalog.variations.first { v -> (v.kind == Kind.REPS || v.kind == Kind.HOLD) && v.loadEquipmentId() == null && catalog.policyFor(v)?.let { it.tiers.size == 5 && it.nextVariationIds.isEmpty() } == true }
+        assertEquals(Suggestion.RaiseLevel(last.id, 5), s(easy(vp(last.id, 4))))
+        val atTop = s(easy(vp(last.id, 5)))   // no move on; an equipment hint may still follow, as it always could
+        assertFalse(atTop is Suggestion.RaiseLevel || atTop is Suggestion.NextExercise)
     }
 
-    @Test fun aClosedSuggestionComesBackWhenTheCountReachesTwoOnceMore() {
-        val first = suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 5), 2)), emptySet())!!
-        assertNull(suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 5), 3)), setOf(first.id)))
-        val again = suggest(catalog, SeedProfiles.home, snap(easy(vp("plank", 5), 4)), setOf(first.id))
-        assertEquals(Suggestion.NextExercise("plank", planksNext, 2), again)
+    @Test fun anUnavailableNextExerciseCountsAsNone() {
+        // a bare profile has no way to do the plank's successor: 4 -> 5 instead
+        val unavailable = catalog.variation(planksNext)?.let { !app.calisthenics.domain.equipment.isAvailable(it, bare) } == true
+        if (unavailable) assertEquals(Suggestion.RaiseLevel("plank", 5), s(easy(vp("plank", 4)), profile = bare))
     }
 
-    @Test fun aLoadedExerciseSuggestsTheNextWeightStep() {
-        val s = suggest(catalog, SeedProfiles.home, snap(easy(vp("kettlebell-deadlift", 5, load = 12_000), 2)), emptySet())
-        assertTrue(s is Suggestion.HeavierWeight && s.round == 1)
+    @Test fun aWeightedExerciseGoesFourToFiveAndAtFiveSuggestsTheHeavierWeight() {
+        assertEquals(Suggestion.RaiseLevel("kettlebell-deadlift", 5), s(easy(vp("kettlebell-deadlift", 4, load = 12_000))))
+        val atFive = s(easy(vp("kettlebell-deadlift", 5, load = 12_000)))
+        assertTrue(atFive is Suggestion.HeavierWeight && atFive.round == 1)
+        assertEquals(Suggestion.RaiseLevel("kettlebell-deadlift", 4), s(easy(vp("kettlebell-deadlift", 2, load = 12_000))))
     }
 
-    @Test fun theCounterReadsOneOrTwoOfTwo() {
-        assertEquals(listOf(0, 1, 2, 1, 2), (0..4).map { vp("plank", 5).copy(consecutiveAbove = it).tooEasyCount() })
+    @Test fun underARepRangeRuleTheMoveOnIsTheNextExercise() {
+        assertEquals(Suggestion.NextExercise("plank", planksNext, 1), s(easy(vp("plank", 1), rule = true)))
+    }
+
+    @Test fun aClosedSuggestionComesBackWithTheNextTooEasy() {
+        val first = s(easy(vp("plank", 3)))!!
+        assertNull(s(easy(vp("plank", 3)), dismissed = setOf(first.id)))
+        assertEquals(Suggestion.RaiseLevel("plank", 5, 2), s(easy(vp("plank", 3), n = 2), dismissed = setOf(first.id)))
+        val next = s(easy(vp("plank", 5)))!!
+        assertEquals(Suggestion.NextExercise("plank", planksNext, 2), s(easy(vp("plank", 5), n = 2), dismissed = setOf(next.id)))
+    }
+
+    @Test fun noSuggestionOnceTheFamilyHasMovedOnToTheSuccessor() {
+        val v = easy(vp("plank", 5))
+        val moved = ProgressSnapshot(mapOf("plank" to v), mapOf(catalog.variation("plank")!!.familyId to planksNext), emptyMap(), emptyList())
+        assertNull(suggest(catalog, SeedProfiles.home, moved, emptySet()))
     }
 
     @Test fun acceptingTheNextExerciseMarksItDoneAndStartsTheSuccessor() {
         val s = ProgressionEngine(catalog).replay(emptyList(), listOf(UserAction.SelfAssessment(0, "plank", 5), UserAction.AcceptNextExercise(3, "plank", planksNext)))
         assertEquals(5, s.variations["plank"]!!.earnedStars())
         assertEquals(planksNext, s.activeInFamily[catalog.variation("plank")!!.familyId]); assertEquals(1, s.tierFor(planksNext))
+    }
+
+    @Test fun acceptingATwoLevelJumpCountsTheSkippedLevelsAsDone() {   // R7.2-T06: stars, like the hand edit (D5)
+        val s = ProgressionEngine(catalog).replay(emptyList(), listOf(UserAction.SelfAssessment(0, "plank", 1), UserAction.AcceptHarder(3, "plank", 3)))
+        val p = s.variations["plank"]!!
+        assertEquals(3, p.tier); assertTrue(p.achievedTiers.containsAll(setOf(1, 2))); assertEquals(2, p.earnedStars())
     }
 }
