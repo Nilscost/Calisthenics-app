@@ -1,0 +1,116 @@
+Blender clip encode validation — 2026-10-13
+Source: 100 IDs marked OK (including known-limit OK) in blender-review.md.
+Freshness check before encoding: 100/100 had complete expected frame counts, all frames newer than joints.json, and start.png present; 0 skipped as stale or incomplete.
+Runtime: Hermes container hermes-f5da05b7; tools/blender/encode.py with explicit IDs only.
+
+arch-hang: 72 frames, 7 KB, seam 0.02 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/arch-hang/blender/arch-hang.mp4
+arch-hold-y: 72 frames, 7 KB, seam 0.03 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/arch-hold-y/blender/arch-hold-y.mp4
+arch-rocks: 96 frames, 13 KB, seam 0.03 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/arch-rocks/blender/arch-rocks.mp4
+archer-row: 96 frames, 20 KB, seam 0.10 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/archer-row/blender/archer-row.mp4
+barbell-rdl: 84 frames, 17 KB, seam 0.10 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/barbell-rdl/blender/barbell-rdl.mp4
+barbell-squat: 72 frames, 16 KB, seam 0.29 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/barbell-squat/blender/barbell-squat.mp4
+bridge-back: 72 frames, 10 KB, seam 0.05 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/bridge-back/blender/bridge-back.mp4
+bridge-head: 72 frames, 9 KB, seam 0.04 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/bridge-head/blender/bridge-head.mp4
+bridge-incline: 72 frames, 27 KB, seam 0.60 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/bridge-incline/blender/bridge-incline.mp4
+bridge-single-leg: 72 frames, 13 KB, seam 0.08 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/bridge-single-leg/blender/bridge-single-leg.mp4
+bridge-table: 72 frames, 17 KB, seam 0.14 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/bridge-table/blender/bridge-table.mp4
+bridge-wall-walkdown: 96 frames, 13 KB, seam 0.09 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/bridge-wall-walkdown/blender/bridge-wall-walkdown.mp4
+calf-raise: 72 frames, 7 KB, seam 0.02 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/calf-raise/blender/calf-raise.mp4
+calf-raise-single: 72 frames, 8 KB, seam 0.03 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/calf-raise-single/blender/calf-raise-single.mp4
+chair-assisted-pullup: 72 frames, 12 KB, seam 0.09 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/chair-assisted-pullup/blender/chair-assisted-pullup.mp4
+chinup-full: 72 frames, 11 KB, seam 0.10 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/chinup-full/blender/chinup-full.mp4
+copenhagen-side-plank: 72 frames, 8 KB, seam 0.02 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/copenhagen-side-plank/blender/copenhagen-side-plank.mp4
+copenhagen-side-plank-short: 72 frames, 9 KB, seam 0.03 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/copenhagen-side-plank-short/blender/copenhagen-side-plank-short.mp4
+dead-bug: 72 frames, 14 KB, seam 0.12 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/dead-bug/blender/dead-bug.mp4
+dead-hang: 72 frames, 6 KB, seam 0.01 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/dead-hang/blender/dead-hang.mp4
+dip-negative: 96 frames, 16 KB, seam 1.07 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/dip-negative/blender/dip-negative.mp4
+dip-parallel: 72 frames, 15 KB, seam 0.13 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/dip-parallel/blender/dip-parallel.mp4
+dip-support-hold: 72 frames, 8 KB, seam 0.02 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/dip-support-hold/blender/dip-support-hold.mp4
+dumbbell-rdl: 84 frames, 16 KB, seam 0.07 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/dumbbell-rdl/blender/dumbbell-rdl.mp4
+dumbbell-row: 72 frames, 15 KB, seam 0.07 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/dumbbell-row/blender/dumbbell-row.mp4
+dumbbell-single-leg-rdl: 84 frames, 19 KB, seam 0.10 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/dumbbell-single-leg-rdl/blender/dumbbell-single-leg-rdl.mp4
+flexed-arm-hang: 72 frames, 6 KB, seam 0.01 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/flexed-arm-hang/blender/flexed-arm-hang.mp4
+front-lever-adv-tuck: 72 frames, 7 KB, seam 0.01 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/front-lever-adv-tuck/blender/front-lever-adv-tuck.mp4
+front-lever-straddle: 72 frames, 7 KB, seam 0.01 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/front-lever-straddle/blender/front-lever-straddle.mp4
+front-lever-tuck: 72 frames, 6 KB, seam 0.01 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/front-lever-tuck/blender/front-lever-tuck.mp4
+glute-bridge: 72 frames, 15 KB, seam 0.10 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/glute-bridge/blender/glute-bridge.mp4
+goblet-squat: 72 frames, 15 KB, seam 0.29 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/goblet-squat/blender/goblet-squat.mp4
+hollow-hold: 72 frames, 6 KB, seam 0.02 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/hollow-hold/blender/hollow-hold.mp4
+hollow-one-leg: 72 frames, 7 KB, seam 0.02 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/hollow-one-leg/blender/hollow-one-leg.mp4
+hollow-rocks: 84 frames, 9 KB, seam 0.03 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/hollow-rocks/blender/hollow-rocks.mp4
+hollow-tuck: 72 frames, 7 KB, seam 0.03 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/hollow-tuck/blender/hollow-tuck.mp4
+inverted-row: 72 frames, 20 KB, seam 0.16 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/inverted-row/blender/inverted-row.mp4
+inverted-row-bent-knees: 72 frames, 18 KB, seam 0.14 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/inverted-row-bent-knees/blender/inverted-row-bent-knees.mp4
+inverted-row-feet-elevated: 72 frames, 17 KB, seam 0.12 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/inverted-row-feet-elevated/blender/inverted-row-feet-elevated.mp4
+inverted-row-wide: 72 frames, 20 KB, seam 0.16 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/inverted-row-wide/blender/inverted-row-wide.mp4
+kettlebell-deadlift: 84 frames, 18 KB, seam 0.08 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/kettlebell-deadlift/blender/kettlebell-deadlift.mp4
+kettlebell-one-arm-row: 72 frames, 18 KB, seam 0.10 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/kettlebell-one-arm-row/blender/kettlebell-one-arm-row.mp4
+kettlebell-single-leg-rdl: 84 frames, 21 KB, seam 0.14 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/kettlebell-single-leg-rdl/blender/kettlebell-single-leg-rdl.mp4
+kettlebell-suitcase-carry: 72 frames, 6 KB, seam 0.01 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/kettlebell-suitcase-carry/blender/kettlebell-suitcase-carry.mp4
+kettlebell-swing: 60 frames, 16 KB, seam 0.23 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/kettlebell-swing/blender/kettlebell-swing.mp4
+kettlebell-swing-one-arm: 60 frames, 16 KB, seam 0.25 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/kettlebell-swing-one-arm/blender/kettlebell-swing-one-arm.mp4
+l-sit-advanced-tuck: 72 frames, 9 KB, seam 0.04 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/l-sit-advanced-tuck/blender/l-sit-advanced-tuck.mp4
+l-sit-floor: 72 frames, 8 KB, seam 0.02 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/l-sit-floor/blender/l-sit-floor.mp4
+l-sit-foot-supported: 72 frames, 8 KB, seam 0.02 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/l-sit-foot-supported/blender/l-sit-foot-supported.mp4
+l-sit-one-foot: 72 frames, 9 KB, seam 0.04 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/l-sit-one-foot/blender/l-sit-one-foot.mp4
+l-sit-one-leg: 72 frames, 9 KB, seam 0.04 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/l-sit-one-leg/blender/l-sit-one-leg.mp4
+l-sit-tuck: 72 frames, 8 KB, seam 0.02 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/l-sit-tuck/blender/l-sit-tuck.mp4
+leg-raise-lying: 84 frames, 15 KB, seam 0.18 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/leg-raise-lying/blender/leg-raise-lying.mp4
+muscle-up-bar: 96 frames, 13 KB, seam 0.30 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/muscle-up-bar/blender/muscle-up-bar.mp4
+nordic-banded: 96 frames, 16 KB, seam 0.19 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/nordic-banded/blender/nordic-banded.mp4
+nordic-curl: 96 frames, 23 KB, seam 0.37 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/nordic-curl/blender/nordic-curl.mp4
+nordic-negative-banded: 108 frames, 19 KB, seam 0.16 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/nordic-negative-banded/blender/nordic-negative-banded.mp4
+pallof-hold: 72 frames, 7 KB, seam 0.02 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pallof-hold/blender/pallof-hold.mp4
+pallof-press: 84 frames, 12 KB, seam 0.04 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pallof-press/blender/pallof-press.mp4
+pike-pushup: 72 frames, 21 KB, seam 0.16 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pike-pushup/blender/pike-pushup.mp4
+pike-pushup-elevated: 72 frames, 19 KB, seam 0.16 (typical step 0.01) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pike-pushup-elevated/blender/pike-pushup-elevated.mp4
+planche-adv-tuck: 72 frames, 7 KB, seam 0.00 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/planche-adv-tuck/blender/planche-adv-tuck.mp4
+planche-lean: 72 frames, 8 KB, seam 0.03 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/planche-lean/blender/planche-lean.mp4
+planche-tuck: 72 frames, 9 KB, seam 0.03 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/planche-tuck/blender/planche-tuck.mp4
+plank: 72 frames, 7 KB, seam 0.03 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/plank/blender/plank.mp4
+plank-shoulder-tap: 72 frames, 14 KB, seam 0.34 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/plank-shoulder-tap/blender/plank-shoulder-tap.mp4
+pullup-band-assisted: 72 frames, 12 KB, seam 0.11 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pullup-band-assisted/blender/pullup-band-assisted.mp4
+pullup-chest-to-bar: 72 frames, 11 KB, seam 0.10 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pullup-chest-to-bar/blender/pullup-chest-to-bar.mp4
+pullup-full: 72 frames, 11 KB, seam 0.09 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pullup-full/blender/pullup-full.mp4
+pullup-negative: 96 frames, 12 KB, seam 0.05 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pullup-negative/blender/pullup-negative.mp4
+pushup-archer: 72 frames, 19 KB, seam 0.21 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pushup-archer/blender/pushup-archer.mp4
+pushup-diamond: 60 frames, 16 KB, seam 0.36 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pushup-diamond/blender/pushup-diamond.mp4
+pushup-feet-elevated: 60 frames, 16 KB, seam 0.40 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pushup-feet-elevated/blender/pushup-feet-elevated.mp4
+pushup-incline: 60 frames, 14 KB, seam 0.35 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pushup-incline/blender/pushup-incline.mp4
+pushup-incline-high: 60 frames, 12 KB, seam 0.16 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pushup-incline-high/blender/pushup-incline-high.mp4
+pushup-knee: 60 frames, 16 KB, seam 0.27 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pushup-knee/blender/pushup-knee.mp4
+pushup-one-arm: 72 frames, 18 KB, seam 0.18 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pushup-one-arm/blender/pushup-one-arm.mp4
+pushup-one-arm-negative: 96 frames, 19 KB, seam 1.09 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pushup-one-arm-negative/blender/pushup-one-arm-negative.mp4
+pushup-standard: 60 frames, 17 KB, seam 0.26 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/pushup-standard/blender/pushup-standard.mp4
+rdl-bodyweight: 84 frames, 17 KB, seam 0.07 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/rdl-bodyweight/blender/rdl-bodyweight.mp4
+reverse-hyperextension: 72 frames, 13 KB, seam 0.03 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/reverse-hyperextension/blender/reverse-hyperextension.mp4
+row-band: 72 frames, 18 KB, seam 0.24 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/row-band/blender/row-band.mp4
+scapular-pull: 96 frames, 7 KB, seam 0.01 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/scapular-pull/blender/scapular-pull.mp4
+side-plank: 72 frames, 9 KB, seam 0.03 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/side-plank/blender/side-plank.mp4
+side-plank-leg-raise: 84 frames, 11 KB, seam 0.06 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/side-plank-leg-raise/blender/side-plank-leg-raise.mp4
+single-leg-deadlift: 84 frames, 22 KB, seam 0.18 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/single-leg-deadlift/blender/single-leg-deadlift.mp4
+split-squat: 72 frames, 13 KB, seam 0.17 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/split-squat/blender/split-squat.mp4
+split-squat-bulgarian: 72 frames, 14 KB, seam 0.11 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/split-squat-bulgarian/blender/split-squat-bulgarian.mp4
+squat-air: 72 frames, 20 KB, seam 0.34 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/squat-air/blender/squat-air.mp4
+squat-pistol: 96 frames, 23 KB, seam 0.23 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/squat-pistol/blender/squat-pistol.mp4
+squat-pistol-assisted: 96 frames, 15 KB, seam 0.09 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/squat-pistol-assisted/blender/squat-pistol-assisted.mp4
+squat-pistol-box: 96 frames, 21 KB, seam 0.11 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/squat-pistol-box/blender/squat-pistol-box.mp4
+squat-pistol-counterbalance: 96 frames, 24 KB, seam 0.20 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/squat-pistol-counterbalance/blender/squat-pistol-counterbalance.mp4
+squat-shrimp: 84 frames, 15 KB, seam 0.17 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/squat-shrimp/blender/squat-shrimp.mp4
+squat-shrimp-advanced: 84 frames, 16 KB, seam 0.16 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/squat-shrimp-advanced/blender/squat-shrimp-advanced.mp4
+squat-shrimp-intermediate: 84 frames, 14 KB, seam 0.13 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/squat-shrimp-intermediate/blender/squat-shrimp-intermediate.mp4
+stretch-pigeon: 96 frames, 17 KB, seam 0.13 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/stretch-pigeon/blender/stretch-pigeon.mp4
+tibialis-raise: 72 frames, 6 KB, seam 0.01 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/tibialis-raise/blender/tibialis-raise.mp4
+tibialis-raise-single: 72 frames, 6 KB, seam 0.01 (typical step 0.00) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/tibialis-raise-single/blender/tibialis-raise-single.mp4
+walking-lunge: 96 frames, 23 KB, seam 0.16 (typical step 0.16) -> /Users/nils/Documents/hermes/Apps/calisthenics/work/clips-bakeoff/walking-lunge/blender/walking-lunge.mp4
+Seam outlier context (white-composited 480x360 PNG frames; mean absolute pixel difference on 0–255 scale): the encoder's “typical step” is frame 0→1 and often rounds to 0.00 because the first key is held. The comparisons below use the median nonzero adjacent-frame difference across the full sequence instead. These are screening metrics, not acceptance thresholds.
+pushup-one-arm-negative: seam 1.092; nonzero adjacent median 0.487, mean 0.612.
+dip-negative: seam 1.070; nonzero adjacent median 0.357, mean 0.400.
+bridge-incline: seam 0.596; nonzero adjacent median 1.592, mean 1.337.
+pushup-feet-elevated: seam 0.395; nonzero adjacent median 1.111, mean 0.896.
+nordic-curl: seam 0.370; nonzero adjacent median 1.665, mean 1.485.
+pushup-diamond: seam 0.363; nonzero adjacent median 1.167, mean 1.001.
+Visual context: the six largest-seam cases were inspected in frame sheets (not playback); no obvious discontinuous pose jump was seen, with small body drift at the seam. Pixel metrics alone do not establish loop quality.
+All 100 clips encoded; maximum reported size 27 KB (bridge-incline). No clip approached the 120 KB cap in this CRF 30 encode pass.
+Command: `source /root/toolchain/env.sh && cd /Users/nils/Documents/hermes/Apps/calisthenics && python3 tools/blender/encode.py <the 100 IDs listed below>` in `docker exec hermes-f5da05b7 bash -lc`; exit code 0.
+IDs encoded (explicit list): arch-hang arch-hold-y arch-rocks archer-row barbell-rdl barbell-squat bridge-back bridge-head bridge-incline bridge-single-leg bridge-table bridge-wall-walkdown calf-raise calf-raise-single chair-assisted-pullup chinup-full copenhagen-side-plank copenhagen-side-plank-short dead-bug dead-hang dip-negative dip-parallel dip-support-hold dumbbell-rdl dumbbell-row dumbbell-single-leg-rdl flexed-arm-hang front-lever-adv-tuck front-lever-straddle front-lever-tuck glute-bridge goblet-squat hollow-hold hollow-one-leg hollow-rocks hollow-tuck inverted-row inverted-row-bent-knees inverted-row-feet-elevated inverted-row-wide kettlebell-deadlift kettlebell-one-arm-row kettlebell-single-leg-rdl kettlebell-suitcase-carry kettlebell-swing kettlebell-swing-one-arm l-sit-advanced-tuck l-sit-floor l-sit-foot-supported l-sit-one-foot l-sit-one-leg l-sit-tuck leg-raise-lying muscle-up-bar nordic-banded nordic-curl nordic-negative-banded pallof-hold pallof-press pike-pushup pike-pushup-elevated planche-adv-tuck planche-lean planche-tuck plank plank-shoulder-tap pullup-band-assisted pullup-chest-to-bar pullup-full pullup-negative pushup-archer pushup-diamond pushup-feet-elevated pushup-incline pushup-incline-high pushup-knee pushup-one-arm pushup-one-arm-negative pushup-standard rdl-bodyweight reverse-hyperextension row-band scapular-pull side-plank side-plank-leg-raise single-leg-deadlift split-squat split-squat-bulgarian squat-air squat-pistol squat-pistol-assisted squat-pistol-box squat-pistol-counterbalance squat-shrimp squat-shrimp-advanced squat-shrimp-intermediate stretch-pigeon tibialis-raise tibialis-raise-single walking-lunge

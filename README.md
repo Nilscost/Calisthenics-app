@@ -9,13 +9,13 @@ I built it as the product owner. AI coding agents wrote most of the code; I set 
 ## What the app does
 
 - **Train:** pick a goal (a skill such as the handstand push-up, or a body focus), your equipment profile and the number of rounds. You get a circuit preview with the muscles worked; swap any exercise for today or permanently, then start.
-- **During the workout:** big ring timer, looping demo clip, voice cues and a foreground service, so it keeps time with the screen off. Stretches replace passive rest. You log reps while you stretch.
+- **During the workout:** large timer, looping demo clip, voice cues and a foreground service, so it keeps time with the screen off. Stretches replace passive rest. You log reps on the exercise screen and holds during the following break.
 - **Progression:** every exercise has five levels. The app moves you up after three successful sessions spread over a week, holds the level if you fall below target, pauses the whole exercise family if you report pain, and hands you to the next exercise when you master one. Kettlebell levels count per weight: a heavier bell restarts the same exercise, while the same bell leads to harder exercises.
 - **Progress:** a skill tree per family (push, pull, squat, core…) with 0–5 stars, locks and equipment badges.
 - **History:** a week view and per-workout details, with corrections saved as new revisions so nothing is overwritten.
 - **Data:** checksummed backup and restore, crash-safe workout recovery, and a schema-checked database with no destructive migrations.
 
-**Version 2 (release R7, 0.10.0-r7):** R7 adds, on top of R6, rep logging on the exercise screen, an exercises-per-round stepper (sessions of at least 30 minutes), skill sessions built around the skill, a full-timeline editor, an Edit mode and links in Progress, Jefferson curl and German hang, and a cool-down switch; see `docs/evidence/owner-check-r7.md`. Nothing has been tested on a phone and the exercise content is an unreviewed draft.
+**Version 2 (release R7, 0.10.0-r7):** R7 adds, on top of R6, rep logging on the exercise screen, an exercises-per-round stepper (aiming for at least 30 minutes when enough equipment-compatible exercises are available), skill sessions built around the skill, a full-timeline editor, an Edit mode and links in Progress, Jefferson curl and German hang, and a cool-down switch; see `docs/evidence/owner-check-r7.md`. Nothing has been tested on a phone and the exercise content is an unreviewed draft.
 
 **Version 2 (release R6, 0.9.0-r6):** a redesigned Train and workout screen, a round preview you can edit (levels, stretches, per-set numbers), three workout formats (circuit, pairs, straight sets), progression rules (levels or rep ranges), saved routines and the ready-made Recommended and Minimalist routines, an optional warm-up, History charts, weight tracks and suggestions for extra equipment, a 24-stretch library with a "Starting To Stretch" session, a RAMP warm-up and the Barlow Condensed and IBM Plex Sans type. See `STATUS.md` and `docs/evidence/owner-check-final.md`. Exercise content is still an unreviewed draft and nothing has been tested on a phone yet.
 
@@ -46,7 +46,7 @@ Every number in the exercise catalog is marked DRAFT until I have reviewed it (`
   - `domain`: pure Kotlin, holding the planner, progression engine and session state machine, all deterministic and unit-tested;
   - `data`: storage;
   - `app`: the user interface.
-- **308 automated tests** covering domain logic, catalog rules, and Robolectric UI tests at phone size, at text size 1.3 and in dark mode. Lint, an offline build check and a hygiene check run in CI (`.github/workflows/android.yml`).
+- **Automated tests** covering domain logic, catalog rules, and Robolectric UI tests at phone size, at text size 1.3 and in dark mode. Lint, an offline build check and a hygiene check run in CI (`.github/workflows/android.yml`).
 - The exercise catalog and demo clips are generated from scripts (`tools/gen_starter_catalog.py`, `tools/gen_demo_clips_v3.py`), so content changes are reviewable as code.
 
 ## Build

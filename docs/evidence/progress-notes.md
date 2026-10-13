@@ -599,3 +599,10 @@ Process notes for the whole batch: every task was verified in the Hermes contain
 ### R7-T13 — cool-down (D10)
 - Train switch and mode (Stretching / Timed), `TrainSettings` + saved routines carry it; Stretching picks stretches the session's exercises list (deep ones allowed), most shared first, to about 5 minutes (never over 8); Timed is one block with no clip and a breathing cue, default 5 min; the Preview shows the cool-down (swap a stretch, − / + minutes via `PlanEdits`). Header COOL-DOWN n OF N (T02).
 - Tests: `CooldownTest` (5), Train and Preview tests, flow `b_train_preview`. **Choice:** the timed block has no catalog item (it is a `COOLDOWN` block without exercise, title "Relax").
+
+### R7-T14 — release 0.10.0-r7 (2026-10-13)
+- Set `versionCode` 10 and `versionName` `0.10.0-r7`; updated `STATUS.md`, README and the owner phone checklist. APK: `Apps/builds/app-debug-R7.apk`.
+- Verification: fresh-clone full verify exit 0 (`docs/evidence/r7-t14-verify-2026-10-13.log`). After that run, GitHub `android.yml` exposed preflight path assumptions in the parallel Blender tools; the coordinator made those paths portable without weakening preflight. The full local verify and GitHub `android.yml` runs for `a372a85` (38404466903), `ab77d74` (38406206011) and `89ade24` (38406697011) all succeeded. No phone testing.
+- UI review: the partial `ui-screens` run for `1f9dc5b` had passing screenshots for the other captured flows but `b_train_preview` and `j_warmup` failed in Maestro. Their flow-only selectors were corrected locally: center the cool-down controls before toggling and wait for the Dip Support Hold by name before checking its 30 s target. A complete all-PASS run and the final screenshot review remain pending.
+- **NOT done:** owner phone check; final all-PASS UI run and review; Jefferson curl and German hang still use stand-in clips until the clip track supplies their own.
+- **Choice not in the plan:** none for the release changes. The app version and release checklist follow the R7 contract; no owner gate was approved.

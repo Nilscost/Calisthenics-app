@@ -192,3 +192,25 @@ The reviewer initially miscounted frames by looking in `blender/`; the coordinat
 The original 100 IDs marked OK in the historical snapshot were sampled at distinct motion frames; a separate visual-sheet review confirmed that. This correction changes only the new-ID frame review above.
 
 Known-limit sleeper/thoracic/wrist-flexor and the pending wall lat/wrist-biceps stretches have not yet been visually accepted.
+
+## Stretch corrections prepared
+
+The coordinator independently regenerated `stretch-ankle-mobility`, `stretch-calf-wall` and `stretch-chest-door` after Luna's fixes; all three printed OK. The two front-wall cameras now view the subject side. The doorway prop is a narrow frame with an opening instead of a solid panel; its hand-contact target is unchanged, and the camera views the opposite side of the former blocking plane. The coordinator inspected the doorway stick sheet; the figure and working arm are visible. These three remain **rerender and rendered review pending**, not accepted shipped clips.
+
+The original 100 visually accepted current clips encoded and passed installer dry validation (100 prepared, zero problems; no shipped asset changes). See `blender-encode-2026-10-13.log` and `blender-dry-install-2026-10-13.log`. Maximum reported CRF30 size was 27 KB. The six largest seam outliers were checked in first/last frame sheets; no abrupt pose jump was evident. This is frame-sheet screening, not video playback or technique approval. Coordinator video-format spot checks confirmed H.264 Main, yuv420p, 480×360, 24 fps for the largest-size and largest-seam clips.
+
+
+## Addendum — new stretch renders (2026-10-13)
+
+Reviewed current `blender/frames/` sets at 0000, 25%, 50%, and 75%. Each reviewed set matched its joint frame count and the newest render files were newer than `joints.json` at inspection.
+
+- `stretch-cobra` — **FIX / pose review needed** — the sampled torso stays essentially flat on the floor; the intended press-up chest lift with hips down does not read.
+- `stretch-frog` — **OK with visibility limit** — wide-knee, low-hip kneeling stretch is readable in side view, but the camera angle makes the knee width hard to judge; sampled motion is subtle.
+- `stretch-hamstring` — **OK** — seated straight-leg position and forward hip hinge are visible across the sampled loop.
+- `stretch-hamstring-standing` — **FIX / pose review needed** — front heel is ahead, but the front knee bends substantially through the sampled hold and the hip hinge is modest, weakening the straight-leg hamstring stretch cue.
+
+`stretch-hip-flexor` had only 20/96 frames at inspection and remains pending; `stretch-lat-wall` had no current start or frames and remains pending. Regenerated `stretch-ankle-mobility`, `stretch-calf-wall`, and `stretch-chest-door` were excluded because their existing renders are stale against the changed joints.
+
+## Further form corrections prepared
+
+`stretch-cobra` now lifts the chest clearly with pelvis z=0.11 and hands/legs grounded; the deepest sampled head height is 0.58 m. `stretch-hamstring-standing` keeps the working knee at 168–169 degrees with the ankle planted and a visible trunk hinge to 50 degrees. The coordinator independently regenerated only these two IDs, observed OK geometry checks, and inspected both stick sheets. Both require rerendering and rendered review. Including these two, 13 changed/new poses are awaiting that review.
