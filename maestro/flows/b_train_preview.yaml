@@ -36,7 +36,8 @@ appId: app.calisthenics.personal
 - tapOn: { id: rule_REP_RANGE }
 - takeScreenshot: 02e-rule-rep-range-${VARIANT}
 - tapOn: { id: rule_APP_LEVELS }
-- scrollUntilVisible: { element: { id: cooldown_caption }, direction: DOWN, timeout: 10000 }
+# a slower scroll: at speed 40 the caption could pass between two visibility checks (dark run da9d667 overshot it)
+- scrollUntilVisible: { element: { id: cooldown_caption }, direction: DOWN, speed: 20, timeout: 30000 }
 - takeScreenshot: 02f-preview-cooldown-${VARIANT}
 # R7.2-T04 (F5): remove a cool-down stretch with its x, then the + opens the stretch picker
 - tapOn: { id: cooldown_remove_0 }
