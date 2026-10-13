@@ -20,8 +20,8 @@ appId: app.calisthenics.personal
     commands:
       - tapOn: { id: session_skip }
 - takeScreenshot: 04-dip-hold-block-${VARIANT}
-- tapOn: { id: session_done }
-- extendedWaitUntil: { visible: { id: logger }, timeout: 10000 }
+# the hold runs to its end (a DONE before the target would make it partial and it would not appear in the end editor)
+- extendedWaitUntil: { visible: { id: logger }, timeout: 60000 }
 - takeScreenshot: 05-dip-hold-logger-${VARIANT}
 - tapOn: { id: session_more }
 - tapOn: "End workout"
