@@ -294,7 +294,10 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
             if (!isAvailable(v, profile)) Text(missingLabel(v, profile), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("detail_missing"))
         }
         if (v.cautions.isNotEmpty()) {
-            val bg = if (dark) CautionDarkSurface else CautionLightSurface; val br = if (dark) CautionDarkBorder else CautionLightBorder; val tx = if (dark) CautionDarkText else CautionLightText
+            val strong = v.cautionStrong   // R7-T12 (D9): light red for the two exercises that need extra care
+            val bg = if (strong) (if (dark) CautionRedDarkSurface else CautionRedLightSurface) else if (dark) CautionDarkSurface else CautionLightSurface
+            val br = if (strong) (if (dark) CautionRedDarkBorder else CautionRedLightBorder) else if (dark) CautionDarkBorder else CautionLightBorder
+            val tx = if (strong) (if (dark) CautionRedDarkText else CautionRedLightText) else if (dark) CautionDarkText else CautionLightText
             Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(bg).border(1.dp, br, RoundedCornerShape(12.dp)).padding(Spacing.m).testTag("detail_caution"), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(stringResource(R.string.sheet_cautions).uppercase(), style = MaterialTheme.typography.labelLarge, color = tx)
                 v.cautions.forEach { Text(it, style = MaterialTheme.typography.bodyMedium, color = tx) }

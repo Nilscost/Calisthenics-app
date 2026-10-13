@@ -18,10 +18,10 @@ object TreeTabs {
         // R7-T11 (D7, O3): the weighted exercises sit in their movement's tab, next to the bodyweight one they build on (the prerequisite edge draws the side branch)
         TreeTab("push", "Push", listOf("pushup", "dip", "planche", "vest-push", "vest-dip")),
         TreeTab("shoulders", "Shoulders", listOf("hspu")),
-        TreeTab("pull", "Pull", listOf("pullup", "lever", "vest-pull")),
+        TreeTab("pull", "Pull", listOf("pullup", "lever", "german-hang", "vest-pull")),
         TreeTab("row", "Row", listOf("row", "kb-row", "db-row")),
         TreeTab("squat", "Squat", listOf("squat", "lunge", "db-squat", "bb-squat", "vest-squat")),
-        TreeTab("hips", "Hips and back", listOf("bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide", "db-hinge", "bb-hinge", "db-bridge")),
+        TreeTab("hips", "Hips and back", listOf("bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide", "jefferson", "db-hinge", "bb-hinge", "db-bridge")),
         TreeTab("core", "Core", listOf("plank", "plank-tap", "dead-bug", "side-plank", "pallof", "carry", "legraise")),
         TreeTab("calves", "Lower legs", listOf("calf", "tibialis")),
         TreeTab(STRETCHES, "Stretches", emptyList()),

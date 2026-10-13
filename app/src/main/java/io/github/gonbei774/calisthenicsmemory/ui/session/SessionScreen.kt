@@ -9,6 +9,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
 import android.os.SystemClock
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -183,6 +184,11 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                             }
                         }
                         Text(title, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_title"))
+                        // R7-T12 (D9): the light-red "pay attention to" points of Jefferson curl and German hang, on the workout screen too
+                        val strongCautions = remember(b.variationId) { b.variationId?.let { id -> runCatching { loadCatalog(ctx).variation(id) }.getOrNull()?.takeIf { it.cautionStrong }?.cautions }.orEmpty() }
+                        if (strongCautions.isNotEmpty() && b.type != BlockType.TRANSITION) Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).background(CautionRedLightSurface).border(1.dp, CautionRedLightBorder, RoundedCornerShape(10.dp)).padding(Spacing.s).testTag("session_caution_red")) {
+                            strongCautions.forEach { Text(it, style = MaterialTheme.typography.bodySmall, color = CautionRedLightText) }
+                        }
                         CueText.nextLabel(st.plan, b.id, names)?.let { Text(stringResource(R.string.session_next, it), Modifier.testTag("session_next"), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                     }
                 } }

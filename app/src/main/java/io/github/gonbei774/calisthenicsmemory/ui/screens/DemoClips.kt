@@ -23,7 +23,8 @@ object DemoClips {
      */
     fun file(ctx: Context, id: String): File? {
         val version = androidx.core.content.pm.PackageInfoCompat.getLongVersionCode(ctx.packageManager.getPackageInfo(ctx.packageName, 0))
-        return cachedClip(File(ctx.cacheDir, "demos"), version, id, assetSize = { assetSize(ctx, id) }, open = { ctx.assets.open("demos/$id.mp4") })
+        val asset = ClipAlias.assetId(id) { runCatching { ctx.assets.openFd("demos/$it.mp4").close(); true }.getOrElse { runCatching { ctx.assets.open("demos/$it.mp4").close(); true }.getOrDefault(false) } }
+        return cachedClip(File(ctx.cacheDir, "demos"), version, asset, assetSize = { assetSize(ctx, asset) }, open = { ctx.assets.open("demos/$asset.mp4") })
     }
 
     private fun assetSize(ctx: Context, id: String): Long = try {

@@ -198,6 +198,8 @@ data class ExerciseVariation(
     val stretchUse: StretchUse = StretchUse.BOTH,
     /** L11: an intense stretch that is never picked automatically (the person adds it by hand). */
     val optIn: Boolean = false,
+    /** R7-T12 (D9): the cautions are shown as the light-red "pay attention to" box (Jefferson curl, German hang) instead of the amber one. */
+    val cautionStrong: Boolean = false,
 )
 
 /** L11: BETWEEN_SETS = short and gentle enough to go between sets; COOL_DOWN = a deeper hold for after the workout only; BOTH = either. */

@@ -277,7 +277,7 @@
       "kind": "STRETCH",
       "unilateral": true,
       "position": "kneeling",
-      "defaultSeconds": 30,
+      "defaultSeconds": 45,
       "equipmentAlternatives": [
         {}
       ],
@@ -321,7 +321,7 @@
       "kind": "STRETCH",
       "unilateral": true,
       "position": "seated",
-      "defaultSeconds": 30,
+      "defaultSeconds": 45,
       "equipmentAlternatives": [
         {}
       ],
@@ -365,7 +365,7 @@
       "kind": "STRETCH",
       "unilateral": false,
       "position": "kneeling",
-      "defaultSeconds": 30,
+      "defaultSeconds": 60,
       "equipmentAlternatives": [
         {}
       ],
@@ -406,7 +406,7 @@
       "kind": "STRETCH",
       "unilateral": true,
       "position": "kneeling",
-      "defaultSeconds": 30,
+      "defaultSeconds": 45,
       "equipmentAlternatives": [
         {
           "capabilities": [
@@ -753,7 +753,7 @@
       "kind": "STRETCH",
       "unilateral": false,
       "position": "seated",
-      "defaultSeconds": 30,
+      "defaultSeconds": 45,
       "equipmentAlternatives": [
         {}
       ],
@@ -792,7 +792,7 @@
       "kind": "STRETCH",
       "unilateral": false,
       "position": "seated",
-      "defaultSeconds": 30,
+      "defaultSeconds": 60,
       "equipmentAlternatives": [
         {}
       ],
@@ -1052,7 +1052,7 @@
       "kind": "STRETCH",
       "unilateral": false,
       "position": "prone",
-      "defaultSeconds": 30,
+      "defaultSeconds": 45,
       "equipmentAlternatives": [
         {}
       ],
@@ -8357,6 +8357,123 @@
         "QUADS",
         "GLUTES"
       ]
+    },
+    {
+      "id": "jefferson-curl",
+      "familyId": "jefferson",
+      "name": "Jefferson Curl",
+      "patterns": [
+        "HINGE"
+      ],
+      "areas": [
+        "LOWER_BODY"
+      ],
+      "kind": "REPS",
+      "equipmentAlternatives": [
+        {}
+      ],
+      "unilateral": false,
+      "position": "standing",
+      "instructions": [
+        "Stand on the floor with the feet hip-width apart and no weight in the hands.",
+        "Tuck the chin and roll down slowly, one segment of the spine at a time, from the neck to the lower back, letting the arms hang.",
+        "Go only as low as stays comfortable; pause, then roll back up in the same slow way, the head coming up last."
+      ],
+      "formCues": [
+        "Slow, one segment at a time",
+        "Knees soft",
+        "Stay within a pain-free range"
+      ],
+      "cautions": [
+        "Pay attention to: start with no weight at all.",
+        "Pay attention to: roll down and up slowly, one segment of the spine at a time.",
+        "Pay attention to: stop at any back pain.",
+        "Pay attention to: avoid it if you have a disc injury."
+      ],
+      "difficultyRank": 22,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-jefferson-curl",
+      "compatibleStretchIds": [
+        "stretch-hamstring",
+        "stretch-hip-flexor",
+        "stretch-hamstring-standing"
+      ],
+      "cautionStrong": true,
+      "primaryMuscles": [
+        "HAMSTRINGS",
+        "LOWER_BACK"
+      ],
+      "secondaryMuscles": [
+        "GLUTES"
+      ]
+    },
+    {
+      "id": "german-hang",
+      "familyId": "german-hang",
+      "name": "German Hang",
+      "patterns": [
+        "PULL_VERTICAL"
+      ],
+      "areas": [
+        "UPPER_BODY"
+      ],
+      "kind": "HOLD",
+      "equipmentAlternatives": [
+        {
+          "needs": [
+            {
+              "equipmentId": "pullup-bar"
+            }
+          ]
+        }
+      ],
+      "unilateral": false,
+      "position": "hang",
+      "instructions": [
+        "Hang from a bar, then lift the legs and rotate the body so the arms end up behind you; start with the feet supported on a chair or the floor so little weight is on the shoulders.",
+        "Keep the shoulders active (a little pulled down), not sagging into the joint.",
+        "Hold, then come out the same way you went in. Take weight off with the feet as much as you need."
+      ],
+      "formCues": [
+        "Feet support first",
+        "Active shoulders",
+        "Out the way you went in"
+      ],
+      "cautions": [
+        "Pay attention to: only after comfortable dead hangs.",
+        "Pay attention to: feet support first, so little weight is on the shoulders.",
+        "Pay attention to: the shoulders stay active.",
+        "Pay attention to: stop at any shoulder pain."
+      ],
+      "difficultyRank": 12,
+      "sourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "reviewState": "DRAFT",
+      "progressionPolicyId": "pol-german-hang",
+      "compatibleStretchIds": [
+        "stretch-chest-door",
+        "stretch-shoulder",
+        "stretch-sleeper",
+        "stretch-wrist-flexor",
+        "stretch-wrist-extensor",
+        "stretch-lat-wall",
+        "stretch-rear-clasp",
+        "stretch-wrist-biceps",
+        "stretch-shoulder-backbend"
+      ],
+      "cautionStrong": true,
+      "primaryMuscles": [
+        "LATS",
+        "REAR_DELTS"
+      ],
+      "secondaryMuscles": [
+        "FOREARMS",
+        "BICEPS"
+      ]
     }
   ],
   "policies": [
@@ -14081,7 +14198,8 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "single-leg-deadlift"
+        "single-leg-deadlift",
+        "jefferson-curl"
       ]
     },
     {
@@ -15089,7 +15207,8 @@
       "policyKind": "PRODUCT_HEURISTIC",
       "approved": false,
       "nextVariationIds": [
-        "scapular-pull"
+        "scapular-pull",
+        "german-hang"
       ]
     },
     {
@@ -16777,6 +16896,144 @@
       },
       "tierProfile": "E",
       "tierNote": "Endurance reps 15 to 25: 2-4 sets of 15-25 is sourced for the tibialis raise; the steps between are DRAFT."
+    },
+    {
+      "id": "pol-jefferson-curl",
+      "variationId": "jefferson-curl",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "REPS",
+            "value": 3
+          },
+          "workWindowSeconds": 35,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "REPS",
+            "value": 4
+          },
+          "workWindowSeconds": 40,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "REPS",
+            "value": 5
+          },
+          "workWindowSeconds": 45,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "REPS",
+            "value": 6
+          },
+          "workWindowSeconds": 50,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "REPS",
+            "value": 8
+          },
+          "workWindowSeconds": 65,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "rdl-bodyweight",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "id": "pol-german-hang",
+      "variationId": "german-hang",
+      "version": 1,
+      "tiers": [
+        {
+          "index": 1,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 5
+          },
+          "workWindowSeconds": 8,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 2,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 8
+          },
+          "workWindowSeconds": 11,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 3,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 10
+          },
+          "workWindowSeconds": 13,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 4,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 15
+          },
+          "workWindowSeconds": 18,
+          "minRecoverySeconds": 60
+        },
+        {
+          "index": 5,
+          "target": {
+            "type": "HOLD_SECONDS",
+            "value": 20
+          },
+          "workWindowSeconds": 23,
+          "minRecoverySeconds": 60
+        }
+      ],
+      "evidenceSourceIds": [
+        "r/bodyweightfitness wiki, live check 2026-10-09"
+      ],
+      "policyKind": "PRODUCT_HEURISTIC",
+      "approved": false,
+      "prerequisiteRule": {
+        "allOf": [
+          [
+            {
+              "variationTierMet": {
+                "variationId": "dead-hang",
+                "tier": 3
+              }
+            }
+          ]
+        ]
+      }
     }
   ],
   "skillNodes": [

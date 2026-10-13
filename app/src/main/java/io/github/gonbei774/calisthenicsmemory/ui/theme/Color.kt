@@ -42,4 +42,7 @@ val GoldMarkOnLight = Color(0xFFB8901A) // doc 17 "accentText": thin marks and g
 val GoldTextOnLight = Color(0xFF7A5C00) // gold as TEXT on white, kept at 4.5:1 or more (deviation from doc 17, see progress notes V08b)
 val GoldDimDark = Color(0xFF8A7A3E);   val GoldDimLight = Color(0xFFD8C88A)   // accentDim: secondary muscles
 val CautionDarkSurface = Color(0xFF2A2410); val CautionDarkBorder = Color(0xFF5C4A12); val CautionDarkText = Color(0xFFF3E3B0)
+// R7-T12 (D9): the light-red "pay attention to" box (Jefferson curl, German hang); the amber one stays for every other exercise
+val CautionRedDarkSurface = Color(0xFF2E1616); val CautionRedDarkBorder = Color(0xFF6B2B2B); val CautionRedDarkText = Color(0xFFF5C6C6)
+val CautionRedLightSurface = Color(0xFFFDECEC); val CautionRedLightBorder = Color(0xFFE8A5A5); val CautionRedLightText = Color(0xFF7A1F1F)
 val CautionLightSurface = Color(0xFFFFF4E5); val CautionLightBorder = Color(0xFFE8C98A); val CautionLightText = Color(0xFF5C3A00)

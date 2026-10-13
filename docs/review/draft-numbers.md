@@ -40,7 +40,7 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
-| Dead Hang | pullup-bar | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | - | Scapular Pull |
+| Dead Hang | pullup-bar | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | - | Scapular Pull, German Hang |
 | Scapular Pull | pullup-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | - | Arch Hang |
 | Arch Hang | pullup-bar | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Scapular Pull L4 | Negative Pull-Up, Chair-Assisted Pull-Up, Flexed-Arm Hang |
 | Band-Assisted Pull-Up | pullup-bar + resistance-band | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | - | Pull-Up |
@@ -54,6 +54,7 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Tuck Front Lever | pullup-bar + high-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Pull-Up L3 and Hollow Body Hold L3 and Wide Inverted Row L4 | Advanced Tuck Front Lever |
 | Advanced Tuck Front Lever | pullup-bar + high-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Tuck Front Lever L4 | Straddle Front Lever |
 | Straddle Front Lever | pullup-bar + high-bar | 2s / 5 / 60 | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | Advanced Tuck Front Lever L4 | — (top) |
+| German Hang | pullup-bar | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | Dead Hang L3 | — (top) |
 | Weighted Pull-Up | pullup-bar + weighted-vest | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Pull-Up L5 | — (top) |
 
 ## Row
@@ -108,7 +109,7 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Kettlebell Single-Leg RDL (per side) | kettlebell | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Controlled Kettlebell Deadlift L4 | Kettlebell Swing |
 | Kettlebell Swing | kettlebell | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Kettlebell Single-Leg RDL (per side) L3 and Controlled Kettlebell Deadlift L5 | One-Arm Kettlebell Swing (per side) |
 | One-Arm Kettlebell Swing (per side) | kettlebell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Kettlebell Swing L4 | — (top) |
-| Romanian Deadlift (bodyweight) | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | Single-Leg Deadlift (per side) |
+| Romanian Deadlift (bodyweight) | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | Single-Leg Deadlift (per side), Jefferson Curl |
 | Single-Leg Deadlift (per side) | none | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 7 / 55 / 60 | 8 / 65 / 60 | Romanian Deadlift (bodyweight) L4 | Banded Nordic Curl Negative, Hamstring Slide Negative |
 | Banded Nordic Curl Negative | foot-anchor + resistance-band* | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Single-Leg Deadlift (per side) L4 | Banded Nordic Curl |
 | Banded Nordic Curl | foot-anchor + resistance-band* | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Banded Nordic Curl Negative L4 | Nordic Curl |
@@ -117,6 +118,7 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Hamstring Slide | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Hamstring Slide Negative L4 | Single-Leg Slide Negative (per side) |
 | Single-Leg Slide Negative (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Hamstring Slide L4 | Single-Leg Slide (per side) |
 | Single-Leg Slide (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Single-Leg Slide Negative (per side) L4 | — (top) |
+| Jefferson Curl | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Romanian Deadlift (bodyweight) L3 | — (top) |
 | Dumbbell Romanian Deadlift | weight | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Romanian Deadlift (bodyweight) L4 | Dumbbell Single-Leg RDL (per side) |
 | Dumbbell Single-Leg RDL (per side) | weight | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Dumbbell Romanian Deadlift L4 and Single-Leg Deadlift (per side) L3 | — (top) |
 | Barbell Romanian Deadlift | barbell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Romanian Deadlift (bodyweight) L4 | — (top) |

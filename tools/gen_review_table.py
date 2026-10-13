@@ -15,10 +15,10 @@ OUT = ROOT / "docs/review/draft-numbers.md"
 TABS = [  # keep in sync with TreeTabs
     ("Push", ["pushup", "dip", "planche", "vest-push", "vest-dip"]),
     ("Shoulders", ["hspu"]),
-    ("Pull", ["pullup", "lever", "vest-pull"]),
+    ("Pull", ["pullup", "lever", "german-hang", "vest-pull"]),
     ("Row", ["row", "kb-row", "db-row"]),
     ("Squat", ["squat", "lunge", "db-squat", "bb-squat", "vest-squat"]),
-    ("Hips and back", ["bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide", "db-hinge", "bb-hinge", "db-bridge"]),
+    ("Hips and back", ["bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide", "jefferson", "db-hinge", "bb-hinge", "db-bridge"]),
     ("Core", ["plank", "plank-tap", "dead-bug", "side-plank", "pallof", "carry", "legraise"]),
     ("Lower legs", ["calf", "tibialis"]),
 ]

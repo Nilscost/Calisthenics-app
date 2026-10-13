@@ -13,11 +13,24 @@ class StretchUseTest {
     private val catalog = app.calisthenics.domain.content.parseCatalog(File(System.getProperty("repo.root"), "content/starter/catalog.json").readText())
     private val none = app.calisthenics.domain.progression.ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
 
-    @Test fun recoveryBlocksNeverUseCoolDownOnlyOrOptInStretches() {
-        val p = (buildTrainPlan(catalog, StarterRoutine.routine, none, SeedProfiles.home, TrainSettings(rounds = 4, stretchOn = true)) as PlanResult.Ready).plan
+    // R7-T12 (D8): the old assertion (no cool-down-only stretch between sets) is replaced: only opt-in stretches stay out of the automatic rotation
+    @Test fun recoveryBlocksNeverUseOptInStretchesButDeepOnesAreAllowed() {
+        val p = (buildTrainPlan(catalog, StarterRoutine.routine, none, SeedProfiles.home, TrainSettings(rounds = 6, stretchOn = true)) as PlanResult.Ready).plan
         val used = p.blocks.filter { it.type == BlockType.STRETCH }.mapNotNull { it.variationId }.toSet()
         assertTrue(used.isNotEmpty())
-        for (id in used) { val v = catalog.variation(id)!!; assertTrue(id, v.stretchUse != StretchUse.COOL_DOWN && !v.optIn) }
+        for (id in used) assertFalse(id, catalog.variation(id)!!.optIn)
+        assertTrue("a deep stretch is used somewhere in the rotation: $used", used.any { catalog.variation(it)!!.stretchUse == StretchUse.COOL_DOWN })
+    }
+
+    @Test fun aDeepStretchBetweenSetsGetsItsOwnTimePerSideAndNeverLessThanTheRest() {
+        for ((id, perSide) in listOf("stretch-pigeon" to true, "stretch-pancake" to false)) {
+            val own = catalog.variation(id)!!.defaultSeconds!!
+            assertTrue("$id has a realistic hold", own in 45..60)
+            val p = (buildTrainPlan(catalog, StarterRoutine.routine, none, SeedProfiles.home, TrainSettings(rounds = 2, stretchOn = true), edits = PlanEdits(stretchPicks = mapOf("push" to id))) as PlanResult.Ready).plan
+            val blocks = p.blocks.filter { it.slotId == "push" && it.roundIndex == 1 && it.variationId == id }
+            assertEquals(if (perSide) 2 else 1, blocks.size)
+            assertTrue(blocks.all { it.durationSeconds >= own })
+        }
     }
 
     @Test fun aHandPickedStretchStillWorksEvenIfItIsCoolDownOnly() {

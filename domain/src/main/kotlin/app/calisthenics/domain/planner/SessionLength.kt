@@ -27,7 +27,7 @@ private fun usable(c: Catalog, v: ExerciseVariation, profile: EquipmentProfile) 
 
 /** The planner refuses an exercise whose recovery would be passive rest while stretching is on; this is the same test, so a filler never makes the plan fail. */
 private fun hasBetweenSetsStretch(c: Catalog, v: ExerciseVariation) =
-    v.compatibleStretchIds.mapNotNull { c.variation(it) }.any { it.kind == Kind.STRETCH && it.stretchUse != StretchUse.COOL_DOWN && !it.optIn }
+    v.compatibleStretchIds.mapNotNull { c.variation(it) }.any { it.kind == Kind.STRETCH && !it.optIn }
 
 /**
  * Exercises that can be added to [routine] for [focus], best first, one per family: the entry exercise of each family at the

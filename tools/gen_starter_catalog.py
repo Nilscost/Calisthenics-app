@@ -254,6 +254,11 @@ for _v in variations:
     if _v["id"] in _CD: _v["stretchUse"] = "COOL_DOWN"
     if _v["id"] == "stretch-sleeper": _v["optIn"] = True; _v["stretchUse"] = "COOL_DOWN"
 
+# R7-T12 (D8): the deep (cool-down) stretches may go between sets again, so they carry realistic holds (45-60 s; per side when one-sided)
+_DEEP = {"stretch-pigeon": 45, "stretch-90-90": 45, "stretch-frog": 60, "stretch-quad-couch": 45, "stretch-butterfly": 45, "stretch-pancake": 60, "stretch-cobra": 45}
+for _v in variations:
+    if _v["id"] in _DEEP: _v["defaultSeconds"] = _DEEP[_v["id"]]
+
 # ---------------- push ----------------
 strength("pushup-incline", "Incline Push-Up", "pushup", ["PUSH_HORIZONTAL"], ["UPPER_BODY"], "REPS", "floor",
          ["Hands on a wall or a stable raised surface, body in one straight line.", "Lower the chest toward the surface, elbows about 45° from the body.",
@@ -913,6 +918,29 @@ for pol in policies:
 
 
 # ---------------- U09: muscles worked (F9). Drives the clip colouring, the preview chips and the tree sheet. ----------------
+# =============================================================================================================
+# R7-T12 (D9): Jefferson curl and German hang. Usable by the app (not opt-in), conservative DRAFT numbers, a light-red "pay attention to" box
+# (cautionStrong). No source is cited: the numbers are product heuristics. Clips: until the clip track delivers, the app shows the closest
+# existing clip (ui/screens/ClipAlias.kt) and gen_demo_clips_v3.py declares the shared pose.
+# =============================================================================================================
+strength("jefferson-curl", "Jefferson Curl", "jefferson", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
+         ["Stand on the floor with the feet hip-width apart and no weight in the hands.", "Tuck the chin and roll down slowly, one segment of the spine at a time, from the neck to the lower back, letting the arms hang.",
+          "Go only as low as stays comfortable; pause, then roll back up in the same slow way, the head coming up last."],
+         ["Slow, one segment at a time", "Knees soft", "Stay within a pain-free range"],
+         reps_tiers([3, 4, 5, 6, 8]), [S_RR], HAM_ST, rank=22, prereq={"allOf": [[vt("rdl-bodyweight", 3)]]},
+         cautions=("Pay attention to: start with no weight at all.", "Pay attention to: roll down and up slowly, one segment of the spine at a time.", "Pay attention to: stop at any back pain.", "Pay attention to: avoid it if you have a disc injury."))
+strength("german-hang", "German Hang", "german-hang", ["PULL_VERTICAL"], ["UPPER_BODY"], "HOLD", "hang",
+         ["Hang from a bar, then lift the legs and rotate the body so the arms end up behind you; start with the feet supported on a chair or the floor so little weight is on the shoulders.", "Keep the shoulders active (a little pulled down), not sagging into the joint.", "Hold, then come out the same way you went in. Take weight off with the feet as much as you need."],
+         ["Feet support first", "Active shoulders", "Out the way you went in"],
+         hold_tiers([5, 8, 10, 15, 20]), [S_RR], UP, eq=BAR, rank=12, prereq={"allOf": [[vt("dead-hang", 3)]]},
+         cautions=("Pay attention to: only after comfortable dead hangs.", "Pay attention to: feet support first, so little weight is on the shoulders.", "Pay attention to: the shoulders stay active.", "Pay attention to: stop at any shoulder pain."))
+for _v in variations:
+    if _v["id"] in ("jefferson-curl", "german-hang"): _v["cautionStrong"] = True
+# reachable: the bodyweight Romanian deadlift and the dead hang lead on to them (as a later successor, so the existing chains keep their first successor)
+for _p in policies:
+    if _p["variationId"] == "rdl-bodyweight": _p["nextVariationIds"] = [*_p.get("nextVariationIds", []), "jefferson-curl"]
+    if _p["variationId"] == "dead-hang": _p["nextVariationIds"] = [*_p.get("nextVariationIds", []), "german-hang"]
+
 M = {
     "pushup-wall": (["CHEST", "TRICEPS"], ["FRONT_DELTS"]),
     "pushup-incline-high": (["CHEST", "TRICEPS"], ["FRONT_DELTS", "ABS"]),
@@ -1032,6 +1060,7 @@ M = {
     "plank-shoulder-tap": (["ABS", "OBLIQUES"], ["FRONT_DELTS", "GLUTES"]),
     "walking-lunge": (["QUADS", "GLUTES"], ["HAMSTRINGS", "HIP_FLEXORS", "CALVES"]),
 }
+M.update({"jefferson-curl": (["HAMSTRINGS", "LOWER_BACK"], ["GLUTES"]), "german-hang": (["LATS", "REAR_DELTS"], ["FOREARMS", "BICEPS"])})
 for v in variations:
     if v["kind"] in ("REPS", "HOLD"):
         p, sec = M[v["id"]]  # KeyError = an exercise without muscles: fix the table

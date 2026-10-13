@@ -284,7 +284,7 @@ private class Planner(val input: PlanInput) {
     private fun stretchesFor(v: ExerciseVariation): List<ExerciseVariation> {
         val areas = normalizeStretchAreas(draft.stretchAreas)
         return v.compatibleStretchIds.mapNotNull { cat.variation(it) }
-            .filter { it.kind == Kind.STRETCH && it.id !in input.excludedVariationIds && it.stretchUse != StretchUse.COOL_DOWN && !it.optIn &&   // L11: only gentle ones go between sets; opt-in ones are picked by hand
+            .filter { it.kind == Kind.STRETCH && it.id !in input.excludedVariationIds && !it.optIn &&   // R7-T12 (D8): deep (cool-down) stretches may go between sets again; only opt-in ones are picked by hand
                 (StretchArea.FULL_BODY in areas || it.stretchAreas.any { a -> a in areas || a == StretchArea.FULL_BODY }) }
             .sortedBy { it.id }
     }
@@ -352,10 +352,10 @@ private class Planner(val input: PlanInput) {
                 val cands = stretchesFor(v)
                 val s = (draft.roundStretchPicks["$r:${c.slot.id}"] ?: draft.stretchPicks[c.slot.id])?.let { cat.variation(it) }?.takeIf { it.kind == Kind.STRETCH } ?: cands[(r - 1 + si) % cands.size]
                 if (s.unilateral) {
-                    val seg = (window + 1) / 2 // never below the reviewed minimum recovery
+                    val seg = maxOf((window + 1) / 2, s.defaultSeconds ?: 0) // never below the reviewed minimum recovery; a deep stretch keeps its own time per side (R7-T12)
                     for (side in listOf(Side.LEFT, Side.RIGHT)) out += TimelineBlock("r$r-${c.slot.id}-rec-${side.name.first()}", BlockType.STRETCH, seg, r, c.slot.id, s.id, side,
                         recoveryForBlockIds = workIds, mediaId = s.mediaId, groupIndex = group)
-                } else out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.STRETCH, window, r, c.slot.id, s.id, Side.BOTH, recoveryForBlockIds = workIds, mediaId = s.mediaId, groupIndex = group)
+                } else out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.STRETCH, maxOf(window, s.defaultSeconds ?: 0), r, c.slot.id, s.id, Side.BOTH, recoveryForBlockIds = workIds, mediaId = s.mediaId, groupIndex = group)
             }
             extras()
         }

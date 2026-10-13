@@ -93,6 +93,15 @@ class ProgressScreenTest {
         rule.onNodeWithTag("detail_title").assertTextContains("Plank", substring = true, ignoreCase = true)
     }
 
+    // R7-T12 (D9): the Jefferson curl sits in Hips and back and its detail carries the pay-attention points
+    @Test fun jeffersonCurlDetailShowsItsPayAttentionPoints() {
+        show()
+        rule.onNodeWithTag("tab_chip_hips").performScrollTo().performClick(); rule.waitForIdle()
+        openDetailOf("jefferson-curl")
+        rule.onNodeWithTag("detail_caution").performScrollTo().assertExists()
+        rule.onNodeWithText("Pay attention to: stop at any back pain.").assertExists()
+    }
+
     @Test fun theGoalPicksTheFamilyTabAndOutlinesItsChain() {
         GoalStore.save(ctx, "hspu")
         show()

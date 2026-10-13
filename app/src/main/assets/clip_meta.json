@@ -254,7 +254,9 @@
    "UPPER_BACK",
    "BICEPS"
   ],
-  "sharedPoseWith": []
+  "sharedPoseWith": [
+   "german-hang"
+  ]
  },
  "dip-negative": {
   "kind": "rep",
@@ -1046,6 +1048,7 @@
    "LOWER_BACK"
   ],
   "sharedPoseWith": [
+   "jefferson-curl",
    "warmup-hinge-easier"
   ]
  },
@@ -1658,6 +1661,7 @@
   ],
   "secondary": [],
   "sharedPoseWith": [
+   "jefferson-curl",
    "rdl-bodyweight"
   ]
  },
@@ -1790,6 +1794,34 @@
   "sharedPoseWith": [
    "squat-air",
    "warmup-squat-easier"
+  ]
+ },
+ "jefferson-curl": {
+  "kind": "rep",
+  "primary": [
+   "HAMSTRINGS",
+   "LOWER_BACK"
+  ],
+  "secondary": [
+   "GLUTES"
+  ],
+  "sharedPoseWith": [
+   "rdl-bodyweight",
+   "warmup-hinge-easier"
+  ]
+ },
+ "german-hang": {
+  "kind": "hold",
+  "primary": [
+   "LATS",
+   "REAR_DELTS"
+  ],
+  "secondary": [
+   "FOREARMS",
+   "BICEPS"
+  ],
+  "sharedPoseWith": [
+   "dead-hang"
   ]
  }
 }

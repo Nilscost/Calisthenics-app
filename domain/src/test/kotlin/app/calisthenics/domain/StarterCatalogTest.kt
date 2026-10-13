@@ -8,6 +8,8 @@ import app.calisthenics.domain.model.*
 import java.io.File
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Test
 
 /** Validates the real bundled starter catalog (content/starter/catalog.json). */
@@ -35,7 +37,7 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(117, strength.size) // L13: +5 (calf and tibialis ladder); L09: +3 (table bridge, head-supported bridge, wall walk-down); L08: +6 (hollow steps and rocks, Pallof hold, short Copenhagen, suitcase carry); L07: +4 (L-sit steps); L05: +4 (shrimp steps, box and counterbalance pistol); L04: +3 (towel door row, wide inverted row, kettlebell one-arm row); L03: +4 (dead hang, flexed-arm hang, chair-assisted pull-up, chin-up); L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
+        assertEquals(119, strength.size) // R7-T12: +2 (Jefferson curl, German hang); L13: +5 (calf and tibialis ladder); L09: +3 (table bridge, head-supported bridge, wall walk-down); L08: +6 (hollow steps and rocks, Pallof hold, short Copenhagen, suitcase carry); L07: +4 (L-sit steps); L05: +4 (shrimp steps, box and counterbalance pistol); L04: +3 (towel door row, wide inverted row, kettlebell one-arm row); L03: +4 (dead hang, flexed-arm hang, chair-assisted pull-up, chin-up); L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
         assertEquals(35, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
         val areas = strength.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
@@ -62,7 +64,7 @@ class StarterCatalogTest {
     }
 
     /** Only these may end a chain; every other exercise must lead somewhere (U09, F15). */
-    private val explicitTops = setOf("pushup-one-arm", "hspu-wall", "muscle-up-bar", "squat-pistol", "bridge-back", "v-sit-floor", "v-up",
+    private val explicitTops = setOf("jefferson-curl", "german-hang", "pushup-one-arm", "hspu-wall", "muscle-up-bar", "squat-pistol", "bridge-back", "v-sit-floor", "v-up",
         "front-lever-straddle", "planche-adv-tuck", "archer-row", "arch-rocks", "copenhagen-side-plank", "kettlebell-swing-one-arm",
         // V21b: ends of the RR paths and single exercises of the ready-made routines
         "dip-parallel", "nordic-curl", "slide-single-leg", "pallof-press", "reverse-hyperextension", "plank-shoulder-tap", "walking-lunge",
@@ -202,7 +204,7 @@ class StarterCatalogTest {
     @Test fun l03PullUpPathWithoutABand() {
         fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
         fun needs(id: String) = catalog.variation(id)!!.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet()
-        assertEquals(listOf("scapular-pull"), next("dead-hang"))
+        assertEquals(listOf("scapular-pull", "german-hang"), next("dead-hang"))   // R7-T12: the German hang follows as a second successor
         assertEquals(listOf("pullup-full"), next("flexed-arm-hang")); assertEquals(listOf("pullup-full"), next("chair-assisted-pullup"))
         assertEquals(setOf("pullup-bar", "chair"), needs("chair-assisted-pullup")); assertEquals(setOf("pullup-bar"), needs("dead-hang")); assertEquals(Kind.HOLD, catalog.variation("flexed-arm-hang")!!.kind)
         // chin-up and pull-up are parallel: same way in, neither leads to the other
@@ -306,7 +308,9 @@ class StarterCatalogTest {
         val cd = stretches.filter { it.stretchUse == StretchUse.COOL_DOWN }.map { it.id }.toSet()
         assertTrue(cd.containsAll(setOf("stretch-pigeon", "stretch-90-90", "stretch-frog", "stretch-quad-couch", "stretch-butterfly", "stretch-pancake", "stretch-cobra", "stretch-sleeper")))
         assertTrue(catalog.variation("stretch-sleeper")!!.optIn)
-        assertTrue(stretches.filter { it.stretchUse != StretchUse.COOL_DOWN && !it.optIn }.all { (it.defaultSeconds ?: 30) <= 30 })       // between sets: 30 s at most
+        // R7-T12: the old rule "between sets: 30 s at most" for every automatic stretch is split: the gentle ones keep 30 s, the deep ones (now also allowed between sets) hold 45-60 s
+        assertTrue(stretches.filter { it.stretchUse != StretchUse.COOL_DOWN && !it.optIn }.all { (it.defaultSeconds ?: 30) <= 30 })
+        assertTrue(stretches.filter { it.stretchUse == StretchUse.COOL_DOWN && !it.optIn }.all { (it.defaultSeconds ?: 0) in 45..60 })
         // every strength exercise keeps at least one stretch that may go between sets (else the recovery would be passive rest)
         for (v in catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }) {
             val bs = v.compatibleStretchIds.mapNotNull { catalog.variation(it) }.filter { it.stretchUse != StretchUse.COOL_DOWN && !it.optIn }
@@ -327,5 +331,19 @@ class StarterCatalogTest {
         val loaded = catalog.variation("calf-raise-single-loaded")!!
         assertEquals("weight", loaded.loadEquipmentId()); assertTrue(loaded.isLoaded())
         assertEquals(setOf("wall"), catalog.variation("tibialis-raise")!!.equipmentAlternatives.flatMap { it.capabilities }.toSet())
+    }
+
+    // R7-T12 (D9): Jefferson curl and German hang are usable (not opt-in), DRAFT, with the light-red pay-attention points
+    @Test fun r7JeffersonCurlAndGermanHangAreUsableWithRedCautions() {
+        for ((id, must) in listOf("jefferson-curl" to listOf("no weight", "back pain", "disc"), "german-hang" to listOf("dead hang", "feet", "shoulders", "shoulder pain"))) {
+            val v = catalog.variation(id)!!
+            assertEquals(ReviewState.DRAFT, v.reviewState); assertTrue(id, v.cautionStrong); assertFalse(v.optIn)
+            assertNotNull(catalog.policyFor(v))
+            val text = v.cautions.joinToString(" ").lowercase()
+            for (m in must) assertTrue("$id: $m in $text", m in text)
+            assertTrue(id, v.cautions.all { it.startsWith("Pay attention to") })
+        }
+        assertEquals(1, catalog.variations.count { it.id == "jefferson-curl" })
+        assertFalse(catalog.variations.filter { it.id != "jefferson-curl" && it.id != "german-hang" }.any { it.cautionStrong })
     }
 }
