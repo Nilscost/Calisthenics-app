@@ -15,7 +15,12 @@ concurrency:
 jobs:
   screens:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120
+    # One job per theme/font variant: a single job running 10 flows x 3 variants exceeded 60 minutes (R7).
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [light, dark, font13]
     env:
       MAESTRO_VERSION: '2.11.0'
     steps:
@@ -44,12 +49,12 @@ jobs:
           profile: pixel_6
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
-          script: bash scripts/ui_shots.sh app/build/outputs/apk/debug/app-debug.apk "$RUNNER_TEMP/shots"
+          script: VARIANTS=${{ matrix.variant }} bash scripts/ui_shots.sh app/build/outputs/apk/debug/app-debug.apk "$RUNNER_TEMP/shots"
       - name: Upload screenshots
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ui-shots-${{ github.sha }}
+          name: ui-shots-${{ matrix.variant }}-${{ github.sha }}
           path: |
             ${{ runner.temp }}/shots
             ~/.maestro/tests

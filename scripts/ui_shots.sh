@@ -7,7 +7,10 @@
 set -uo pipefail
 APK="$1"; OUT="$2"; ROOT=$(pwd); PKG=app.calisthenics.personal
 export MAESTRO_CLI_NO_ANALYTICS=1
-mkdir -p "$OUT"; : > "$OUT/results.txt"
+# VARIANTS (default: all three) lets CI run one variant per job; the results file is then results-<variant>.txt.
+VARIANTS="${VARIANTS:-light dark font13}"
+RES="$OUT/results.txt"; [ "$VARIANTS" = "light dark font13" ] || RES="$OUT/results-${VARIANTS// /_}.txt"
+mkdir -p "$OUT"; : > "$RES"
 adb wait-for-device
 until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 ]; do sleep 2; done
 adb shell settings put global hide_error_dialogs 1   # no "isn't responding" dialogs over the app
@@ -16,7 +19,7 @@ adb shell wm size 1080x2400
 adb shell wm density 420          # Galaxy S21: 1080x2400, ~421 dpi
 adb install -r "$APK"
 fail=0
-for variant in light dark font13; do
+for variant in $VARIANTS; do
   case $variant in
     light)  night=no;  scale=1.0 ;;
     dark)   night=yes; scale=1.0 ;;
@@ -40,23 +43,23 @@ for variant in light dark font13; do
     for try in 1 2; do
       tmp=$(mktemp -d)
       # The hook runs before every attempt (fresh state / seed / theme of the variant).
-      bash "$hook" "$variant" > "$OUT/$name/hook-$variant.txt" 2>&1 || echo "HOOKFAIL $name $variant" >> "$OUT/results.txt"
+      bash "$hook" "$variant" > "$OUT/$name/hook-$variant.txt" 2>&1 || echo "HOOKFAIL $name $variant" >> "$RES"
       if (cd "$tmp" && maestro test --no-ansi --test-output-dir "$tmp" -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant.txt" 2>&1; then
         ok=1; else ok=0; fi
       [ $ok = 1 ] && break
-      [ $try = 1 ] && { echo "RETRY $name $variant" >> "$OUT/results.txt"; adb shell am force-stop $PKG; adb shell input keyevent KEYCODE_HOME; sleep 15; rm -rf "$tmp"; }
+      [ $try = 1 ] && { echo "RETRY $name $variant" >> "$RES"; adb shell am force-stop $PKG; adb shell input keyevent KEYCODE_HOME; sleep 15; rm -rf "$tmp"; }
     done
     find "$tmp" -name '*.png' -not -path '*/.maestro/*' -not -name 'screenshot-*' -exec cp {} "$OUT/$name/" \;
     rm -rf "$tmp"
     if [ $ok = 1 ]; then
-      echo "PASS $name $variant" >> "$OUT/results.txt"
+      echo "PASS $name $variant" >> "$RES"
     else
-      echo "FAIL $name $variant" >> "$OUT/results.txt"; fail=1
+      echo "FAIL $name $variant" >> "$RES"; fail=1
       adb exec-out screencap -p > "$OUT/$name/zz-failure-$variant.png" || true
     fi
   done
 done
 adb shell settings put system font_scale 1.0
 adb shell cmd uimode night no
-cat "$OUT/results.txt"
+cat "$RES"
 exit $fail
