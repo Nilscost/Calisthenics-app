@@ -26,8 +26,7 @@ private val cache = ConcurrentHashMap<String, ImageBitmap>()
 /** Decoded thumbnails are small (about 128 px); they are cached for the process. */
 fun loadThumb(ctx: android.content.Context, id: String): ImageBitmap? =
     cache[id] ?: run {
-        fun load(i: String) = runCatching { ctx.assets.open("thumbs/$i.webp").use { BitmapFactory.decodeStream(it) }?.asImageBitmap() }.getOrNull()
-        (load(id) ?: io.github.gonbei774.calisthenicsmemory.ui.screens.ClipAlias.assetId(id) { false }.takeIf { it != id }?.let { load(it) })?.also { cache[id] = it }   // R7-T12: the closest existing picture until the clip track delivers
+        runCatching { ctx.assets.open("thumbs/$id.webp").use { BitmapFactory.decodeStream(it) }?.asImageBitmap() }.getOrNull()?.also { cache[id] = it }
     }
 
 /** The picture of exercise [id] on a rounded surface tile; the first letter of [name] if there is no picture. Decorative: the name sits next to it. */

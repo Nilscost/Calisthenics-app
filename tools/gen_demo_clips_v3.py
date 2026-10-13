@@ -694,8 +694,8 @@ POSES.update(OWN_POSES)
 
 # L12: the "easier" warm-up items repeat an existing exercise for ten slow reps
 POSES["warmup-squat-easier"] = POSES["squat-air"]; POSES["warmup-hinge-easier"] = POSES["rdl-bodyweight"]
-# R7-T12: Jefferson curl and German hang have no clip of their own yet: the closest existing pose, until the clip track delivers (the app shows the same alias, ui/screens/ClipAlias.kt)
-POSES["jefferson-curl"] = POSES["rdl-bodyweight"]; POSES["german-hang"] = POSES["dead-hang"]
+# R7.1: Jefferson curl and German hang have their own Blender clips (tools/blender/families); this drawn pipeline has no pose for them.
+BLENDER_ONLY = {"jefferson-curl", "german-hang"}
 # V27: the weighted-vest versions are the same movement (the vest is not drawn); declared in SHARED_POSES
 for _w, _b in (("weighted-pushup", "pushup-standard"), ("weighted-pullup", "pullup-full"), ("weighted-dip", "dip-parallel"), ("weighted-squat", "squat-air")):
     POSES[_w] = POSES[_b]
@@ -705,8 +705,7 @@ SHARED_POSES = {
     frozenset({"dead-bug", "warmup-dead-bug"}): "the warm-up item is the same exercise for 30 s",
     frozenset({"dip-support-hold", "warmup-support-hold"}): "the RR warm-up support hold is the same hold",
     frozenset({"squat-air", "warmup-squat-easier", "weighted-squat"}): "the warm-up item repeats the squat for ten slow reps; the vest is not drawn",
-    frozenset({"rdl-bodyweight", "warmup-hinge-easier", "jefferson-curl"}): "the warm-up item repeats the Romanian deadlift for ten slow reps; the Jefferson curl uses it as a placeholder until the clip track delivers its own",
-    frozenset({"dead-hang", "german-hang"}): "placeholder: the German hang uses the dead hang until the clip track delivers its own",
+    frozenset({"rdl-bodyweight", "warmup-hinge-easier"}): "the warm-up item repeats the Romanian deadlift for ten slow reps",
     frozenset({"pushup-standard", "weighted-pushup"}): "the vest is the only difference and is not drawn",
     frozenset({"pullup-full", "weighted-pullup"}): "the vest is the only difference and is not drawn",
     frozenset({"dip-parallel", "weighted-dip"}): "the vest is the only difference and is not drawn",
@@ -993,7 +992,7 @@ def main():
     cat = json.load(open(os.path.join(root, "app/src/main/assets/catalog.json")))
     byid = {v["id"]: v for v in cat["variations"]}
     # assertions the plan asks for
-    missing = [v for v in byid if v not in POSES]
+    missing = [v for v in byid if v not in POSES and v not in BLENDER_ONLY]
     assert not missing, f"no pose for catalog ids: {missing}"
     used = {m for v in byid.values() for m in v.get("primaryMuscles", []) + v.get("secondaryMuscles", [])}
     assert used <= set(REGIONS), f"muscles without a body region: {used - set(REGIONS)}"
@@ -1010,7 +1009,7 @@ def main():
     thumbdir = os.path.join(root, "app/src/main/assets/thumbs"); os.makedirs(thumbdir, exist_ok=True)
     thumbs_only = "--thumbs" in args
     args = [a for a in args if a != "--thumbs"]
-    ids = args or list(byid)
+    ids = args or [i for i in byid if i not in BLENDER_ONLY]
     groups = {i: sorted(g) for g in pose_groups() for i in g}
     meta = {}
     thumbs = []
