@@ -78,6 +78,15 @@ class HistorySettingsTest {
         rule.onNodeWithTag("chart_pushup-standard", useUnmergedTree = true).assertExists()
     }
 
+    // R7-T06 (B7): sets left "as planned" count as their target, and one session shows the hint instead of a bare dot
+    @Test fun oneSessionShowsTheHintAndAsPlannedSetsCountAsTheTarget() {
+        showHistory(FakeHistory(listOf(session("a", LocalDate.of(2026, 10, 5), null, null, null))))
+        rule.waitForIdle()
+        rule.onNodeWithTag("progression_pushup-standard").performScrollTo().assertTextContains("best 8", substring = true)
+        rule.onNodeWithTag("progression_pushup-standard").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("chart_hint_pushup-standard", useUnmergedTree = true).assertExists()
+    }
+
     @Test fun tappingADayFiltersAndTappingASessionOpensIt() {
         var opened = ""
         showHistory(FakeHistory(listOf(session("a", LocalDate.of(2026, 10, 5), 8), session("b", LocalDate.of(2026, 10, 7), 8))), { opened = it })

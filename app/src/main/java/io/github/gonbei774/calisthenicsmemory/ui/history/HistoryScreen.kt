@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import app.calisthenics.domain.feedback.Rating
@@ -60,7 +61,7 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
 
     val catalog = remember { runCatching { loadCatalog(ctx) }.getOrNull() }
     var progress by remember { mutableStateOf<app.calisthenics.domain.progression.ProgressSnapshot?>(null) }
-    LaunchedEffect(catalog) { if (catalog != null) progress = try { io.github.gonbei774.calisthenicsmemory.ui.screens.ProgressLoader.load(ctx, catalog) } catch (_: Throwable) { null } }
+    LaunchedEffect(catalog, all) { if (catalog != null) progress = try { io.github.gonbei774.calisthenicsmemory.ui.screens.ProgressLoader.load(ctx, catalog) } catch (_: Throwable) { null } }
     var chartFor by remember { mutableStateOf<String?>(null) }
     Scaffold(modifier = modifier) { pad ->
         Column(Modifier.padding(pad).fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
@@ -116,7 +117,7 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
                 }
             }
             // doc 17 §2.5: every progression with its current best, and the lowest set per session for the one that is open
-            val series = remember(list) { lowestSetSeries(list.map { it.record }, zone) }
+            val series = remember(list) { effectiveSetSeries(list.map { SessionWithPlan(it.record, it.plan, it.rows) }, zone) }
             if (series.isNotEmpty() && catalog != null) {
                 Caption(stringResource(R.string.history_progressions))
                 series.entries.sortedByDescending { it.value.last().day }.forEach { (vid, pts) ->
@@ -135,7 +136,8 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
                             }
                             if (open) {
                                 val gate = tier?.let { t -> catalog.policyFor(v)?.tiers?.firstOrNull { it.index == t }?.target?.value }
-                                LowestSetChart(pts.takeLast(12).map { it.lowest }, gate, Modifier.fillMaxWidth().height(120.dp).testTag("chart_$vid"))
+                                LowestSetChart(pts.takeLast(12).map { it.lowest }, gate, Modifier.fillMaxWidth().height(160.dp).testTag("chart_$vid"))
+                                if (pts.size < 2) Text(stringResource(R.string.history_chart_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("chart_hint_$vid"))
                                 if (gate != null) Text(stringResource(R.string.history_chart_gate, gate, unit), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                         }
@@ -156,19 +158,28 @@ private fun StatTile(value: String, caption: Int, tag: String, modifier: Modifie
     }
 }
 
-/** The lowest set of each session as a line with dots; the dashed line is the number that gates the level. */
+/** The lowest set of each session as a line with big dots and their values; the dashed line is the number that gates the level. */
 @Composable
 private fun LowestSetChart(values: List<Int>, gate: Int?, modifier: Modifier) {
     val line = AppAccentTheme.colors.accent; val grid = MaterialTheme.colorScheme.outlineVariant; val gateColor = MaterialTheme.colorScheme.outline
+    val labelColor = MaterialTheme.colorScheme.onSurface
+    val labelStyle = MaterialTheme.typography.labelLarge.copy(color = labelColor)
+    val measurer = androidx.compose.ui.text.rememberTextMeasurer()
     val desc = stringResource(R.string.history_chart_desc, values.joinToString(", "))
     androidx.compose.foundation.Canvas(modifier.semantics { contentDescription = desc }) {
-        val top = (values + listOfNotNull(gate)).max().toFloat().coerceAtLeast(1f); val pad = 8.dp.toPx()
+        val top = (values + listOfNotNull(gate)).max().toFloat().coerceAtLeast(1f); val pad = 22.dp.toPx(); val dot = 7.dp.toPx()
         fun y(v: Float) = size.height - pad - (size.height - 2 * pad) * (v / top)
         drawLine(grid, androidx.compose.ui.geometry.Offset(0f, size.height - pad), androidx.compose.ui.geometry.Offset(size.width, size.height - pad), 1.dp.toPx())
         gate?.let { drawLine(gateColor, androidx.compose.ui.geometry.Offset(0f, y(it.toFloat())), androidx.compose.ui.geometry.Offset(size.width, y(it.toFloat())), 1.dp.toPx(), pathEffect = androidx.compose.ui.graphics.PathEffect.dashPathEffect(floatArrayOf(10f, 10f))) }
         val xs = values.indices.map { i -> pad + (size.width - 2 * pad) * (if (values.size == 1) 0.5f else i / (values.size - 1f)) }
         for (i in 0 until values.size - 1) drawLine(line, androidx.compose.ui.geometry.Offset(xs[i], y(values[i].toFloat())), androidx.compose.ui.geometry.Offset(xs[i + 1], y(values[i + 1].toFloat())), 3.dp.toPx())
-        values.forEachIndexed { i, v -> drawCircle(line, 5.dp.toPx(), androidx.compose.ui.geometry.Offset(xs[i], y(v.toFloat()))) }
+        values.forEachIndexed { i, v ->
+            drawCircle(line, dot, androidx.compose.ui.geometry.Offset(xs[i], y(v.toFloat())))   // 14 dp across (R7-T06)
+            val t = measurer.measure(v.toString(), labelStyle)
+            val tx = (xs[i] - t.size.width / 2f).coerceIn(0f, size.width - t.size.width)
+            val ty = (y(v.toFloat()) - dot - t.size.height - 2.dp.toPx()).coerceAtLeast(0f)
+            drawText(t, topLeft = androidx.compose.ui.geometry.Offset(tx, ty))
+        }
     }
 }
 

@@ -47,4 +47,42 @@ class HistoryStatsTest {
         assertEquals(listOf(6, 7), series.getValue("pushup-standard").map { it.lowest })    // oldest first; skipped and running ignored
         assertEquals(listOf(LocalDate.of(2026, 10, 2), LocalDate.of(2026, 10, 9)), series.getValue("pushup-standard").map { it.day })
     }
+
+    // ---- R7-T06 (B7, B8): the chart uses what the person effectively did
+    private fun blk(id: String, v: String, round: Int, t: app.calisthenics.domain.model.Target) =
+        app.calisthenics.domain.model.TimelineBlock(id, app.calisthenics.domain.model.BlockType.WORK, 60, round, "s", v, app.calisthenics.domain.model.Side.NONE, t, 3)
+    private fun planOf(vararg b: app.calisthenics.domain.model.TimelineBlock) =
+        app.calisthenics.domain.model.WorkoutPlan("p", "r", 1, 1, 0L, "home", 0, 60, emptySet(), false, null, 1, emptyList(), emptyList(), false, false, b.toList())
+    private val reps = { n: Int -> app.calisthenics.domain.model.Target(app.calisthenics.domain.model.TargetType.REPS, n) }
+
+    @Test fun anAsPlannedSetCountsAsItsTarget() {
+        val plan = planOf(blk("1", "pushup-standard", 1, reps(10)), blk("2", "pushup-standard", 2, reps(10)))
+        val s = session("a", LocalDate.of(2026, 10, 2), "COMPLETED", work("1", "pushup-standard", 30, null), work("2", "pushup-standard", 30, 12))
+        val series = effectiveSetSeries(listOf(SessionWithPlan(s, plan)), zone)
+        assertEquals(listOf(10), series.getValue("pushup-standard").map { it.lowest })   // set 1 untouched = 10, set 2 typed 12 -> lowest 10
+        assertTrue(lowestSetSeries(listOf(s), zone).getValue("pushup-standard").single().lowest == 12)   // the old series ignored the untouched set
+    }
+
+    @Test fun aCorrectionMovesThePoint() {
+        val plan = planOf(blk("1", "pushup-standard", 1, reps(10)), blk("2", "pushup-standard", 2, reps(10)))
+        val s = session("a", LocalDate.of(2026, 10, 2), "COMPLETED", work("1", "pushup-standard", 30, 8), work("2", "pushup-standard", 30, 9))
+        val rows = listOf(app.calisthenics.domain.feedback.FeedbackRow("pushup-standard", "1", 1, app.calisthenics.domain.feedback.Rating.MET, false, 14),
+            app.calisthenics.domain.feedback.FeedbackRow("pushup-standard", "2", 1, app.calisthenics.domain.feedback.Rating.MET, false, 14))
+        assertEquals(8, effectiveSetSeries(listOf(SessionWithPlan(s, plan)), zone).getValue("pushup-standard").single().lowest)
+        assertEquals(14, effectiveSetSeries(listOf(SessionWithPlan(s, plan, rows)), zone).getValue("pushup-standard").single().lowest)
+    }
+
+    @Test fun holdsAreInSecondsAndARangeCountsAtItsTop() {
+        val hold = app.calisthenics.domain.model.Target(app.calisthenics.domain.model.TargetType.HOLD_SECONDS, 10, 30)
+        val plan = planOf(blk("1", "dip-support-hold", 1, hold), blk("2", "dip-support-hold", 2, hold))
+        val s = session("a", LocalDate.of(2026, 10, 2), "COMPLETED", work("1", "dip-support-hold", 33, null), work("2", "dip-support-hold", 33, 25))
+        assertEquals(25, effectiveSetSeries(listOf(SessionWithPlan(s, plan)), zone).getValue("dip-support-hold").single().lowest)
+        val allPlanned = session("b", LocalDate.of(2026, 10, 3), "COMPLETED", work("1", "dip-support-hold", 33, null), work("2", "dip-support-hold", 33, null))
+        assertEquals(30, effectiveSetSeries(listOf(SessionWithPlan(allPlanned, plan)), zone).getValue("dip-support-hold").single().lowest)
+    }
+
+    @Test fun withoutAPlanTheLoggedNumbersAreUsed() {
+        val s = session("a", LocalDate.of(2026, 10, 2), "COMPLETED", work("1", "pushup-standard", 30, 7), work("2", "pushup-standard", 30, null))
+        assertEquals(7, effectiveSetSeries(listOf(SessionWithPlan(s, null)), zone).getValue("pushup-standard").single().lowest)
+    }
 }
