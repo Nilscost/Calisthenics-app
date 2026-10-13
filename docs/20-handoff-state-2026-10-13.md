@@ -12,6 +12,54 @@ House rules (unchanged):
 
 ---
 
+## START HERE: current state and remaining work (updated 2026-10-13 18:20)
+
+The sections further down are history: the morning state, then the Codex continuation (15:00–16:03). This section supersedes them wherever they disagree.
+
+### What happened since the first version of this file
+- **Codex** made commits `a372a85`, `5f6a3b2`, `ab77d74`, `89ade24` and `854b5d7`:
+  - CI preflight fix for portable tool paths;
+  - Jefferson curl and German hang poses;
+  - wall/door camera fixes and the HSPU body line;
+  - Maestro selector fixes for `b_train_preview` and `j_warmup`;
+  - a safer `install_clips.py` with tests (`tests/test_install_clips.py`);
+  - the R7 evidence: T14 progress note, `docs/evidence/r7-owner-report.md` and a **preliminary** `docs/evidence/ui/R7-review.md`.
+- Codex stopped at 16:03 with work uncommitted. The coordinator reviewed it and committed it as `75b5617` (stretches_a fixes: cobra, ankle, calf and door) and `2e1fbad` (evidence, README, STATUS, encode and dry-install logs).
+- **The owner's Blender run finished at 17:12:** 94 rendered, 58 already done, 0 failed (`work/clips-bakeoff/render-summary.txt`).
+- App code (`app/`, `domain/`, `data/`) has not changed since `71b053e`, so `builds/app-debug-R7.apk` is still the current R7 build.
+- **Not pushed:** `origin/main` is at `89ade24`. Local `854b5d7`, `75b5617`, `2e1fbad` and this doc commit still need a push (command in doc 19 §2).
+
+### Track 1, R7: what's left
+1. **Push** the local commits.
+2. **ui-screens never completes.** Every run since `1f9dc5b` ended "cancelled": `1f9dc5b`, `a372a85`, `ab77d74`, `89ade24` (run 38406697056). The "Run flows on the emulator" step hits the job's `timeout-minutes: 60` in `.github/workflows/ui-screens.yml`, because R7 made the flows longer.
+   - Fix: raise that job timeout (e.g. 90–120) or split the flows into a matrix.
+   - Then get one run where **every flow and variant passes**, and fix any flow that fails.
+3. **Finish `docs/evidence/ui/R7-review.md`:** replace the preliminary table with final scores from that complete run (light, dark and font 1.3 for every changed screen; light for the rest). Fix anything below 4.
+4. Update `STATUS.md` and the owner report if anything changes. Never claim phone testing.
+
+### Track 2, Blender clips: what's left
+Counts over the 154 ids in `work/clips-bakeoff` (152 + `jefferson-curl` + `german-hang`):
+- **109 visually accepted** in `docs/evidence/clips-bakeoff/blender-review.md`. Of these, the first 100 are already encoded and dry-installed: 0 problems, largest file 27 KB.
+- **13 changed/new poses that need a render and then a visual review:**
+  - **11 not rendered yet:** `calf-raise-single-loaded german-hang hspu-wall hspu-wall-negative jefferson-curl pushup-wall stretch-ankle-mobility stretch-calf-wall stretch-chest-door stretch-cobra stretch-hamstring-standing`
+  - **2 already rendered from the new joints, but not reviewed:** `towel-door-row wall-handstand-hold`
+- **32 rendered by the owner's run but not yet visually reviewed:** `stretch-hip-flexor stretch-lat-wall stretch-pancake stretch-pike-one-leg stretch-quad-couch stretch-quad-standing stretch-rear-clasp stretch-shoulder stretch-shoulder-backbend stretch-sleeper stretch-supine-twist stretch-thoracic stretch-wrist-biceps stretch-wrist-extensor stretch-wrist-flexor superman-hold v-sit-floor v-up warmup-arch-hang warmup-dead-bug warmup-hinge-easier warmup-shoulder-band warmup-shoulder-towel warmup-squat-easier warmup-squat-sky-reach warmup-support-hold warmup-wrist-prep weighted-dip weighted-glute-bridge weighted-pullup weighted-pushup weighted-squat`. This list includes the known limits: sleeper, thoracic, wrist-flexor and the four weighted variants.
+
+Next steps, in order:
+1. **The owner renders the 11** on the Mac (about 25 min). `--resume` skips everything that is current:
+   ```
+   cd /Users/nils/Documents/hermes/Apps/calisthenics && /Applications/Blender.app/Contents/MacOS/Blender -b -P tools/blender/render.py -- --resume
+   ```
+   Expected summary: 11 rendered, 143 already done, 0 failed. Don't run `poses.py` without ids, because that rewrites every `joints.json` and forces a full re-render.
+2. **Visual review** of the 13 changed and the 32 unreviewed ids. Sample `blender/frames/` at 0 %, 25 %, 50 % and 75 %, and check they're newer than `joints.json`. Append the results to `blender-review.md`, one line per id. For defects: fix the pose in its family module, run `poses.py <id> --describe` until it prints OK, commit, and ask the owner for another `--resume` run.
+3. **Encode and validate all accepted clips** (sandbox): `python3 tools/blender/encode.py <ids>`. Check the 120 KB cap and the loop seam, then run `python3 tools/blender/install_clips.py --dry`.
+4. **Install:** `install_clips.py` without `--dry`. This writes `app/src/main/assets/demos/*.mp4` and `assets/thumbs/*.webp`.
+5. **Remove the T12 placeholders:** the `SHARED_POSES` entries that map `jefferson-curl` and `german-hang` to stand-in clips.
+6. **Full verify in the sandbox** (doc 19 §2), then a complete ui-screens PASS. Commit, push, rebuild the APK and copy it to `builds/`. **Ask Nils** whether this ships as R7 or as a new version; don't decide the version yourself.
+7. Update `STATUS.md`, the owner report and `docs/evidence/clips-bakeoff/blender-review.md`, and list what's still NOT done.
+
+---
+
 ## Track 1: R7 app batch (`docs/18-r7-plan.md`, `docs/19-r7-executor-handoff.md`)
 
 ### Done (committed and pushed, `origin/main` = `1f9dc5b` at time of writing)
@@ -98,7 +146,7 @@ cd /Users/nils/Documents/hermes/Apps/calisthenics && /Applications/Blender.app/C
 
 ---
 
-## Continuation by Codex with Luna subagents (2026-10-13)
+## History: continuation by Codex with Luna subagents (2026-10-13, 15:00–16:03)
 
 Do not repeat the completed R7 implementation or rewrite all joint files. The original owner render is still running during this continuation.
 
@@ -121,3 +169,7 @@ After the owner's process ends, the eight changed/new IDs need another render an
 The owner's running process enumerated its IDs before the two new IDs existed, so it cannot render those on this pass. A new `--resume` run will pick them up and rerender the six stale camera/body corrections.
 
 **Check the timestamp of `work/clips-bakeoff/render-summary.txt`.** During this continuation it still contains the old 13:18 run summary (84 rendered); that is not the completion of the currently running owner's batch. No new shipped assets, aliases or version changes were made. Placeholder removal, remaining rendered review, complete encode/seam/size validation, install, full verification and updated APK remain pending on the clip track.
+
+Further visual review accepted seven newly completed motion sets (107 total accepted across the dated snapshots). Three more confirmed occlusions were fixed in `stretches_a.py`: `stretch-ankle-mobility stretch-calf-wall stretch-chest-door`. These also require rerendering and rendered review (11 changed/new IDs total). The first 100 accepted clips encoded and passed dry installation: 100 prepared, zero problems, largest reported CRF30 file 27 KB; app assets remain untouched. The encode and dry-install logs are in `docs/evidence/clips-bakeoff/`.
+
+Further rendered review accepted the frog (with a recorded visibility limit) and seated hamstring clip. It identified form defects in `stretch-cobra` and `stretch-hamstring-standing`; both have been corrected and independently geometry/preview checked, but require rerendering. There are now 109 accepted current renders across the snapshots and 13 changed/new poses requiring rerender and rendered review.
