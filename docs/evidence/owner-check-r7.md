@@ -1,7 +1,7 @@
-# Owner check, release R7 (0.10.0-r7, versionCode 10)
+# Owner check, release R7.1 (0.10.1-r7, versionCode 11)
 
 Nothing here was tested on a phone: this list is what you walk through on the Galaxy S21. All exercise content is an unreviewed DRAFT.
-Install `app-debug-R7.apk`. **If a clip looks old (for example the feet-elevated push-up still looks like the standard one), clear the app cache once** (Settings > Apps > the app > Storage > Clear cache). The new build also clears old clip copies by itself on first start (B10).
+Install `app-debug-R7.1.apk` (the same R7 features, plus the new Blender clips for all 154 exercises, including Jefferson curl and German hang). **If a clip looks old (for example the feet-elevated push-up still looks like the standard one), clear the app cache once** (Settings > Apps > the app > Storage > Clear cache). The new build also clears old clip copies by itself on first start (B10).
 
 Each step names the item it checks (B = bug of 0.9.0-r6, D = decision, O = answer).
 

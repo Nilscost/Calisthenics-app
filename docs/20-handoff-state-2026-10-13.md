@@ -12,51 +12,15 @@ House rules (unchanged):
 
 ---
 
-## START HERE: current state and remaining work (updated 2026-10-13 18:20)
+## START HERE: current state (updated 2026-10-13 evening, R7.1)
 
-The sections further down are history: the morning state, then the Codex continuation (15:00–16:03). This section supersedes them wherever they disagree.
+**R7.1 is done and pushed** (0.10.1-r7, versionCode 11). Remaining work is owner-only; the sections below this one are history.
+- **Clips:** all 154 ids reviewed (`docs/evidence/clips-bakeoff/blender-review.md`), all 154 installed in `app/src/main/assets/demos` and `thumbs`; the Jefferson curl and German hang stand-ins (`ClipAlias`, `SHARED_POSES`) are gone. Nothing awaits a re-render.
+- **CI:** `ui-screens` is one job per variant; run 38442012588 passed 30 of 30. Final screenshot review: `docs/evidence/ui/R7-review.md`.
+- **Verify:** `docs/evidence/r71-verify-2026-10-13.log`, exit 0. APK: `Apps/builds/app-debug-R7.1.apk`.
+- **Docs:** `STATUS.md`, `docs/evidence/r7-owner-report.md`, `owner-check-r7.md` (clear the app cache if a clip looks old), `progress-notes.md` entry `### R7.1`.
 
-### What happened since the first version of this file
-- **Codex** made commits `a372a85`, `5f6a3b2`, `ab77d74`, `89ade24` and `854b5d7`:
-  - CI preflight fix for portable tool paths;
-  - Jefferson curl and German hang poses;
-  - wall/door camera fixes and the HSPU body line;
-  - Maestro selector fixes for `b_train_preview` and `j_warmup`;
-  - a safer `install_clips.py` with tests (`tests/test_install_clips.py`);
-  - the R7 evidence: T14 progress note, `docs/evidence/r7-owner-report.md` and a **preliminary** `docs/evidence/ui/R7-review.md`.
-- Codex stopped at 16:03 with work uncommitted. The coordinator reviewed it and committed it as `75b5617` (stretches_a fixes: cobra, ankle, calf and door) and `2e1fbad` (evidence, README, STATUS, encode and dry-install logs).
-- **The owner's Blender run finished at 17:12:** 94 rendered, 58 already done, 0 failed (`work/clips-bakeoff/render-summary.txt`).
-- App code (`app/`, `domain/`, `data/`) has not changed since `71b053e`, so `builds/app-debug-R7.apk` is still the current R7 build.
-- **Not pushed:** `origin/main` is at `89ade24`. Local `854b5d7`, `75b5617`, `2e1fbad` and this doc commit still need a push (command in doc 19 §2).
-
-### Track 1, R7: what's left
-1. **Push** the local commits.
-2. **ui-screens never completes.** Every run since `1f9dc5b` ended "cancelled": `1f9dc5b`, `a372a85`, `ab77d74`, `89ade24` (run 38406697056). The "Run flows on the emulator" step hits the job's `timeout-minutes: 60` in `.github/workflows/ui-screens.yml`, because R7 made the flows longer.
-   - Fix: raise that job timeout (e.g. 90–120) or split the flows into a matrix.
-   - Then get one run where **every flow and variant passes**, and fix any flow that fails.
-3. **Finish `docs/evidence/ui/R7-review.md`:** replace the preliminary table with final scores from that complete run (light, dark and font 1.3 for every changed screen; light for the rest). Fix anything below 4.
-4. Update `STATUS.md` and the owner report if anything changes. Never claim phone testing.
-
-### Track 2, Blender clips: what's left
-Counts over the 154 ids in `work/clips-bakeoff` (152 + `jefferson-curl` + `german-hang`):
-- **109 visually accepted** in `docs/evidence/clips-bakeoff/blender-review.md`. Of these, the first 100 are already encoded and dry-installed: 0 problems, largest file 27 KB.
-- **13 changed/new poses that need a render and then a visual review:**
-  - **11 not rendered yet:** `calf-raise-single-loaded german-hang hspu-wall hspu-wall-negative jefferson-curl pushup-wall stretch-ankle-mobility stretch-calf-wall stretch-chest-door stretch-cobra stretch-hamstring-standing`
-  - **2 already rendered from the new joints, but not reviewed:** `towel-door-row wall-handstand-hold`
-- **32 rendered by the owner's run but not yet visually reviewed:** `stretch-hip-flexor stretch-lat-wall stretch-pancake stretch-pike-one-leg stretch-quad-couch stretch-quad-standing stretch-rear-clasp stretch-shoulder stretch-shoulder-backbend stretch-sleeper stretch-supine-twist stretch-thoracic stretch-wrist-biceps stretch-wrist-extensor stretch-wrist-flexor superman-hold v-sit-floor v-up warmup-arch-hang warmup-dead-bug warmup-hinge-easier warmup-shoulder-band warmup-shoulder-towel warmup-squat-easier warmup-squat-sky-reach warmup-support-hold warmup-wrist-prep weighted-dip weighted-glute-bridge weighted-pullup weighted-pushup weighted-squat`. This list includes the known limits: sleeper, thoracic, wrist-flexor and the four weighted variants.
-
-Next steps, in order:
-1. **The owner renders the 11** on the Mac (about 25 min). `--resume` skips everything that is current:
-   ```
-   cd /Users/nils/Documents/hermes/Apps/calisthenics && /Applications/Blender.app/Contents/MacOS/Blender -b -P tools/blender/render.py -- --resume
-   ```
-   Expected summary: 11 rendered, 143 already done, 0 failed. Don't run `poses.py` without ids, because that rewrites every `joints.json` and forces a full re-render.
-2. **Visual review** of the 13 changed and the 32 unreviewed ids. Sample `blender/frames/` at 0 %, 25 %, 50 % and 75 %, and check they're newer than `joints.json`. Append the results to `blender-review.md`, one line per id. For defects: fix the pose in its family module, run `poses.py <id> --describe` until it prints OK, commit, and ask the owner for another `--resume` run.
-3. **Encode and validate all accepted clips** (sandbox): `python3 tools/blender/encode.py <ids>`. Check the 120 KB cap and the loop seam, then run `python3 tools/blender/install_clips.py --dry`.
-4. **Install:** `install_clips.py` without `--dry`. This writes `app/src/main/assets/demos/*.mp4` and `assets/thumbs/*.webp`.
-5. **Remove the T12 placeholders:** the `SHARED_POSES` entries that map `jefferson-curl` and `german-hang` to stand-in clips.
-6. **Full verify in the sandbox** (doc 19 §2), then a complete ui-screens PASS. Commit, push, rebuild the APK and copy it to `builds/`. **Ask Nils** whether this ships as R7 or as a new version; don't decide the version yourself.
-7. Update `STATUS.md`, the owner report and `docs/evidence/clips-bakeoff/blender-review.md`, and list what's still NOT done.
+What is left (owner): install the APK and walk through `docs/evidence/owner-check-r7.md` on the phone; review the DRAFT training content; decide whether to improve the known clip limits (listed in the review file and the R7.1 progress note). Never claim phone testing; never approve owner gates.
 
 ---
 
