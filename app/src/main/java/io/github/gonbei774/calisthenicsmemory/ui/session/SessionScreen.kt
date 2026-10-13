@@ -224,7 +224,9 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                             b.note?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center, modifier = Modifier.testTag("session_note")) }
                         }
                         Row(Modifier.fillMaxWidth().padding(top = Spacing.xs), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
-                            if (paused) AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_RESUME) }, Modifier.weight(1f).height(54.dp).testTag("session_resume")) { Text(stringResource(R.string.session_resume)) }
+                            // R7.2-T05 (F6): while paused, Resume is the filled gold button on one line (smaller label and padding so it fits at font 1.3); Pause stays outlined
+                            if (paused) Button(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_RESUME) }, Modifier.weight(1f).height(54.dp).testTag("session_resume"),
+                                shape = RoundedCornerShape(Radius.button), contentPadding = PaddingValues(horizontal = 8.dp)) { Text(stringResource(R.string.session_resume), maxLines = 1, softWrap = false, style = MaterialTheme.typography.labelLarge) }
                             else AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_PAUSE) }, Modifier.weight(1f).height(54.dp).testTag("session_pause")) { Text(stringResource(R.string.session_pause)) }
                             // DONE in the middle, gold and a little wider: ends the set during work; in any other block (R7-T02, B4) it saves the pending log and moves on.
                             if (b.type == BlockType.WORK) Button(

@@ -337,3 +337,30 @@ class SessionScreenTest {
         rule.onNodeWithTag("session_round").assertTextContains("WARM-UP 2 OF $n")
     }
 }
+
+
+/** R7.2-T05 (F6): at text size 1.3 "Resume" stays on one line and is the filled gold button. */
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [34], qualifiers = "w411dp-h891dp-xxhdpi", fontScale = 1.3f)
+class SessionPausedFontScaleTest {
+    @get:Rule val rule = createComposeRule()
+    private val app: Application get() = ApplicationProvider.getApplicationContext()
+    @After fun tearDown() { SessionBus.clear() }
+
+    @Test fun resumeIsOneLineAndFilledGold() {
+        val catalog = loadCatalog(app)
+        SessionBus.clear(); SessionBus.names = catalog.variations.associate { it.id to it.name }
+        val none = ProgressSnapshot(emptyMap(), emptyMap(), emptyMap(), emptyList())
+        val plan = (buildTrainPlan(catalog, StarterRoutine.routine, none, SeedProfiles.home, TrainSettings(rounds = 2, stretchOn = true)) as PlanResult.Ready).plan.copy(id = "plan-1")
+        val s = reduce(reduce(newSession("S", plan), SessionEvent.Start(0)).state, SessionEvent.Pause(5_000)).state
+        SessionBus.publish(s)
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = {}) } }
+        rule.waitForIdle()
+        val node = rule.onNodeWithTag("session_resume", useUnmergedTree = true).assertIsDisplayed()
+        val results = mutableListOf<androidx.compose.ui.text.TextLayoutResult>()
+        val textNode = rule.onNode(hasText("Resume", ignoreCase = true) and hasAnyAncestor(hasTestTag("session_resume")), useUnmergedTree = true)
+        textNode.fetchSemanticsNode().config[SemanticsActions.GetTextLayoutResult].action?.invoke(results)
+        assertEquals("Resume on one line", 1, results.single().lineCount)
+        node.assertHasClickAction()
+    }
+}
