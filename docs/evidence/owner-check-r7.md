@@ -17,7 +17,7 @@ Each step names the item it checks (B = bug of 0.9.0-r6, D = decision, O = answe
 ## 3. Preview
 6. Open the Preview. Each round shows tiles; the stepper on a tile changes the level and the numbers follow (D12).
 7. Choose the Rep range rule: a line says "Rep range: all sets at the top -> next exercise"; the tile stepper now steps to the easier or harder exercise of the chain and the range stays (O1, B12).
-8. Open **Full timeline**: every set's tiles, each with its set number; per tile you can swap, remove, change the level, type a number or change the stretch for that one set (D4). There is no "Detailed edit" switch any more.
+8. Open **Full timeline**: every set's tiles, each with its set number; each tile offers swap, remove, level, number and stretch controls. Numbers and stretches affect that set; swap, remove and level currently affect that exercise across all sets (D4 limitation). There is no "Detailed edit" switch any more.
 9. Tap "+" between two tiles: first choose a category (Push, Pull, Row, Squat, Hips and back, Core, Lower legs, Stretches), then only that list is shown (D11).
 10. At the end of the Preview the Cool-down: stretches you can swap, or minutes with - / + (D10).
 
@@ -27,7 +27,7 @@ Each step names the item it checks (B = bug of 0.9.0-r6, D = decision, O = answe
 13. On a rep exercise the **- number +** is on the exercise screen itself, with "Too easy" beside it; DONE saves the number and ends the set (D3). Do "Too easy" twice in a row for an exercise at its top level (see step 17).
 14. A hold (dip support hold under the Recommended Routine) shows **30 s** (not 10-30 s) and the logger after it starts at 30 (B2). The same number is in "Edit what I logged" on the end screen (B3).
 15. Jefferson curl and German hang (find them in Progress, steps 20-21): the workout screen and the detail show a **light-red** box with "Pay attention to" points (D9). Their clip is a stand-in (the Romanian deadlift and the dead hang) until the clip track delivers their own.
-16. In a routine with stretching between sets: a deep stretch (pigeon, frog...) can come between sets and then has its own 45-60 s (per side) even if the break is longer than 60 s (D8).
+16. In a routine with stretching between sets: a deep stretch (pigeon, frog...) can come between sets and then gets at least its own 45-60 s per side, or the longer rest window (D8).
 
 ## 5. End, History
 17. After two "Too easy" in a row at level 5 the Progress tab shows a card **"Move on to <next exercise>?"**; the exercise detail shows **"Too easy: 1 of 2"** (B9). Closing the card brings it back when the count reaches 2 again.

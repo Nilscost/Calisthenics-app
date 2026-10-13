@@ -172,3 +172,23 @@ The continuation's Luna implementer corrected the six occlusion cases by moving 
 - `wall-handstand-hold`: camera correction, toes meet the wall, near-straight body/limbs. Static hold: breathing movement omitted to preserve contact/reach geometry.
 
 All eight require a new Blender render, visual recheck, seam/size checks and installation. The two new IDs were absent when the owner's current render enumerated its input list; rerun `--resume` after that process finishes. No shipped media or app aliases were changed.
+
+
+## Addendum — newly completed motion-frame review (2026-10-13)
+
+The reviewer initially miscounted frames by looking in `blender/`; the coordinator caught this and required a corrected review from `blender/frames/`. I sampled frames 0000, 25%, 50% and 75% from each current complete set below. Current complete sets had exactly the expected contiguous frame count and were newer than their joint file at inspection.
+
+- `slide-hamstring` — **OK** — sampled loop shows both legs sliding from bent to extended and returning, with the bridge and hand support maintained.
+- `slide-negative` — **OK** — sampled loop shows bilateral leg extension and return from the bent bridge position; motion reads clearly.
+- `slide-negative-single` — **OK** — raised leg stays lifted while the working leg slides between bent and extended positions.
+- `slide-single-leg` — **OK** — one leg remains raised while the planted leg performs the sliding extension and return.
+- `stretch-90-90` — **OK** — seated 90/90 setup is clear; the torso leans forward through the sampled stretch and returns.
+- `stretch-ankle-mobility` — **FIX / rerender pending** — all sampled frames retain the severe wall occlusion; the figure remains mostly hidden.
+- `stretch-back` — **OK** — sampled quadruped loop shows a readable forward/back weight shift with hands and knees supporting the figure.
+- `stretch-butterfly` — **OK** — seated soles-together position stays clear while the torso moves through a forward lean and returns.
+- `stretch-calf-wall` — **FIX / rerender pending** — all sampled frames retain severe wall occlusion; the wall hides most of the body.
+- `stretch-chest-door` — **pending** — the earlier full-frame door start remains the last visual finding; this ID is actively being corrected and was excluded from this motion review.
+
+The original 100 IDs marked OK in the historical snapshot were sampled at distinct motion frames; a separate visual-sheet review confirmed that. This correction changes only the new-ID frame review above.
+
+Known-limit sleeper/thoracic/wrist-flexor and the pending wall lat/wrist-biceps stretches have not yet been visually accepted.

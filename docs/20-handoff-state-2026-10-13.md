@@ -95,3 +95,29 @@ cd /Users/nils/Documents/hermes/Apps/calisthenics && /Applications/Blender.app/C
 - One Haiku subagent per group, at most 2 at a time.
 - The prompt was `tools/blender/HAIKU-TASK.md` plus the group's ids, plus "you run on the Mac: skip `source /root/toolchain/env.sh`". It also listed lessons: face up is `p ≈ -90` and face down is `p ≈ +90`; contacts appear under "on floor" in every moment; planted feet keep one world target; "straight" means ≥ 165.
 - Never trust a subagent's pasted `--describe` output (one had a typo). Re-run it yourself, and check chest facing from `joints.json` (forward = `chest_left × chest_up`).
+
+---
+
+## Continuation by Codex with Luna subagents (2026-10-13)
+
+Do not repeat the completed R7 implementation or rewrite all joint files. The original owner render is still running during this continuation.
+
+Committed continuation code:
+- `a372a85`: portable clip tooling paths fix the verify CI preflight failure. Full offline Android verification exit 0 (`docs/evidence/r7-resume-verify-2026-10-13.log`), starter content structural/rights validation passed, GitHub verify run `38404466903` passed.
+- `5f6a3b2`: Jefferson curl and foot-supported German hang poses; six wall/door camera fixes; corrected wall HSPU body line; stick-sheet bar x-offset matches the renderer. Coordinator independently regenerated only the eight changed/new IDs and checked geometry/previews.
+- `ab77d74`: Maestro centers the cool-down controls before tapping and targets the Dip Support Hold by name instead of the first 30 s hold.
+- `89ade24`: installer accepts new catalog IDs without needing pre-existing demo files, rejects stale/noncontiguous frames, stages files before replacement, and keeps shipped files when encoding fails or exceeds the cap. Seven focused installer tests passed independently in Hermes.
+
+Evidence and owner delivery:
+- `docs/evidence/ui/R7-review.md`: screenshot review and precise CI status; use its latest status rather than assuming every screen passed. Earlier `1f9dc5b` shots were partial and b/j failed.
+- `docs/evidence/progress-notes.md`: previously missing R7-T14 entry is now added.
+- `docs/evidence/r7-owner-report.md`: changes, verification, remaining implementation limits and owner gates.
+- `docs/evidence/owner-check-r7.md`: corrected to state that level/swap/removal affect all sets, while number/stretch are per set; deep stretch duration is max(rest window, default), per side.
+
+Blender snapshot review (`docs/evidence/clips-bakeoff/blender-review.md`): 154 joint directories now exist (152 original plus the two new IDs). At the review snapshot 100 outputs had no major visual defect, six needed rerendering, and 48 were pending. This is a snapshot, not the final render count. Some previously stale outputs have since been rerendered by the owner and still need visual inspection.
+
+After the owner's process ends, the eight changed/new IDs need another render and rendered review:
+`calf-raise-single-loaded german-hang hspu-wall hspu-wall-negative jefferson-curl pushup-wall towel-door-row wall-handstand-hold`.
+The owner's running process enumerated its IDs before the two new IDs existed, so it cannot render those on this pass. A new `--resume` run will pick them up and rerender the six stale camera/body corrections.
+
+**Check the timestamp of `work/clips-bakeoff/render-summary.txt`.** During this continuation it still contains the old 13:18 run summary (84 rendered); that is not the completion of the currently running owner's batch. No new shipped assets, aliases or version changes were made. Placeholder removal, remaining rendered review, complete encode/seam/size validation, install, full verification and updated APK remain pending on the clip track.
