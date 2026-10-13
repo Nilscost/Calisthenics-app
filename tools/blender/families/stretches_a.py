@@ -195,7 +195,7 @@ def stretch_lat_wall():
                 knee_l=[1, 0, 0], knee_r=[1, 0, 0])
     a = base_pose(pelvis=[-0.46, 0.0, 0.75], p1=78, p2=78, hp=0, **hands, **feet)
     b = base_pose(pelvis=[-0.41, 0.0, 0.70], p1=88, p2=88, hp=0, **hands, **feet)
-    return dict(seconds=4.0, keys=rep(a, b), cam_az=30, cam_el=10, props=[WALL])
+    return dict(seconds=4.0, keys=rep(a, b), cam_az=-30, cam_el=10, props=[WALL])
 
 
 EXERCISES = {

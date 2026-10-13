@@ -214,3 +214,42 @@ Reviewed current `blender/frames/` sets at 0000, 25%, 50%, and 75%. Each reviewe
 ## Further form corrections prepared
 
 `stretch-cobra` now lifts the chest clearly with pelvis z=0.11 and hands/legs grounded; the deepest sampled head height is 0.58 m. `stretch-hamstring-standing` keeps the working knee at 168–169 degrees with the ankle planted and a visible trunk hinge to 50 degrees. The coordinator independently regenerated only these two IDs, observed OK geometry checks, and inspected both stick sheets. Both require rerendering and rendered review. Including these two, 13 changed/new poses are awaiting that review.
+
+## Addendum — review of the 32 renders from the 17:12 run, plus two changed ids (2026-10-13 evening)
+
+Method: for each id, a sheet of `start.png` and the frames at 25 %, 50 % and 75 % of the sequence, checked to be newer than `joints.json` (all 34 were). Frame counts match the joint frame counts. This is a by-eye review of renders; nothing here is phone-tested.
+
+- `stretch-hip-flexor` — **OK** — half-kneeling lunge, front shin vertical, back knee down; the motion is small but the position reads.
+- `stretch-lat-wall` — **FIX** — the wall covers the whole body; only one arm shows. Camera changed from az 30 to az -30 (as for the calf-wall and ankle fixes); `poses.py stretch-lat-wall --describe` prints OK. Needs a re-render.
+- `stretch-pancake` — **OK** — wide straddle, hips on the floor, trunk folding forward between the legs.
+- `stretch-pike-one-leg` — **OK** — seated on a chair with one heel on the seat, trunk hinging toward the straight leg.
+- `stretch-quad-couch` — **OK** — rear shin up the wall, knee on the floor; the figure is small but clear.
+- `stretch-quad-standing` — **OK** — standing, heel pulled to the glute with the hand; knees stay together.
+- `stretch-rear-clasp` — **OK** — hands behind the back; the clasp is hidden from the front-side camera but the arm line reads.
+- `stretch-shoulder` — **OK** — cross-body arm pulled in by the other arm.
+- `stretch-shoulder-backbend` — **OK** — arms overhead, slight lean back; subtle motion.
+- `stretch-sleeper` — **OK (known limit)** — pelvis floats about 8 cm above the floor; the side-lying shape with the front arm bent reads.
+- `stretch-supine-twist` — **OK** — on the back, knee crossing over, arms out; shoulders stay down.
+- `stretch-thoracic` — **OK (known limit)** — the whole trunk rolls, and the raised arm reads as the rotation.
+- `stretch-wrist-biceps` — **OK** — palm on the wall behind at shoulder height, body turning away.
+- `stretch-wrist-extensor` — **OK** — quadruped, palms down, fingers toward the knees.
+- `stretch-wrist-flexor` — **OK (known limit)** — nearly identical to the extensor clip (palms down, fingers toward the knees); the catalogue's "palms up" is not shown.
+- `superman-hold` — **OK** — face down, arms and legs lifted off the floor; a small breathing motion.
+- `v-sit-floor` — **OK** — hands on blocks, hips off the floor, legs raised straight at about 45 degrees.
+- `v-up` — **OK** — lying flat, then arms and legs rising to the V and back.
+- `warmup-arch-hang` — **OK** — hanging from the bar with the feet on a box; the arched shoulders read.
+- `warmup-dead-bug` — **OK** — on the back, arms up, knees at 90 degrees, opposite arm and leg extending.
+- `warmup-hinge-easier` — **OK** — standing, hands slide down the thighs, hinge with a slight knee bend.
+- `warmup-shoulder-band` — **OK** — overhead, in front, behind pass with the band held wide.
+- `warmup-shoulder-towel` — **OK** — same path as the band clip with a towel; the two look alike by design.
+- `warmup-squat-easier` — **OK** — sits back to a chair and rises; the chair is behind the figure.
+- `warmup-squat-sky-reach` — **OK** — arms overhead to a deep squat and back up.
+- `warmup-support-hold` — **OK** — hands on bars at hip height, shoulders pushed down; small breathing motion.
+- `warmup-wrist-prep` — **OK** — quadruped, hands rocking with the palms down.
+- `weighted-dip` — **OK (known limit)** — dip on bars with a weight on the chest, no vest model.
+- `weighted-glute-bridge` — **OK** — hips rise with a weight held on the hips.
+- `weighted-pullup` — **OK (known limit)** — the pull-up reaches the bar with a weight on the chest.
+- `weighted-pushup` — **OK (known limit)** — body line stays straight, with a weight on the back.
+- `weighted-squat` — **OK (known limit)** — squat to depth with the weight at the chest.
+- `towel-door-row` — **OK** — leaning back from the door edge, pulling to the chest; the door no longer hides the figure.
+- `wall-handstand-hold` — **OK** — belly toward the wall, body vertical, hands on the floor; the wall stays behind the figure.
