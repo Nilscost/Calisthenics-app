@@ -17,3 +17,9 @@ All 14 explicit IDs passed --describe with no reach or floor penetration warning
 Repairs before acceptance: chair moved under the feet, fixed elevated-hand contact with body outside the box, dog/dive/upward-dog phases instead of a rigid push-up, upright kneeling return with hands released, right-only wall push-away, dense rigid-body trajectories, and deeper floor push-up bottoms. Ordinary floor push-up bottom working elbows are approximately 91–100 degrees with head near 0.22–0.26 m. The raised single leg stays above the floor. Hindu intentionally flexes the hips in the dog phase; it does not use the rigid-body hip-angle requirement.
 
 Evidence: pushup_new-describe.txt and the representative PNGs beside this file. Explosive contacts and equipment are schematic; the actual Blender movie still needs review after rendering.
+
+## dip_planche · 15 ids accepted for draft rendering
+
+All 15 explicit IDs passed --describe without reach or floor warnings. Coordinator reviewed full planche, straight-arm frog, Russian dip and elevated bench dip after repair passes. Straight-arm holds keep elbows near extension; frog knees contact upper arms; Russian dip reaches forearm support and returns to straight-arm support; elevated heels remain fixed while the pelvis follows an arc. Equipment remains diagrammatic.
+
+Evidence: dip_planche-describe.txt and representative PNGs beside this file. Blender movies still require review after rendering.

@@ -13,3 +13,13 @@ pushup-half-one-arm
 pushup-one-arm-elevated
 pushup-one-arm-straight-body
 pushup-pseudo-planche
+dip-bench-bent-knee
+dip-bench-straight-leg
+dip-bench-feet-elevated
+dip-feet-supported
+dip-jumping
+dip-straight-bar
+dip-l-sit
+dip-forward-lean
+planche-frog-stand
+planche-frog-stand-straight-arm
