@@ -1,0 +1,10 @@
+squat-assisted
+squat-box
+squat-half
+squat-close
+squat-uneven
+squat-cossack
+squat-pistol-negative
+squat-pistol-elevated
+squat-shrimp-two-hand
+squat-shrimp-deficit

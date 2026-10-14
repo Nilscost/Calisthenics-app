@@ -1,0 +1,100 @@
+squat-assisted: 84 frames OK
+  t=0.00 pelvis z=0.97 x=+0.00 | head z=1.67 | trunk 2 deg from vertical | knee L/R 169/169 | elbow L/R 168/130 | hip(thigh-trunk) R 170 | wrist R z=1.15 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.25 pelvis z=0.78 x=-0.07 | head z=1.47 | trunk 14 deg from vertical | knee L/R 103/103 | elbow L/R 168/92 | hip(thigh-trunk) R 122 | wrist R z=1.15 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.50 pelvis z=0.42 x=-0.20 | head z=1.00 | trunk 37 deg from vertical | knee L/R 52/52 | elbow L/R 168/125 | hip(thigh-trunk) R 49 | wrist R z=1.15 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.75 pelvis z=0.62 x=-0.13 | head z=1.27 | trunk 24 deg from vertical | knee L/R 75/75 | elbow L/R 168/88 | hip(thigh-trunk) R 91 | wrist R z=1.15 ankle R z=0.08 | on floor: ankle_l, ankle_r
+squat-box: 84 frames OK
+  t=0.00 pelvis z=0.97 x=+0.00 | head z=1.67 | trunk 3 deg from vertical | knee L/R 169/169 | elbow L/R 125/125 | hip(thigh-trunk) R 169 | wrist R z=1.38 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.25 pelvis z=0.82 x=-0.06 | head z=1.51 | trunk 12 deg from vertical | knee L/R 111/111 | elbow L/R 125/125 | hip(thigh-trunk) R 129 | wrist R z=1.22 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.50 pelvis z=0.53 x=-0.18 | head z=1.15 | trunk 30 deg from vertical | knee L/R 65/65 | elbow L/R 125/125 | hip(thigh-trunk) R 71 | wrist R z=0.88 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.75 pelvis z=0.69 x=-0.12 | head z=1.35 | trunk 20 deg from vertical | knee L/R 86/86 | elbow L/R 125/125 | hip(thigh-trunk) R 103 | wrist R z=1.07 ankle R z=0.08 | on floor: ankle_l, ankle_r
+squat-half: 72 frames OK
+  t=0.00 pelvis z=0.97 x=+0.00 | head z=1.67 | trunk 3 deg from vertical | knee L/R 169/169 | elbow L/R 125/125 | hip(thigh-trunk) R 169 | wrist R z=1.38 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.25 pelvis z=0.88 x=-0.03 | head z=1.57 | trunk 12 deg from vertical | knee L/R 124/124 | elbow L/R 125/125 | hip(thigh-trunk) R 139 | wrist R z=1.28 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.50 pelvis z=0.69 x=-0.10 | head z=1.33 | trunk 28 deg from vertical | knee L/R 86/86 | elbow L/R 125/125 | hip(thigh-trunk) R 97 | wrist R z=1.05 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.75 pelvis z=0.79 x=-0.06 | head z=1.46 | trunk 19 deg from vertical | knee L/R 105/105 | elbow L/R 125/125 | hip(thigh-trunk) R 119 | wrist R z=1.18 ankle R z=0.08 | on floor: ankle_l, ankle_r
+squat-close: 84 frames OK
+  t=0.00 pelvis z=0.97 x=+0.00 | head z=1.67 | trunk 3 deg from vertical | knee L/R 169/169 | elbow L/R 146/146 | hip(thigh-trunk) R 165 | wrist R z=1.38 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.25 pelvis z=0.77 x=-0.07 | head z=1.45 | trunk 16 deg from vertical | knee L/R 101/101 | elbow L/R 146/146 | hip(thigh-trunk) R 118 | wrist R z=1.17 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.50 pelvis z=0.39 x=-0.20 | head z=0.95 | trunk 41 deg from vertical | knee L/R 49/49 | elbow L/R 146/146 | hip(thigh-trunk) R 42 | wrist R z=0.70 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.75 pelvis z=0.60 x=-0.13 | head z=1.24 | trunk 27 deg from vertical | knee L/R 72/72 | elbow L/R 146/146 | hip(thigh-trunk) R 85 | wrist R z=0.96 ankle R z=0.08 | on floor: ankle_l, ankle_r
+squat-uneven: 84 frames OK
+  t=0.00 pelvis z=0.97 x=+0.00 | head z=1.67 | trunk 3 deg from vertical | knee L/R 113/168 | elbow L/R 125/125 | hip(thigh-trunk) R 166 | wrist R z=1.38 ankle R z=0.08 | on floor: ankle_r
+  t=0.25 pelvis z=0.77 x=-0.07 | head z=1.45 | trunk 13 deg from vertical | knee L/R 75/100 | elbow L/R 125/125 | hip(thigh-trunk) R 122 | wrist R z=1.17 ankle R z=0.08 | on floor: ankle_r
+  t=0.50 pelvis z=0.38 x=-0.20 | head z=0.99 | trunk 31 deg from vertical | knee L/R 37/47 | elbow L/R 125/125 | hip(thigh-trunk) R 52 | wrist R z=0.73 ankle R z=0.08 | on floor: ankle_r
+  t=0.75 pelvis z=0.59 x=-0.13 | head z=1.25 | trunk 21 deg from vertical | knee L/R 52/71 | elbow L/R 125/125 | hip(thigh-trunk) R 92 | wrist R z=0.98 ankle R z=0.08 | on floor: ankle_r
+squat-cossack: 96 frames OK
+  t=0.00 pelvis z=0.97 x=+0.00 | head z=1.67 | trunk 3 deg from vertical | knee L/R 179/179 | elbow L/R 97/97 | hip(thigh-trunk) R 176 | wrist R z=1.38 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.25 pelvis z=0.79 x=-0.03 | head z=1.49 | trunk 5 deg from vertical | knee L/R 123/105 | elbow L/R 97/97 | hip(thigh-trunk) R 137 | wrist R z=1.20 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.50 pelvis z=0.44 x=-0.08 | head z=1.13 | trunk 10 deg from vertical | knee L/R 176/49 | elbow L/R 97/97 | hip(thigh-trunk) R 92 | wrist R z=0.84 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.75 pelvis z=0.63 x=-0.05 | head z=1.33 | trunk 7 deg from vertical | knee L/R 122/76 | elbow L/R 97/97 | hip(thigh-trunk) R 117 | wrist R z=1.04 ankle R z=0.08 | on floor: ankle_l, ankle_r
+squat-pistol-negative: 108 frames OK
+  t=0.00 pelvis z=0.97 x=+0.00 | head z=1.67 | trunk 5 deg from vertical | knee L/R 168/168 | elbow L/R 153/153 | hip(thigh-trunk) R 168 | wrist R z=1.38 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.25 pelvis z=0.78 x=-0.08 | head z=1.45 | trunk 17 deg from vertical | knee L/R 102/101 | elbow L/R 153/153 | hip(thigh-trunk) R 119 | wrist R z=1.17 ankle R z=0.08 | on floor: ankle_r
+  t=0.50 pelvis z=0.40 x=-0.22 | head z=0.95 | trunk 41 deg from vertical | knee L/R 146/52 | elbow L/R 153/153 | hip(thigh-trunk) R 45 | wrist R z=0.70 ankle R z=0.08 | on floor: ankle_r
+  t=0.75 pelvis z=0.88 x=-0.03 | head z=1.57 | trunk 11 deg from vertical | knee L/R 87/124 | elbow L/R 153/153 | hip(thigh-trunk) R 140 | wrist R z=1.28 ankle R z=0.08 | on floor: ankle_r
+squat-pistol-elevated: 96 frames OK
+  t=0.00 pelvis z=1.18 x=+0.00 | head z=1.87 | trunk 4 deg from vertical | knee L/R 112/168 | elbow L/R 164/164 | hip(thigh-trunk) R 168 | wrist R z=1.58 ankle R z=0.28 | on floor: nothing
+  t=0.25 pelvis z=1.03 x=-0.06 | head z=1.72 | trunk 14 deg from vertical | knee L/R 118/113 | elbow L/R 164/164 | hip(thigh-trunk) R 131 | wrist R z=1.43 ankle R z=0.28 | on floor: nothing
+  t=0.50 pelvis z=0.66 x=-0.20 | head z=1.23 | trunk 39 deg from vertical | knee L/R 142/56 | elbow L/R 164/164 | hip(thigh-trunk) R 56 | wrist R z=0.97 ankle R z=0.28 | on floor: nothing
+  t=0.75 pelvis z=0.67 x=-0.19 | head z=1.25 | trunk 38 deg from vertical | knee L/R 141/58 | elbow L/R 164/164 | hip(thigh-trunk) R 59 | wrist R z=0.99 ankle R z=0.28 | on floor: nothing
+squat-shrimp-two-hand: 96 frames OK
+  t=0.00 pelvis z=0.68 x=-0.08 | head z=1.37 | trunk 8 deg from vertical | knee L/R 55/83 | elbow L/R 127/127 | hip(thigh-trunk) R 134 | wrist R z=0.76 ankle R z=0.08 | on floor: ankle_r
+  t=0.25 pelvis z=0.62 x=-0.09 | head z=1.31 | trunk 8 deg from vertical | knee L/R 42/73 | elbow L/R 125/125 | hip(thigh-trunk) R 128 | wrist R z=0.65 ankle R z=0.08 | on floor: ankle_r
+  t=0.50 pelvis z=0.51 x=-0.10 | head z=1.20 | trunk 8 deg from vertical | knee L/R 22/56 | elbow L/R 149/149 | hip(thigh-trunk) R 116 | wrist R z=0.45 ankle R z=0.08 | on floor: ankle_r, knee_l
+  t=0.75 pelvis z=0.57 x=-0.09 | head z=1.26 | trunk 8 deg from vertical | knee L/R 32/65 | elbow L/R 131/131 | hip(thigh-trunk) R 123 | wrist R z=0.56 ankle R z=0.08 | on floor: ankle_r
+squat-shrimp-deficit: 96 frames OK
+  t=0.00 pelvis z=0.86 x=+0.00 | head z=1.49 | trunk 23 deg from vertical | knee L/R 54/83 | elbow L/R 118/100 | hip(thigh-trunk) R 155 | wrist R z=1.25 ankle R z=0.28 | on floor: nothing
+  t=0.25 pelvis z=0.74 x=-0.01 | head z=1.34 | trunk 29 deg from vertical | knee L/R 49/64 | elbow L/R 123/100 | hip(thigh-trunk) R 150 | wrist R z=1.10 ankle R z=0.28 | on floor: nothing
+  t=0.50 pelvis z=0.50 x=-0.02 | head z=1.02 | trunk 40 deg from vertical | knee L/R 45/34 | elbow L/R 157/100 | hip(thigh-trunk) R 143 | wrist R z=0.81 ankle R z=0.28 | on floor: knee_l
+  t=0.75 pelvis z=0.63 x=-0.01 | head z=1.19 | trunk 34 deg from vertical | knee L/R 46/49 | elbow L/R 133/100 | hip(thigh-trunk) R 147 | wrist R z=0.97 ankle R z=0.28 | on floor: nothing
+squat-wall-sit: 72 frames OK
+  t=0.00 pelvis z=0.57 x=-0.25 | head z=1.27 | trunk 0 deg from vertical | knee L/R 90/90 | elbow L/R 88/88 | hip(thigh-trunk) R 94 | wrist R z=0.70 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.25 pelvis z=0.58 x=-0.25 | head z=1.28 | trunk 0 deg from vertical | knee L/R 92/92 | elbow L/R 88/88 | hip(thigh-trunk) R 95 | wrist R z=0.71 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.50 pelvis z=0.59 x=-0.25 | head z=1.29 | trunk 0 deg from vertical | knee L/R 93/93 | elbow L/R 88/88 | hip(thigh-trunk) R 97 | wrist R z=0.72 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.75 pelvis z=0.58 x=-0.25 | head z=1.28 | trunk 0 deg from vertical | knee L/R 92/92 | elbow L/R 88/88 | hip(thigh-trunk) R 95 | wrist R z=0.71 ankle R z=0.08 | on floor: ankle_l, ankle_r
+squat-horse-stance: 72 frames OK
+  t=0.00 pelvis z=0.54 x=-0.10 | head z=1.24 | trunk 4 deg from vertical | knee L/R 77/77 | elbow L/R 109/109 | hip(thigh-trunk) R 103 | wrist R z=0.95 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.25 pelvis z=0.55 x=-0.10 | head z=1.25 | trunk 4 deg from vertical | knee L/R 78/78 | elbow L/R 109/109 | hip(thigh-trunk) R 104 | wrist R z=0.96 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.50 pelvis z=0.56 x=-0.10 | head z=1.26 | trunk 4 deg from vertical | knee L/R 79/79 | elbow L/R 109/109 | hip(thigh-trunk) R 105 | wrist R z=0.97 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.75 pelvis z=0.55 x=-0.10 | head z=1.25 | trunk 4 deg from vertical | knee L/R 78/78 | elbow L/R 109/109 | hip(thigh-trunk) R 104 | wrist R z=0.96 ankle R z=0.08 | on floor: ankle_l, ankle_r
+step-up: 96 frames OK
+  t=0.00 pelvis z=0.78 x=-0.04 | head z=1.46 | trunk 15 deg from vertical | knee L/R 115/66 | elbow L/R 106/106 | hip(thigh-trunk) R 105 | wrist R z=1.18 ankle R z=0.28 | on floor: ankle_l
+  t=0.25 pelvis z=0.80 x=-0.04 | head z=1.48 | trunk 15 deg from vertical | knee L/R 113/69 | elbow L/R 106/106 | hip(thigh-trunk) R 107 | wrist R z=1.20 ankle R z=0.28 | on floor: nothing
+  t=0.50 pelvis z=1.06 x=+0.00 | head z=1.74 | trunk 15 deg from vertical | knee L/R 110/119 | elbow L/R 106/106 | hip(thigh-trunk) R 136 | wrist R z=1.45 ankle R z=0.28 | on floor: nothing
+  t=0.75 pelvis z=1.18 x=+0.02 | head z=1.86 | trunk 15 deg from vertical | knee L/R 119/169 | elbow L/R 106/106 | hip(thigh-trunk) R 160 | wrist R z=1.57 ankle R z=0.28 | on floor: nothing
+step-up-deep: 96 frames OK
+  t=0.00 pelvis z=0.82 x=-0.04 | head z=1.50 | trunk 15 deg from vertical | knee L/R 124/34 | elbow L/R 106/106 | hip(thigh-trunk) R 86 | wrist R z=1.22 ankle R z=0.54 | on floor: ankle_l
+  t=0.25 pelvis z=0.89 x=-0.03 | head z=1.57 | trunk 15 deg from vertical | knee L/R 113/43 | elbow L/R 106/106 | hip(thigh-trunk) R 93 | wrist R z=1.28 ankle R z=0.54 | on floor: nothing
+  t=0.50 pelvis z=1.14 x=-0.01 | head z=1.82 | trunk 15 deg from vertical | knee L/R 96/82 | elbow L/R 106/106 | hip(thigh-trunk) R 117 | wrist R z=1.54 ankle R z=0.54 | on floor: nothing
+  t=0.75 pelvis z=1.44 x=+0.02 | head z=2.12 | trunk 15 deg from vertical | knee L/R 90/169 | elbow L/R 106/106 | hip(thigh-trunk) R 160 | wrist R z=1.83 ankle R z=0.54 | on floor: nothing
+lunge-reverse: 96 frames OK
+  t=0.00 pelvis z=0.97 x=+0.00 | head z=1.67 | trunk 2 deg from vertical | knee L/R 168/168 | elbow L/R 168/168 | hip(thigh-trunk) R 168 | wrist R z=0.88 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.25 pelvis z=0.87 x=-0.00 | head z=1.57 | trunk 3 deg from vertical | knee L/R 124/124 | elbow L/R 132/132 | hip(thigh-trunk) R 143 | wrist R z=0.82 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.50 pelvis z=0.51 x=-0.02 | head z=1.21 | trunk 5 deg from vertical | knee L/R 78/78 | elbow L/R 79/79 | hip(thigh-trunk) R 84 | wrist R z=0.62 ankle R z=0.08 | on floor: ankle_l, ankle_r, knee_l
+  t=0.75 pelvis z=0.79 x=-0.01 | head z=1.49 | trunk 3 deg from vertical | knee L/R 106/106 | elbow L/R 116/116 | hip(thigh-trunk) R 128 | wrist R z=0.78 ankle R z=0.08 | on floor: ankle_l, ankle_r
+lunge-lateral: 84 frames OK
+  t=0.00 pelvis z=0.97 x=+0.00 | head z=1.67 | trunk 7 deg from vertical | knee L/R 168/168 | elbow L/R 106/106 | hip(thigh-trunk) R 168 | wrist R z=1.38 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.25 pelvis z=0.83 x=+0.00 | head z=1.52 | trunk 7 deg from vertical | knee L/R 123/112 | elbow L/R 106/106 | hip(thigh-trunk) R 142 | wrist R z=1.23 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.50 pelvis z=0.54 x=+0.00 | head z=1.24 | trunk 7 deg from vertical | knee L/R 167/68 | elbow L/R 106/106 | hip(thigh-trunk) R 108 | wrist R z=0.95 ankle R z=0.08 | on floor: ankle_l, ankle_r
+  t=0.75 pelvis z=0.70 x=+0.00 | head z=1.39 | trunk 7 deg from vertical | knee L/R 122/88 | elbow L/R 106/106 | hip(thigh-trunk) R 127 | wrist R z=1.10 ankle R z=0.08 | on floor: ankle_l, ankle_r
+reverse-nordic: 96 frames OK
+  t=0.00 pelvis z=0.52 x=+0.00 | head z=1.22 | trunk 0 deg from vertical | knee L/R 77/77 | elbow L/R 97/97 | hip(thigh-trunk) R 166 | wrist R z=0.93 ankle R z=0.08 | on floor: ankle_l, ankle_r, knee_l, knee_r
+  t=0.25 pelvis z=0.51 x=-0.05 | head z=1.20 | trunk 9 deg from vertical | knee L/R 71/71 | elbow L/R 97/97 | hip(thigh-trunk) R 168 | wrist R z=0.92 ankle R z=0.08 | on floor: ankle_l, ankle_r, knee_l, knee_r
+  t=0.50 pelvis z=0.50 x=-0.14 | head z=1.13 | trunk 25 deg from vertical | knee L/R 63/63 | elbow L/R 97/97 | hip(thigh-trunk) R 170 | wrist R z=0.87 ankle R z=0.08 | on floor: ankle_l, ankle_r, knee_l, knee_r
+  t=0.75 pelvis z=0.51 x=-0.09 | head z=1.17 | trunk 16 deg from vertical | knee L/R 67/67 | elbow L/R 97/97 | hip(thigh-trunk) R 169 | wrist R z=0.90 ankle R z=0.08 | on floor: ankle_l, ankle_r, knee_l, knee_r
+sissy-squat-assisted: 84 frames OK
+  t=0.00 pelvis z=0.99 x=+0.05 | head z=1.69 | trunk 0 deg from vertical | knee L/R 153/153 | elbow L/R 168/154 | hip(thigh-trunk) R 166 | wrist R z=1.00 ankle R z=0.12 | on floor: toe_l, toe_r
+  t=0.25 pelvis z=0.87 x=+0.08 | head z=1.56 | trunk 10 deg from vertical | knee L/R 114/114 | elbow L/R 168/96 | hip(thigh-trunk) R 162 | wrist R z=1.00 ankle R z=0.12 | on floor: toe_l, toe_r
+  t=0.50 pelvis z=0.64 x=+0.15 | head z=1.24 | trunk 30 deg from vertical | knee L/R 74/74 | elbow L/R 168/39 | hip(thigh-trunk) R 169 | wrist R z=1.00 ankle R z=0.12 | on floor: toe_l, toe_r
+  t=0.75 pelvis z=0.77 x=+0.11 | head z=1.42 | trunk 19 deg from vertical | knee L/R 93/93 | elbow L/R 168/65 | hip(thigh-trunk) R 164 | wrist R z=1.00 ankle R z=0.12 | on floor: toe_l, toe_r
+sissy-squat: 84 frames OK
+  t=0.00 pelvis z=0.99 x=+0.05 | head z=1.69 | trunk 0 deg from vertical | knee L/R 153/153 | elbow L/R 125/125 | hip(thigh-trunk) R 166 | wrist R z=1.41 ankle R z=0.12 | on floor: toe_l, toe_r
+  t=0.25 pelvis z=0.87 x=+0.08 | head z=1.56 | trunk 10 deg from vertical | knee L/R 114/114 | elbow L/R 125/125 | hip(thigh-trunk) R 162 | wrist R z=1.28 ankle R z=0.12 | on floor: toe_l, toe_r
+  t=0.50 pelvis z=0.64 x=+0.15 | head z=1.24 | trunk 30 deg from vertical | knee L/R 74/74 | elbow L/R 125/125 | hip(thigh-trunk) R 169 | wrist R z=0.99 ankle R z=0.12 | on floor: toe_l, toe_r
+  t=0.75 pelvis z=0.77 x=+0.11 | head z=1.42 | trunk 19 deg from vertical | knee L/R 93/93 | elbow L/R 125/125 | hip(thigh-trunk) R 164 | wrist R z=1.15 ankle R z=0.12 | on floor: toe_l, toe_r
+natural-leg-extension: 96 frames OK
+  t=0.00 pelvis z=0.55 x=+0.00 | head z=1.25 | trunk 0 deg from vertical | knee L/R 100/100 | elbow L/R 106/106 | hip(thigh-trunk) R 167 | wrist R z=0.96 ankle R z=0.08 | on floor: ankle_l, ankle_r, knee_l, knee_r
+  t=0.25 pelvis z=0.54 x=-0.04 | head z=1.24 | trunk 5 deg from vertical | knee L/R 93/93 | elbow L/R 106/106 | hip(thigh-trunk) R 167 | wrist R z=0.95 ankle R z=0.08 | on floor: ankle_l, ankle_r, knee_l, knee_r
+  t=0.50 pelvis z=0.49 x=-0.30 | head z=1.03 | trunk 38 deg from vertical | knee L/R 61/61 | elbow L/R 106/106 | hip(thigh-trunk) R 167 | wrist R z=0.80 ankle R z=0.08 | on floor: ankle_l, ankle_r, knee_l, knee_r
+  t=0.75 pelvis z=0.59 x=+0.00 | head z=1.27 | trunk 13 deg from vertical | knee L/R 107/107 | elbow L/R 106/106 | hip(thigh-trunk) R 155 | wrist R z=0.99 ankle R z=0.08 | on floor: ankle_l, ankle_r
