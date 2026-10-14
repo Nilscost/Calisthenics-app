@@ -1,8 +1,13 @@
 # R7.2-T09: clip re-pose, stick-sheet review (F10, F11)
 
-Status: **poses written and checked on stick sheets; NOT rendered.** The Blender render runs on the owner's Mac, so the installed clips
-`app/src/main/assets/demos/{warmup-shoulder-band,pallof-press,pallof-hold}.mp4` are still the R7.1 ones.
-Frames only; nothing here was reviewed as video.
+Status: **rendered on the owner's Mac and installed (R7.2-T09b); the owner judges them on the phone.** Frames were reviewed on contact sheets (12 frames each, `rendered-<id>.png`), not as video.
+Installed: `demos/{warmup-shoulder-band,pallof-press,pallof-hold}.mp4` (17, 11, 7 KB; loop seams 0.14, 0.04, 0.02) and their thumbnails; no other asset changed.
+
+## Review of the real renders (honest)
+- **warmup-shoulder-band: first half good, behind-the-back phase reads poorly.** Hands at the hips, arms forward, band overhead with straight arms and a clearly visible band all read well. From this camera (az 55) the behind-the-back part is weak: the band is hidden or edge-on, the near arm points out sideways like a T, and the far arm disappears behind the body. The F10 complaint (it reads as an overhead raise) is partly fixed. If the owner finds that phase confusing, move the camera to a side view (az about 20) or lower the behind-the-back angle (320 deg) and re-render this one id.
+- **pallof-press: band reads, press is subtle.** The band runs clearly to the side at chest height, hands start at the sternum and the arms straighten, but from az 58 the forward press is foreshortened, so the motion looks small. Owner to judge; az about 40 would show more press and less band.
+- **pallof-hold: reads as a held press with the band pulling sideways.** Nearly static, as intended.
+
 
 Sheets: `warmup-shoulder-band.png`, `pallof-press.png`, `pallof-hold.png` (six moments x side / front / render camera; made with
 `poses.py <ids> --preview`). `poses.py <ids> --describe` prints OK for all three.
@@ -18,7 +23,7 @@ Known limits (not fixed here):
 - `warmup-shoulder-towel` still uses the old `_shoulder_loop` pose (bent arms, straight-line interpolation). It has the same problem as F10; it was outside this release's scope.
 - The standing legs of the Pallof clips keep the base stance (knees about 157 deg), as in the other standing core clips.
 
-## Owner render (one line)
+## Owner render (done; kept for a re-render)
 ```
 cd /Users/nils/Documents/hermes/Apps/calisthenics && /Applications/Blender.app/Contents/MacOS/Blender -b -P tools/blender/render.py -- warmup-shoulder-band pallof-press pallof-hold
 ```

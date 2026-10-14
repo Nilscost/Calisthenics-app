@@ -1,7 +1,7 @@
 # Owner check, release R7.2 (0.10.2-r7, versionCode 12)
 
 Nothing here was tested on a phone: this list is what you walk through on the Galaxy S21. All exercise content is an unreviewed DRAFT.
-Install `app-debug-R7.2.apk`. **The shoulder pass-through and Pallof clips are NOT new in this APK:** their poses are re-written, but the Blender render has to run on your Mac first (the command is in `docs/evidence/clips-r7.2/review.md`). Until then step 11 shows the old clips.
+Install `app-debug-R7.2.apk`. The shoulder pass-through and Pallof clips are new in this APK (rendered on your Mac).
 Each step names the feedback item it checks (F = your feedback on 0.10.1-r7, O = your answer).
 
 ## 1. Preview
@@ -23,7 +23,7 @@ Each step names the feedback item it checks (F = your feedback on 0.10.1-r7, O =
 10. Planche lean: it shows "needs Plank" **only while your plank is below level 4**. If your plank is level 4 or more, nothing is shown, and that is correct (F9, O2; no code change in this release).
 
 ## 5. Clips
-11. After the render and install on your Mac (not part of this APK): clear the app cache (Settings > Apps > the app > Storage > Clear cache). The **shoulder band pass-through** shows straight arms over the head and behind the back with a visible band; the **Pallof press** starts with the hands at the sternum and presses straight forward, with the band pulling to the side (F10, F11). Check Pallof hold too.
+11. Clear the app cache (Settings > Apps > the app > Storage > Clear cache), then check the **shoulder band pass-through** (straight arms, visible band, hips to overhead to behind the back and back) and the **Pallof press / hold** (hands at the sternum, press straight forward, band pulling to the side). Known: in the pass-through the behind-the-back part may read poorly (one arm sticks out sideways); tell me if it does (F10, F11).
 
 ## Score
 Give each tab 1-5 (Train, Preview, Workout, Progress, History, Settings), one thing you like and one thing to fix.

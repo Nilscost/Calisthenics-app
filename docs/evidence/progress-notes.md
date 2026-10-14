@@ -669,3 +669,8 @@ Process notes for the whole batch: every task was verified in the Hermes contain
 - `versionCode` 12, `versionName` `0.10.2-r7`; `STATUS.md`, `docs/evidence/owner-check-r7.2.md`; APK `Apps/builds/app-debug-R7.2.apk` (built in a fresh clone of `da9d667`; `f1f7993` only changes a Maestro flow).
 - Verification: fresh-clone full verify exit 0 (`docs/evidence/r7.2-t11-verify-2026-10-13.log`), Python tests 27 OK; per-task logs `r7.2-tNN-verify-2026-10-13.log`; GitHub `verify` and `connected` green on the pushed commits.
 - **NOT done:** F10 and F11 clips (re-posed, not rendered: needs the owner's Blender render, command in `docs/evidence/clips-r7.2/review.md`); phone check; the Move-on card screenshot. No owner gate was approved.
+
+### R7.2-T09b — clips rendered and installed (F10, F11)
+- The owner rendered the three ids on his Mac (84 / 84 / 72 frames, 0 failed). `encode.py` and `install_clips.py` for those three ids only (`--dry` first: 3 prepared, 0 problems): `git status` shows only the three demos and thumbnails changed. Sizes 17 / 11 / 7 KB, seams 0.14 / 0.04 / 0.02. `poses.py` was not run.
+- Contact sheets of the real frames are in `docs/evidence/clips-r7.2/rendered-*.png`. **Honest read:** the pass-through's behind-the-back phase reads poorly from az 55 (band edge-on, near arm sticks out sideways); the Pallof press is subtle from az 58; the hold is fine. F10/F11 are "rendered, owner to judge", not "done". Camera or angle tweaks are listed in `clips-r7.2/review.md`.
+- Verify: `docs/evidence/r7.2-t09b-verify-2026-10-14.log`.
