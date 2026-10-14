@@ -8,3 +8,8 @@ squat-pistol-negative
 squat-pistol-elevated
 squat-shrimp-two-hand
 squat-shrimp-deficit
+pushup-uneven
+pushup-half-one-arm
+pushup-one-arm-elevated
+pushup-one-arm-straight-body
+pushup-pseudo-planche

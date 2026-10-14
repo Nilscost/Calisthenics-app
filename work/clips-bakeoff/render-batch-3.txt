@@ -2,3 +2,12 @@ squat-wall-sit
 squat-horse-stance
 lunge-reverse
 lunge-lateral
+pushup-single-leg
+pushup-hindu
+pushup-pop-up-incline
+pushup-kneeling-push-off
+pushup-pop-up
+pushup-pop-up-wide-close
+pushup-clap
+pushup-chest-strike
+pushup-wall-push-away

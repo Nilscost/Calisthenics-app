@@ -9,3 +9,11 @@ All 20 explicit IDs passed --describe with no reach or floor penetration warning
 Repairs before acceptance: two-hand rear-foot contact; compact step outside the trailing leg; actual floor-to-step trajectory; wall brought to the back; deeper natural-leg-extension motion. The final step-up support is narrow and on the right side so the free left leg clears it throughout the loop. Natural leg extension shows the unassisted motion (the instruction's optional hand assistance is omitted). Props are diagrammatic.
 
 Evidence: squat_legs-describe.txt and representative PNG sheets beside this file. No movie rendered yet.
+
+## pushup_new · 14 ids accepted for draft rendering
+
+All 14 explicit IDs passed --describe with no reach or floor penetration warnings after several repair passes. Coordinator inspected Hindu, elevated one-arm, raised-leg and clap contact sheets; also inspected the earlier pseudo-planche and kneeling-push-off sheets and reviewed their support repairs.
+
+Repairs before acceptance: chair moved under the feet, fixed elevated-hand contact with body outside the box, dog/dive/upward-dog phases instead of a rigid push-up, upright kneeling return with hands released, right-only wall push-away, dense rigid-body trajectories, and deeper floor push-up bottoms. Ordinary floor push-up bottom working elbows are approximately 91–100 degrees with head near 0.22–0.26 m. The raised single leg stays above the floor. Hindu intentionally flexes the hips in the dog phase; it does not use the rigid-body hip-angle requirement.
+
+Evidence: pushup_new-describe.txt and the representative PNGs beside this file. Explosive contacts and equipment are schematic; the actual Blender movie still needs review after rendering.
