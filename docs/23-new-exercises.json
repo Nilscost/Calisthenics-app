@@ -12503,14 +12503,15 @@
     }
    ],
    "instructions": [
-    "Stand beside a vertical pole, top hand gripping it above the head and the bottom arm wrapped around it with the pole tight in the armpit.",
-    "Lift the feet so you hang from the clutch with the body close to vertical.",
+    "Stand side-on to a fixed pole with the working-side armpit and upper lat pressed against it.",
+    "Wrap that arm around the pole and press the heel of its palm against the pole. Place the other hand near hip height and brace its bent elbow into the waist above the hip.",
+    "Brace the clutch, bend the knees and lift the feet without drawing the knees toward the chest; keep the body close to vertical.",
     "Hold, then step down; train both sides."
    ],
    "formCues": [
-    "Bottom arm locked to the pole",
-    "Body rigid",
-    "Short perfect holds"
+    "Armpit and upper lat against the pole",
+    "Upper arm wraps; lower elbow braces into the waist",
+    "Feet lifted by bending the knees"
    ],
    "cautions": [
     "Stop the set on sharp or joint pain; do not push through it.",
@@ -12542,7 +12543,8 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "convict-conditioning-2-wade"
-   ]
+   ],
+   "note": "Posture corrected against the written CC2 instructions (printed pp. 75-79, 83, 100, 105 as relevant). The supplied PDF is a text export without the exercise photos; photo comparison remains open."
   },
   {
    "id": "flag-clutch-diagonal-split",
@@ -12570,14 +12572,14 @@
     }
    ],
    "instructions": [
-    "From the clutch hang, lean the body out to about 45 degrees.",
-    "Spread the legs front and back in a split to make balance easier.",
-    "Hold, then lower."
+    "Set the basic clutch with the pole against the armpit and the lower elbow braced above the hip.",
+    "Lift the body into a diagonal position. Tuck the upper leg toward the body and extend the lower leg.",
+    "Keep the trunk and the extended lower leg in one diagonal line; hold, then lower."
    ],
    "formCues": [
-    "Bottom arm locked to the pole",
-    "Body rigid",
-    "Short perfect holds"
+    "Upper leg tucked",
+    "Lower leg straight in line with the trunk",
+    "Lower elbow braces into the waist"
    ],
    "cautions": [
     "Stop the set on sharp or joint pain; do not push through it.",
@@ -12609,7 +12611,8 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "convict-conditioning-2-wade"
-   ]
+   ],
+   "note": "Posture corrected against the written CC2 instructions (printed pp. 75-79, 83, 100, 105 as relevant). The supplied PDF is a text export without the exercise photos; photo comparison remains open."
   },
   {
    "id": "flag-clutch-diagonal-tuck",
@@ -12838,14 +12841,14 @@
     }
    ],
    "instructions": [
-    "From the clutch, lift the body to horizontal.",
-    "Hold the legs straight in a front-back split.",
-    "Hold, then lower."
+    "From the horizontal tuck clutch, keep the upper knee bent opposite the hips.",
+    "Extend the lower leg until it forms a straight horizontal line with the trunk.",
+    "Hold the split clutch without turning the belly upward, then lower."
    ],
    "formCues": [
-    "Bottom arm locked to the pole",
-    "Body rigid",
-    "Short perfect holds"
+    "One knee tucked, the other leg extended",
+    "Trunk and lower leg level",
+    "Stay side-on"
    ],
    "cautions": [
     "Stop the set on sharp or joint pain; do not push through it.",
@@ -12877,7 +12880,8 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "convict-conditioning-2-wade"
-   ]
+   ],
+   "note": "Posture corrected against the written CC2 instructions (printed pp. 75-79, 83, 100, 105 as relevant). The supplied PDF is a text export without the exercise photos; photo comparison remains open."
   },
   {
    "id": "flag-clutch-bent-leg",
@@ -13033,20 +13037,33 @@
     {
      "needs": [
       {
+       "equipmentId": "pullup-bar"
+      }
+     ],
+     "capabilities": [
+      "wall"
+     ]
+    },
+    {
+     "needs": [
+      {
+       "equipmentId": "pullup-bar"
+      },
+      {
        "equipmentId": "pole"
       }
      ]
     }
    ],
    "instructions": [
-    "Stand beside the pole; top hand grips at about head height, bottom hand lower with a straight arm pressing into the pole.",
-    "Pull with the top arm and push with the bottom arm while you lean and lift the feet briefly.",
-    "Hold, then step down."
+    "Hang from an overhead bar beside a wall or fixed vertical support with an overhand grip.",
+    "Release the hand nearest the support and place its palm flat on that support. Straighten that arm to press the body outward while the other hand remains on the bar.",
+    "Keep the body aligned and hold; train both sides."
    ],
    "formCues": [
-    "Bottom arm locked",
-    "Top arm pulls",
-    "Body rigid"
+    "One hand on the overhead bar",
+    "Other palm presses the vertical support",
+    "Pressing arm straight"
    ],
    "cautions": [
     "Stop the set on sharp or joint pain; do not push through it.",
@@ -13070,13 +13087,17 @@
    "poseGroup": "flag_pole",
    "props": [
     {
-     "kind": "rod",
-     "as": "vertical pole (rod from floor to 2.5 m)"
+     "kind": "bar",
+     "as": "overhead pull-up bar at about 2.3 m"
+    },
+    {
+     "kind": "box",
+     "as": "thin wall beside the body for the pressing hand"
     }
    ],
    "renderBatch": 2,
    "gapTier": "A46",
-   "note": "Step names verified against CC2; posture wording is a paraphrase to check against the book's photos.",
+   "note": "Posture corrected against the written CC2 instructions (printed pp. 75-79, 83, 100, 105 as relevant). The supplied PDF is a text export without the exercise photos; photo comparison remains open.",
    "reviewState": "DRAFT",
    "sourceIds": [
     "convict-conditioning-2-wade"
@@ -13383,14 +13404,14 @@
     }
    ],
    "instructions": [
-    "From the vertical press, lower the body toward horizontal.",
-    "Hold the legs in a wide front-back split.",
-    "Hold, then lower."
+    "From the vertical press, bend the leg closest to the pole to about 90 degrees at the knee, bringing that knee forward a little.",
+    "Keep the other leg straight and lower the body toward horizontal.",
+    "Hold with the trunk and the lower extended leg in a straight horizontal line; lower with control."
    ],
    "formCues": [
-    "Bottom arm locked",
-    "Top arm pulls",
-    "Body rigid"
+    "Pole-side leg bent about 90 degrees",
+    "Other leg extended",
+    "Bottom arm locked"
    ],
    "cautions": [
     "Stop the set on sharp or joint pain; do not push through it.",
@@ -13420,7 +13441,7 @@
    ],
    "renderBatch": 2,
    "gapTier": "A46",
-   "note": "Step names verified against CC2; posture wording is a paraphrase to check against the book's photos.",
+   "note": "Posture corrected against the written CC2 instructions (printed pp. 75-79, 83, 100, 105 as relevant). The supplied PDF is a text export without the exercise photos; photo comparison remains open.",
    "reviewState": "DRAFT",
    "sourceIds": [
     "convict-conditioning-2-wade"
