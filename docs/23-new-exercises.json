@@ -904,6 +904,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "explosive-calisthenics-wade"
+   ],
+   "alsoRequires": [
+    "pushup-standard"
    ]
   },
   {
@@ -970,6 +973,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "explosive-calisthenics-wade"
+   ],
+   "alsoRequires": [
+    "pushup-standard"
    ]
   },
   {
@@ -1027,6 +1033,9 @@
    "sourceIds": [
     "explosive-calisthenics-wade",
     "street-workout-kavadlo"
+   ],
+   "alsoRequires": [
+    "pushup-standard"
    ]
   },
   {
@@ -1081,6 +1090,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "explosive-calisthenics-wade"
+   ],
+   "alsoRequires": [
+    "pushup-standard"
    ]
   },
   {
@@ -1141,6 +1153,9 @@
     "explosive-calisthenics-wade",
     "overcoming-gravity-2-low",
     "superhuman-stack-pure-calisthenics"
+   ],
+   "alsoRequires": [
+    "pushup-standard"
    ]
   },
   {
@@ -1199,6 +1214,9 @@
    "sourceIds": [
     "explosive-calisthenics-wade",
     "overcoming-gravity-2-low"
+   ],
+   "alsoRequires": [
+    "pushup-standard"
    ]
   },
   {
@@ -13557,6 +13575,7 @@
    "insertAfter": null,
    "difficultyRank": 5,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -13602,6 +13621,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -13611,6 +13633,7 @@
    "insertAfter": "landing-stick",
    "difficultyRank": 10,
    "patterns": [
+    "PLYOMETRIC",
     "CALF_RAISE"
    ],
    "areas": [
@@ -13658,6 +13681,9 @@
     "jumping-into-plyometrics-chu",
     "army-atp-7-22-02-c1",
     "explosive-calisthenics-wade"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -13667,6 +13693,7 @@
    "insertAfter": "pogo-hop",
    "difficultyRank": 12,
    "patterns": [
+    "PLYOMETRIC",
     "CALF_RAISE"
    ],
    "areas": [
@@ -13709,6 +13736,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -13718,6 +13748,7 @@
    "insertAfter": "ankle-hop-side-to-side",
    "difficultyRank": 14,
    "patterns": [
+    "PLYOMETRIC",
     "CALF_RAISE"
    ],
    "areas": [
@@ -13761,6 +13792,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -13770,6 +13804,7 @@
    "insertAfter": "pogo-hop",
    "difficultyRank": 20,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -13819,6 +13854,9 @@
     "army-atp-7-22-02-c1",
     "explosive-calisthenics-wade",
     "superhuman-stack-pure-calisthenics"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -13828,6 +13866,7 @@
    "insertAfter": "jump-squat",
    "difficultyRank": 22,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -13875,6 +13914,9 @@
    "sourceIds": [
     "jumping-into-plyometrics-chu",
     "explosive-calisthenics-wade"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -13884,6 +13926,7 @@
    "insertAfter": "jump-squat",
    "difficultyRank": 25,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -13931,6 +13974,9 @@
    "sourceIds": [
     "explosive-calisthenics-wade",
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -13940,6 +13986,7 @@
    "insertAfter": "jump-butt-kick",
    "difficultyRank": 28,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -13985,6 +14032,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "explosive-calisthenics-wade"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -13994,6 +14044,7 @@
    "insertAfter": "jump-tuck-slap",
    "difficultyRank": 30,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -14043,6 +14094,9 @@
     "jumping-into-plyometrics-chu",
     "army-atp-7-22-02-c1",
     "explosive-calisthenics-wade"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14052,6 +14106,7 @@
    "insertAfter": "jump-tuck",
    "difficultyRank": 35,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -14100,6 +14155,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "explosive-calisthenics-wade"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14109,6 +14167,7 @@
    "insertAfter": "jump-squat",
    "difficultyRank": 32,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -14158,6 +14217,9 @@
     "army-atp-7-22-02-c1",
     "jumping-into-plyometrics-chu",
     "explosive-calisthenics-wade"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14167,6 +14229,7 @@
    "insertAfter": "jump-split",
    "difficultyRank": 38,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -14211,6 +14274,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14220,6 +14286,7 @@
    "insertAfter": "jump-vertical",
    "difficultyRank": 40,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -14266,6 +14333,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "explosive-calisthenics-wade"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14275,6 +14345,7 @@
    "insertAfter": null,
    "difficultyRank": 10,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -14320,6 +14391,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14329,6 +14403,7 @@
    "insertAfter": null,
    "difficultyRank": 15,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -14374,6 +14449,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14383,6 +14461,7 @@
    "insertAfter": "jump-broad",
    "difficultyRank": 25,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -14428,6 +14507,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14437,6 +14519,7 @@
    "insertAfter": "jump-broad",
    "difficultyRank": 22,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -14481,6 +14564,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14490,6 +14576,7 @@
    "insertAfter": "jump-lateral",
    "difficultyRank": 20,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -14535,6 +14622,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14544,6 +14634,7 @@
    "insertAfter": "jump-lateral",
    "difficultyRank": 28,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -14589,6 +14680,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "superhuman-stack-pure-calisthenics"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14598,6 +14692,7 @@
    "insertAfter": "jump-broad-consecutive",
    "difficultyRank": 32,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -14645,6 +14740,9 @@
    "sourceIds": [
     "jumping-into-plyometrics-chu",
     "army-atp-7-22-02-c1"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14654,6 +14752,7 @@
    "insertAfter": "hop-single-leg-stick",
    "difficultyRank": 38,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -14699,6 +14798,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14708,6 +14810,7 @@
    "insertAfter": "hop-single-leg-lateral",
    "difficultyRank": 45,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -14752,6 +14855,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14761,6 +14867,7 @@
    "insertAfter": "skater-bound",
    "difficultyRank": 40,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -14806,6 +14913,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14815,6 +14925,7 @@
    "insertAfter": "zigzag-hop",
    "difficultyRank": 55,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -14861,6 +14972,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14870,6 +14984,7 @@
    "insertAfter": null,
    "difficultyRank": 5,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -14932,6 +15047,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -14941,6 +15059,7 @@
    "insertAfter": "box-step-off-landing",
    "difficultyRank": 8,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -15003,6 +15122,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -15012,6 +15134,7 @@
    "insertAfter": "box-push-off-alternating",
    "difficultyRank": 12,
    "patterns": [
+    "PLYOMETRIC",
     "LUNGE"
    ],
    "areas": [
@@ -15074,6 +15197,9 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -15083,6 +15209,7 @@
    "insertAfter": "box-step-off-landing",
    "difficultyRank": 20,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -15144,6 +15271,9 @@
     "jumping-into-plyometrics-chu",
     "superhuman-stack-pure-calisthenics",
     "cross-training-wod-bible-selter"
+   ],
+   "alsoRequires": [
+    "squat-air"
    ]
   },
   {
@@ -15153,6 +15283,7 @@
    "insertAfter": "box-jump",
    "difficultyRank": 30,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -15210,6 +15341,11 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "box-jump",
+    "squat-pistol",
+    "squat-air"
    ]
   },
   {
@@ -15219,6 +15355,7 @@
    "insertAfter": "box-jump-rebound",
    "difficultyRank": 40,
    "patterns": [
+    "PLYOMETRIC",
     "SQUAT"
    ],
    "areas": [
@@ -15249,7 +15386,7 @@
    "cautions": [
     "Stop the set on sharp or joint pain; do not push through it.",
     "Land softly on the balls of the feet with the knees over the toes; plyometrics go first in a session, on a forgiving surface, and stop when landings get sloppy.",
-    "Gated: unlock only after clean box jumps at 45-60 cm and a stable single-leg squat (app rule, not Chu's). Max a few sets."
+    "App prerequisite: master box jumps and the single-leg squat progression before unlocking. Start from a 30 cm box; rest fully between reps."
    ],
    "primaryMuscles": [
     "QUADS",
@@ -15268,7 +15405,7 @@
    "props": [
     {
      "kind": "box",
-     "as": "sturdy box about 0.4-0.5 m high"
+     "as": "sturdy box about 0.30 m high"
     }
    ],
    "renderBatch": 3,
@@ -15276,6 +15413,11 @@
    "reviewState": "DRAFT",
    "sourceIds": [
     "jumping-into-plyometrics-chu"
+   ],
+   "alsoRequires": [
+    "box-jump",
+    "squat-pistol",
+    "squat-air"
    ]
   },
   {
@@ -15285,6 +15427,7 @@
    "insertAfter": null,
    "difficultyRank": 5,
    "patterns": [
+    "CONDITIONING",
     "SQUAT",
     "CORE_ANTI_EXTENSION"
    ],
@@ -15338,6 +15481,7 @@
    "insertAfter": "squat-thrust-step-back",
    "difficultyRank": 10,
    "patterns": [
+    "CONDITIONING",
     "SQUAT",
     "CORE_ANTI_EXTENSION"
    ],
@@ -15393,6 +15537,7 @@
    "insertAfter": "squat-thrust",
    "difficultyRank": 15,
    "patterns": [
+    "CONDITIONING",
     "SQUAT",
     "CORE_ANTI_EXTENSION"
    ],
@@ -15446,6 +15591,7 @@
    "insertAfter": "sprawl",
    "difficultyRank": 20,
    "patterns": [
+    "CONDITIONING",
     "SQUAT",
     "CORE_ANTI_EXTENSION"
    ],
@@ -15501,6 +15647,7 @@
    "insertAfter": "burpee",
    "difficultyRank": 25,
    "patterns": [
+    "CONDITIONING",
     "SQUAT",
     "PUSH_HORIZONTAL"
    ],
@@ -15555,6 +15702,7 @@
    "insertAfter": "burpee-pushup",
    "difficultyRank": 28,
    "patterns": [
+    "CONDITIONING",
     "PUSH_HORIZONTAL",
     "CORE_ANTI_EXTENSION"
    ],
@@ -15608,6 +15756,7 @@
    "insertAfter": null,
    "difficultyRank": 6,
    "patterns": [
+    "CONDITIONING",
     "CORE_ANTI_EXTENSION"
    ],
    "areas": [
@@ -15658,6 +15807,7 @@
    "insertAfter": "mountain-climber-slow",
    "difficultyRank": 12,
    "patterns": [
+    "CONDITIONING",
     "CORE_ANTI_EXTENSION"
    ],
    "areas": [
@@ -15708,6 +15858,7 @@
    "insertAfter": "mountain-climber",
    "difficultyRank": 16,
    "patterns": [
+    "CONDITIONING",
     "CORE_ANTI_EXTENSION",
     "CORE_ANTI_ROTATION"
    ],
@@ -15760,6 +15911,7 @@
    "insertAfter": null,
    "difficultyRank": 3,
    "patterns": [
+    "CONDITIONING",
     "MOBILITY"
    ],
    "areas": [
@@ -15809,6 +15961,7 @@
    "insertAfter": "half-jack",
    "difficultyRank": 5,
    "patterns": [
+    "CONDITIONING",
     "MOBILITY"
    ],
    "areas": [
@@ -15860,6 +16013,7 @@
    "insertAfter": "jumping-jack",
    "difficultyRank": 8,
    "patterns": [
+    "CONDITIONING",
     "MOBILITY"
    ],
    "areas": [
@@ -15910,6 +16064,7 @@
    "insertAfter": "seal-jack",
    "difficultyRank": 14,
    "patterns": [
+    "CONDITIONING",
     "SQUAT"
    ],
    "areas": [
@@ -15961,6 +16116,7 @@
    "insertAfter": null,
    "difficultyRank": 4,
    "patterns": [
+    "CONDITIONING",
     "MOBILITY"
    ],
    "areas": [
@@ -16009,6 +16165,7 @@
    "insertAfter": "butt-kicks",
    "difficultyRank": 8,
    "patterns": [
+    "CONDITIONING",
     "MOBILITY"
    ],
    "areas": [
@@ -16059,6 +16216,7 @@
    "insertAfter": null,
    "difficultyRank": 4,
    "patterns": [
+    "CONDITIONING",
     "MOBILITY"
    ],
    "areas": [
@@ -16108,6 +16266,7 @@
    "insertAfter": "skipping",
    "difficultyRank": 10,
    "patterns": [
+    "CONDITIONING",
     "MOBILITY"
    ],
    "areas": [
@@ -16157,6 +16316,7 @@
    "insertAfter": "skipping",
    "difficultyRank": 12,
    "patterns": [
+    "CONDITIONING",
     "SQUAT"
    ],
    "areas": [
@@ -16210,6 +16370,7 @@
    "insertAfter": null,
    "difficultyRank": 10,
    "patterns": [
+    "CONDITIONING",
     "CALF_RAISE"
    ],
    "areas": [
@@ -16271,6 +16432,7 @@
    "insertAfter": "jump-rope",
    "difficultyRank": 30,
    "patterns": [
+    "CONDITIONING",
     "CALF_RAISE",
     "SQUAT"
    ],
@@ -16332,6 +16494,7 @@
    "insertAfter": null,
    "difficultyRank": 5,
    "patterns": [
+    "CONDITIONING",
     "LUNGE"
    ],
    "areas": [
@@ -16383,6 +16546,7 @@
    "insertAfter": "lateral-shuffle",
    "difficultyRank": 10,
    "patterns": [
+    "CONDITIONING",
     "LUNGE"
    ],
    "areas": [
@@ -16436,6 +16600,7 @@
    "insertAfter": null,
    "difficultyRank": 15,
    "patterns": [
+    "CONDITIONING",
     "LUNGE"
    ],
    "areas": [
@@ -16487,6 +16652,7 @@
    "insertAfter": "shuttle-sprint",
    "difficultyRank": 18,
    "patterns": [
+    "CONDITIONING",
     "LUNGE"
    ],
    "areas": [
@@ -16537,6 +16703,7 @@
    "insertAfter": null,
    "difficultyRank": 8,
    "patterns": [
+    "CONDITIONING",
     "LUNGE"
    ],
    "areas": [
@@ -16585,6 +16752,7 @@
    "insertAfter": "four-square-hops",
    "difficultyRank": 12,
    "patterns": [
+    "CONDITIONING",
     "LUNGE"
    ],
    "areas": [
@@ -16633,6 +16801,7 @@
    "insertAfter": null,
    "difficultyRank": 5,
    "patterns": [
+    "CONDITIONING",
     "CORE_ANTI_EXTENSION"
    ],
    "areas": [
@@ -16686,6 +16855,7 @@
    "insertAfter": "bear-plank",
    "difficultyRank": 10,
    "patterns": [
+    "CONDITIONING",
     "CORE_ANTI_EXTENSION"
    ],
    "areas": [
@@ -16740,6 +16910,7 @@
    "insertAfter": null,
    "difficultyRank": 10,
    "patterns": [
+    "CONDITIONING",
     "HINGE",
     "PUSH_HORIZONTAL"
    ],
@@ -16792,6 +16963,7 @@
    "insertAfter": null,
    "difficultyRank": 8,
    "patterns": [
+    "CONDITIONING",
     "CORE_ANTI_EXTENSION"
    ],
    "areas": [
@@ -16843,6 +17015,7 @@
    "insertAfter": null,
    "difficultyRank": 12,
    "patterns": [
+    "CONDITIONING",
     "SQUAT"
    ],
    "areas": [
@@ -16894,9 +17067,13 @@
    "insertAfter": null,
    "difficultyRank": 15,
    "patterns": [
+    "CONDITIONING",
     "MOBILITY"
    ],
-   "areas": [],
+   "areas": [
+    "UPPER_BODY",
+    "CORE"
+   ],
    "kind": "REPS",
    "unilateral": false,
    "position": "floor",
@@ -16923,7 +17100,10 @@
     "Stop the set on sharp or joint pain; do not push through it.",
     "Neck safety: always over the shoulder, on a soft surface."
    ],
-   "primaryMuscles": [],
+   "primaryMuscles": [
+    "ABS",
+    "UPPER_BACK"
+   ],
    "secondaryMuscles": [],
    "sourceRefs": [
     "ATP p. 6-9",
@@ -16952,6 +17132,7 @@
    "insertAfter": null,
    "difficultyRank": 8,
    "patterns": [
+    "CONDITIONING",
     "CORE_ANTI_EXTENSION"
    ],
    "areas": [
@@ -17014,6 +17195,7 @@
    "insertAfter": "rolling-sit-up",
    "difficultyRank": 12,
    "patterns": [
+    "CONDITIONING",
     "SQUAT",
     "CORE_ANTI_EXTENSION"
    ],
@@ -17080,6 +17262,7 @@
    "insertAfter": "rolling-squat",
    "difficultyRank": 18,
    "patterns": [
+    "CONDITIONING",
     "CORE_ANTI_EXTENSION",
     "PUSH_VERTICAL"
    ],
@@ -19025,7 +19208,7 @@
     "Gentle effort only; stop on dizziness, tingling or pain."
    ],
    "primaryMuscles": [
-    "UPPER_BACK"
+    "NECK"
    ],
    "secondaryMuscles": [],
    "sourceRefs": [
@@ -19077,7 +19260,7 @@
     "Gentle effort only; stop on dizziness, tingling or pain."
    ],
    "primaryMuscles": [
-    "UPPER_BACK"
+    "NECK"
    ],
    "secondaryMuscles": [],
    "sourceRefs": [
@@ -19128,7 +19311,7 @@
     "Gentle effort only; stop on dizziness, tingling or pain."
    ],
    "primaryMuscles": [
-    "UPPER_BACK"
+    "NECK"
    ],
    "secondaryMuscles": [
     "ABS"
@@ -19179,7 +19362,7 @@
     "Gentle effort only; stop on dizziness, tingling or pain."
    ],
    "primaryMuscles": [
-    "UPPER_BACK"
+    "NECK"
    ],
    "secondaryMuscles": [],
    "defaultSeconds": 10,
@@ -19230,7 +19413,7 @@
     "Gentle effort only; stop on dizziness, tingling or pain."
    ],
    "primaryMuscles": [
-    "UPPER_BACK"
+    "NECK"
    ],
    "secondaryMuscles": [
     "ABS"
@@ -21554,7 +21737,9 @@
    "patterns": [
     "STRETCH"
    ],
-   "areas": [],
+   "areas": [
+    "CORE"
+   ],
    "kind": "REPS",
    "unilateral": false,
    "position": "seated",
@@ -23082,6 +23267,10 @@
    "sourceIds": [
     "overcoming-gravity-2-low",
     "building-the-gymnastic-body-sommer"
+   ],
+   "alsoRequires": [
+    "pullup-chest-to-bar",
+    "ring-dip"
    ]
   },
   {
@@ -23151,6 +23340,10 @@
    "sourceIds": [
     "overcoming-gravity-2-low",
     "building-the-gymnastic-body-sommer"
+   ],
+   "alsoRequires": [
+    "pullup-chest-to-bar",
+    "ring-dip"
    ]
   }
  ],
