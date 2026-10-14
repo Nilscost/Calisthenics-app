@@ -1,4 +1,4 @@
-// T05 — immutable domain contracts (docs/02-coding-specification.md §2–§3).
+// T05 — immutable domain contracts (docs/archive/02-coding-specification.md §2–§3).
 // Pure Kotlin: no Android, no wall clock, no Room. All values immutable.
 package app.calisthenics.domain.model
 

@@ -23,9 +23,9 @@ I built it as the product owner. AI coding agents wrote most of the code; I set 
 
 | Stage | Where |
 |---|---|
-| Idea and product specification, approved before coding | `docs/00-owner-idea.md`, `docs/01-product-specification.md` |
+| Idea and product specification, approved before coding | `docs/archive/00-owner-idea.md`, `docs/archive/01-product-specification.md` |
 | Coding specification, workplan (27 tasks) and verification plan | `docs/02`–`04` |
-| Decisions, open risks, architecture records | `docs/07-decisions-and-blockers.md`, `docs/adr/` |
+| Decisions, open risks, architecture records | `docs/archive/07-decisions-and-blockers.md`, `docs/adr/` |
 | UX overhaul from my phone feedback: 18 findings, 8 open questions, 14 tasks | `docs/10-ux-overhaul-plan.md` |
 | Evidence: a verification log per task, phone-run results, reviews | `docs/evidence/` |
 | Honest current state | `STATUS.md` |

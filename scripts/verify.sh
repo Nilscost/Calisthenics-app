@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Reproducible local verification contract from docs/04-verification.md.
+# Reproducible local verification contract from docs/archive/04-verification.md.
 # Run with: bash scripts/verify.sh
 #
 # Fail immediately on a missing tool or failing check. Device tests are never

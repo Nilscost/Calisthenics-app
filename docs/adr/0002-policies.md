@@ -2,7 +2,7 @@
 
 Status: **ACCEPTED — approved by the owner on 2026-09-28 at gate G0.**
 Date: 2026-09-28 (drafted and accepted same day). Companion to ADR 0001 (foundation: fork CalisthenicsMemory).
-Source of every default: `docs/02-coding-specification.md` (lines quoted as §-refs).
+Source of every default: `docs/archive/02-coding-specification.md` (lines quoted as §-refs).
 Reminder from the spec: these are **testable heuristics, not scientifically
 validated exercise prescriptions** and not medical advice.
 

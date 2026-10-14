@@ -7,7 +7,7 @@ bad = []
 BIG = 1024 * 1024   # 1 MB: the generated catalog is about 400 KB and the bundled fonts about 500 KB
 SECRET = re.compile(r"AKIA[0-9A-Z]{16}|-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|ghp_[A-Za-z0-9]{30,}|xox[baprs]-[A-Za-z0-9-]{10,}")
 PATHS = re.compile(r"/Users/[a-z0-9_.-]+/")
-SKIP_PATH_CHECK = ("docs/", "STATUS.md", "tasks.json", "PACKAGE-MANIFEST.json", "tools/preflight.py")  # historical notes
+SKIP_PATH_CHECK = ("docs/", "STATUS.md", "tools/preflight.py")  # historical notes
 for f in files:
     if not os.path.isfile(f): continue
     if re.search(r"\.(jks|keystore|apk|aab|p12|pem|db)$", f): bad.append(f"forbidden file type: {f}")

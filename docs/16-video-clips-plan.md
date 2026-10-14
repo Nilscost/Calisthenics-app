@@ -4,7 +4,7 @@ Status: **plan, not started.** Rewritten 2026-10-12 at the owner's request: try 
 
 Background:
 - research report `/Users/nils/Documents/hermes/Apps/reports/Exercise demo video options.md` (recommends Blender; AI only as an experiment);
-- today's clips: procedural Python + Pillow generator (`tools/gen_demo_clips_v2.py`); weak ones are listed in `docs/evidence/clips-v3-review.md`.
+- today's clips: procedural Python + Pillow generator (`tools/gen_demo_clips_v2.py`); weak ones are listed in `docs/evidence/archive/clips-v3-review.md`.
 
 Why both: the report argues that a rigged Blender figure fixes form, loops and licences, but nobody has seen either route on our hardest exercises. Comparing three versions of the same four exercises is cheaper than arguing about it. The worked muscles don't have to be in the clip, because the body figure (v2 task V08) shows them next to it.
 

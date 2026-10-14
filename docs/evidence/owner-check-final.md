@@ -1,6 +1,6 @@
 # Final owner checklist: one walk-through of the whole app (version 2, release R6, 0.9.0-r6)
 
-Install `Apps/builds/app-debug-R6.apk` over the existing app. This merges `owner-check-r1.md` to `owner-check-r6.md`, in the order you would meet the screens. Nothing here was tested on a phone by anyone; everything is an unreviewed draft (exercises, numbers, stretches). Weak clips are listed in `docs/evidence/clips-v3-review.md`.
+Install `Apps/builds/app-debug-R6.apk` over the existing app. This merges `owner-check-r1.md` to `owner-check-r6.md`, in the order you would meet the screens. Nothing here was tested on a phone by anyone; everything is an unreviewed draft (exercises, numbers, stretches). Weak clips are listed in `docs/evidence/archive/clips-v3-review.md`.
 
 ## 1. First start and questionnaire (R3)
 - Goal page: Body part / Skill / Routine buttons and a dropdown; header GOAL · EQUIPMENT · LEVEL; equipment page (new options: dip support, foot anchor, barbell, weighted vest); level pages show the whole progression of a family with pictures and five levels (pull page has the flexed-arm hang); "You are ready" shows stars (a start at level 3 = two stars).

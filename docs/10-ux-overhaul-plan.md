@@ -1,7 +1,7 @@
 # 10 — UX/UI overhaul plan (owner feedback 2026-10-05)
 
 Status: **APPROVED TO START (owner answers 2026-10-05 in §2). Owner OK on the §4.1 chains given in chat 2026-10-05, "OK for the moment" (provisional; draft content, may be changed).**
-Implementer: Sonnet (or any model). Read this whole file, then `docs/07-decisions-and-blockers.md`, then inspect the repo. Do not rely on chat history.
+Implementer: Sonnet (or any model). Read this whole file, then `docs/archive/07-decisions-and-blockers.md`, then inspect the repo. Do not rely on chat history.
 
 ---
 
@@ -169,7 +169,7 @@ Every family must end in either a hard skill or a `nextVariationIds` hand-off; e
   - Muscles: each `Muscle` maps to segments/regions (e.g. CHEST → front of upper torso, TRICEPS → back of upper arm). Primary = saturated orange-red, secondary = light orange. **Nothing else coloured.**
   - Equipment drawn in 3-D (bar, wall, chair, band).
   - 2 s loop, 24 fps, 480×360, H.264, < 120 KB each.
-- Review: contact sheet + vision check per batch of 8 for (a) correct movement, (b) only the listed muscles coloured, (c) readable depth. Record review notes in `docs/evidence/clips-v2-review.md`.
+- Review: contact sheet + vision check per batch of 8 for (a) correct movement, (b) only the listed muscles coloured, (c) readable depth. Record review notes in `docs/evidence/archive/clips-v2-review.md`.
 
 ---
 
@@ -186,7 +186,7 @@ Every family must end in either a hard skill or a `nextVariationIds` hand-off; e
 
 ## 7. Ordered tasks for the implementer
 
-Conventions (mandatory): see skill `calisthenics-app-build-loop` / repo `docs/02-coding-specification.md`. One task at a time, tests first, full verify command, evidence log `docs/evidence/u<NN>-verify-<date>.log`, commit as "Nils Costanzo <51085848+Nilscost@users.noreply.github.com>", APK `Apps/builds/app-debug-U<NN>.apk`. Data-model fields are appended last with defaults. No destructive DB migration.
+Conventions (mandatory): see skill `calisthenics-app-build-loop` / repo `docs/archive/02-coding-specification.md`. One task at a time, tests first, full verify command, evidence log `docs/evidence/u<NN>-verify-<date>.log`, commit as "Nils Costanzo <51085848+Nilscost@users.noreply.github.com>", APK `Apps/builds/app-debug-U<NN>.apk`. Data-model fields are appended last with defaults. No destructive DB migration.
 
 | # | Task | Needs | Files (start points) | Automated check | Owner check on phone |
 |---|---|---|---|---|---|

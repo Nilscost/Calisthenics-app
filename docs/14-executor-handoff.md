@@ -4,7 +4,7 @@ You implement version 2 of a personal calisthenics Android app (Kotlin, Jetpack 
 
 ## 1. Read first, in this order
 1. `docs/12-v2-plan.md`: the contract. Owner feedback R1–R29, decisions D1–D15, answers O1–O6, target experience §5, content §6, tasks §8. **§11 (reviewer changes) overrides §8 where they differ**, and the task order is in §4 below.
-2. `docs/11-implementer-handoff.md` "Rules": they still apply, with the updates in plan §10.
+2. `docs/archive/11-implementer-handoff.md` "Rules": they still apply, with the updates in plan §10.
 3. `maestro/README.md`: how the UI screenshots work.
 4. Inspect the code before editing. Paths in the plan are starting points.
 
@@ -96,7 +96,7 @@ One task = one commit (or a commit plus its review commit). Tests first for logi
 | 6 | **V04b** | end-screen per-round editor + History per-round edit + "Too easy" |
 | 7 | **V05 Release R1** | **STOP** (§6) |
 | 8 | **V06a** | clip pipeline v3: thumbnails, muscle data, pose-uniqueness assertion; poses unchanged |
-| 9 | **V06b** | own pose per variant (K2), pull-up (K5), full review `docs/evidence/clips-v3-review.md` |
+| 9 | **V06b** | own pose per variant (K2), pull-up (K5), full review `docs/evidence/archive/clips-v3-review.md` |
 | 10 | V07 | stretches to about 18 |
 | 11 | V08 | body map |
 | 12 | V09 | thumbnails and body map everywhere |

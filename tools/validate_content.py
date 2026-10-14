@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Validate a content pack directory against the media/catalog contract (spec §8).
 
-T03 deliverable — the command contract in docs/04-verification.md runs:
+T03 deliverable — the command contract in docs/archive/04-verification.md runs:
     python3 tools/validate_content.py content/starter
 
 A pack directory contains:

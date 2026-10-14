@@ -3,7 +3,7 @@
 Status: **PROPOSED — pending G1 (S21 owner session, T04).** No device evidence yet.
 Date: 2026-09-30 (proposed).
 Affected requirements: RUN-01, PLAT-02, AUD-01, AUD-02 (docs/01 § runtime; docs/03 T04/T15).
-Evidence to attach at G1: `docs/evidence/t04-s21-runtime.md` (timing CSV, logcat, screenshots).
+Evidence to attach at G1: `docs/evidence/archive/t04-s21-runtime.md` (timing CSV, logcat, screenshots).
 
 ## Context
 
@@ -111,7 +111,7 @@ state). See `spikes/android-session-runtime/README.md` for the full runbook.
 - Owner action required at G1: grant POST_NOTIFICATIONS on first launch,
   disable "Sleeping apps" / set the app to "Unrestricted" battery use on the
   S21 (One UI), and run the full-length synthetic session with the screen
-  locked. See `docs/evidence/t04-s21-runtime.md` for the exact steps.
+  locked. See `docs/evidence/archive/t04-s21-runtime.md` for the exact steps.
 
 ## Rejected alternatives
 
@@ -127,5 +127,5 @@ state). See `spikes/android-session-runtime/README.md` for the full runbook.
   session.
 
 ## G1 result (owner approved 2026-10-05)
-Galaxy S21, airplane mode, music (Spotify) playing, full 45:40 run: 219/219 cues fired, worst cue 17 ms late, total +3 ms; offline TTS 219/219. Evidence: `docs/evidence/g1/`.
+Galaxy S21, airplane mode, music (Spotify) playing, full 45:40 run: 219/219 cues fired, worst cue 17 ms late, total +3 ms; offline TTS 219/219. Evidence: `docs/evidence/archive/g1/`.
 Accepted limit: Spotify did not lower its volume for a MAY_DUCK focus request (granted by Android), though cues were clearly audible over the music. The product must not promise ducking. Full-focus (pausing music per cue) was rejected as worse.

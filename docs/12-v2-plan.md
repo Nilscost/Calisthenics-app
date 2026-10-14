@@ -137,7 +137,7 @@ Sources: owner phone test on Galaxy S21 (APK `app-debug-KB1.apk`, 0.3.1-kb) and 
   - the movement reads within one loop;
   - the anatomy is plausible: contact points right, feet off the floor where they should be, the bar or box in the right place;
   - what makes this variant different is visible.
-- Review: contact sheets plus actually watching frames in sequence. The reviewer lists rejected clips in `docs/evidence/clips-v3-review.md`.
+- Review: contact sheets plus actually watching frames in sequence. The reviewer lists rejected clips in `docs/evidence/archive/clips-v3-review.md`.
 - **Stretch clips** are rebuilt in 3D like the strength clips.
 - **Full-screen workout video:** the clip fills the screen behind the controls. Controls sit on a dark band (scrim) at the top and bottom; text contrast stays ≥ 4.5:1 over any frame; portrait only.
 
@@ -269,7 +269,7 @@ Each release ends with:
 **Stop and wait for the owner** after each release, and when an open decision (§4) blocks the next task. Tasks that don't depend on it may continue.
 
 ## 10. Rules (carried over + new)
-- Everything in `docs/11-implementer-handoff.md` "Rules" still applies, with these updates:
+- Everything in `docs/archive/11-implementer-handoff.md` "Rules" still applies, with these updates:
   - commit identity `Nils Costanzo <51085848+Nilscost@users.noreply.github.com>`;
   - the repo is **public** on GitHub, so never commit personal data, keys or the owner's Gmail.
 - Toolchain (sandbox): `source /root/toolchain/env.sh` before any build. `bash /root/toolchain/check.sh` shows what's present. The build tree is `/workspace/review` (a clone of the Mac repo; reset it to Mac HEAD before starting). Verify command:

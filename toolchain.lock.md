@@ -1,4 +1,4 @@
-# Toolchain lock (T03 — docs/02-coding-specification.md §6)
+# Toolchain lock (T03 — docs/archive/02-coding-specification.md §6)
 
 Pinned toolchain for the Calisthenics fork. Bump deliberately; record the
 reason in the PR/task notes.
@@ -27,8 +27,8 @@ reason in the PR/task notes.
 - No NDK. No native libraries in the **app** (Room uses the Android SQLite
   framework on-device).
 - **Build-host-only** native compatibility for this ARM64 Linux sandbox
-  (no app source or runtime impact; see `docs/evidence/t01-build.md` and
-  `docs/evidence/t03-scaffold.md`):
+  (no app source or runtime impact; see `docs/evidence/archive/t01-build.md` and
+  `docs/evidence/archive/t03-scaffold.md`):
   - AGP's bundled `aapt2` is x86-64 only. It runs under `qemu-user-static`
     once an x86-64 glibc is installed: `dpkg --add-architecture amd64 &&
     apt-get install -y libc6:amd64 libstdc++6:amd64 libgcc-s1:amd64`, then

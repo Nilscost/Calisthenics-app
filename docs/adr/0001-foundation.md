@@ -1,7 +1,7 @@
 # ADR 0001 — Foundation: fork/adapt CalisthenicsMemory
 
 Status: **ACCEPTED — foundation approved by the owner on 2026-09-28.**
-Date: 2026-09-25 (proposed), 2026-09-28 (accepted). Evidence: `docs/research/reuse-audit.md`, `docs/evidence/t01-build.md`.
+Date: 2026-09-25 (proposed), 2026-09-28 (accepted). Evidence: `docs/research/reuse-audit.md`, `docs/evidence/archive/t01-build.md`.
 
 Owner statement (2026-09-28, verbatim): *"Use the faster route — I would want to keep my app open source if it is shared widely."*
 Consequence recorded: the fork stays **GPL-3.0** (upstream notices preserved); if the app is ever shared publicly it is released as open source. Final license selection remains a T24 action (see `LICENSE-NOT-SELECTED.md`), but the direction is settled: open source.
@@ -67,10 +67,10 @@ survey's four reuse candidates in real checkouts:
 - T04 (runtime spike + S21 G1) is still the first hard gate: nothing in the
   fork is evidence of spec compliance until A02/A03 pass on the device.
 - The isolated, unmodified upstream candidate built and passed its unit tests
-  on 2026-09-28 (see `docs/evidence/t01-build.md`). The project scaffold's T03
+  on 2026-09-28 (see `docs/evidence/archive/t01-build.md`). The project scaffold's T03
   host-runnable gate then **completed on 2026-09-29** (`scripts/verify.sh`
   exit 0 — tests, lint, `assembleDebug`, content validation; see
-  `docs/evidence/t03-scaffold.md`). It needed two build-host-only fixes in this
+  `docs/evidence/archive/t03-scaffold.md`). It needed two build-host-only fixes in this
   ARM64 sandbox: an x86-64 glibc under `qemu-user-static` so AGP's x86-64
   `aapt2` runs, and a build-time `sqlite-jdbc 3.45.3.0` force so Room's KSP
   schema verifier loads (neither enters the APK). Device tests and G1 still

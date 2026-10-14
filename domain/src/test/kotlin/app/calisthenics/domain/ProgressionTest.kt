@@ -6,7 +6,7 @@ import org.junit.Test
 
 /**
  * Progression fixtures — approved policy (ADR 0002 §C3, spec §5),
- * scenario IDs G3-P* (docs/04-verification.md "Required numeric progression
+ * scenario IDs G3-P* (docs/archive/04-verification.md "Required numeric progression
  * fixtures"). Enrolled at tier 2 on day 0; exposures are qualifying per C2.
  */
 class ProgressionTest {

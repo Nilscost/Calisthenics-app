@@ -55,7 +55,7 @@ Defects: empty clip area during get-ready of a stretch (3). Noted; fixing it nee
 Rule control (App levels · Rep range · Custom), explanatory sentence, ranges "5–8 reps" on the cards. Light 5, dark 5, font 1.3 4.
 
 ## V21b — Recommended Routine content (clips and Progress)
-Content task; its screens are the Progress Push tab with the dip chain (wrench / lock tiles, thumbnails readable at tile size: 4/4/4) and the clip frames in `docs/evidence/clips-v3-review.md`. Defects as in V13 (ordering, raw id).
+Content task; its screens are the Progress Push tab with the dip chain (wrench / lock tiles, thumbnails readable at tile size: 4/4/4) and the clip frames in `docs/evidence/archive/clips-v3-review.md`. Defects as in V13 (ordering, raw id).
 
 ## V22 — ready-made routines (h_ready)
 | Screen | Light | Dark | Font 1.3 | Notes |

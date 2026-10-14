@@ -1,6 +1,6 @@
 # Release R6 screenshot review (0.9.0-r6)
 
-Evidence: ui-screens run https://github.com/Nilscost/Calisthenics-app/actions/runs/38080776533 at commit `9b28604`; `results.txt` on the `ui-shots` branch, folder `9b28604/`: **30 PASS, 0 FAIL** (10 flows a to j, each in light, dark and font 1.3); verify green; full local verify exit 0 (`docs/evidence/r6-verify-2026-10-10.log`). Every flow's screens were opened as three-variant contact sheets (81 steps) and compared with doc 17; the per-task reviews (`V12-V27-review.md`, `L01-L10-review.md`, `L11-review.md`, `L11b-review.md`, `L12-review.md`, `L13-review.md`, `R5-review.md`) hold the detail. Type: Barlow Condensed for titles, timers and numbers, IBM Plex Sans for text, in all variants.
+Evidence: ui-screens run https://github.com/Nilscost/Calisthenics-app/actions/runs/38080776533 at commit `9b28604`; `results.txt` on the `ui-shots` branch, folder `9b28604/`: **30 PASS, 0 FAIL** (10 flows a to j, each in light, dark and font 1.3); verify green; full local verify exit 0 (`docs/evidence/archive/r6-verify-2026-10-10.log`). Every flow's screens were opened as three-variant contact sheets (81 steps) and compared with doc 17; the per-task reviews (`V12-V27-review.md`, `L01-L10-review.md`, `L11-review.md`, `L11b-review.md`, `L12-review.md`, `L13-review.md`, `R5-review.md`) hold the detail. Type: Barlow Condensed for titles, timers and numbers, IBM Plex Sans for text, in all variants.
 
 ## Screens (scores light / dark / font 1.3)
 | Flow and screens | Scores | Defects |

@@ -1,5 +1,5 @@
 // T10 + T11 — deterministic duration-budget planner with stretch allocation.
-// Spec: docs/02-coding-specification.md §4 (algorithm order 1–10), ADR 0002 §B.
+// Spec: docs/archive/02-coding-specification.md §4 (algorithm order 1–10), ADR 0002 §B.
 // Pure and deterministic: same input -> same plan and explanations. No clock, no randomness.
 package app.calisthenics.domain.planner
 

@@ -1,7 +1,7 @@
 # Screenshot review L01–L10 (one section per task)
 
 Scores 1–5 (below 3 must be fixed). Variants: light / dark / font 1.3. Evidence: ui-screens run https://github.com/Nilscost/Calisthenics-app/actions/runs/38042340665 at commit `78d0fca` (the pushed HEAD that contains L01–L10): `results.txt` on the `ui-shots` branch, folder `78d0fca/`: **24 PASS, 0 FAIL**. (Runs `98570d7` failed in `e_seeded` because the next suggestion card pushed the tab row down, and `h_ready` once at font 1.3; both flows were fixed and rerun.) Compared with doc 17.
-These are content tasks: their screens are the Progress tabs (new nodes and chains), the exercise detail and the questionnaire. Clip frames and their verdicts: `docs/evidence/clips-v3-review.md`.
+These are content tasks: their screens are the Progress tabs (new nodes and chains), the exercise detail and the questionnaire. Clip frames and their verdicts: `docs/evidence/archive/clips-v3-review.md`.
 
 ## L01 — tier profiles: no visible change
 Numbers behind the Pallof, reverse hyperextension, dip support hold (the cards read "8–12 reps", "10–30 s" in the Preview, see `h_ready`). Light 5, dark 5, font 1.3 4.

@@ -3,7 +3,7 @@
 Date: 2026-09-25 (UTC). Environment: Docker sandbox, ARM64, OpenJDK 21.0.12.1
 (Debian), Python 3.11.15. Network state at audit time: sandbox DNS
 (`192.168.65.7`) intermittently down; egress proxy (`host.docker.internal:9090`)
-403s outbound hosts that are not allowlisted. See `docs/evidence/environment.md`.
+403s outbound hosts that are not allowlisted. See `docs/evidence/archive/environment.md`.
 
 All four checkouts live under `/workspace/app/research-checkouts/` and were
 verified clean (`git status --short` empty) at inspection time.
@@ -119,7 +119,7 @@ BUILD FAILED (749 pre-existing upstream style errors; not build-breaking)
 ```
 
 Two environment-only fixes were required in this ARM64 Docker sandbox — no
-candidate source was changed (details: `docs/evidence/t01-build.md`):
+candidate source was changed (details: `docs/evidence/archive/t01-build.md`):
 (1) AGP's x86-64 `aapt2` binary runs under `qemu-user-static` once an x86-64
 glibc loader is installed (`dpkg --add-architecture amd64 && apt-get install
 libc6:amd64`); (2) `sqlite-jdbc 3.41.2.2` (transitive via Room) bundles no

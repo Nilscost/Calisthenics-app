@@ -9,7 +9,7 @@ import org.junit.runner.RunWith
 
 /**
  * T03 Compose launch smoke test (instrumented; runs on an authorized device
- * per docs/04-verification.md). Only proves the app process starts and the
+ * per docs/archive/04-verification.md). Only proves the app process starts and the
  * launcher activity composes — NOT evidence of product functionality.
  */
 @RunWith(AndroidJUnit4::class)
