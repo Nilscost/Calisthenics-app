@@ -920,8 +920,7 @@ for pol in policies:
 # ---------------- U09: muscles worked (F9). Drives the clip colouring, the preview chips and the tree sheet. ----------------
 # =============================================================================================================
 # R7-T12 (D9): Jefferson curl and German hang. Usable by the app (not opt-in), conservative DRAFT numbers, a light-red "pay attention to" box
-# (cautionStrong). No source is cited: the numbers are product heuristics. Clips: until the clip track delivers, the app shows the closest
-# existing clip (ui/screens/ClipAlias.kt) and gen_demo_clips_v3.py declares the shared pose.
+# (cautionStrong). No source is cited: the numbers are product heuristics. Both have their own Blender clips since R7.1.
 # =============================================================================================================
 strength("jefferson-curl", "Jefferson Curl", "jefferson", ["HINGE"], ["LOWER_BODY"], "REPS", "standing",
          ["Stand on the floor with the feet hip-width apart and no weight in the hands.", "Tuck the chin and roll down slowly, one segment of the spine at a time, from the neck to the lower back, letting the arms hang.",

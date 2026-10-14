@@ -1,4 +1,4 @@
-// V09 (R4, R9, R25): the still thumbnail of an exercise (assets/thumbs/<id>.webp, made by tools/gen_demo_clips_v3.py).
+// V09 (R4, R9, R25): the still thumbnail of an exercise (assets/thumbs/<id>.webp, made by tools/blender/install_clips.py from the clip's start frame).
 package io.github.gonbei774.calisthenicsmemory.ui.components
 
 import android.graphics.BitmapFactory

@@ -47,7 +47,7 @@ Every number in the exercise catalog is marked DRAFT until I have reviewed it (`
   - `data`: storage;
   - `app`: the user interface.
 - **Automated tests** covering domain logic, catalog rules, and Robolectric UI tests at phone size, at text size 1.3 and in dark mode. Lint, an offline build check and a hygiene check run in CI (`.github/workflows/android.yml`).
-- The exercise catalog and demo clips are generated from scripts (`tools/gen_starter_catalog.py`, `tools/gen_demo_clips_v3.py`), so content changes are reviewable as code.
+- The exercise catalog and demo clips are generated from scripts, so content changes are reviewable as code: the catalog by `tools/gen_starter_catalog.py`, the clips as poses in `tools/blender/` rendered in Blender. `tools/gen_demo_clips_v3.py` (the earlier stick-figure generator) still writes the muscle data (`clip_meta.json`) and checks that every exercise has a pose.
 
 ## Build
 
