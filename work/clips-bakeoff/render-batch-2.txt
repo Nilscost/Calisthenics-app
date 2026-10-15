@@ -9,3 +9,4 @@ dip-korean
 planche-tuck-pushup
 planche-straddle
 planche-full
+rollout-one-arm

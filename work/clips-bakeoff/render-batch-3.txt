@@ -11,3 +11,5 @@ pushup-pop-up-wide-close
 pushup-clap
 pushup-chest-strike
 pushup-wall-push-away
+plank-arm-leg-reach
+body-saw

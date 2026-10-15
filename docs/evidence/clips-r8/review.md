@@ -23,3 +23,9 @@ Evidence: pushup_new-describe.txt and the representative PNGs beside this file. 
 All 15 explicit IDs passed --describe without reach or floor warnings. Coordinator reviewed full planche, straight-arm frog, Russian dip and elevated bench dip after repair passes. Straight-arm holds keep elbows near extension; frog knees contact upper arms; Russian dip reaches forearm support and returns to straight-arm support; elevated heels remain fixed while the pelvis follows an arc. Equipment remains diagrammatic.
 
 Evidence: dip_planche-describe.txt and representative PNGs beside this file. Blender movies still require review after rendering.
+
+## core_floor · 21 ids accepted for draft rendering
+
+All 21 explicit IDs passed --describe after coordinator-requested repairs. Coordinator inspected standing, negative and kneeling rollouts, seated compression and bird-dog; earlier reviewed long-lever plank, contralateral plank, straddle L-sit and swimmer. Rollout supports stay planted while hands travel; standing version unfolds a pike, negative includes a knee-supported reset. Compression keeps the pelvis seated and lifts the straight legs; bird-dog working limbs extend.
+
+The ab wheel uses an animated segmented rim of joint-attached rods because the existing plate prop cannot move. This diagrammatic approximation preserves correct body movement without changing the renderer. Evidence: core_floor-describe.txt and representative PNGs. Actual Blender movies remain unverified.
