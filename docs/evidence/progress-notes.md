@@ -738,3 +738,7 @@ Hips_bridge accepted after coordinator repaired dropback arm trajectories and re
 ### All priority batches ready · 2026-10-15
 
 Flag_pole16 and rings16 accepted after coordinator geometry repairs. Total223/379: batch1 121/121, batch2 66/66, batch3 36/192. Current pair plyo_a13 / plyo_b17 uses fresh Luna medium agents and safechecker. No new app integration. Hybrid clutch-grip primary photo inspected in built-in browser; exact CC2 photos remain unavailable. Ring MU repaired to fixed handleheight and actual upward body travel.
+
+### Jump groups accepted · 2026-10-15
+
+Plyo_a13 and plyo_b17 accepted after coordinator hand/foot contact, alternating landing, solid-box clearance and loop-reset repairs. Total253/379 ready:121+66+66. Accepted inputs remain frozen for the running Blender job. Next pair conditioning20 and crawl_agility15; app integration remains held. Safe checker now rejects backwards key times and nonidentical duplicate times.

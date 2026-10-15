@@ -110,3 +110,10 @@ Independent hip/pelvis axial twist is limited by the rig; hip-twist hop shows le
 
 
 Evidence: plyo_a-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## plyo_b · 17 ids accepted for draft rendering
+
+All17 pass reach/floor checks and chronological-key validation. Coordinator reviewed box jump, rebound box jump, skater bound and depth jump sheets, plus earlier broad/consecutive, single-box push-off and single-leg-bound sheets. Box approach moved back and airborne clearance added; no knee/body box penetration above25mm in full-frame approximate sphere/box scan. Rebound floor landing moved beyond solid box, then returns airborne. Skater landings alternate legs; hopping stick lasts over2s. Forward jumps return using alternating steps, including around-box resets, rather than sliding support feet. Depth jump uses the reconciled30cm box. Box jump/rebound use a30cm draft low-box visual rather than generic40–50cm prop wording; push-offs use20cm step. Markers and movement distances are compact visual schematics. Added safe-checker rejection of decreasing or differing duplicate key times after those choreography errors escaped reach checks; injected backwards timing rejected in a read-only guard check. Full Blender movies still require visual review.
+
+
+Evidence: plyo_b-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.

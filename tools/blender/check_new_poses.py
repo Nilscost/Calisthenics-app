@@ -45,8 +45,16 @@ def main():
     built = []
     failed = False
     for exercise_id in ids:
+        spec = poses.EXERCISES[exercise_id]()
+        keys = spec['keys']
+        timing = []
+        if not keys or keys[0][0] != 0 or keys[-1][0] > 1:
+            timing.append('Keys must start at 0 and end at or before 1')
+        for (t0, p0), (t1, p1) in zip(keys, keys[1:]):
+            if t1 < t0 or (t1 == t0 and p0 != p1):
+                timing.append(f'Invalid key transition at {t0:g} -> {t1:g}')
         data, report = poses.build(exercise_id)
-        problems = report + poses.checks(data)
+        problems = timing + report + poses.checks(data)
         print(f'{exercise_id}: {len(data["frames"])} frames ' + ('PROBLEM' if problems else 'OK'))
         for problem in problems:
             print('  ' + problem)
