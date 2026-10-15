@@ -83,3 +83,12 @@ All11 explicit IDs pass reach/floor checks. Coordinator inspected standing and c
 
 
 Evidence: hips_bridge-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## flag_pole · 16 ids accepted for draft rendering
+
+All16 IDs pass reach/floor checks. Coordinator inspected full/hanging/split clutch, support press, kick, split press and vertical press. Repairs distinguish the armpit clamp and waist-braced elbow from the separated straight-arm press grip; rolled body geometry distinguishes upper and lower legs. Press elbows stay near extension, split knees90° with open hips, straight legs remain extended. Support Press uses overhead bar plus a side wall. Kick Press now starts/lands on the floor with a brief knee/arm absorption, instead of kicking from a permanent hang.
+
+References: written contract/owner CC2 text plus public instructor references in flag-reference-review.md. Coordinator inspected Hybrid Calisthenics' clutch-grip photograph in the browser, confirming the broad wrap/bracing method. Exact named-stage CC2 photos were unavailable; the tight wrap and forearm contacts remain schematic interpretations, not an exact photographic reconstruction. Actual Blender movies still need inspection for shoulder and pole contact before app integration.
+
+
+Evidence: flag_pole-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
