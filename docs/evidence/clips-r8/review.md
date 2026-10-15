@@ -136,3 +136,25 @@ Shoulder-pop source spot-check: the authored Explosive Calisthenics chapter6 ste
 
 
 Evidence: crawl_agility-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## prehab_shoulder · 17 ids accepted for draft rendering
+
+Coordinator reviewed representative three-view contact sheets and all-frame reach/floor results after several rounds of Luna draft repair. Prone I/T/Y remain straight-arm rays; L retains ~90° elbows and W ~45°. Elbows rise 9cm and wrists 10.5cm; straight prone legs stay >175°. Floor angels now use an exact floor elbow/forearm sweep from goalpost W toward overhead; wall slides likewise start forearms up and keep elbow/wrist centers in the wall plane. Kneeling scapular support has planted knees and an aligned thigh/trunk, distinct from the toe-supported full plank. All four scapular drills keep fixed supports and elbows >169°. Support shrug is above the bars with suspended feet, rather than a bent-arm hang.
+
+Band ER keeps the upper arm at the side, while ER90 abducts it to shoulder height; both retain fixed working elbows and ~90° flexion on the forearm arc. Side ER uses a real supporting elbow/wrist on the floor. Cuban press rotates forearms down/forward/up before pressing overhead and reverses the sequence. Hand directions follow the forearms on rotation and press, avoiding bent-back wrists; the side-anchored band remains distinct from the front anchor of ER90. Face-pull hands finish beside the ears, with high elbows. Numerical semantic assertions for fixed supports, straight arms, floor angels, prone lift and fixed ER elbows passed.
+
+LIMITATION: this rig has no scapula joint. Scapular push-ups and support shrugs show the correct support/straight-arm setup with a tiny thorax approximation; they do NOT demonstrate the full isolated shoulder-blade motion. These are draft rendering candidates, not approved instructional movies. A better rig or alternate demonstration is needed before accepting those isolated actions for app teaching. Fine thumb/finger poses are also schematic. No app assets installed.
+
+
+Evidence: prehab_shoulder-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## prehab_wrist_hip · 12 ids accepted for draft rendering
+
+Coordinator repaired and reviewed the wrist/hip geometry and three-view sheets. Palm pulses now pivot the rigid hand around fixed fingertips using a dense arc. Seated mobility has actual floor sitting with raised knees supporting the forearms, fixed wrists/elbows, small clockwise/counterclockwise hand circles, flexion and side bends; a rejected full 360° wrist bend was removed. Fist rotations oscillate through a bounded arc with nonzero palm normals. Back-of-hand push-ups retain fixed wrists, palms up and fingers toward the knees, with distinct knee-supported and straight-leg variants; the knee variant has floor knee centers at .05m. Eccentric curl keeps the working forearm fixed, lowers over ~5s of a 7s cycle and uses the other hand beneath the weight during the return. The renderer's weight center follows the hand orientation.
+
+Lateral and medial leg raises use distinct top and bottom working legs with straight knees and 15–20cm foot lift. Clamshell has stacked, fixed feet, ~90° knees, thighs initially in line with the lower trunk, fixed pelvis and a 17cm upward top-knee opening; the original downward motion was rejected. The tuck now bends the top hip/knee toward 90° while knee and ankle stay at the same height. Fire hydrant and donkey kick keep the torso, hands and opposite support leg fixed with ~90° working knees; donkey ankle rises above the hip on the heel drive. Numerical semantic assertions for fixed supports, hand pivot, curl forearm, knee contacts, clamshell rise and level tuck passed.
+
+LIMITATION: individual fingers and independent forearm-bone twist are absent. The finger-lift phase cannot be demonstrated; palm pulses and fist orientations are schematic rigid-hand cues. These require movie review and a fuller hand rig/alternate demonstration before accepting fine-hand instructional coverage. No app assets installed.
+
+
+Evidence: prehab_wrist_hip-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
