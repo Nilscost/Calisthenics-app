@@ -22,3 +22,8 @@ pullup-kipping
 ice-cream-maker
 hanging-windshield-wiper-half
 hanging-windshield-wiper
+grip-uneven-hang
+grip-towel-hang
+grip-twin-towel-hang
+grip-uneven-towel-hang
+grip-one-arm-towel-hang

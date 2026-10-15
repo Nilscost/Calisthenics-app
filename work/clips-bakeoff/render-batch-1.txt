@@ -95,3 +95,8 @@ dragon-flag-adv-tuck
 dragon-flag-one-leg
 dragon-flag-negative
 dragon-flag
+row-archer-arm-in
+row-one-arm-straddle
+row-one-arm
+grip-horizontal-hang
+grip-one-arm-hang

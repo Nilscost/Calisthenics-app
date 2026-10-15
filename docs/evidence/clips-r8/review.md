@@ -53,3 +53,10 @@ Evidence: levers-describe.txt and four contact sheets. Accepted for draft render
 All15 explicit IDs passed build/describe/floor checks without warnings. Coordinator inspected toes-to-bar, heel-hook, both windshield wipers and dragon flags. Repairs before acceptance keep wiper legs moving together with knees173–175°, fixed hanging wrists, dragon-flag upper-back anchor at bench height and knees174–175°. Toes-to-bar reaches the bar; supported knee raise uses low dip supports. Negative dragon flag uses tucked reset.
 
 Evidence: hanging_core-describe.txt and representative sheets. Accepted for draft rendering; Blender movies remain unverified.
+
+## grip_row_arms · 13 ids accepted for draft rendering
+
+All13 explicit IDs pass reach/floor checks. Coordinator inspected biceps curl, triceps extension, one-arm row, archer and the towel hangs. Repairs extend archer assisting elbow to173°, distinguish one shared towel loop from two separated doubled loops, and align the uneven towel through both hand grips. Rows and arm exercises keep heel/bar contacts; curl reaches forehead rather than chest. Towels remain schematic rods and hand animation communicates eagle-claw grip.
+
+
+Evidence: grip_row_arms-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.

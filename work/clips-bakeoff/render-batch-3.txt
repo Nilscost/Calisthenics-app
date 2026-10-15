@@ -16,3 +16,6 @@ body-saw
 pullup-commando
 pullup-kip-swing
 heel-hook
+arms-biceps-curl
+arms-triceps-extension
+grip-eagle-claw
