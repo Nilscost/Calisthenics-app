@@ -29,3 +29,9 @@ Evidence: dip_planche-describe.txt and representative PNGs beside this file. Ble
 All 21 explicit IDs passed --describe after coordinator-requested repairs. Coordinator inspected standing, negative and kneeling rollouts, seated compression and bird-dog; earlier reviewed long-lever plank, contralateral plank, straddle L-sit and swimmer. Rollout supports stay planted while hands travel; standing version unfolds a pike, negative includes a knee-supported reset. Compression keeps the pelvis seated and lifts the straight legs; bird-dog working limbs extend.
 
 The ab wheel uses an animated segmented rim of joint-attached rods because the existing plate prop cannot move. This diagrammatic approximation preserves correct body movement without changing the renderer. Evidence: core_floor-describe.txt and representative PNGs. Actual Blender movies remain unverified.
+
+## handstand_balance · 21 ids accepted for draft rendering
+
+All 21 explicit IDs passed --describe after repeated coordinator review. Inspected straight-leg press variants, tripod tuck, forearm headstand, elbow lever, wall walk and deep handstand push-ups. Repairs preserve straight press arms/legs, place tucked knees within 3.3 cm of the supporting elbows, put actual forearms on the floor, and put lever elbows into the abdomen with flat hands. Deep push-ups use diagrammatic elevated handles: top elbows165°, bottom63° with shoulders at hand height and head clear of floor. Full/straddle elbow-lever knees177°.
+
+Evidence: handstand_balance-describe.txt and representative sheets. Accepted for draft rendering only; Blender movies and balance depiction still require review.

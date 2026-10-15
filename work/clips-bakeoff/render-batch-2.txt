@@ -10,3 +10,10 @@ planche-tuck-pushup
 planche-straddle
 planche-full
 rollout-one-arm
+handstand-press-wall-negative
+handstand-press-elevated
+handstand-press-straddle
+handstand-press-bent-arm
+elbow-lever-umbrella
+elbow-lever-straddle
+elbow-lever
