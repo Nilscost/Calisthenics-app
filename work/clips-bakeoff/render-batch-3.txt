@@ -34,3 +34,16 @@ balance-single-leg-cushion
 short-foot
 bridge-reverse-plank
 bridge-wall-push-off
+landing-stick
+pogo-hop
+ankle-hop-side-to-side
+ankle-hop-hip-twist
+jump-squat
+jump-vertical
+jump-butt-kick
+jump-tuck-slap
+jump-tuck
+jump-tuck-catch
+jump-split
+jump-split-cycle
+jump-block

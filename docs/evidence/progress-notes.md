@@ -734,3 +734,7 @@ Owner requests all379 pose sources ready before deciding which exercises to inte
 An agent accidentally invoked the unsupported poses.py --help and regenerated caches during the live Blender run. All180 previously accepted inputs matched their deterministic approved sources exactly. Blender process remained running. Ninety-three complete outputs postdated source acceptance but had newer regenerated JSON; the coordinator restored only their cache mtimes to source acceptance time, preserving rendered files. Audit: clips-r8/cache-recovery-2026-10-15.json. Added check_new_poses.py with read-only default, explicit group/ID validation, frozen accepted writes and unchanged-payload mtime preservation; missing/unknown/frozen guard checks pass.
 
 Hips_bridge accepted after coordinator repaired dropback arm trajectories and reviewed wall/head and bench/head clearance. All121 priority IDs are now in the ready manifests. Total191/379 ready; next pair flag_pole and rings uses fresh Luna agents. Integration remains on hold.
+
+### All priority batches ready · 2026-10-15
+
+Flag_pole16 and rings16 accepted after coordinator geometry repairs. Total223/379: batch1 121/121, batch2 66/66, batch3 36/192. Current pair plyo_a13 / plyo_b17 uses fresh Luna medium agents and safechecker. No new app integration. Hybrid clutch-grip primary photo inspected in built-in browser; exact CC2 photos remain unavailable. Ring MU repaired to fixed handleheight and actual upward body travel.

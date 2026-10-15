@@ -101,3 +101,12 @@ Equipment follows the contract's schematic rod-based suspension representation; 
 
 
 Evidence: rings-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## plyo_a · 13 ids accepted for draft rendering
+
+All13 explicit IDs pass reach/floor checks. Coordinator inspected squat jump, tuck/hug/shin-catch, butt kick, approach/block jump and hip-twist hop. Rejected initial generic airborne stance: tuck legs now compress toward chest, butt-kick heels actually move behind/above knees, lateral hops travelY, both feet turn together rather than splaying. Squat feet stay planted and hands reach the contract-permitted comfortable depth rather than the floor. Block jump uses alternating approach steps and coordinator-added walking return instead of a sliding reset. Coordinator ties peak hand contacts to solved knees/shins and removes frozen apex keys. Peak contact sheets were inspected separately so a brief contact was not missed by ordinary sampled moments.
+
+Independent hip/pelvis axial twist is limited by the rig; hip-twist hop shows leg/foot rotation under a forward-facing trunk. Flight is schematic slow demonstration, not a measured ballistic simulation.
+
+
+Evidence: plyo_a-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
