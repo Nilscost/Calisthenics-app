@@ -41,16 +41,16 @@ If something truly can't be shown, pose the body correctly without it and say so
 Use `python3 tools/blender/check_new_poses.py --group <group> --describe` for read-only validation. Add `--write` only for an unaccepted new group once all checks pass. This wrapper rejects missing/unknown IDs, refuses writes to IDs already in the render manifests, validates the whole group before writing, and preserves identical JSON timestamps. Do not invoke the historical `poses.py --help`: it is unsupported and regenerates every cache. The coordinator handles preview sheets and acceptance. Core pose/render code remains unchanged.
 
 ## Coordinator check, per group
-1. `python3 tools/blender/poses.py <ids…> --describe`: all `OK`.
-2. `python3 tools/blender/poses.py <ids…> --preview /workspace/pv-<group>`: look at the sheets for 3–4 ids per group (always the hardest ones: inversions, flags, levers, rolls) against the anatomy checklist in POSES.md. Send fixes back.
-3. Append the group's OK ids to `work/clips-bakeoff/render-batch-<n>.txt` (one id per line, `n` = the id's `renderBatch`).
-4. Commit the group file: `R8-poses: <group> (<n> ids)`.
+1. `python3 tools/blender/check_new_poses.py --group <group> --describe`: all `OK`. Check actual choreography, full-frame limb angles and contacts too; a clean reach/floor report does not establish that the exercise is correct.
+2. Build the unaccepted group in memory with `poses.build(id)` and use `preview_sheet.sheet(data, output_path)` to inspect 3–4 representative sheets (always the hardest inversions, flags, levers or rolls). Include additional moments for brief actions that the standard sheet can miss. Send fixes back. Do not regenerate accepted inputs.
+3. After review, write the unaccepted group with `python3 tools/blender/check_new_poses.py --group <group> --write`, then append its IDs to `work/clips-bakeoff/render-batch-<n>.txt` (one ID per line, `n` = the contract's `renderBatch`). Record review evidence and any rig limitations.
+4. Commit the group file, evidence and manifests: `R8-poses: <group> (<n> ids)`. Those sources and cached inputs are then frozen for the owner's render.
 
 ## The owner's overnight render (one line, no comments)
 ```
-cd /Users/nils/Documents/hermes/Apps/calisthenics && /Applications/Blender.app/Contents/MacOS/Blender -b -P tools/blender/render.py -- $(cat work/clips-bakeoff/render-batch-1.txt)
+cd /Users/nils/Documents/hermes/Apps/calisthenics && /Applications/Blender.app/Contents/MacOS/Blender -b -P tools/blender/render.py -- $(cat work/clips-bakeoff/render-batch-{1,2,3}.txt) --resume
 ```
-Always pass the ids explicitly like this. Don't use `-- --resume` alone: most older clips no longer have their frames on disk, so it would re-render all of them. To continue an interrupted night, add `--resume` after the ids. Rough time: about 2 minutes per clip, so batch 1 (121 ids) ≈ 4 h, batch 3 (192) ≈ 6–7 h.
+Wait for the current Blender job to finish before launching the next one. This command expands all three approved lists at launch and skips completed, up-to-date outputs. Poses accepted after launch enter the next invocation of the same command. Always pass the IDs explicitly; `-- --resume` alone would select the whole registered library. Render time varies with clip length.
 
 ## After the render
 `python3 tools/blender/encode.py <ids…>`, then `python3 tools/blender/install_clips.py <ids…> --dry`, then without `--dry`. `install_clips.py` only accepts ids that exist in `catalog.json`, so the catalog entries (doc 25, step 2) must land first.
