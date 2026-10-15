@@ -760,3 +760,8 @@ Shoulder17 and wrist/hip12 accepted for draft Blender rendering after coordinato
 ### Neck/knee/warm-up draft checkpoint · 2026-10-15
 
 13 more sources ready for draft rendering:330/379 total (121+66+143). Knee, step, leg-swing and pike geometry rebuilt and reviewed. Neck rig limits explicitly documented: seated chin retraction is static setup only; supported nod and independent tuck cannot be fully shown. These are not accepted instructional movies. Army16 remains under review and outside manifests. Original317 accepted inputs remain frozen; no app integration.
+
+
+### Army draft checkpoint · 2026-10-15
+
+Army16 accepted for draft rendering after coordinator rebuilds, independent static-pose review, and full-frame contact/angle checks. Total346/379 (121+66+159). Remaining33 are the final pair: stretches_c18 and pilates_mat15. Shared pelvic/chest rotation and head-look-back limits are recorded in clips-r8/review.md. All prior330 sources and cached inputs remain frozen. The simplicity review now includes teachability/rig limits; no app integration or behavior changed.
