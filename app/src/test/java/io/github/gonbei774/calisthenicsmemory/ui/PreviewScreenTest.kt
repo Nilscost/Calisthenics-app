@@ -282,8 +282,12 @@ class PreviewScreenTest {
         val targetBefore = rule.onNodeWithTag("exercise_target_push").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
         rule.onNodeWithTag("level_plus_push").performScrollTo().performClick(); rule.waitForIdle()
         val nameAfter = rule.onNodeWithTag("exercise_name_push").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
+        assertEquals("One-Arm Wall Push-Away (per side)", nameAfter)
         assertNotEquals(nameBefore, nameAfter)
-        rule.onNodeWithTag("exercise_target_push").assertTextEquals(targetBefore)
+        val targetAfter = rule.onNodeWithTag("exercise_target_push").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
+        assertTrue(targetBefore.contains("5–8 reps"))
+        assertTrue(targetAfter.contains("5–8 reps"))
+        assertTrue(targetAfter.endsWith("per side"))
         rule.onNodeWithTag("level_push").assertTextContains("Exercise", substring = true)
     }
 

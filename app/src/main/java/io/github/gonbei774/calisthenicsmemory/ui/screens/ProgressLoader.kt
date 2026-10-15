@@ -22,6 +22,8 @@ object ProgressLoader {
         for (s in dao.sessions().sortedBy { it.startedAtEpochMs }) {
             if (s.status != "COMPLETED" && s.status != "PARTIAL_FINISHED") continue
             val plan = dao.plan(s.planId)?.let { try { json.decodeFromString(WorkoutPlan.serializer(), it.planJson) } catch (_: Exception) { null } } ?: continue
+            // Flow programs have no per-exercise performance log; elapsed time is not strength evidence.
+            if (plan.fixedProgramId != null && plan.flow) continue
             val exec = dao.blockResults(s.sessionId).associate { r ->
                 r.blockId to when (r.outcome) { "MET" -> Execution.COMPLETED; "PARTIAL" -> Execution.PARTIAL; "SKIPPED" -> Execution.SKIPPED; else -> Execution.NOT_STARTED }
             }

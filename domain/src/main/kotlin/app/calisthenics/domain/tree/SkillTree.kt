@@ -17,13 +17,18 @@ object TreeTabs {
     val all = listOf(
         // R7-T11 (D7, O3): the weighted exercises sit in their movement's tab, next to the bodyweight one they build on (the prerequisite edge draws the side branch)
         TreeTab("push", "Push", listOf("pushup", "dip", "planche", "vest-push", "vest-dip")),
-        TreeTab("shoulders", "Shoulders", listOf("hspu")),
-        TreeTab("pull", "Pull", listOf("pullup", "lever", "german-hang", "vest-pull")),
-        TreeTab("row", "Row", listOf("row", "kb-row", "db-row")),
-        TreeTab("squat", "Squat", listOf("squat", "lunge", "db-squat", "bb-squat", "vest-squat")),
+        TreeTab("shoulders", "Handstand", listOf("hspu", "handstand", "arm-balance")),
+        TreeTab("pull", "Pull", listOf("pullup", "lever", "german-hang", "grip", "vest-pull")),
+        TreeTab("row", "Row", listOf("row", "kb-row", "db-row", "arms")),
+        TreeTab("squat", "Squat", listOf("squat", "lunge", "step-up", "quad", "db-squat", "bb-squat", "vest-squat")),
         TreeTab("hips", "Hips and back", listOf("bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide", "jefferson", "db-hinge", "bb-hinge", "db-bridge")),
-        TreeTab("core", "Core", listOf("plank", "plank-tap", "dead-bug", "side-plank", "pallof", "carry", "legraise")),
-        TreeTab("calves", "Lower legs", listOf("calf", "tibialis")),
+        TreeTab("core", "Core", listOf("plank", "plank-tap", "dead-bug", "side-plank", "pallof", "carry", "legraise", "rollout", "hanging-legraise", "dragon-flag", "bird-dog", "crunch", "flag")),
+        TreeTab("calves", "Lower legs", listOf("calf", "tibialis", "balance")),
+        TreeTab("rings", "Rings", listOf("ring-support", "ring-dip", "ring-pushup", "ring-mu")),
+        TreeTab("power", "Power", listOf("plyo", "plyo-lateral", "plyo-box")),
+        TreeTab("conditioning", "Conditioning", listOf("conditioning", "agility", "crawl")),
+        TreeTab("prehab", "Prehab", listOf("prehab-shoulder", "prehab-wrist", "prehab-hip", "prehab-knee", "neck")),
+        TreeTab("pilates", "Pilates", listOf("pilates")),
         TreeTab(STRETCHES, "Stretches", emptyList()),
     )
     fun byId(id: String) = all.firstOrNull { it.id == id }
@@ -44,7 +49,7 @@ data class TreeLayout(val nodes: List<TreeNodeLayout>, val edges: List<TreeEdge>
 private class Graph(val ids: Set<String>, val edges: List<TreeEdge>, val order: Comparator<String>, val depth: Map<String, Int>, val comps: List<List<String>>)
 
 private fun graphOf(c: Catalog, familyIds: Collection<String>): Graph {
-    val ex = c.variations.filter { (it.kind == Kind.REPS || it.kind == Kind.HOLD) && it.familyId in familyIds }
+    val ex = c.variations.filter { (it.kind == Kind.REPS || it.kind == Kind.HOLD) && !it.routineOnly && it.familyId in familyIds }
     val ids = ex.map { it.id }.toSet()
     val edges = linkedSetOf<TreeEdge>()
     for (p in c.policies) {
@@ -68,6 +73,15 @@ private fun graphOf(c: Catalog, familyIds: Collection<String>): Graph {
     edges.forEach { e -> val a = find(e.from); val b = find(e.to); if (a != b) parent[maxOf(a, b)] = minOf(a, b) }
     val comps = ids.groupBy { find(it) }.values.map { it.sortedWith(order) }.sortedWith(compareBy({ rank[it.first()] ?: 0 }, { it.first() }))
     return Graph(ids, edges.toList(), order, depth, comps)
+}
+
+/** Case-insensitive name and alias lookup for catalog browsing. Drill-only routine rows stay private to programs. */
+fun searchVariations(c: Catalog, query: String): List<app.calisthenics.domain.model.ExerciseVariation> {
+    val needle = query.trim().lowercase()
+    if (needle.isEmpty()) return emptyList()
+    return c.variations.asSequence().filter { !it.routineOnly }
+        .filter { it.name.contains(needle, ignoreCase = true) || it.aliases.any { alias -> alias.contains(needle, ignoreCase = true) } }
+        .sortedBy { it.name.lowercase() }.toList()
 }
 
 /**

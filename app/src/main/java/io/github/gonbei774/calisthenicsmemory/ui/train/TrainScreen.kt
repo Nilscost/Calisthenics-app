@@ -65,6 +65,7 @@ fun TrainScreen(
     onPreview: () -> Unit,
     onStarted: () -> Unit,
     onEditProfile: (String?) -> Unit,
+    onPrograms: () -> Unit = {},
 ) {
     val ctx = LocalContext.current
     val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
@@ -104,7 +105,10 @@ fun TrainScreen(
             Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.s),
             verticalArrangement = Arrangement.spacedBy(Spacing.m),
         ) {
-            Text(stringResource(R.string.train_title).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("train_title"))
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(stringResource(R.string.train_title).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("train_title"))
+                TextButton(onClick = onPrograms, modifier = Modifier.testTag("open_programs")) { Text(stringResource(R.string.programs_open)) }
+            }
             UnfinishedBanner(onStarted)
 
             ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, exercisesPerRound = null)) }, routines = saved, routineId = settings.routineId, onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } })

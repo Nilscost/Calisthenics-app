@@ -80,6 +80,7 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
     val skill = skills.firstOrNull { it.id == skillId } ?: skills.first()
     var open by remember { mutableStateOf<String?>(null) }          // a stretch sheet
     var selected by rememberSaveable { mutableStateOf<String?>(null) }  // the ringed node, its panel is open
+    var catalogQuery by rememberSaveable { mutableStateOf("") }
     // R7-T11 (D6): the exercise detail pages open on a small stack, so Back returns to the detail you came from
     var detailStack by rememberSaveable { mutableStateOf(OpenExercise.take() ?: "") }   // ids joined by ","
     val stack = detailStack.split(',').filter { it.isNotEmpty() }
@@ -135,6 +136,22 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
                     )
                 }
             }
+            OutlinedTextField(
+                value = catalogQuery, onValueChange = { catalogQuery = it }, singleLine = true,
+                label = { Text(stringResource(R.string.progress_search)) },
+                modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.l).testTag("progress_search"),
+            )
+            if (catalogQuery.isNotBlank()) {
+                val matches = remember(c, catalogQuery) { searchVariations(c, catalogQuery).take(12) }
+                Column(Modifier.fillMaxWidth().heightIn(max = 180.dp).verticalScroll(rememberScrollState()).testTag("progress_search_results")) {
+                    matches.forEach { v ->
+                        Text(v.name, Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable { detailStack = v.id; selected = null }
+                            .padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("search_result_${v.id}"),
+                            style = MaterialTheme.typography.bodyLarge)
+                    }
+                    if (matches.isEmpty()) Text(stringResource(R.string.progress_search_empty), Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
             if (mode == ProgressMode.SKILL) Text(skill.description, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = Spacing.l).testTag("skill_description"))
             if (mode == ProgressMode.TYPE && goal != null && goal.entryVariationId != null) Text(
                 stringResource(R.string.progress_goal, goal.name), Modifier.padding(horizontal = Spacing.l), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text,
@@ -155,9 +172,8 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
                     }
                 }
                 val mastered = remember(nodes) { nodes.filterValues { it.state == TreeNodeState.MASTERED }.keys }
-                Box(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).horizontalScroll(rememberScrollState()).testTag("tree_area")) {
-                    SkillTreeCanvas(layout, nodes, mastered, selected, onNode = { selected = if (selected == it) null else it }, onNeed = { detailStack = it })
-                }
+                SkillTreeCanvas(layout, nodes, mastered, selected, onNode = { selected = if (selected == it) null else it },
+                    modifier = Modifier.weight(1f).fillMaxWidth().testTag("tree_area"), onNeed = { detailStack = it })
                 selected?.let { id -> c.variation(id)?.let { v -> nodes[id]?.let { n -> NodePanel(c, v, n, data.progress, profile, onOpen = { detailStack = id }, onOpenOther = { o -> detailStack = o }, onClose = { selected = null }) } } }
             }
         }
@@ -253,6 +269,11 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
             Caption(stringResource(R.string.detail_breadcrumb, familyTitle, tier, 5), Modifier.testTag("detail_breadcrumb"))
         }
         Text(v.name.uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("detail_title"))
+        if (v.aliases.isNotEmpty()) Text(
+            stringResource(R.string.detail_aliases, v.aliases.joinToString(", ")),
+            style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.testTag("detail_aliases"),
+        )
         Row(verticalAlignment = Alignment.CenterVertically) {
             StarRow(displayStars(c, progress, v.id), size = 22.dp)
             Spacer(Modifier.weight(1f))
@@ -332,7 +353,7 @@ private fun WeightTrack(v: ExerciseVariation, progress: app.calisthenics.domain.
 @Composable
 private fun StretchList(c: Catalog, modifier: Modifier, onOpen: (String) -> Unit) {
     Column(modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-        c.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }.forEach { v ->
+        c.variations.filter { (it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY) && !it.routineOnly }.forEach { v ->
             Card(Modifier.fillMaxWidth().clickable { onOpen(v.id) }.testTag("stretch_${v.id}"), shape = MaterialTheme.shapes.large) {
                 Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                     io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(v.id, v.name, 44.dp)

@@ -59,6 +59,8 @@ object BodyRegions {
         Muscle.QUADS to pair({ l, r -> rr(F, l, 114f, r, 164f) }, 33f, 47f),
         Muscle.HAMSTRINGS to pair({ l, r -> rr(B, l, 134f, r, 172f) }, 33f, 47f),
         Muscle.CALVES to pair({ l, r -> rr(B, l, 174f, r, 202f) }, 34f, 46f),
+        Muscle.TIBIALIS to pair({ l, r -> rr(F, l, 174f, r, 202f) }, 34f, 46f),
+        Muscle.NECK to listOf(rr(F, 45f, 24f, 55f, 31f), rr(B, 45f, 24f, 55f, 31f)),
         Muscle.HIP_FLEXORS to pair({ l, r -> ov(F, l, 94f, r, 110f) }, 36f, 49f),
         Muscle.ADDUCTORS to pair({ l, r -> rr(F, l, 114f, r, 142f) }, 45f, 50f),
     )

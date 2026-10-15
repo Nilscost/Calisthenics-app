@@ -20,6 +20,18 @@ class ProfileEditTest {
     @Test fun everyCatalogEquipmentIdHasAChecklistRow() {
         val needed = catalog.variations.flatMap { it.equipmentAlternatives }.flatMap { it.needs }.map { it.equipmentId }.toSet()
         for (id in needed) assertNotNull("no checklist row for $id", EquipmentOptions.byId(id))
+        for (id in listOf("rings", "ab-wheel", "step", "box", "bench", "parallettes", "pole", "sliders", "jump-rope")) {
+            assertNotNull("new R8 gear is missing from onboarding/settings: $id", EquipmentOptions.byId(id))
+            assertFalse("$id should be selectable now", EquipmentOptions.byId(id)!!.future)
+        }
+    }
+
+    @Test fun selectedRingProfileControlsRingExerciseAvailability() {
+        val exercise = catalog.variation("ring-support-hold")!!
+        val home = buildProfile("home", "Home", emptyList())
+        val withRings = buildProfile("rings", "Rings", listOf(EquipmentSelection("rings")))
+        assertFalse(isAvailable(exercise, home))
+        assertTrue(isAvailable(exercise, withRings))
     }
 
     @Test fun muscleUpIsLockedWithoutAHighBarAndUnlocksWithOne() {

@@ -153,6 +153,14 @@ class TrainScreenTest {
         rule.onNodeWithTag("preview_header").assertIsDisplayed()
     }
 
+    @Test fun fixedProgramsAreReachableFromTrainAndReturnToTheWorkoutBuilder() {
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { AppNav() } }
+        rule.onNodeWithTag("open_programs").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithText("Fixed programs").assertExists()
+        rule.onNodeWithTag("programs_back").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("train_title").assertExists()
+    }
+
     @Test fun workoutFormatControlHasThreeFormatsPersistsAndRenamesRoundsToSets() {
         show(); rule.waitForIdle()
         for (f in listOf("CIRCUIT", "PAIRS", "STRAIGHT")) rule.onNodeWithTag("format_$f").assertExists()

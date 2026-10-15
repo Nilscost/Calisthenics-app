@@ -1,0 +1,18 @@
+# R8 T07: open the fixed program list and verify the flow player exposes timers without per-item controls.
+appId: app.calisthenics.personal
+---
+- launchApp
+- runFlow: ../common/dismiss_system_dialogs.yaml
+- extendedWaitUntil: { visible: { id: bottom_bar }, timeout: 15000 }
+- tapOn: { id: tab_train }
+- tapOn: { id: open_programs }
+- extendedWaitUntil: { visible: { id: program_army-hsd }, timeout: 10000 }
+- assertVisible: { id: program_flow_army-hsd }
+- takeScreenshot: 01-programs-${VARIANT}
+- tapOn: { id: program_start_army-hsd }
+- extendedWaitUntil: { visible: { id: session_pause }, timeout: 10000 }
+- assertVisible: { id: session_time }
+- assertNotVisible: { id: logger }
+- assertNotVisible: { id: session_done }
+- assertNotVisible: { id: session_skip }
+- takeScreenshot: 02-flow-session-${VARIANT}

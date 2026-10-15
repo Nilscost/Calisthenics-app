@@ -23,7 +23,7 @@ private val extensionPatterns: Map<Area, List<Pattern>> = mapOf(
 )
 
 private fun usable(c: Catalog, v: ExerciseVariation, profile: EquipmentProfile) =
-    (v.kind == Kind.REPS || v.kind == Kind.HOLD) && c.policyFor(v) != null && isAvailable(v, profile)
+    !v.routineOnly && (v.kind == Kind.REPS || v.kind == Kind.HOLD) && c.policyFor(v) != null && isAvailable(v, profile)
 
 /** The planner refuses an exercise whose recovery would be passive rest while stretching is on; this is the same test, so a filler never makes the plan fail. */
 private fun hasBetweenSetsStretch(c: Catalog, v: ExerciseVariation) =
@@ -59,21 +59,8 @@ fun extensionSlots(c: Catalog, routine: Routine, focus: Set<StrengthFocus>, prof
         if (!any) break
         pass++
     }
-    // Last resort when the new families run out (a small equipment profile): other exercises of the movements already in the session,
-    // the ones closest to the level of the exercise they sit beside, so a body-part session can still reach its length. Never an exercise twice.
-    val chosenIds = usedIds.toMutableSet().also { ids -> out.forEach { ids += it.preferredVariationId } }
-    val anchors = (routine.slots + out).mapNotNull { sl -> c.variation(sl.preferredVariationId)?.takeIf { v -> v.areas.any { it in areas } } }
-    repeat(2) {
-        for (u in anchors) {
-            val cand = c.variations.filter { v ->
-                v.familyId == u.familyId && v.id !in chosenIds && usable(c, v, profile) && v.patterns.any { it in u.patterns } &&
-                    v.areas.any { it in areas && it in u.areas } && (!stretchOn || hasBetweenSetsStretch(c, v)) && Goals.unmet(c, v.id, progress).isEmpty() &&
-                    progress.activeInFamily[v.familyId] != v.id
-            }.minWithOrNull(compareBy({ kotlin.math.abs(it.difficultyRank - u.difficultyRank) }, { it.id })) ?: continue
-            chosenIds += cand.id
-            out += RoutineSlot("ext-${cand.id}", u.patterns.first { it in cand.patterns }, u.areas.first { it in cand.areas && it in areas }, cand.id)
-        }
-    }
+    // A shorter pool is preferable to adding another rung of a progression
+    // already trained in this workout (owner feedback, 2026-10-15).
     return out
 }
 

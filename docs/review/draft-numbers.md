@@ -7,54 +7,139 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
-| Wall Push-Up | wall | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | High Incline Push-Up (table or counter) |
+| Wall Push-Up | wall | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | High Incline Push-Up (table or counter), One-Arm Wall Push-Away (per side) |
 | High Incline Push-Up (table or counter) | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Wall Push-Up L4 | Incline Push-Up, Knee Push-Up |
 | Incline Push-Up | wall or chair* | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | High Incline Push-Up (table or counter) L3 | Standard Push-Up |
+| One-Arm Wall Push-Away (per side) | wall | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Wall Push-Up L5 | — (top) |
 | Knee Push-Up | none | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 11 / 80 / 60 | 14 / 100 / 60 | High Incline Push-Up (table or counter) L3 | Standard Push-Up |
-| Standard Push-Up | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Incline Push-Up L5 or Knee Push-Up L5 | Diamond Push-Up, Feet-Elevated Push-Up |
+| Standard Push-Up | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Incline Push-Up L5 or Knee Push-Up L5 | Diamond Push-Up, Feet-Elevated Push-Up, Single-Leg Push-Up, Hindu Push-Up (dive-bomber), Incline Pop-Up |
+| Incline Pop-Up | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Standard Push-Up L5 | Kneeling Push-Off |
+| Single-Leg Push-Up | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Standard Push-Up L5 | — (top) |
+| Kneeling Push-Off | mat | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Incline Pop-Up L5 | Pop-Up Push-Up |
 | Feet-Elevated Push-Up | chair* | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Standard Push-Up L4 | Archer Push-Up (per side) |
-| Diamond Push-Up | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Standard Push-Up L4 | Archer Push-Up (per side) |
-| Archer Push-Up (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Diamond Push-Up L3 and Feet-Elevated Push-Up L3 | One-Arm Push-Up Negative (per side) |
+| Pop-Up Push-Up | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Kneeling Push-Off L5 | Wide-to-Close Pop-Up, Clap Push-Up |
+| Hindu Push-Up (dive-bomber) | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Standard Push-Up L5 | — (top) |
+| Diamond Push-Up | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Standard Push-Up L4 | Archer Push-Up (per side), Uneven Push-Up (per side), Pseudo Planche Push-Up (feet raised) |
+| Wide-to-Close Pop-Up | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Pop-Up Push-Up L5 | — (top) |
+| Clap Push-Up | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Pop-Up Push-Up L5 | Chest-Strike Push-Up |
+| Uneven Push-Up (per side) | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Diamond Push-Up L5 | — (top) |
+| Chest-Strike Push-Up | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Clap Push-Up L5 | — (top) |
+| Archer Push-Up (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Diamond Push-Up L3 and Feet-Elevated Push-Up L3 | One-Arm Push-Up Negative (per side), Half One-Arm Push-Up (per side) |
+| Pseudo Planche Push-Up (feet raised) | chair* or box | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Diamond Push-Up L5 | — (top) |
+| Half One-Arm Push-Up (per side) | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Archer Push-Up (per side) L5 | Hands-Elevated One-Arm Push-Up (per side) |
+| Hands-Elevated One-Arm Push-Up (per side) | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Half One-Arm Push-Up (per side) L5 | — (top) |
 | One-Arm Push-Up Negative (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Archer Push-Up (per side) L3 | One-Arm Push-Up (per side) |
-| One-Arm Push-Up (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | One-Arm Push-Up Negative (per side) L4 | — (top) |
-| Dip Support Hold | dip-support | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Negative Dip |
+| One-Arm Push-Up (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | One-Arm Push-Up Negative (per side) L4 | One-Arm Push-Up, Feet Together (per side) |
+| One-Arm Push-Up, Feet Together (per side) | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | One-Arm Push-Up (per side) L5 | — (top) |
+| Bench Dip (knees bent) | chair* | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | Bench Dip (legs straight) |
+| Bench Dip (legs straight) | chair* | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Bench Dip (knees bent) L5 | Bench Dip (feet on a second chair) |
+| Bench Dip (feet on a second chair) | chair* | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Bench Dip (legs straight) L5 | Feet-Supported Dip (parallel bars) |
+| Feet-Supported Dip (parallel bars) | dip-support + chair* | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Bench Dip (feet on a second chair) L5 | — (top) |
+| Dip Support Hold | dip-support | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Negative Dip, Jumping Dip |
+| Jumping Dip | dip-support | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Dip Support Hold L5 | — (top) |
 | Negative Dip | dip-support | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Dip Support Hold L4 | Dip |
-| Dip | dip-support | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Negative Dip L4 | — (top) |
+| Dip | dip-support | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Negative Dip L4 | Straight-Bar Dip, L-Sit Dip, Russian Dip |
+| Straight-Bar Dip | low-bar | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Dip L5 | Korean Dip (behind the back) |
+| L-Sit Dip | dip-support | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Dip L5 | 45-Degree Lean Dip |
+| 45-Degree Lean Dip | dip-support | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | L-Sit Dip L5 | — (top) |
+| Russian Dip | dip-support | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Dip L5 | — (top) |
+| Korean Dip (behind the back) | low-bar | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Straight-Bar Dip L5 | — (top) |
+| Frog Stand | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | - | Straight-Arm Frog Stand |
+| Straight-Arm Frog Stand | none | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Frog Stand L5 | — (top) |
 | Planche Lean | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Standard Push-Up L4 and Front Plank L4 | Tuck Planche |
-| Tuck Planche | none | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Planche Lean L4 | Advanced Tuck Planche |
-| Advanced Tuck Planche | none | 2s / 5 / 60 | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | Tuck Planche L4 | — (top) |
+| Tuck Planche | none | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Planche Lean L4 | Advanced Tuck Planche, Tuck Planche Push-Up |
+| Advanced Tuck Planche | none | 2s / 5 / 60 | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | Tuck Planche L4 | Straddle Planche |
+| Tuck Planche Push-Up | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Tuck Planche L5 | — (top) |
+| Straddle Planche | none | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Advanced Tuck Planche L5 | Full Planche |
+| Full Planche | none | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Straddle Planche L5 | — (top) |
 | Weighted Push-Up | weighted-vest | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Standard Push-Up L5 | — (top) |
 | Weighted Dip | dip-support + weighted-vest | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Dip L5 | — (top) |
 
-## Shoulders
+## Handstand
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
+| Hands-Elevated Pike Push-Up | chair* | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | — (top) |
 | Pike Push-Up | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Standard Push-Up L3 | Elevated Pike Push-Up |
 | Elevated Pike Push-Up | chair* | 3 / 35 / 60 | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 12 / 85 / 60 | Pike Push-Up L4 | Wall Handstand Hold (chest to wall) |
-| Wall Handstand Hold (chest to wall) | wall | 10s / 13 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | Elevated Pike Push-Up L3 | Wall Handstand Push-Up Negative |
+| Wall Handstand Hold (chest to wall) | wall | 10s / 13 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | Elevated Pike Push-Up L3 | Wall Handstand Push-Up Negative, Wall Handstand Toe Pulls |
 | Wall Handstand Push-Up Negative | wall + mat | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Wall Handstand Hold (chest to wall) L3 | Wall Handstand Push-Up |
-| Wall Handstand Push-Up | wall + mat | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 8 / 65 / 60 | Wall Handstand Push-Up Negative L4 and Wall Handstand Hold (chest to wall) L4 | — (top) |
+| Wall Handstand Push-Up | wall + mat | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 8 / 65 / 60 | Wall Handstand Push-Up Negative L4 and Wall Handstand Hold (chest to wall) L4 | Deficit Wall Handstand Push-Up |
+| Deficit Wall Handstand Push-Up | wall + parallettes or wall + mat | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Wall Handstand Push-Up L5 | Freestanding Headstand Push-Up |
+| Freestanding Headstand Push-Up | mat | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Deficit Wall Handstand Push-Up L5 and Freestanding Handstand L5 | Freestanding Handstand Push-Up (parallettes) |
+| Freestanding Handstand Push-Up (parallettes) | parallettes | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Freestanding Headstand Push-Up L5 and Freestanding Handstand L5 | — (top) |
+| Tripod Tuck (knees on elbows) | mat | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | 30s / 33 / 90 | - | Wall Headstand |
+| Wall Plank (feet on the wall) | wall | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | 30s / 33 / 90 | 45s / 48 / 90 | - | Wall Walk-Up (toes only) |
+| Wall Headstand | wall + mat | 15s / 18 / 90 | 20s / 23 / 90 | 30s / 33 / 90 | 45s / 48 / 90 | 60s / 63 / 90 | Tripod Tuck (knees on elbows) L5 | Tripod Headstand |
+| Tripod Headstand | mat | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | 30s / 33 / 90 | 45s / 48 / 90 | Wall Headstand L5 | Forearm Headstand |
+| Wall Walk-Up (toes only) | wall | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Wall Plank (feet on the wall) L5 | — (top) |
+| Forearm Headstand | mat | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | 30s / 33 / 90 | 45s / 48 / 90 | Tripod Headstand L5 | — (top) |
+| Wall Handstand Toe Pulls | wall | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Wall Handstand Hold (chest to wall) L5 | Wall Handstand, One Foot Off |
+| Wall Handstand, One Foot Off | wall | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | 30s / 33 / 90 | Wall Handstand Toe Pulls L5 | Kick-Up to Handstand with Roll-Out Bail |
+| Kick-Up to Handstand with Roll-Out Bail | mat | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Wall Handstand, One Foot Off L5 | Freestanding Handstand |
+| Freestanding Handstand | mat | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | 30s / 33 / 90 | Kick-Up to Handstand with Roll-Out Bail L5 | Wall Straddle-Press Negative, Bent-Arm Press to Handstand |
+| Wall Straddle-Press Negative | wall | 1 / 30 / 90 | 2 / 30 / 90 | 3 / 35 / 90 | 4 / 40 / 90 | 5 / 45 / 90 | Freestanding Handstand L5 | Elevated Straddle Press |
+| Bent-Arm Press to Handstand | none | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Freestanding Handstand L5 | — (top) |
+| Elevated Straddle Press | box | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Wall Straddle-Press Negative L5 | Straddle Press to Handstand |
+| Straddle Press to Handstand | none | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Elevated Straddle Press L5 | — (top) |
+| Closed Umbrella (elbow lever prep) | none | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | - | Straddle Elbow Lever |
+| Straddle Elbow Lever | none | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | Closed Umbrella (elbow lever prep) L5 | Elbow Lever |
+| Elbow Lever | none | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | Straddle Elbow Lever L5 | — (top) |
 
 ## Pull
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
-| Dead Hang | pullup-bar | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | - | Scapular Pull, German Hang |
-| Scapular Pull | pullup-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | - | Arch Hang |
+| Dead Hang | pullup-bar | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | - | Scapular Pull, Back lever, False-Grip Hang, Kip Swing, Uneven Hang (per side) |
+| Scapular Pull | pullup-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | - | Arch Hang, Jumping Pull-Up |
+| Kip Swing | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Dead Hang L5 | — (top) |
 | Arch Hang | pullup-bar | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Scapular Pull L4 | Negative Pull-Up, Chair-Assisted Pull-Up, Flexed-Arm Hang |
+| False-Grip Hang | pullup-bar | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Dead Hang L5 | — (top) |
 | Band-Assisted Pull-Up | pullup-bar + resistance-band | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | - | Pull-Up |
+| Jumping Pull-Up | pullup-bar | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Scapular Pull L5 | — (top) |
 | Chair-Assisted Pull-Up | pullup-bar + chair* | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Arch Hang L3 | Pull-Up |
-| Negative Pull-Up | pullup-bar | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Arch Hang L4 | Pull-Up |
+| Negative Pull-Up | pullup-bar | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Arch Hang L4 | Pull-Up, Top-Half Pull-Up |
 | Flexed-Arm Hang | pullup-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 15s / 18 / 60 | Arch Hang L3 | Pull-Up |
-| Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Band-Assisted Pull-Up L4 or Negative Pull-Up L4 or Chair-Assisted Pull-Up L4 or Flexed-Arm Hang L4 | Chest-to-Bar Pull-Up |
+| Top-Half Pull-Up | pullup-bar | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Negative Pull-Up L5 | — (top) |
+| Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Band-Assisted Pull-Up L4 or Negative Pull-Up L4 or Chair-Assisted Pull-Up L4 or Flexed-Arm Hang L4 | Chest-to-Bar Pull-Up, Commando Pull-Up (alternating grip), Kipping Pull-Up, Jumping Pullover |
 | Chin-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Band-Assisted Pull-Up L4 or Negative Pull-Up L4 or Chair-Assisted Pull-Up L4 or Flexed-Arm Hang L4 | — (top) |
-| Chest-to-Bar Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Pull-Up L4 | Bar Muscle-Up |
+| Commando Pull-Up (alternating grip) | pullup-bar | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Pull-Up L5 | — (top) |
+| Kipping Pull-Up | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Pull-Up L5 | — (top) |
+| Jumping Pullover | low-bar or pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Pull-Up L5 | Bar Pullover |
+| Chest-to-Bar Pull-Up | pullup-bar | 1 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Pull-Up L4 | Bar Muscle-Up, Sternum Pull-Up (extended range), L-Sit Pull-Up, Archer Pull-Up (per side) |
+| Bar Pullover | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Jumping Pullover L5 | — (top) |
+| L-Sit Pull-Up | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Chest-to-Bar Pull-Up L5 and L-Sit (floor) L5 | — (top) |
+| Sternum Pull-Up (extended range) | pullup-bar | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Chest-to-Bar Pull-Up L5 | Muscle-Up Negative |
+| Muscle-Up Negative | pullup-bar + high-bar | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Sternum Pull-Up (extended range) L5 | Kipping Muscle-Up (practice) |
+| Kipping Muscle-Up (practice) | pullup-bar + high-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Muscle-Up Negative L5 | — (top) |
 | Bar Muscle-Up | pullup-bar + high-bar | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Chest-to-Bar Pull-Up L4 | — (top) |
+| Archer Pull-Up (per side) | pullup-bar | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Chest-to-Bar Pull-Up L5 | Typewriter Pull-Up, Uneven Pull-Up (towel, per side) |
+| Typewriter Pull-Up | pullup-bar | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Archer Pull-Up (per side) L5 | — (top) |
+| Uneven Pull-Up (towel, per side) | pullup-bar | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Archer Pull-Up (per side) L5 | One-Arm Flexed Hang (per side) |
+| One-Arm Flexed Hang (per side) | pullup-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Uneven Pull-Up (towel, per side) L5 and One-Arm Hang (per side) L5 | Assisted One-Arm Pull-Up (per side) |
+| Assisted One-Arm Pull-Up (per side) | pullup-bar | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | One-Arm Flexed Hang (per side) L5 | One-Arm Pull-Up Negative (per side) |
+| One-Arm Pull-Up Negative (per side) | pullup-bar | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Assisted One-Arm Pull-Up (per side) L5 | One-Arm Pull-Up (per side) |
+| One-Arm Pull-Up (per side) | pullup-bar | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | One-Arm Pull-Up Negative (per side) L5 | — (top) |
 | Tuck Front Lever | pullup-bar + high-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Pull-Up L3 and Hollow Body Hold L3 and Wide Inverted Row L4 | Advanced Tuck Front Lever |
 | Advanced Tuck Front Lever | pullup-bar + high-bar | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | Tuck Front Lever L4 | Straddle Front Lever |
-| Straddle Front Lever | pullup-bar + high-bar | 2s / 5 / 60 | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | Advanced Tuck Front Lever L4 | — (top) |
-| German Hang | pullup-bar | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | Dead Hang L3 | — (top) |
+| Straddle Front Lever | pullup-bar + high-bar | 2s / 5 / 60 | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | Advanced Tuck Front Lever L4 | One-Leg Front Lever |
+| One-Leg Front Lever | pullup-bar + high-bar or rings | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Straddle Front Lever L5 | Full Front Lever |
+| Full Front Lever | pullup-bar + high-bar or rings | 3s / 6 / 90 | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | One-Leg Front Lever L5 | — (top) |
+| Back lever | pullup-bar | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | Dead Hang L3 | Skin the Cat |
+| Skin the Cat | pullup-bar + high-bar or rings | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Back lever L5 | Tuck Back Lever |
+| Tuck Back Lever | pullup-bar + high-bar or rings | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Skin the Cat L5 | Advanced Tuck Back Lever (flat back) |
+| Advanced Tuck Back Lever (flat back) | pullup-bar + high-bar or rings | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Tuck Back Lever L5 | Straddle Back Lever |
+| Straddle Back Lever | pullup-bar + high-bar or rings | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Advanced Tuck Back Lever (flat back) L5 | Half-Lay / One-Leg Back Lever |
+| Half-Lay / One-Leg Back Lever | pullup-bar + high-bar or rings | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Straddle Back Lever L5 | Full Back Lever |
+| Full Back Lever | pullup-bar + high-bar or rings | 3s / 6 / 90 | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | Half-Lay / One-Leg Back Lever L5 | — (top) |
+| Eagle Claws | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | — (top) |
+| Horizontal Hang (table edge) | low-bar | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | - | — (top) |
+| Uneven Hang (per side) | pullup-bar | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | Dead Hang L5 | One-Arm Hang (per side) |
+| One-Arm Hang (per side) | pullup-bar | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | Uneven Hang (per side) L5 | Towel Hang |
+| Towel Hang | pullup-bar | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | One-Arm Hang (per side) L5 | Twin Towel Hang |
+| Twin Towel Hang | pullup-bar | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | Towel Hang L5 | Uneven Towel Hang (per side) |
+| Uneven Towel Hang (per side) | pullup-bar | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | Twin Towel Hang L5 | One-Arm Towel Hang (per side) |
+| One-Arm Towel Hang (per side) | pullup-bar | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Uneven Towel Hang (per side) L5 | — (top) |
 | Weighted Pull-Up | pullup-bar + weighted-vest | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Pull-Up L5 | — (top) |
 
 ## Row
@@ -67,25 +152,56 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Inverted Row | low-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Inverted Row (knees bent) L4 | Wide Inverted Row |
 | Wide Inverted Row | low-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Inverted Row L4 | Inverted Row (feet elevated) |
 | Inverted Row (feet elevated) | low-bar | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Wide Inverted Row L4 | Archer Row (per side) |
-| Archer Row (per side) | low-bar | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Inverted Row (feet elevated) L4 | — (top) |
+| Archer Row (per side) | low-bar | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Inverted Row (feet elevated) L4 | Tuck Front Lever Row, Archer Row, Straight Arm In |
+| Tuck Front Lever Row | pullup-bar + high-bar or rings | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Archer Row (per side) L5 and Tuck Front Lever L5 | Advanced Tuck Front Lever Row |
+| Archer Row, Straight Arm In | low-bar or rings | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Archer Row (per side) L5 | Straddle One-Arm Row (per side) |
+| Advanced Tuck Front Lever Row | pullup-bar + high-bar or rings | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Tuck Front Lever Row L5 and Advanced Tuck Front Lever L5 | Ice Cream Maker, Straddle Front Lever Row |
+| Straddle One-Arm Row (per side) | low-bar or rings | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Archer Row, Straight Arm In L5 | One-Arm Row (per side) |
+| Ice Cream Maker | pullup-bar + high-bar or rings | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Advanced Tuck Front Lever Row L5 | — (top) |
+| One-Arm Row (per side) | low-bar or rings | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Straddle One-Arm Row (per side) L5 | — (top) |
+| Straddle Front Lever Row | pullup-bar + high-bar or rings | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Advanced Tuck Front Lever Row L5 and Straddle Front Lever L5 | Hang to Front Lever Row |
+| Hang to Front Lever Row | pullup-bar + high-bar or rings | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Straddle Front Lever Row L5 | Full Front Lever Row |
+| Full Front Lever Row | pullup-bar + high-bar or rings | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Hang to Front Lever Row L5 and Full Front Lever L5 | — (top) |
 | Kettlebell One-Arm Row (per side) | kettlebell | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Band Row (seated) L4 | — (top) |
 | One-Arm Dumbbell Row (per side) | weight | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Band Row (seated) L4 | — (top) |
+| Bodyweight Biceps Curl | low-bar or rings | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | — (top) |
+| Bodyweight Triceps Extension | low-bar or rings | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | — (top) |
 
 ## Squat
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
-| Air Squat | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | Split Squat (per side) |
+| Assisted Squat (holding a door frame) | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | Box Squat (sit and stand), Half Squat |
+| Box Squat (sit and stand) | chair* | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Assisted Squat (holding a door frame) L5 | — (top) |
+| Half Squat | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Assisted Squat (holding a door frame) L5 | — (top) |
+| Air Squat | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | Split Squat (per side), Close Squat, Cossack Squat (per side), Wall Sit, Horse Stance |
+| Wall Sit | wall | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | Air Squat L5 | — (top) |
+| Horse Stance | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | Air Squat L5 | — (top) |
+| Close Squat | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Air Squat L5 | Uneven Squat (per side) |
 | Split Squat (per side) | none | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Air Squat L3 | Bulgarian Split Squat (per side) |
+| Uneven Squat (per side) | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Close Squat L5 | — (top) |
 | Bulgarian Split Squat (per side) | chair* | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Split Squat (per side) L3 | Assisted Pistol Squat (per side), Beginner Shrimp Squat (per side) |
+| Cossack Squat (per side) | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Air Squat L5 | — (top) |
 | Beginner Shrimp Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bulgarian Split Squat (per side) L4 | Intermediate Shrimp Squat (per side) |
 | Intermediate Shrimp Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Beginner Shrimp Squat (per side) L4 | Advanced Shrimp Squat (per side) |
-| Assisted Pistol Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bulgarian Split Squat (per side) L4 | Box Pistol Squat (per side), Counterbalance Pistol Squat (per side) |
+| Assisted Pistol Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Bulgarian Split Squat (per side) L4 | Box Pistol Squat (per side), Counterbalance Pistol Squat (per side), Pistol Squat Negative (per side) |
+| Pistol Squat Negative (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Assisted Pistol Squat (per side) L5 | — (top) |
 | Counterbalance Pistol Squat (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Assisted Pistol Squat (per side) L3 | Pistol Squat (per side) |
-| Box Pistol Squat (per side) | chair* | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Assisted Pistol Squat (per side) L3 | Pistol Squat (per side) |
-| Advanced Shrimp Squat (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Intermediate Shrimp Squat (per side) L4 | — (top) |
+| Box Pistol Squat (per side) | chair* | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Assisted Pistol Squat (per side) L3 | Pistol Squat (per side), Elevated Pistol (on a step, per side) |
+| Advanced Shrimp Squat (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Intermediate Shrimp Squat (per side) L4 | Two-Hand Shrimp Squat (per side) |
+| Elevated Pistol (on a step, per side) | step or box | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Box Pistol Squat (per side) L5 | — (top) |
 | Pistol Squat (per side) | none | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Box Pistol Squat (per side) L4 or Counterbalance Pistol Squat (per side) L4 | — (top) |
+| Two-Hand Shrimp Squat (per side) | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Advanced Shrimp Squat (per side) L5 | Deficit (Jumbo) Shrimp Squat (per side) |
+| Deficit (Jumbo) Shrimp Squat (per side) | step or box | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Two-Hand Shrimp Squat (per side) L5 | — (top) |
+| Reverse Lunge | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | Lateral Lunge (per side) |
 | Walking Lunge | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 16 / 110 / 60 | Air Squat L3 | — (top) |
+| Lateral Lunge (per side) | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Reverse Lunge L5 | — (top) |
+| Step-Up (stair) | step | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | Deep Step-Up (chair height) |
+| Deep Step-Up (chair height) | chair* or box | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Step-Up (stair) L5 | — (top) |
+| Reverse Nordic | mat | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | — (top) |
+| Assisted Sissy Squat | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | Sissy Squat |
+| Sissy Squat | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Assisted Sissy Squat L5 | Natural Leg Extension |
+| Natural Leg Extension | foot-anchor | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Sissy Squat L5 | — (top) |
 | Goblet Squat | weight | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Air Squat L4 | — (top) |
 | Barbell Squat | barbell | 5 / 45 / 60 | 6 / 50 / 60 | 7 / 55 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Air Squat L4 | — (top) |
 | Weighted Squat | weighted-vest | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | Air Squat L5 | — (top) |
@@ -94,14 +210,23 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
-| Glute Bridge | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 18 / 125 / 60 | - | Table Bridge (reverse tabletop), Single-Leg Glute Bridge (per side) |
+| Glute Bridge | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 18 / 125 / 60 | - | Table Bridge (reverse tabletop), Single-Leg Glute Bridge (per side), Reverse Plank (straight bridge), Shoulder-Elevated Hip Thrust |
+| Reverse Plank (straight bridge) | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | Glute Bridge L5 | — (top) |
 | Table Bridge (reverse tabletop) | none | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Glute Bridge L4 | Incline Bridge (hands on a chair) |
+| Shoulder-Elevated Hip Thrust | bench or chair* | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Glute Bridge L5 | Single-Leg Hip Thrust (per side) |
 | Single-Leg Glute Bridge (per side) | none | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Glute Bridge L4 | — (top) |
 | Incline Bridge (hands on a chair) | chair* | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Table Bridge (reverse tabletop) L4 | Head-Supported Bridge |
-| Head-Supported Bridge | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Incline Bridge (hands on a chair) L4 | Wall Walk-Down Bridge |
-| Wall Walk-Down Bridge | wall | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Head-Supported Bridge L3 | Full Back Bridge |
+| Single-Leg Hip Thrust (per side) | bench or chair* | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Shoulder-Elevated Hip Thrust L5 | — (top) |
+| Head-Supported Bridge | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Incline Bridge (hands on a chair) L4 | Wall Walk-Down Bridge, Half Bridge |
+| Half Bridge | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Head-Supported Bridge L5 | — (top) |
+| Wall Walk-Down Bridge | wall | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Head-Supported Bridge L3 | Full Back Bridge, Wall Walk-Up Bridge |
 | Full Back Bridge | none | 5s / 8 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | Wall Walk-Down Bridge L3 | — (top) |
-| Superman Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Arch Hold (arms overhead, Y) |
+| Wall Walk-Up Bridge | wall | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Wall Walk-Down Bridge L5 | Closing Bridge, Wall Bridge Push-Off |
+| Wall Bridge Push-Off | wall | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Wall Walk-Up Bridge L5 | — (top) |
+| Closing Bridge | mat | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Wall Walk-Up Bridge L5 | Stand-to-Stand Bridge |
+| Stand-to-Stand Bridge | mat | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Closing Bridge L5 | — (top) |
+| Superman Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Arch Hold (arms overhead, Y), Floor Back Extension |
+| Floor Back Extension | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Superman Hold L5 | — (top) |
 | Arch Hold (arms overhead, Y) | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | Superman Hold L4 | Arch Rocks |
 | Arch Rocks | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Arch Hold (arms overhead, Y) L4 | — (top) |
 | Reverse Hyperextension | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 80 / 60 | 12 / 85 / 60 | - | — (top) |
@@ -112,8 +237,10 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 | Romanian Deadlift (bodyweight) | none | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | 20 / 135 / 60 | - | Single-Leg Deadlift (per side), Jefferson Curl |
 | Single-Leg Deadlift (per side) | none | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 7 / 55 / 60 | 8 / 65 / 60 | Romanian Deadlift (bodyweight) L4 | Banded Nordic Curl Negative, Hamstring Slide Negative |
 | Banded Nordic Curl Negative | foot-anchor + resistance-band* | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Single-Leg Deadlift (per side) L4 | Banded Nordic Curl |
-| Banded Nordic Curl | foot-anchor + resistance-band* | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Banded Nordic Curl Negative L4 | Nordic Curl |
-| Nordic Curl | foot-anchor | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Banded Nordic Curl L4 | — (top) |
+| Banded Nordic Curl | foot-anchor + resistance-band* | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | Banded Nordic Curl Negative L4 | Nordic Curl, Harop Curl, Beginner |
+| Harop Curl, Beginner | foot-anchor | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Banded Nordic Curl L5 | — (top) |
+| Nordic Curl | foot-anchor | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Banded Nordic Curl L4 | Harop Curl, Intermediate |
+| Harop Curl, Intermediate | foot-anchor | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Nordic Curl L5 | — (top) |
 | Hamstring Slide Negative | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Single-Leg Deadlift (per side) L4 | Hamstring Slide |
 | Hamstring Slide | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Hamstring Slide Negative L4 | Single-Leg Slide Negative (per side) |
 | Single-Leg Slide Negative (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | Hamstring Slide L4 | Single-Leg Slide (per side) |
@@ -128,40 +255,1136 @@ All numbers are the assistant's unreviewed DRAFT. Per level: **target / work win
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
-| Front Plank | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | Dead Bug L3 | Tucked Hollow Hold |
+| Front Plank | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | Dead Bug L3 | Tucked Hollow Hold, Long-Lever (RKC) Plank, Contralateral Plank (Superman plank, per side) |
+| Long-Lever (RKC) Plank | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | Front Plank L5 | Body Saw, Kneeling Ab-Wheel Rollout |
 | Tucked Hollow Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | Front Plank L4 | One-Leg Hollow Hold |
 | One-Leg Hollow Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | Tucked Hollow Hold L4 | Hollow Body Hold |
+| Contralateral Plank (Superman plank, per side) | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | Front Plank L5 | Plank with Arm-Leg Reach |
 | Hollow Body Hold | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | One-Leg Hollow Hold L4 | Foot-Supported L-Sit, Hollow Rocks |
 | Foot-Supported L-Sit | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | Hollow Body Hold L3 | One-Foot L-Sit |
+| Plank with Arm-Leg Reach | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Contralateral Plank (Superman plank, per side) L5 | — (top) |
 | One-Foot L-Sit | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | Foot-Supported L-Sit L4 | Tuck L-Sit |
+| Body Saw | sliders | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Long-Lever (RKC) Plank L5 | — (top) |
 | Hollow Rocks | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Hollow Body Hold L4 | — (top) |
 | Tuck L-Sit | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | One-Foot L-Sit L4 | Advanced Tuck L-Sit |
 | Advanced Tuck L-Sit | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | Tuck L-Sit L4 | One-Leg Extended L-Sit |
 | One-Leg Extended L-Sit | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | Advanced Tuck L-Sit L4 | L-Sit (floor) |
-| L-Sit (floor) | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | One-Leg Extended L-Sit L4 | V-Sit (floor) |
+| L-Sit (floor) | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 60s / 63 / 60 | One-Leg Extended L-Sit L4 | V-Sit (floor), Seated Compression Lifts |
+| Seated Compression Lifts | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | L-Sit (floor) L5 | Straddle L-Sit |
+| Straddle L-Sit | none | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | Seated Compression Lifts L5 | — (top) |
 | V-Sit (floor) | none | 3s / 6 / 60 | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 15s / 18 / 60 | L-Sit (floor) L4 | — (top) |
 | Plank Shoulder Taps | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 16 / 110 / 60 | Front Plank L2 | — (top) |
+| Supine Bracing (feet down) | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | - | 90/90 Hold |
+| 90/90 Hold | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | Supine Bracing (feet down) L5 | Bent-Leg Raise (Army 4C) |
+| Bent-Leg Raise (Army 4C) | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | 90/90 Hold L5 | Single-Leg Extension Dead Bug |
+| Single-Leg Extension Dead Bug | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Bent-Leg Raise (Army 4C) L5 | — (top) |
 | Dead Bug | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 14 / 100 / 60 | - | Front Plank |
-| Side Plank (per side) | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | - | Side Plank with Leg Raise (per side) |
+| Knee Side Plank (per side) | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | - | — (top) |
+| Side Plank (per side) | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | - | Side Plank with Leg Raise (per side), Side Plank Hip Raise (per side) |
+| Side Plank Hip Raise (per side) | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Side Plank (per side) L5 | — (top) |
 | Side Plank with Leg Raise (per side) | none | 4 / 40 / 60 | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | Side Plank (per side) L4 | Short-Lever Copenhagen Side Plank (per side) |
 | Short-Lever Copenhagen Side Plank (per side) | chair* | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 16s / 19 / 60 | 20s / 23 / 60 | Side Plank with Leg Raise (per side) L4 | Copenhagen Side Plank (long lever, per side) |
-| Copenhagen Side Plank (long lever, per side) | chair* | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 16s / 19 / 60 | 20s / 23 / 60 | Short-Lever Copenhagen Side Plank (per side) L4 | — (top) |
+| Copenhagen Side Plank (long lever, per side) | chair* | 5s / 8 / 60 | 8s / 11 / 60 | 12s / 15 / 60 | 16s / 19 / 60 | 20s / 23 / 60 | Short-Lever Copenhagen Side Plank (per side) L4 | Copenhagen Adduction Raise (per side) |
+| Copenhagen Adduction Raise (per side) | chair* | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Copenhagen Side Plank (long lever, per side) L5 | — (top) |
 | Pallof Hold (per side) | resistance-band* | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 25s / 28 / 60 | 30s / 33 / 60 | - | Pallof Press (per side) |
 | Pallof Press (per side) | resistance-band* | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 80 / 60 | 12 / 85 / 60 | - | — (top) |
 | Kettlebell Suitcase Carry (per side) | kettlebell | 20s / 23 / 60 | 30s / 33 / 60 | 40s / 43 / 60 | 50s / 53 / 60 | 60s / 63 / 60 | - | — (top) |
-| Lying Leg Raise | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | V-Up |
+| Lying Knee Tuck | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | - | Lying Bent-Knee Leg Raise |
+| Lying Bent-Knee Leg Raise | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Lying Knee Tuck L5 | Seated Knee Raise, Reverse Crunch |
+| Seated Knee Raise | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Lying Bent-Knee Leg Raise L5 | Lying Frog Raise |
+| Lying Frog Raise | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Seated Knee Raise L5 | — (top) |
+| Reverse Crunch | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Lying Bent-Knee Leg Raise L5 | — (top) |
+| Bent-Knee Floor Wiper | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | - | Straight-Leg Floor Wiper |
+| Lying Leg Raise | none | 6 / 50 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | - | V-Up, Tuck V-Up |
+| Tuck V-Up | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Lying Leg Raise L5 | Straddle V-Up |
+| Straddle V-Up | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Tuck V-Up L5 | — (top) |
 | V-Up | none | 5 / 45 / 60 | 7 / 55 / 60 | 9 / 70 / 60 | 12 / 85 / 60 | 15 / 105 / 60 | Lying Leg Raise L3 | — (top) |
+| Straight-Leg Floor Wiper | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Bent-Knee Floor Wiper L5 | — (top) |
+| Kneeling Ab-Wheel Rollout | ab-wheel or rings | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Long-Lever (RKC) Plank L5 | Ramp or Wall-Stop Rollout |
+| Ramp or Wall-Stop Rollout | wall + ab-wheel or rings | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Kneeling Ab-Wheel Rollout L5 | Standing Rollout Negative |
+| Standing Rollout Negative | ab-wheel + mat or rings | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | Ramp or Wall-Stop Rollout L5 | Standing Ab-Wheel Rollout |
+| Standing Ab-Wheel Rollout | ab-wheel or rings | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Standing Rollout Negative L5 | One-Arm Rollout (per side) |
+| One-Arm Rollout (per side) | ab-wheel | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Standing Ab-Wheel Rollout L5 | — (top) |
+| Supported Knee Raise (parallel bars) | dip-support or chair* | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | - | Hanging Knee Raise |
+| Hanging Knee Raise | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Supported Knee Raise (parallel bars) L5 | Twisting Hanging Knee Raise, Heel Hook |
+| Twisting Hanging Knee Raise | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Hanging Knee Raise L5 | Hanging Bent-Leg Raise |
+| Heel Hook | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Hanging Knee Raise L5 | — (top) |
+| Hanging Bent-Leg Raise | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Twisting Hanging Knee Raise L5 | Hanging Leg Raise |
+| Hanging Leg Raise | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Hanging Bent-Leg Raise L5 | Toes-to-Bar |
+| Toes-to-Bar | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Hanging Leg Raise L5 | Hanging Half Windshield Wiper |
+| Hanging Half Windshield Wiper | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Toes-to-Bar L5 | Hanging Windshield Wiper |
+| Hanging Windshield Wiper | pullup-bar | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Hanging Half Windshield Wiper L5 | — (top) |
+| Candlestick Hold | bench or foot-anchor | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | - | Tuck Dragon Flag |
+| Tuck Dragon Flag | bench or foot-anchor | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Candlestick Hold L5 | Advanced Tuck Dragon Flag |
+| Advanced Tuck Dragon Flag | bench or foot-anchor | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Tuck Dragon Flag L5 | One-Leg Dragon Flag |
+| One-Leg Dragon Flag | bench or foot-anchor | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Advanced Tuck Dragon Flag L5 | Dragon Flag Negative |
+| Dragon Flag Negative | bench or foot-anchor | 1 / 30 / 60 | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | One-Leg Dragon Flag L5 | Dragon Flag |
+| Dragon Flag | bench or foot-anchor | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Dragon Flag Negative L5 | — (top) |
+| Quadruped Hold | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | - | Quadruped Arm Raise |
+| Quadruped Arm Raise | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Quadruped Hold L5 | Quadruped Leg Raise |
+| Quadruped Leg Raise | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Quadruped Arm Raise L5 | Bird Dog |
+| Bird Dog | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Quadruped Leg Raise L5 | Quadraplex (per side), Swimmer (prone) |
+| Swimmer (prone) | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Bird Dog L5 | — (top) |
+| Quadraplex (per side) | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | Bird Dog L5 | — (top) |
+| McGill Curl-Up | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | - | Crunch |
+| Crunch | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | McGill Curl-Up L5 | Bicycle Crunch (pause at centre), Sit-Up |
+| Bicycle Crunch (pause at centre) | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Crunch L5 | — (top) |
+| Sit-Up | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Crunch L5 | Rower (sit-up to tuck), Russian Twist |
+| Rower (sit-up to tuck) | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Sit-Up L5 | — (top) |
+| Russian Twist | none | 8 / 65 / 60 | 9 / 70 / 60 | 10 / 75 / 60 | 11 / 85 / 60 | 12 / 90 / 60 | Sit-Up L5 | — (top) |
+| Clutch Hang | pole | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | - | Diagonal Split Clutch |
+| Support Press | pole | 3s / 6 / 90 | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | - | Press Hang |
+| Diagonal Split Clutch | pole | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Clutch Hang L5 | Diagonal Tuck Clutch |
+| Press Hang | pole | 3s / 6 / 90 | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | Support Press L5 | Kick Press |
+| Diagonal Tuck Clutch | pole | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Diagonal Split Clutch L5 | Diagonal Clutch |
+| Kick Press | pole | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Press Hang L5 | Vertical Chamber Press |
+| Diagonal Clutch | pole | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Diagonal Tuck Clutch L5 | Horizontal Tuck Clutch |
+| Vertical Chamber Press | pole | 3s / 6 / 90 | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | Kick Press L5 | Vertical Press |
+| Horizontal Tuck Clutch | pole | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Diagonal Clutch L5 | Horizontal Split Clutch |
+| Vertical Press | pole | 3s / 6 / 90 | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | Vertical Chamber Press L5 | Split Press Flag |
+| Horizontal Split Clutch | pole | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Horizontal Tuck Clutch L5 | Bent Leg Clutch Flag |
+| Bent Leg Clutch Flag | pole | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Horizontal Split Clutch L5 | Clutch Flag |
+| Split Press Flag | pole | 3s / 6 / 90 | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | Vertical Press L5 | Bent Leg Press Flag |
+| Clutch Flag | pole | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Bent Leg Clutch Flag L5 | — (top) |
+| Bent Leg Press Flag | pole | 3s / 6 / 90 | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | Split Press Flag L5 | Press Flag |
+| Press Flag | pole | 3s / 6 / 90 | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | Bent Leg Press Flag L5 | — (top) |
 
 ## Lower legs
 
 | Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
 |---|---|---|---|---|---|---|---|---|
-| Calf Raise | none | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | - | Single-Leg Calf Raise (per side) |
-| Single-Leg Calf Raise (per side) | none | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | Calf Raise L4 | Loaded Single-Leg Calf Raise (per side) |
+| Bent-Knee Calf Raise | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | — (top) |
+| Calf Raise | none | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | - | Single-Leg Calf Raise (per side), Single-Leg Bent-Knee Calf Raise (per side) |
+| Single-Leg Bent-Knee Calf Raise (per side) | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Calf Raise L5 | — (top) |
+| Single-Leg Calf Raise (per side) | none | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | Calf Raise L4 | Loaded Single-Leg Calf Raise (per side), Bent-Knee Calf Raise off a Step |
+| Bent-Knee Calf Raise off a Step | step or box | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Single-Leg Calf Raise (per side) L5 | Calf Raise off a Step |
+| Calf Raise off a Step | step or box | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Bent-Knee Calf Raise off a Step L5 | Single-Leg Bent-Knee Calf Raise off a Step (per side) |
+| Single-Leg Bent-Knee Calf Raise off a Step (per side) | step or box | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Calf Raise off a Step L5 | Single-Leg Calf Raise off a Step (per side) |
+| Single-Leg Calf Raise off a Step (per side) | step or box | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | Single-Leg Bent-Knee Calf Raise off a Step (per side) L5 | — (top) |
 | Loaded Single-Leg Calf Raise (per side) | weight | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | Single-Leg Calf Raise (per side) L4 | — (top) |
 | Wall Tibialis Raise | wall | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | - | Single-Leg Wall Tibialis Raise (per side) |
 | Single-Leg Wall Tibialis Raise (per side) | wall | 15 / 105 / 60 | 18 / 125 / 60 | 20 / 135 / 60 | 22 / 145 / 60 | 25 / 165 / 60 | Wall Tibialis Raise L4 | — (top) |
+| Single-Leg Stand (per side) | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | - | Single-Leg Stand, Eyes Closed (per side) |
+| Short Foot | none | 5 / 45 / 60 | 6 / 55 / 60 | 7 / 60 / 60 | 8 / 65 / 60 | 10 / 75 / 60 | - | — (top) |
+| Single-Leg Stand, Eyes Closed (per side) | none | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | Single-Leg Stand (per side) L5 | Single-Leg Stand on a Cushion (per side) |
+| Single-Leg Stand on a Cushion (per side) | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | Single-Leg Stand, Eyes Closed (per side) L5 | — (top) |
+
+## Rings
+
+| Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
+|---|---|---|---|---|---|---|---|---|
+| Ring Support Hold | rings | 15s / 18 / 90 | 20s / 23 / 90 | 30s / 33 / 90 | 45s / 48 / 90 | 60s / 63 / 90 | - | Ring Support, Rings Turned Out, Ring L-Sit |
+| Ring Support, Rings Turned Out | rings | 15s / 18 / 90 | 20s / 23 / 90 | 30s / 33 / 90 | 45s / 48 / 90 | 60s / 63 / 90 | Ring Support Hold L5 | — (top) |
+| Ring L-Sit | rings | 5s / 8 / 90 | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | Ring Support Hold L5 | — (top) |
+| Ring Dip Negative | rings | 1 / 30 / 90 | 2 / 30 / 90 | 3 / 35 / 90 | 4 / 40 / 90 | 5 / 45 / 90 | - | Ring Dip |
+| Ring Dip | rings | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Ring Dip Negative L5 | L-Sit Ring Dip |
+| L-Sit Ring Dip | rings | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Ring Dip L5 | Ring Dip, Rings Turned Out |
+| Ring Dip, Rings Turned Out | rings | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | L-Sit Ring Dip L5 | — (top) |
+| Wide Ring Push-Up | rings | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | - | Ring Push-Up |
+| Ring Push-Up | rings | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Wide Ring Push-Up L5 | Ring Push-Up, Rings Turned Out |
+| Ring Push-Up, Rings Turned Out | rings | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Ring Push-Up L5 | Archer Ring Push-Up, Rings Turned Out (per side) |
+| Archer Ring Push-Up, Rings Turned Out (per side) | rings | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Ring Push-Up, Rings Turned Out L5 | Ring Pseudo Planche Push-Up, 40 Degrees |
+| Ring Pseudo Planche Push-Up, 40 Degrees | rings | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Archer Ring Push-Up, Rings Turned Out (per side) L5 | Ring Pseudo Planche Push-Up, 60 Degrees |
+| Ring Pseudo Planche Push-Up, 60 Degrees | rings | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Ring Pseudo Planche Push-Up, 40 Degrees L5 | — (top) |
+| Ring False-Grip Hang | rings | 8s / 11 / 90 | 10s / 13 / 90 | 15s / 18 / 90 | 20s / 23 / 90 | 30s / 33 / 90 | - | Ring Muscle-Up Negative |
+| Ring Muscle-Up Negative | rings | 1 / 30 / 90 | 2 / 30 / 90 | 3 / 35 / 90 | 4 / 40 / 90 | 5 / 45 / 90 | Ring False-Grip Hang L5 and Chest-to-Bar Pull-Up L5 and Ring Dip L5 | Ring Muscle-Up |
+| Ring Muscle-Up | rings | 8 / 65 / 90 | 9 / 70 / 90 | 10 / 75 / 90 | 11 / 85 / 90 | 12 / 90 / 90 | Ring Muscle-Up Negative L5 and Chest-to-Bar Pull-Up L5 and Ring Dip L5 | — (top) |
+
+## Power
+
+| Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
+|---|---|---|---|---|---|---|---|---|
+| Jump Landing Stick | none | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | - | Pogo Hop (two-foot ankle hop) |
+| Pogo Hop (two-foot ankle hop) | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | 8 / 65 / 60 | Jump Landing Stick L5 | Side-to-Side Ankle Hop, Squat Jump |
+| Side-to-Side Ankle Hop | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | 8 / 65 / 60 | Pogo Hop (two-foot ankle hop) L5 | Hip-Twist Ankle Hop |
+| Hip-Twist Ankle Hop | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | 8 / 65 / 60 | Side-to-Side Ankle Hop L5 | — (top) |
+| Squat Jump | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Pogo Hop (two-foot ankle hop) L5 | Vertical Jump with Arm Swing, Butt-Kick Jump, Split Jump (scissor) |
+| Vertical Jump with Arm Swing | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Squat Jump L5 | Block Jump (short run-up) |
+| Butt-Kick Jump | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Squat Jump L5 | Slap Tuck Jump |
+| Slap Tuck Jump | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Butt-Kick Jump L5 | Tuck Jump |
+| Tuck Jump | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Slap Tuck Jump L5 | Catch Tuck Jump |
+| Split Jump (scissor) | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Squat Jump L5 | Split Jump with Cycle |
+| Catch Tuck Jump | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Tuck Jump L5 | — (top) |
+| Split Jump with Cycle | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Split Jump (scissor) L5 | — (top) |
+| Block Jump (short run-up) | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Vertical Jump with Arm Swing L5 | — (top) |
+| Lateral Two-Foot Jump | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | - | Lateral Hops over Markers, Skater Bound (lateral bound) |
+| Standing Broad Jump | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | - | Consecutive Broad Jumps, Forward Hops over Markers |
+| Lateral Hops over Markers | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | 8 / 65 / 60 | Lateral Two-Foot Jump L5 | — (top) |
+| Forward Hops over Markers | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | 8 / 65 / 60 | Standing Broad Jump L5 | — (top) |
+| Consecutive Broad Jumps | none | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Standing Broad Jump L5 | Single-Leg Hop and Stick (per side) |
+| Skater Bound (lateral bound) | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | 8 / 65 / 60 | Lateral Two-Foot Jump L5 | Alternate-Leg Bounding |
+| Single-Leg Hop and Stick (per side) | none | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | Consecutive Broad Jumps L5 | Single-Leg Lateral Hop (per side) |
+| Single-Leg Lateral Hop (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | 8 / 65 / 60 | Single-Leg Hop and Stick (per side) L5 | Zigzag One-Foot Hops |
+| Alternate-Leg Bounding | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | 8 / 65 / 60 | Skater Bound (lateral bound) L5 | — (top) |
+| Zigzag One-Foot Hops | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | 8 / 65 / 60 | Single-Leg Lateral Hop (per side) L5 | Single-Leg Bounding (per side) |
+| Single-Leg Bounding (per side) | none | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | 8 / 65 / 60 | Zigzag One-Foot Hops L5 | — (top) |
+| Box Step-Off Landing | box or step | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | - | Alternating Box Push-Off, Box Jump (step down) |
+| Alternating Box Push-Off | step or box | 2 / 30 / 60 | 3 / 35 / 60 | 4 / 40 / 60 | 5 / 45 / 60 | 6 / 55 / 60 | Box Step-Off Landing L5 | Single-Leg Box Push-Off (per side) |
+| Single-Leg Box Push-Off (per side) | step or box | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Alternating Box Push-Off L5 | — (top) |
+| Box Jump (step down) | box | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Box Step-Off Landing L5 | Box Jump with Rebound |
+| Box Jump with Rebound | box | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Box Jump (step down) L5 and Pistol Squat (per side) L5 | Depth Jump |
+| Depth Jump | box | 1 / 30 / 120 | 2 / 30 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | 3 / 35 / 120 | Box Jump with Rebound L5 and Box Jump (step down) L5 and Pistol Squat (per side) L5 | — (top) |
+
+## Conditioning
+
+| Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
+|---|---|---|---|---|---|---|---|---|
+| Half Jack (Army) | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | Jumping Jack |
+| Butt Kicks | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | High Knees |
+| Skipping | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | Side Skip with Arm Swing, Power Skip |
+| Step-Back Squat Thrust | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | Squat Thrust |
+| Jumping Jack | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Half Jack (Army) L5 | Seal Jack |
+| Slow Mountain Climber | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | Mountain Climber |
+| Seal Jack | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Jumping Jack L5 | Star Jack |
+| High Knees | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Butt Kicks L5 | — (top) |
+| Squat Thrust | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Step-Back Squat Thrust L5 | Sprawl |
+| Side Skip with Arm Swing | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Skipping L5 | — (top) |
+| Jump Rope (single unders) | jump-rope | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | Jump Rope Double Unders |
+| Mountain Climber | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Slow Mountain Climber L5 | Cross-Body Mountain Climber |
+| Power Skip | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Skipping L5 | — (top) |
+| Star Jack | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Seal Jack L5 | — (top) |
+| Sprawl | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Squat Thrust L5 | Burpee |
+| Cross-Body Mountain Climber | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Mountain Climber L5 | — (top) |
+| Burpee | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Sprawl L5 | Push-Up Burpee |
+| Push-Up Burpee | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Burpee L5 | 8-Count T Push-Up (Army) |
+| 8-Count T Push-Up (Army) | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Push-Up Burpee L5 | — (top) |
+| Jump Rope Double Unders | jump-rope | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Jump Rope (single unders) L5 | — (top) |
+| Lateral Shuffle | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | Carioca (crossover) |
+| Four-Square Hops | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | Hexagon Drill |
+| Carioca (crossover) | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Lateral Shuffle L5 | — (top) |
+| Hexagon Drill | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Four-Square Hops L5 | — (top) |
+| Shuttle Sprint | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | Crouch Run (Army) |
+| Crouch Run (Army) | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Shuttle Sprint L5 | — (top) |
+| Bear Plank Hold | none | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | - | Bear Crawl |
+| Inchworm | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | — (top) |
+| Rolling Sit-Up | mat | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | Rolling Squat |
+| Bear Crawl | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Bear Plank Hold L5 | — (top) |
+| Crab Walk | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | — (top) |
+| Frogger | none | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | — (top) |
+| Rolling Squat | mat | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Rolling Sit-Up L5 | Shoulder Pop |
+| Shoulder Roll (forward roll) | mat | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | - | — (top) |
+| Shoulder Pop | mat | 5 / 45 / 75 | 8 / 65 / 75 | 10 / 75 / 75 | 12 / 90 / 75 | 15 / 105 / 75 | Rolling Squat L5 | — (top) |
+
+## Prehab
+
+| Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
+|---|---|---|---|---|---|---|---|---|
+| Scapular Push-Up (wall) | wall | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | Scapular Push-Up (knees) |
+| Prone I Raise | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Scapular Wall Slide | wall | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Floor Angel | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Side-Lying External Rotation (per side) | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | Band External Rotation (per side) |
+| Band Pull-Apart | resistance-band | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | Face Pull |
+| Prone T Raise | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Scapular Push-Up (knees) | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | Scapular Push-Up (wall) L5 | Scapular Push-Up |
+| Prone Y Raise | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Prone L Raise | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Prone W Raise | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Scapular Push-Up | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | Scapular Push-Up (knees) L5 | — (top) |
+| Band External Rotation (per side) | resistance-band* | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | Side-Lying External Rotation (per side) L5 | Band External Rotation at 90 Degrees (per side) |
+| Face Pull | resistance-band* or rings | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | Band Pull-Apart L5 | — (top) |
+| Support Scapula Shrug | dip-support | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Band External Rotation at 90 Degrees (per side) | resistance-band* | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | Band External Rotation (per side) L5 | — (top) |
+| Cuban Press | weight or resistance-band | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Palm Pulses and Finger Lifts | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | Back-of-Hand Push-Up (knees) |
+| Seated Wrist Circles and Bends | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Fist-on-Floor Forearm Rotations | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Back-of-Hand Push-Up (knees) | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | Palm Pulses and Finger Lifts L5 | Back-of-Hand Push-Up |
+| Eccentric Wrist Extension (per side) | weight | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Back-of-Hand Push-Up | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | Back-of-Hand Push-Up (knees) L5 | — (top) |
+| Lateral Leg Raise (side-lying, per side) | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Medial Leg Raise (side-lying, per side) | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Bent-Leg Lateral Raise (clamshell, per side) | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Single-Leg Tuck (side-lying, per side) | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Fire Hydrant (per side) | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Donkey Kick (per side) | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Terminal Knee Extension (per side) | resistance-band* | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Slow Stair Descent (per side) | step | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Petersen Step-Up (per side) | step | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | — (top) |
+| Spanish Squat Hold | resistance-band* | 15s / 18 / 60 | 20s / 23 / 60 | 30s / 33 / 60 | 45s / 48 / 60 | 60s / 63 / 60 | - | — (top) |
+| Supine Chin Nod | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | - | Seated Chin Tuck |
+| Seated Chin Tuck | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | Supine Chin Nod L5 | Chin Tuck with Head Lift |
+| Chin Tuck with Head Lift | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | Seated Chin Tuck L5 | Neck Isometrics (4-way) |
+| Neck Isometrics (4-way) | none | 5s / 8 / 60 | 8s / 11 / 60 | 10s / 13 / 60 | 15s / 18 / 60 | 20s / 23 / 60 | Chin Tuck with Head Lift L5 | Manual-Resistance Head Raise |
+| Manual-Resistance Head Raise | none | 8 / 65 / 45 | 10 / 75 / 45 | 12 / 90 / 45 | 15 / 105 / 45 | 20 / 135 / 45 | Neck Isometrics (4-way) L5 | — (top) |
+
+## Pilates
+
+| Exercise | Equipment | L1 | L2 | L3 | L4 | L5 | Unlocks after | Next exercise(s) |
+|---|---|---|---|---|---|---|---|---|
+| Spine Stretch Forward | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Spine Twist | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Single-Leg Circle (per side) | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Saw | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Rolling Like a Ball | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Single-Leg Stretch | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Seal | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Roll-Up | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Double-Leg Stretch | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Double-Leg Kick | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Scissors | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Corkscrew | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Open-Leg Rocker | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
+| Roll-Over | mat | 3 / 35 / 45 | 5 / 45 / 45 | 6 / 55 / 45 | 8 / 65 / 45 | 10 / 75 / 45 | - | — (top) |
 
 ## Automatic checks
 
-- No warnings.
+- ⚠️ Incline Pop-Up: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Incline Pop-Up L1: rest 120 != 60
+- ⚠️ Incline Pop-Up L2: rest 120 != 60
+- ⚠️ Incline Pop-Up L3: rest 120 != 60
+- ⚠️ Incline Pop-Up L4: rest 120 != 60
+- ⚠️ Incline Pop-Up L5: rest 120 != 60
+- ⚠️ Kneeling Push-Off: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Kneeling Push-Off L1: rest 120 != 60
+- ⚠️ Kneeling Push-Off L2: rest 120 != 60
+- ⚠️ Kneeling Push-Off L3: rest 120 != 60
+- ⚠️ Kneeling Push-Off L4: rest 120 != 60
+- ⚠️ Kneeling Push-Off L5: rest 120 != 60
+- ⚠️ Pop-Up Push-Up: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Pop-Up Push-Up L1: rest 120 != 60
+- ⚠️ Pop-Up Push-Up L2: rest 120 != 60
+- ⚠️ Pop-Up Push-Up L3: rest 120 != 60
+- ⚠️ Pop-Up Push-Up L4: rest 120 != 60
+- ⚠️ Pop-Up Push-Up L5: rest 120 != 60
+- ⚠️ Wide-to-Close Pop-Up: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Wide-to-Close Pop-Up L1: rest 120 != 60
+- ⚠️ Wide-to-Close Pop-Up L2: rest 120 != 60
+- ⚠️ Wide-to-Close Pop-Up L3: rest 120 != 60
+- ⚠️ Wide-to-Close Pop-Up L4: rest 120 != 60
+- ⚠️ Wide-to-Close Pop-Up L5: rest 120 != 60
+- ⚠️ Clap Push-Up: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Clap Push-Up L1: rest 120 != 60
+- ⚠️ Clap Push-Up L2: rest 120 != 60
+- ⚠️ Clap Push-Up L3: rest 120 != 60
+- ⚠️ Clap Push-Up L4: rest 120 != 60
+- ⚠️ Clap Push-Up L5: rest 120 != 60
+- ⚠️ Chest-Strike Push-Up: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Chest-Strike Push-Up L1: rest 120 != 60
+- ⚠️ Chest-Strike Push-Up L2: rest 120 != 60
+- ⚠️ Chest-Strike Push-Up L3: rest 120 != 60
+- ⚠️ Chest-Strike Push-Up L4: rest 120 != 60
+- ⚠️ Chest-Strike Push-Up L5: rest 120 != 60
+- ⚠️ One-Arm Push-Up (per side) -> One-Arm Push-Up, Feet Together (per side): next starts higher (8) than this ends (5)
+- ⚠️ Tripod Tuck (knees on elbows) L1: rest 90 != 60
+- ⚠️ Tripod Tuck (knees on elbows) L2: rest 90 != 60
+- ⚠️ Tripod Tuck (knees on elbows) L3: rest 90 != 60
+- ⚠️ Tripod Tuck (knees on elbows) L4: rest 90 != 60
+- ⚠️ Tripod Tuck (knees on elbows) L5: rest 90 != 60
+- ⚠️ Wall Plank (feet on the wall) L1: rest 90 != 60
+- ⚠️ Wall Plank (feet on the wall) L2: rest 90 != 60
+- ⚠️ Wall Plank (feet on the wall) L3: rest 90 != 60
+- ⚠️ Wall Plank (feet on the wall) L4: rest 90 != 60
+- ⚠️ Wall Plank (feet on the wall) L5: rest 90 != 60
+- ⚠️ Wall Headstand L1: rest 90 != 60
+- ⚠️ Wall Headstand L2: rest 90 != 60
+- ⚠️ Wall Headstand L3: rest 90 != 60
+- ⚠️ Wall Headstand L4: rest 90 != 60
+- ⚠️ Wall Headstand L5: rest 90 != 60
+- ⚠️ Tripod Headstand L1: rest 90 != 60
+- ⚠️ Tripod Headstand L2: rest 90 != 60
+- ⚠️ Tripod Headstand L3: rest 90 != 60
+- ⚠️ Tripod Headstand L4: rest 90 != 60
+- ⚠️ Tripod Headstand L5: rest 90 != 60
+- ⚠️ Wall Walk-Up (toes only) L1: rest 90 != 60
+- ⚠️ Wall Walk-Up (toes only) L2: rest 90 != 60
+- ⚠️ Wall Walk-Up (toes only) L3: rest 90 != 60
+- ⚠️ Wall Walk-Up (toes only) L4: rest 90 != 60
+- ⚠️ Wall Walk-Up (toes only) L5: rest 90 != 60
+- ⚠️ Forearm Headstand L1: rest 90 != 60
+- ⚠️ Forearm Headstand L2: rest 90 != 60
+- ⚠️ Forearm Headstand L3: rest 90 != 60
+- ⚠️ Forearm Headstand L4: rest 90 != 60
+- ⚠️ Forearm Headstand L5: rest 90 != 60
+- ⚠️ Wall Handstand Toe Pulls L1: rest 90 != 60
+- ⚠️ Wall Handstand Toe Pulls L2: rest 90 != 60
+- ⚠️ Wall Handstand Toe Pulls L3: rest 90 != 60
+- ⚠️ Wall Handstand Toe Pulls L4: rest 90 != 60
+- ⚠️ Wall Handstand Toe Pulls L5: rest 90 != 60
+- ⚠️ Wall Handstand, One Foot Off L1: rest 90 != 60
+- ⚠️ Wall Handstand, One Foot Off L2: rest 90 != 60
+- ⚠️ Wall Handstand, One Foot Off L3: rest 90 != 60
+- ⚠️ Wall Handstand, One Foot Off L4: rest 90 != 60
+- ⚠️ Wall Handstand, One Foot Off L5: rest 90 != 60
+- ⚠️ Kick-Up to Handstand with Roll-Out Bail L1: rest 90 != 60
+- ⚠️ Kick-Up to Handstand with Roll-Out Bail L2: rest 90 != 60
+- ⚠️ Kick-Up to Handstand with Roll-Out Bail L3: rest 90 != 60
+- ⚠️ Kick-Up to Handstand with Roll-Out Bail L4: rest 90 != 60
+- ⚠️ Kick-Up to Handstand with Roll-Out Bail L5: rest 90 != 60
+- ⚠️ Freestanding Handstand L1: rest 90 != 60
+- ⚠️ Freestanding Handstand L2: rest 90 != 60
+- ⚠️ Freestanding Handstand L3: rest 90 != 60
+- ⚠️ Freestanding Handstand L4: rest 90 != 60
+- ⚠️ Freestanding Handstand L5: rest 90 != 60
+- ⚠️ Wall Straddle-Press Negative L1: rest 90 != 60
+- ⚠️ Wall Straddle-Press Negative L2: rest 90 != 60
+- ⚠️ Wall Straddle-Press Negative L3: rest 90 != 60
+- ⚠️ Wall Straddle-Press Negative L4: rest 90 != 60
+- ⚠️ Wall Straddle-Press Negative L5: rest 90 != 60
+- ⚠️ Wall Straddle-Press Negative -> Elevated Straddle Press: next starts higher (8) than this ends (5)
+- ⚠️ Bent-Arm Press to Handstand L1: rest 90 != 60
+- ⚠️ Bent-Arm Press to Handstand L2: rest 90 != 60
+- ⚠️ Bent-Arm Press to Handstand L3: rest 90 != 60
+- ⚠️ Bent-Arm Press to Handstand L4: rest 90 != 60
+- ⚠️ Bent-Arm Press to Handstand L5: rest 90 != 60
+- ⚠️ Elevated Straddle Press L1: rest 90 != 60
+- ⚠️ Elevated Straddle Press L2: rest 90 != 60
+- ⚠️ Elevated Straddle Press L3: rest 90 != 60
+- ⚠️ Elevated Straddle Press L4: rest 90 != 60
+- ⚠️ Elevated Straddle Press L5: rest 90 != 60
+- ⚠️ Straddle Press to Handstand L1: rest 90 != 60
+- ⚠️ Straddle Press to Handstand L2: rest 90 != 60
+- ⚠️ Straddle Press to Handstand L3: rest 90 != 60
+- ⚠️ Straddle Press to Handstand L4: rest 90 != 60
+- ⚠️ Straddle Press to Handstand L5: rest 90 != 60
+- ⚠️ Closed Umbrella (elbow lever prep): looks like a bar exercise but equipment is "none"
+- ⚠️ Straddle Elbow Lever: looks like a bar exercise but equipment is "none"
+- ⚠️ Elbow Lever: looks like a bar exercise but equipment is "none"
+- ⚠️ Muscle-Up Negative -> Kipping Muscle-Up (practice): next starts higher (8) than this ends (5)
+- ⚠️ One-Leg Front Lever L1: rest 90 != 60
+- ⚠️ One-Leg Front Lever L2: rest 90 != 60
+- ⚠️ One-Leg Front Lever L3: rest 90 != 60
+- ⚠️ One-Leg Front Lever L4: rest 90 != 60
+- ⚠️ One-Leg Front Lever L5: rest 90 != 60
+- ⚠️ Full Front Lever L1: rest 90 != 60
+- ⚠️ Full Front Lever L2: rest 90 != 60
+- ⚠️ Full Front Lever L3: rest 90 != 60
+- ⚠️ Full Front Lever L4: rest 90 != 60
+- ⚠️ Full Front Lever L5: rest 90 != 60
+- ⚠️ Skin the Cat L1: rest 90 != 60
+- ⚠️ Skin the Cat L2: rest 90 != 60
+- ⚠️ Skin the Cat L3: rest 90 != 60
+- ⚠️ Skin the Cat L4: rest 90 != 60
+- ⚠️ Skin the Cat L5: rest 90 != 60
+- ⚠️ Tuck Back Lever L1: rest 90 != 60
+- ⚠️ Tuck Back Lever L2: rest 90 != 60
+- ⚠️ Tuck Back Lever L3: rest 90 != 60
+- ⚠️ Tuck Back Lever L4: rest 90 != 60
+- ⚠️ Tuck Back Lever L5: rest 90 != 60
+- ⚠️ Advanced Tuck Back Lever (flat back) L1: rest 90 != 60
+- ⚠️ Advanced Tuck Back Lever (flat back) L2: rest 90 != 60
+- ⚠️ Advanced Tuck Back Lever (flat back) L3: rest 90 != 60
+- ⚠️ Advanced Tuck Back Lever (flat back) L4: rest 90 != 60
+- ⚠️ Advanced Tuck Back Lever (flat back) L5: rest 90 != 60
+- ⚠️ Straddle Back Lever L1: rest 90 != 60
+- ⚠️ Straddle Back Lever L2: rest 90 != 60
+- ⚠️ Straddle Back Lever L3: rest 90 != 60
+- ⚠️ Straddle Back Lever L4: rest 90 != 60
+- ⚠️ Straddle Back Lever L5: rest 90 != 60
+- ⚠️ Half-Lay / One-Leg Back Lever L1: rest 90 != 60
+- ⚠️ Half-Lay / One-Leg Back Lever L2: rest 90 != 60
+- ⚠️ Half-Lay / One-Leg Back Lever L3: rest 90 != 60
+- ⚠️ Half-Lay / One-Leg Back Lever L4: rest 90 != 60
+- ⚠️ Half-Lay / One-Leg Back Lever L5: rest 90 != 60
+- ⚠️ Full Back Lever L1: rest 90 != 60
+- ⚠️ Full Back Lever L2: rest 90 != 60
+- ⚠️ Full Back Lever L3: rest 90 != 60
+- ⚠️ Full Back Lever L4: rest 90 != 60
+- ⚠️ Full Back Lever L5: rest 90 != 60
+- ⚠️ Archer Row, Straight Arm In: unilateral=True but name says otherwise
+- ⚠️ Step-Up (stair): unilateral=True but name says otherwise
+- ⚠️ Deep Step-Up (chair height): unilateral=True but name says otherwise
+- ⚠️ Long-Lever (RKC) Plank: looks like a bar exercise but equipment is "none"
+- ⚠️ Standing Rollout Negative -> Standing Ab-Wheel Rollout: next starts higher (8) than this ends (5)
+- ⚠️ Dragon Flag Negative -> Dragon Flag: next starts higher (8) than this ends (5)
+- ⚠️ Clutch Hang L1: rest 90 != 60
+- ⚠️ Clutch Hang L2: rest 90 != 60
+- ⚠️ Clutch Hang L3: rest 90 != 60
+- ⚠️ Clutch Hang L4: rest 90 != 60
+- ⚠️ Clutch Hang L5: rest 90 != 60
+- ⚠️ Clutch Hang: unilateral=True but name says otherwise
+- ⚠️ Clutch Hang: looks like a bar exercise but equipment is "pole"
+- ⚠️ Support Press L1: rest 90 != 60
+- ⚠️ Support Press L2: rest 90 != 60
+- ⚠️ Support Press L3: rest 90 != 60
+- ⚠️ Support Press L4: rest 90 != 60
+- ⚠️ Support Press L5: rest 90 != 60
+- ⚠️ Support Press: unilateral=True but name says otherwise
+- ⚠️ Diagonal Split Clutch L1: rest 90 != 60
+- ⚠️ Diagonal Split Clutch L2: rest 90 != 60
+- ⚠️ Diagonal Split Clutch L3: rest 90 != 60
+- ⚠️ Diagonal Split Clutch L4: rest 90 != 60
+- ⚠️ Diagonal Split Clutch L5: rest 90 != 60
+- ⚠️ Diagonal Split Clutch: unilateral=True but name says otherwise
+- ⚠️ Press Hang L1: rest 90 != 60
+- ⚠️ Press Hang L2: rest 90 != 60
+- ⚠️ Press Hang L3: rest 90 != 60
+- ⚠️ Press Hang L4: rest 90 != 60
+- ⚠️ Press Hang L5: rest 90 != 60
+- ⚠️ Press Hang: unilateral=True but name says otherwise
+- ⚠️ Press Hang: looks like a bar exercise but equipment is "pole"
+- ⚠️ Diagonal Tuck Clutch L1: rest 90 != 60
+- ⚠️ Diagonal Tuck Clutch L2: rest 90 != 60
+- ⚠️ Diagonal Tuck Clutch L3: rest 90 != 60
+- ⚠️ Diagonal Tuck Clutch L4: rest 90 != 60
+- ⚠️ Diagonal Tuck Clutch L5: rest 90 != 60
+- ⚠️ Diagonal Tuck Clutch: unilateral=True but name says otherwise
+- ⚠️ Kick Press L1: rest 90 != 60
+- ⚠️ Kick Press L2: rest 90 != 60
+- ⚠️ Kick Press L3: rest 90 != 60
+- ⚠️ Kick Press L4: rest 90 != 60
+- ⚠️ Kick Press L5: rest 90 != 60
+- ⚠️ Kick Press: unilateral=True but name says otherwise
+- ⚠️ Diagonal Clutch L1: rest 90 != 60
+- ⚠️ Diagonal Clutch L2: rest 90 != 60
+- ⚠️ Diagonal Clutch L3: rest 90 != 60
+- ⚠️ Diagonal Clutch L4: rest 90 != 60
+- ⚠️ Diagonal Clutch L5: rest 90 != 60
+- ⚠️ Diagonal Clutch: unilateral=True but name says otherwise
+- ⚠️ Vertical Chamber Press L1: rest 90 != 60
+- ⚠️ Vertical Chamber Press L2: rest 90 != 60
+- ⚠️ Vertical Chamber Press L3: rest 90 != 60
+- ⚠️ Vertical Chamber Press L4: rest 90 != 60
+- ⚠️ Vertical Chamber Press L5: rest 90 != 60
+- ⚠️ Vertical Chamber Press: unilateral=True but name says otherwise
+- ⚠️ Horizontal Tuck Clutch L1: rest 90 != 60
+- ⚠️ Horizontal Tuck Clutch L2: rest 90 != 60
+- ⚠️ Horizontal Tuck Clutch L3: rest 90 != 60
+- ⚠️ Horizontal Tuck Clutch L4: rest 90 != 60
+- ⚠️ Horizontal Tuck Clutch L5: rest 90 != 60
+- ⚠️ Horizontal Tuck Clutch: unilateral=True but name says otherwise
+- ⚠️ Vertical Press L1: rest 90 != 60
+- ⚠️ Vertical Press L2: rest 90 != 60
+- ⚠️ Vertical Press L3: rest 90 != 60
+- ⚠️ Vertical Press L4: rest 90 != 60
+- ⚠️ Vertical Press L5: rest 90 != 60
+- ⚠️ Vertical Press: unilateral=True but name says otherwise
+- ⚠️ Horizontal Split Clutch L1: rest 90 != 60
+- ⚠️ Horizontal Split Clutch L2: rest 90 != 60
+- ⚠️ Horizontal Split Clutch L3: rest 90 != 60
+- ⚠️ Horizontal Split Clutch L4: rest 90 != 60
+- ⚠️ Horizontal Split Clutch L5: rest 90 != 60
+- ⚠️ Horizontal Split Clutch: unilateral=True but name says otherwise
+- ⚠️ Bent Leg Clutch Flag L1: rest 90 != 60
+- ⚠️ Bent Leg Clutch Flag L2: rest 90 != 60
+- ⚠️ Bent Leg Clutch Flag L3: rest 90 != 60
+- ⚠️ Bent Leg Clutch Flag L4: rest 90 != 60
+- ⚠️ Bent Leg Clutch Flag L5: rest 90 != 60
+- ⚠️ Bent Leg Clutch Flag: unilateral=True but name says otherwise
+- ⚠️ Split Press Flag L1: rest 90 != 60
+- ⚠️ Split Press Flag L2: rest 90 != 60
+- ⚠️ Split Press Flag L3: rest 90 != 60
+- ⚠️ Split Press Flag L4: rest 90 != 60
+- ⚠️ Split Press Flag L5: rest 90 != 60
+- ⚠️ Split Press Flag: unilateral=True but name says otherwise
+- ⚠️ Clutch Flag L1: rest 90 != 60
+- ⚠️ Clutch Flag L2: rest 90 != 60
+- ⚠️ Clutch Flag L3: rest 90 != 60
+- ⚠️ Clutch Flag L4: rest 90 != 60
+- ⚠️ Clutch Flag L5: rest 90 != 60
+- ⚠️ Clutch Flag: unilateral=True but name says otherwise
+- ⚠️ Bent Leg Press Flag L1: rest 90 != 60
+- ⚠️ Bent Leg Press Flag L2: rest 90 != 60
+- ⚠️ Bent Leg Press Flag L3: rest 90 != 60
+- ⚠️ Bent Leg Press Flag L4: rest 90 != 60
+- ⚠️ Bent Leg Press Flag L5: rest 90 != 60
+- ⚠️ Bent Leg Press Flag: unilateral=True but name says otherwise
+- ⚠️ Press Flag L1: rest 90 != 60
+- ⚠️ Press Flag L2: rest 90 != 60
+- ⚠️ Press Flag L3: rest 90 != 60
+- ⚠️ Press Flag L4: rest 90 != 60
+- ⚠️ Press Flag L5: rest 90 != 60
+- ⚠️ Press Flag: unilateral=True but name says otherwise
+- ⚠️ Ring Support Hold L1: rest 90 != 60
+- ⚠️ Ring Support Hold L2: rest 90 != 60
+- ⚠️ Ring Support Hold L3: rest 90 != 60
+- ⚠️ Ring Support Hold L4: rest 90 != 60
+- ⚠️ Ring Support Hold L5: rest 90 != 60
+- ⚠️ Ring Support, Rings Turned Out L1: rest 90 != 60
+- ⚠️ Ring Support, Rings Turned Out L2: rest 90 != 60
+- ⚠️ Ring Support, Rings Turned Out L3: rest 90 != 60
+- ⚠️ Ring Support, Rings Turned Out L4: rest 90 != 60
+- ⚠️ Ring Support, Rings Turned Out L5: rest 90 != 60
+- ⚠️ Ring L-Sit L1: rest 90 != 60
+- ⚠️ Ring L-Sit L2: rest 90 != 60
+- ⚠️ Ring L-Sit L3: rest 90 != 60
+- ⚠️ Ring L-Sit L4: rest 90 != 60
+- ⚠️ Ring L-Sit L5: rest 90 != 60
+- ⚠️ Ring Dip Negative L1: rest 90 != 60
+- ⚠️ Ring Dip Negative L2: rest 90 != 60
+- ⚠️ Ring Dip Negative L3: rest 90 != 60
+- ⚠️ Ring Dip Negative L4: rest 90 != 60
+- ⚠️ Ring Dip Negative L5: rest 90 != 60
+- ⚠️ Ring Dip Negative -> Ring Dip: next starts higher (8) than this ends (5)
+- ⚠️ Ring Dip L1: rest 90 != 60
+- ⚠️ Ring Dip L2: rest 90 != 60
+- ⚠️ Ring Dip L3: rest 90 != 60
+- ⚠️ Ring Dip L4: rest 90 != 60
+- ⚠️ Ring Dip L5: rest 90 != 60
+- ⚠️ L-Sit Ring Dip L1: rest 90 != 60
+- ⚠️ L-Sit Ring Dip L2: rest 90 != 60
+- ⚠️ L-Sit Ring Dip L3: rest 90 != 60
+- ⚠️ L-Sit Ring Dip L4: rest 90 != 60
+- ⚠️ L-Sit Ring Dip L5: rest 90 != 60
+- ⚠️ Ring Dip, Rings Turned Out L1: rest 90 != 60
+- ⚠️ Ring Dip, Rings Turned Out L2: rest 90 != 60
+- ⚠️ Ring Dip, Rings Turned Out L3: rest 90 != 60
+- ⚠️ Ring Dip, Rings Turned Out L4: rest 90 != 60
+- ⚠️ Ring Dip, Rings Turned Out L5: rest 90 != 60
+- ⚠️ Wide Ring Push-Up L1: rest 90 != 60
+- ⚠️ Wide Ring Push-Up L2: rest 90 != 60
+- ⚠️ Wide Ring Push-Up L3: rest 90 != 60
+- ⚠️ Wide Ring Push-Up L4: rest 90 != 60
+- ⚠️ Wide Ring Push-Up L5: rest 90 != 60
+- ⚠️ Ring Push-Up L1: rest 90 != 60
+- ⚠️ Ring Push-Up L2: rest 90 != 60
+- ⚠️ Ring Push-Up L3: rest 90 != 60
+- ⚠️ Ring Push-Up L4: rest 90 != 60
+- ⚠️ Ring Push-Up L5: rest 90 != 60
+- ⚠️ Ring Push-Up, Rings Turned Out L1: rest 90 != 60
+- ⚠️ Ring Push-Up, Rings Turned Out L2: rest 90 != 60
+- ⚠️ Ring Push-Up, Rings Turned Out L3: rest 90 != 60
+- ⚠️ Ring Push-Up, Rings Turned Out L4: rest 90 != 60
+- ⚠️ Ring Push-Up, Rings Turned Out L5: rest 90 != 60
+- ⚠️ Archer Ring Push-Up, Rings Turned Out (per side) L1: rest 90 != 60
+- ⚠️ Archer Ring Push-Up, Rings Turned Out (per side) L2: rest 90 != 60
+- ⚠️ Archer Ring Push-Up, Rings Turned Out (per side) L3: rest 90 != 60
+- ⚠️ Archer Ring Push-Up, Rings Turned Out (per side) L4: rest 90 != 60
+- ⚠️ Archer Ring Push-Up, Rings Turned Out (per side) L5: rest 90 != 60
+- ⚠️ Ring Pseudo Planche Push-Up, 40 Degrees L1: rest 90 != 60
+- ⚠️ Ring Pseudo Planche Push-Up, 40 Degrees L2: rest 90 != 60
+- ⚠️ Ring Pseudo Planche Push-Up, 40 Degrees L3: rest 90 != 60
+- ⚠️ Ring Pseudo Planche Push-Up, 40 Degrees L4: rest 90 != 60
+- ⚠️ Ring Pseudo Planche Push-Up, 40 Degrees L5: rest 90 != 60
+- ⚠️ Ring Pseudo Planche Push-Up, 60 Degrees L1: rest 90 != 60
+- ⚠️ Ring Pseudo Planche Push-Up, 60 Degrees L2: rest 90 != 60
+- ⚠️ Ring Pseudo Planche Push-Up, 60 Degrees L3: rest 90 != 60
+- ⚠️ Ring Pseudo Planche Push-Up, 60 Degrees L4: rest 90 != 60
+- ⚠️ Ring Pseudo Planche Push-Up, 60 Degrees L5: rest 90 != 60
+- ⚠️ Ring False-Grip Hang L1: rest 90 != 60
+- ⚠️ Ring False-Grip Hang L2: rest 90 != 60
+- ⚠️ Ring False-Grip Hang L3: rest 90 != 60
+- ⚠️ Ring False-Grip Hang L4: rest 90 != 60
+- ⚠️ Ring False-Grip Hang L5: rest 90 != 60
+- ⚠️ Ring False-Grip Hang: looks like a bar exercise but equipment is "rings"
+- ⚠️ Ring Muscle-Up Negative L1: rest 90 != 60
+- ⚠️ Ring Muscle-Up Negative L2: rest 90 != 60
+- ⚠️ Ring Muscle-Up Negative L3: rest 90 != 60
+- ⚠️ Ring Muscle-Up Negative L4: rest 90 != 60
+- ⚠️ Ring Muscle-Up Negative L5: rest 90 != 60
+- ⚠️ Ring Muscle-Up Negative -> Ring Muscle-Up: next starts higher (8) than this ends (5)
+- ⚠️ Ring Muscle-Up Negative: looks like a bar exercise but equipment is "rings"
+- ⚠️ Ring Muscle-Up L1: rest 90 != 60
+- ⚠️ Ring Muscle-Up L2: rest 90 != 60
+- ⚠️ Ring Muscle-Up L3: rest 90 != 60
+- ⚠️ Ring Muscle-Up L4: rest 90 != 60
+- ⚠️ Ring Muscle-Up L5: rest 90 != 60
+- ⚠️ Ring Muscle-Up: looks like a bar exercise but equipment is "rings"
+- ⚠️ Squat Jump: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Squat Jump L1: rest 120 != 60
+- ⚠️ Squat Jump L2: rest 120 != 60
+- ⚠️ Squat Jump L3: rest 120 != 60
+- ⚠️ Squat Jump L4: rest 120 != 60
+- ⚠️ Squat Jump L5: rest 120 != 60
+- ⚠️ Vertical Jump with Arm Swing: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Vertical Jump with Arm Swing L1: rest 120 != 60
+- ⚠️ Vertical Jump with Arm Swing L2: rest 120 != 60
+- ⚠️ Vertical Jump with Arm Swing L3: rest 120 != 60
+- ⚠️ Vertical Jump with Arm Swing L4: rest 120 != 60
+- ⚠️ Vertical Jump with Arm Swing L5: rest 120 != 60
+- ⚠️ Butt-Kick Jump: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Butt-Kick Jump L1: rest 120 != 60
+- ⚠️ Butt-Kick Jump L2: rest 120 != 60
+- ⚠️ Butt-Kick Jump L3: rest 120 != 60
+- ⚠️ Butt-Kick Jump L4: rest 120 != 60
+- ⚠️ Butt-Kick Jump L5: rest 120 != 60
+- ⚠️ Slap Tuck Jump: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Slap Tuck Jump L1: rest 120 != 60
+- ⚠️ Slap Tuck Jump L2: rest 120 != 60
+- ⚠️ Slap Tuck Jump L3: rest 120 != 60
+- ⚠️ Slap Tuck Jump L4: rest 120 != 60
+- ⚠️ Slap Tuck Jump L5: rest 120 != 60
+- ⚠️ Tuck Jump: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Tuck Jump L1: rest 120 != 60
+- ⚠️ Tuck Jump L2: rest 120 != 60
+- ⚠️ Tuck Jump L3: rest 120 != 60
+- ⚠️ Tuck Jump L4: rest 120 != 60
+- ⚠️ Tuck Jump L5: rest 120 != 60
+- ⚠️ Split Jump (scissor): targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Split Jump (scissor) L1: rest 120 != 60
+- ⚠️ Split Jump (scissor) L2: rest 120 != 60
+- ⚠️ Split Jump (scissor) L3: rest 120 != 60
+- ⚠️ Split Jump (scissor) L4: rest 120 != 60
+- ⚠️ Split Jump (scissor) L5: rest 120 != 60
+- ⚠️ Catch Tuck Jump: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Catch Tuck Jump L1: rest 120 != 60
+- ⚠️ Catch Tuck Jump L2: rest 120 != 60
+- ⚠️ Catch Tuck Jump L3: rest 120 != 60
+- ⚠️ Catch Tuck Jump L4: rest 120 != 60
+- ⚠️ Catch Tuck Jump L5: rest 120 != 60
+- ⚠️ Split Jump with Cycle: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Split Jump with Cycle L1: rest 120 != 60
+- ⚠️ Split Jump with Cycle L2: rest 120 != 60
+- ⚠️ Split Jump with Cycle L3: rest 120 != 60
+- ⚠️ Split Jump with Cycle L4: rest 120 != 60
+- ⚠️ Split Jump with Cycle L5: rest 120 != 60
+- ⚠️ Block Jump (short run-up): targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Block Jump (short run-up) L1: rest 120 != 60
+- ⚠️ Block Jump (short run-up) L2: rest 120 != 60
+- ⚠️ Block Jump (short run-up) L3: rest 120 != 60
+- ⚠️ Block Jump (short run-up) L4: rest 120 != 60
+- ⚠️ Block Jump (short run-up) L5: rest 120 != 60
+- ⚠️ Lateral Two-Foot Jump: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Lateral Two-Foot Jump L1: rest 120 != 60
+- ⚠️ Lateral Two-Foot Jump L2: rest 120 != 60
+- ⚠️ Lateral Two-Foot Jump L3: rest 120 != 60
+- ⚠️ Lateral Two-Foot Jump L4: rest 120 != 60
+- ⚠️ Lateral Two-Foot Jump L5: rest 120 != 60
+- ⚠️ Standing Broad Jump: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Standing Broad Jump L1: rest 120 != 60
+- ⚠️ Standing Broad Jump L2: rest 120 != 60
+- ⚠️ Standing Broad Jump L3: rest 120 != 60
+- ⚠️ Standing Broad Jump L4: rest 120 != 60
+- ⚠️ Standing Broad Jump L5: rest 120 != 60
+- ⚠️ Consecutive Broad Jumps: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Consecutive Broad Jumps L1: rest 120 != 60
+- ⚠️ Consecutive Broad Jumps L2: rest 120 != 60
+- ⚠️ Consecutive Broad Jumps L3: rest 120 != 60
+- ⚠️ Consecutive Broad Jumps L4: rest 120 != 60
+- ⚠️ Consecutive Broad Jumps L5: rest 120 != 60
+- ⚠️ Skater Bound (lateral bound): unilateral=True but name says otherwise
+- ⚠️ Zigzag One-Foot Hops: unilateral=True but name says otherwise
+- ⚠️ Single-Leg Box Push-Off (per side): targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Single-Leg Box Push-Off (per side) L1: rest 120 != 60
+- ⚠️ Single-Leg Box Push-Off (per side) L2: rest 120 != 60
+- ⚠️ Single-Leg Box Push-Off (per side) L3: rest 120 != 60
+- ⚠️ Single-Leg Box Push-Off (per side) L4: rest 120 != 60
+- ⚠️ Single-Leg Box Push-Off (per side) L5: rest 120 != 60
+- ⚠️ Box Jump (step down): targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Box Jump (step down) L1: rest 120 != 60
+- ⚠️ Box Jump (step down) L2: rest 120 != 60
+- ⚠️ Box Jump (step down) L3: rest 120 != 60
+- ⚠️ Box Jump (step down) L4: rest 120 != 60
+- ⚠️ Box Jump (step down) L5: rest 120 != 60
+- ⚠️ Box Jump with Rebound: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Box Jump with Rebound L1: rest 120 != 60
+- ⚠️ Box Jump with Rebound L2: rest 120 != 60
+- ⚠️ Box Jump with Rebound L3: rest 120 != 60
+- ⚠️ Box Jump with Rebound L4: rest 120 != 60
+- ⚠️ Box Jump with Rebound L5: rest 120 != 60
+- ⚠️ Depth Jump: targets not strictly rising [1, 2, 3, 3, 3]
+- ⚠️ Depth Jump L1: rest 120 != 60
+- ⚠️ Depth Jump L2: rest 120 != 60
+- ⚠️ Depth Jump L3: rest 120 != 60
+- ⚠️ Depth Jump L4: rest 120 != 60
+- ⚠️ Depth Jump L5: rest 120 != 60
+- ⚠️ Half Jack (Army) L1: rest 75 != 60
+- ⚠️ Half Jack (Army) L2: rest 75 != 60
+- ⚠️ Half Jack (Army) L3: rest 75 != 60
+- ⚠️ Half Jack (Army) L4: rest 75 != 60
+- ⚠️ Half Jack (Army) L5: rest 75 != 60
+- ⚠️ Butt Kicks L1: rest 75 != 60
+- ⚠️ Butt Kicks L2: rest 75 != 60
+- ⚠️ Butt Kicks L3: rest 75 != 60
+- ⚠️ Butt Kicks L4: rest 75 != 60
+- ⚠️ Butt Kicks L5: rest 75 != 60
+- ⚠️ Skipping L1: rest 75 != 60
+- ⚠️ Skipping L2: rest 75 != 60
+- ⚠️ Skipping L3: rest 75 != 60
+- ⚠️ Skipping L4: rest 75 != 60
+- ⚠️ Skipping L5: rest 75 != 60
+- ⚠️ Step-Back Squat Thrust L1: rest 75 != 60
+- ⚠️ Step-Back Squat Thrust L2: rest 75 != 60
+- ⚠️ Step-Back Squat Thrust L3: rest 75 != 60
+- ⚠️ Step-Back Squat Thrust L4: rest 75 != 60
+- ⚠️ Step-Back Squat Thrust L5: rest 75 != 60
+- ⚠️ Jumping Jack L1: rest 75 != 60
+- ⚠️ Jumping Jack L2: rest 75 != 60
+- ⚠️ Jumping Jack L3: rest 75 != 60
+- ⚠️ Jumping Jack L4: rest 75 != 60
+- ⚠️ Jumping Jack L5: rest 75 != 60
+- ⚠️ Slow Mountain Climber L1: rest 75 != 60
+- ⚠️ Slow Mountain Climber L2: rest 75 != 60
+- ⚠️ Slow Mountain Climber L3: rest 75 != 60
+- ⚠️ Slow Mountain Climber L4: rest 75 != 60
+- ⚠️ Slow Mountain Climber L5: rest 75 != 60
+- ⚠️ Seal Jack L1: rest 75 != 60
+- ⚠️ Seal Jack L2: rest 75 != 60
+- ⚠️ Seal Jack L3: rest 75 != 60
+- ⚠️ Seal Jack L4: rest 75 != 60
+- ⚠️ Seal Jack L5: rest 75 != 60
+- ⚠️ High Knees L1: rest 75 != 60
+- ⚠️ High Knees L2: rest 75 != 60
+- ⚠️ High Knees L3: rest 75 != 60
+- ⚠️ High Knees L4: rest 75 != 60
+- ⚠️ High Knees L5: rest 75 != 60
+- ⚠️ Squat Thrust L1: rest 75 != 60
+- ⚠️ Squat Thrust L2: rest 75 != 60
+- ⚠️ Squat Thrust L3: rest 75 != 60
+- ⚠️ Squat Thrust L4: rest 75 != 60
+- ⚠️ Squat Thrust L5: rest 75 != 60
+- ⚠️ Side Skip with Arm Swing L1: rest 75 != 60
+- ⚠️ Side Skip with Arm Swing L2: rest 75 != 60
+- ⚠️ Side Skip with Arm Swing L3: rest 75 != 60
+- ⚠️ Side Skip with Arm Swing L4: rest 75 != 60
+- ⚠️ Side Skip with Arm Swing L5: rest 75 != 60
+- ⚠️ Jump Rope (single unders) L1: rest 75 != 60
+- ⚠️ Jump Rope (single unders) L2: rest 75 != 60
+- ⚠️ Jump Rope (single unders) L3: rest 75 != 60
+- ⚠️ Jump Rope (single unders) L4: rest 75 != 60
+- ⚠️ Jump Rope (single unders) L5: rest 75 != 60
+- ⚠️ Mountain Climber L1: rest 75 != 60
+- ⚠️ Mountain Climber L2: rest 75 != 60
+- ⚠️ Mountain Climber L3: rest 75 != 60
+- ⚠️ Mountain Climber L4: rest 75 != 60
+- ⚠️ Mountain Climber L5: rest 75 != 60
+- ⚠️ Power Skip L1: rest 75 != 60
+- ⚠️ Power Skip L2: rest 75 != 60
+- ⚠️ Power Skip L3: rest 75 != 60
+- ⚠️ Power Skip L4: rest 75 != 60
+- ⚠️ Power Skip L5: rest 75 != 60
+- ⚠️ Star Jack L1: rest 75 != 60
+- ⚠️ Star Jack L2: rest 75 != 60
+- ⚠️ Star Jack L3: rest 75 != 60
+- ⚠️ Star Jack L4: rest 75 != 60
+- ⚠️ Star Jack L5: rest 75 != 60
+- ⚠️ Sprawl L1: rest 75 != 60
+- ⚠️ Sprawl L2: rest 75 != 60
+- ⚠️ Sprawl L3: rest 75 != 60
+- ⚠️ Sprawl L4: rest 75 != 60
+- ⚠️ Sprawl L5: rest 75 != 60
+- ⚠️ Cross-Body Mountain Climber L1: rest 75 != 60
+- ⚠️ Cross-Body Mountain Climber L2: rest 75 != 60
+- ⚠️ Cross-Body Mountain Climber L3: rest 75 != 60
+- ⚠️ Cross-Body Mountain Climber L4: rest 75 != 60
+- ⚠️ Cross-Body Mountain Climber L5: rest 75 != 60
+- ⚠️ Burpee L1: rest 75 != 60
+- ⚠️ Burpee L2: rest 75 != 60
+- ⚠️ Burpee L3: rest 75 != 60
+- ⚠️ Burpee L4: rest 75 != 60
+- ⚠️ Burpee L5: rest 75 != 60
+- ⚠️ Push-Up Burpee L1: rest 75 != 60
+- ⚠️ Push-Up Burpee L2: rest 75 != 60
+- ⚠️ Push-Up Burpee L3: rest 75 != 60
+- ⚠️ Push-Up Burpee L4: rest 75 != 60
+- ⚠️ Push-Up Burpee L5: rest 75 != 60
+- ⚠️ 8-Count T Push-Up (Army) L1: rest 75 != 60
+- ⚠️ 8-Count T Push-Up (Army) L2: rest 75 != 60
+- ⚠️ 8-Count T Push-Up (Army) L3: rest 75 != 60
+- ⚠️ 8-Count T Push-Up (Army) L4: rest 75 != 60
+- ⚠️ 8-Count T Push-Up (Army) L5: rest 75 != 60
+- ⚠️ Jump Rope Double Unders L1: rest 75 != 60
+- ⚠️ Jump Rope Double Unders L2: rest 75 != 60
+- ⚠️ Jump Rope Double Unders L3: rest 75 != 60
+- ⚠️ Jump Rope Double Unders L4: rest 75 != 60
+- ⚠️ Jump Rope Double Unders L5: rest 75 != 60
+- ⚠️ Lateral Shuffle L1: rest 75 != 60
+- ⚠️ Lateral Shuffle L2: rest 75 != 60
+- ⚠️ Lateral Shuffle L3: rest 75 != 60
+- ⚠️ Lateral Shuffle L4: rest 75 != 60
+- ⚠️ Lateral Shuffle L5: rest 75 != 60
+- ⚠️ Four-Square Hops L1: rest 75 != 60
+- ⚠️ Four-Square Hops L2: rest 75 != 60
+- ⚠️ Four-Square Hops L3: rest 75 != 60
+- ⚠️ Four-Square Hops L4: rest 75 != 60
+- ⚠️ Four-Square Hops L5: rest 75 != 60
+- ⚠️ Carioca (crossover) L1: rest 75 != 60
+- ⚠️ Carioca (crossover) L2: rest 75 != 60
+- ⚠️ Carioca (crossover) L3: rest 75 != 60
+- ⚠️ Carioca (crossover) L4: rest 75 != 60
+- ⚠️ Carioca (crossover) L5: rest 75 != 60
+- ⚠️ Hexagon Drill L1: rest 75 != 60
+- ⚠️ Hexagon Drill L2: rest 75 != 60
+- ⚠️ Hexagon Drill L3: rest 75 != 60
+- ⚠️ Hexagon Drill L4: rest 75 != 60
+- ⚠️ Hexagon Drill L5: rest 75 != 60
+- ⚠️ Shuttle Sprint L1: rest 75 != 60
+- ⚠️ Shuttle Sprint L2: rest 75 != 60
+- ⚠️ Shuttle Sprint L3: rest 75 != 60
+- ⚠️ Shuttle Sprint L4: rest 75 != 60
+- ⚠️ Shuttle Sprint L5: rest 75 != 60
+- ⚠️ Crouch Run (Army) L1: rest 75 != 60
+- ⚠️ Crouch Run (Army) L2: rest 75 != 60
+- ⚠️ Crouch Run (Army) L3: rest 75 != 60
+- ⚠️ Crouch Run (Army) L4: rest 75 != 60
+- ⚠️ Crouch Run (Army) L5: rest 75 != 60
+- ⚠️ Inchworm L1: rest 75 != 60
+- ⚠️ Inchworm L2: rest 75 != 60
+- ⚠️ Inchworm L3: rest 75 != 60
+- ⚠️ Inchworm L4: rest 75 != 60
+- ⚠️ Inchworm L5: rest 75 != 60
+- ⚠️ Rolling Sit-Up L1: rest 75 != 60
+- ⚠️ Rolling Sit-Up L2: rest 75 != 60
+- ⚠️ Rolling Sit-Up L3: rest 75 != 60
+- ⚠️ Rolling Sit-Up L4: rest 75 != 60
+- ⚠️ Rolling Sit-Up L5: rest 75 != 60
+- ⚠️ Bear Crawl L1: rest 75 != 60
+- ⚠️ Bear Crawl L2: rest 75 != 60
+- ⚠️ Bear Crawl L3: rest 75 != 60
+- ⚠️ Bear Crawl L4: rest 75 != 60
+- ⚠️ Bear Crawl L5: rest 75 != 60
+- ⚠️ Crab Walk L1: rest 75 != 60
+- ⚠️ Crab Walk L2: rest 75 != 60
+- ⚠️ Crab Walk L3: rest 75 != 60
+- ⚠️ Crab Walk L4: rest 75 != 60
+- ⚠️ Crab Walk L5: rest 75 != 60
+- ⚠️ Frogger L1: rest 75 != 60
+- ⚠️ Frogger L2: rest 75 != 60
+- ⚠️ Frogger L3: rest 75 != 60
+- ⚠️ Frogger L4: rest 75 != 60
+- ⚠️ Frogger L5: rest 75 != 60
+- ⚠️ Rolling Squat L1: rest 75 != 60
+- ⚠️ Rolling Squat L2: rest 75 != 60
+- ⚠️ Rolling Squat L3: rest 75 != 60
+- ⚠️ Rolling Squat L4: rest 75 != 60
+- ⚠️ Rolling Squat L5: rest 75 != 60
+- ⚠️ Shoulder Roll (forward roll) L1: rest 75 != 60
+- ⚠️ Shoulder Roll (forward roll) L2: rest 75 != 60
+- ⚠️ Shoulder Roll (forward roll) L3: rest 75 != 60
+- ⚠️ Shoulder Roll (forward roll) L4: rest 75 != 60
+- ⚠️ Shoulder Roll (forward roll) L5: rest 75 != 60
+- ⚠️ Shoulder Pop L1: rest 75 != 60
+- ⚠️ Shoulder Pop L2: rest 75 != 60
+- ⚠️ Shoulder Pop L3: rest 75 != 60
+- ⚠️ Shoulder Pop L4: rest 75 != 60
+- ⚠️ Shoulder Pop L5: rest 75 != 60
+- ⚠️ Scapular Push-Up (wall) L1: rest 45 != 60
+- ⚠️ Scapular Push-Up (wall) L2: rest 45 != 60
+- ⚠️ Scapular Push-Up (wall) L3: rest 45 != 60
+- ⚠️ Scapular Push-Up (wall) L4: rest 45 != 60
+- ⚠️ Scapular Push-Up (wall) L5: rest 45 != 60
+- ⚠️ Prone I Raise L1: rest 45 != 60
+- ⚠️ Prone I Raise L2: rest 45 != 60
+- ⚠️ Prone I Raise L3: rest 45 != 60
+- ⚠️ Prone I Raise L4: rest 45 != 60
+- ⚠️ Prone I Raise L5: rest 45 != 60
+- ⚠️ Scapular Wall Slide L1: rest 45 != 60
+- ⚠️ Scapular Wall Slide L2: rest 45 != 60
+- ⚠️ Scapular Wall Slide L3: rest 45 != 60
+- ⚠️ Scapular Wall Slide L4: rest 45 != 60
+- ⚠️ Scapular Wall Slide L5: rest 45 != 60
+- ⚠️ Floor Angel L1: rest 45 != 60
+- ⚠️ Floor Angel L2: rest 45 != 60
+- ⚠️ Floor Angel L3: rest 45 != 60
+- ⚠️ Floor Angel L4: rest 45 != 60
+- ⚠️ Floor Angel L5: rest 45 != 60
+- ⚠️ Side-Lying External Rotation (per side) L1: rest 45 != 60
+- ⚠️ Side-Lying External Rotation (per side) L2: rest 45 != 60
+- ⚠️ Side-Lying External Rotation (per side) L3: rest 45 != 60
+- ⚠️ Side-Lying External Rotation (per side) L4: rest 45 != 60
+- ⚠️ Side-Lying External Rotation (per side) L5: rest 45 != 60
+- ⚠️ Band Pull-Apart L1: rest 45 != 60
+- ⚠️ Band Pull-Apart L2: rest 45 != 60
+- ⚠️ Band Pull-Apart L3: rest 45 != 60
+- ⚠️ Band Pull-Apart L4: rest 45 != 60
+- ⚠️ Band Pull-Apart L5: rest 45 != 60
+- ⚠️ Prone T Raise L1: rest 45 != 60
+- ⚠️ Prone T Raise L2: rest 45 != 60
+- ⚠️ Prone T Raise L3: rest 45 != 60
+- ⚠️ Prone T Raise L4: rest 45 != 60
+- ⚠️ Prone T Raise L5: rest 45 != 60
+- ⚠️ Scapular Push-Up (knees) L1: rest 45 != 60
+- ⚠️ Scapular Push-Up (knees) L2: rest 45 != 60
+- ⚠️ Scapular Push-Up (knees) L3: rest 45 != 60
+- ⚠️ Scapular Push-Up (knees) L4: rest 45 != 60
+- ⚠️ Scapular Push-Up (knees) L5: rest 45 != 60
+- ⚠️ Prone Y Raise L1: rest 45 != 60
+- ⚠️ Prone Y Raise L2: rest 45 != 60
+- ⚠️ Prone Y Raise L3: rest 45 != 60
+- ⚠️ Prone Y Raise L4: rest 45 != 60
+- ⚠️ Prone Y Raise L5: rest 45 != 60
+- ⚠️ Prone L Raise L1: rest 45 != 60
+- ⚠️ Prone L Raise L2: rest 45 != 60
+- ⚠️ Prone L Raise L3: rest 45 != 60
+- ⚠️ Prone L Raise L4: rest 45 != 60
+- ⚠️ Prone L Raise L5: rest 45 != 60
+- ⚠️ Prone W Raise L1: rest 45 != 60
+- ⚠️ Prone W Raise L2: rest 45 != 60
+- ⚠️ Prone W Raise L3: rest 45 != 60
+- ⚠️ Prone W Raise L4: rest 45 != 60
+- ⚠️ Prone W Raise L5: rest 45 != 60
+- ⚠️ Scapular Push-Up L1: rest 45 != 60
+- ⚠️ Scapular Push-Up L2: rest 45 != 60
+- ⚠️ Scapular Push-Up L3: rest 45 != 60
+- ⚠️ Scapular Push-Up L4: rest 45 != 60
+- ⚠️ Scapular Push-Up L5: rest 45 != 60
+- ⚠️ Band External Rotation (per side) L1: rest 45 != 60
+- ⚠️ Band External Rotation (per side) L2: rest 45 != 60
+- ⚠️ Band External Rotation (per side) L3: rest 45 != 60
+- ⚠️ Band External Rotation (per side) L4: rest 45 != 60
+- ⚠️ Band External Rotation (per side) L5: rest 45 != 60
+- ⚠️ Face Pull L1: rest 45 != 60
+- ⚠️ Face Pull L2: rest 45 != 60
+- ⚠️ Face Pull L3: rest 45 != 60
+- ⚠️ Face Pull L4: rest 45 != 60
+- ⚠️ Face Pull L5: rest 45 != 60
+- ⚠️ Support Scapula Shrug L1: rest 45 != 60
+- ⚠️ Support Scapula Shrug L2: rest 45 != 60
+- ⚠️ Support Scapula Shrug L3: rest 45 != 60
+- ⚠️ Support Scapula Shrug L4: rest 45 != 60
+- ⚠️ Support Scapula Shrug L5: rest 45 != 60
+- ⚠️ Band External Rotation at 90 Degrees (per side) L1: rest 45 != 60
+- ⚠️ Band External Rotation at 90 Degrees (per side) L2: rest 45 != 60
+- ⚠️ Band External Rotation at 90 Degrees (per side) L3: rest 45 != 60
+- ⚠️ Band External Rotation at 90 Degrees (per side) L4: rest 45 != 60
+- ⚠️ Band External Rotation at 90 Degrees (per side) L5: rest 45 != 60
+- ⚠️ Cuban Press L1: rest 45 != 60
+- ⚠️ Cuban Press L2: rest 45 != 60
+- ⚠️ Cuban Press L3: rest 45 != 60
+- ⚠️ Cuban Press L4: rest 45 != 60
+- ⚠️ Cuban Press L5: rest 45 != 60
+- ⚠️ Palm Pulses and Finger Lifts L1: rest 45 != 60
+- ⚠️ Palm Pulses and Finger Lifts L2: rest 45 != 60
+- ⚠️ Palm Pulses and Finger Lifts L3: rest 45 != 60
+- ⚠️ Palm Pulses and Finger Lifts L4: rest 45 != 60
+- ⚠️ Palm Pulses and Finger Lifts L5: rest 45 != 60
+- ⚠️ Seated Wrist Circles and Bends L1: rest 45 != 60
+- ⚠️ Seated Wrist Circles and Bends L2: rest 45 != 60
+- ⚠️ Seated Wrist Circles and Bends L3: rest 45 != 60
+- ⚠️ Seated Wrist Circles and Bends L4: rest 45 != 60
+- ⚠️ Seated Wrist Circles and Bends L5: rest 45 != 60
+- ⚠️ Fist-on-Floor Forearm Rotations L1: rest 45 != 60
+- ⚠️ Fist-on-Floor Forearm Rotations L2: rest 45 != 60
+- ⚠️ Fist-on-Floor Forearm Rotations L3: rest 45 != 60
+- ⚠️ Fist-on-Floor Forearm Rotations L4: rest 45 != 60
+- ⚠️ Fist-on-Floor Forearm Rotations L5: rest 45 != 60
+- ⚠️ Back-of-Hand Push-Up (knees) L1: rest 45 != 60
+- ⚠️ Back-of-Hand Push-Up (knees) L2: rest 45 != 60
+- ⚠️ Back-of-Hand Push-Up (knees) L3: rest 45 != 60
+- ⚠️ Back-of-Hand Push-Up (knees) L4: rest 45 != 60
+- ⚠️ Back-of-Hand Push-Up (knees) L5: rest 45 != 60
+- ⚠️ Eccentric Wrist Extension (per side) L1: rest 45 != 60
+- ⚠️ Eccentric Wrist Extension (per side) L2: rest 45 != 60
+- ⚠️ Eccentric Wrist Extension (per side) L3: rest 45 != 60
+- ⚠️ Eccentric Wrist Extension (per side) L4: rest 45 != 60
+- ⚠️ Eccentric Wrist Extension (per side) L5: rest 45 != 60
+- ⚠️ Back-of-Hand Push-Up L1: rest 45 != 60
+- ⚠️ Back-of-Hand Push-Up L2: rest 45 != 60
+- ⚠️ Back-of-Hand Push-Up L3: rest 45 != 60
+- ⚠️ Back-of-Hand Push-Up L4: rest 45 != 60
+- ⚠️ Back-of-Hand Push-Up L5: rest 45 != 60
+- ⚠️ Lateral Leg Raise (side-lying, per side) L1: rest 45 != 60
+- ⚠️ Lateral Leg Raise (side-lying, per side) L2: rest 45 != 60
+- ⚠️ Lateral Leg Raise (side-lying, per side) L3: rest 45 != 60
+- ⚠️ Lateral Leg Raise (side-lying, per side) L4: rest 45 != 60
+- ⚠️ Lateral Leg Raise (side-lying, per side) L5: rest 45 != 60
+- ⚠️ Medial Leg Raise (side-lying, per side) L1: rest 45 != 60
+- ⚠️ Medial Leg Raise (side-lying, per side) L2: rest 45 != 60
+- ⚠️ Medial Leg Raise (side-lying, per side) L3: rest 45 != 60
+- ⚠️ Medial Leg Raise (side-lying, per side) L4: rest 45 != 60
+- ⚠️ Medial Leg Raise (side-lying, per side) L5: rest 45 != 60
+- ⚠️ Bent-Leg Lateral Raise (clamshell, per side) L1: rest 45 != 60
+- ⚠️ Bent-Leg Lateral Raise (clamshell, per side) L2: rest 45 != 60
+- ⚠️ Bent-Leg Lateral Raise (clamshell, per side) L3: rest 45 != 60
+- ⚠️ Bent-Leg Lateral Raise (clamshell, per side) L4: rest 45 != 60
+- ⚠️ Bent-Leg Lateral Raise (clamshell, per side) L5: rest 45 != 60
+- ⚠️ Single-Leg Tuck (side-lying, per side) L1: rest 45 != 60
+- ⚠️ Single-Leg Tuck (side-lying, per side) L2: rest 45 != 60
+- ⚠️ Single-Leg Tuck (side-lying, per side) L3: rest 45 != 60
+- ⚠️ Single-Leg Tuck (side-lying, per side) L4: rest 45 != 60
+- ⚠️ Single-Leg Tuck (side-lying, per side) L5: rest 45 != 60
+- ⚠️ Fire Hydrant (per side) L1: rest 45 != 60
+- ⚠️ Fire Hydrant (per side) L2: rest 45 != 60
+- ⚠️ Fire Hydrant (per side) L3: rest 45 != 60
+- ⚠️ Fire Hydrant (per side) L4: rest 45 != 60
+- ⚠️ Fire Hydrant (per side) L5: rest 45 != 60
+- ⚠️ Donkey Kick (per side) L1: rest 45 != 60
+- ⚠️ Donkey Kick (per side) L2: rest 45 != 60
+- ⚠️ Donkey Kick (per side) L3: rest 45 != 60
+- ⚠️ Donkey Kick (per side) L4: rest 45 != 60
+- ⚠️ Donkey Kick (per side) L5: rest 45 != 60
+- ⚠️ Terminal Knee Extension (per side) L1: rest 45 != 60
+- ⚠️ Terminal Knee Extension (per side) L2: rest 45 != 60
+- ⚠️ Terminal Knee Extension (per side) L3: rest 45 != 60
+- ⚠️ Terminal Knee Extension (per side) L4: rest 45 != 60
+- ⚠️ Terminal Knee Extension (per side) L5: rest 45 != 60
+- ⚠️ Slow Stair Descent (per side) L1: rest 45 != 60
+- ⚠️ Slow Stair Descent (per side) L2: rest 45 != 60
+- ⚠️ Slow Stair Descent (per side) L3: rest 45 != 60
+- ⚠️ Slow Stair Descent (per side) L4: rest 45 != 60
+- ⚠️ Slow Stair Descent (per side) L5: rest 45 != 60
+- ⚠️ Petersen Step-Up (per side) L1: rest 45 != 60
+- ⚠️ Petersen Step-Up (per side) L2: rest 45 != 60
+- ⚠️ Petersen Step-Up (per side) L3: rest 45 != 60
+- ⚠️ Petersen Step-Up (per side) L4: rest 45 != 60
+- ⚠️ Petersen Step-Up (per side) L5: rest 45 != 60
+- ⚠️ Supine Chin Nod L1: rest 45 != 60
+- ⚠️ Supine Chin Nod L2: rest 45 != 60
+- ⚠️ Supine Chin Nod L3: rest 45 != 60
+- ⚠️ Supine Chin Nod L4: rest 45 != 60
+- ⚠️ Supine Chin Nod L5: rest 45 != 60
+- ⚠️ Seated Chin Tuck L1: rest 45 != 60
+- ⚠️ Seated Chin Tuck L2: rest 45 != 60
+- ⚠️ Seated Chin Tuck L3: rest 45 != 60
+- ⚠️ Seated Chin Tuck L4: rest 45 != 60
+- ⚠️ Seated Chin Tuck L5: rest 45 != 60
+- ⚠️ Chin Tuck with Head Lift L1: rest 45 != 60
+- ⚠️ Chin Tuck with Head Lift L2: rest 45 != 60
+- ⚠️ Chin Tuck with Head Lift L3: rest 45 != 60
+- ⚠️ Chin Tuck with Head Lift L4: rest 45 != 60
+- ⚠️ Chin Tuck with Head Lift L5: rest 45 != 60
+- ⚠️ Manual-Resistance Head Raise L1: rest 45 != 60
+- ⚠️ Manual-Resistance Head Raise L2: rest 45 != 60
+- ⚠️ Manual-Resistance Head Raise L3: rest 45 != 60
+- ⚠️ Manual-Resistance Head Raise L4: rest 45 != 60
+- ⚠️ Manual-Resistance Head Raise L5: rest 45 != 60
+- ⚠️ Spine Stretch Forward L1: rest 45 != 60
+- ⚠️ Spine Stretch Forward L2: rest 45 != 60
+- ⚠️ Spine Stretch Forward L3: rest 45 != 60
+- ⚠️ Spine Stretch Forward L4: rest 45 != 60
+- ⚠️ Spine Stretch Forward L5: rest 45 != 60
+- ⚠️ Spine Twist L1: rest 45 != 60
+- ⚠️ Spine Twist L2: rest 45 != 60
+- ⚠️ Spine Twist L3: rest 45 != 60
+- ⚠️ Spine Twist L4: rest 45 != 60
+- ⚠️ Spine Twist L5: rest 45 != 60
+- ⚠️ Single-Leg Circle (per side) L1: rest 45 != 60
+- ⚠️ Single-Leg Circle (per side) L2: rest 45 != 60
+- ⚠️ Single-Leg Circle (per side) L3: rest 45 != 60
+- ⚠️ Single-Leg Circle (per side) L4: rest 45 != 60
+- ⚠️ Single-Leg Circle (per side) L5: rest 45 != 60
+- ⚠️ Saw L1: rest 45 != 60
+- ⚠️ Saw L2: rest 45 != 60
+- ⚠️ Saw L3: rest 45 != 60
+- ⚠️ Saw L4: rest 45 != 60
+- ⚠️ Saw L5: rest 45 != 60
+- ⚠️ Rolling Like a Ball L1: rest 45 != 60
+- ⚠️ Rolling Like a Ball L2: rest 45 != 60
+- ⚠️ Rolling Like a Ball L3: rest 45 != 60
+- ⚠️ Rolling Like a Ball L4: rest 45 != 60
+- ⚠️ Rolling Like a Ball L5: rest 45 != 60
+- ⚠️ Single-Leg Stretch L1: rest 45 != 60
+- ⚠️ Single-Leg Stretch L2: rest 45 != 60
+- ⚠️ Single-Leg Stretch L3: rest 45 != 60
+- ⚠️ Single-Leg Stretch L4: rest 45 != 60
+- ⚠️ Single-Leg Stretch L5: rest 45 != 60
+- ⚠️ Seal L1: rest 45 != 60
+- ⚠️ Seal L2: rest 45 != 60
+- ⚠️ Seal L3: rest 45 != 60
+- ⚠️ Seal L4: rest 45 != 60
+- ⚠️ Seal L5: rest 45 != 60
+- ⚠️ Roll-Up L1: rest 45 != 60
+- ⚠️ Roll-Up L2: rest 45 != 60
+- ⚠️ Roll-Up L3: rest 45 != 60
+- ⚠️ Roll-Up L4: rest 45 != 60
+- ⚠️ Roll-Up L5: rest 45 != 60
+- ⚠️ Double-Leg Stretch L1: rest 45 != 60
+- ⚠️ Double-Leg Stretch L2: rest 45 != 60
+- ⚠️ Double-Leg Stretch L3: rest 45 != 60
+- ⚠️ Double-Leg Stretch L4: rest 45 != 60
+- ⚠️ Double-Leg Stretch L5: rest 45 != 60
+- ⚠️ Double-Leg Kick L1: rest 45 != 60
+- ⚠️ Double-Leg Kick L2: rest 45 != 60
+- ⚠️ Double-Leg Kick L3: rest 45 != 60
+- ⚠️ Double-Leg Kick L4: rest 45 != 60
+- ⚠️ Double-Leg Kick L5: rest 45 != 60
+- ⚠️ Scissors L1: rest 45 != 60
+- ⚠️ Scissors L2: rest 45 != 60
+- ⚠️ Scissors L3: rest 45 != 60
+- ⚠️ Scissors L4: rest 45 != 60
+- ⚠️ Scissors L5: rest 45 != 60
+- ⚠️ Corkscrew L1: rest 45 != 60
+- ⚠️ Corkscrew L2: rest 45 != 60
+- ⚠️ Corkscrew L3: rest 45 != 60
+- ⚠️ Corkscrew L4: rest 45 != 60
+- ⚠️ Corkscrew L5: rest 45 != 60
+- ⚠️ Open-Leg Rocker L1: rest 45 != 60
+- ⚠️ Open-Leg Rocker L2: rest 45 != 60
+- ⚠️ Open-Leg Rocker L3: rest 45 != 60
+- ⚠️ Open-Leg Rocker L4: rest 45 != 60
+- ⚠️ Open-Leg Rocker L5: rest 45 != 60
+- ⚠️ Roll-Over L1: rest 45 != 60
+- ⚠️ Roll-Over L2: rest 45 != 60
+- ⚠️ Roll-Over L3: rest 45 != 60
+- ⚠️ Roll-Over L4: rest 45 != 60
+- ⚠️ Roll-Over L5: rest 45 != 60

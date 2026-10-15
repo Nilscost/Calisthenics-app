@@ -49,6 +49,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.session.SessionScreen
 import io.github.gonbei774.calisthenicsmemory.ui.screens.SettingsScreen
 import io.github.gonbei774.calisthenicsmemory.ui.train.PreviewScreen
 import io.github.gonbei774.calisthenicsmemory.ui.train.TrainScreen
+import io.github.gonbei774.calisthenicsmemory.ui.train.ProgramsScreen
 
 enum class Tab(val route: String, val labelRes: Int, val icon: ImageVector) {
     TRAIN("train", R.string.tab_train, Icons.Filled.PlayArrow),
@@ -61,7 +62,7 @@ enum class Tab(val route: String, val labelRes: Int, val icon: ImageVector) {
 enum class Route(val route: String) {
     TRAIN("train"), PROGRESS("progress"), HISTORY("history"), SETTINGS("settings"),
     SESSION("session"), ONBOARDING("onboarding"), FIRST_RUN("first_run"), BACKUP("backup"), LICENSES("licenses"),
-    PROFILES("profiles"), PROFILE_EDIT("profile_edit"), PREVIEW("preview"), HISTORY_DETAIL("history_detail"), PRIVACY("privacy");
+    PROFILES("profiles"), PROFILE_EDIT("profile_edit"), PREVIEW("preview"), PROGRAMS("programs"), HISTORY_DETAIL("history_detail"), PRIVACY("privacy");
 
     val tab: Tab? get() = Tab.entries.firstOrNull { it.route == route }
     /** How deep in a flow the screen is: tabs 0, their sub-screens 1, the running workout 2 (drives the slide direction). */
@@ -126,8 +127,9 @@ fun AppNav(theme: AppTheme = AppTheme.SYSTEM, onTheme: (AppTheme) -> Unit = {}) 
             label = "route",
         ) { r ->
         when (r) {
-            Route.TRAIN -> TrainScreen(m, onPreview = { go(Route.PREVIEW) }, onStarted = { go(Route.SESSION) },
+            Route.TRAIN -> TrainScreen(m, onPreview = { go(Route.PREVIEW) }, onStarted = { go(Route.SESSION) }, onPrograms = { go(Route.PROGRAMS) },
                 onEditProfile = { id -> editId = id; editFrom = Route.TRAIN.route; go(Route.PROFILE_EDIT) })
+            Route.PROGRAMS -> { BackHandler { go(Route.TRAIN) }; ProgramsScreen(m, onBack = { go(Route.TRAIN) }, onStarted = { go(Route.SESSION) }) }
             Route.PREVIEW -> { BackHandler { go(Route.TRAIN) }; PreviewScreen(m, onBack = { go(Route.TRAIN) }, onStarted = { go(Route.SESSION) }) }
             Route.PROGRESS -> ProgressScreen(m)
             Route.HISTORY -> HistoryScreen(m, onOpenExercise = { OpenExercise.request(it); go(Route.PROGRESS) }, onOpen = { id -> detailId = id; go(Route.HISTORY_DETAIL) })

@@ -44,7 +44,7 @@ private fun moveOn(c: Catalog, profile: EquipmentProfile, p: ProgressSnapshot, v
     val pol = c.policyFor(v)
     val top = pol?.tiers?.maxOfOrNull { it.index } ?: 5
     val round = vp.consecutiveAbove.coerceAtLeast(1)
-    fun next(): String? = pol?.nextVariationIds.orEmpty().firstOrNull { n -> c.variation(n)?.let { isAvailable(it, profile) } == true && Goals.unmet(c, n, p).filter { it.variationId != v.id }.isEmpty() }
+    fun next(): String? = if (c.exerciseGroups.any { v.id in it.alternativeVariationIds }) null else pol?.progressionSuccessors().orEmpty().firstOrNull { n -> c.variation(n)?.let { isAvailable(it, profile) } == true && Goals.unmet(c, n, p).filter { it.variationId != v.id }.isEmpty() }
     if (vp.ruleAbove) return next()?.let { Suggestion.NextExercise(v.id, it, round) }        // a Rep range rule has no levels
     val eq = v.loadEquipmentId()
     if (vp.tier + 2 <= top) return Suggestion.RaiseLevel(v.id, vp.tier + 2, round)

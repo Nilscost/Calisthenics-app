@@ -674,3 +674,53 @@ Process notes for the whole batch: every task was verified in the Hermes contain
 - The owner rendered the three ids on his Mac (84 / 84 / 72 frames, 0 failed). `encode.py` and `install_clips.py` for those three ids only (`--dry` first: 3 prepared, 0 problems): `git status` shows only the three demos and thumbnails changed. Sizes 17 / 11 / 7 KB, seams 0.14 / 0.04 / 0.02. `poses.py` was not run.
 - Contact sheets of the real frames are in `docs/evidence/clips-r7.2/rendered-*.png`. **Honest read:** the pass-through's behind-the-back phase reads poorly from az 55 (band edge-on, near arm sticks out sideways); the Pallof press is subtle from az 58; the hold is fine. F10/F11 are "rendered, owner to judge", not "done". Camera or angle tweaks are listed in `clips-r7.2/review.md`.
 - Verify: `docs/evidence/r7.2-t09b-verify-2026-10-14.log`.
+
+### R8 preflight and owner decisions (2026-10-14)
+- Read docs 23–25 and audited references and progression graphs with a Luna agent: 379 unique new IDs, no unresolved predecessor IDs or detected cycles. No implementation or clip accepted during preflight.
+- Owner resolved handoff questions and approved comparable exercise rotation, app-exercise-only unlocks, the six explicit explosive push-up caps, exercise-specific power defaults, draft content defaults and equipment-profile filtering. Full decisions: `docs/26-r8-execution-decisions.md`.
+- Contract corrections: depth-jump prop height now 30 cm; its former box-height/self-check gate becomes box-jump + squat-pistol app prerequisites. The same extra gates protect rebound box jumps. Ring muscle-up negatives/full movement gain chest-to-bar pull-up + ring-dip prerequisites. All remain DRAFT product rules.
+- **NOT done:** pose review/render/installation, full verification, UI reviews, release, phone testing.
+- **Choices not in the handoff:** rotation grouping/main mastery behavior, restricted hard-cap scope, formal app-only gates, proper enums and display renames approved in chat. Poses are prioritized for tomorrow morning; app work starts in parallel.
+
+### R8-T01 · first reviewed pose pair (2026-10-14)
+- Accepted and committed `squat_legs` (20 ids, 499c7da) and `pushup_new` (14 ids, ca36a52) after explicit-ID checks and coordinator contact-sheet review. Review and representative sheets: `docs/evidence/clips-r8/`. Many first-pass geometry and movement errors were sent back to the Luna agents before acceptance.
+- Partial render lists: batch 1 = 15/121, batch 2 = 6/66, batch 3 = 13/192. Only accepted IDs are listed. No Blender movie rendered, encoded or installed. Next pair: core_floor and dip_planche.
+- App work in parallel: deterministic catalog importer, model metadata, tabs/equipment/aliases and rotation/caps underway. Android `:app:compileDebugKotlin` passed in isolated `/workspace/r8-codex` (33s); this is a compile check, not full verification. Rotation tests pass in domain runs; catalog regression tests are still being updated to the explicit R8 contract, with actual content defects fixed rather than waived.
+- **NOT done:** remaining poses and batches, renders/install, complete app features, passing full verify/UI review, release/phone check.
+- **Choices not in the handoff:** ordinary pose scripts/checks run on Mac, Pillow preview sheets generated using the existing Hermes toolchain. Reviewed manifests are explicitly tracked despite the work directory ignore rule.
+
+### R8 contract follow-up · structural and source checks (2026-10-14)
+- Formalized the handoff's baseline gates: all 30 plyometric IDs also require squat-air; the six explicitly capped explosive push-ups also require pushup-standard. All are app-exercise achievements, without external measurements.
+- Corrected shoulder-roll's missing areas/primary muscles and pilates-spine-stretch-forward's missing CORE area. Added PLYOMETRIC/CONDITIONING patterns while retaining anatomical movement labels; neck exercises now use NECK.
+- Read the supplied CC2 PDF and rendered sample pages: it is a text-only archive export without the exercise photos. Written text (printed pp. 75–79, 83, 100, 105) establishes five flag corrections recorded in doc26 and the contract: clutch grip, the one-tucked/one-extended split clutch positions, bent pole-side knee for Split Press, and overhead bar plus wall/support for Support Press. The contract's Support Press equipment and props now match that setup.
+- **NOT done:** flag photo comparison (asked for another local copy if one exists); flag poses are not accepted; no claim of expert technique review or phone testing.
+
+### R8 pose coordination checkpoint · 2026-10-14
+
+Accepted and committed pushup_new (14), squat_legs (20), dip_planche (15): 49 unique poses. Explicit manifests currently contain batch 1: 25/121, batch 2: 11/66, batch 3: 13/192. Core_floor is being repaired and has not entered a manifest. Reviewed joint sheets are draft render inputs, not movie or phone verification.
+
+A coordinator help probe invoked the pose tool with an unrecognized --help argument, which regenerated cached joints for registered exercises. No source or movie assets were changed. Accepted render manifests remain explicit, preventing an accidental all-exercise render; future invocations use known exercise IDs only.
+
+The latest app compilation succeeds after T07 repairs; fixed-program and rotation domain tests pass. Broader verification remains pending catalog expectation/seed-fixture updates and app UI corrections. Clip-completeness failures remain expected until owner renders and clips are installed; these tests are retained. No release or owner gate is approved.
+
+### R8 core acceptance and mainline review · 2026-10-15
+
+Core_floor accepted after the required contact/choreography repairs: 70/379 total accepted, manifests 43/121 + 12/66 + 15/192. Next pair handstand_balance and pullup_new started with Luna.
+
+Read-only Luna branch review was checked against actual graph continuations. Several proposed intermediate choices were terminal in the contract, so reviewed continuation edges were explicitly added before switching the main successor. See execution decisions for chosen paths. Existing next-edge prefixes are retained. Python generator checks now include five independently specified reconnecting ladders and remain 10/10 passing. Broad domain verification pending; no T09 completion claim.
+
+Engine verification now passes all 405 domain tests (data module has no unit-test sources), including the rotation and fixed-program tests, after exact contract-extension/terminal assertions were updated. Debug seed regenerated deliberately; its exact comparison guard remains. A further real-catalog check now verifies each reviewed intermediate path can advance through its actual achievement prerequisites and every built-in skill goal still reaches its target; verification of that added check is next.
+
+### Owner workout feedback · 2026-10-15
+
+Recorded all comments in docs/user-feedback.md and the comprehensive-but-uncluttered review lens. Additional structural ladder rewiring was removed from generated output and moved into discussion docs 27–28; previous approved comparable rotation remains. Automatic filler no longer repeats an existing progression to reach a duration; automatic goal/filler duplicate choices are filtered after resolution while explicit manual additions/swaps remain explicit. Added five-second setup between split hold sides in generated and fixed plans without shortening holds. TTS rate .75 and side-aware spoken labels implemented.
+
+Full verification snapshot before the final compact Train header adjustment: 409 domain tests pass, 175 app tests with five failures (three missing-clip/thumbnail checks pending renders, two Train layout regressions). Build and lint passed. Tree canvas was virtualized to fix the larger catalog's memory failure; no OOM in this full run. The Programs link was moved into the existing Train heading row to preserve the uncluttered screen and address the fit regressions. Current follow-up verification also adds a real generated side-plank timing regression test.
+
+Thoracic/right-hand-behind-head anatomy and rear-clasp viewing angle were corrected in stretches_b.py. Both text checks pass. Coordinator viewed Blender start-frame stills after sandboxed Blender failed at startup and the same two-still render succeeded outside the sandbox. Full corrected movies are not installed yet.
+
+### R8 app implementation checkpoint · 2026-10-15
+
+Saved working implementation for T03–T09 and the workout-feedback fixes. Latest broad verification: 410 domain tests pass; 172/175 app tests pass. The three remaining app failures are the intact clip/thumbnail completeness and decode checks for the new exercises, whose movies are not installed yet. Lint and debug assembly pass. This is an implementation checkpoint, NOT completion of all T03–T10 gates: ui-screens/visual review and owner device checks have not been performed, assets are incomplete, version/release remains pending. Exact log: docs/evidence/r8-checkpoint-verify-2026-10-15.log.
+
+The compact Train header keeps Programs discoverable without adding a full-height extra row; its previously failing screen-fit tests now pass. Dedicated workout feedback regressions verify no automatic repeated progression and five-second change-side setup without shortening the two holds. Fixed Pilates core flow becomes 739 seconds because the new setup interval is added to its original 734-second movement time.

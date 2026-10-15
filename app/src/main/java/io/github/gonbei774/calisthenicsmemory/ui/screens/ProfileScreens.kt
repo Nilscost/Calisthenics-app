@@ -42,6 +42,14 @@ fun equipmentLabel(id: String): Int = when (id) {
     "weighted-vest" -> R.string.eq_vest
     "foot-anchor" -> R.string.eq_foot_anchor
     "parallettes" -> R.string.eq_parallettes
+    "rings" -> R.string.eq_rings
+    "ab-wheel" -> R.string.eq_ab_wheel
+    "step" -> R.string.eq_step
+    "box" -> R.string.eq_box
+    "bench" -> R.string.eq_bench
+    "pole" -> R.string.eq_pole
+    "sliders" -> R.string.eq_sliders
+    "jump-rope" -> R.string.eq_jump_rope
     else -> R.string.eq_other
 }
 
@@ -92,6 +100,14 @@ private fun equipmentLabelShort(id: String): Int = when (id) {
     "weighted-vest" -> R.string.eq_vest_short
     "foot-anchor" -> R.string.eq_foot_anchor_short
     "parallettes" -> R.string.eq_parallettes_short
+    "rings" -> R.string.eq_rings_short
+    "ab-wheel" -> R.string.eq_ab_wheel_short
+    "step" -> R.string.eq_step_short
+    "box" -> R.string.eq_box_short
+    "bench" -> R.string.eq_bench_short
+    "pole" -> R.string.eq_pole_short
+    "sliders" -> R.string.eq_sliders_short
+    "jump-rope" -> R.string.eq_jump_rope_short
     else -> R.string.eq_other
 }
 

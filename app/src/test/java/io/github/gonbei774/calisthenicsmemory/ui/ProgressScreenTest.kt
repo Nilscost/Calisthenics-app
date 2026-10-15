@@ -32,6 +32,7 @@ class ProgressScreenTest {
 
     private fun show() { rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { ProgressScreen() } }; rule.waitForIdle() }
     private fun desc(tag: String) = rule.onNodeWithTag(tag).fetchSemanticsNode().config.first { it.key.name == "ContentDescription" }.value.let { (it as List<*>).first().toString() }
+    private fun revealTreeNode(id: String) { rule.onNodeWithTag("tree_rows").performScrollToNode(hasTestTag("tree_node_$id")) }
 
     @Test fun pushTreeShowsNodesWithStarsAndStates() {
         LevelStore.save(ctx, mapOf("pushup-standard" to 3))
@@ -39,7 +40,9 @@ class ProgressScreenTest {
         assertTrue(desc("tree_node_pushup-standard").contains("2 of 5 stars")) // D8: the two levels below the starting level count
         assertTrue(desc("tree_node_pushup-standard").contains("Training now"))
         assertTrue(desc("tree_node_pushup-incline").contains("Ready to start") || desc("tree_node_pushup-incline").contains("Needs equipment"))
+        revealTreeNode("pushup-one-arm")
         assertTrue(desc("tree_node_pushup-one-arm").contains("Locked"))
+        revealTreeNode("planche-lean")
         rule.onNodeWithTag("tree_node_planche-lean").assertExists() // the planche chain sits under the push-ups
     }
 
@@ -47,6 +50,7 @@ class ProgressScreenTest {
     @Test fun theDetailNoLongerShowsATooEasyCounter() {
         LevelStore.save(ctx, mapOf("pushup-standard" to 3))
         show()
+        revealTreeNode("pushup-standard")
         rule.onNodeWithTag("tree_node_pushup-standard").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
         rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("detail_too_easy").assertDoesNotExist()
@@ -69,6 +73,7 @@ class ProgressScreenTest {
     }
 
     private fun openDetailOf(id: String) {
+        revealTreeNode(id)
         rule.onNodeWithTag("tree_node_$id").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
         rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
     }
@@ -104,8 +109,10 @@ class ProgressScreenTest {
     // R7-T11 (O2): the planche lean tile says it needs the plank, and tapping it opens the plank
     @Test fun plancheLeanNeedsPlankIsATappableNote() {
         show()
-        rule.onNodeWithTag("tree_need_planche-lean", useUnmergedTree = true).performScrollTo().assertTextContains("Plank", substring = true)
-        rule.onNodeWithTag("tree_need_planche-lean", useUnmergedTree = true).performClick(); rule.waitForIdle()
+        revealTreeNode("planche-lean")
+        rule.onNodeWithTag("tree_need_planche-lean", useUnmergedTree = true).assertHasClickAction()
+            .performScrollTo().assertTextContains("Plank", substring = true)
+            .performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
         rule.onNodeWithTag("detail_title").assertTextContains("Plank", substring = true, ignoreCase = true)
     }
 
@@ -121,7 +128,9 @@ class ProgressScreenTest {
     @Test fun theGoalPicksTheFamilyTabAndOutlinesItsChain() {
         GoalStore.save(ctx, "hspu")
         show()
+        revealTreeNode("hspu-wall")
         rule.onNodeWithTag("tree_node_hspu-wall").assertExists()
+        revealTreeNode("pike-pushup")
         rule.onNodeWithTag("tree_node_pike-pushup").assertExists()
         rule.onNodeWithText("Goal: Handstand push-up").assertIsDisplayed()
     }
@@ -132,15 +141,45 @@ class ProgressScreenTest {
         rule.onNodeWithTag("tree_node_squat-air").assertExists()
         rule.onNodeWithTag("tree_node_pushup-standard").assertDoesNotExist()
         rule.onNodeWithTag("tab_chip_row").performClick(); rule.waitForIdle()
+        revealTreeNode("archer-row")
         rule.onNodeWithTag("tree_node_archer-row").assertExists() // F15: the band row now leads somewhere
         rule.onNodeWithTag("tab_chip_core").performScrollTo().performClick(); rule.waitForIdle()
+        revealTreeNode("dead-bug")
         rule.onNodeWithTag("tree_node_dead-bug").assertExists()
+    }
+
+    @Test fun aliasesAreSearchableAndShownOnExerciseDetail() {
+        show()
+        rule.onNodeWithTag("progress_search").performTextInput("Teaser (Pilates)"); rule.waitForIdle()
+        rule.onNodeWithTag("search_result_v-up").assertExists().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_title").assertTextContains("V-UP", substring = true)
+        rule.onNodeWithTag("detail_aliases").assertTextContains("Also known as: V-Up (Army), Teaser (Pilates)", substring = true)
+    }
+
+    @Test fun newProgressTabsAndRoutineOnlyDrillsAreReachableAsExpected() {
+        show()
+        for (tab in listOf("rings", "power", "conditioning", "prehab", "pilates")) {
+            rule.onNodeWithTag("tab_chip_$tab").performScrollTo().performClick(); rule.waitForIdle()
+            val family = when (tab) {
+                "rings" -> "ring-support-hold"
+                "power" -> "jump-squat"
+                "conditioning" -> "bear-crawl"
+                "prehab" -> "external-rotation-band"
+                else -> "pilates-roll-up"
+            }
+            revealTreeNode(family)
+            rule.onNodeWithTag("tree_node_$family").assertExists()
+        }
+        val drillName = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx).variations.first { it.routineOnly }.name
+        rule.onNodeWithTag("progress_search").performTextInput(drillName); rule.waitForIdle()
+        rule.onNodeWithText("No matching exercises.").assertExists()
     }
 
     @Test fun firstTapSelectsTheNodeAndOpensThePanelAboveTheTabBar() {
         LevelStore.save(ctx, mapOf("pushup-standard" to 3))
         show()
         rule.onNodeWithTag("node_panel").assertDoesNotExist()
+        revealTreeNode("pushup-standard")
         rule.onNodeWithTag("tree_node_pushup-standard").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
         rule.onNodeWithTag("node_panel").assertIsDisplayed()
         rule.onNodeWithTag("panel_title").assertTextEquals("Standard Push-Up")
@@ -170,6 +209,7 @@ class ProgressScreenTest {
         LevelStore.save(ctx, mapOf("kettlebell-deadlift" to 2))
         show()
         rule.onNodeWithTag("tab_chip_hips").performClick(); rule.waitForIdle()
+        revealTreeNode("kettlebell-deadlift")
         rule.onNodeWithTag("tree_node_kettlebell-deadlift").performScrollTo().performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
         rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("weight_step_12000").performScrollTo().assertTextContains("NOW", substring = true)   // the home profile's 12 kg bell
@@ -181,6 +221,7 @@ class ProgressScreenTest {
     @Test fun theExerciseDetailShowsTheFiveLevelsUnlocksAndCautionsWithoutActionButtons() {
         LevelStore.save(ctx, mapOf("pushup-standard" to 3))
         show()
+        revealTreeNode("pushup-standard")
         rule.onNodeWithTag("tree_node_pushup-standard").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
         rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("exercise_detail").assertIsDisplayed()
@@ -195,6 +236,7 @@ class ProgressScreenTest {
         rule.onNodeWithText("Swap", substring = true, ignoreCase = true).assertDoesNotExist()
         rule.onNodeWithTag("detail_back").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("exercise_detail").assertDoesNotExist()
+        revealTreeNode("pushup-standard")
         rule.onNodeWithTag("tree_node_pushup-standard").assertExists()
     }
 
@@ -205,7 +247,9 @@ class ProgressScreenTest {
         rule.onNodeWithTag("progress_mode_skill").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("progress_mode_skill").assertIsSelected()
         rule.onNodeWithTag("skill_chip_muscle-up").performScrollTo().performClick(); rule.waitForIdle()
+        revealTreeNode("pullup-band-assisted")
         rule.onNodeWithTag("tree_node_pullup-band-assisted").assertExists()
+        revealTreeNode("muscle-up-bar")
         rule.onNodeWithTag("tree_node_muscle-up-bar").assertExists()
         rule.onNodeWithTag("tree_node_pushup-standard").assertDoesNotExist()
         rule.onNodeWithTag("tree_node_muscle-up-bar").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
@@ -215,7 +259,9 @@ class ProgressScreenTest {
     @Test fun exercisesBelowTheCurrentOneShowFiveStars() {
         LevelStore.save(ctx, mapOf("pushup-standard" to 2, "pushup-feet-elevated" to 1))
         show()
+        revealTreeNode("pushup-standard")
         assertTrue(desc("tree_node_pushup-standard"), desc("tree_node_pushup-standard").contains("5 of 5 stars"))
+        revealTreeNode("pushup-knee")
         assertTrue(desc("tree_node_pushup-knee").contains("5 of 5 stars"))
     }
 
@@ -224,6 +270,24 @@ class ProgressScreenTest {
         val y = { t: String -> rule.onNodeWithTag(t).fetchSemanticsNode().boundsInRoot.top }
         assertTrue("${y("tree_node_pushup-incline")} < ${y("tree_node_pushup-standard")}", y("tree_node_pushup-incline") < y("tree_node_pushup-standard"))
         assertTrue("${y("tree_node_pushup-standard")} < ${y("tree_node_pushup-feet-elevated")}", y("tree_node_pushup-standard") < y("tree_node_pushup-feet-elevated"))
+    }
+
+    @Test fun theWidePushTreeScrollsToR8NodesAtItsRightEdge() {
+        show()
+        revealTreeNode("pushup-wall-push-away")
+        val rightEdge = rule.onNodeWithTag("tree_node_pushup-wall-push-away")
+        rightEdge.performScrollTo()
+        rightEdge.assertIsDisplayed()
+    }
+
+    @Test fun deepTreeRowsAreComposedOnDemandAndRemainReachable() {
+        show()
+        rule.onNodeWithTag("tree_node_pushup-one-arm").assertDoesNotExist()
+        revealTreeNode("pushup-one-arm")
+        val deepNode = rule.onNodeWithTag("tree_node_pushup-one-arm")
+        deepNode.performScrollTo().assertIsDisplayed()
+        deepNode.performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
+        rule.onNodeWithTag("panel_title").assertTextContains("One-Arm Push-Up", substring = true)
     }
 
     @Test fun stretchesHaveTheirOwnTab() {

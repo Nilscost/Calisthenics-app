@@ -67,9 +67,26 @@ class HoldTimingTest {
         val tr = on.blocks.firstOrNull { it.type == BlockType.TRANSITION }
         assertNotNull("this routine has a position change", tr)
         val next = on.blocks.drop(on.blocks.indexOf(tr) + 1).first { it.variationId != null }
-        assertEquals("Get ready: ${names[next.variationId]}", CueText.label(on, tr!!.id, names))
+        val side = when (next.side) { Side.LEFT -> " — Left side"; Side.RIGHT -> " — Right side"; else -> "" }
+        assertEquals("Get ready: ${names[next.variationId]}$side", CueText.label(on, tr!!.id, names))
         val off = plan(stretch = false)
         assertTrue(off.blocks.any { it.type == BlockType.PASSIVE_RECOVERY })
         assertEquals("Rest", CueText.label(off, off.blocks.first { it.type == BlockType.PASSIVE_RECOVERY }.id, names))
+    }
+
+    @Test fun spokenCuesIdentifySidesForWorkStretchNextAndGetReady() {
+        val base = plan(stretch = true)
+        val work = base.blocks.first { it.type == BlockType.WORK }
+        val stretchBlock = base.blocks.first { it.type == BlockType.STRETCH }
+        val transition = base.blocks.first { it.type == BlockType.TRANSITION }
+        val next = base.blocks.drop(base.blocks.indexOf(transition) + 1).first { it.variationId != null }
+        val leftWork = work.copy(side = Side.LEFT)
+        val rightWork = next.copy(side = Side.RIGHT)
+        val sided = base.copy(blocks = listOf(leftWork, transition, rightWork, stretchBlock.copy(side = Side.RIGHT)))
+
+        assertTrue(CueText.label(sided, leftWork.id, names).endsWith("Left side"))
+        assertTrue(CueText.label(sided, stretchBlock.id, names).endsWith("Right side"))
+        assertTrue(CueText.label(sided, transition.id, names).endsWith("Right side"))
+        assertTrue(CueText.nextLabel(sided, leftWork.id, names)!!.endsWith("Right side"))
     }
 }

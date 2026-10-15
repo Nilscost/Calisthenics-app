@@ -48,6 +48,8 @@ class SessionLengthTest {
             assertEquals("count $n", minOf(n, maxExercisesPerRound(catalog, StarterRoutine.routine, setOf(StrengthFocus.UPPER_BODY), profile, none)), exercisesPerRoundOf(p))
             val first = p.blocks.filter { it.type == BlockType.WORK && it.roundIndex == 1 }.mapNotNull { it.variationId }
             assertEquals("no repeated exercise at $n", first.size, first.distinct().size)
+            val families = first.distinct().map { catalog.variation(it)!!.familyId }
+            assertEquals("no repeated progression at $n", families.size, families.distinct().size)
         }
     }
 

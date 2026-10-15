@@ -34,6 +34,8 @@ fun muscleLabel(m: Muscle): Int = when (m) {
     Muscle.CALVES -> R.string.muscle_calves
     Muscle.HIP_FLEXORS -> R.string.muscle_hip_flexors
     Muscle.ADDUCTORS -> R.string.muscle_adductors
+    Muscle.NECK -> R.string.muscle_neck
+    Muscle.TIBIALIS -> R.string.muscle_tibialis
 }
 
 /** Primary muscles in the accent colour, secondary ones muted: the same colour code the clips use. */

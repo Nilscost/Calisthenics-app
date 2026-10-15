@@ -37,6 +37,8 @@ data class BackupPayload(
     val profiles: List<EquipmentProfile> = emptyList(),
     /** V18: the routines saved from the Preview. Appended last with a default so older backup files still import. */
     val savedRoutines: List<app.calisthenics.domain.routine.SavedRoutine> = emptyList(),
+    /** R8 T07: selected program and per-program flow choices; absent on older backups. */
+    val trainSettings: app.calisthenics.domain.planner.TrainSettings? = null,
 )
 
 @Serializable

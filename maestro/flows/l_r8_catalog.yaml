@@ -1,0 +1,17 @@
+# R8: browse a new catalog tab and find an exercise by its Pilates alias.
+appId: app.calisthenics.personal
+---
+- launchApp
+- runFlow: ../common/dismiss_system_dialogs.yaml
+- extendedWaitUntil: { visible: { id: bottom_bar }, timeout: 15000 }
+- tapOn: { id: tab_progress }
+- extendedWaitUntil: { visible: { id: progress_search }, timeout: 10000 }
+- tapOn: { id: tab_chip_power }
+- extendedWaitUntil: { visible: { id: tree_node_jump-squat }, timeout: 10000 }
+- takeScreenshot: 01-power-tab-${VARIANT}
+- tapOn: { id: progress_search }
+- inputText: "Teaser (Pilates)"
+- extendedWaitUntil: { visible: { id: search_result_v-up }, timeout: 10000 }
+- tapOn: { id: search_result_v-up }
+- extendedWaitUntil: { visible: { id: detail_aliases }, timeout: 10000 }
+- takeScreenshot: 02-alias-detail-${VARIANT}

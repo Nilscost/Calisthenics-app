@@ -19,12 +19,16 @@ import app.calisthenics.domain.model.WorkoutFormat
 import app.calisthenics.domain.planner.PlanResult
 import app.calisthenics.domain.planner.TrainSettings
 import app.calisthenics.domain.planner.buildTrainPlan
+import app.calisthenics.domain.planner.buildFixedProgramPlan
+import app.calisthenics.domain.planner.FixedProgramPlanResult
 import app.calisthenics.domain.progression.ProgressSnapshot
 import app.calisthenics.domain.routine.StarterRoutine
 import app.calisthenics.domain.session.*
 import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
 import io.github.gonbei774.calisthenicsmemory.ui.session.SessionScreen
+import io.github.gonbei774.calisthenicsmemory.ui.session.loggerBlock
+import io.github.gonbei774.calisthenicsmemory.ui.session.repLoggerBlock
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog
 import org.junit.After
@@ -87,6 +91,31 @@ class SessionScreenTest {
         rule.onNodeWithTag("logger_value").assertTextEquals(plan.blocks[0].target!!.shownValue().toString())
         rule.onNodeWithTag("logger_unit").assertTextEquals("x")   // R7.2-T07 (F12): "8 x"
         rule.onNodeWithTag("session_next").assertExists()
+    }
+
+    @Test fun flowProgramHasTimerAndPauseButNoPerItemLoggerDoneOrSkip() {
+        val program = catalog.fixedPrograms.first { it.id == "army-hsd" }
+        val p = (buildFixedProgramPlan(catalog, program, SeedProfiles.home, flow = true) as FixedProgramPlanResult.Ready).plan
+        val state = stateAt(p, 0)
+        assertNull(repLoggerBlock(state))
+        assertNull(loggerBlock(state))
+        show(state)
+        rule.onNodeWithTag("session_time").assertExists()
+        rule.onNodeWithTag("session_pause").assertExists()
+        rule.onNodeWithTag("logger").assertDoesNotExist()
+        rule.onNodeWithTag("session_done").assertDoesNotExist()
+        rule.onNodeWithTag("session_skip").assertDoesNotExist()
+    }
+
+    @Test fun nonFlowFourCoreLogsItsHoldOnTheCurrentExercise() {
+        val program = catalog.fixedPrograms.first { it.id == "army-4c" }
+        val p = (buildFixedProgramPlan(catalog, program, SeedProfiles.home, flow = false) as FixedProgramPlanResult.Ready).plan
+        val firstHold = p.blocks.indexOfFirst { it.target?.type == TargetType.HOLD_SECONDS }
+        assertTrue(firstHold >= 0)
+        show(stateAt(p, firstHold))
+        rule.onNodeWithTag("logger").assertIsDisplayed()
+        rule.onNodeWithTag("logger_unit").assertTextEquals("s")
+        rule.onNodeWithTag("session_done").assertIsDisplayed()
     }
 
     // R7-T03: holds keep logging on the break that follows (the rep exercises are logged on the work block)

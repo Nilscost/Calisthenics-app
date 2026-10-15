@@ -5,6 +5,7 @@ import app.calisthenics.domain.model.Catalog
 import app.calisthenics.domain.model.EdgeRelation
 import app.calisthenics.domain.model.Kind
 import app.calisthenics.domain.model.ReviewState
+import app.calisthenics.domain.model.TargetType
 import kotlinx.serialization.json.Json
 
 private val KEBAB = Regex("^[a-z0-9]+(-[a-z0-9]+)*$")
@@ -36,6 +37,27 @@ fun validateCatalog(c: Catalog, production: Boolean = false): ValidationReport {
         .filterNot { KEBAB.matches(it) }.forEach { e += "id '$it' is not lowercase kebab-case" }
 
     val vIds = c.variations.map { it.id }.toSet()
+    dupes(c.exerciseGroups.map { it.id }, "exercise group")
+    dupes(c.fixedPrograms.map { it.id }, "fixed program")
+    for (g in c.exerciseGroups) {
+        val main = c.variation(g.mainVariationId)
+        if (main == null) e += "group ${g.id}: unknown main exercise '${g.mainVariationId}'"
+        if (g.mainVariationId in g.alternativeVariationIds) e += "group ${g.id}: main is also an alternative"
+        for (id in g.alternativeVariationIds) {
+            val alt = c.variation(id)
+            if (alt == null) e += "group ${g.id}: unknown alternative '$id'"
+            else if (main != null && (alt.familyId != main.familyId || alt.kind != main.kind)) e += "group ${g.id}: incompatible alternative '$id'"
+        }
+    }
+    for (r in c.fixedPrograms) {
+        if (r.items.isEmpty()) e += "program ${r.id}: no items"
+        for (item in r.items) {
+            if (item.exerciseId !in vIds) e += "program ${r.id}: unknown exercise '${item.exerciseId}'"
+            if ((item.reps == null) == (item.seconds == null)) e += "program ${r.id}: item '${item.exerciseId}' needs reps or seconds"
+            if (item.reps?.let { it <= 0 } == true || item.seconds?.let { it <= 0 } == true) e += "program ${r.id}: nonpositive target"
+            if (r.flow && (item.estSeconds ?: item.seconds ?: 0) <= 0) e += "program ${r.id}: flow item '${item.exerciseId}' needs duration"
+        }
+    }
     for (o in c.onboardingFamilies) {
         if (o.anchorVariationId !in o.ladder) e += "onboarding family '${o.id}': anchor '${o.anchorVariationId}' is not on its ladder"
         for (id in o.ladder) {
@@ -80,6 +102,14 @@ fun validateCatalog(c: Catalog, production: Boolean = false): ValidationReport {
         if (p.variationId !in vIds) e += "${p.id}: unknown variation '${p.variationId}'"
         if (p.tiers.map { it.index } != listOf(1, 2, 3, 4, 5)) e += "${p.id}: must have exactly five tiers 1..5 in order"
         if (p.tiers.map { it.target.type }.distinct().size > 1) e += "${p.id}: tiers mix target types"
+        val kind = c.variation(p.variationId)?.kind
+        if (kind == Kind.REPS && p.tiers.any { it.target.type != TargetType.REPS } ||
+            kind == Kind.HOLD && p.tiers.any { it.target.type != TargetType.HOLD_SECONDS }) e += "${p.id}: target type does not match exercise kind"
+        p.maxRepsPerSet?.let { cap ->
+            if (cap <= 0 || kind != Kind.REPS) e += "${p.id}: invalid rep ceiling"
+            if (p.tiers.any { (it.target.max ?: it.target.value) > cap }) e += "${p.id}: tier target exceeds rep ceiling"
+        }
+        p.mainSuccessorId?.let { if (it !in p.nextVariationIds) e += "${p.id}: main successor is not a next variation" }
         p.tiers.zipWithNext().forEach { (a, b) ->
             if (b.target.value < a.target.value) e += "${p.id}: tier ${b.index} target easier than tier ${a.index}"
         }

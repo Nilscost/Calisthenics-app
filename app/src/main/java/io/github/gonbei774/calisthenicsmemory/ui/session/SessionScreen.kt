@@ -69,6 +69,7 @@ import java.time.LocalDate
  * R7-T03 (D3): rep blocks are logged on their own work screen; only holds are logged on the break that follows.
  */
 fun loggerBlock(st: SessionState): TimelineBlock? {
+    if (st.plan.fixedProgramId != null && st.plan.flow) return null
     val cur = st.currentBlock ?: return null
     if (cur.type != BlockType.STRETCH && cur.type != BlockType.PASSIVE_RECOVERY && cur.type != BlockType.TRANSITION) return null
     val last = st.plan.blocks.take(st.blockIndex).lastOrNull { it.type == BlockType.WORK && it.variationId != null } ?: return null
@@ -82,7 +83,10 @@ fun loggerBlock(st: SessionState): TimelineBlock? {
 
 /** R7-T03 (D3): the rep work block that is running now carries its own logger (− number +, Too easy). */
 fun repLoggerBlock(st: SessionState): TimelineBlock? =
-    st.currentBlock?.takeIf { it.type == BlockType.WORK && it.variationId != null && it.target?.type == TargetType.REPS }
+    st.currentBlock?.takeIf { !(st.plan.fixedProgramId != null && st.plan.flow) &&
+        it.type == BlockType.WORK && it.variationId != null &&
+            (it.target?.type == TargetType.REPS || (st.plan.fixedProgramId != null && !st.plan.flow && it.target?.type == TargetType.HOLD_SECONDS))
+    }
 
 @Composable
 fun SessionScreen(modifier: Modifier = Modifier, onExit: () -> Unit) {
@@ -228,8 +232,10 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                             if (paused) Button(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_RESUME) }, Modifier.weight(1f).height(54.dp).testTag("session_resume"),
                                 shape = RoundedCornerShape(Radius.button), contentPadding = PaddingValues(horizontal = 8.dp)) { Text(stringResource(R.string.session_resume), maxLines = 1, softWrap = false, style = MaterialTheme.typography.labelLarge) }
                             else AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_PAUSE) }, Modifier.weight(1f).height(54.dp).testTag("session_pause")) { Text(stringResource(R.string.session_pause)) }
+                            // Flow programs advance on their timers and expose no per-item logging or skip controls.
+                            if (st.plan.fixedProgramId != null && st.plan.flow) Unit
                             // DONE in the middle, gold and a little wider: ends the set during work; in any other block (R7-T02, B4) it saves the pending log and moves on.
-                            if (b.type == BlockType.WORK) Button(
+                            else if (b.type == BlockType.WORK) Button(
                                 onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); if (repWork != null) logger?.push(); sessionCommand(ctx, WorkoutSessionService.ACTION_DONE) }, enabled = st.phase == Phase.RUNNING,
                                 modifier = Modifier.weight(1.3f).height(58.dp).testTag("session_done"), shape = RoundedCornerShape(Radius.button),
                             ) { Text(stringResource(R.string.session_done).uppercase(), style = MaterialTheme.typography.titleLarge) }
@@ -237,7 +243,7 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                                 onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); logger?.push(); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, enabled = st.phase == Phase.RUNNING,
                                 modifier = Modifier.weight(1.3f).height(58.dp).testTag(if (logger != null) "logger_done" else "break_done"), shape = RoundedCornerShape(Radius.button),
                             ) { Text(stringResource(R.string.logger_done).uppercase(), style = MaterialTheme.typography.titleLarge) }
-                            AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, Modifier.weight(1f).height(54.dp).testTag("session_skip")) { Text(stringResource(R.string.session_skip)) }
+                            if (st.plan.fixedProgramId == null || !st.plan.flow) AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, Modifier.weight(1f).height(54.dp).testTag("session_skip")) { Text(stringResource(R.string.session_skip)) }
                         }
                     }
                 } }
@@ -286,8 +292,9 @@ private fun RepLogger(l: LoggerState, work: TimelineBlock, showName: Boolean) {
 private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) {
     val ctx = LocalContext.current
     val done = st.plan.blocks.filter { it.type == BlockType.WORK && st.executions[it.id] == Execution.COMPLETED }
-    val exercises = done.mapNotNull { it.variationId }.distinct()
-    val rounds = done.mapNotNull { it.roundIndex }.distinct().size
+    val completedProgramItems = if (st.plan.fixedProgramId != null) st.plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.filter { st.executions[it.id] == Execution.COMPLETED } else done
+    val exercises = completedProgramItems.mapNotNull { it.variationId }.distinct()
+    val rounds = if (st.plan.fixedProgramId != null) if (exercises.isEmpty()) 0 else 1 else done.mapNotNull { it.roundIndex }.distinct().size
     val minutes = (st.activeElapsedMs / 60_000L).toInt()
     var events by remember { mutableStateOf<List<String>>(emptyList()) }
     var editing by remember { mutableStateOf(false) }
@@ -308,7 +315,7 @@ private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) 
                 else Text(stringResource(R.string.end_saved), style = MaterialTheme.typography.bodyMedium)
             }
         }
-        if (exercises.isNotEmpty()) {
+        if (exercises.isNotEmpty() && !st.plan.flow) {
             AppTextButton(onClick = { editing = !editing }, modifier = Modifier.testTag("end_edit")) { Text(stringResource(R.string.end_edit_logged)) }
             if (editing) exercises.forEach { vid ->
                 val blocks = st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid && st.executions[it.id] == Execution.COMPLETED }

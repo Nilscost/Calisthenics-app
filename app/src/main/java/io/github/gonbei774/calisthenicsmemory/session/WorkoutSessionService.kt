@@ -128,7 +128,7 @@ class WorkoutSessionService : Service() {
         sStart = sound!!.load(this, R.raw.start_cue, 1); sBeep = sound!!.load(this, R.raw.beep_short, 1); sDone = sound!!.load(this, R.raw.set_complete, 1)
         if (speak) tts = TextToSpeech(this) { st ->
             ttsReady = st == TextToSpeech.SUCCESS && tts?.let { it.isLanguageAvailable(Locale.US) >= TextToSpeech.LANG_AVAILABLE } == true
-            if (ttsReady) { tts?.language = Locale.US; tts?.setAudioAttributes(attrs)
+            if (ttsReady) { tts?.language = Locale.US; tts?.setSpeechRate(0.75f); tts?.setAudioAttributes(attrs)
                 tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                     override fun onStart(id: String?) {}
                     override fun onDone(id: String?) { releaseFocus() }

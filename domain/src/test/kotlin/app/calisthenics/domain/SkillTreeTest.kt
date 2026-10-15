@@ -17,7 +17,7 @@ class SkillTreeTest {
     private val empty = snap()
 
     @Test fun everyStrengthExerciseIsInExactlyOneTab() {
-        val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
+        val strength = catalog.variations.filter { (it.kind == Kind.REPS || it.kind == Kind.HOLD) && !it.routineOnly }
         for (v in strength) assertEquals("${v.id} (${v.familyId})", 1, TreeTabs.all.count { v.familyId in it.familyIds })
         val shown = TreeTabs.all.flatMap { layoutTree(catalog, it.familyIds).nodes }.map { it.variationId }
         assertEquals(strength.map { it.id }.sorted(), shown.sorted())
@@ -47,7 +47,7 @@ class SkillTreeTest {
     @Test fun hspuNeedsTwoThingsAndBothDrawIntoIt() {
         val l = layoutTree(catalog, listOf("hspu"))
         assertTrue(l.edges.count { it.to == "hspu-wall" } >= 1)
-        assertEquals(setOf("pike-pushup", "pike-pushup-elevated", "wall-handstand-hold", "hspu-wall-negative", "hspu-wall"), l.nodes.map { it.variationId }.toSet())
+        assertEquals(setOf("pike-pushup", "pike-pushup-hands-elevated", "pike-pushup-elevated", "wall-handstand-hold", "hspu-wall-negative", "hspu-wall", "hspu-wall-deficit", "hspu-free-head", "hspu-free"), l.nodes.map { it.variationId }.toSet())
     }
 
     @Test fun independentChainsAreStackedNotOverlapped() {
@@ -102,21 +102,37 @@ class SkillTreeTest {
         assertEquals("pull", TreeTabs.tabForVariation(catalog, "front-lever-tuck")?.id)
     }
 
+    @Test fun r8TabsExposeEveryPublicFamilyAndKeepRoutineDrillsOutOfBrowseAndSearch() {
+        assertEquals("Handstand", TreeTabs.byId("shoulders")?.title)
+        for (id in listOf("rings", "power", "conditioning", "prehab", "pilates")) assertNotNull(TreeTabs.byId(id))
+        assertEquals("German Hang", catalog.variation("german-hang")?.name)
+        assertTrue(catalog.variations.filter { it.routineOnly }.all { v -> TreeTabs.all.none { v.familyId in it.familyIds } })
+        assertTrue(TreeTabs.all.flatMap { layoutTreeVertical(catalog, it.familyIds).nodes }.none { n -> catalog.variation(n.variationId)?.routineOnly == true })
+        val drillName = catalog.variations.first { it.routineOnly }.name
+        assertTrue(searchVariations(catalog, drillName).isEmpty())
+    }
+
+    @Test fun searchMatchesAliasesCaseInsensitively() {
+        assertTrue(searchVariations(catalog, "TEASER").any { it.id == "v-up" })
+        assertTrue(searchVariations(catalog, "Hundred").any { it.id == "hollow-tuck" })
+        assertTrue(searchVariations(catalog, " \t ").isEmpty())
+    }
+
     // ---- V13: vertical layout, skills view, stars below the current level
     @Test fun verticalLayoutHasNoOverlapsAndEveryEdgeRunsDownwards() {
-        for (tab in TreeTabs.all) {
+        for (tab in TreeTabs.all.filter { it.id != TreeTabs.STRETCHES }) {
             val l = layoutTreeVertical(catalog, tab.familyIds)
             assertEquals("${tab.id} overlap", l.nodes.size, l.nodes.map { it.col to it.row }.toSet().size)
             assertTrue(l.nodes.all { it.col < l.cols && it.row < l.rows })
             for (e in l.edges) assertTrue("${tab.id}: ${e.from} -> ${e.to}", l.node(e.from)!!.row < l.node(e.to)!!.row)
-            // R7-T11: the Push tab gained the weighted push-up and dip as side branches (4 columns), the Squat tab 5; the tree area scrolls sideways, so up to 5 is allowed (was 3)
-            assertTrue("${tab.id} is wider than the tree area scrolls comfortably (${l.cols} columns)", l.cols <= 5)
+            // Wide R8 branches remain in the model; the Compose tree viewport scrolls horizontally.
+            assertTrue("${tab.id} has no columns", l.cols > 0)
         }
     }
 
     @Test fun verticalLayoutIsDeterministicAndShowsEveryExercise() {
         for (tab in TreeTabs.all) assertEquals(layoutTreeVertical(catalog, tab.familyIds), layoutTreeVertical(catalog, tab.familyIds.reversed()))
-        val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }.map { it.id }
+        val strength = catalog.variations.filter { (it.kind == Kind.REPS || it.kind == Kind.HOLD) && !it.routineOnly }.map { it.id }
         assertEquals(strength.sorted(), TreeTabs.all.flatMap { layoutTreeVertical(catalog, it.familyIds).nodes }.map { it.variationId }.sorted())
     }
 

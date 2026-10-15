@@ -14,13 +14,18 @@ OUT = ROOT / "docs/review/draft-numbers.md"
 
 TABS = [  # keep in sync with TreeTabs
     ("Push", ["pushup", "dip", "planche", "vest-push", "vest-dip"]),
-    ("Shoulders", ["hspu"]),
-    ("Pull", ["pullup", "lever", "german-hang", "vest-pull"]),
-    ("Row", ["row", "kb-row", "db-row"]),
-    ("Squat", ["squat", "lunge", "db-squat", "bb-squat", "vest-squat"]),
+    ("Handstand", ["hspu", "handstand", "arm-balance"]),
+    ("Pull", ["pullup", "lever", "german-hang", "grip", "vest-pull"]),
+    ("Row", ["row", "kb-row", "db-row", "arms"]),
+    ("Squat", ["squat", "lunge", "step-up", "quad", "db-squat", "bb-squat", "vest-squat"]),
     ("Hips and back", ["bridge", "superman", "reverse-hyper", "deadlift", "rdl", "nordic", "slide", "jefferson", "db-hinge", "bb-hinge", "db-bridge"]),
-    ("Core", ["plank", "plank-tap", "dead-bug", "side-plank", "pallof", "carry", "legraise"]),
-    ("Lower legs", ["calf", "tibialis"]),
+    ("Core", ["plank", "plank-tap", "dead-bug", "side-plank", "pallof", "carry", "legraise", "rollout", "hanging-legraise", "dragon-flag", "bird-dog", "crunch", "flag"]),
+    ("Lower legs", ["calf", "tibialis", "balance"]),
+    ("Rings", ["ring-support", "ring-dip", "ring-pushup", "ring-mu"]),
+    ("Power", ["plyo", "plyo-lateral", "plyo-box"]),
+    ("Conditioning", ["conditioning", "agility", "crawl"]),
+    ("Prehab", ["prehab-shoulder", "prehab-wrist", "prehab-hip", "prehab-knee", "neck"]),
+    ("Pilates", ["pilates"]),
 ]
 
 
@@ -51,7 +56,7 @@ def prereq(pol, names):
 
 def main():
     c = json.loads(CATALOG.read_text())
-    strength = {v["id"]: v for v in c["variations"] if v["kind"] in ("REPS", "HOLD")}
+    strength = {v["id"]: v for v in c["variations"] if v["kind"] in ("REPS", "HOLD") and not v.get("routineOnly", False)}
     pols = {p["variationId"]: p for p in c["policies"]}
     names = {v["id"]: v["name"] for v in c["variations"]}
     warn = []

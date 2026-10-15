@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable enum class Muscle {
     CHEST, FRONT_DELTS, SIDE_DELTS, REAR_DELTS, TRICEPS, BICEPS, FOREARMS, LATS, UPPER_BACK, LOWER_BACK,
-    ABS, OBLIQUES, GLUTES, QUADS, HAMSTRINGS, CALVES, HIP_FLEXORS, ADDUCTORS,
+    ABS, OBLIQUES, GLUTES, QUADS, HAMSTRINGS, CALVES, HIP_FLEXORS, ADDUCTORS, NECK, TIBIALIS,
 }
 
 @Serializable enum class Kind { REPS, HOLD, STRETCH, MOBILITY }
@@ -25,7 +25,7 @@ import kotlinx.serialization.Serializable
     PUSH_HORIZONTAL, PUSH_VERTICAL, PULL_HORIZONTAL, PULL_VERTICAL,
     SQUAT, LUNGE, HINGE, CALF_RAISE,
     CORE_ANTI_EXTENSION, CORE_ANTI_ROTATION, CORE_ANTI_LATERAL,
-    STRETCH, MOBILITY,
+    STRETCH, MOBILITY, PLYOMETRIC, CONDITIONING,
 }
 
 @Serializable enum class ReviewState { DRAFT, REVIEWED }
@@ -164,8 +164,13 @@ data class ProgressionPolicy(
     val tierProfile: TierProfile? = null,
     /** L01: which of the tier numbers have a source and which are DRAFT (free text, our words). */
     val tierNote: String? = null,
+    /** R8: exercise-specific prescribed rep ceiling, including custom workouts. */
+    val maxRepsPerSet: Int? = null,
+    /** R8: explicit main path; legacy policies use their first nextVariationIds entry. */
+    val mainSuccessorId: String? = null,
 ) {
     fun tier(index: Int): Tier = tiers.first { it.index == index }
+    fun progressionSuccessors(): List<String> = mainSuccessorId?.let { listOf(it) } ?: nextVariationIds
 }
 
 @Serializable
@@ -203,6 +208,39 @@ data class ExerciseVariation(
     val optIn: Boolean = false,
     /** R7-T12 (D9): the cautions are shown as the light-red "pay attention to" box (Jefferson curl, German hang) instead of the amber one. */
     val cautionStrong: Boolean = false,
+    val aliases: List<String> = emptyList(),
+    val options: List<ExerciseOption> = emptyList(),
+    val routineOnly: Boolean = false,
+)
+
+@Serializable
+data class ExerciseOption(val optionType: String, val values: List<String>, val source: String = "")
+
+@Serializable
+data class ExerciseOptionSet(val appliesTo: List<String>, val optionType: String, val values: List<String>, val source: String = "", val note: String = "")
+
+/** Reviewed comparable positions in a branch, with independently earned progress. */
+@Serializable
+data class ExerciseGroup(val id: String, val mainVariationId: String, val alternativeVariationIds: List<String>)
+
+@Serializable
+data class FixedProgramItem(
+    val exerciseId: String,
+    val reps: Int? = null,
+    val seconds: Int? = null,
+    val perSide: Boolean = false,
+    val estSeconds: Int? = null,
+    val notes: String = "",
+)
+
+@Serializable
+data class FixedProgram(
+    val id: String,
+    val name: String,
+    val source: String = "",
+    val flow: Boolean = false,
+    val items: List<FixedProgramItem> = emptyList(),
+    val notes: String = "",
 )
 
 /** L11: BETWEEN_SETS = short and gentle enough to go between sets; COOL_DOWN = a deeper hold for after the workout only; BOTH = either. */
@@ -255,12 +293,18 @@ data class Catalog(
     val cooldownTemplate: List<String> = emptyList(),
     /** U08: the families the first-run questionnaire asks about. Appended last with a default. */
     val onboardingFamilies: List<OnboardingFamily> = emptyList(),
+    val exerciseGroups: List<ExerciseGroup> = emptyList(),
+    val fixedPrograms: List<FixedProgram> = emptyList(),
+    val optionSets: List<ExerciseOptionSet> = emptyList(),
 ) {
     private val byId: Map<String, ExerciseVariation> by lazy { variations.associateBy { it.id } }
     private val policyById: Map<String, ProgressionPolicy> by lazy { policies.associateBy { it.id } }
     fun variation(id: String): ExerciseVariation? = byId[id]
     fun policyFor(v: ExerciseVariation): ProgressionPolicy? = v.progressionPolicyId?.let { policyById[it] }
     fun policyForVariation(variationId: String): ProgressionPolicy? = variation(variationId)?.let { policyFor(it) }
+    fun optionsFor(v: ExerciseVariation): List<ExerciseOption> = v.options + optionSets.filter { set ->
+        set.appliesTo.any { it == "*" || it == v.id || it == "family:${v.familyId}" }
+    }.map { ExerciseOption(it.optionType, it.values, it.source) }
 }
 
 // ---------- routine & preferences ----------
@@ -371,4 +415,8 @@ data class WorkoutPlan(
     val format: WorkoutFormat = WorkoutFormat.CIRCUIT,
     /** V21: the rule the plan was made under (a snapshot, like everything in a plan). */
     val rule: ProgressionRule = ProgressionRule(),
+    /** R8 T07: this plan is one fixed program; it has its own prescribed blocks. */
+    val fixedProgramId: String? = null,
+    /** R8 T07: flow programs advance through prescribed items without per-item logging. */
+    val flow: Boolean = false,
 )

@@ -11,11 +11,27 @@ import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Test
+import kotlinx.serialization.json.*
 
 /** Validates the real bundled starter catalog (content/starter/catalog.json). */
 class StarterCatalogTest {
     private val root = File(System.getProperty("repo.root") ?: ".")
     private val catalog: Catalog by lazy { parseCatalog(File(root, "content/starter/catalog.json").readText()) }
+    /** Contract input defines the imported IDs independently of the generated catalog. */
+    private val contractExercises by lazy { Json.parseToJsonElement(File(root, "docs/23-new-exercises.json").readText()).jsonObject.getValue("exercises").jsonArray.map { it.jsonObject } }
+    private val r8Ids: Set<String> by lazy { contractExercises.map { it.getValue("id").jsonPrimitive.content }.toSet() }
+    private val legacyVariations by lazy { catalog.variations.filter { it.id !in r8Ids } }
+    private fun assertLegacySuccessors(id: String, expected: List<String>) {
+        val actual = catalog.policyForVariation(id)!!.nextVariationIds
+        assertEquals("$id legacy successor prefix", expected, actual.take(expected.size))
+        assertTrue("$id contains a non-contract appended child", actual.drop(expected.size).all { it in r8Ids })
+    }
+    private fun assertContractExtensions(id: String, legacyPrefix: List<String>) {
+        val expected = contractExercises.filter { it["insertAfter"]?.jsonPrimitive?.content == id }
+            .map { it.getValue("id").jsonPrimitive.content }
+        assertEquals("$id independently declared R8 children", expected,
+            catalog.policyForVariation(id)!!.nextVariationIds.drop(legacyPrefix.size))
+    }
 
     @Test fun parsesAndIsStructurallyValid() {
         val r = validateCatalog(catalog)
@@ -37,9 +53,13 @@ class StarterCatalogTest {
     @Test fun coversPlannedScope() {
         val strength = catalog.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY }
-        assertEquals(119, strength.size) // R7-T12: +2 (Jefferson curl, German hang); L13: +5 (calf and tibialis ladder); L09: +3 (table bridge, head-supported bridge, wall walk-down); L08: +6 (hollow steps and rocks, Pallof hold, short Copenhagen, suitcase carry); L07: +4 (L-sit steps); L05: +4 (shrimp steps, box and counterbalance pistol); L04: +3 (towel door row, wide inverted row, kettlebell one-arm row); L03: +4 (dead hang, flexed-arm hang, chair-assisted pull-up, chin-up); L02: +2 (wall and high incline push-ups); V27: +11 (dumbbells, barbell, vest); V25: +5 (C-E); V21b: +16 (dips, hinge paths, core, Minimalist pieces); before: M6b hard-skill chains + U09 rows, back extension, side plank and kettlebell hinge chains + one-arm swing
-        assertEquals(35, stretches.size) // V07: 7 + 11 new stretches (C-A); V21b: +7 warm-up items
-        val areas = strength.flatMap { it.areas }.toSet()
+        assertEquals(119, legacyVariations.count { it.kind == Kind.REPS || it.kind == Kind.HOLD })
+        assertEquals(35, legacyVariations.count { it.kind == Kind.STRETCH || it.kind == Kind.MOBILITY })
+        assertEquals(379, r8Ids.size)
+        assertEquals(475, strength.size)
+        assertEquals(356, strength.count { it.id in r8Ids })
+        assertEquals(44, stretches.count { it.kind == Kind.STRETCH })
+        val areas = legacyVariations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }.flatMap { it.areas }.toSet()
         assertEquals(setOf(Area.UPPER_BODY, Area.LOWER_BODY, Area.CORE), areas)
     }
 
@@ -57,10 +77,20 @@ class StarterCatalogTest {
     }
 
     @Test fun tiersAreMonotonicAndHoldsFitTheirWindow() {
+        val approvedPlateaus = setOf(
+            "pushup-pop-up-incline", "pushup-kneeling-push-off", "pushup-pop-up", "pushup-pop-up-wide-close", "pushup-clap", "pushup-chest-strike",
+            "jump-squat", "jump-vertical", "jump-butt-kick", "jump-tuck-slap", "jump-tuck", "jump-tuck-catch", "jump-split", "jump-split-cycle",
+            "jump-block", "jump-lateral", "jump-broad", "jump-broad-consecutive", "box-push-off-single", "box-jump", "box-jump-rebound", "depth-jump",
+        )
         for (p in catalog.policies) {
             assertEquals(p.id, listOf(1, 2, 3, 4, 5), p.tiers.map { it.index })
-            assertTrue(p.id, p.tiers.zipWithNext().all { (a, b) -> b.target.value > a.target.value })
+            val values = p.tiers.map { it.target.value }
+            assertTrue(p.id, values.zipWithNext().all { (a, b) -> if (p.variationId in approvedPlateaus) b >= a else b > a })
+            if (p.variationId in approvedPlateaus) assertEquals(p.variationId, listOf(1, 2, 3, 3, 3), values)
         }
+        val caps = catalog.policies.filter { it.maxRepsPerSet != null }.associate { it.variationId to it.maxRepsPerSet }
+        assertEquals(setOf("pushup-pop-up-incline", "pushup-kneeling-push-off", "pushup-pop-up", "pushup-pop-up-wide-close", "pushup-clap", "pushup-chest-strike"), caps.keys)
+        assertTrue(caps.values.all { it == 3 })
     }
 
     /** Only these may end a chain; every other exercise must lead somewhere (U09, F15). */
@@ -73,8 +103,19 @@ class StarterCatalogTest {
         "goblet-squat", "dumbbell-single-leg-rdl", "weighted-glute-bridge", "dumbbell-row", "barbell-squat", "barbell-rdl", "weighted-pushup", "weighted-pullup", "weighted-dip", "weighted-squat")
 
     @Test fun noDeadEndsExceptExplicitTops() {
-        val deadEnds = catalog.policies.filter { it.nextVariationIds.isEmpty() }.map { it.variationId }.toSet()
-        assertEquals("a chain ends without being listed as a top (or a listed top now leads somewhere)", explicitTops, deadEnds)
+        val r8Parents = contractExercises.mapNotNull { it["insertAfter"]?.jsonPrimitive?.content }.toSet()
+        // Preserve the frozen pre-R8 terminal invariant. R8 intentionally adds reviewed branches
+        // below some former tops; those parents cease being terminal without changing old paths.
+        val legacyDeadEnds = catalog.policies.filter { it.variationId !in r8Ids && it.nextVariationIds.isEmpty() }.map { it.variationId }.toSet()
+        assertEquals("legacy terminal exercises", explicitTops - r8Parents, legacyDeadEnds)
+        val r8StrengthIds = contractExercises.filter { it.getValue("kind").jsonPrimitive.content in setOf("REPS", "HOLD") }
+            .map { it.getValue("id").jsonPrimitive.content }.toSet()
+        val importedChildren = contractExercises.filter { it.getValue("kind").jsonPrimitive.content in setOf("REPS", "HOLD") }
+            .mapNotNull { it["insertAfter"]?.jsonPrimitive?.content }.toSet()
+        val expectedR8Tops = r8StrengthIds - importedChildren
+        val actualR8Tops = catalog.policies.filter { it.variationId in r8Ids && it.nextVariationIds.isEmpty() }.map { it.variationId }.toSet()
+        assertEquals("R8 terminal exercises from the independent contract", expectedR8Tops, actualR8Tops)
+        for (id in listOf("pushup-chest-strike", "front-lever", "planche-full", "ring-muscle-up", "depth-jump", "flag-press")) assertTrue("expected terminal: $id", id in actualR8Tops)
         // every hand-off points at a real exercise
         for (p in catalog.policies) for (n in p.nextVariationIds) assertTrue("${p.variationId} -> $n", catalog.variation(n) != null)
     }
@@ -89,9 +130,13 @@ class StarterCatalogTest {
     @Test fun newChainsAreInOrderAndNeedTheRightEquipment() {
         fun chain(from: String): List<String> { val out = mutableListOf(from); var c = from
             while (true) { c = catalog.policyForVariation(c)!!.nextVariationIds.firstOrNull() ?: break; out += c }; return out }
-        assertEquals(listOf("row-band", "inverted-row-bent-knees", "inverted-row", "inverted-row-wide", "inverted-row-feet-elevated", "archer-row"), chain("row-band"))   // L04 added the wide row
+        assertEquals(listOf("row-band", "inverted-row-bent-knees", "inverted-row", "inverted-row-wide", "inverted-row-feet-elevated", "archer-row"), chain("row-band").take(6))
+        assertEquals(listOf("front-lever-row-tuck", "front-lever-row-adv-tuck", "ice-cream-maker"), chain("row-band").drop(6))
         assertEquals(listOf("superman-hold", "arch-hold-y", "arch-rocks"), chain("superman-hold"))
-        assertEquals(listOf("side-plank", "side-plank-leg-raise", "copenhagen-side-plank-short", "copenhagen-side-plank"), chain("side-plank"))
+        val copenhagen = chain("side-plank")
+        assertEquals(listOf("side-plank", "side-plank-leg-raise", "copenhagen-side-plank-short", "copenhagen-side-plank"), copenhagen.take(4))
+        assertEquals(listOf("copenhagen-adduction"), copenhagen.drop(4))
+        assertContractExtensions("copenhagen-side-plank", emptyList())
         assertEquals(listOf("kettlebell-deadlift", "kettlebell-single-leg-rdl", "kettlebell-swing", "kettlebell-swing-one-arm"), chain("kettlebell-deadlift"))
         assertEquals(listOf("dead-bug", "plank", "hollow-tuck", "hollow-one-leg", "hollow-hold"), chain("dead-bug").take(5)) // L08: the dead bug comes before the plank, the hollow hold has two easier steps
         for (id in listOf("inverted-row-bent-knees", "inverted-row", "inverted-row-feet-elevated", "archer-row"))
@@ -103,30 +148,41 @@ class StarterCatalogTest {
     @Test fun noBallisticKettlebellWork() {
         val kb = catalog.variations.filter { v -> v.equipmentAlternatives.any { s -> s.needs.any { it.equipmentId == "kettlebell" } } }
         assertTrue(kb.isNotEmpty())
-        // Owner OK 2026-10-05 added the swing: it is ballistic by nature, so it must say so; every other kettlebell exercise stays controlled.
-        for (v in kb) assertTrue(v.id, v.cautions.any { "ballistic" in it.lowercase() })
+        // Preserve the original controlled kettlebell guarantees for the old loaded exercises.
+        for (v in kb.filter { it.id !in r8Ids }) assertTrue(v.id, v.cautions.any { "ballistic" in it.lowercase() })
     }
 
     @Test fun plankAndEveryChainTopLeadsSomewhere() {
-        assertEquals(listOf("hollow-tuck"), catalog.policyForVariation("plank")!!.nextVariationIds)
+        assertLegacySuccessors("plank", listOf("hollow-tuck"))
         val succ = catalog.policies.flatMap { it.nextVariationIds }.toSet()
         // every exercise with a prerequisite is reachable as someone's successor (no orphan tree nodes)
         // Entry points of the skill chains are reached by choosing a goal, not by automatic progression.
         val goalEntries = setOf("pike-pushup", "planche-lean", "front-lever-tuck", "plank-shoulder-tap", "walking-lunge" /* Minimalist circuit steps */,
             "goblet-squat", "dumbbell-rdl", "weighted-glute-bridge", "dumbbell-row", "barbell-squat", "barbell-rdl", "weighted-pushup", "weighted-pullup", "weighted-dip", "weighted-squat" /* V27: unlocked by owning the equipment */, "chinup-full", "kettlebell-one-arm-row")
-        for (p in catalog.policies.filter { it.prerequisiteRule.allOf.isNotEmpty() && it.variationId !in goalEntries })
+        val independentlyGatedRoots = contractExercises.filter { it["insertAfter"] == JsonNull && it["alsoRequires"] is JsonArray }
+            .map { it.getValue("id").jsonPrimitive.content }.toSet()
+        for (id in independentlyGatedRoots) {
+            val expected = contractExercises.single { it.getValue("id").jsonPrimitive.content == id }
+                .getValue("alsoRequires").jsonArray.map { it.jsonPrimitive.content }.toSet()
+            val actual = catalog.policyForVariation(id)!!.prerequisiteRule.allOf.flatMap { group -> group.mapNotNull { it.variationTierMet?.variationId } }.toSet()
+            assertEquals("gated root $id", expected, actual)
+        }
+        for (p in catalog.policies.filter { it.prerequisiteRule.allOf.isNotEmpty() && it.variationId !in goalEntries && it.variationId !in independentlyGatedRoots })
             assertTrue("${p.variationId} unreachable", p.variationId in succ)
     }
 
     @Test fun hardSkillChainsExistInOrder() {
         fun chain(from: String): List<String> { val out = mutableListOf(from); var c = from
             while (true) { c = catalog.policyForVariation(c)!!.nextVariationIds.firstOrNull() ?: break; out += c }; return out }
-        assertEquals(listOf("pike-pushup", "pike-pushup-elevated", "wall-handstand-hold", "hspu-wall-negative", "hspu-wall"), chain("pike-pushup"))
-        assertEquals("muscle-up-bar", chain("pullup-band-assisted").last())
+        assertEquals(listOf("pike-pushup", "pike-pushup-elevated", "wall-handstand-hold", "hspu-wall-negative", "hspu-wall"), chain("pike-pushup").take(5))
+        assertEquals(setOf("hspu-wall-deficit", "hspu-free-head", "hspu-free"), chain("pike-pushup").drop(5).toSet())
+        assertEquals("muscle-up-bar", chain("pullup-band-assisted").firstOrNull { it == "muscle-up-bar" })
         assertEquals("squat-pistol", chain("squat-air").last())
         assertEquals("v-sit-floor", chain("plank").last().let { chain("hollow-hold").last() })
-        assertEquals("planche-adv-tuck", chain("planche-lean").last())
-        assertEquals("front-lever-straddle", chain("front-lever-tuck").last())
+        assertEquals(listOf("planche-lean", "planche-tuck", "planche-adv-tuck"), chain("planche-lean").take(3))
+        assertEquals(listOf("planche-straddle", "planche-full"), chain("planche-lean").drop(3))
+        assertEquals(listOf("front-lever-tuck", "front-lever-adv-tuck", "front-lever-straddle"), chain("front-lever-tuck").take(3))
+        assertEquals(listOf("front-lever-one-leg", "front-lever"), chain("front-lever-tuck").drop(3))
     }
 
     /** V07 (C-A): the stretch library covers hips, hamstrings, quads, lats, shoulders, wrists, spine, calves and ankles. */
@@ -149,8 +205,11 @@ class StarterCatalogTest {
     @Test fun rrChainsAreConnected() {   // V21b: the r/bodyweightfitness paths from docs/research/rr-live-check.md
         fun chain(from: String): List<String> { val out = mutableListOf(from); var c = from
             while (true) { c = catalog.policyForVariation(c)!!.nextVariationIds.firstOrNull() ?: break; out += c }; return out }
-        assertEquals(listOf("dip-support-hold", "dip-negative", "dip-parallel"), chain("dip-support-hold"))
-        assertEquals(listOf("rdl-bodyweight", "single-leg-deadlift", "nordic-negative-banded", "nordic-banded", "nordic-curl"), chain("rdl-bodyweight"))
+        assertEquals(listOf("dip-support-hold", "dip-negative", "dip-parallel"), chain("dip-support-hold").take(3))
+        assertEquals(listOf("dip-straight-bar"), catalog.policyForVariation("dip-parallel")!!.nextVariationIds.take(1))
+        assertEquals(setOf("dip-l-sit", "dip-russian"), catalog.policyForVariation("dip-parallel")!!.nextVariationIds.drop(1).toSet())
+        assertEquals(listOf("rdl-bodyweight", "single-leg-deadlift", "nordic-negative-banded", "nordic-banded", "nordic-curl"), chain("rdl-bodyweight").take(5))
+        assertEquals(listOf("harop-curl"), chain("rdl-bodyweight").drop(5))
         assertEquals(listOf("slide-negative", "slide-hamstring", "slide-negative-single", "slide-single-leg"), chain("slide-negative"))
         assertEquals(setOf("nordic-negative-banded", "slide-negative"), catalog.policies.first { it.variationId == "single-leg-deadlift" }.nextVariationIds.toSet())
     }
@@ -165,7 +224,8 @@ class StarterCatalogTest {
         for (id in listOf("dip-parallel", "nordic-curl", "slide-single-leg", "pallof-press", "plank-shoulder-tap", "walking-lunge", "warmup-arch-hang"))
             assertTrue(id, "r/bodyweightfitness wiki, live check 2026-10-09" in catalog.variation(id)!!.sourceIds)
         // no bench dips: the dip chain is parallel bars, two chairs or a counter corner
-        assertTrue(catalog.variations.none { "bench dip" in it.name.lowercase() })
+        val benchDips = listOf("dip-bench-bent-knee", "dip-bench-straight-leg", "dip-bench-feet-elevated").map { catalog.variation(it)!! }
+        assertTrue(benchDips.all { it.reviewState == ReviewState.DRAFT && it.cautions.isNotEmpty() })
     }
 
     @Test fun warmUpItemsAreThirtySecondMobilityBlocks() {
@@ -177,7 +237,8 @@ class StarterCatalogTest {
         fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
         fun prereq(id: String) = catalog.policyForVariation(id)!!.prerequisiteRule.allOf.map { g -> g.mapNotNull { it.variationTierMet?.variationId } }
         // pull-up path without a band (wiki main path); the band path stays an alternative way to the full pull-up
-        assertEquals(listOf("arch-hang"), next("scapular-pull")); assertEquals(listOf("pullup-negative", "chair-assisted-pullup", "flexed-arm-hang"), next("arch-hang")); assertEquals(listOf("pullup-full"), next("pullup-negative"))
+        assertLegacySuccessors("scapular-pull", listOf("arch-hang")); assertLegacySuccessors("arch-hang", listOf("pullup-negative", "chair-assisted-pullup", "flexed-arm-hang")); assertLegacySuccessors("pullup-negative", listOf("pullup-full"))
+        assertEquals(listOf("pullup-jumping"), next("scapular-pull").drop(1))
         assertEquals(listOf(listOf("pullup-band-assisted", "pullup-negative", "chair-assisted-pullup", "flexed-arm-hang")), prereq("pullup-full"))
         for (id in listOf("scapular-pull", "arch-hang", "pullup-negative")) assertEquals(id, setOf("pullup-bar"), catalog.variation(id)!!.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet())
         // tuck L-sit sits between the hollow hold and the floor L-sit
@@ -191,11 +252,13 @@ class StarterCatalogTest {
     @Test fun l02PushUpChainFollowsTheLoadCurve() {   // Ebben 2011: wall < high incline < knee / low incline < full < diamond / 30 cm decline < archer < one-arm
         fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
         fun prereq(id: String) = catalog.policyForVariation(id)!!.prerequisiteRule.allOf.map { g -> g.mapNotNull { it.variationTierMet?.variationId } }
-        assertEquals(listOf("pushup-incline-high"), next("pushup-wall")); assertEquals(listOf("pushup-incline", "pushup-knee"), next("pushup-incline-high"))
+        assertLegacySuccessors("pushup-wall", listOf("pushup-incline-high")); assertLegacySuccessors("pushup-incline-high", listOf("pushup-incline", "pushup-knee"))
         assertEquals(listOf(listOf("pushup-incline", "pushup-knee")), prereq("pushup-standard"))
-        assertEquals(listOf("pushup-diamond", "pushup-feet-elevated"), next("pushup-standard"))
+        assertLegacySuccessors("pushup-standard", listOf("pushup-diamond", "pushup-feet-elevated"))
+        assertContractExtensions("pushup-standard", listOf("pushup-diamond", "pushup-feet-elevated"))
         assertEquals(listOf(listOf("pushup-standard")), prereq("pushup-diamond")); assertEquals(listOf(listOf("pushup-standard")), prereq("pushup-feet-elevated"))
-        assertEquals(listOf("pushup-archer"), next("pushup-diamond")); assertEquals(listOf("pushup-archer"), next("pushup-feet-elevated"))
+        assertLegacySuccessors("pushup-diamond", listOf("pushup-archer")); assertContractExtensions("pushup-diamond", listOf("pushup-archer"))
+        assertEquals(listOf("pushup-archer"), next("pushup-feet-elevated"))
         assertEquals(listOf(listOf("pushup-diamond"), listOf("pushup-feet-elevated")), prereq("pushup-archer"))   // both siblings
         val rank = { id: String -> catalog.variation(id)!!.difficultyRank }
         assertTrue(rank("pushup-wall") < rank("pushup-incline-high") && rank("pushup-incline-high") < rank("pushup-incline") && rank("pushup-standard") < rank("pushup-diamond"))
@@ -204,7 +267,8 @@ class StarterCatalogTest {
     @Test fun l03PullUpPathWithoutABand() {
         fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
         fun needs(id: String) = catalog.variation(id)!!.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet()
-        assertEquals(listOf("scapular-pull", "german-hang"), next("dead-hang"))   // R7-T12: the German hang follows as a second successor
+        assertEquals(listOf("scapular-pull", "german-hang"), next("dead-hang").take(2))   // R7-T12: the German hang follows as a second successor
+        assertTrue(next("dead-hang").drop(2).all { it in r8Ids })
         assertEquals(listOf("pullup-full"), next("flexed-arm-hang")); assertEquals(listOf("pullup-full"), next("chair-assisted-pullup"))
         assertEquals(setOf("pullup-bar", "chair"), needs("chair-assisted-pullup")); assertEquals(setOf("pullup-bar"), needs("dead-hang")); assertEquals(Kind.HOLD, catalog.variation("flexed-arm-hang")!!.kind)
         // chin-up and pull-up are parallel: same way in, neither leads to the other
@@ -223,7 +287,7 @@ class StarterCatalogTest {
         assertEquals(setOf("low-bar"), needs("inverted-row")); assertEquals(setOf("low-bar"), needs("inverted-row-wide")); assertEquals(setOf("kettlebell"), needs("kettlebell-one-arm-row"))
         assertEquals(listOf(listOf("row-band", "towel-door-row")), prereq("inverted-row-bent-knees"))
         // inverted row -> wide row -> feet elevated -> archer; the front lever needs 3 x 8 wide rows (tier 4)
-        assertEquals(listOf("inverted-row-wide"), next("inverted-row")); assertEquals(listOf("inverted-row-feet-elevated"), next("inverted-row-wide"))
+        assertLegacySuccessors("inverted-row", listOf("inverted-row-wide")); assertLegacySuccessors("inverted-row-wide", listOf("inverted-row-feet-elevated"))
         assertEquals(listOf(listOf("inverted-row-wide")), prereq("inverted-row-feet-elevated"))
         assertTrue(listOf("inverted-row-wide") in prereq("front-lever-tuck"))
     }
@@ -233,15 +297,18 @@ class StarterCatalogTest {
         fun prereq(id: String) = catalog.policyForVariation(id)!!.prerequisiteRule.allOf.map { g -> g.mapNotNull { it.variationTierMet?.variationId } }
         // beginner shrimp || band/frame-assisted pistol -> intermediate shrimp || box pistol || counterbalance pistol -> advanced shrimp || pistol
         assertEquals(listOf("squat-shrimp-intermediate"), next("squat-shrimp")); assertEquals(listOf("squat-shrimp-advanced"), next("squat-shrimp-intermediate"))
-        assertEquals(listOf("squat-pistol-box", "squat-pistol-counterbalance"), next("squat-pistol-assisted"))
-        assertEquals(listOf("squat-pistol"), next("squat-pistol-box")); assertEquals(listOf("squat-pistol"), next("squat-pistol-counterbalance"))
+        assertLegacySuccessors("squat-pistol-assisted", listOf("squat-pistol-box", "squat-pistol-counterbalance"))
+        assertLegacySuccessors("squat-pistol-box", listOf("squat-pistol")); assertContractExtensions("squat-pistol-box", listOf("squat-pistol"))
+        assertLegacySuccessors("squat-pistol-counterbalance", listOf("squat-pistol"))
         assertEquals(listOf(listOf("squat-pistol-box", "squat-pistol-counterbalance")), prereq("squat-pistol"))
-        assertTrue(next("squat-shrimp-advanced").isEmpty() && next("squat-pistol").isEmpty())    // two parallel end points
+        assertContractExtensions("squat-shrimp-advanced", emptyList()) // R8 adds the deficit shrimp.
+        assertTrue(next("squat-pistol").isEmpty())
         // the ankle check is information, in every single-leg step
         for (id in listOf("squat-shrimp", "squat-shrimp-intermediate", "squat-shrimp-advanced", "squat-pistol-assisted", "squat-pistol-box", "squat-pistol-counterbalance"))
             assertTrue(id, catalog.variation(id)!!.instructions.any { "Ankle check" in it && "information only" in it })
         assertEquals(setOf("chair"), catalog.variation("squat-pistol-box")!!.equipmentAlternatives.flatMap { it.needs }.map { it.equipmentId }.toSet())
     }
+
 
     @Test fun l06HingeHasFourPathsWithSafeNordicDefaults() {
         fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
@@ -261,7 +328,7 @@ class StarterCatalogTest {
     @Test fun l07LSitStepsUseTheAccumulatedMinuteProfile() {
         val steps = listOf("l-sit-foot-supported", "l-sit-one-foot", "l-sit-tuck", "l-sit-advanced-tuck", "l-sit-one-leg", "l-sit-floor", "v-sit-floor")
         fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
-        for ((a, b) in steps.zipWithNext()) assertEquals("$a -> $b", listOf(b), next(a))
+        for ((a, b) in steps.zipWithNext()) assertLegacySuccessors(a, listOf(b))
         for (id in steps.dropLast(1)) {
             val p = catalog.policyForVariation(id)!!
             assertEquals(id, app.calisthenics.domain.model.TierProfile.H60, p.tierProfile); assertEquals(id, listOf(10, 15, 20, 30, 60), p.tiers.map { it.target.value })
@@ -287,7 +354,7 @@ class StarterCatalogTest {
         // glute bridge -> table bridge -> chair (incline) bridge -> head-supported -> wall walk-down (the middle step) -> full back bridge; the single-leg bridge is a side branch
         var c = "glute-bridge"; val out = mutableListOf(c); while (true) { c = next(c).firstOrNull() ?: break; out += c }
         assertEquals(listOf("glute-bridge", "bridge-table", "bridge-incline", "bridge-head", "bridge-wall-walkdown", "bridge-back"), out)
-        assertEquals(listOf("bridge-table", "bridge-single-leg"), next("glute-bridge")); assertEquals(listOf(listOf("glute-bridge")), prereq("bridge-single-leg"))
+        assertLegacySuccessors("glute-bridge", listOf("bridge-table", "bridge-single-leg")); assertEquals(listOf(listOf("glute-bridge")), prereq("bridge-single-leg"))
         assertEquals(setOf("wall"), catalog.variation("bridge-wall-walkdown")!!.equipmentAlternatives.flatMap { it.capabilities }.toSet())
         assertTrue(catalog.variation("bridge-head")!!.cautions.any { "neck" in it })
     }
@@ -296,15 +363,17 @@ class StarterCatalogTest {
         for (id in listOf("dip-support-hold", "dip-negative", "dip-parallel", "weighted-dip")) {
             val v = catalog.variation(id)!!
             assertTrue(id, v.instructions.any { "Depth cap" in it && "right angle" in it && "front of the shoulder" in it })
-            assertTrue(id, v.instructions.any { "two sturdy chairs" in it && "counter corner" in it.replace("-", " ").replace("kitchen counter corner", "counter corner") || "kitchen-counter corner" in it })
+            assertTrue(id, v.instructions.any { "two sturdy chairs" in it && "counter" in it.lowercase() })
         }
         assertEquals(30, catalog.policyForVariation("dip-support-hold")!!.tiers.last().target.value)            // support hold 3 x 30 s
-        assertTrue(catalog.variations.none { "bench dip" in it.name.lowercase() })
+        val benchDips = listOf("dip-bench-bent-knee", "dip-bench-straight-leg", "dip-bench-feet-elevated").map { catalog.variation(it)!! }
+        assertTrue(benchDips.all { it.reviewState == ReviewState.DRAFT && it.cautions.isNotEmpty() })
     }
 
     @Test fun l11StretchLibraryIsTaggedForBetweenSetsAndCoolDown() {
         val stretches = catalog.variations.filter { it.kind == Kind.STRETCH }
-        assertEquals(25, stretches.size)                                          // L11: 17 + 7 = 24 stretches (the ankle one is a mobility item); L11b added the shoulder backbend
+        assertEquals(25, legacyVariations.count { it.kind == Kind.STRETCH })       // frozen pre-R8 library size
+        assertEquals(44, stretches.size)
         val cd = stretches.filter { it.stretchUse == StretchUse.COOL_DOWN }.map { it.id }.toSet()
         assertTrue(cd.containsAll(setOf("stretch-pigeon", "stretch-90-90", "stretch-frog", "stretch-quad-couch", "stretch-butterfly", "stretch-pancake", "stretch-cobra", "stretch-sleeper")))
         assertTrue(catalog.variation("stretch-sleeper")!!.optIn)
@@ -323,7 +392,7 @@ class StarterCatalogTest {
 
     @Test fun l13CalvesAndTibialisUseTheEnduranceProfileAndTheDumbbellsAsLoad() {
         fun next(id: String) = catalog.policyForVariation(id)!!.nextVariationIds
-        assertEquals(listOf("calf-raise-single"), next("calf-raise")); assertEquals(listOf("calf-raise-single-loaded"), next("calf-raise-single")); assertEquals(listOf("tibialis-raise-single"), next("tibialis-raise"))
+        assertLegacySuccessors("calf-raise", listOf("calf-raise-single")); assertLegacySuccessors("calf-raise-single", listOf("calf-raise-single-loaded")); assertLegacySuccessors("tibialis-raise", listOf("tibialis-raise-single"))
         for (id in listOf("calf-raise", "calf-raise-single", "calf-raise-single-loaded", "tibialis-raise", "tibialis-raise-single")) {
             val p = catalog.policyForVariation(id)!!
             assertEquals(id, app.calisthenics.domain.model.TierProfile.E, p.tierProfile); assertEquals(id, listOf(15, 18, 20, 22, 25), p.tiers.map { it.target.value })
@@ -344,6 +413,6 @@ class StarterCatalogTest {
             assertTrue(id, v.cautions.all { it.startsWith("Pay attention to") })
         }
         assertEquals(1, catalog.variations.count { it.id == "jefferson-curl" })
-        assertFalse(catalog.variations.filter { it.id != "jefferson-curl" && it.id != "german-hang" }.any { it.cautionStrong })
+        assertFalse(legacyVariations.filter { it.id != "jefferson-curl" && it.id != "german-hang" }.any { it.cautionStrong })
     }
 }

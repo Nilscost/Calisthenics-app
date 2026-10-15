@@ -34,6 +34,10 @@ data class TrainSettings(
     val cooldownOn: Boolean = false,
     val cooldownMode: CooldownMode = CooldownMode.STRETCHING,
     val cooldownMinutes: Int = 5,
+    /** R8 T07: selected catalog-backed fixed program (null = existing objective/routine). */
+    val fixedProgramId: String? = null,
+    /** R8 T07: user overrides for each program's contract default flow setting. */
+    val fixedProgramFlowOverrides: Map<String, Boolean> = emptyMap(),
 ) {
     fun effectiveFocus(): Set<StrengthFocus> = focus ?: Goals.focusFor(goalId)
 }

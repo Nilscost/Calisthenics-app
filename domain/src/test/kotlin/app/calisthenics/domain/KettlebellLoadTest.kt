@@ -117,7 +117,14 @@ class KettlebellLoadTest {
         assertTrue(oas.unilateral)
         assertEquals(listOf("kettlebell-swing-one-arm"), catalog.policyForVariation("kettlebell-swing")!!.nextVariationIds)
         assertEquals(VariationTier("kettlebell-swing", 4), catalog.policyForVariation(oas.id)!!.prerequisiteRule.allOf.single().single().variationTierMet)
-        // every kettlebell exercise explains how to pick the weight and that levels count per weight
-        for (v in catalog.variations.filter { it.isLoaded() }) assertTrue(v.id, v.instructions.any { it.startsWith("Weight:") && "per weight" in it })
+        // The original load progression applies to its two established loaded lifts. New R8
+        // shoulder-prehab equipment options use light-weight safety cues, not load tracks.
+        for (id in listOf("kettlebell-deadlift", "kettlebell-swing-one-arm")) {
+            val v = catalog.variation(id)!!
+            assertTrue(id, v.instructions.any { it.startsWith("Weight:") && "per weight" in it })
+        }
+        val cubanPress = catalog.variation("cuban-press")!!
+        assertTrue(cubanPress.instructions.any { "very light" in it.lowercase() })
+        assertTrue(cubanPress.cautions.any { "sharp or joint pain" in it.lowercase() })
     }
 }

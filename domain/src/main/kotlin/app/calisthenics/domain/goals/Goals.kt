@@ -47,7 +47,7 @@ object Goals {
         val start = g.entryVariationId ?: return emptyList()
         val out = mutableListOf(start); var cur = start
         while (cur != g.targetVariationId && out.size < 20) {
-            cur = c.policyForVariation(cur)?.nextVariationIds?.firstOrNull() ?: break
+            cur = c.policyForVariation(cur)?.progressionSuccessors()?.firstOrNull() ?: break
             out += cur
         }
         return out

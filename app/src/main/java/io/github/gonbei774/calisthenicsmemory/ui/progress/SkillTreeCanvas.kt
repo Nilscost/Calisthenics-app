@@ -8,6 +8,10 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
@@ -18,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -25,6 +30,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -67,24 +74,42 @@ fun SkillTreeCanvas(layout: TreeLayout, nodes: Map<String, NodeUi>, mastered: Se
     val edgeColor = MaterialTheme.colorScheme.outlineVariant
     val doneColor = AppAccentTheme.colors.accent
     val w: Dp = CellWidth * layout.cols
-    val h: Dp = CellHeight * layout.rows
-    Box(modifier.size(w + 16.dp, h + 16.dp).padding(8.dp)) {
-        Canvas(Modifier.size(w, h)) {
-            val cw = CellWidth.toPx(); val ch = CellHeight.toPx(); val th = TileHeight.toPx(); val gap = TopGap.toPx()
-            for (e in layout.edges) {
-                val a = layout.node(e.from) ?: continue
-                val b = layout.node(e.to) ?: continue
-                val x1 = a.col * cw + cw / 2; val y1 = a.row * ch + gap + th
-                val x2 = b.col * cw + cw / 2; val y2 = b.row * ch + gap
-                val mid = (y1 + y2) / 2
-                val p = Path().apply { moveTo(x1, y1); cubicTo(x1, mid, x2, mid, x2, y2) }
-                drawPath(p, if (e.from in mastered) doneColor else edgeColor, style = Stroke(width = (if (e.kind == EdgeKind.NEXT) 3.dp else 2.dp).toPx(), cap = StrokeCap.Round))
+    val positionsByRow = remember(layout) { layout.nodes.groupBy { it.row } }
+    val positionById = remember(layout) { layout.nodes.associateBy { it.variationId } }
+    val rowIds = remember(layout) { (0 until layout.rows).toList() }
+    Box(modifier) {
+        Row(Modifier.fillMaxSize().horizontalScroll(rememberScrollState())) {
+            Box(Modifier.width(w).fillMaxHeight()) {
+                LazyColumn(Modifier.fillMaxSize().testTag("tree_rows")) {
+            items(rowIds, key = { it }) { row ->
+                Box(Modifier.width(w).height(CellHeight).testTag("tree_row_$row")) {
+                    Canvas(Modifier.fillMaxSize()) {
+                        clipRect {
+                        val cw = CellWidth.toPx(); val ch = CellHeight.toPx(); val th = TileHeight.toPx(); val gap = TopGap.toPx()
+                        val rowTop = row * ch
+                        withTransform({ translate(top = -rowTop) }) {
+                            for (e in layout.edges) {
+                                val a = positionById[e.from] ?: continue
+                                val b = positionById[e.to] ?: continue
+                                val x1 = a.col * cw + cw / 2; val y1 = a.row * ch + gap + th
+                                val x2 = b.col * cw + cw / 2; val y2 = b.row * ch + gap
+                                if (maxOf(y1, y2) < rowTop || minOf(y1, y2) > rowTop + ch) continue
+                                val mid = (y1 + y2) / 2
+                                val p = Path().apply { moveTo(x1, y1); cubicTo(x1, mid, x2, mid, x2, y2) }
+                                drawPath(p, if (e.from in mastered) doneColor else edgeColor, style = Stroke(width = (if (e.kind == EdgeKind.NEXT) 3.dp else 2.dp).toPx(), cap = StrokeCap.Round))
+                            }
+                        }
+                        }
+                    }
+                    positionsByRow[row].orEmpty().forEach { pos ->
+                        val n = nodes[pos.variationId] ?: return@forEach
+                        Box(Modifier.offset(x = CellWidth * pos.col).size(CellWidth, CellHeight), contentAlignment = Alignment.TopCenter) {
+                            TreeNode(n, n.id == selected, onNeed) { onNode(n.id) }
+                        }
+                    }
+                }
             }
         }
-        layout.nodes.forEach { pos ->
-            val n = nodes[pos.variationId] ?: return@forEach
-            Box(Modifier.offset(CellWidth * pos.col, CellHeight * pos.row).size(CellWidth, CellHeight), contentAlignment = Alignment.TopCenter) {
-                TreeNode(n, n.id == selected, onNeed) { onNode(n.id) }
             }
         }
     }

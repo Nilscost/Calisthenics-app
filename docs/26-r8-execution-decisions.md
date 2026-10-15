@@ -19,3 +19,7 @@ Owner decisions in the Codex chat supersede the open questions in docs 23–25.
 All training content remains DRAFT. No phone testing or owner gate approval is claimed. New clip assets cannot pass completeness checks until the owner renders them and they are encoded and installed.
 
 Written CC2 checks exposed contract errors in five flag entries. Clutch hang now uses the armpit wrap and opposite elbow braced into the waist, not an overhead press grip. Diagonal and horizontal split clutch use one tucked leg and one extended leg. Split Press uses a roughly 90-degree pole-side knee and one extended leg. Support Press uses an overhead bar plus a wall/fixed support, so its equipment and diagram props were corrected. Photos remain unavailable and no flag pose group is yet accepted.
+
+Coordinator explored intermediate-rung continuations, then held those additional structural changes after the owner's 2026-10-15 feedback requested critical review and discussion before implementation. The generated catalog again preserves the existing main choices except the previously approved feet-elevated/diamond group. Proposed changes and unresolved questions are recorded in docs/27-progression-review.md.
+
+Owner confirmed no second local CC2 copy exists and authorized internet research for uncertain poses. Online reference checking replaces the unavailable local-photo comparison; exact flag acceptance still requires coordinator visual review against the chosen references.

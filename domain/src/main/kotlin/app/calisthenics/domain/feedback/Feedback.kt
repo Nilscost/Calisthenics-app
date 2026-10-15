@@ -118,6 +118,9 @@ fun deriveEvidence(
     /** V21: per exercise, did the session meet the plan's rep-range rule? null = App levels. */
     ruleMetOf: (String) -> Boolean? = { null },
 ): List<SessionEvidence> {
+    // Flow programs record a completed session but provide no per-exercise result. Do not
+    // turn timer completion into assumed strength evidence for any item in the routine.
+    if (plan.fixedProgramId != null && plan.flow) return emptyList()
     val tierByVariation = plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null }
         // a free number (Detailed edit) means "does not count towards progression": no prescribed tier, so the session is never qualifying
         .groupBy { it.variationId!! }.mapValues { (_, bs) -> if (bs.any { it.freeTarget }) null else bs.mapNotNull { it.prescriptionTier }.maxOrNull() }

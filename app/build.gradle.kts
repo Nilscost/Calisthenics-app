@@ -97,6 +97,9 @@ android {
 
     testOptions {
         unitTests.isIncludeAndroidResources = true
+        // The expanded catalog exercises large Compose semantics trees in Robolectric.
+        // Gradle's default 512 MiB worker heap exhausted during the R8 progress tests.
+        unitTests.all { it.maxHeapSize = "2g" }
     }
 
     // Lint: see app/lint.xml (auto-detected by AGP). U01b removed the fork's partial translations (English only, Q3).

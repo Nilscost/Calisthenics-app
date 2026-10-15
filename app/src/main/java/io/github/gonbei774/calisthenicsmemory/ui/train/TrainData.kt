@@ -4,6 +4,9 @@ package io.github.gonbei774.calisthenicsmemory.ui.train
 import android.content.Context
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
+import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import app.calisthenics.domain.content.parseCatalog
 import app.calisthenics.domain.model.Catalog
 import app.calisthenics.domain.model.Routine
@@ -50,6 +53,10 @@ object TrainSettingsStore {
             cooldownOn = p(ctx).getBoolean("cooldown", false),
             cooldownMode = runCatching { app.calisthenics.domain.model.CooldownMode.valueOf(p(ctx).getString("cooldown_mode", "STRETCHING")!!) }.getOrDefault(app.calisthenics.domain.model.CooldownMode.STRETCHING),
             cooldownMinutes = p(ctx).getInt("cooldown_minutes", 5),
+            fixedProgramId = p(ctx).getString("fixed_program", null),
+            fixedProgramFlowOverrides = runCatching {
+                kotlinx.serialization.json.Json.parseToJsonElement(p(ctx).getString("fixed_program_flow", "{}")!!).jsonObject.mapNotNull { (k, v) -> (v as? JsonPrimitive)?.booleanOrNull?.let { k to it } }.toMap()
+            }.getOrDefault(emptyMap()),
         )
     }
 
@@ -58,7 +65,8 @@ object TrainSettingsStore {
         ProfileStore.select(ctx, s.profileId)
         ModeStore.setTimed(ctx, s.timed)
         PrefsStore.save(ctx, PrefsStore.load(ctx).copy(stretchOn = s.stretchOn))
-        p(ctx).edit().putInt("rounds", s.rounds).putString("format", s.format.name).putString("routine", s.routineId).putBoolean("warmup", s.warmupOn).putInt("exercises", s.exercisesPerRound ?: -1).putBoolean("cooldown", s.cooldownOn).putString("cooldown_mode", s.cooldownMode.name).putInt("cooldown_minutes", s.cooldownMinutes).apply()
+        val flowJson = kotlinx.serialization.json.buildJsonObject { s.fixedProgramFlowOverrides.forEach { (k, v) -> put(k, kotlinx.serialization.json.JsonPrimitive(v)) } }
+        p(ctx).edit().putInt("rounds", s.rounds).putString("format", s.format.name).putString("routine", s.routineId).putBoolean("warmup", s.warmupOn).putInt("exercises", s.exercisesPerRound ?: -1).putBoolean("cooldown", s.cooldownOn).putString("cooldown_mode", s.cooldownMode.name).putInt("cooldown_minutes", s.cooldownMinutes).putString("fixed_program", s.fixedProgramId).putString("fixed_program_flow", flowJson.toString()).apply()
     }
 }
 

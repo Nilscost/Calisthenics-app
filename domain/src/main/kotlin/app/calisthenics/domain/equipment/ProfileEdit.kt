@@ -41,7 +41,15 @@ object EquipmentOptions {
         EquipmentOption("weighted-vest", weighted = true, defaultMassGrams = 5_000),     // V27: a load for push-ups, pull-ups, dips and squats
         EquipmentOption("dip-support"),       // V21b: parallel bars, two sturdy chairs or a counter corner (dips, support hold)
         EquipmentOption("foot-anchor"),       // V21b: a sofa or heavy furniture to hook the heels under (Nordic curls)
-        EquipmentOption("parallettes", future = true),
+        EquipmentOption("parallettes"),
+        EquipmentOption("rings"),
+        EquipmentOption("ab-wheel"),
+        EquipmentOption("step"),
+        EquipmentOption("box"),
+        EquipmentOption("bench"),
+        EquipmentOption("pole"),
+        EquipmentOption("sliders"),
+        EquipmentOption("jump-rope"),
     )
     fun byId(id: String) = all.firstOrNull { it.id == id }
 }

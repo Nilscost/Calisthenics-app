@@ -82,7 +82,13 @@ private class Planner(val input: PlanInput) {
 
         // 3–5. choose variations
         val chosen = mutableListOf<Chosen>()
-        for (slot in slots) chooseFor(slot)?.let { chosen += it }
+        for (slot in slots) chooseFor(slot)?.let { candidate ->
+            val automaticSlot = slot.id.startsWith("ext-") || app.calisthenics.domain.goals.Goals.isSkillSlot(slot.id)
+            val explicitPick = draft.swaps.containsKey(slot.id) || slot.id.startsWith("add-")
+            if (automaticSlot && !explicitPick && chosen.any { it.variation.familyId == candidate.variation.familyId }) {
+                explain += "${candidate.variation.name} was left out because this workout already trains its progression."
+            } else chosen += candidate
+        }
         if (chosen.isEmpty()) return fail("nothing-available",
             "No exercise in this routine can be done with the current equipment, exclusions and holds.",
             listOf(PlanOption("change-profile", "Switch equipment profile."), PlanOption("clear-exclusions", "Review excluded exercises.")))
@@ -233,6 +239,11 @@ private class Planner(val input: PlanInput) {
             }
             pref = easier
         }
+        if (hold == null && draft.swaps[slot.id] == null) {
+            val rotated = rotatedExercise(cat, pref, input.progress, input.profile, input.excludedVariationIds)
+            if (rotated.id != pref.id) explain += "${rotated.name} is today's alternative to ${pref.name}; each exercise keeps its own progress."
+            pref = rotated
+        }
         var v: ExerciseVariation = pref
         if (!usable(v)) {
             val sub = substitute(slot, v)
@@ -279,7 +290,7 @@ private class Planner(val input: PlanInput) {
     }
 
     private fun substitute(slot: RoutineSlot, original: ExerciseVariation): Pair<ExerciseVariation, Boolean>? {
-        val pool = cat.variations.filter { usable(it) && it.id != original.id && cat.policyFor(it) != null }
+        val pool = cat.variations.filter { !it.routineOnly && usable(it) && it.id != original.id && cat.policyFor(it) != null && app.calisthenics.domain.goals.Goals.unmet(cat, it.id, input.progress).isEmpty() }
         fun rank(list: List<ExerciseVariation>) = list.sortedWith(compareBy({ kotlin.math.abs(it.difficultyRank - original.difficultyRank) }, { it.id }))
         rank(pool.filter { slot.intent in it.patterns && slot.area in it.areas }).firstOrNull()?.let { return it to true }
         rank(pool.filter { slot.area in it.areas }).firstOrNull()?.let { return it to false }
@@ -335,7 +346,8 @@ private class Planner(val input: PlanInput) {
                 val free = draft.freeTargets["$r:${c.slot.id}"] ?: draft.freeTargets[c.slot.id]
                 val rng = draft.rule
                 val ruleTarget = if (rng.isRange) (if (isHold) Target(t.target.type, rng.holdFrom, rng.holdTo) else Target(t.target.type, c.slot.repFrom ?: rng.from, maxOf(c.slot.repTo ?: rng.to, c.slot.repFrom ?: rng.from))) else null
-                val target = if (free != null) Target(t.target.type, free.coerceIn(1, 999)) else ruleTarget ?: t.target
+                val requested = if (free != null) Target(t.target.type, free.coerceIn(1, 999)) else ruleTarget ?: t.target
+                val target = cappedTarget(requested, cat.policyFor(v)!!)
                 val dur = if ((free != null || ruleTarget != null) && isHold) maxOf(secs, (target.max ?: target.value) + 3) else secs
                 out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, t.index,
                     mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams, freeTarget = free != null, groupIndex = group)
@@ -410,7 +422,7 @@ private class Planner(val input: PlanInput) {
         var prevPos: String? = null
         for (b in blocks) {
             val pos = b.variationId?.let { cat.variation(it)?.position }
-            if (prevPos != null && pos != null && pos != prevPos) {
+            if ((prevPos != null && pos != null && pos != prevPos) || needsSideChangePreparation(out.lastOrNull(), b)) {
                 out += TimelineBlock("tr-${++n}", BlockType.TRANSITION, TRANSITION_SECONDS, b.roundIndex, b.slotId, groupIndex = b.groupIndex)
             }
             out += b

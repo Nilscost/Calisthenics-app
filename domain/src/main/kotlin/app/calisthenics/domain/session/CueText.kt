@@ -4,6 +4,7 @@
 package app.calisthenics.domain.session
 
 import app.calisthenics.domain.model.BlockType
+import app.calisthenics.domain.model.Side
 import app.calisthenics.domain.model.TimelineBlock
 import app.calisthenics.domain.model.WorkoutPlan
 
@@ -14,13 +15,16 @@ object CueText {
         if (i < 0) return ""
         val b = plan.blocks[i]
         val name = b.variationId?.let { names[it] ?: it }
-        return when (b.type) {
+        val text = when (b.type) {
             BlockType.PASSIVE_RECOVERY -> if (plan.stretchOn) "Recover" else "Rest"
-            BlockType.TRANSITION -> nextExercise(plan, i)?.let { "Get ready: ${names[it.variationId] ?: it.variationId}" } ?: "Get ready"
+            BlockType.TRANSITION -> nextExercise(plan, i)?.let {
+                "Get ready: ${(names[it.variationId] ?: it.variationId)}${sideLabel(it.side)}"
+            } ?: "Get ready"
             BlockType.STRETCH -> "Stretch: " + (name ?: "")
             BlockType.COOLDOWN -> name?.let { "Cool-down: $it" } ?: "Relax"
             else -> name ?: "Go"
         }.trim()
+        return if (b.type == BlockType.TRANSITION) text else "$text${sideLabel(b.side)}".trim()
     }
 
     /** What to announce as "Next": skips the short get-ready block so the user hears the exercise itself. */
@@ -32,4 +36,10 @@ object CueText {
 
     private fun nextExercise(plan: WorkoutPlan, from: Int): TimelineBlock? =
         plan.blocks.drop(from + 1).firstOrNull { it.variationId != null && it.type != BlockType.TRANSITION }
+
+    private fun sideLabel(side: Side): String = when (side) {
+        Side.LEFT -> " — Left side"
+        Side.RIGHT -> " — Right side"
+        else -> ""
+    }
 }

@@ -21,7 +21,8 @@ class BackupHistoryTest {
 
     private fun payload() = BackupPayload(Preferences(), emptyList(), listOf(PlanRecord("p1", "{}"), PlanRecord("p2", "{}"), PlanRecord("p3", "{}")),
         listOf(s1, s2, s3), listOf(FeedbackRecord("s1", "pushup-standard", 1, "MET", false, false, 5L)),
-        listOf(ProgressionEventRecord("e1", "pushup-standard", "ADVANCE", 1, 2, "3 sessions", 9L)))
+        listOf(ProgressionEventRecord("e1", "pushup-standard", "ADVANCE", 1, 2, "3 sessions", 9L)),
+        trainSettings = app.calisthenics.domain.planner.TrainSettings(fixedProgramId = "pilates-core-10", fixedProgramFlowOverrides = mapOf("army-hsd" to false)))
 
     @Test fun weeksStartMondayAndGroupSessions() {
         val w = weeklySummaries(listOf(s1, s2), ZoneId.of("UTC"))

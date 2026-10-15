@@ -56,7 +56,7 @@ fun applyEdits(routine: Routine, e: PlanEdits): Routine {
 fun slotFor(v: ExerciseVariation, n: Int = 1) = RoutineSlot("add-${v.id}" + if (n > 1) "-$n" else "", v.patterns.first(), v.areas.firstOrNull() ?: Area.UPPER_BODY, v.id)
 
 private fun usableStrength(catalog: Catalog, v: ExerciseVariation, profile: EquipmentProfile) =
-    (v.kind == Kind.REPS || v.kind == Kind.HOLD) && catalog.policyFor(v) != null && isAvailable(v, profile)
+    !v.routineOnly && (v.kind == Kind.REPS || v.kind == Kind.HOLD) && catalog.policyFor(v) != null && isAvailable(v, profile)
 
 /** D1: the whole progression of the exercise's own family, easier to harder, usable with this equipment. The current one is included. */
 fun swapFamilyOptions(catalog: Catalog, currentId: String, profile: EquipmentProfile): List<ExerciseVariation> {

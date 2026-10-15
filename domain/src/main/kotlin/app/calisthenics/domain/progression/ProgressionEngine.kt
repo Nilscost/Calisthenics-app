@@ -105,6 +105,8 @@ data class ProgressSnapshot(
     val activeInFamily: Map<String, String>,
     val holds: Map<String, FamilyHold>,
     val events: List<ProgressEvent>,
+    /** Distinct workouts with completed work in a family, rebuilt from evidence rather than stored counters. */
+    val familyWorkoutCounts: Map<String, Int> = emptyMap(),
 ) {
     fun tierFor(variationId: String): Int? = variations[variationId]?.tier
     fun holdFor(familyId: String): FamilyHold? = holds[familyId]
@@ -121,6 +123,8 @@ class ProgressionEngine(private val catalog: Catalog) {
 
     private fun policy(vid: String): ProgressionPolicy? = catalog.policyForVariation(vid)
     private fun family(vid: String): String = catalog.variation(vid)?.familyId ?: vid
+    private fun isRotationAlternative(vid: String) = catalog.exerciseGroups.any { vid in it.alternativeVariationIds }
+    private fun mainFor(vid: String) = catalog.exerciseGroups.firstOrNull { vid in it.alternativeVariationIds }?.mainVariationId ?: vid
 
     private fun seed(p: ProgressionPolicy) = SeedPolicy(
         variationId = p.variationId,
@@ -154,7 +158,7 @@ class ProgressionEngine(private val catalog: Catalog) {
             var p = ensure(vid, ev.day, tier = ev.prescribedTier ?: 1)
             p = p.copy(lastTrainedDay = maxOf(p.lastTrainedDay ?: ev.day, ev.day))
             val start = p
-            active.putIfAbsent(p.familyId, vid)
+            active.putIfAbsent(p.familyId, mainFor(vid))
             val hold = holds[p.familyId]
             // Kettlebell weight: levels are earned per weight (owner 2026-10-08).
             val load = ev.loadGrams
@@ -235,8 +239,8 @@ class ProgressionEngine(private val catalog: Catalog) {
                         // R7-T04 (B1): above the top step: the top step is achieved too (five stars) and the successor is active at level 1
                         val p = ensure(a.variationId, a.day, top, top)
                         vars[a.variationId] = p.copy(tier = top, baselineTier = top, enrolledAtDay = a.day, achievedTiers = (1..top).toSet())
-                        active.putIfAbsent(p.familyId, a.variationId)
-                        val next = policy(a.variationId)?.nextVariationIds.orEmpty().firstOrNull { catalog.variation(it) != null && prerequisitesMet(it, vars) }
+                        active.putIfAbsent(p.familyId, mainFor(a.variationId))
+                        val next = if (isRotationAlternative(a.variationId)) null else policy(a.variationId)?.progressionSuccessors().orEmpty().firstOrNull { catalog.variation(it) != null && prerequisitesMet(it, vars) }
                         if (next != null) {
                             if (!vars.containsKey(next)) vars[next] = VariationProgress(next, family(next), 1, a.day, null, emptySet(), null, emptyList(), 0, 0, false, false, null, null)
                             active[p.familyId] = next
@@ -245,11 +249,11 @@ class ProgressionEngine(private val catalog: Catalog) {
                         // R7-T11 (D5): set by hand: levels 1..achievedUpTo are done, [tier] is the one trained next
                         val p = ensure(a.variationId, a.day, a.tier, 1)
                         vars[a.variationId] = p.copy(tier = a.tier, baselineTier = 1, enrolledAtDay = a.day, achievedTiers = (1..a.achievedUpTo).toSet())
-                        active.putIfAbsent(p.familyId, a.variationId)
+                        active.putIfAbsent(p.familyId, mainFor(a.variationId))
                     } else {
                         val p = ensure(a.variationId, a.day, a.tier, a.tier)
                         vars[a.variationId] = p.copy(tier = a.tier, baselineTier = a.tier, enrolledAtDay = a.day)
-                        active.putIfAbsent(p.familyId, a.variationId)
+                        active.putIfAbsent(p.familyId, mainFor(a.variationId))
                     }
                 }
                 is UserAction.AcceptHarder -> {
@@ -265,7 +269,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                     val top = policy(a.variationId)?.tiers?.maxOfOrNull { it.index } ?: 5
                     vars[a.variationId] = p.copy(achievedTiers = (1..top).toSet(), streakDays = emptyList(), streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false, ruleAbove = false)
                     if (!vars.containsKey(a.toVariationId)) vars[a.toVariationId] = VariationProgress(a.toVariationId, family(a.toVariationId), 1, a.day, null, emptySet(), null, emptyList(), 0, 0, false, false, null, null)
-                    active[p.familyId] = a.toVariationId
+                    if (!isRotationAlternative(a.variationId)) active[p.familyId] = a.toVariationId
                     events += ProgressEvent(a.day, a.variationId, "You accepted the next exercise: ${catalog.variation(a.toVariationId)?.name ?: a.toVariationId} (level 1).")
                 }
                 is UserAction.AcceptEasier -> {
@@ -304,16 +308,20 @@ class ProgressionEngine(private val catalog: Catalog) {
         }
 
         items.sortedWith(compareBy({ it.day }, { it.order }, { it.key })).forEach { it.run() }
-        return ProgressSnapshot(vars.toMap(), active.toMap(), holds.toMap(), events.toList())
+        val counts = evidence.filter { it.completedWorkBlocks > 0 }.groupBy { it.familyId }
+            .mapValues { (_, sessions) -> sessions.map { it.sessionId }.distinct().size }
+        return ProgressSnapshot(vars.toMap(), active.toMap(), holds.toMap(), events.toList(), counts)
     }
 
     /** The rule was met: this exercise counts as passed (all five stars) and the routine continues with the next exercise at its bottom. */
     private fun moveOnByRule(p: VariationProgress, day: Int, events: MutableList<ProgressEvent>, active: MutableMap<String, String>, vars: MutableMap<String, VariationProgress>): VariationProgress {
         val done = p.copy(achievedTiers = (1..5).toSet(), streakDays = emptyList(), streakAssumed = 0, lastAutoAdvanceDay = day)
         val name = catalog.variation(p.variationId)?.name ?: p.variationId
-        val next = policy(p.variationId)?.nextVariationIds.orEmpty().firstOrNull { catalog.variation(it) != null }
+        val next = if (isRotationAlternative(p.variationId)) null else policy(p.variationId)?.progressionSuccessors().orEmpty().firstOrNull { catalog.variation(it) != null && prerequisitesMet(it, vars + (p.variationId to done)) }
         if (next == null) {
-            events += ProgressEvent(day, p.variationId, "Every set reached the top of the range - this is the last exercise of this progression.")
+            events += ProgressEvent(day, p.variationId, if (isRotationAlternative(p.variationId))
+                "Every set reached the top of the range. Progress on this alternative is kept; the main exercise controls the next main step."
+                else "Every set reached the top of the range - no eligible next exercise is available yet.")
             return done
         }
         active[done.familyId] = next
@@ -351,7 +359,7 @@ class ProgressionEngine(private val catalog: Catalog) {
         // Top tier: same pacing gate (evaluated as if a 6th tier existed) then successor move.
         if (p0.tier == 5 && 5 !in p0.achievedTiers && gateWouldPass(pol, p0, day)) {
             val achieved = p0.copy(achievedTiers = p0.achievedTiers + 5, lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
-            val successor = pol.nextVariationIds.firstOrNull { prerequisitesMet(it, vars) }
+            val successor = if (isRotationAlternative(p0.variationId)) null else pol.progressionSuccessors().firstOrNull { prerequisitesMet(it, vars + (p0.variationId to achieved)) }
             val name = catalog.variation(p0.variationId)?.name ?: p0.variationId
             val loaded = catalog.variation(p0.variationId)?.isLoaded() == true
             val at = p0.loadGrams?.let { " at ${formatKg(it)} kg" }.orEmpty()
