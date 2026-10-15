@@ -92,3 +92,12 @@ References: written contract/owner CC2 text plus public instructor references in
 
 
 Evidence: flag_pole-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## rings · 16 ids accepted for draft rendering
+
+All16 explicit IDs pass reach/floor checks. Coordinator inspected full muscle-up, PPPU60, negative dip, L-sit and archer push-up. Repairs keep muscle-up handles at a fixed2.21m while pelvis rises1.18→2.304m through pull/turnover/support, rather than stretching the straps downward. Local3.4m anchors preserve fixed-length support. Archer assisting elbow stays171–173° throughout. Support lockouts, distinct PPPU40/60 backward lean and extended L-sit legs were checked numerically. Negative muscle-up uses7s lowering with a quicker loop reset; negative dip emphasizes the controlled lower before reset.
+
+Equipment follows the contract's schematic rod-based suspension representation; literal ring hoops are omitted. Turn-out is represented by hand/palm orientation. These are draft diagrams, with actual Blender hand/ring appearance and negative-reset clarity still to review before integration.
+
+
+Evidence: rings-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
