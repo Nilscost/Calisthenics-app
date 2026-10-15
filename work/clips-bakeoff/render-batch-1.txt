@@ -70,3 +70,16 @@ pullup-one-arm-negative
 pullup-one-arm
 pullup-pullover-jumping
 pullup-pullover
+front-lever-one-leg
+front-lever
+skin-the-cat
+back-lever-tuck
+back-lever-adv-tuck
+back-lever-straddle
+back-lever-one-leg
+back-lever
+front-lever-row-tuck
+front-lever-row-adv-tuck
+front-lever-row-straddle
+front-lever-row-hang
+front-lever-row

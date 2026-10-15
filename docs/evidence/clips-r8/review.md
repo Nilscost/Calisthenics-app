@@ -41,3 +41,9 @@ Evidence: handstand_balance-describe.txt and representative sheets. Accepted for
 All 19 explicit IDs passed --describe after choreography and anatomy repairs. Coordinator inspected pullovers, assisted and strict one-arm pull-ups, sternum pull and kipping muscle-up, plus the partial pull-up. Pullovers now rotate through inversion around the bar rather than showing a muscle-up. The helper hand remains below the working wrist throughout the assisted rep. Chin-clearance checks use the bottom of the head, not just its center; ordinary tops place head center around 2.43 m over the 2.30 m bar. Leaned top positions avoid overfolded elbows. Final partial range is elbows36–82°.
 
 Evidence: pullup_new-describe.txt and representative sheets. No new Blender movie or phone acceptance is claimed.
+
+## levers · 14 ids accepted for draft rendering
+
+All 14 explicit IDs passed --describe without reach or floor warnings. Coordinator inspected skin-the-cat, one-leg back lever, hang-to-front-lever row and ice-cream maker. Skin-the-cat rotates through inversion to a distinct German hang and returns along the same arc. Final one-leg back lever uses a clear right knee bend90° with hip170° after rejecting both a flexed-hip version and a nearly straight-knee version. Hold arms remain near extension; row elbows flex from171° to88–95°. Ice-cream maker uses the permitted tucked shape.
+
+Evidence: levers-describe.txt and four contact sheets. Accepted for draft rendering only; Blender movies remain unverified.
