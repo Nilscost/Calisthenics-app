@@ -117,3 +117,12 @@ All17 pass reach/floor checks and chronological-key validation. Coordinator revi
 
 
 Evidence: plyo_b-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## conditioning · 20 ids accepted for draft rendering
+
+All 20 poses pass reach, floor and key-order checks. Coordinator rebuilt the thrust/press/T sequences after initial drafts passed some checks while showing incorrect actions. The press has elbows about 170 degrees at the top and 86 at the bottom, with fixed hand/foot contacts. Eight-count uses a grounded chest, an 0.8-second hands-off T, hand replacement, press and stand; no finishing jump. Step-back thrust moves one foot at a time, while jumping variants lift both feet; sprawl visibly sinks the hips. Burpee has one finishing jump with an overhead clap, while the push-up variant adds a complete press. Mountain climbers distinguish sequential slow steps from alternating running and a cross-body path. Skips travel forward with airborne phases and a stepping reset; lateral skipping goes out and back. Jacks have moving arm sweeps rather than static arm targets. Reviewed standard and targeted-phase sheets for eight-count, burpee/push-up, power skip, side skip, mountain climbers and earlier jack/butt-kick drafts.
+
+Limit: the two jump-rope clips show grip, wrist circles and hops, but omit the rope loop because no existing prop can represent its rotation. Wrist timing is one versus two circles per hop; the higher double-under hop is visible, but actual rope clearance/passes cannot be verified. These are draft body-motion sources with that explicit visual limitation. Blender movies still require review.
+
+
+Evidence: conditioning-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.

@@ -742,3 +742,7 @@ Flag_pole16 and rings16 accepted after coordinator geometry repairs. Total223/37
 ### Jump groups accepted · 2026-10-15
 
 Plyo_a13 and plyo_b17 accepted after coordinator hand/foot contact, alternating landing, solid-box clearance and loop-reset repairs. Total253/379 ready:121+66+66. Accepted inputs remain frozen for the running Blender job. Next pair conditioning20 and crawl_agility15; app integration remains held. Safe checker now rejects backwards key times and nonidentical duplicate times.
+
+### Conditioning accepted · 2026-10-15
+
+Conditioning 20 accepted after coordinator rebuilt contact sequences and reviewed targeted phase sheets. Total 273/379 ready. Rope loops are omitted and explicitly documented; body hops and wrist timing are represented. Agility/rolls remain under repair and outside the manifests. No app integration or existing accepted input changed.
