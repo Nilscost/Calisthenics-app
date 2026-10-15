@@ -23,3 +23,7 @@ Written CC2 checks exposed contract errors in five flag entries. Clutch hang now
 Coordinator explored intermediate-rung continuations, then held those additional structural changes after the owner's 2026-10-15 feedback requested critical review and discussion before implementation. The generated catalog again preserves the existing main choices except the previously approved feet-elevated/diamond group. Proposed changes and unresolved questions are recorded in docs/27-progression-review.md.
 
 Owner confirmed no second local CC2 copy exists and authorized internet research for uncertain poses. Online reference checking replaces the unavailable local-photo comparison; exact flag acceptance still requires coordinator visual review against the chosen references.
+
+## Integration hold · 2026-10-15
+
+The current R8 catalog and app work are a draft checkpoint, not approval for final inclusion. Pause catalog expansion and app feature work while pose work is completed. All 379 exercise pose sources must be completed and reviewed for Blender before the owner and coordinator discuss which exercises to integrate. Preserve existing work and behavior during this hold; do not treat draft presence as a decision to ship.

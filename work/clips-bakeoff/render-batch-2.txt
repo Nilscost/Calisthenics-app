@@ -20,3 +20,5 @@ elbow-lever
 pullup-typewriter
 pullup-kipping
 ice-cream-maker
+hanging-windshield-wiper-half
+hanging-windshield-wiper

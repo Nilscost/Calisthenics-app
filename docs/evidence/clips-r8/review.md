@@ -47,3 +47,9 @@ Evidence: pullup_new-describe.txt and representative sheets. No new Blender movi
 All 14 explicit IDs passed --describe without reach or floor warnings. Coordinator inspected skin-the-cat, one-leg back lever, hang-to-front-lever row and ice-cream maker. Skin-the-cat rotates through inversion to a distinct German hang and returns along the same arc. Final one-leg back lever uses a clear right knee bend90° with hip170° after rejecting both a flexed-hip version and a nearly straight-knee version. Hold arms remain near extension; row elbows flex from171° to88–95°. Ice-cream maker uses the permitted tucked shape.
 
 Evidence: levers-describe.txt and four contact sheets. Accepted for draft rendering only; Blender movies remain unverified.
+
+## hanging_core · 15 ids accepted for draft rendering
+
+All15 explicit IDs passed build/describe/floor checks without warnings. Coordinator inspected toes-to-bar, heel-hook, both windshield wipers and dragon flags. Repairs before acceptance keep wiper legs moving together with knees173–175°, fixed hanging wrists, dragon-flag upper-back anchor at bench height and knees174–175°. Toes-to-bar reaches the bar; supported knee raise uses low dip supports. Negative dragon flag uses tucked reset.
+
+Evidence: hanging_core-describe.txt and representative sheets. Accepted for draft rendering; Blender movies remain unverified.

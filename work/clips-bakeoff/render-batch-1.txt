@@ -83,3 +83,15 @@ front-lever-row-adv-tuck
 front-lever-row-straddle
 front-lever-row-hang
 front-lever-row
+knee-raise-supported
+hanging-knee-raise
+hanging-knee-raise-twisting
+hanging-leg-raise-bent
+hanging-leg-raise
+toes-to-bar
+dragon-flag-candlestick
+dragon-flag-tuck
+dragon-flag-adv-tuck
+dragon-flag-one-leg
+dragon-flag-negative
+dragon-flag
