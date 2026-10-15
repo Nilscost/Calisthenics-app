@@ -128,3 +128,16 @@ clamshell
 side-lying-leg-tuck
 fire-hydrant
 donkey-kick
+spanish-squat
+terminal-knee-extension
+petersen-step-up
+stair-descent-slow
+chin-nod-supine
+chin-tuck-seated
+chin-tuck-head-lift
+neck-isometric-4-way
+neck-head-raise-manual
+joint-circles
+leg-swings
+deep-squat-hold
+hip-raise-pushup

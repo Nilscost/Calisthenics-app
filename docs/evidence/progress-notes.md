@@ -755,3 +755,8 @@ Crawl/agility 15 accepted after extensive contact and trajectory repairs. Total 
 ### Prehab draft rendering checkpoint · 2026-10-15
 
 Shoulder17 and wrist/hip12 accepted for draft Blender rendering after coordinator contact, limb-angle and anatomical-motion repairs. Total317/379 sources in manifests (121+66+130). Current rig cannot independently move scapulae or individual fingers: isolated scapular actions and finger-lift coverage remain instructional limitations, explicitly recorded in clips-r8/review.md. Read-only and semantic geometry checks pass; representative sheets reviewed. Existing288 cache payloads and mtimes remain frozen. Next pair neck_knee_warmup13 and army_drill16; later stretches_c18 and pilates_mat15. App integration remains held.
+
+
+### Neck/knee/warm-up draft checkpoint · 2026-10-15
+
+13 more sources ready for draft rendering:330/379 total (121+66+143). Knee, step, leg-swing and pike geometry rebuilt and reviewed. Neck rig limits explicitly documented: seated chin retraction is static setup only; supported nod and independent tuck cannot be fully shown. These are not accepted instructional movies. Army16 remains under review and outside manifests. Original317 accepted inputs remain frozen; no app integration.

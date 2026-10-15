@@ -158,3 +158,16 @@ LIMITATION: individual fingers and independent forearm-bone twist are absent. Th
 
 
 Evidence: prehab_wrist_hip-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## neck_knee_warmup · 13 ids accepted for draft rendering
+
+Coordinator rebuilt the knee/step/warm-up geometry and reviewed all13 three-view sheets plus targeted pike phases. Spanish squat is a static hold with exact vertical shins and a band passing behind both knees toward a front anchor. TKE changes actual knee flexion (~150° to >174°), with a fixed working foot and band endpoint following the back of the knee; changing only a knee pole was rejected. Petersen uses a heel-raised fixed working foot, ~92°→175° knee extension and a free foot outside the solid step. Stair descent has a flat fixed support foot, free heel outside the step, 3.5s lowering in a six-second cycle, and the actual step-up return. Solid-box joint checks pass; free-foot lateral clearance was checked separately.
+
+Leg swings use continuous front/back then lateral constant-radius arcs, >176° working knees and a fixed support foot. The initial sign-flip teleport was rejected. The no-prop contract is shown with free balancing arms; the instruction's optional wall/chair balance support is not depicted. Deep squat keeps heels planted while weight shifts side to side. Hip raise has fixed wrists/ankles, >169° elbows and >174° knees through the controlled sag and pike, using a solved support geometry rather than a bent-arm approximation.
+
+Head lift is ~2.43cm, with trunk and feet fixed. Supine knees now point upward and the unused arms lie along the floor. Manual-resistance hand midpoint follows the forehead; the free arm stays down. Four-way isometrics use inward palm normals and vertical hands at four skull surface contacts, with transfers above the head. Joint circles have bounded hand/ankle paths and neutral transitions rather than full wrist revolutions or snapping between regions. Read-only and semantic support/angle/contact checks pass. No app assets installed.
+
+LIMITATION: no independent cervical translation, yaw or sidebend. Seated chin tuck is STATIC SETUP ONLY, with no claim to demonstrate retraction. Supine nod is a small pitch approximation with ~1cm center displacement; a truly supported nod without translation is unavailable. The chin-tuck component of head lift cannot be independently demonstrated. Generic joint circles show only neck pitch, and force/resistance is schematic. These are draft rendering sources; the unsupported neck actions need a better rig or alternate demonstration before instructional acceptance.
+
+
+Evidence: neck_knee_warmup-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
