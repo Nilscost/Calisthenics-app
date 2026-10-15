@@ -728,3 +728,9 @@ The compact Train header keeps Programs discoverable without adding a full-heigh
 ### 2026-10-15 · all poses before integration
 
 Owner requests all379 pose sources ready before deciding which exercises to integrate. Existing app/catalog work remains a draft checkpoint. Owner reports Blender running; accepted sources, joints and frames are frozen for that run. New groups only are authored and reviewed, then added to manifests for a subsequent invocation. At this checkpoint170 poses accepted (priority batch109/121); hips_bridge and calf_balance are the next pair. Full Blender movie/phone acceptance remains separate.
+
+### Cache protection and completed priority set · 2026-10-15
+
+An agent accidentally invoked the unsupported poses.py --help and regenerated caches during the live Blender run. All180 previously accepted inputs matched their deterministic approved sources exactly. Blender process remained running. Ninety-three complete outputs postdated source acceptance but had newer regenerated JSON; the coordinator restored only their cache mtimes to source acceptance time, preserving rendered files. Audit: clips-r8/cache-recovery-2026-10-15.json. Added check_new_poses.py with read-only default, explicit group/ID validation, frozen accepted writes and unchanged-payload mtime preservation; missing/unknown/frozen guard checks pass.
+
+Hips_bridge accepted after coordinator repaired dropback arm trajectories and reviewed wall/head and bench/head clearance. All121 priority IDs are now in the ready manifests. Total191/379 ready; next pair flag_pole and rings uses fresh Luna agents. Integration remains on hold.

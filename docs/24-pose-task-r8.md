@@ -36,6 +36,10 @@ If something truly can't be shown, pose the body correctly without it and say so
 - Per-side exercises: the right side works (faces the camera).
 - Pilates and Army drill moves follow the same rules. Pilates rolls (rolling like a ball, open-leg rocker, seal) need `dense(...)` keys so the spine rolls instead of teleporting.
 
+## Safe checks while Blender is running
+
+Use `python3 tools/blender/check_new_poses.py --group <group> --describe` for read-only validation. Add `--write` only for an unaccepted new group once all checks pass. This wrapper rejects missing/unknown IDs, refuses writes to IDs already in the render manifests, validates the whole group before writing, and preserves identical JSON timestamps. Do not invoke the historical `poses.py --help`: it is unsupported and regenerates every cache. The coordinator handles preview sheets and acceptance. Core pose/render code remains unchanged.
+
 ## Coordinator check, per group
 1. `python3 tools/blender/poses.py <ids…> --describe`: all `OK`.
 2. `python3 tools/blender/poses.py <ids…> --preview /workspace/pv-<group>`: look at the sheets for 3–4 ids per group (always the hardest ones: inversions, flags, levers, rolls) against the anatomy checklist in POSES.md. Send fixes back.
