@@ -13,3 +13,5 @@ pushup-chest-strike
 pushup-wall-push-away
 plank-arm-leg-reach
 body-saw
+pullup-commando
+pullup-kip-swing

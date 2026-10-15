@@ -35,3 +35,9 @@ The ab wheel uses an animated segmented rim of joint-attached rods because the e
 All 21 explicit IDs passed --describe after repeated coordinator review. Inspected straight-leg press variants, tripod tuck, forearm headstand, elbow lever, wall walk and deep handstand push-ups. Repairs preserve straight press arms/legs, place tucked knees within 3.3 cm of the supporting elbows, put actual forearms on the floor, and put lever elbows into the abdomen with flat hands. Deep push-ups use diagrammatic elevated handles: top elbows165°, bottom63° with shoulders at hand height and head clear of floor. Full/straddle elbow-lever knees177°.
 
 Evidence: handstand_balance-describe.txt and representative sheets. Accepted for draft rendering only; Blender movies and balance depiction still require review.
+
+## pullup_new · 19 ids accepted for draft rendering
+
+All 19 explicit IDs passed --describe after choreography and anatomy repairs. Coordinator inspected pullovers, assisted and strict one-arm pull-ups, sternum pull and kipping muscle-up, plus the partial pull-up. Pullovers now rotate through inversion around the bar rather than showing a muscle-up. The helper hand remains below the working wrist throughout the assisted rep. Chin-clearance checks use the bottom of the head, not just its center; ordinary tops place head center around 2.43 m over the 2.30 m bar. Leaned top positions avoid overfolded elbows. Final partial range is elbows36–82°.
+
+Evidence: pullup_new-describe.txt and representative sheets. No new Blender movie or phone acceptance is claimed.

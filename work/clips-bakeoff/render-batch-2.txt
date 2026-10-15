@@ -17,3 +17,5 @@ handstand-press-bent-arm
 elbow-lever-umbrella
 elbow-lever-straddle
 elbow-lever
+pullup-typewriter
+pullup-kipping
