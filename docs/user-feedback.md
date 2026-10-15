@@ -11,9 +11,10 @@
 
 ### Execution status
 
-- Recorded all six comments. Duplicate-progression prevention, voice speed/side cues and five-second hold-side setup are implemented; final regression verification is in progress.
+- Recorded all six comments. Duplicate-progression prevention, voice speed/side cues and five-second hold-side setup are implemented; regression checks pass apart from the three expected missing-media asset checks.
 - New structural ladder rewiring is held for review; the previously approved same-level exercise rotation remains in scope.
-- Stretch source poses and camera have been corrected and inspected as joint sheets and Blender start-frame stills. The rig currently cannot show independent upper-back axial rotation; the modest rotation approximation still needs full movie review. Replacement movies require render, encode and install before they appear on the phone.
+- Rear hand clasp: corrected overhead arm and rear camera, reviewed four Blender frames across the loop, rendered, encoded and installed the replacement clip and thumbnail. Phone verification remains pending.
+- Thoracic rotation: the first repair improves the arm position but does not show enough independent upper-back rotation. Candidate saved for further work; its replacement is not installed or accepted.
 - No phone verification is claimed.
 
 ## Review lens clarified by the owner · 2026-10-15

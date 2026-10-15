@@ -75,17 +75,20 @@ def quad_standing():
     return dict(seconds=4.0, keys=rep(a, b), cam_az=60, cam_el=10, props=[])
 
 
-# --- 4. standing, towel held behind the back (right hand over the shoulder, left hand low) -----------------
+# --- 4. standing, towel behind the back (right upper hand, left hand low) ----------------------------------
 def rear_hand_clasp():
     towel = dict(kind="rod", a=pt("wrist_r"), b=pt("wrist_l"), r=0.02)
 
     def key(wr, wl):
         return base_pose(pelvis=[0.0, 0.0, 0.975], p1=0, p2=0, hp=0,
-                         wrist_r=wr, elbow_r=[-0.3, -1, 0.6], hand_r=[0, 0, -1],
-                         wrist_l=wl, elbow_l=[-0.3, 1, -0.2], hand_l=[0, 0, 1])
-    a = key([-0.06, -0.14, 1.18], [-0.10, 0.14, 0.92])
-    b = key([-0.06, -0.12, 1.28], [-0.10, 0.12, 1.05])
-    return dict(seconds=4.0, keys=rep(a, b), cam_az=60, cam_el=10, props=[towel])
+                         wrist_r=wr, elbow_r=[0, 0, 1], hand_r=[0, 0, -1], palm_r=[-1, 0, 0],
+                         wrist_l=wl, elbow_l=[-0.3, 1, -0.2], hand_l=[0, 0, 1], palm_l=[-1, 0, 0])
+    # The right elbow bends high over the shoulder; the wrist descends to the upper back.
+    # The left hand stays low on the opposite end of the towel.
+    a = key([-0.25, -0.14, 1.30], [-0.15, 0.14, 0.90])
+    b = key([-0.25, -0.14, 1.34], [-0.15, 0.14, 0.94])
+    # Rear three-quarter view makes the towel and both hands visible behind the torso.
+    return dict(seconds=4.0, keys=rep(a, b), cam_az=-45, cam_el=12, props=[towel])
 
 
 # --- 5. standing, right arm across the chest, left hand holds the right upper arm --------------------------
