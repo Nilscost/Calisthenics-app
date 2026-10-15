@@ -746,3 +746,7 @@ Plyo_a13 and plyo_b17 accepted after coordinator hand/foot contact, alternating 
 ### Conditioning accepted · 2026-10-15
 
 Conditioning 20 accepted after coordinator rebuilt contact sequences and reviewed targeted phase sheets. Total 273/379 ready. Rope loops are omitted and explicitly documented; body hops and wrist timing are represented. Agility/rolls remain under repair and outside the manifests. No app integration or existing accepted input changed.
+
+### Agility and roll checkpoint · 2026-10-15
+
+Crawl/agility 15 accepted after extensive contact and trajectory repairs. Total 288/379 pose sources ready (batch1 121, batch2 66, batch3 101). All original accepted inputs remain frozen. Next pair: prehab_shoulder 17 and prehab_wrist_hip 12. No new app integration. The remaining 91 sources include prehab, neck/knee/warm-up, Army drills, stretches and Pilates.
