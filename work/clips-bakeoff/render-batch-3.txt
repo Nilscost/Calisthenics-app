@@ -19,3 +19,12 @@ heel-hook
 arms-biceps-curl
 arms-triceps-extension
 grip-eagle-claw
+curl-up-mcgill
+crunch
+bicycle-crunch
+sit-up
+rower-situp
+russian-twist
+side-plank-knee
+side-plank-hip-raise
+copenhagen-adduction

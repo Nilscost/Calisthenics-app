@@ -27,3 +27,5 @@ grip-towel-hang
 grip-twin-towel-hang
 grip-uneven-towel-hang
 grip-one-arm-towel-hang
+windshield-wiper-bent-knee
+windshield-wiper-floor

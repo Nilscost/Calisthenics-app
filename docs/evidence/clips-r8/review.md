@@ -60,3 +60,10 @@ All13 explicit IDs pass reach/floor checks. Coordinator inspected biceps curl, t
 
 
 Evidence: grip_row_arms-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## core_supine · 18 ids accepted for draft rendering
+
+All 18 explicit IDs pass reach and floor checks. Coordinator inspected Copenhagen, knee side plank, straight floor wiper and straddle V-up through several repairs. Knee plank now aligns knees through head with knees90° and fixed forearm support. Copenhagen top foot stays on the chair while lower leg adducts; dense spherical targets prevent a hidden mid-rep knee bend. V-up legs rise continuously with torso rather than jumping to their top position; knees remain176° across the loop. Floor wiper sweeps45° each way with upper back and hands planted. Joint motion remains a simplified diagram of spinal rotation.
+
+
+Evidence: core_supine-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.

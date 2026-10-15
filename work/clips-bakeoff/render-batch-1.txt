@@ -100,3 +100,10 @@ row-one-arm-straddle
 row-one-arm
 grip-horizontal-hang
 grip-one-arm-hang
+lying-knee-tuck
+lying-bent-knee-raise
+seated-knee-raise
+frog-raise
+reverse-crunch
+v-up-tuck
+v-up-straddle
