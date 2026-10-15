@@ -76,3 +76,10 @@ Representation limits: the mannequin has no eyelids, so eyes-closed balance show
 
 
 Evidence: calf_balance-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## hips_bridge · 11 ids accepted for draft rendering
+
+All11 explicit IDs pass reach/floor checks. Coordinator inspected standing and closing bridges, wallwalk, wall push-off, hip thrust and Harop curl. Repairs prevent head/wall and head/bench collisions; upperback stays supported above the bench, Harop hinges at the hips with straight trunk, reverse plank preserves straight body, and wallwalk alternates hand steps. Coordinator rewrote dropback wrist trajectories after finding severe mid-loop elbow folding: arms now remain near extension beside the head during the arch; closing bridge also lowers to supine with fixed hand contact. Props are schematic and closing-loop recovery retraces the setup.
+
+
+Evidence: hips_bridge-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.

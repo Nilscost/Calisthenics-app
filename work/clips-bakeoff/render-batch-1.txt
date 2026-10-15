@@ -113,3 +113,9 @@ calf-raise-step-bent-knee
 calf-raise-step
 calf-raise-step-single-bent-knee
 calf-raise-step-single
+bridge-half
+bridge-wall-walkup
+bridge-closing
+bridge-stand-to-stand
+harop-curl-beginner
+harop-curl

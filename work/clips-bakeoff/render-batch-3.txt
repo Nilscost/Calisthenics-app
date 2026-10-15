@@ -32,3 +32,5 @@ balance-single-leg
 balance-single-leg-eyes-closed
 balance-single-leg-cushion
 short-foot
+bridge-reverse-plank
+bridge-wall-push-off

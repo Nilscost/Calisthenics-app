@@ -29,3 +29,6 @@ grip-uneven-towel-hang
 grip-one-arm-towel-hang
 windshield-wiper-bent-knee
 windshield-wiper-floor
+hip-thrust
+hip-thrust-single-leg
+back-extension-floor
