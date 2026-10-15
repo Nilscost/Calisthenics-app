@@ -107,3 +107,9 @@ frog-raise
 reverse-crunch
 v-up-tuck
 v-up-straddle
+calf-raise-bent-knee
+calf-raise-single-bent-knee
+calf-raise-step-bent-knee
+calf-raise-step
+calf-raise-step-single-bent-knee
+calf-raise-step-single

@@ -28,3 +28,7 @@ russian-twist
 side-plank-knee
 side-plank-hip-raise
 copenhagen-adduction
+balance-single-leg
+balance-single-leg-eyes-closed
+balance-single-leg-cushion
+short-foot

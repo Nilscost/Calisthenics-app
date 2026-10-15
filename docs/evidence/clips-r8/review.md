@@ -67,3 +67,12 @@ All 18 explicit IDs pass reach and floor checks. Coordinator inspected Copenhage
 
 
 Evidence: core_supine-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## calf_balance · 10 ids accepted for draft rendering
+
+All 10 explicit IDs pass reach/floor checks. Coordinator inspected step raise, single-leg bent-knee step raise, cushion balance and seated short foot. Repairs widen the wall under the supporting hand, move the step out from beneath the descending heel, add the missing seat, and pivot around the actual renderer foot surface. Independent foot-mesh calculation keeps the ball surface at step top .20m within .00003m through the loop. Straight knees remain172°, bent variants150°.
+
+Representation limits: the mannequin has no eyelids, so eyes-closed balance shows the same balance task with wider ready arms; it does not literally close its eyes. Short-foot shows the seated starting position and flat long toes, but this rig cannot display intrinsic foot-arch shortening. These two sources are ready to render as limited diagrams, not approved demonstrations of their defining fine action; revisit these limits during integration selection.
+
+
+Evidence: calf_balance-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
