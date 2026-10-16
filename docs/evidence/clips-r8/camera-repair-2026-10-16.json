@@ -59,5 +59,46 @@
   ],
   "installed": true,
   "installerResult": "Six installed; zero problems. Canonical H.264 Main CRF30 outputs, all under 120KB.",
-  "heldDemonstrationsAfterReview": 25
+  "heldDemonstrationsAfterReview": 25,
+  "encodedOutputCheck": {
+    "method": "Decoded installed MP4 frames at start, midpoint and last frame; coordinator inspected the six-row contact sheet after installation.",
+    "results": [
+      {
+        "id": "handstand-wall-one-foot",
+        "frames": 72,
+        "sha256": "7f333f79af5e14390b0067907956820d03c88149890141b35c3edf8ce9a729fd",
+        "bytes": 6435
+      },
+      {
+        "id": "handstand-toe-pulls",
+        "frames": 72,
+        "sha256": "73709928836edd39268af263843ef43749db1cc86959c8113a2d072dc890edf2",
+        "bytes": 7632
+      },
+      {
+        "id": "headstand-wall",
+        "frames": 72,
+        "sha256": "ef4cfc207e699796434220f339b521526b27e487133cd84cb41a251eb030fc27",
+        "bytes": 7173
+      },
+      {
+        "id": "hspu-wall-deficit",
+        "frames": 72,
+        "sha256": "b5baee963e8f1e7270e8945218947562af4afd9ca81a00d0c741ae7dd9b32404",
+        "bytes": 12493
+      },
+      {
+        "id": "handstand-press-wall-negative",
+        "frames": 96,
+        "sha256": "307bf100370644eb939f1fe71365a8cd3a827449a91bc9600aa03de662419721",
+        "bytes": 13256
+      },
+      {
+        "id": "flag-support-press",
+        "frames": 72,
+        "sha256": "9c50fe0fe15142a2c83eb27193d1665bdbd2a18608b515abbb3d998a20f8dead",
+        "bytes": 5883
+      }
+    ]
+  }
 }

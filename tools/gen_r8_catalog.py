@@ -34,19 +34,9 @@ CLIP_META = ROOT / "app/src/main/assets/clip_meta.json"
 REVIEW_REPORT = ROOT / "work/r8-import-review.json"
 ROUTE_REPORT = ROOT / "docs/29-progression-routes.json"
 
-DEMONSTRATION_HOLD = {
-    "chin-tuck-seated", "stretch-neck-side", "stretch-twist-straight-leg",
-    "stretch-twist-easy", "stretch-twist-half", "stretch-twist-three-quarter",
-    "stretch-twist-full", "pilates-roll-up", "pilates-roll-over", "pilates-seal",
-    "pilates-saw", "pilates-spine-twist", "pilates-double-leg-kick",
-    # Clips do not yet demonstrate these taught positions correctly. They stay
-    # in their authored routes, but are withheld from training until reviewed.
-    "stretch-thoracic", "scapular-pushup-wall", "scapular-pushup-knee",
-    "scapular-pushup", "support-scapular-shrug", "wrist-palm-pulses",
-    "chin-nod-supine", "chin-tuck-head-lift",
-    "neck-head-raise-manual",
-    "short-foot", "rower-situp", "turn-and-lunge",
-}
+# Cleared in R8-T14: all 25 previously held demonstrations were re-rendered and
+# accepted (docs/evidence/clips-r8/repair-final-acceptance-2026-10-17.md).
+DEMONSTRATION_HOLD: set[str] = set()
 
 
 def demonstration_is_held(variation_id: str, held_ids: set[str] | None = None) -> bool:
