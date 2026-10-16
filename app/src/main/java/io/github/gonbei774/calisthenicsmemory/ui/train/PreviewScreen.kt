@@ -68,6 +68,15 @@ import java.util.UUID
 
 fun formatClock(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 
+/** Apply the Preview's rest choices to every set and keep the displayed and started duration in sync. */
+private fun withRestDurations(plan: WorkoutPlan, durations: Map<String, Int>): WorkoutPlan {
+    if (durations.isEmpty()) return plan
+    val blocks = plan.blocks.map { block ->
+        if (block.type == BlockType.PASSIVE_RECOVERY && block.slotId in durations) block.copy(durationSeconds = durations.getValue(block.slotId!!)) else block
+    }
+    return plan.copy(blocks = blocks, plannedDurationSeconds = blocks.sumOf { it.durationSeconds })
+}
+
 /** The circuit: the work of round 1, one entry per exercise (both sides of a unilateral exercise are one entry). */
 data class CircuitEntry(val slotId: String, val variationId: String, val target: Target?, val perSide: Boolean, val loadGrams: Int? = null, val tier: Int = 1, val free: Boolean = false)
 
@@ -153,30 +162,49 @@ private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name
     }
 }
 
-/** The slim row between two exercises: what the break is (the stretch or the rest) and a dashed + to add something here. */
+/** The break and its adjacent dashed +; plain rest can be adjusted directly in this row. */
 @Composable
-private fun BreakRow(slotId: String, p: WorkoutPlan, round: Int, names: Map<String, String>, onChange: () -> Unit, onAdd: () -> Unit, sfx: String = "") {
+private fun BreakRow(slotId: String, p: WorkoutPlan, round: Int, names: Map<String, String>, onChange: () -> Unit, onRestChange: (Int) -> Unit, onAdd: () -> Unit, sfx: String = "") {
     val blocks = p.blocks.filter { it.slotId == slotId && it.roundIndex == round && (it.type == BlockType.STRETCH || it.type == BlockType.PASSIVE_RECOVERY) }
     val secs = blocks.sumOf { it.durationSeconds }
     val stretches = blocks.filter { it.type == BlockType.STRETCH }.mapNotNull { it.variationId }.distinct().mapNotNull { names[it] }
-    // R7.2-T03 (F4): the break is a small outlined card with the same swap icon as the tiles; the + sits on its own line below it
-    Column(Modifier.fillMaxWidth()) {
+    // The break fills the row beside its adjacent + affordance.
+    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
         if (blocks.isNotEmpty()) {
             val changeLabel = stringResource(R.string.preview_change)
-            OutlinedCard(
-                onClick = onChange, Modifier.fillMaxWidth().testTag("break_$slotId$sfx"), shape = MaterialTheme.shapes.large,
-                colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surface), border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant),
-            ) {
-                Row(Modifier.padding(start = Spacing.m, top = Spacing.xs, bottom = Spacing.xs), verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        if (stretches.isNotEmpty()) stringResource(R.string.preview_break_stretch, stretches.joinToString(" + "), formatClock(secs)) else stringResource(R.string.preview_break_rest, formatClock(secs)),
-                        Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2,
+            @Composable fun BreakContents() {
+                if (stretches.isEmpty()) Row(
+                    Modifier.fillMaxWidth().padding(start = Spacing.m, end = Spacing.xs, top = Spacing.xs, bottom = Spacing.xs),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(stringResource(R.string.block_rest), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    io.github.gonbei774.calisthenicsmemory.ui.components.Stepper(
+                        value = secs, onValueChange = onRestChange, range = 15..300, step = 15,
+                        valueText = ::formatClock, tag = "rest_$slotId$sfx",
                     )
+                    IconButton(onClick = onChange, modifier = Modifier.testTag("break_change_$slotId$sfx")) { Icon(Icons.Filled.Refresh, changeLabel) }
+                } else Row(
+                    Modifier.padding(start = Spacing.m, top = Spacing.xs, bottom = Spacing.xs),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(stringResource(R.string.preview_break_stretch, stretches.joinToString(" + "), formatClock(secs)), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 2)
                     Box(Modifier.size(Spacing.touch), contentAlignment = Alignment.Center) { Icon(Icons.Filled.Refresh, changeLabel) }
                 }
             }
+            val breakModifier = Modifier.weight(1f).testTag("break_$slotId$sfx")
+            if (stretches.isNotEmpty()) {
+                OutlinedCard(onClick = onChange, modifier = breakModifier, shape = MaterialTheme.shapes.large,
+                    colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surface), border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant)) {
+                    BreakContents()
+                }
+            } else {
+                Card(modifier = breakModifier, shape = MaterialTheme.shapes.large,
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface), border = BorderStroke(1.dp, MaterialTheme.colorScheme.surfaceVariant)) {
+                    BreakContents()
+                }
+            }
         }
-        AddButton(onAdd, Modifier.align(Alignment.End).padding(top = Spacing.s).testTag("add_after_$slotId$sfx"))
+        AddButton(onAdd, Modifier.testTag("add_after_$slotId$sfx"))
     }
 }
 
@@ -204,6 +232,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     val settings = remember(data) { withDefaultLength(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = resolved.edits) }
     var routine by remember(data) { mutableStateOf(resolved.routine) }
     var edits by remember(data) { mutableStateOf(resolved.edits) }
+    var restDurations by remember(data) { mutableStateOf<Map<String, Int>>(emptyMap()) }
     var saveDialog by remember { mutableStateOf(false) }
     var savedNote by remember { mutableStateOf<String?>(null) }
     val editing = remember { SavedRoutineStore.get(ctx, stored.routineId) }
@@ -229,7 +258,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                 Row(Modifier.fillMaxWidth().padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
                     AppOutlinedButton(onClick = { saveDialog = true }, enabled = result is PlanResult.Ready, modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("save_routine_button")) { Text(stringResource(R.string.routine_save), textAlign = TextAlign.Center) }
                     Button(
-                        onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); startPlan(ctx, (result as PlanResult.Ready).plan); onStarted() },
+                        onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); startPlan(ctx, withRestDurations((result as PlanResult.Ready).plan, restDurations)); onStarted() },
                         enabled = result is PlanResult.Ready,
                         modifier = Modifier.weight(1.6f).heightIn(min = 56.dp).testTag("start_button"),
                         shape = RoundedCornerShape(Radius.button),
@@ -244,10 +273,10 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                     Text(stringResource(R.string.train_infeasible), style = MaterialTheme.typography.titleMedium)
                     r.reasons.forEach { Text(it.message) }
                     r.alternatives.forEach { Text(stringResource(R.string.bullet_item, it.description), style = MaterialTheme.typography.bodySmall) }
-                    if (!edits.isEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
+                    if (!edits.isEmpty() || restDurations.isNotEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits(); restDurations = emptyMap() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
                 }
                 is PlanResult.Ready -> {
-                    val p = r.plan
+                    val p = withRestDurations(r.plan, restDurations)
                     if (routine.stretchSession.isNotEmpty()) {   // L11b: a stretch-only session has no sets, levels or rule: just the list and the protocol
                         Text(stringResource(R.string.stretch_session_header, p.blocks.mapNotNull { it.variationId }.filter { names.containsKey(it) }.distinct().size, (p.plannedDurationSeconds + 30) / 60), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"))
                         Text(stringResource(R.string.stretch_session_protocol), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("stretch_protocol"))
@@ -279,7 +308,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                             onSwap = { swapSlot = e.slotId }, onRemove = { removeSlot = e.slotId }, sfx = sfx,
                             onTypeNumber = if (typed) ({ typeFor = e.slotId to st }) else null, badge = badge,
                             chain = if (rule.isRange && idx >= 0) idx to options.size else null)
-                        BreakRow(e.slotId, p, st, names, onChange = { breakSlot = e.slotId to (if (typed) st else null) }, onAdd = { addAfter = e.slotId }, sfx = sfx)
+                        BreakRow(e.slotId, p, st, names, onChange = { breakSlot = e.slotId to (if (typed) st else null) }, onRestChange = { restDurations = restDurations + (e.slotId to it) }, onAdd = { addAfter = e.slotId }, sfx = sfx)
                     }
                     // R7.2-T01 (F1): one round view for all sets (the edits apply to every set), no set tabs; the full timeline below lists every set
                     Text(stringResource(R.string.preview_all_sets, (p.blocks.filter { it.roundIndex == set }.sumOf { it.durationSeconds } + 30) / 60), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("all_sets_header").padding(top = Spacing.xs))
@@ -321,7 +350,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                             AddButton({ coolAdd = true }, Modifier.align(Alignment.End).testTag("cooldown_add"))
                         }
                     }
-                    if (!edits.isEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
+                    if (!edits.isEmpty() || restDurations.isNotEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits(); restDurations = emptyMap() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
                     // R7-T10 (D4): the full timeline is the editor: every set's tiles, each with its set number; a stretch or a typed number can differ per set
                     Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
                         Row(Modifier.fillMaxWidth().clickable { timelineOpen = !timelineOpen }.heightIn(min = Spacing.touch).padding(horizontal = Spacing.m).testTag("timeline_toggle"), verticalAlignment = Alignment.CenterVertically) {

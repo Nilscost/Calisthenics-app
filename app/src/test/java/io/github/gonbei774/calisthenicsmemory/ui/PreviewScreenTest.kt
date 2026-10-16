@@ -7,6 +7,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import app.calisthenics.domain.model.WorkoutPlan
+import app.calisthenics.domain.model.BlockType
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import io.github.gonbei774.calisthenicsmemory.ui.train.PreviewScreen
@@ -159,6 +160,55 @@ class PreviewScreenTest {
         assertEquals(4, plan.rounds)
     }
 
+    @Test fun restDurationCanBeChangedAndTheStartedPlanUsesTheUpdatedTime() {
+        val prefs = io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.load(app)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.save(app, prefs.copy(stretchOn = false))
+        show(); rule.waitForIdle()
+        val original = rule.onNodeWithTag("rest_push_value").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString()
+        val beforeHeader = rule.onNodeWithTag("preview_header").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.Text].joinToString()
+        val originalSeconds = original.split(":").let { it[0].toInt() * 60 + it[1].toInt() }
+        val otherRestSeconds = listOf("squat", "pull", "core", "hinge", "core2").associateWith { slot ->
+            val clock = rule.onNodeWithTag("rest_${slot}_value").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString()
+            clock.split(":").let { it[0].toInt() * 60 + it[1].toInt() }
+        }
+        val updatedLabel = "%d:%02d".format((originalSeconds + 15) / 60, (originalSeconds + 15) % 60)
+        rule.onNodeWithTag("rest_push_plus").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("rest_push_value").assertContentDescriptionEquals(updatedLabel)
+        val afterHeader = rule.onNodeWithTag("preview_header").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.Text].joinToString()
+        assertNotEquals(beforeHeader, afterHeader)
+        rule.onNodeWithTag("start_button").performClick()
+        val intent = shadowOf(app).nextStartedService
+        val plan = Json { ignoreUnknownKeys = true }.decodeFromString(WorkoutPlan.serializer(), intent.getStringExtra(WorkoutSessionService.EXTRA_PLAN)!!)
+        val pushRests = plan.blocks.filter { it.type == BlockType.PASSIVE_RECOVERY && it.slotId == "push" }
+        assertTrue(pushRests.isNotEmpty())
+        assertTrue(pushRests.all { it.durationSeconds == originalSeconds + 15 })
+        otherRestSeconds.forEach { (slot, seconds) ->
+            assertTrue(plan.blocks.filter { it.type == BlockType.PASSIVE_RECOVERY && it.slotId == slot }.all { it.durationSeconds == seconds })
+        }
+        assertEquals(plan.blocks.sumOf { it.durationSeconds }, plan.plannedDurationSeconds)
+    }
+
+    @Test fun resettingAPreviewRestChoiceRestoresItsOriginalDuration() {
+        val prefs = io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.load(app)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.save(app, prefs.copy(stretchOn = false))
+        show(); rule.waitForIdle()
+        val original = rule.onNodeWithTag("rest_push_value").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString()
+        rule.onNodeWithTag("rest_push_plus").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("edits_reset").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("rest_push_value").assertContentDescriptionEquals(original)
+        rule.onNodeWithTag("edits_reset").assertDoesNotExist()
+    }
+
+    @Test fun aPlainRestStillOpensItsBreakPickerFromTheChangeButton() {
+        val prefs = io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.load(app)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.save(app, prefs.copy(stretchOn = false))
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("break_change_push").performScrollTo().performClick(); rule.waitForIdle(); rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle()
+        rule.onNodeWithTag("break_option_auto").assertExists()
+        rule.onNodeWithTag("break_option_auto").performSemanticsAction(click); rule.waitForIdle()
+        rule.onNodeWithTag("rest_push_plus").assertExists()
+    }
+
     // ---- V16: the editor
     private val click = androidx.compose.ui.semantics.SemanticsActions.OnClick
 
@@ -199,17 +249,16 @@ class PreviewScreenTest {
         rule.onNodeWithTag("break_push").assertTextContains("Pigeon", substring = true)
     }
 
-    @Test fun theBreakIsABoxWithTheSwapIconAndThePlusSitsBelowItWithAGap() {   // R7.2-T03 (F4)
+    @Test fun theBreakAndPlusShareARowAndTheBreakFillsTheRemainingWidth() {   // R7.2-T03 (F4)
         show(); rule.waitForIdle()
         rule.onNodeWithTag("break_push").performScrollTo().assertExists()
         rule.onNodeWithText("change").assertDoesNotExist()                               // the word is gone, the icon stays
         rule.onNodeWithTag("break_push").assertContentDescriptionEquals("change")
         val card = rule.onNodeWithTag("break_push").fetchSemanticsNode().boundsInRoot
         val plus = rule.onNodeWithTag("add_after_push").fetchSemanticsNode().boundsInRoot
-        assertTrue("the + is below the card", plus.top >= card.bottom)
-        val gap = (plus.top - card.bottom) / rule.density.density
-        assertTrue("gap $gap dp >= 8", gap >= 7.5f)
-        assertTrue("the + is at the right edge", plus.right > card.right - 20 * rule.density.density)
+        assertTrue("the + shares the card row", kotlin.math.abs(plus.center.y - card.center.y) < 16 * rule.density.density)
+        assertTrue("the card fills the available row", card.width > plus.width * 4)
+        assertTrue("the + is to the right of the card", plus.left >= card.right)
     }
 
     @Test fun thePlusBetweenBlocksAddsAnExerciseAfterThatSlot() {

@@ -1,0 +1,19 @@
+R8 Preview rest editor focused verification — 2026-10-16
+
+Environment: Hermes container hermes-f5da05b7, existing /workspace/review build tree. Only PreviewScreen.kt and PreviewScreenTest.kt were copied from the mounted source repository. No reset or full-repository sync was performed.
+
+Baseline comparison:
+- Production source temporarily replaced with `git show HEAD:app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/train/PreviewScreen.kt`.
+- The current test source was retained unchanged for the comparison. A shell EXIT trap restored the candidate production source after the run.
+- Command: `./gradlew :app:testDebugUnitTest --tests '*underARepRangeTheStepperMovesToTheNextExerciseOfTheChainAndKeepsTheRange' --offline --console=plain`
+- Result: failed on baseline HEAD too. At PreviewScreenTest.kt:304, expected `One-Arm Wall Push-Away (per side)`; actual `Knee Push-Up`. This establishes the remaining suite failure predates the Preview rest/layout changes.
+
+Candidate focused verification:
+- Command: `./gradlew :app:testDebugUnitTest --tests '*restDurationCanBeChangedAndTheStartedPlanUsesTheUpdatedTime' --tests '*aPlainRestStillOpensItsBreakPickerFromTheChangeButton' --tests '*resettingAPreviewRestChoiceRestoresItsOriginalDuration' --tests '*theBreakAndPlusShareARowAndTheBreakFillsTheRemainingWidth' --offline --console=plain`
+- Result: BUILD SUCCESSFUL. All four focused tests passed; Kotlin production and test compilation succeeded.
+- Coverage checks rest changes across every set for the selected exercise, leaves other exercise rests unchanged, updates the preview estimate and started plan total, keeps the plain-Rest change picker available, resets the rest override, and aligns the break card with the adjacent + control.
+
+Final compact Rest-row refinement:
+- Plain Rest now shows one horizontal row: localized `Rest` label, the 15-second Stepper showing its timestamp, and the refresh IconButton. The duplicate `Rest · duration` text and second line were removed. The break card still fills remaining width beside the fixed + touch target; stretch rows retain their existing layout.
+- Re-ran only the four focused candidate tests listed above after this refinement.
+- Result: BUILD SUCCESSFUL; all four tests passed and production/test Kotlin compilation succeeded.

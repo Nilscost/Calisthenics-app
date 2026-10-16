@@ -24,3 +24,10 @@ Keep the exercise library comprehensive while keeping the app uncluttered and th
 ## Integration hold · 2026-10-15
 
 The current R8 catalog and app work remain a draft checkpoint, not approved final inclusion. Pause catalog expansion and app feature work while pose work is completed. Complete and review all 379 exercise pose sources for Blender before discussing which exercises to integrate. Preserve the existing work and behavior during this hold.
+
+
+## Workout preview rest editing · 2026-10-16
+
+Owner reports that rest durations cannot be changed in the workout preview. Make rest times editable there and carry the chosen durations into the started workout and preview total. This is explicitly requested app work alongside the remaining pose review; exercise-inclusion decisions remain held. Implemented: plain rest has a compact15-second stepper (15–300s), applied across sets and reflected in the preview total and started workout. Rest/stretch swapping and Reset remain available. Four focused preview checks pass after the final compact-row adjustment; the prior progression-name test failure also reproduces on unchanged HEAD. See `docs/evidence/r8-preview-rest-verify-2026-10-16.log`. No phone verification or APK installation is claimed.
+
+Layout clarification: place the rest/stretch card and existing “+” button in one horizontal row. The card fills the available width after reserving the existing button size and gap.
