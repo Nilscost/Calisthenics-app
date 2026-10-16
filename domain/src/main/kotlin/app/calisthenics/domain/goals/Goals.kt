@@ -27,14 +27,19 @@ object Goals {
 
     val all = listOf(
         Goal("general", "General strength", "Balanced full-body work; no skill target.", focus = setOf(StrengthFocus.FULL_BODY)),
-        Goal("hspu", "Handstand push-up", "Pike push-up to wall handstand push-up.", "pike-pushup", "hspu-wall", supports = listOf("plank", "dip-support-hold")),
+        Goal("hspu", "Handstand push-up", "Pike push-up to a freestanding handstand push-up.", "pike-pushup", "hspu-free", supports = listOf("plank", "dip-support-hold")),
         Goal("muscle-up", "Pull-up to muscle-up", "Band-assisted pull-up to bar muscle-up.", "pullup-band-assisted", "muscle-up-bar", supports = listOf("dip-support-hold", "hollow-hold")),
         Goal("pistol", "Pistol squat", "Bulgarian split squat to pistol squat.", "split-squat-bulgarian", "squat-pistol", supports = listOf("rdl-bodyweight", "calf-raise")),
         Goal("one-arm-pushup", "One-arm push-up", "Standard push-up to one-arm push-up.", "pushup-standard", "pushup-one-arm", supports = listOf("plank", "side-plank")),
         Goal("l-sit", "L-sit and V-sit", "Hollow hold to V-sit.", "hollow-hold", "v-sit-floor", supports = listOf("dip-support-hold", "plank")),
-        Goal("front-lever", "Front lever", "Tuck lever to straddle lever. Hard skill.", "front-lever-tuck", "front-lever-straddle", supports = listOf("hollow-hold", "inverted-row-wide", "pullup-full")),
-        Goal("planche", "Planche", "Planche lean to advanced tuck planche. Hard skill.", "planche-lean", "planche-adv-tuck", supports = listOf("hollow-hold", "dip-support-hold")),
+        Goal("front-lever", "Front lever", "Build from a tuck toward a full front lever.", "front-lever-tuck", "front-lever", supports = listOf("hollow-hold", "front-lever-row-tuck")),
+        Goal("planche", "Planche", "Build from a lean toward a full planche. Hard skill.", "planche-lean", "planche-full", supports = listOf("hollow-hold", "dip-support-hold")),
         Goal("back-bridge", "Back bridge", "Glute bridge to full back bridge.", "glute-bridge", "bridge-back", supports = listOf("superman-hold", "plank")),
+        Goal("handstand", "Handstand", "Build wall control, then balance freely.", "handstand-wall-plank", "handstand-free", supports = listOf("hollow-hold", "pike-pushup")),
+        Goal("back-lever", "Back lever", "Progress from a tuck to a full back lever.", "back-lever-tuck", "back-lever", supports = listOf("pullup-false-grip-hang", "skin-the-cat")),
+        Goal("dragon-flag", "Dragon flag", "Build a controlled full-body dragon flag.", "dragon-flag-candlestick", "dragon-flag", supports = listOf("hollow-hold", "hanging-knee-raise")),
+        Goal("shrimp-squat", "Shrimp squat", "Build to a single-leg shrimp squat.", "squat-shrimp", "squat-shrimp-advanced", supports = listOf("calf-raise", "wall-sit")),
+        Goal("flag", "Clutch flag", "Build toward a clutch flag on a vertical support.", "flag-clutch-hang", "flag-clutch", focus = setOf(StrengthFocus.UPPER_BODY, StrengthFocus.CORE), supports = listOf("side-plank", "pullup-full")),
         Goal("body-upper", "Focus: upper body", "Only upper-body exercises.", focus = setOf(StrengthFocus.UPPER_BODY)),
         Goal("body-lower", "Focus: lower body", "Only lower-body exercises.", focus = setOf(StrengthFocus.LOWER_BODY)),
         Goal("body-core", "Focus: core", "Only core exercises.", focus = setOf(StrengthFocus.CORE)),
@@ -45,12 +50,28 @@ object Goals {
     /** Entry -> ... -> target, following the first successor each time. */
     fun chain(c: Catalog, g: Goal): List<String> {
         val start = g.entryVariationId ?: return emptyList()
+        val explicit = c.progressionRoutes.firstOrNull { g.id in it.goalIds && g.targetVariationId in it.mainPath }
+        if (explicit != null) return explicit.mainPath.take(explicit.mainPath.indexOf(g.targetVariationId) + 1)
         val out = mutableListOf(start); var cur = start
         while (cur != g.targetVariationId && out.size < 20) {
             cur = c.policyForVariation(cur)?.progressionSuccessors()?.firstOrNull() ?: break
             out += cur
         }
         return out
+    }
+
+    /** Use the furthest started main rung so a newly inserted earlier rung never resets an existing trainee. */
+    private fun currentMainIndex(c: Catalog, g: Goal, chain: List<String>, p: ProgressSnapshot): Int {
+        val route = c.progressionRoutes.firstOrNull { g.id in it.goalIds && g.targetVariationId in it.mainPath }
+        val path = route?.mainPath ?: chain
+        val startedIndex = path.indexOfLast { p.variations.containsKey(it) }
+        if (startedIndex >= 0) {
+            val started = path[startedIndex]
+            if (!mastered(started, p)) return chain.indexOf(started).takeIf { it >= 0 } ?: 0
+            val next = path.drop(startedIndex + 1).firstOrNull { !mastered(it, p) }
+            if (next != null) return chain.indexOf(next).takeIf { it >= 0 } ?: 0
+        }
+        return chain.indexOfFirst { !mastered(it, p) }.takeIf { it >= 0 } ?: chain.lastIndex
     }
 
     private fun met(vt: VariationTier, p: ProgressSnapshot) =
@@ -63,7 +84,12 @@ object Goals {
     private fun movedPast(c: Catalog, id: String, p: ProgressSnapshot): Boolean {
         val seen = mutableSetOf(id); val queue = ArrayDeque(listOf(id))
         while (queue.isNotEmpty()) {
-            for (n in c.policyForVariation(queue.removeFirst())?.nextVariationIds.orEmpty()) {
+            val current = queue.removeFirst()
+            val successors = if (c.routesFor(current).isNotEmpty()) c.routesFor(current).flatMap { route ->
+                val index = route.mainPath.indexOf(current)
+                if (index >= 0) route.mainPath.drop(index + 1) else emptyList()
+            }.distinct() else c.policyForVariation(current)?.nextVariationIds.orEmpty()
+            for (n in successors) {
                 if (!seen.add(n)) continue
                 if (p.variations.containsKey(n)) return true
                 queue += n
@@ -92,7 +118,7 @@ object Goals {
     /** The exercise to train now toward the goal: first unmastered step, or the prerequisite that unlocks it. */
     fun nextToTrain(c: Catalog, g: Goal, p: ProgressSnapshot): String? {
         val ch = chain(c, g); if (ch.isEmpty()) return null
-        var v = ch.firstOrNull { !mastered(it, p) } ?: ch.last()
+        var v = ch[currentMainIndex(c, g, ch, p)]
         repeat(10) {
             if (p.variations.containsKey(v)) return v
             val u = unmet(c, v, p).firstOrNull() ?: return v
@@ -118,13 +144,13 @@ object Goals {
      */
     fun skillExercises(c: Catalog, g: Goal, p: ProgressSnapshot, profile: EquipmentProfile? = null): List<String> {
         val ch = chain(c, g); if (ch.isEmpty()) return emptyList()
-        val step = ch.firstOrNull { !mastered(it, p) } ?: ch.last()
+        val step = ch[currentMainIndex(c, g, ch, p)]
         val out = LinkedHashSet<String>()
         val missing = unmet(c, step, p)
         if (missing.isEmpty() || p.variations.containsKey(step)) out += step
         if (missing.isNotEmpty()) missing.forEach { out += trainable(c, it.variationId, p) }
         g.supports.forEach { out += trainable(c, it, p) }
-        return out.filter { id -> c.variation(id)?.let { (it.kind == Kind.REPS || it.kind == Kind.HOLD) && c.policyFor(it) != null && (profile == null || app.calisthenics.domain.equipment.isAvailable(it, profile)) } == true }
+        return out.filter { id -> c.variation(id)?.let { !it.demonstrationHold && (it.kind == Kind.REPS || it.kind == Kind.HOLD) && c.policyFor(it) != null && (profile == null || app.calisthenics.domain.equipment.isAvailable(it, profile)) } == true }
     }
 
     /** Slot ids of the exercises a skill brought in: the first is "goal", the rest "skill-n". */
@@ -136,10 +162,16 @@ object Goals {
      */
     fun routineFor(c: Catalog, base: Routine, goalId: String?, p: ProgressSnapshot, profile: EquipmentProfile? = null): Routine {
         val g = byId(goalId) ?: return base
-        val focused = base.copy(goalId = g.id, defaultFocus = g.focus)
+        val focused = base.copy(goalId = g.id, defaultFocus = g.focus, slots = base.slots.map { slot ->
+            if (slot.progressionRouteId != null) slot else slot.copy(progressionRouteId = c.mainRouteFor(slot.preferredVariationId, g.id)?.id)
+        })
         if (g.entryVariationId == null) return focused
         val ex = skillExercises(c, g, p, profile).mapNotNull { c.variation(it) }
         if (ex.isEmpty()) return focused
-        return focused.copy(slots = ex.mapIndexed { i, v -> RoutineSlot(if (i == 0) "goal" else "skill-${i + 1}", v.patterns.first(), v.areas.firstOrNull() ?: Area.UPPER_BODY, v.id) })
+        return focused.copy(slots = ex.mapIndexed { i, v ->
+            val route = c.mainRouteFor(v.id, g.id)
+            RoutineSlot(if (i == 0) "goal" else "skill-${i + 1}", v.patterns.first(), v.areas.firstOrNull() ?: Area.UPPER_BODY, v.id,
+                progressionRouteId = route?.id)
+        })
     }
 }

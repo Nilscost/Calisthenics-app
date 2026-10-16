@@ -107,6 +107,8 @@ data class ProgressSnapshot(
     val events: List<ProgressEvent>,
     /** Distinct workouts with completed work in a family, rebuilt from evidence rather than stored counters. */
     val familyWorkoutCounts: Map<String, Int> = emptyMap(),
+    /** Distinct workouts completed in a route, including explicitly approved cross-family alternatives. */
+    val routeWorkoutCounts: Map<String, Int> = emptyMap(),
 ) {
     fun tierFor(variationId: String): Int? = variations[variationId]?.tier
     fun holdFor(familyId: String): FamilyHold? = holds[familyId]
@@ -123,8 +125,32 @@ class ProgressionEngine(private val catalog: Catalog) {
 
     private fun policy(vid: String): ProgressionPolicy? = catalog.policyForVariation(vid)
     private fun family(vid: String): String = catalog.variation(vid)?.familyId ?: vid
-    private fun isRotationAlternative(vid: String) = catalog.exerciseGroups.any { vid in it.alternativeVariationIds }
-    private fun mainFor(vid: String) = catalog.exerciseGroups.firstOrNull { vid in it.alternativeVariationIds }?.mainVariationId ?: vid
+    private fun selectedRoute(vid: String, routeId: String? = null) = catalog.routeById(routeId)?.takeIf { vid in it.mainPath || it.members.any { m -> m.variationId == vid } }
+        ?: catalog.mainRouteFor(vid)
+    private fun isRotationAlternative(vid: String, routeId: String? = null): Boolean {
+        val route = selectedRoute(vid, routeId)
+        val member = route?.members?.firstOrNull { it.variationId == vid }
+        if (member != null) return member.role != app.calisthenics.domain.model.ProgressionRole.MAIN
+        if (route != null && vid in route.mainPath) return false
+        return catalog.exerciseGroups.any { vid in it.alternativeVariationIds }
+    }
+    private fun mainFor(vid: String, routeId: String? = null): String {
+        val route = selectedRoute(vid, routeId)
+        val member = route?.members?.firstOrNull { it.variationId == vid }
+        if (member != null) return member.atVariationId ?: vid
+        if (route != null && vid in route.mainPath) return vid
+        return catalog.exerciseGroups.firstOrNull { vid in it.alternativeVariationIds }?.mainVariationId ?: vid
+    }
+    private fun mainSuccessor(vid: String, routeId: String? = null): String? {
+        val route = selectedRoute(vid, routeId)
+        if (route != null) {
+            val member = route.members.firstOrNull { it.variationId == vid }
+            if (member != null && member.role != app.calisthenics.domain.model.ProgressionRole.MAIN) return null
+            val anchor = catalog.routeAnchorFor(vid, route) ?: return null
+            return route.mainPath.getOrNull(route.mainPath.indexOf(anchor) + 1)
+        }
+        return policy(vid)?.progressionSuccessors()?.firstOrNull()
+    }
 
     private fun seed(p: ProgressionPolicy) = SeedPolicy(
         variationId = p.variationId,
@@ -158,7 +184,7 @@ class ProgressionEngine(private val catalog: Catalog) {
             var p = ensure(vid, ev.day, tier = ev.prescribedTier ?: 1)
             p = p.copy(lastTrainedDay = maxOf(p.lastTrainedDay ?: ev.day, ev.day))
             val start = p
-            active.putIfAbsent(p.familyId, mainFor(vid))
+            active.putIfAbsent(p.familyId, mainFor(vid, ev.progressionRouteId))
             val hold = holds[p.familyId]
             // Kettlebell weight: levels are earned per weight (owner 2026-10-08).
             val load = ev.loadGrams
@@ -186,14 +212,14 @@ class ProgressionEngine(private val catalog: Catalog) {
                     if (ev.ruleMet && hold == null && !p.autoPaused) {
                         val days = (p.streakDays + ev.day).distinct().sorted()
                         p = p.copy(streakDays = days)
-                        if (autoProgression && days.size >= ev.ruleSessions) p = moveOnByRule(p, ev.day, events, active, vars)
+                        if (autoProgression && days.size >= ev.ruleSessions) p = moveOnByRule(p, ev.day, events, active, vars, ev.progressionRouteId)
                     } else if (!ev.ruleMet) p = p.copy(streakDays = emptyList(), streakAssumed = 0)
                 }
                 ev.qualifying && hold == null && !p.autoPaused && ev.prescribedTier == p.tier -> {
                     val days = (p.streakDays + ev.day).distinct().sorted()
                     p = p.copy(streakDays = days, streakAssumed = p.streakAssumed + if (ev.confirmedBlocks == 0) 1 else 0,
                         consecutiveBelow = 0, lowerTargetSuggested = false)
-                    if (autoProgression) p = tryAdvance(p, ev.day, events, active, vars)
+                    if (autoProgression) p = tryAdvance(p, ev.day, events, active, vars, ev.progressionRouteId)
                 }
                 ev.anyBelow && !ev.discomfort -> {
                     val below = p.consecutiveBelow + 1
@@ -240,7 +266,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                         val p = ensure(a.variationId, a.day, top, top)
                         vars[a.variationId] = p.copy(tier = top, baselineTier = top, enrolledAtDay = a.day, achievedTiers = (1..top).toSet())
                         active.putIfAbsent(p.familyId, mainFor(a.variationId))
-                        val next = if (isRotationAlternative(a.variationId)) null else policy(a.variationId)?.progressionSuccessors().orEmpty().firstOrNull { catalog.variation(it) != null && prerequisitesMet(it, vars) }
+                        val next = if (isRotationAlternative(a.variationId)) null else mainSuccessor(a.variationId)?.takeIf { catalog.variation(it) != null && prerequisitesMet(it, vars) }
                         if (next != null) {
                             if (!vars.containsKey(next)) vars[next] = VariationProgress(next, family(next), 1, a.day, null, emptySet(), null, emptyList(), 0, 0, false, false, null, null)
                             active[p.familyId] = next
@@ -310,16 +336,18 @@ class ProgressionEngine(private val catalog: Catalog) {
         items.sortedWith(compareBy({ it.day }, { it.order }, { it.key })).forEach { it.run() }
         val counts = evidence.filter { it.completedWorkBlocks > 0 }.groupBy { it.familyId }
             .mapValues { (_, sessions) -> sessions.map { it.sessionId }.distinct().size }
-        return ProgressSnapshot(vars.toMap(), active.toMap(), holds.toMap(), events.toList(), counts)
+        val routeCounts = evidence.filter { it.completedWorkBlocks > 0 && it.progressionRouteId != null }
+            .groupBy { it.progressionRouteId!! }.mapValues { (_, sessions) -> sessions.map { it.sessionId }.distinct().size }
+        return ProgressSnapshot(vars.toMap(), active.toMap(), holds.toMap(), events.toList(), counts, routeCounts)
     }
 
     /** The rule was met: this exercise counts as passed (all five stars) and the routine continues with the next exercise at its bottom. */
-    private fun moveOnByRule(p: VariationProgress, day: Int, events: MutableList<ProgressEvent>, active: MutableMap<String, String>, vars: MutableMap<String, VariationProgress>): VariationProgress {
+    private fun moveOnByRule(p: VariationProgress, day: Int, events: MutableList<ProgressEvent>, active: MutableMap<String, String>, vars: MutableMap<String, VariationProgress>, routeId: String? = null): VariationProgress {
         val done = p.copy(achievedTiers = (1..5).toSet(), streakDays = emptyList(), streakAssumed = 0, lastAutoAdvanceDay = day)
         val name = catalog.variation(p.variationId)?.name ?: p.variationId
-        val next = if (isRotationAlternative(p.variationId)) null else policy(p.variationId)?.progressionSuccessors().orEmpty().firstOrNull { catalog.variation(it) != null && prerequisitesMet(it, vars + (p.variationId to done)) }
+        val next = if (isRotationAlternative(p.variationId, routeId)) null else mainSuccessor(p.variationId, routeId)?.takeIf { catalog.variation(it) != null && prerequisitesMet(it, vars + (p.variationId to done)) }
         if (next == null) {
-            events += ProgressEvent(day, p.variationId, if (isRotationAlternative(p.variationId))
+            events += ProgressEvent(day, p.variationId, if (isRotationAlternative(p.variationId, routeId))
                 "Every set reached the top of the range. Progress on this alternative is kept; the main exercise controls the next main step."
                 else "Every set reached the top of the range - no eligible next exercise is available yet.")
             return done
@@ -336,6 +364,7 @@ class ProgressionEngine(private val catalog: Catalog) {
         events: MutableList<ProgressEvent>,
         active: MutableMap<String, String>,
         vars: Map<String, VariationProgress>,
+        routeId: String? = null,
     ): VariationProgress {
         val pol = policy(p0.variationId) ?: return p0
         val r = evaluateAdvancement(
@@ -359,7 +388,7 @@ class ProgressionEngine(private val catalog: Catalog) {
         // Top tier: same pacing gate (evaluated as if a 6th tier existed) then successor move.
         if (p0.tier == 5 && 5 !in p0.achievedTiers && gateWouldPass(pol, p0, day)) {
             val achieved = p0.copy(achievedTiers = p0.achievedTiers + 5, lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
-            val successor = if (isRotationAlternative(p0.variationId)) null else pol.progressionSuccessors().firstOrNull { prerequisitesMet(it, vars + (p0.variationId to achieved)) }
+            val successor = if (isRotationAlternative(p0.variationId, routeId)) null else mainSuccessor(p0.variationId, routeId)?.takeIf { prerequisitesMet(it, vars + (p0.variationId to achieved)) }
             val name = catalog.variation(p0.variationId)?.name ?: p0.variationId
             val loaded = catalog.variation(p0.variationId)?.isLoaded() == true
             val at = p0.loadGrams?.let { " at ${formatKg(it)} kg" }.orEmpty()
@@ -369,7 +398,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                 events += ProgressEvent(day, p0.variationId,
                     "All five tiers earned$at. Moving on to ${catalog.variation(successor)?.name ?: successor} (tier 1)${if (loaded) " with the same kettlebell" else ""}; your five stars here are kept. You can switch back anytime.$heavier$assumedNote")
             } else {
-                val blocked = pol.nextVariationIds.firstOrNull()
+                val blocked = mainSuccessor(p0.variationId, routeId)
                 events += ProgressEvent(day, p0.variationId,
                     if (blocked != null) "All five tiers earned$at. The harder variation ${catalog.variation(blocked)?.name ?: blocked} isn't available with your equipment/prerequisites yet, so you stay here.$heavier"
                     else if (loaded) "All five tiers earned$at — this is the top of this progression with this weight. To keep progressing, set a heavier kettlebell in your equipment profile; $name then starts again at tier 1."

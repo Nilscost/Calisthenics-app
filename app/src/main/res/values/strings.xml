@@ -82,6 +82,16 @@
     <string name="eq_jump_rope_short">Jump rope</string>
     <string name="progress_search">Search exercises by name or alias</string>
     <string name="progress_search_empty">No matching exercises.</string>
+    <string name="progress_all_progressions">All progressions</string>
+    <string name="progress_default_progressions">Default progressions</string>
+    <string name="progress_other_ways">Other ways</string>
+    <string name="progress_helps_with">Helps with</string>
+    <string name="progress_show_extras">Show other ways and support</string>
+    <string name="progress_hide_extras">Hide other ways and support</string>
+    <string name="progress_teaching_hold">Text cue only · demonstration held</string>
+    <string name="progress_program_only">Program only</string>
+    <string name="progress_library_only">Library exercise</string>
+    <string name="progress_no_routes">No progressions are available for this equipment profile.</string>
     <string name="detail_aliases">Also known as: %1$s</string>
     <string name="eq_weight">Weight</string>
     <string name="eq_weight_each">Weight of each</string>
@@ -91,6 +101,10 @@
     <string name="programs_title">Fixed programs</string>
     <string name="programs_intro">Follow the listed exercises in order with their written targets. Programs do not change with your training level.</string>
     <string name="programs_item_count">%1$d exercises</string>
+    <string name="programs_summary">About %1$d min · %2$s</string>
+    <string name="programs_no_equipment">No equipment</string>
+    <string name="programs_details">Details</string>
+    <string name="programs_close">Close</string>
     <string name="programs_line">%1$d. %2$s — %3$s</string>
     <string name="programs_reps">%1$d reps</string>
     <string name="programs_seconds">%1$d seconds</string>
@@ -469,4 +483,12 @@
     <string name="backup_restored">Restored. %1$d new workout(s) added; %2$d already on this phone. Safety copy: %3$s (in the app\'s private storage).</string>
     <string name="backup_restore_failed">Restore failed, nothing half-applied: %1$s</string>
     <string name="history_day_trained">workout</string>
+    <string name="train_extras">Extras</string>
+    <string name="train_additional_pools">Add to this workout</string>
+    <string name="train_pool_power">Power</string>
+    <string name="train_pool_conditioning">Conditioning finisher</string>
+    <string name="train_pool_prehab">Preparation for these exercises</string>
+    <string name="train_pool_mobility">Mobility</string>
+    <string name="programs_equipment_label">Equipment: %1$s</string>
+    <string name="programs_equipment_or">%1$s or %2$s</string>
 </resources>

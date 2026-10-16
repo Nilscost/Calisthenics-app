@@ -38,6 +38,8 @@ data class TrainSettings(
     val fixedProgramId: String? = null,
     /** R8 T07: user overrides for each program's contract default flow setting. */
     val fixedProgramFlowOverrides: Map<String, Boolean> = emptyMap(),
+    /** Opt-in route pools (POWER, CONDITIONING, PREHAB, MOBILITY); empty by default. */
+    val additionalPools: Set<String> = emptySet(),
 ) {
     fun effectiveFocus(): Set<StrengthFocus> = focus ?: Goals.focusFor(goalId)
 }
@@ -97,7 +99,7 @@ fun defaultExercisesPerRound(
     swaps: Map<String, String> = emptyMap(), prefs: Preferences = Preferences(), edits: PlanEdits = PlanEdits(),
 ): Int? {
     if (s.routineId != null || baseRoutine.stretchSession.isNotEmpty() || edits.removed.isNotEmpty() || edits.added.isNotEmpty()) return null
-    val routine = trainRoutine(catalog, baseRoutine, progress, s.goalId, profile)
+    val routine = withAdditionalPools(catalog, trainRoutine(catalog, baseRoutine, progress, s.goalId, profile), progress, profile, s.goalId, s.additionalPools)
     val focus = fillFocusOf(routine, s)
     val base = slotsForFocus(routine, focus).size
     val top = maxExercisesPerRound(catalog, routine, focus, profile, progress, s.stretchOn)
@@ -123,6 +125,7 @@ private fun planFor(
     swaps: Map<String, String>, nowEpochMs: Long, nowDay: Int, prefs: Preferences, edits: PlanEdits, count: Int?,
 ): PlanResult {
     var withGoal = trainRoutine(catalog, baseRoutine, progress, s.goalId, profile)
+    withGoal = withAdditionalPools(catalog, withGoal, progress, profile, s.goalId, s.additionalPools)
     if (count != null) withGoal = withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s), count, profile, progress, s.stretchOn)
     val routine = applyEdits(withGoal, edits)
     val draft = SessionDraft.from(prefs.copy(stretchOn = s.stretchOn, selectedProfileId = profile.id, warmupOn = s.warmupOn), routine)
@@ -130,13 +133,71 @@ private fun planFor(
             focus = s.effectiveFocus(), swaps = swaps + edits.swaps, rounds = (if ((edits.rule ?: routine.rule).isRange) (edits.rule ?: routine.rule).sets else s.rounds).coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed, format = s.format,
             tierOverrides = edits.tierOverrides, stretchPicks = edits.stretchPicks, extraStretches = edits.extraStretches,
             roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, rule = edits.rule ?: routine.rule)
-    return generate(PlanInput("draft", nowEpochMs, nowDay, catalog, routine, draft, profile, progress = progress))
+    return withTimedExtras(catalog, generate(PlanInput("draft", nowEpochMs, nowDay, catalog, routine, draft, profile, progress = progress)), progress, profile, s.additionalPools)
 }
 
 /** The routine as the plan uses it before hand edits: the goal's step in front and the exercises per round brought to [TrainSettings.exercisesPerRound]. A saved routine keeps exactly this list. */
 fun routineForPlan(catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, profile: EquipmentProfile, s: TrainSettings): Routine {
-    val withGoal = trainRoutine(catalog, baseRoutine, progress, s.goalId, profile)
+    val withGoal = withAdditionalPools(catalog, trainRoutine(catalog, baseRoutine, progress, s.goalId, profile), progress, profile, s.goalId, s.additionalPools)
     return s.exercisesPerRound?.let { withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s), it, profile, progress, s.stretchOn) } ?: withGoal
+}
+
+/** Power joins strength work only by deliberate selection; the other extras are timed blocks. */
+private fun withAdditionalPools(c: Catalog, routine: Routine, progress: ProgressSnapshot, profile: EquipmentProfile, goalId: String, pools: Set<String>): Routine {
+    if ("POWER" !in pools || c.progressionRoutes.isEmpty()) return routine
+    val used = routine.slots.mapNotNull { c.progressionGroupOf(it.preferredVariationId) }.toMutableSet()
+    val additions = c.progressionRoutes.filter { it.focus == "POWER" }.mapNotNull { route ->
+        if (!used.add(route.progressionGroup)) return@mapNotNull null
+        val trained = route.mainPath.filter { progress.variations.containsKey(it) }
+        val start = trained.lastOrNull { 5 !in progress.variations.getValue(it).achievedTiers }
+            ?: trained.lastOrNull()?.let { route.mainPath.getOrNull(route.mainPath.indexOf(it) + 1) }
+            ?: route.mainPath.firstOrNull()
+        val candidates = listOfNotNull(start) + route.members.filter { it.role == ProgressionRole.ALTERNATE && it.atVariationId == start }.map { it.variationId }
+        val v = candidates.mapNotNull(c::variation).firstOrNull { !it.demonstrationHold && !it.routineOnly && c.policyFor(it) != null && isAvailable(it, profile) && Goals.unmet(c, it.id, progress).isEmpty() }
+            ?: return@mapNotNull null
+        RoutineSlot("pool-power-${route.id}", v.patterns.first(), v.areas.firstOrNull() ?: Area.CORE, v.id, progressionRouteId = route.id)
+    }
+    return routine.copy(slots = routine.slots + additions)
+}
+
+/** Timed extras have no achievement target and cannot advance a strength ladder. */
+private fun withTimedExtras(c: Catalog, result: PlanResult, progress: ProgressSnapshot, profile: EquipmentProfile, pools: Set<String>): PlanResult {
+    if (result !is PlanResult.Ready || pools.isEmpty() || c.progressionRoutes.isEmpty()) return result
+    val plan = result.plan
+    val workIds = plan.blocks.filter { it.type == BlockType.WORK }.mapNotNull { it.variationId }.toSet()
+    val usedGroups = workIds.mapNotNull(c::progressionGroupOf).toSet()
+    fun supportsWork(anchor: String?): Boolean = anchor != null && (anchor in workIds || c.progressionRoutes.any { route ->
+        val at = route.mainPath.indexOf(anchor)
+        at >= 0 && workIds.any { route.mainPath.indexOf(it) >= at }
+    })
+    val support = if ("PREHAB" in pools) c.progressionRoutes.filter { it.focus == "PREHAB" }.flatMap { route ->
+        route.members.filter { it.role == ProgressionRole.SUPPORT && supportsWork(it.atVariationId) }.map { it.variationId }
+    }.distinct().mapNotNull(c::variation).filter { !it.demonstrationHold && !it.routineOnly && isAvailable(it, profile) && Goals.unmet(c, it.id, progress).isEmpty() }.take(2) else emptyList()
+    val compatible = workIds.flatMap { c.variation(it)?.compatibleStretchIds.orEmpty() }.toSet()
+    val mobility = if ("MOBILITY" in pools) compatible.mapNotNull(c::variation)
+        .filter { !it.demonstrationHold && !it.optIn && !it.routineOnly && isAvailable(it, profile) }.sortedBy { it.id }.take(3) else emptyList()
+    val conditioning = if ("CONDITIONING" in pools) c.progressionRoutes.filter { it.focus == "CONDITIONING" }.flatMap { route -> route.members.map { it.variationId } + route.mainPath }
+        .distinct().mapNotNull(c::variation).filter { !it.demonstrationHold && !it.routineOnly && (it.kind == Kind.REPS || it.kind == Kind.HOLD) && c.progressionGroupOf(it.id) !in usedGroups && isAvailable(it, profile) && Goals.unmet(c, it.id, progress).isEmpty() }.sortedBy { it.id } else emptyList()
+    val completed = progress.familyWorkoutCounts.values.sum()
+    val interval = conditioning.getOrNull(if (conditioning.isEmpty()) 0 else completed % conditioning.size)
+    fun timed(v: ExerciseVariation, prefix: String, type: BlockType, duration: Int): List<TimelineBlock> {
+        val sides = if (v.unilateral) listOf(Side.LEFT, Side.RIGHT) else listOf(Side.NONE)
+        return sides.flatMapIndexed { index, side ->
+            (if (index > 0) listOf(TimelineBlock("$prefix-${v.id}-side-ready", BlockType.TRANSITION, SIDE_CHANGE_PREPARATION_SECONDS)) else emptyList()) +
+                TimelineBlock("$prefix-${v.id}-${side.name}", type, duration, variationId = v.id, side = side, mediaId = v.mediaId, note = "Use controlled movement for the timed interval.")
+        }
+    }
+    val before = support.flatMap { timed(it, "prep", BlockType.WARMUP, 30) }
+    val finish = if (interval == null) emptyList() else (0..2).flatMap { n ->
+        timed(interval, "finisher-$n", BlockType.WORK, 30) + if (n < 2) listOf(TimelineBlock("finisher-rest-$n", BlockType.PASSIVE_RECOVERY, 30)) else emptyList()
+    }
+    val after = mobility.flatMap { timed(it, "mobility", BlockType.COOLDOWN, it.defaultSeconds ?: 30) }
+    val lastWork = plan.blocks.indexOfLast { it.type == BlockType.WORK }
+    val insert = if (lastWork >= 0) lastWork + 1 else plan.blocks.size
+    val blocks = before + plan.blocks.take(insert) + finish + plan.blocks.drop(insert) + after
+    return PlanResult.Ready(plan.copy(blocks = blocks, plannedDurationSeconds = blocks.sumOf { it.durationSeconds },
+        usesDraftContent = plan.usesDraftContent || (support + mobility + listOfNotNull(interval)).any { it.reviewState == ReviewState.DRAFT },
+        changesExplained = plan.changesExplained + listOfNotNull(if (before.isNotEmpty()) "Preparation added for today's exercises." else null, if (finish.isNotEmpty()) "Conditioning finisher: three 30-second intervals, with 30-second rests." else null, if (after.isNotEmpty()) "Mobility added after training." else null)))
 }
 
 /** The exercises one round has in [plan]: what the stepper shows. */

@@ -35,14 +35,32 @@ private fun hasBetweenSetsStretch(c: Catalog, v: ExerciseVariation) =
  */
 fun extensionSlots(c: Catalog, routine: Routine, focus: Set<StrengthFocus>, profile: EquipmentProfile, progress: ProgressSnapshot, stretchOn: Boolean = true): List<RoutineSlot> {
     val areas = areasFor(focus)
-    val used = routine.slots.mapNotNull { c.variation(it.preferredVariationId)?.familyId }.toMutableSet()
-    val usedIds = routine.slots.map { it.preferredVariationId }.toSet() + routine.slots.mapNotNull { s -> c.variation(s.preferredVariationId)?.let { progress.activeInFamily[it.familyId] } }
-    // per area: per pattern, the families that qualify (best entry first)
+    val used = routine.slots.mapNotNull { c.routeById(it.progressionRouteId)?.progressionGroup ?: c.progressionGroupOf(it.preferredVariationId) }.toMutableSet()
+    val usedIds = routine.slots.map { it.preferredVariationId }.toSet()
+    // per area: per pattern, one current main rung from each eligible progression.
     fun lists(area: Area): List<List<RoutineSlot>> = extensionPatterns.getValue(area).map { p ->
-        c.variations.filter { p in it.patterns && area in it.areas && usable(c, it, profile) && it.id !in usedIds && it.familyId !in used && (!stretchOn || hasBetweenSetsStretch(c, it)) && Goals.unmet(c, it.id, progress).isEmpty() }
-            .groupBy { it.familyId }.values.map { fam -> fam.minWith(compareBy({ it.difficultyRank }, { it.id })) }
-            .sortedWith(compareBy({ it.difficultyRank }, { it.id }))
-            .map { RoutineSlot("ext-${it.familyId}", p, area, it.id) }
+        val candidates = c.variations.filter { p in it.patterns && area in it.areas && !it.demonstrationHold &&
+            (c.progressionRoutes.isEmpty() || c.routesFor(it.id).any { route -> it.id in route.mainPath && route.defaultPool }) &&
+            usable(c, it, profile) && it.id !in usedIds && c.progressionGroupOf(it.id) !in used && (!stretchOn || hasBetweenSetsStretch(c, it)) && Goals.unmet(c, it.id, progress).isEmpty() }
+        val selected = if (c.progressionRoutes.isEmpty()) {
+            candidates.groupBy { c.progressionGroupOf(it.id) }.values.map { group -> group.minWith(compareBy({ it.difficultyRank }, { it.id })) }
+                .sortedWith(compareBy({ it.difficultyRank }, { it.id }))
+        } else {
+            candidates.groupBy { c.progressionGroupOf(it.id) }.values.mapNotNull { group ->
+                val route = group.asSequence().flatMap { c.routesFor(it.id).asSequence() }.firstOrNull { it.defaultPool }
+                    ?: return@mapNotNull null
+                val active = progress.activeInFamily.values.firstOrNull { id -> id in route.mainPath }
+                val started = route.mainPath.filter { it in progress.variations }
+                val latest = active ?: started.lastOrNull { 5 !in progress.variations.getValue(it).achievedTiers }
+                    ?: started.lastOrNull()?.let { last -> route.mainPath.getOrNull(route.mainPath.indexOf(last) + 1) }
+                    ?: route.mainPath.firstOrNull()
+                group.firstOrNull { it.id == latest }
+            }.sortedWith(compareBy({ it.difficultyRank }, { it.id }))
+        }
+        selected.map { v ->
+            val routeId = c.mainRouteFor(v.id)?.takeIf { it.defaultPool }?.id
+            RoutineSlot("ext-${c.progressionGroupOf(v.id)}", p, area, v.id, progressionRouteId = routeId)
+        }
     }
     val byArea = Area.entries.filter { it in areas }.map { lists(it) }
     // round robin: first family of each pattern of each area, then the second, ...
@@ -54,7 +72,7 @@ fun extensionSlots(c: Catalog, routine: Routine, focus: Set<StrengthFocus>, prof
         for (pi in 0 until maxPatterns) for (area in byArea) {
             val cand = area.getOrNull(pi)?.getOrNull(pass) ?: continue
             any = true
-            if (taken.add(c.variation(cand.preferredVariationId)!!.familyId)) out += cand
+            if (taken.add(c.progressionGroupOf(cand.preferredVariationId)!!)) out += cand
         }
         if (!any) break
         pass++

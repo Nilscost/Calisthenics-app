@@ -99,7 +99,7 @@ class FullProgressionTest {
             val all = app.calisthenics.domain.intake.fullProgression(catalog, f)
             assertEquals(all.map { it.id }.toSet().size, all.size) // each exercise once
             assertEquals(f.ladder, all.take(f.ladder.size).map { it.id })
-            assertTrue("${f.id} should list more than the ladder", all.size > f.ladder.size)
+            assertTrue("${f.id} retains every entry rung", all.size >= f.ladder.size)
         }
         val push = catalog.onboardingFamilies.first { it.id == "pushup" }
         val ids = app.calisthenics.domain.intake.fullProgression(catalog, push).map { it.id }

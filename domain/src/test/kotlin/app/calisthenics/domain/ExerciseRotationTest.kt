@@ -58,6 +58,36 @@ class ExerciseRotationTest {
         assertEquals("main", ProgressionEngine(c).replay(listOf(evidence("one", "alternate")), emptyList()).activeInFamily["pushup"])
     }
 
+    @Test fun `cross-family alternate rotates by host route workout count`() {
+        val host = main.copy(progressionGroup = "host-core")
+        val next = harder.copy(progressionGroup = "host-core")
+        val crossFamily = alt.copy(familyId = "crunch", progressionGroup = "crunches")
+        val route = ProgressionRoute("host", "Host route", "host-core", mainPath = listOf("main", "harder"), members = listOf(
+            ProgressionMember("main", ProgressionRole.MAIN),
+            ProgressionMember("harder", ProgressionRole.MAIN),
+            ProgressionMember("alternate", ProgressionRole.ALTERNATE, "main"),
+        ))
+        val routed = c.copy(variations = listOf(host, crossFamily, next, Fx.stretch),
+            progressionRoutes = listOf(route), exerciseGroups = listOf(ExerciseGroup("host-alts", "main", listOf("alternate"))))
+        fun routedEvidence(session: String, variation: String, family: String, day: Int) =
+            evidence(session, variation, day).copy(familyId = family, progressionRouteId = "host")
+
+        val afterMain = ProgressionEngine(routed).replay(listOf(routedEvidence("one", "main", "pushup", 1)), emptyList())
+        assertEquals(1, afterMain.familyWorkoutCounts["pushup"])
+        assertEquals(1, afterMain.routeWorkoutCounts["host"])
+        assertEquals("alternate", rotatedExercise(routed, host, afterMain, SeedProfiles.home, progressionRouteId = "host").id)
+        val unrelatedRoute = ProgressionRoute("other", "Other route", "host-core", mainPath = listOf("harder"), members = listOf(ProgressionMember("harder", ProgressionRole.MAIN)))
+        assertEquals("alternate", rotatedExercise(routed.copy(progressionRoutes = listOf(route, unrelatedRoute)), host, afterMain,
+            SeedProfiles.home, progressionRouteId = "other").id)
+
+        val afterAlternate = ProgressionEngine(routed).replay(listOf(
+            routedEvidence("one", "main", "pushup", 1), routedEvidence("two", "alternate", "crunch", 2)), emptyList())
+        assertEquals(1, afterAlternate.familyWorkoutCounts["pushup"])
+        assertEquals(1, afterAlternate.familyWorkoutCounts["crunch"])
+        assertEquals(2, afterAlternate.routeWorkoutCounts["host"])
+        assertEquals("main", rotatedExercise(routed, host, afterAlternate, SeedProfiles.home, progressionRouteId = "host").id)
+    }
+
     @Test fun `custom rule completion honors extra exercise prerequisites`() {
         val gate = PrerequisiteRule(listOf(listOf(Predicate(variationTierMet = VariationTier("alternate", 5)))))
         val gated = c.copy(policies = c.policies.map { if (it.variationId == "harder") it.copy(prerequisiteRule = gate) else it })

@@ -17,6 +17,12 @@ import sys
 from collections import defaultdict
 from typing import Any
 
+from progression_routes import (
+    CONDITIONING_POOL_IDS, EXPLICIT_LIBRARY_IDS, EXTRA_MEMBERSHIPS, EXTRAS, PREHAB_IDS,
+    ROUTE_GATE_TIERS,
+    PROGRESSION_GROUP_OVERRIDES, ROUTES,
+)
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CONTRACT = ROOT / "docs/23-new-exercises.json"
 BASE_GENERATOR = ROOT / "tools/gen_starter_catalog.py"
@@ -26,6 +32,19 @@ CONTENT_META = ROOT / "content/starter/catalog_meta.json"
 ASSET_META = ROOT / "app/src/main/assets/catalog_meta.json"
 CLIP_META = ROOT / "app/src/main/assets/clip_meta.json"
 REVIEW_REPORT = ROOT / "work/r8-import-review.json"
+ROUTE_REPORT = ROOT / "docs/29-progression-routes.json"
+
+DEMONSTRATION_HOLD = {
+    "chin-tuck-seated", "stretch-neck-side", "stretch-twist-straight-leg",
+    "stretch-twist-easy", "stretch-twist-half", "stretch-twist-three-quarter",
+    "stretch-twist-full", "pilates-roll-up", "pilates-roll-over", "pilates-seal",
+    "pilates-saw", "pilates-spine-twist", "pilates-double-leg-kick",
+    # Clips do not yet demonstrate these taught positions correctly. They stay
+    # in their authored routes, but are withheld from training until reviewed.
+    "stretch-thoracic", "scapular-pushup-wall", "scapular-pushup-knee",
+    "scapular-pushup", "support-scapular-shrug", "wrist-palm-pulses",
+    "chin-nod-supine", "chin-tuck-head-lift",
+}
 
 # The six Explosive Calisthenics push-up variations are intentionally capped at
 # three reps per set. Other drills do not inherit this cap.
@@ -46,6 +65,20 @@ CONFIRMED_EXERCISE_GROUPS = [
         "mainVariationId": "pushup-feet-elevated",
         "alternativeVariationIds": ["pushup-diamond"],
     }
+]
+REVIEWED_ROTATION_GROUPS = CONFIRMED_EXERCISE_GROUPS + [
+    {"id": "calf-bent-knee-level", "mainVariationId": "calf-raise", "alternativeVariationIds": ["calf-raise-bent-knee"]},
+    {"id": "calf-single-bent-knee-level", "mainVariationId": "calf-raise-single", "alternativeVariationIds": ["calf-raise-single-bent-knee"]},
+    {"id": "calf-step-bent-knee-level", "mainVariationId": "calf-raise-step", "alternativeVariationIds": ["calf-raise-step-bent-knee"]},
+    {"id": "calf-step-single-bent-knee-level", "mainVariationId": "calf-raise-step-single", "alternativeVariationIds": ["calf-raise-step-single-bent-knee"]},
+    {"id": "v-up-tuck-level", "mainVariationId": "v-up", "alternativeVariationIds": ["v-up-tuck", "v-up-straddle"]},
+    {"id": "floor-legraise-entry-level", "mainVariationId": "leg-raise-lying", "alternativeVariationIds": ["seated-knee-raise", "reverse-crunch", "crunch", "sit-up", "rower-situp", "curl-up-mcgill"]},
+    {"id": "crunch-flexion-level", "mainVariationId": "crunch", "alternativeVariationIds": ["sit-up", "rower-situp", "curl-up-mcgill"]},
+    {"id": "core-rotation-level", "mainVariationId": "bicycle-crunch", "alternativeVariationIds": ["russian-twist"]},
+    {"id": "side-plank-entry-level", "mainVariationId": "side-plank", "alternativeVariationIds": ["side-plank-knee"]},
+    {"id": "side-plank-core-variety", "mainVariationId": "side-plank", "alternativeVariationIds": ["bicycle-crunch", "russian-twist", "pallof-hold", "pallof-press", "bird-dog"]},
+    {"id": "anti-rotation-plank-hold", "mainVariationId": "plank-long-lever", "alternativeVariationIds": ["plank-contralateral"]},
+    {"id": "anti-rotation-plank-reps", "mainVariationId": "plank-shoulder-tap", "alternativeVariationIds": ["plank-arm-leg-reach"]},
 ]
 
 REPS_BY_CLASS = {
@@ -170,9 +203,8 @@ def _policy(exercise: dict[str, Any], all_ids: set[str]) -> dict[str, Any]:
         })
 
     prereq_ids: list[str] = []
-    predecessor = exercise.get("insertAfter")
-    if predecessor:
-        prereq_ids.append(predecessor)
+    # insertAfter is source ordering metadata, not an app gate. Only explicit
+    # app-only alsoRequires gates survive into prerequisiteRule.
     prereq_ids.extend(exercise.get("alsoRequires", []))
     prereq_ids = list(dict.fromkeys(prereq_ids))
     unknown = sorted(set(prereq_ids) - all_ids)
@@ -334,6 +366,227 @@ def _attach_aliases(catalog: dict[str, Any], contract: dict[str, Any]) -> None:
         values = target.setdefault("aliases", [])
         if alias["alias"] not in values:
             values.append(alias["alias"])
+
+
+def _reviewed_routes(catalog: dict[str, Any]) -> tuple[list[dict[str, Any]], dict[str, dict[str, Any]]]:
+    """Materialize explicit reviewed paths and role memberships for every ID."""
+    ids = {v["id"] for v in catalog["variations"]}
+    routes: list[dict[str, Any]] = []
+    primary_membership: dict[str, dict[str, Any]] = {}
+    classified: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    route_by_id = {r["id"]: r for r in ROUTES}
+    if len(route_by_id) != len(ROUTES):
+        raise ValueError("duplicate progression route id")
+    for authored in ROUTES:
+        path = authored["mainPath"].split()
+        unknown = set(path) - ids
+        if unknown:
+            raise ValueError(f"route {authored['id']} references missing main-path IDs: {sorted(unknown)}")
+        route = {k: v for k, v in authored.items() if k != "mainPath"}
+        route["mainPath"] = path
+        route["members"] = [{"variationId": item, "role": "MAIN"} for item in path]
+        for item in path:
+            classified[item].append({"variationId": item, "role": "MAIN"})
+            primary_membership.setdefault(item, route)
+        routes.append(route)
+    for variation_id, (route_id, role, anchor) in EXTRAS.items():
+        if variation_id not in ids:
+            raise ValueError(f"explicit role mapping references missing ID: {variation_id}")
+        route = route_by_id.get(route_id)
+        if route is None:
+            raise ValueError(f"explicit role mapping references missing route: {route_id}")
+        member = {"variationId": variation_id, "role": role}
+        if anchor:
+            if anchor not in ids:
+                raise ValueError(f"{variation_id}: unknown route anchor {anchor}")
+            member["atVariationId"] = anchor
+        target = next(r for r in routes if r["id"] == route_id)
+        if not any(m["variationId"] == variation_id and m["role"] == role for m in target["members"]):
+            target["members"].append(member)
+        classified[variation_id].append(member)
+        primary_membership.setdefault(variation_id, target)
+    for variation_id, route_id, role, anchor in EXTRA_MEMBERSHIPS:
+        if variation_id not in ids:
+            raise ValueError(f"multi-route role mapping references missing ID: {variation_id}")
+        target = next((r for r in routes if r["id"] == route_id), None)
+        if target is None:
+            raise ValueError(f"multi-route role mapping references missing route: {route_id}")
+        if anchor and anchor not in ids:
+            raise ValueError(f"{variation_id}: unknown cross-route anchor {anchor}")
+        member = {"variationId": variation_id, "role": role}
+        if anchor:
+            member["atVariationId"] = anchor
+        prior = next((m for m in target["members"] if m["variationId"] == variation_id), None)
+        if prior is not None and prior != member:
+            raise ValueError(f"{variation_id}: conflicting membership in route {route_id}")
+        if prior is None:
+            target["members"].append(member)
+        classified[variation_id].append(member)
+        primary_membership.setdefault(variation_id, target)
+    condition_route = next(r for r in routes if r["id"] == "conditioning-pool")
+    for variation_id in sorted(CONDITIONING_POOL_IDS):
+        if variation_id not in ids:
+            raise ValueError(f"conditioning pool references missing ID: {variation_id}")
+        member = {"variationId": variation_id, "role": "LIBRARY"}
+        condition_route["members"].append(member)
+        classified[variation_id].append(member)
+        primary_membership.setdefault(variation_id, condition_route)
+    unassigned = ids - set(classified)
+    if unassigned != EXPLICIT_LIBRARY_IDS:
+        raise ValueError(f"explicit library-role table mismatch; missing={sorted(unassigned-EXPLICIT_LIBRARY_IDS)}, stale={sorted(EXPLICIT_LIBRARY_IDS-unassigned)}")
+    # Deliberately classify the explicit table as library-only.
+    library_members = []
+    for variation_id in sorted(EXPLICIT_LIBRARY_IDS):
+        member = {"variationId": variation_id, "role": "LIBRARY"}
+        library_members.append(member)
+        classified[variation_id].append(member)
+    library_route = {"id": "library", "name": "Exercise library", "progressionGroup": "library",
+                     "mainPath": [], "members": library_members, "defaultPool": False, "goalIds": []}
+    routes.append(library_route)
+    for variation_id, rows in classified.items():
+        # Multi-route exercises have one stable variation-level group, while
+        # route membership remains the source of route-specific roles.
+        primary = primary_membership.get(variation_id, library_route)
+        primary_membership[variation_id] = primary
+    if set(classified) != ids:
+        raise ValueError(f"route coverage mismatch: {sorted(ids - set(classified))}")
+    return routes, primary_membership
+
+
+def _role_counts(routes: list[dict[str, Any]]) -> dict[str, int]:
+    roles: dict[str, set[str]] = defaultdict(set)
+    for route in routes:
+        for member in route["members"]:
+            roles[member["role"]].add(member["variationId"])
+    return {role: len(ids) for role, ids in sorted(roles.items())}
+
+
+def _route_edge_audit(routes: list[dict[str, Any]], review: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, str]]]:
+    route_by_id = {route["id"]: route for route in routes}
+    audit = []
+    unresolved = []
+    for row in review:
+        if not row["reviewRequired"]:
+            continue
+        children = []
+        for child_id in row["newChildren"]:
+            disposition = "unresolved"
+            evidence = []
+            for route in routes:
+                path = route["mainPath"]
+                for parent, next_id in zip(path, path[1:]):
+                    if parent == row["parentId"] and next_id == child_id:
+                        disposition = "main-step"
+                        evidence.append(route["id"])
+                member = next((m for m in route["members"] if m["variationId"] == child_id), None)
+                if member and member["role"] in {"ALTERNATE", "SUPPORT"} and member.get("atVariationId") == row["parentId"]:
+                    disposition = member["role"].lower() + "-at-parent"
+                    evidence.append(route["id"])
+            if disposition == "unresolved":
+                child_roles = [m["role"] for route in routes for m in route["members"] if m["variationId"] == child_id]
+                if "PROGRAM" in child_roles:
+                    disposition = "program-only"
+                elif "LIBRARY" in child_roles:
+                    disposition = "library-only"
+                elif "MAIN" in child_roles:
+                    disposition = "main-step-on-separate-route"
+                elif child_roles:
+                    disposition = "explicitly-reanchored"
+            children.append({"id": child_id, "disposition": disposition, "routeIds": sorted(set(evidence))})
+            if disposition == "unresolved":
+                unresolved.append({"parentId": row["parentId"], "childId": child_id})
+        audit.append({"parentId": row["parentId"], "children": children})
+    return audit, unresolved
+
+
+def _apply_route_main_successors(catalog: dict[str, Any], routes: list[dict[str, Any]]) -> None:
+    """Reduce route nodes to reviewed spine edges; route paths handle splits."""
+    successors: dict[str, set[str]] = defaultdict(set)
+    route_nodes = set()
+    for route in routes:
+        path = route["mainPath"]
+        route_nodes.update(path)
+        for parent, child in zip(path, path[1:]):
+            successors[parent].add(child)
+    policies = {p["variationId"]: p for p in catalog["policies"]}
+    for parent in route_nodes:
+        policy = policies.get(parent)
+        if policy is None:
+            continue
+        children = successors.get(parent, set())
+        if children:
+            policy["nextVariationIds"] = sorted(children)
+        else:
+            policy.pop("nextVariationIds", None)
+        if len(children) == 1:
+            policy["mainSuccessorId"] = next(iter(children))
+        else:
+            policy.pop("mainSuccessorId", None)
+
+
+def _apply_route_prerequisites(catalog: dict[str, Any], routes: list[dict[str, Any]]) -> None:
+    """Gate authored main-path advances on the immediately preceding mastery.
+
+    Multiple route entries for one child are represented as one OR group;
+    independent compound gates remain separate AND groups. Route-specific
+    readiness thresholds are separate from automatic mastery at tier five.
+    """
+    policies = {p["variationId"]: p for p in catalog["policies"]}
+    for variation_id in ("pushup-archer", "nordic-negative-banded"):
+        if variation_id in policies:
+            policies[variation_id].pop("prerequisiteRule", None)
+    incoming: dict[str, dict[str, int]] = defaultdict(dict)
+    for route in routes:
+        path = route["mainPath"]
+        for parent, child in zip(path, path[1:]):
+            incoming[child][parent] = ROUTE_GATE_TIERS[route["id"]]
+
+    for child, parents in incoming.items():
+        policy = policies.get(child)
+        if policy is None:
+            continue
+        prior_groups = list(policy.get("prerequisiteRule", {}).get("allOf", []))
+        parent_ids = set(parents)
+        existing_thresholds = {}
+        route_parent_alternatives = set()
+        independent_groups = []
+        for group in prior_groups:
+            matching = []
+            for pred in group:
+                gate = pred.get("variationTierMet")
+                if gate and gate["variationId"] in parent_ids:
+                    existing_thresholds[gate["variationId"]] = gate["tier"]
+                    matching.append(gate["variationId"])
+            if matching and len(group) > len(matching):
+                # Preserve a reviewed OR entry such as band row OR towel row;
+                # its main-path parent is already represented in that clause.
+                route_parent_alternatives.update(matching)
+                independent_groups.append(group)
+            elif matching:
+                # Pure predecessor clauses can be folded into the route-local
+                # OR group below while retaining their reviewed thresholds.
+                continue
+            else:
+                independent_groups.append(group)
+        route_group = [
+            {"variationTierMet": {
+                "variationId": parent,
+                "tier": existing_thresholds.get(parent, gate_tier),
+            }}
+            for parent, gate_tier in sorted(parents.items()) if parent not in route_parent_alternatives
+        ]
+        policy["prerequisiteRule"] = {"allOf": independent_groups + ([route_group] if route_group else [])}
+
+    # The bar muscle-up keeps its compound chest-to-bar + straight-bar-dip
+    # readiness gate in addition to the route's immediately previous negative.
+    muscle_up = policies.get("muscle-up-bar")
+    if muscle_up is not None:
+        rule = muscle_up.setdefault("prerequisiteRule", {"allOf": []})
+        dip_predicate = {"variationTierMet": {"variationId": "dip-straight-bar", "tier": 4}}
+        if not any(dip_predicate in group for group in rule["allOf"]):
+            rule["allOf"].append([dip_predicate])
+
+
 def _routine(routine: dict[str, Any]) -> dict[str, Any]:
     items = []
     for item in routine["items"]:
@@ -427,25 +680,6 @@ def _rank(exercise: dict[str, Any] | None) -> int | None:
     return value if isinstance(value, int) else None
 
 
-def _choose_new_main(parent: dict[str, Any], child_ids: list[str], by_variation: dict[str, dict[str, Any]]) -> str | None:
-    """Choose a conservative same-family rung; caller records the choice for review."""
-    matching = [by_variation[c] for c in child_ids
-                if c in by_variation
-                and by_variation[c]["familyId"] == parent["familyId"]
-                and by_variation[c]["kind"] == parent["kind"]]
-    if not matching:
-        matching = [by_variation[c] for c in child_ids if c in by_variation]
-    if not matching:
-        return None
-    parent_rank = _rank(parent)
-    ranked = sorted(matching, key=lambda v: (
-        0 if parent_rank is not None and _rank(v) is not None and _rank(v) > parent_rank else 1,
-        _rank(v) if _rank(v) is not None else 10**9,
-        child_ids.index(v["id"]),
-    ))
-    return ranked[0]["id"]
-
-
 def _merge_successors(base: dict[str, Any], contract: dict[str, Any]) -> list[dict[str, Any]]:
     """Retain old edges, add contract edges, and write mainline review choices."""
     by_variation = {v["id"]: v for v in base["variations"]}
@@ -472,7 +706,7 @@ def _merge_successors(base: dict[str, Any], contract: dict[str, Any]) -> list[di
         # retained as next links so the tree can show them.
         policy["nextVariationIds"] = existing + [child for child in child_ids if child not in existing]
         existing_main = policy.get("mainSuccessorId") or (existing[0] if existing else None)
-        chosen_main = existing_main or _choose_new_main(by_variation[parent], child_ids, by_variation)
+        chosen_main = existing_main
         if chosen_main:
             policy["mainSuccessorId"] = chosen_main
 
@@ -490,7 +724,7 @@ def _merge_successors(base: dict[str, Any], contract: dict[str, Any]) -> list[di
             "existingNextVariationIds": existing,
             "newChildren": child_ids,
             "selectedMainSuccessorId": chosen_main,
-            "selectionReason": "preserved-existing-main" if existing_main else "same-family-and-kind-lowest-ranked",
+            "selectionReason": "preserved-existing-main" if existing_main else "no-reviewed-route-successor",
             "lowerRankInsertionCandidates": insertion_candidates,
             "reviewRequired": bool(insertion_candidates) or len(child_ids) > 1 or existing_main is not None,
         })
@@ -536,8 +770,31 @@ def import_contract(base: dict[str, Any], contract: dict[str, Any]) -> tuple[dic
     # A few id aliases are already in the contract list; apply them before
     # writing the catalog so users can search/display those names immediately.
     result["fixedPrograms"] = [_routine(routine) for routine in contract.get("routines", [])]
-    result["exerciseGroups"] = json.loads(json.dumps(CONFIRMED_EXERCISE_GROUPS))
+    result["exerciseGroups"] = json.loads(json.dumps(REVIEWED_ROTATION_GROUPS))
     result["optionSets"] = contract.get("options", [])
+    routes, primary_routes = _reviewed_routes(result)
+    result["progressionRoutes"] = routes
+    _apply_route_main_successors(result, routes)
+    _apply_route_prerequisites(result, routes)
+    updated_policies = {p["variationId"]: p for p in result["policies"]}
+    route_next: dict[str, set[str]] = defaultdict(set)
+    for route in routes:
+        for parent, child in zip(route["mainPath"], route["mainPath"][1:]):
+            route_next[parent].add(child)
+    for row in review:
+        choices = route_next.get(row["parentId"], set())
+        policy = updated_policies.get(row["parentId"], {})
+        row["selectedMainSuccessorId"] = policy.get("mainSuccessorId")
+        row["selectionReason"] = ("route-specific-successors" if len(choices) > 1 else
+                                   "reviewed-route" if choices else "no-reviewed-route-successor")
+    for variation in result["variations"]:
+        route = primary_routes[variation["id"]]
+        variation["progressionGroup"] = PROGRESSION_GROUP_OVERRIDES.get(
+            variation["id"], None if route["id"] == "library" else route["progressionGroup"]
+        )
+        if variation["id"] in PREHAB_IDS:
+            variation["progressionGroup"] = "prehab"
+        variation["demonstrationHold"] = variation["id"] in DEMONSTRATION_HOLD
 
     # Preserve both the prior and newly authored metadata in the standalone
     # sidecar. These structures are consumed by the tabs/equipment and pose work.
@@ -594,9 +851,28 @@ def main() -> int:
         _write_json(REVIEW_REPORT, {
             "progressionEdges": review,
             "targetProfileExceptions": target_exceptions,
+            "unresolvedEdgeCount": sum(1 for row in review if row["reviewRequired"]),
+        })
+        edge_audit, unresolved_edges = _route_edge_audit(result["progressionRoutes"], review)
+        reviewed_edge_count = sum(len(row["children"]) for row in edge_audit)
+        _write_json(ROUTE_REPORT, {
+            "status": "DRAFT",
+            "source": "tools/progression_routes.py",
+            "variationCount": len(result["variations"]),
+            "routeCount": len(result["progressionRoutes"]),
+            "roleCounts": _role_counts(result["progressionRoutes"]),
+            "reviewedParentCount": len(edge_audit),
+            "reviewedEdgeCount": reviewed_edge_count,
+            "edgeAudit": edge_audit,
+            "unresolvedEdges": unresolved_edges,
+            "notes": [
+                "Each child of the 47 review-required legacy parents is classified by its authored route role and anchor.",
+                "Only pairs without an authored main step, alternate/support anchor, program/library role, or explicit reanchor remain unresolved.",
+                "Route roles are explicitly authored in the route table; unmatched entries are explicitly listed as library-only.",
+            ],
         })
         print(f"wrote {len(result['variations'])} variations, {len(result['policies'])} policies, {len(result['fixedPrograms'])} programs")
-        for path in (CONTENT_CATALOG, ASSET_CATALOG, CONTENT_META, ASSET_META, CLIP_META, REVIEW_REPORT):
+        for path in (CONTENT_CATALOG, ASSET_CATALOG, CONTENT_META, ASSET_META, CLIP_META, REVIEW_REPORT, ROUTE_REPORT):
             print(f"{path.relative_to(ROOT)}: {path.stat().st_size} bytes")
         return 0
     except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as exc:

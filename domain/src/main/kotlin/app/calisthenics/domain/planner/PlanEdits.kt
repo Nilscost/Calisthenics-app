@@ -58,6 +58,29 @@ fun slotFor(v: ExerciseVariation, n: Int = 1) = RoutineSlot("add-${v.id}" + if (
 private fun usableStrength(catalog: Catalog, v: ExerciseVariation, profile: EquipmentProfile) =
     !v.routineOnly && (v.kind == Kind.REPS || v.kind == Kind.HOLD) && catalog.policyFor(v) != null && isAvailable(v, profile)
 
+/** Reviewed main spine for the level stepper; Other ways keeps its separate family browser.
+ * An alternate occupies its main anchor. Missing equipment uses an explicit same-level
+ * alternate or stops the stepper; it never skips a required rung by sorting past it.
+ */
+fun mainPathOptions(c: Catalog, currentId: String, profile: EquipmentProfile, goalId: String? = null): List<ExerciseVariation> {
+    if (c.progressionRoutes.isEmpty()) return swapFamilyOptions(c, currentId, profile)
+    val current = c.variation(currentId) ?: return emptyList()
+    val route = c.mainRouteFor(currentId, goalId) ?: return listOf(current)
+    val anchor = if (currentId in route.mainPath) currentId else route.members.firstOrNull {
+        it.variationId == currentId && it.role == ProgressionRole.ALTERNATE
+    }?.atVariationId ?: return listOf(current)
+    val at = route.mainPath.indexOf(anchor)
+    if (at < 0) return listOf(current)
+    fun option(id: String): ExerciseVariation? {
+        if (id == anchor) return current
+        val ids = listOf(id) + route.members.filter { it.role == ProgressionRole.ALTERNATE && it.atVariationId == id }.map { it.variationId }
+        return ids.mapNotNull(c::variation).firstOrNull { !it.demonstrationHold && isAvailable(it, profile) && c.policyFor(it) != null }
+    }
+    val before = route.mainPath.take(at).asReversed().map(::option).takeWhile { it != null }.filterNotNull().asReversed()
+    val after = route.mainPath.drop(at + 1).map(::option).takeWhile { it != null }.filterNotNull()
+    return before + current + after
+}
+
 /** D1: the whole progression of the exercise's own family, easier to harder, usable with this equipment. The current one is included. */
 fun swapFamilyOptions(catalog: Catalog, currentId: String, profile: EquipmentProfile): List<ExerciseVariation> {
     val cur = catalog.variation(currentId) ?: return emptyList()

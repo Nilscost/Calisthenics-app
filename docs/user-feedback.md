@@ -12,7 +12,7 @@
 ### Execution status
 
 - Recorded all six comments. Duplicate-progression prevention, voice speed/side cues and five-second hold-side setup are implemented; regression checks pass apart from the three expected missing-media asset checks.
-- New structural ladder rewiring is held for review; the previously approved same-level exercise rotation remains in scope.
+- Structural progression changes were held for review, then authorized on 2026-10-16 after the owner accepted the review of `progression-comment.md`. See `30-progression-implementation.md` for the implementation and verification checkpoint.
 - Rear hand clasp: corrected overhead arm and rear camera, reviewed four Blender frames across the loop, rendered, encoded and installed the replacement clip and thumbnail. Phone verification remains pending.
 - Thoracic rotation: the first repair improves the arm position but does not show enough independent upper-back rotation. Candidate saved for further work; its replacement is not installed or accepted.
 - No phone verification is claimed.
@@ -31,3 +31,7 @@ The current R8 catalog and app work remain a draft checkpoint, not approved fina
 Owner reports that rest durations cannot be changed in the workout preview. Make rest times editable there and carry the chosen durations into the started workout and preview total. This is explicitly requested app work alongside the remaining pose review; exercise-inclusion decisions remain held. Implemented: plain rest has a compact15-second stepper (15–300s), applied across sets and reflected in the preview total and started workout. Rest/stretch swapping and Reset remain available. Four focused preview checks pass after the final compact-row adjustment; the prior progression-name test failure also reproduces on unchanged HEAD. See `docs/evidence/r8-preview-rest-verify-2026-10-16.log`. No phone verification or APK installation is claimed.
 
 Layout clarification: place the rest/stretch card and existing “+” button in one horizontal row. The card fills the available width after reserving the existing button size and gap.
+
+## Progression implementation authorized · 2026-10-16
+
+The owner accepted the review of Opus's `progression-comment.md` and asked to implement it. Use explicit main paths, route-specific alternatives and support, separate RDL and Nordic work, preserve app-achievement prerequisites and existing history, and keep specialist exercise pools off by default. Main-path mastery controls advancement; alternatives retain independent targets and rotate across completed workouts. Difficulty rank remains useful for display ordering and does not establish the next required exercise. This authorization supersedes the progression/app integration hold above; rendered demonstration acceptance and phone verification remain separate.

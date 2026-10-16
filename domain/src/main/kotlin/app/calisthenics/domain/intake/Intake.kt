@@ -6,6 +6,7 @@ import app.calisthenics.domain.model.Catalog
 import app.calisthenics.domain.model.ExerciseVariation
 import app.calisthenics.domain.model.OnboardingFamily
 import app.calisthenics.domain.model.Pattern
+import app.calisthenics.domain.model.ProgressionRole
 import app.calisthenics.domain.model.Routine
 import app.calisthenics.domain.model.Tier
 import app.calisthenics.domain.progression.ALL_TIERS_DONE
@@ -70,16 +71,23 @@ fun levelFor(c: Catalog, f: OnboardingFamily, a: FamilyAnswer, usable: (Exercise
 
 /**
  * R3: every exercise of the family's progression for the level page, easier to harder: the entry ladder first, then everything
- * that follows it through `nextVariationIds`, ordered by difficulty. Each exercise appears once. Picking a harder one without its
+ * main or alternate in its reviewed routes, ordered by difficulty. Each exercise appears once. Picking a harder one without its
  * prerequisites is allowed (self-assessment).
  */
 fun fullProgression(c: Catalog, f: OnboardingFamily): List<ExerciseVariation> {
     val seen = LinkedHashSet<String>()
     f.ladder.forEach { seen += it }
-    val queue = ArrayDeque(f.ladder)
-    while (queue.isNotEmpty()) {
-        val id = queue.removeFirst()
-        c.policyForVariation(id)?.nextVariationIds.orEmpty().forEach { if (seen.add(it)) queue += it }
+    if (c.progressionRoutes.isNotEmpty()) {
+        c.progressionRoutes.filter { route -> route.mainPath.any { it in f.ladder } }.forEach { route ->
+            seen += route.mainPath
+            seen += route.members.filter { it.role == ProgressionRole.ALTERNATE }.map { it.variationId }
+        }
+    } else {
+        val queue = ArrayDeque(f.ladder)
+        while (queue.isNotEmpty()) {
+            val id = queue.removeFirst()
+            c.policyForVariation(id)?.nextVariationIds.orEmpty().forEach { if (seen.add(it)) queue += it }
+        }
     }
     val ladderIds = f.ladder.toSet()
     val rest = seen.filter { it !in ladderIds }.mapNotNull { c.variation(it) }.sortedBy { it.difficultyRank }

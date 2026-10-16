@@ -45,7 +45,9 @@ class GoalsTest {
         assertTrue("a push in the handstand session: $hs", hs.any { c.variation(it)!!.patterns.any { p -> p.name.startsWith("PUSH") } })
     }
     @Test fun generalAndBodyPartGoalsLeaveRoutineAlone() {
-        assertEquals(StarterRoutine.routine.slots, Goals.routineFor(c, StarterRoutine.routine, "general", snap()).slots)
+        val slots = Goals.routineFor(c, StarterRoutine.routine, "general", snap()).slots
+        assertEquals(StarterRoutine.routine.slots, slots.map { it.copy(progressionRouteId = null) })
+        assertTrue(slots.all { slot -> c.routeById(slot.progressionRouteId)?.members?.any { it.variationId == slot.preferredVariationId } == true })
         assertEquals(setOf(StrengthFocus.CORE), Goals.focusFor("body-core"))
     }
     @Test fun nodeStatesLockedAvailableMastered() {

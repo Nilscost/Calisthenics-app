@@ -99,6 +99,8 @@ data class SessionEvidence(
     val ruleMet: Boolean? = null,
     /** V21: how many such sessions in a row move you on. */
     val ruleSessions: Int = 1,
+    /** Route used by the work blocks, null for historical plans and context-free evidence. */
+    val progressionRouteId: String? = null,
 ) {
     /** Spec §5 / ADR C2 exposure definition. */
     val qualifying: Boolean
@@ -126,6 +128,8 @@ fun deriveEvidence(
         .groupBy { it.variationId!! }.mapValues { (_, bs) -> if (bs.any { it.freeTarget }) null else bs.mapNotNull { it.prescriptionTier }.maxOrNull() }
     val loadByVariation = plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null }
         .groupBy { it.variationId!! }.mapValues { (_, bs) -> bs.mapNotNull { it.loadGrams }.maxOrNull() }
+    val routeByVariation = plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null }
+        .groupBy { it.variationId!! }.mapValues { (_, bs) -> bs.mapNotNull { it.progressionRouteId }.firstOrNull() }
     return outcomes.groupBy { it.variationId }.toSortedMap().map { (vid, os) ->
         val tier = tierByVariation[vid]
         val disc = os.any { it.discomfort }
@@ -148,6 +152,7 @@ fun deriveEvidence(
             anyAbove = os.any { it.rating == Rating.ABOVE },
             ruleMet = ruleMetOf(vid),
             ruleSessions = plan.rule.sessions,
+            progressionRouteId = routeByVariation[vid],
         )
     }
 }

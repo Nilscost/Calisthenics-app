@@ -298,7 +298,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                     if (rule.isRange) Text(stringResource(R.string.rule_range_note), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("rule_range_note"))
                     // one tile: the same design in the round view and in the full timeline
                     @Composable fun Tile(i: Int, e: CircuitEntry, st: Int, sfx: String, badge: Int?, typed: Boolean) {
-                        val options = if (rule.isRange) swapFamilyOptions(data.catalog, e.variationId, profile) else emptyList()
+                        val options = if (rule.isRange) mainPathOptions(data.catalog, e.variationId, profile, p.goalId) else emptyList()
                         val idx = options.indexOfFirst { it.id == e.variationId }
                         ExerciseRow(i, e, data.catalog.variation(e.variationId), names[e.variationId] ?: e.variationId, data.catalog.policyForVariation(e.variationId)?.tiers?.size ?: 5,
                             onStep = { d ->

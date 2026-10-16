@@ -2,6 +2,7 @@ package app.calisthenics.domain
 
 import app.calisthenics.domain.content.parseCatalog
 import app.calisthenics.domain.equipment.SeedProfiles
+import app.calisthenics.domain.goals.Goals
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.planner.*
 import app.calisthenics.domain.progression.ProgressSnapshot
@@ -21,12 +22,16 @@ class SessionLengthTest {
         return (buildTrainPlan(catalog, StarterRoutine.routine, none, profile, eff) as PlanResult.Ready).plan
     }
 
-    @Test fun anUpperBodySessionOfThreeRoundsIsFilledToThirtyMinutes() {
+    @Test fun anUpperBodySessionUsesTheAvailableDefaultPoolBeforeStoppingShortOfThirtyMinutes() {
         val s = TrainSettings(goalId = "body-upper", rounds = 3)
         val bare = plan(s, effective = false)
         assertTrue("without the default it is short: ${bare.plannedDurationSeconds / 60} min", bare.plannedDurationSeconds < MIN_SESSION_SECONDS)
         val p = plan(s)
-        assertTrue("upper, 3 rounds: ${p.plannedDurationSeconds / 60} min", p.plannedDurationSeconds >= MIN_SESSION_SECONDS)
+        val focused = Goals.routineFor(catalog, StarterRoutine.routine, "body-upper", none, profile)
+        assertEquals(maxExercisesPerRound(catalog, focused, setOf(StrengthFocus.UPPER_BODY), profile, none), exercisesPerRoundOf(p))
+        assertTrue("a short pool does not pull in specialist extras", p.blocks.filter { it.type == BlockType.WORK }.all { block ->
+            catalog.routeById(block.progressionRouteId)?.defaultPool == true
+        })
         assertTrue(exercisesPerRoundOf(p) > exercisesPerRoundOf(bare))
         assertTrue("only upper-body exercises", p.blocks.filter { it.type == BlockType.WORK }.mapNotNull { catalog.variation(it.variationId!!) }.all { Area.UPPER_BODY in it.areas })
     }

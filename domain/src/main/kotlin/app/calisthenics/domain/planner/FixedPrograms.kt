@@ -47,9 +47,12 @@ fun buildFixedProgramPlan(
                 target = target,
                 // Fixed programs follow their written volume, never the app-level progression ladder.
                 prescriptionTier = null,
-                mediaId = exercise.mediaId,
+                // Program-only text cues remain usable, but a held demo must not be presented as a reviewed teaching clip.
+                mediaId = exercise.mediaId.takeUnless { exercise.demonstrationHold },
                 freeTarget = flow,
-                note = item.notes.takeIf { it.isNotBlank() },
+                note = listOfNotNull(item.notes.takeIf { it.isNotBlank() },
+                    if (exercise.demonstrationHold) "Demonstration video is unavailable; follow the written instructions: ${exercise.instructions.joinToString(" ")}" else null)
+                    .joinToString("\n").ifBlank { null },
             )
         }
     })

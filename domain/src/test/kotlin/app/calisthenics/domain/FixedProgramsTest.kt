@@ -116,4 +116,16 @@ class FixedProgramsTest {
         assertFalse(plan.flow)
         assertTrue(program.flow)
     }
+
+    @Test fun heldPilatesDemonstrationsKeepProgramTargetsButDoNotClaimAClip() {
+        val program = byProgram.getValue("pilates-mat-beginner")
+        val plan = (buildFixedProgramPlan(catalog, program, SeedProfiles.home, flow = false) as FixedProgramPlanResult.Ready).plan
+        val heldIds = catalog.variations.filter { it.demonstrationHold }.map { it.id }.toSet()
+        val heldBlocks = plan.blocks.filter { it.variationId in heldIds }
+        assertTrue(heldBlocks.isNotEmpty())
+        assertTrue(heldBlocks.all { it.mediaId == null })
+        assertTrue(heldBlocks.all { it.note?.contains("written instructions") == true })
+        assertEquals(program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.reps ?: item.seconds } },
+            plan.blocks.filter { it.variationId != null }.map { it.target!!.value })
+    }
 }

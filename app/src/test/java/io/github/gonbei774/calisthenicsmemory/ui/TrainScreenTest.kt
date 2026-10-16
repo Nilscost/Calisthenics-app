@@ -64,7 +64,7 @@ class TrainScreenTest {
         .first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }.toInt()
 
     // R7-T08 (D1): the stepper next to the rounds; a body-part session starts at the count that makes it 30 minutes, a tap overrides it
-    @Test fun exercisesPerRoundStepperDefaultsToThirtyMinutesAndCanBeChanged() {
+    @Test fun exercisesPerRoundStepperRespectsTheAvailableDefaultPoolAndCanBeChanged() {
         show()
         rule.waitForIdle()
         rule.onNodeWithTag("objective_type_BODY_PART").assertIsSelected()
@@ -72,7 +72,8 @@ class TrainScreenTest {
         rule.onNodeWithText("Focus: upper body").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("rounds_minus").performClick(); rule.waitForIdle()   // 3 rounds
         rule.onNodeWithTag("exercises_plus", useUnmergedTree = true).performScrollTo().assertExists()
-        assertTrue("upper body, 3 rounds: ${minutes()} min", minutes() >= 30)
+        // A deliberately small pool may finish before 30 minutes; it must not repeat a progression to fill time.
+        assertTrue("upper body has a usable plan", minutes() > 0)
         val n = exercises()
         assertTrue(n >= 3)
         rule.onNodeWithTag("exercises_minus", useUnmergedTree = true).performClick(); rule.waitForIdle()
@@ -233,4 +234,15 @@ class TrainScreenTest {
         assertTrue(minutes() >= before)   // counted in the time
         assertTrue(ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getBoolean("warmup", false))
     }
+    @Test fun optionalWorkoutPoolsAreCollapsedOffByDefaultAndPersistExplicitChoices() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("pool_POWER").assertDoesNotExist()
+        rule.onNodeWithTag("additional_pools").performClick(); rule.waitForIdle()
+        listOf("POWER", "CONDITIONING", "PREHAB", "MOBILITY").forEach {
+            rule.onNodeWithTag("pool_$it").performScrollTo().assertIsOff()
+        }
+        rule.onNodeWithTag("pool_POWER").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(setOf("POWER"), io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx).additionalPools)
+    }
+
 }

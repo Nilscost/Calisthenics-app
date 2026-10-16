@@ -32,6 +32,30 @@ import kotlinx.serialization.Serializable
 
 @Serializable enum class PolicyKind { REVIEWED_GUIDANCE, PRODUCT_HEURISTIC }
 
+/** A variation's explicit place in a progression route. */
+@Serializable enum class ProgressionRole { MAIN, ALTERNATE, SUPPORT, PROGRAM, LIBRARY }
+
+@Serializable
+data class ProgressionMember(
+    val variationId: String,
+    val role: ProgressionRole,
+    val atVariationId: String? = null,
+)
+
+/** A named main path with explicitly attached non-main material. */
+@Serializable
+data class ProgressionRoute(
+    val id: String,
+    val name: String,
+    val progressionGroup: String,
+    val goalVariationId: String? = null,
+    val mainPath: List<String> = emptyList(),
+    val members: List<ProgressionMember> = emptyList(),
+    val defaultPool: Boolean = false,
+    val focus: String? = null,
+    val goalIds: List<String> = emptyList(),
+)
+
 @Serializable enum class Side { NONE, LEFT, RIGHT, BOTH }
 
 /** R7-T13 (D10): the cool-down after the workout: stretches matched to the session, or a timed relax block. */
@@ -211,6 +235,10 @@ data class ExerciseVariation(
     val aliases: List<String> = emptyList(),
     val options: List<ExerciseOption> = emptyList(),
     val routineOnly: Boolean = false,
+    /** Shared identity for movement progressions that span legacy catalog families. */
+    val progressionGroup: String? = null,
+    /** A hold is present for demonstration/reference, not evidence of an acceptable exercise clip. */
+    val demonstrationHold: Boolean = false,
 )
 
 @Serializable
@@ -296,6 +324,8 @@ data class Catalog(
     val exerciseGroups: List<ExerciseGroup> = emptyList(),
     val fixedPrograms: List<FixedProgram> = emptyList(),
     val optionSets: List<ExerciseOptionSet> = emptyList(),
+    /** Explicit route metadata. Empty preserves legacy policy-based behavior. */
+    val progressionRoutes: List<ProgressionRoute> = emptyList(),
 ) {
     private val byId: Map<String, ExerciseVariation> by lazy { variations.associateBy { it.id } }
     private val policyById: Map<String, ProgressionPolicy> by lazy { policies.associateBy { it.id } }
@@ -305,6 +335,46 @@ data class Catalog(
     fun optionsFor(v: ExerciseVariation): List<ExerciseOption> = v.options + optionSets.filter { set ->
         set.appliesTo.any { it == "*" || it == v.id || it == "family:${v.familyId}" }
     }.map { ExerciseOption(it.optionType, it.values, it.source) }
+
+    fun routesFor(id: String): List<ProgressionRoute> = progressionRoutes.filter { route ->
+        id in route.mainPath || route.members.any { it.variationId == id }
+    }
+
+    fun routeById(id: String?): ProgressionRoute? = id?.let { routeId -> progressionRoutes.firstOrNull { it.id == routeId } }
+
+    fun progressionGroupOf(id: String): String? = variation(id)?.let { it.progressionGroup ?: it.familyId }
+
+    /** Select a route containing this variation, preferring a goal match then default-pool routes. */
+    fun mainRouteFor(id: String, goalId: String? = null): ProgressionRoute? = routesFor(id)
+        .sortedWith(compareBy<ProgressionRoute>(
+            { if (goalId != null && goalId in it.goalIds) 0 else 1 },
+            { if (id in it.mainPath) 0 else 1 },
+            { if (it.progressionGroup == progressionGroupOf(id)) 0 else 1 },
+            { if (it.defaultPool) 0 else 1 },
+            { it.id },
+        ))
+        .firstOrNull()
+
+    fun routeAnchorFor(id: String, route: ProgressionRoute? = mainRouteFor(id)): String? {
+        route ?: return null
+        return if (id in route.mainPath) id else route.members.firstOrNull {
+            it.variationId == id && it.role in setOf(ProgressionRole.ALTERNATE, ProgressionRole.SUPPORT)
+        }?.atVariationId
+    }
+
+    fun nextMain(id: String, goalId: String? = null): String? {
+        val route = mainRouteFor(id, goalId) ?: return null
+        val anchor = routeAnchorFor(id, route) ?: return null
+        val index = route.mainPath.indexOf(anchor)
+        return route.mainPath.getOrNull(index + 1)
+    }
+
+    fun previousMain(id: String, goalId: String? = null): String? {
+        val route = mainRouteFor(id, goalId) ?: return null
+        val anchor = routeAnchorFor(id, route) ?: return null
+        val index = route.mainPath.indexOf(anchor)
+        return route.mainPath.getOrNull(index - 1)
+    }
 }
 
 // ---------- routine & preferences ----------
@@ -324,6 +394,8 @@ data class RoutineSlot(
     val repTo: Int? = null,
     /** V22: this slot's rest after a set in seconds (RR pairs 90, core 60, Minimalist 0 = none); null = the exercise's own recovery. */
     val restSeconds: Int? = null,
+    /** Route chosen for a branch-aware goal; null keeps canonical/default route selection. */
+    val progressionRouteId: String? = null,
 )
 
 @Serializable
@@ -385,6 +457,8 @@ data class TimelineBlock(
     val groupIndex: Int? = null,
     /** L11b: a short instruction shown with the block (the stretch session's "ease in and out 10 times"). */
     val note: String? = null,
+    /** Route context for replaying main-path advancement; absent in plans saved before route support. */
+    val progressionRouteId: String? = null,
 ) {
     init { require(durationSeconds > 0) { "block $id must have positive duration" } }
 }

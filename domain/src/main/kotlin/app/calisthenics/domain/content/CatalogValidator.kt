@@ -33,10 +33,41 @@ fun validateCatalog(c: Catalog, production: Boolean = false): ValidationReport {
     dupes(c.policies.map { it.id }, "policy")
     dupes(c.skillNodes.map { it.id }, "skill node")
     dupes(c.skillEdges.map { it.id }, "skill edge")
+    dupes(c.progressionRoutes.map { it.id }, "progression route")
     (c.variations.map { it.id } + c.policies.map { it.id } + c.skillNodes.map { it.id } + c.skillEdges.map { it.id })
         .filterNot { KEBAB.matches(it) }.forEach { e += "id '$it' is not lowercase kebab-case" }
 
     val vIds = c.variations.map { it.id }.toSet()
+    for (route in c.progressionRoutes) {
+        if (route.name.isBlank()) e += "route ${route.id}: empty name"
+        if (route.mainPath.isEmpty() && (route.goalVariationId != null || route.defaultPool || route.goalIds.isNotEmpty())) e += "route ${route.id}: a goal/default progression needs a main path"
+        dupes(route.mainPath, "route ${route.id} main-path variation")
+        dupes(route.members.map { it.variationId }, "route ${route.id} member")
+        for (id in route.mainPath) if (id !in vIds) e += "route ${route.id}: unknown main-path variation '$id'"
+        val mainMembers = route.members.filter { it.role == app.calisthenics.domain.model.ProgressionRole.MAIN }.map { it.variationId }.toSet()
+        if (mainMembers != route.mainPath.toSet()) e += "route ${route.id}: MAIN members must exactly match mainPath"
+        for (m in route.members) {
+            if (m.variationId !in vIds) e += "route ${route.id}: unknown member '${m.variationId}'"
+            when (m.role) {
+                app.calisthenics.domain.model.ProgressionRole.ALTERNATE -> if (m.atVariationId == null || m.atVariationId !in route.mainPath)
+                    e += "route ${route.id}: alternate '${m.variationId}' needs a main-path anchor"
+                app.calisthenics.domain.model.ProgressionRole.SUPPORT -> if (m.atVariationId == null || m.atVariationId !in vIds)
+                    e += "route ${route.id}: support '${m.variationId}' needs a valid exercise anchor"
+                app.calisthenics.domain.model.ProgressionRole.MAIN -> if (m.atVariationId != null && (m.variationId != route.mainPath.firstOrNull() || m.atVariationId !in vIds))
+                    e += "route ${route.id}: only the entry main step may reference an external entry anchor"
+                else -> if (m.atVariationId != null) e += "route ${route.id}: program/library members cannot have an anchor"
+            }
+        }
+        route.goalVariationId?.let { if (it !in route.mainPath) e += "route ${route.id}: goal '$it' is not on mainPath" }
+        for (goal in route.goalIds) if (goal.isBlank()) e += "route ${route.id}: blank goal id"
+        if (route.mainPath.size > 1) {
+            for ((from, to) in route.mainPath.zipWithNext()) {
+                if (c.variation(to) == null) continue
+                // Legacy policy edges remain valid transition evidence, but route order is authoritative.
+                if (from == to) e += "route ${route.id}: self-cycle at '$from'"
+            }
+        }
+    }
     dupes(c.exerciseGroups.map { it.id }, "exercise group")
     dupes(c.fixedPrograms.map { it.id }, "fixed program")
     for (g in c.exerciseGroups) {
@@ -46,7 +77,14 @@ fun validateCatalog(c: Catalog, production: Boolean = false): ValidationReport {
         for (id in g.alternativeVariationIds) {
             val alt = c.variation(id)
             if (alt == null) e += "group ${g.id}: unknown alternative '$id'"
-            else if (main != null && (alt.familyId != main.familyId || alt.kind != main.kind)) e += "group ${g.id}: incompatible alternative '$id'"
+            else if (main != null) {
+                val explicitAnchor = c.progressionRoutes.any { route -> main.id in route.mainPath && route.members.any {
+                    it.variationId == alt.id && it.role == app.calisthenics.domain.model.ProgressionRole.ALTERNATE && it.atVariationId == main.id
+                } }
+                val strengthKinds = setOf(app.calisthenics.domain.model.Kind.REPS, app.calisthenics.domain.model.Kind.HOLD)
+                if ((c.progressionGroupOf(alt.id) != c.progressionGroupOf(main.id) && !explicitAnchor) || ((alt.kind in strengthKinds) != (main.kind in strengthKinds)))
+                    e += "group ${g.id}: incompatible alternative '$id'"
+            }
         }
     }
     for (r in c.fixedPrograms) {

@@ -85,7 +85,8 @@ private class Planner(val input: PlanInput) {
         for (slot in slots) chooseFor(slot)?.let { candidate ->
             val automaticSlot = slot.id.startsWith("ext-") || app.calisthenics.domain.goals.Goals.isSkillSlot(slot.id)
             val explicitPick = draft.swaps.containsKey(slot.id) || slot.id.startsWith("add-")
-            if (automaticSlot && !explicitPick && chosen.any { it.variation.familyId == candidate.variation.familyId }) {
+            if (automaticSlot && !explicitPick && !routeEligibleForAutomatic(candidate.variation, slot.id, draft)) return@let
+            if (automaticSlot && !explicitPick && chosen.any { sameProgressionForSlots(it, candidate) }) {
                 explain += "${candidate.variation.name} was left out because this workout already trains its progression."
             } else chosen += candidate
         }
@@ -187,7 +188,7 @@ private class Planner(val input: PlanInput) {
     private fun stretchSession(): PlanResult {
         val out = mutableListOf<TimelineBlock>()
         for ((i, id) in input.routine.stretchSession.withIndex()) {
-            val v = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH && isAvailable(it, input.profile) } ?: continue
+            val v = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH && !it.demonstrationHold && isAvailable(it, input.profile) } ?: continue
             val sides = if (v.unilateral) listOf(Side.LEFT, Side.RIGHT) else listOf(Side.BOTH)
             for (side in sides) for ((k, hold) in listOf(10, 20, 30).withIndex()) {
                 val tag = "ss$i-${side.name.first()}-${k + 1}"
@@ -215,15 +216,33 @@ private class Planner(val input: PlanInput) {
         v.id !in input.excludedVariationIds && isAvailable(v, input.profile) &&
             (v.kind == Kind.REPS || v.kind == Kind.HOLD)
 
+    private fun sameProgressionForSlots(a: Chosen, b: Chosen): Boolean {
+        val ag = cat.routeById(a.slot.progressionRouteId)?.progressionGroup ?: cat.progressionGroupOf(a.variation.id)
+        val bg = cat.routeById(b.slot.progressionRouteId)?.progressionGroup ?: cat.progressionGroupOf(b.variation.id)
+        return ag == bg
+    }
+
     private fun chooseFor(slot: RoutineSlot): Chosen? {
         val prefId = draft.swaps[slot.id] ?: slot.preferredVariationId
         val prefOrNull = cat.variation(prefId)
         if (prefOrNull == null) { warn += "${slot.id}: exercise '$prefId' is not in the catalog; slot skipped."; needsAcceptance = true; return null }
         var pref: ExerciseVariation = prefOrNull
-        // progression successor in the same family
-        val active = input.progress.activeInFamily[pref.familyId]
+        // Use persisted family activity only when it belongs to this route/progression group.
+        // A legacy family may now contain several independent routes (plank, hollow and L-sit).
+        var route = cat.routeById(slot.progressionRouteId)?.takeIf { selected -> pref.id in selected.mainPath || selected.members.any { it.variationId == pref.id } }
+            ?: cat.mainRouteFor(pref.id, draft.goalId)
+        val group = cat.progressionGroupOf(pref.id)
+        val savedActive = input.progress.activeInFamily[pref.familyId]
+        val active = savedActive?.takeIf { candidate ->
+            (route != null && candidate in route.mainPath) || (route == null && cat.progressionGroupOf(candidate) == group)
+        } ?: route?.let { selected ->
+            val started = selected.mainPath.filter { it in input.progress.variations }
+            val latest = started.lastOrNull()
+            if (latest == null) null else if (5 in input.progress.variations.getValue(latest).achievedTiers)
+                selected.mainPath.getOrNull(selected.mainPath.indexOf(latest) + 1) ?: latest else latest
+        }
         if (active != null && active != pref.id && draft.swaps[slot.id] == null) {
-            cat.variation(active)?.takeIf { usable(it) }?.let {
+            cat.variation(active)?.takeIf { usable(it) && (route?.let { r -> it.id in r.mainPath } ?: (cat.progressionGroupOf(it.id) == group)) }?.let {
                 explain += "${it.name} replaces ${pref.name} because you completed all tiers of ${pref.name}."
                 pref = it
             }
@@ -232,7 +251,8 @@ private class Planner(val input: PlanInput) {
         val hold = input.progress.holdFor(family)
         if (hold != null) {
             val easier = hold.easierVariationId?.let { cat.variation(it) }
-            if (easier == null || !usable(easier)) {
+            val inRoute = easier?.let { candidate -> route?.let { r -> candidate.id in r.mainPath || r.members.any { m -> m.variationId == candidate.id && m.role == ProgressionRole.ALTERNATE } } ?: (cat.progressionGroupOf(candidate.id) == cat.progressionGroupOf(pref.id)) } == true
+            if (easier == null || !usable(easier) || !inRoute) {
                 warn += "${pref.name} is paused because of reported discomfort. Choose an easier option, swap, skip it or finish — it will not be prescribed at a harder level."
                 needsAcceptance = true
                 return null
@@ -240,19 +260,22 @@ private class Planner(val input: PlanInput) {
             pref = easier
         }
         if (hold == null && draft.swaps[slot.id] == null) {
-            val rotated = rotatedExercise(cat, pref, input.progress, input.profile, input.excludedVariationIds)
+            val rotated = rotatedExercise(cat, pref, input.progress, input.profile, input.excludedVariationIds, route?.id)
             if (rotated.id != pref.id) explain += "${rotated.name} is today's alternative to ${pref.name}; each exercise keeps its own progress."
             pref = rotated
         }
         var v: ExerciseVariation = pref
         if (!usable(v)) {
-            val sub = substitute(slot, v)
+            val sub = substitute(slot, v, route)
             if (sub == null) {
                 warn += "${v.name} was left out: it needs ${missingFor(v, input.profile)} (or is excluded) and no suitable replacement exists. No other exercise was labelled as ${slot.intent.name.lowercase().replace('_', ' ')}."
                 needsAcceptance = true
                 return null
             }
             val (sv, equivalent) = sub
+            if (!equivalent && cat.progressionRoutes.isNotEmpty()) {
+                route = cat.mainRouteFor(sv.id, draft.goalId)
+            }
             if (equivalent) explain += "${sv.name} replaces ${v.name} (same movement, ${v.equipmentAlternatives.firstOrNull()?.let { "needs ${missingFor(v, input.profile)}" } ?: "unavailable"})."
             else {
                 warn += "${sv.name} replaces ${v.name}, but it is NOT the same movement (${slot.intent.name.lowercase().replace('_', ' ')} is missing from this workout). Confirm before starting."
@@ -286,15 +309,33 @@ private class Planner(val input: PlanInput) {
             if (t != tierIdx) explain += "${v.name}: level set to $t for today (it only counts towards progress at your own level)."
             tierIdx = t
         }
-        return Chosen(slot, v, pol.tier(tierIdx!!), load)
+        return Chosen(slot.copy(progressionRouteId = route?.id), v, pol.tier(tierIdx!!), load)
     }
 
-    private fun substitute(slot: RoutineSlot, original: ExerciseVariation): Pair<ExerciseVariation, Boolean>? {
-        val pool = cat.variations.filter { !it.routineOnly && usable(it) && it.id != original.id && cat.policyFor(it) != null && app.calisthenics.domain.goals.Goals.unmet(cat, it.id, input.progress).isEmpty() }
+    private fun substitute(slot: RoutineSlot, original: ExerciseVariation, route: ProgressionRoute?): Pair<ExerciseVariation, Boolean>? {
+        val pool = cat.variations.filter { !it.demonstrationHold && !it.routineOnly && usable(it) && it.id != original.id && cat.policyFor(it) != null && app.calisthenics.domain.goals.Goals.unmet(cat, it.id, input.progress).isEmpty() }
         fun rank(list: List<ExerciseVariation>) = list.sortedWith(compareBy({ kotlin.math.abs(it.difficultyRank - original.difficultyRank) }, { it.id }))
-        rank(pool.filter { slot.intent in it.patterns && slot.area in it.areas }).firstOrNull()?.let { return it to true }
+        val sameRungAlternatives = if (route == null || cat.progressionRoutes.isEmpty()) pool else pool.filter { candidate ->
+            route.members.any { it.variationId == candidate.id && it.role == ProgressionRole.ALTERNATE && it.atVariationId == original.id } &&
+                cat.exerciseGroups.any { it.mainVariationId == original.id && candidate.id in it.alternativeVariationIds }
+        }
+        rank(sameRungAlternatives.filter { slot.intent in it.patterns && slot.area in it.areas }).firstOrNull()?.let { return it to true }
         rank(pool.filter { slot.area in it.areas }).firstOrNull()?.let { return it to false }
         return null
+    }
+
+    private fun routeEligibleForAutomatic(v: ExerciseVariation, slotId: String, draft: SessionDraft): Boolean {
+        if (v.demonstrationHold) return false
+        if (cat.progressionRoutes.isEmpty()) return true
+        val slot = input.routine.slots.firstOrNull { it.id == slotId }
+        val selected = cat.routeById(slot?.progressionRouteId)
+            ?: cat.mainRouteFor(v.id, draft.goalId)
+        val routes = cat.routesFor(v.id).filter { route ->
+            val role = route.members.firstOrNull { it.variationId == v.id }?.role
+            val roleOkay = v.id in route.mainPath || (role == ProgressionRole.ALTERNATE && cat.exerciseGroups.any { v.id in it.alternativeVariationIds })
+            roleOkay && (route.id == selected?.id || (slotId.startsWith("ext-") && route.defaultPool))
+        }
+        return routes.isNotEmpty()
     }
 
     // ---------- blocks ----------
@@ -302,7 +343,7 @@ private class Planner(val input: PlanInput) {
     private fun stretchesFor(v: ExerciseVariation): List<ExerciseVariation> {
         val areas = normalizeStretchAreas(draft.stretchAreas)
         return v.compatibleStretchIds.mapNotNull { cat.variation(it) }
-            .filter { it.kind == Kind.STRETCH && it.id !in input.excludedVariationIds && !it.optIn &&   // R7-T12 (D8): deep (cool-down) stretches may go between sets again; only opt-in ones are picked by hand
+            .filter { it.kind == Kind.STRETCH && !it.demonstrationHold && it.id !in input.excludedVariationIds && !it.optIn &&   // R7-T12 (D8): deep (cool-down) stretches may go between sets again; only opt-in ones are picked by hand
                 (StretchArea.FULL_BODY in areas || it.stretchAreas.any { a -> a in areas || a == StretchArea.FULL_BODY }) }
             .sortedBy { it.id }
     }
@@ -350,12 +391,13 @@ private class Planner(val input: PlanInput) {
                 val target = cappedTarget(requested, cat.policyFor(v)!!)
                 val dur = if ((free != null || ruleTarget != null) && isHold) maxOf(secs, (target.max ?: target.value) + 3) else secs
                 out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, t.index,
-                    mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams, freeTarget = free != null, groupIndex = group)
+                    mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams, freeTarget = free != null, groupIndex = group,
+                    progressionRouteId = c.slot.progressionRouteId)
             }
             val isLast = pos == order.lastIndex
             fun extras() {
                 draft.extraStretches[c.slot.id].orEmpty().forEachIndexed { i, id ->
-                    val x = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH } ?: return@forEachIndexed
+                    val x = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH && !it.demonstrationHold } ?: return@forEachIndexed
                     val secs = x.defaultSeconds ?: 30
                     if (x.unilateral) for (side in listOf(Side.LEFT, Side.RIGHT)) out += TimelineBlock("r$r-${c.slot.id}-x$i-${side.name.first()}", BlockType.STRETCH, secs, r, c.slot.id, x.id, side, recoveryForBlockIds = workIds, mediaId = x.mediaId, groupIndex = group)
                     else out += TimelineBlock("r$r-${c.slot.id}-x$i", BlockType.STRETCH, secs, r, c.slot.id, x.id, Side.BOTH, recoveryForBlockIds = workIds, mediaId = x.mediaId, groupIndex = group)
@@ -369,7 +411,7 @@ private class Planner(val input: PlanInput) {
                 out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.PASSIVE_RECOVERY, window, r, c.slot.id, recoveryForBlockIds = workIds, groupIndex = group)
             } else {
                 val cands = stretchesFor(v)
-                val s = (draft.roundStretchPicks["$r:${c.slot.id}"] ?: draft.stretchPicks[c.slot.id])?.let { cat.variation(it) }?.takeIf { it.kind == Kind.STRETCH } ?: cands[(r - 1 + si) % cands.size]
+                val s = (draft.roundStretchPicks["$r:${c.slot.id}"] ?: draft.stretchPicks[c.slot.id])?.let { cat.variation(it) }?.takeIf { it.kind == Kind.STRETCH && !it.demonstrationHold } ?: cands[(r - 1 + si) % cands.size]
                 if (s.unilateral) {
                     val seg = maxOf((window + 1) / 2, s.defaultSeconds ?: 0) // never below the reviewed minimum recovery; a deep stretch keeps its own time per side (R7-T12)
                     for (side in listOf(Side.LEFT, Side.RIGHT)) out += TimelineBlock("r$r-${c.slot.id}-rec-${side.name.first()}", BlockType.STRETCH, seg, r, c.slot.id, s.id, side,
@@ -387,11 +429,11 @@ private class Planner(val input: PlanInput) {
      */
     private fun cooldownStretches(chosen: List<Chosen>): List<TimelineBlock> {
         fun secs(v: ExerciseVariation) = (v.defaultSeconds ?: 30) * (if (v.unilateral) 2 else 1)
-        val base: List<ExerciseVariation> = draft.cooldownStretches?.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind == Kind.STRETCH } } ?: run {
+        val base: List<ExerciseVariation> = draft.cooldownStretches?.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind == Kind.STRETCH && !v.demonstrationHold } } ?: run {
             val score = chosen.flatMap { it.variation.compatibleStretchIds }.groupingBy { it }.eachCount()
             val out = mutableListOf<ExerciseVariation>(); var total = 0
             for (id in score.keys.sortedWith(compareBy({ -score.getValue(it) }, { it }))) {
-                val v = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH && !it.optIn && it.id !in input.excludedVariationIds && isAvailable(it, input.profile) } ?: continue
+                val v = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH && !it.demonstrationHold && !it.optIn && it.id !in input.excludedVariationIds && isAvailable(it, input.profile) } ?: continue
                 if (total + secs(v) > COOLDOWN_MAX_SECONDS) continue
                 out += v; total += secs(v)
                 if (total >= COOLDOWN_TARGET_SECONDS) break
@@ -400,7 +442,7 @@ private class Planner(val input: PlanInput) {
         }
         // R7.2-T04 (F5): the hand removals and additions come last, so they also apply to a hand-picked list
         val kept = base.filter { it.id !in draft.cooldownRemoved }
-        val picked = kept + draft.cooldownAdded.distinct().filter { id -> kept.none { it.id == id } }.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind == Kind.STRETCH } }
+        val picked = kept + draft.cooldownAdded.distinct().filter { id -> kept.none { it.id == id } }.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind == Kind.STRETCH && !v.demonstrationHold } }
         return picked.flatMapIndexed { i, v ->
             val s = v.defaultSeconds ?: 30
             if (v.unilateral) listOf(Side.LEFT, Side.RIGHT).map { TimelineBlock("cooldown-$i-${it.name.first()}", BlockType.COOLDOWN, s, variationId = v.id, side = it, mediaId = v.mediaId, note = "Cool-down") }
@@ -409,7 +451,7 @@ private class Planner(val input: PlanInput) {
     }
 
     private fun template(ids: List<String>, type: BlockType, prefix: String): List<TimelineBlock> = ids.flatMapIndexed { i, id ->
-        val v = cat.variation(id) ?: return@flatMapIndexed emptyList()
+        val v = cat.variation(id)?.takeUnless { it.demonstrationHold } ?: return@flatMapIndexed emptyList()
         val secs = v.defaultSeconds ?: 30
         val note = if (type == BlockType.WARMUP) "Warm-up · " + Ramp.phaseOf(id).label.lowercase() else null
         if (v.unilateral) listOf(Side.LEFT, Side.RIGHT).map { TimelineBlock("$prefix-$i-${it.name.first()}", type, secs, variationId = id, side = it, mediaId = v.mediaId, note = note) }

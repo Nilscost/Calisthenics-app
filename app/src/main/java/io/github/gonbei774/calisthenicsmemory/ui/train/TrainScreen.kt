@@ -83,6 +83,8 @@ fun TrainScreen(
     val minutes = plan?.plannedDurationSeconds?.let { (it + 30) / 60 }
     val exercises = plan?.blocks?.filter { it.type == BlockType.WORK || (resolved.routine.stretchSession.isNotEmpty() && it.type == BlockType.STRETCH) }?.mapNotNull { it.variationId }?.distinct()?.size
 
+    var poolsOpen by remember { mutableStateOf(false) }
+
     // Doc 17 §2.1: choices only; START WORKOUT and Workout preview stay at the bottom.
     Scaffold(
         modifier = modifier,
@@ -107,6 +109,7 @@ fun TrainScreen(
         ) {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(stringResource(R.string.train_title).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("train_title"))
+                TextButton(onClick = { poolsOpen = !poolsOpen }, modifier = Modifier.testTag("additional_pools")) { Text(stringResource(R.string.train_extras)) }
                 TextButton(onClick = onPrograms, modifier = Modifier.testTag("open_programs")) { Text(stringResource(R.string.programs_open)) }
             }
             UnfinishedBanner(onStarted)
@@ -179,7 +182,7 @@ fun TrainScreen(
             }
             // R7-T08 (D1): exercises per round, next to the rounds; the default makes the session at least 30 minutes, a tap overrides it
             val exercisesCard: @Composable (Modifier) -> Unit = { m ->
-                val maxEx = remember(resolved, data, profile) { val r = trainRoutine(data.catalog, resolved.routine, data.progress, resolved.settings.goalId, profile); maxExercisesPerRound(data.catalog, r, fillFocusOf(r, resolved.settings), profile, data.progress, resolved.settings.stretchOn) }
+                val maxEx = remember(resolved, data, profile) { val r = routineForPlan(data.catalog, resolved.routine, data.progress, profile, resolved.settings.copy(exercisesPerRound = null)); maxExercisesPerRound(data.catalog, r, fillFocusOf(r, resolved.settings), profile, data.progress, resolved.settings.stretchOn) }
                 val shown = (eff.exercisesPerRound ?: plan?.let { exercisesPerRoundOf(it) } ?: 1).coerceIn(1, maxOf(maxEx, 1))
                 Card(m, shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
@@ -194,6 +197,26 @@ fun TrainScreen(
                     setsCard(Modifier.weight(1f).fillMaxHeight()); exercisesCard(Modifier.weight(1f).fillMaxHeight())
                 }
                 betweenCard(Modifier.fillMaxWidth())
+            }
+
+            // Specialist work is a deliberate choice, kept collapsed in an ordinary workout.
+            if (poolsOpen) {
+                Caption(stringResource(R.string.train_additional_pools))
+                listOf(
+                    "POWER" to R.string.train_pool_power,
+                    "CONDITIONING" to R.string.train_pool_conditioning,
+                    "PREHAB" to R.string.train_pool_prehab,
+                    "MOBILITY" to R.string.train_pool_mobility,
+                ).forEach { (pool, labelId) ->
+                    val label = stringResource(labelId)
+                    Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
+                        Text(label, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
+                        Switch(checked = pool in settings.additionalPools, onCheckedChange = { enabled ->
+                            val pools = if (enabled) settings.additionalPools + pool else settings.additionalPools - pool
+                            change(settings.copy(additionalPools = pools, exercisesPerRound = null))
+                        }, modifier = Modifier.semantics { contentDescription = label }.testTag("pool_$pool"))
+                    }
+                }
             }
 
             val warmupLabel = stringResource(R.string.train_warmup)
