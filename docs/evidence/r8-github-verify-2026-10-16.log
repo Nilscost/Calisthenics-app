@@ -1,0 +1,515 @@
+verify	Set up job	﻿2026-10-16T13:29:07.4302795Z Current runner version: '2.337.0'
+verify	Set up job	2026-10-16T13:29:07.4330202Z ##[group]Runner Image Provisioner
+verify	Set up job	2026-10-16T13:29:07.4331103Z Hosted Compute Agent
+verify	Set up job	2026-10-16T13:29:07.4331835Z Version: 20261012.601
+verify	Set up job	2026-10-16T13:29:07.4332595Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+verify	Set up job	2026-10-16T13:29:07.4333385Z Build Date: 2026-10-12T17:48:21Z
+verify	Set up job	2026-10-16T13:29:07.4334210Z Worker ID: {139813fe-7613-462e-b96e-12b6e2bdc033}
+verify	Set up job	2026-10-16T13:29:07.4334942Z Region: westus
+verify	Set up job	2026-10-16T13:29:07.4335997Z Cloud: Azure
+verify	Set up job	2026-10-16T13:29:07.4336729Z ##[endgroup]
+verify	Set up job	2026-10-16T13:29:07.4338291Z ##[group]Operating System
+verify	Set up job	2026-10-16T13:29:07.4339099Z Ubuntu
+verify	Set up job	2026-10-16T13:29:07.4339660Z 24.04.5
+verify	Set up job	2026-10-16T13:29:07.4340286Z LTS
+verify	Set up job	2026-10-16T13:29:07.4340869Z ##[endgroup]
+verify	Set up job	2026-10-16T13:29:07.4341438Z ##[group]Runner Image
+verify	Set up job	2026-10-16T13:29:07.4342104Z Image: ubuntu-24.04
+verify	Set up job	2026-10-16T13:29:07.4342680Z Version: 20261012.334.1
+verify	Set up job	2026-10-16T13:29:07.4343778Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+verify	Set up job	2026-10-16T13:29:07.4346144Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+verify	Set up job	2026-10-16T13:29:07.4347276Z ##[endgroup]
+verify	Set up job	2026-10-16T13:29:07.4348578Z ##[group]GITHUB_TOKEN Permissions
+verify	Set up job	2026-10-16T13:29:07.4350585Z Contents: read
+verify	Set up job	2026-10-16T13:29:07.4351263Z Metadata: read
+verify	Set up job	2026-10-16T13:29:07.4351910Z Packages: read
+verify	Set up job	2026-10-16T13:29:07.4352497Z ##[endgroup]
+verify	Set up job	2026-10-16T13:29:07.4354696Z Secret source: Actions
+verify	Set up job	2026-10-16T13:29:07.4356091Z Cache mode: write
+verify	Set up job	2026-10-16T13:29:07.4356869Z Prepare workflow directory
+verify	Set up job	2026-10-16T13:29:07.4703525Z Prepare all required actions
+verify	Set up job	2026-10-16T13:29:07.4754182Z Getting action download info
+verify	Set up job	2026-10-16T13:29:07.8472753Z Download action repository 'actions/checkout@v5' (SHA:fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09)
+verify	Set up job	2026-10-16T13:29:07.9668094Z Download action repository 'actions/setup-java@v5' (SHA:b6effb05e454b25005698d916606bdc6ffcbf961)
+verify	Set up job	2026-10-16T13:29:08.5705944Z Complete job name: verify
+verify	Run actions/checkout@v5	﻿2026-10-16T13:29:08.6507190Z ##[group]Run actions/checkout@v5
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6508107Z with:
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6508598Z   repository: Nilscost/Calisthenics-app
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6512741Z   token: ***
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6513189Z   ssh-strict: true
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6513655Z   ssh-user: git
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6514131Z   persist-credentials: true
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6514652Z   clean: true
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6515117Z   sparse-checkout-cone-mode: true
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6515928Z   fetch-depth: 1
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6516387Z   fetch-tags: false
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6516854Z   show-progress: true
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6517321Z   lfs: false
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6517753Z   submodules: false
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6518220Z   set-safe-directory: true
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6518746Z   allow-unsafe-pr-checkout: false
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.6519563Z ##[endgroup]
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7514943Z Syncing repository: Nilscost/Calisthenics-app
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7517801Z ##[group]Getting Git version info
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7519120Z Working directory is '/home/runner/work/Calisthenics-app/Calisthenics-app'
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7521036Z [command]/usr/bin/git version
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7601091Z git version 2.55.0
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7625736Z ##[endgroup]
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7649389Z Temporarily overriding HOME='/home/runner/work/_temp/6b766d6b-2d6f-4352-af54-cf0bd6cf35d5' before making global git config changes
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7662276Z Adding repository directory to the temporary git global config as a safe directory
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7664707Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Calisthenics-app/Calisthenics-app
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7708073Z Deleting the contents of '/home/runner/work/Calisthenics-app/Calisthenics-app'
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7717149Z ##[group]Initializing the repository
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7720097Z [command]/usr/bin/git init /home/runner/work/Calisthenics-app/Calisthenics-app
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7855020Z hint: Using 'master' as the name for the initial branch. This default branch name
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7857638Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7859340Z hint: to use in all of your new repositories, which will suppress this warning,
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7860575Z hint: call:
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7861155Z hint:
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7861865Z hint: 	git config --global init.defaultBranch <name>
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7862613Z hint:
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7863369Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7864478Z hint: 'development'. The just-created branch can be renamed via this command:
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7865334Z hint:
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7866624Z hint: 	git branch -m <name>
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7867653Z hint:
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7869101Z hint: Disable this message with "git config set advice.defaultBranchName false"
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7871337Z Initialized empty Git repository in /home/runner/work/Calisthenics-app/Calisthenics-app/.git/
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7874567Z [command]/usr/bin/git remote add origin https://github.com/Nilscost/Calisthenics-app
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7927689Z ##[endgroup]
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7929183Z ##[group]Disabling automatic garbage collection
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7931118Z [command]/usr/bin/git config --local gc.auto 0
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7967135Z ##[endgroup]
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7968070Z ##[group]Setting up auth
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.7975864Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.8011154Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.8433773Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.8473719Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.8702436Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.8737315Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.8964771Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.9009137Z ##[endgroup]
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.9010557Z ##[group]Fetching the repository
+verify	Run actions/checkout@v5	2026-10-16T13:29:08.9019202Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +53ef4e4c810b4a44bf7e880456f05ba060634180:refs/remotes/origin/main
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.7279724Z From https://github.com/Nilscost/Calisthenics-app
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.7286932Z  * [new ref]         53ef4e4c810b4a44bf7e880456f05ba060634180 -> origin/main
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.7290341Z ##[endgroup]
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.7291684Z ##[group]Determining the checkout info
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.7293253Z ##[endgroup]
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.7296889Z [command]/usr/bin/git sparse-checkout disable
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.7361311Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.7410994Z ##[group]Checking out the ref
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.7415845Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.9677132Z Switched to a new branch 'main'
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.9689094Z branch 'main' set up to track 'origin/main'.
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.9694444Z ##[endgroup]
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.9752985Z [command]/usr/bin/git log -1 --format=%H
+verify	Run actions/checkout@v5	2026-10-16T13:29:10.9784686Z 53ef4e4c810b4a44bf7e880456f05ba060634180
+verify	Run actions/setup-java@v5	﻿2026-10-16T13:29:11.0206523Z ##[group]Run actions/setup-java@v5
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0206989Z with:
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0207245Z   distribution: temurin
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0207527Z   java-version: 21
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0207929Z   cache: gradle
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0208206Z   java-package: jdk
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0209007Z   check-latest: false
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0209499Z   set-default: true
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0209892Z   verify-signature: false
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0210199Z   server-id: github
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0210482Z   server-username: GITHUB_ACTOR
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0210799Z   server-password: GITHUB_TOKEN
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0211103Z   overwrite-settings: true
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0211378Z   job-status: success
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0214355Z   token: ***
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0214665Z   show-download-progress: false
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.0215002Z ##[endgroup]
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.1730886Z ##[group]Installed distributions
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2135776Z Resolved Java 21.0.12+1 from tool-cache
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2136832Z Setting Java 21.0.12+1 as the default
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2148394Z Creating toolchains.xml for JDK version 21 from temurin
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2226814Z Writing to /home/runner/.m2/toolchains.xml
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2227429Z 
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2227594Z Java configuration:
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2228154Z   Distribution: temurin
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2228649Z   Version: 21.0.12+1
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2229162Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2229587Z 
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2230087Z ##[endgroup]
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2263432Z Creating settings.xml with server-id: github
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2266678Z Writing to /home/runner/.m2/settings.xml
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.2279964Z Configured MAVEN_ARGS to include -ntp to suppress Maven transfer progress logs. Set 'show-download-progress: true' to keep the download progress output.
+verify	Run actions/setup-java@v5	2026-10-16T13:29:11.7999585Z gradle cache is not found
+verify	Run actions/setup-java@v5	2026-10-16T13:29:12.2185072Z Cache hit for: setup-java-Linux-x64-gradle-wrapper-30ce15bf7b1b9b2b9669f0dfc0f1466ea2e57b0313cec55ea1f6e9f84cd31f07
+verify	Run actions/setup-java@v5	2026-10-16T13:29:13.5081514Z Received 0 of 136303949 (0.0%), 0.0 MBs/sec
+verify	Run actions/setup-java@v5	2026-10-16T13:29:14.5088440Z Received 113246208 of 136303949 (83.1%), 54.0 MBs/sec
+verify	Run actions/setup-java@v5	2026-10-16T13:29:14.9593008Z Received 136303949 of 136303949 (100.0%), 53.0 MBs/sec
+verify	Run actions/setup-java@v5	2026-10-16T13:29:14.9594423Z Cache Size: ~130 MB (136303949 B)
+verify	Run actions/setup-java@v5	2026-10-16T13:29:14.9638524Z [command]/usr/bin/tar -xf /home/runner/work/_temp/f3a33a47-c829-433d-bc05-f52ed406db76/cache.tzst -P -C /home/runner/work/Calisthenics-app/Calisthenics-app --use-compress-program unzstd
+verify	Run actions/setup-java@v5	2026-10-16T13:29:15.1592061Z Cache restored successfully
+verify	Run actions/setup-java@v5	2026-10-16T13:29:15.1656823Z gradle-wrapper cache restored from key: setup-java-Linux-x64-gradle-wrapper-30ce15bf7b1b9b2b9669f0dfc0f1466ea2e57b0313cec55ea1f6e9f84cd31f07
+verify	Run yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true	﻿2026-10-16T13:29:15.1879515Z ##[group]Run yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+verify	Run yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true	2026-10-16T13:29:15.1880317Z ^[[36;1myes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true^[[0m
+verify	Run yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true	2026-10-16T13:29:15.2169822Z shell: /usr/bin/bash -e {0}
+verify	Run yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true	2026-10-16T13:29:15.2170244Z env:
+verify	Run yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true	2026-10-16T13:29:15.2170710Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+verify	Run yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true	2026-10-16T13:29:15.2171486Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+verify	Run yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true	2026-10-16T13:29:15.2172153Z   MAVEN_ARGS: -ntp
+verify	Run yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true	2026-10-16T13:29:15.2172470Z ##[endgroup]
+verify	Run yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true	2026-10-16T13:29:26.0109225Z yes: standard output: Broken pipe
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	﻿2026-10-16T13:29:26.0151883Z ##[group]Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:26.0152725Z ^[[36;1m"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"^[[0m
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:26.0217954Z shell: /usr/bin/bash -e {0}
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:26.0218233Z env:
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:26.0218575Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:26.0219115Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:26.0219511Z   MAVEN_ARGS: -ntp
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:26.0219730Z ##[endgroup]
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:26.7686422Z Loading package information...                                                  
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:26.8570293Z Loading local repository...                                                     
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:26.8572553Z [                                       ] 3% Loading local repository...        
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:26.8605887Z [                                       ] 3% Fetch remote repository...         
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:27.2885077Z [=                                      ] 3% Fetch remote repository...         
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:27.3669729Z [=                                      ] 4% Fetch remote repository...         
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:27.4024671Z [=                                      ] 5% Fetch remote repository...         
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:27.4724523Z [==                                     ] 5% Fetch remote repository...         
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:27.5612395Z [==                                     ] 6% Fetch remote repository...         
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:27.6406680Z [==                                     ] 7% Fetch remote repository...         
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:27.6446061Z [==                                     ] 7% Computing updates...               
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:27.6556090Z [===                                    ] 8% Computing updates...               
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:27.6609782Z [===                                    ] 10% Computing updates...              
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:27.6618709Z [=======================================] 100% Computing updates...             
+verify	Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"	2026-10-16T13:29:27.6626514Z 
+verify	Run python3 tools/preflight.py	﻿2026-10-16T13:29:27.6841360Z ##[group]Run python3 tools/preflight.py
+verify	Run python3 tools/preflight.py	2026-10-16T13:29:27.6841741Z ^[[36;1mpython3 tools/preflight.py^[[0m
+verify	Run python3 tools/preflight.py	2026-10-16T13:29:27.6904411Z shell: /usr/bin/bash -e {0}
+verify	Run python3 tools/preflight.py	2026-10-16T13:29:27.6904678Z env:
+verify	Run python3 tools/preflight.py	2026-10-16T13:29:27.6905000Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+verify	Run python3 tools/preflight.py	2026-10-16T13:29:27.6905808Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+verify	Run python3 tools/preflight.py	2026-10-16T13:29:27.6906253Z   MAVEN_ARGS: -ntp
+verify	Run python3 tools/preflight.py	2026-10-16T13:29:27.6906472Z ##[endgroup]
+verify	Run python3 tools/preflight.py	2026-10-16T13:29:27.8398960Z preflight OK (1922 tracked files)
+verify	Run python3 tools/check_migration_sql.py	﻿2026-10-16T13:29:27.8479156Z ##[group]Run python3 tools/check_migration_sql.py
+verify	Run python3 tools/check_migration_sql.py	2026-10-16T13:29:27.8479591Z ^[[36;1mpython3 tools/check_migration_sql.py^[[0m
+verify	Run python3 tools/check_migration_sql.py	2026-10-16T13:29:27.8542363Z shell: /usr/bin/bash -e {0}
+verify	Run python3 tools/check_migration_sql.py	2026-10-16T13:29:27.8542644Z env:
+verify	Run python3 tools/check_migration_sql.py	2026-10-16T13:29:27.8542956Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+verify	Run python3 tools/check_migration_sql.py	2026-10-16T13:29:27.8543488Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+verify	Run python3 tools/check_migration_sql.py	2026-10-16T13:29:27.8543892Z   MAVEN_ARGS: -ntp
+verify	Run python3 tools/check_migration_sql.py	2026-10-16T13:29:27.8544099Z ##[endgroup]
+verify	Run python3 tools/check_migration_sql.py	2026-10-16T13:29:27.8900191Z new statements from Room: 9; in migration: 9
+verify	Run bash scripts/verify.sh	﻿2026-10-16T13:29:27.8984551Z ##[group]Run bash scripts/verify.sh
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:27.8984896Z ^[[36;1mbash scripts/verify.sh^[[0m
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:27.9047836Z shell: /usr/bin/bash -e {0}
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:27.9048100Z env:
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:27.9048417Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:27.9048931Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:27.9049321Z   MAVEN_ARGS: -ntp
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:27.9049547Z ##[endgroup]
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:27.9156744Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:27.9157015Z ==> Gradle wrapper and pinned runtime
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6158055Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6159328Z Welcome to Gradle 8.13!
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6159985Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6160874Z Here are the highlights of this release:
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6161783Z  - Daemon JVM auto-provisioning
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6163543Z  - Enhancements for Scala plugin and JUnit testing
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6164969Z  - Improvements for build authors and plugin developers
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6166091Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6167111Z For more details see https://docs.gradle.org/8.13/release-notes.html
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6167926Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6168083Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6169430Z ------------------------------------------------------------
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6170238Z Gradle 8.13
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6171311Z ------------------------------------------------------------
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6171932Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6172725Z Build time:    2025-02-25 09:22:14 UTC
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6173742Z Revision:      073314332697ba45c16c0a0ce1891fa6794179ff
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6174485Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6175184Z Kotlin:        2.0.21
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6176097Z Groovy:        3.0.22
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6177521Z Ant:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6178531Z Launcher JVM:  21.0.12.1 (Eclipse Adoptium 21.0.12.1+1-LTS)
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6180113Z Daemon JVM:    /usr/lib/jvm/temurin-21-jdk-amd64 (no JDK specified, using current Java home)
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6181274Z OS:            Linux 6.17.0-1022-azure amd64
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6181850Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6259609Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:28.6259871Z ==> Domain, data and app unit tests
+verify	Run bash scripts/verify.sh	2026-10-16T13:29:29.4112163Z Starting a Gradle Daemon (subsequent builds will be faster)
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:34.1163500Z > Task :domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:38.2149386Z > Task :domain:processResources NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:38.2172850Z > Task :domain:processTestResources NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:38.2196328Z > Task :data:checkKotlinGradlePluginConfigurationErrors SKIPPED
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:38.2217717Z > Task :data:preBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:38.2218633Z > Task :data:preDebugBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:38.3129787Z > Task :data:generateDebugResValues
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:38.3146420Z > Task :data:generateDebugResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:38.3147297Z > Task :data:packageDebugResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:38.3148097Z > Task :data:processDebugNavigationResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:40.0109091Z > Task :data:parseDebugLocalResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:41.7116295Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:41.7169277Z e: The daemon has terminated unexpectedly on startup attempt #1 with error code: 0. The daemon process output:
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:41.7170304Z > Task :domain:compileKotlin
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:41.7196240Z     1. Kotlin compile daemon is ready
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:42.2104555Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:42.2105901Z > Task :data:javaPreCompileDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:42.2107405Z > Task :data:preDebugUnitTestBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:42.2109653Z > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:42.2111060Z > Task :app:preBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:42.2112372Z > Task :app:preDebugBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:42.2119027Z > Task :data:javaPreCompileDebugUnitTest
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:42.2119775Z > Task :app:generateDebugBuildConfig
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:42.2120351Z > Task :data:generateDebugRFile
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:42.2120973Z > Task :data:writeDebugAarMetadata
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:52.1106354Z > Task :app:processDebugNavigationResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:57.4126461Z > Task :data:generateDebugUnitTestStubRFile
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:57.4127878Z > Task :app:checkDebugAarMetadata
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:57.7176323Z > Task :app:generateDebugResValues
+verify	Run bash scripts/verify.sh	2026-10-16T13:30:57.7206217Z > Task :app:compileDebugNavigationResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:01.4156312Z > Task :app:collectDependencies
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:02.7136654Z > Task :app:prepareLibraryDefinitionsDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:02.9116594Z > Task :app:mapDebugSourceSetPaths
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:02.9146157Z > Task :app:generateDebugResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:05.2105787Z > Task :app:packageDebugResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:06.5126492Z > Task :app:parseDebugLocalResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:06.5196405Z > Task :app:createDebugCompatibleScreenManifests
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:06.5264420Z > Task :app:extractDeepLinksDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:06.5316187Z > Task :data:extractDeepLinksDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:06.8146449Z > Task :app:mergeDebugResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:06.8147497Z > Task :data:compileDebugLibraryResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:06.8176188Z > Task :data:processDebugManifest
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:07.3126620Z > Task :data:kspDebugKotlin
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:07.5131770Z > Task :app:javaPreCompileDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:08.1136368Z > Task :app:processDebugMainManifest
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:08.3165178Z > Task :app:processDebugManifest
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:08.3206122Z > Task :app:preDebugUnitTestBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:08.3256492Z > Task :app:javaPreCompileDebugUnitTest
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:08.3366478Z > Task :app:processDebugManifestForPackage
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:09.8116477Z > Task :app:mergeDebugShaders
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:09.8153139Z > Task :app:compileDebugShaders NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:09.8162549Z > Task :app:generateDebugAssets UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:09.8208184Z > Task :data:mergeDebugShaders
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:09.8209020Z > Task :data:compileDebugShaders NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:09.8236111Z > Task :data:generateDebugAssets UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:09.8236690Z > Task :data:mergeDebugAssets
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:11.3124685Z > Task :app:mergeDebugAssets
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:11.3136065Z > Task :app:processDebugResources
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:11.8126532Z > Task :app:processDebugUnitTestManifest
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:12.2109039Z > Task :app:packageDebugUnitTestForUnitTest
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:12.2146682Z > Task :app:generateDebugUnitTestConfig
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:13.0111253Z > Task :data:compileDebugKotlin
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:20.9126631Z > Task :data:compileDebugJavaWithJavac
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:20.9127964Z > Task :domain:compileJava NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:20.9143140Z > Task :domain:classes UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:21.1112421Z > Task :domain:jar
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:21.4134007Z > Task :data:processDebugJavaRes
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:21.5113408Z > Task :data:bundleLibCompileToJarDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:21.5146739Z > Task :data:bundleLibRuntimeToJarDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:21.5147557Z > Task :data:kspDebugUnitTestKotlin NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:21.5148355Z > Task :data:compileDebugUnitTestKotlin NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:21.5149233Z > Task :data:compileDebugUnitTestJavaWithJavac NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:21.5150132Z > Task :data:processDebugUnitTestJavaRes NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:21.5150856Z > Task :data:testDebugUnitTest NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:28.0117201Z > Task :app:kspDebugKotlin
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:35.7106805Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:35.7129210Z > Task :domain:compileTestKotlin
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:35.7156606Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/domain/src/test/kotlin/app/calisthenics/domain/ProfileEditTest.kt:91:19 Redundant creation of Json format. Creating instances for each usage can be slow.
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:35.7173533Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/domain/src/test/kotlin/app/calisthenics/domain/SavedRoutineTest.kt:52:19 Redundant creation of Json format. Creating instances for each usage can be slow.
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:35.7207156Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/domain/src/test/kotlin/app/calisthenics/domain/SeedFixtureTest.kt:68:26 Redundant creation of Json format. Creating instances for each usage can be slow.
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:35.8145872Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:35.8181264Z > Task :domain:compileTestJava NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:35.8216007Z > Task :domain:testClasses UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:46.3120151Z > Task :domain:test
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:50.6110141Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:50.6110880Z > Task :app:compileDebugKotlin
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:50.6112720Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/history/HistoryScreen.kt:84:158 'val Icons.Filled.KeyboardArrowLeft: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.KeyboardArrowLeft.
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:50.6116529Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/history/HistoryScreen.kt:86:199 'val Icons.Filled.KeyboardArrowRight: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.KeyboardArrowRight.
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:50.6119329Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/train/TrainData.kt:77:16 Redundant creation of Json format. Creating instances for each usage can be slow.
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:53.1128462Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:53.1168461Z > Task :app:compileDebugJavaWithJavac
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:53.1186104Z > Task :app:processDebugJavaRes
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:53.2126600Z > Task :app:bundleDebugClassesToCompileJar
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:53.2166062Z > Task :app:bundleDebugClassesToRuntimeJar
+verify	Run bash scripts/verify.sh	2026-10-16T13:31:56.7105684Z > Task :app:kspDebugUnitTestKotlin
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:01.3108749Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:01.3109691Z > Task :app:compileDebugUnitTestKotlin
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:01.3141514Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ClipAssetsTest.kt:10:29 Java type mismatch: inferred type is 'kotlin.String?', but 'kotlin.String' was expected.
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:01.3182941Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/DemoPlayerTest.kt:23:19 'fun createTempDir(prefix: String = ..., suffix: String? = ..., directory: File? = ...): File' is deprecated. Avoid creating temporary directories in the default temp location with this function due to too wide permissions on the newly created directory. Use kotlin.io.path.createTempDirectory instead.
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:01.3229244Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/DemoPlayerTest.kt:40:22 'fun createTempDir(prefix: String = ..., suffix: String? = ..., directory: File? = ...): File' is deprecated. Avoid creating temporary directories in the default temp location with this function due to too wide permissions on the newly created directory. Use kotlin.io.path.createTempDirectory instead.
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:01.3287436Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/NavShellTest.kt:65:37 Java type mismatch: inferred type is 'kotlin.String?', but 'kotlin.String' was expected.
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:01.3317738Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PreviewScreenTest.kt:158:20 Redundant creation of Json format. Creating instances for each usage can be slow.
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:01.3369839Z w: file:///home/runner/work/Calisthenics-app/Calisthenics-app/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PreviewScreenTest.kt:181:20 Redundant creation of Json format. Creating instances for each usage can be slow.
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:01.4145843Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:01.4176452Z > Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:01.4216209Z > Task :app:processDebugUnitTestJavaRes
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:31.4104884Z > Task :app:testDebugUnitTest
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.4106059Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.4147479Z [Incubating] Problems report is available at: file:///home/runner/work/Calisthenics-app/Calisthenics-app/build/reports/problems/problems-report.html
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.4153161Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.4155146Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.4156563Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.4157530Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.4158706Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.4159816Z For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.4161090Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.4161439Z BUILD SUCCESSFUL in 3m 17s
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.4162068Z 60 actionable tasks: 60 executed
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.7355883Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:46.7356557Z ==> App lint and debug APK build
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.2936704Z > Task :data:preBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.2976194Z > Task :data:preDebugBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.3922644Z > Task :data:checkDebugAarMetadata
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.3947400Z > Task :data:mergeDebugJniLibFolders
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.3976212Z > Task :data:mergeDebugNativeLibs NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.4005951Z > Task :data:stripDebugDebugSymbols NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.4007015Z > Task :data:checkKotlinGradlePluginConfigurationErrors SKIPPED
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.4031052Z > Task :data:copyDebugJniLibsProjectAndLocalJars
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.4066142Z > Task :data:generateDebugResValues UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.4086365Z > Task :data:generateDebugResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.4096123Z > Task :data:packageDebugResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.4103771Z > Task :data:processDebugNavigationResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.4104907Z > Task :data:parseDebugLocalResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.4106083Z > Task :data:generateDebugRFile UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.4932075Z > Task :data:kspDebugKotlin UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:48.4946569Z > Task :data:compileDebugKotlin UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.1897723Z > Task :data:extractDebugAnnotations
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.1923665Z > Task :data:extractDeepLinksForAarDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.1946183Z > Task :data:mergeDebugShaders UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.1976167Z > Task :data:compileDebugShaders NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2006216Z > Task :data:generateDebugAssets UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2007087Z > Task :data:mergeDebugAssets UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2036148Z > Task :data:javaPreCompileDebug UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2066092Z > Task :data:compileDebugJavaWithJavac UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2096103Z > Task :data:mergeDebugGeneratedProguardFiles
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2097109Z > Task :data:mergeDebugConsumerProguardFiles
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2126109Z > Task :data:prepareDebugArtProfile
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2153098Z > Task :data:prepareLintJarForPublish
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2169610Z > Task :data:processDebugManifest UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2187306Z > Task :data:processDebugJavaRes UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2216382Z > Task :data:writeDebugAarMetadata UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2238341Z > Task :domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2912326Z > Task :domain:compileKotlin UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2936438Z > Task :domain:compileJava NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2963429Z > Task :domain:processResources NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.2996099Z > Task :domain:classes UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.3014698Z > Task :domain:jar UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.3045073Z > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.3056624Z > Task :app:preBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.3088256Z > Task :app:preDebugBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.3116128Z > Task :app:generateDebugBuildConfig UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.3928138Z > Task :app:checkDebugAarMetadata UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.3956159Z > Task :data:mergeDebugJavaResource
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.3996287Z > Task :app:processDebugNavigationResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.4920882Z > Task :data:syncDebugLibJars
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.4946115Z > Task :data:bundleDebugLocalLintAar
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.4968259Z > Task :app:compileDebugNavigationResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5005944Z > Task :app:generateDebugResValues UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5025943Z > Task :app:collectDependencies UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5055916Z > Task :app:prepareLibraryDefinitionsDebug UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5100978Z > Task :app:mapDebugSourceSetPaths UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5101633Z > Task :app:generateDebugResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5102237Z > Task :app:mergeDebugResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5156057Z > Task :app:packageDebugResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5196274Z > Task :app:parseDebugLocalResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5246052Z > Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5276011Z > Task :app:extractDeepLinksDebug UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5301259Z > Task :data:extractDeepLinksDebug UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5356099Z > Task :app:processDebugMainManifest UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5416000Z > Task :app:processDebugManifest UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5445974Z > Task :app:processDebugManifestForPackage UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5496005Z > Task :data:compileDebugLibraryResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5926476Z > Task :app:processDebugResources UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.5956173Z > Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.6899854Z > Task :app:kspDebugKotlin UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.6976175Z > Task :app:compileDebugKotlin UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.7020830Z > Task :app:javaPreCompileDebug UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.7039644Z > Task :app:compileDebugJavaWithJavac UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.7093776Z > Task :app:bundleDebugClassesToCompileJar UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.7123978Z > Task :app:preDebugAndroidTestBuild SKIPPED
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.7184886Z > Task :app:generateDebugAndroidTestResValues
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.7226122Z > Task :data:bundleLibRuntimeToJarDebug UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.7956630Z > Task :data:createFullJarDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:53.7986129Z > Task :data:writeDebugLintModelMetadata
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:55.9903535Z > Task :app:generateDebugAndroidTestLintModel
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:55.9906000Z > Task :app:extractProguardFiles
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:55.9906574Z > Task :data:extractProguardFiles
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:55.9907087Z > Task :data:generateDebugLintModel
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:56.1902708Z > Task :app:generateDebugLintReportModel
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:56.1926413Z > Task :app:preDebugUnitTestBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:32:56.3953882Z > Task :app:generateDebugUnitTestLintModel
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:06.2916332Z > Task :data:preDebugAndroidTestBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:06.2938349Z > Task :data:generateDebugAndroidTestResValues
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:06.4898879Z > Task :data:generateDebugAndroidTestLintModel
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:06.4958011Z > Task :data:preDebugUnitTestBuild UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:06.5926452Z > Task :data:generateDebugUnitTestLintModel
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:06.6016354Z > Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:06.6076071Z > Task :app:mergeDebugShaders UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:06.6105917Z > Task :app:compileDebugShaders NO-SOURCE
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:06.6106543Z > Task :app:generateDebugAssets UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:06.6107120Z > Task :app:mergeDebugAssets UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:07.4917993Z > Task :app:compressDebugAssets
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:07.4986608Z > Task :app:desugarDebugFileDependencies
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:16.7898019Z > Task :app:lintAnalyzeDebugAndroidTest
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:19.4906518Z > Task :app:dexBuilderDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:23.1906462Z > Task :data:lintAnalyzeDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:27.8897508Z > Task :app:lintAnalyzeDebugUnitTest
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:49.4926739Z > Task :data:lintAnalyzeDebugAndroidTest
+verify	Run bash scripts/verify.sh	2026-10-16T13:33:49.4956358Z > Task :app:mergeDebugGlobalSynthetics
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:09.5909490Z > Task :app:processDebugJavaRes UP-TO-DATE
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:10.0896914Z > Task :app:checkDebugDuplicateClasses
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:10.1909004Z > Task :data:lintAnalyzeDebugUnitTest
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:10.4896764Z > Task :data:bundleLibRuntimeToDirDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:11.3896883Z > Task :app:mergeDebugJavaResource
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:12.2938077Z > Task :app:mergeLibDexDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:12.3916653Z > Task :app:mergeDebugJniLibFolders
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:12.7918339Z > Task :data:copyDebugJniLibsProjectOnly
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:12.9903387Z > Task :app:mergeProjectDexDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:13.0926783Z > Task :app:mergeDebugNativeLibs
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:16.1906499Z > Task :app:validateSigningDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:16.1956144Z > Task :app:writeDebugAppMetadata
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:16.2916419Z > Task :app:writeDebugSigningConfigVersions
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:16.2945712Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:16.2970227Z > Task :app:stripDebugDebugSymbols
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:16.2996767Z Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so. Run with --info option to learn more.
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:16.9895770Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:16.9956510Z > Task :app:mergeExtDexDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:17.8898810Z > Task :app:packageDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:17.8899749Z > Task :app:createDebugApkListingFileRedirect
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:17.8900541Z > Task :app:assembleDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:39.3912621Z > Task :app:lintAnalyzeDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.5896089Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.5946503Z > Task :app:lintReportDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.5976574Z Wrote HTML report to file:///home/runner/work/Calisthenics-app/Calisthenics-app/app/build/reports/lint-results-debug.html
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.5977922Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6014085Z > Task :app:lintDebug
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6045759Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6046261Z BUILD SUCCESSFUL in 2m 9s
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6075946Z 98 actionable tasks: 51 executed, 47 up-to-date
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6385750Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6416195Z ==> Starter content structure and rights validation
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6846547Z OK: content/starter passed content validation (structure + rights fields).
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6848168Z NOTE: structural validation only — training quality, tiers and media content are not judged by this tool.
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6915719Z 
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6936231Z All host-runnable verification checks passed.
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6937050Z Device checks (only after explicit device authorization):
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6937722Z   adb devices -l
+verify	Run bash scripts/verify.sh	2026-10-16T13:34:56.6942094Z   ./gradlew :data:connectedDebugAndroidTest :app:connectedDebugAndroidTest
+verify	Post Run actions/setup-java@v5	﻿2026-10-16T13:34:56.7234015Z Post job cleanup.
+verify	Post Run actions/setup-java@v5	2026-10-16T13:34:56.9287359Z Cache hit occurred on the gradle-wrapper primary key setup-java-Linux-x64-gradle-wrapper-30ce15bf7b1b9b2b9669f0dfc0f1466ea2e57b0313cec55ea1f6e9f84cd31f07, not saving cache.
+verify	Post Run actions/setup-java@v5	2026-10-16T13:34:57.0157127Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/Calisthenics-app/Calisthenics-app --files-from manifest.txt --use-compress-program zstdmt
+verify	Post Run actions/setup-java@v5	2026-10-16T13:35:01.0812886Z Failed to save: Unable to reserve cache with key setup-java-Linux-x64-gradle-4bd760decf4d2be1ecec28862a935440dd5493f1fa755cc2fffb2a350d66f87f, another job may be creating this cache.
+verify	Post Run actions/checkout@v5	﻿2026-10-16T13:35:01.1560635Z Post job cleanup.
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.2420158Z [command]/usr/bin/git version
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.2467153Z git version 2.55.0
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.2513114Z Temporarily overriding HOME='/home/runner/work/_temp/7f6e1984-2878-435c-b1e6-d671c0d7a027' before making global git config changes
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.2515005Z Adding repository directory to the temporary git global config as a safe directory
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.2518980Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Calisthenics-app/Calisthenics-app
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.2560489Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.2597385Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.2913345Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.2944705Z http.https://github.com/.extraheader
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.2957588Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.2992944Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.3263644Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+verify	Post Run actions/checkout@v5	2026-10-16T13:35:01.3301014Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+verify	Complete job	﻿2026-10-16T13:35:01.3688313Z Cleaning up orphan processes
+verify	Complete job	2026-10-16T13:35:01.3995061Z Terminate orphan process: pid (2540) (java)
+verify	Complete job	2026-10-16T13:35:01.4038871Z Terminate orphan process: pid (2699) (java)

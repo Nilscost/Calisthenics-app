@@ -814,3 +814,26 @@ NOT done: final fresh-clone build, GitHub emulator screenshots/connected checks 
 Fixed programs now live under the Routine objective alongside saved routines; the separate Train header action is removed. Removed Extras and all four specialist-pool switches. Stored pool selections are cleared on load, so hidden settings cannot widen generated workouts. Specialist exercises remain manually addable in Preview with equipment filtering. Flow is explicitly accepted and retained. Light-theme text actions use the existing contrast-safe AppTextButton. Screenshot flows follow the requested structure and anchor swipes to actual scroll containers.
 
 Full domain/app tests, lint and assembly pass; log r8-routine-ui-final-verify-2026-10-16.log. Final emulator screenshots remain pending. The owner also rejected written-only substitutes for videos: all 25 held demonstrations are reopened for targeted anatomy, choreography and camera repairs. No completed revised APK or phone acceptance is claimed.
+
+### R8-T12 · Manual specialist mobility and clip policy · 2026-10-16
+
+New contract flexibility/mobility entries are manual Preview choices and fixed-routine content, excluded from automatic recovery/cool-down matching. The existing picker accepts available STRETCH and MOBILITY entries with equipment and teaching-hold checks. Existing default stretches remain automatic choices. Replaced catalog-dependent held-video tests with synthetic fixtures at the common media loader and saved-session boundary, preserving coverage when all current clips are repaired. Version code is 14 to invalidate cached code-13 clips.
+
+Verification: 437 domain tests, 190 app tests, lint and assembly pass; r8-manual-mobility-verify-2026-10-16.log. NOT done at this checkpoint: repaired-video installation, final emulator checks and phone acceptance. Choices: no new switches; preserve the serialized legacy pool field while clearing its live selections.
+
+### R8-T13 · Final workout-feedback audit · 2026-10-16
+
+Five-second side preparation now also covers adjacent same-exercise left/right targetless STRETCH and COOLDOWN holds. Full prescribed holds remain intact. Preview edits, including rests, survive the asynchronous history refresh. Large system text gives exercise names the full card width. Separate modal windows expose their existing control tags to emulator automation; flows wait for fully visible controls and handle seeded exercises that intentionally lack an unmet-prerequisite note.
+
+Verification: 439 domain tests and 191 app tests, lint and assembly pass; r8-final-offline-verify-2026-10-16.log. The debug seed was regenerated and passed its no-write freshness check. GitHub full and focused screenshot checks are running on 39e9fc1. NOT done: final all-PASS screenshot review, replacement-media installation, revised APK and phone acceptance. Choices: a manual workflow flow-glob input permits focused emulator diagnostics; it adds no app control. The focused run includes onboarding because those flows require initialized app state.
+
+### R8-T14 · Repaired media installed, holds cleared, final build · 2026-10-17
+
+What changed: the rig and pose repairs and their tests (`tests/test_pose_articulation.py`, `tests/test_pose_repairs.py`) were committed. The coordinator accepted all 25 decoded repair MP4s; `/tmp/r8-promote-repairs.py` (preflight, then `--install`) backed up the old canonical directories and assets into `work/r8-video-repair-2026-10-16/baseline`, promoted the staged joints and encodes, ran the canonical installer and confirmed that every installed hash equals the reviewed encode (`clips-r8/repair-install-2026-10-16.json`). `DEMONSTRATION_HOLD` in `tools/gen_r8_catalog.py` is now an empty set; the runtime and content catalogs were regenerated and the debug seed fixture was regenerated in the Docker build tree and copied back. The synthetic hold-guard tests (Progress, FixedPrograms, ManualMobility) were kept and ran under Gradle for the first time.
+
+Tests: Docker full verify 439 domain, 191 app, lint, assembleDebug, preflight, migration SQL and content validation, all exit 0 (`r8-final-verify-2026-10-17.log`); Python 41 tests. CI on `95fa4fc`: verify 38973320301 success; ui-screens 38973320244 success with 51 of 51 flow PASS (one light retry on `b_train_preview` passed) and connected 9 tests, 0 failures. Light, dark and font 1.3 screenshots reviewed (`ui/R8-*-review.md`). Fresh clone in Docker of `95fa4fc` built the APK (`r8-fresh-clone-verify-2026-10-17.log`, `r8-build-2026-10-17.json`): versionCode 14, signing certificate equal to R7.2.
+
+NOT done: no phone testing and no owner gate approval; content stays DRAFT. The "1 rounds" copy in the history detail was not singularised. No new renders were made.
+
+Choices not in the plan: the host's Python 3.11 with a cached Pillow and a stub `imageio_ffmpeg` pointing at Homebrew ffmpeg was used for the installer and the Python tests, because the host had no Pillow. The fresh clone was taken from the local repository at the CI-verified commit `95fa4fc` (the sandbox proxy refuses GitHub); the later documentation-only commits do not change the code or APK inputs. The earlier code-13 `r8-build-2026-10-16.json` and the stale 2026-10-16 fresh-clone and GitHub logs are kept as history only.
+

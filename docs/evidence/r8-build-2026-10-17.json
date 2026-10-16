@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-17",
+  "sourceCommit": "95fa4fc3e50fddc55c6cda95d3f445c38583e08e",
+  "sourceNote": "Fresh clone of the code commit that CI verified. Later commits change documentation only.",
+  "package": "app.calisthenics.personal",
+  "versionName": "0.11.0-r8",
+  "versionCode": 14,
+  "apk": "/Users/nils/Documents/hermes/Apps/builds/app-debug-R8.apk",
+  "bytes": 24706602,
+  "sha256": "cfa9f42c5305e6d3f195614f0d13001a80b52804d56714bc1aa32c1f153982ea",
+  "certificateSha256": "8638d15f7e5327d0a4f3197dad470e70b1425dfcb00a6bfc4bbcdc96a63bd940",
+  "certificateMatchesR72": true,
+  "freshCloneVerify": "passed in Docker; preflight, migration SQL, domain, data, app tests, lint, assembleDebug, content validation all exit 0; docs/evidence/r8-fresh-clone-verify-2026-10-17.log",
+  "domainTests": 439,
+  "appTests": 191,
+  "pythonTests": 41,
+  "demonstrationHolds": 0,
+  "repairedDemonstrationsInstalled": 25,
+  "phoneTested": false,
+  "githubVerify": {
+    "result": "success",
+    "url": "https://github.com/Nilscost/Calisthenics-app/actions/runs/38973320301"
+  },
+  "uiScreens": {
+    "result": "success",
+    "flowResults": "51 PASS (17 flows x light, dark, font13; one light RETRY on b_train_preview passed)",
+    "url": "https://github.com/Nilscost/Calisthenics-app/actions/runs/38973320244"
+  },
+  "connectedChecks": {
+    "result": "success",
+    "tests": 9,
+    "failures": 0,
+    "url": "https://github.com/Nilscost/Calisthenics-app/actions/runs/38973320244"
+  },
+  "status": "Final code-14 release build; owner phone walk-through pending"
+}

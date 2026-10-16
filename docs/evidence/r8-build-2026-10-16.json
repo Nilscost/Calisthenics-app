@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-16",
+  "sourceCommit": "53ef4e4c810b4a44bf7e880456f05ba060634180",
+  "package": "app.calisthenics.personal",
+  "versionName": "0.11.0-r8",
+  "versionCode": 13,
+  "apk": "/Users/nils/Documents/hermes/Apps/builds/app-debug-R8.apk",
+  "bytes": 24714130,
+  "sha256": "0a607323a03f449f7ce24f098c5b443441b864fb5ff719de6364ea3b491ab88f",
+  "certificateSha256": "8638d15f7e5327d0a4f3197dad470e70b1425dfcb00a6bfc4bbcdc96a63bd940",
+  "certificateMatchesR72": true,
+  "freshCloneVerify": "passed;111 tasks executed",
+  "domainTests": 435,
+  "appTests": 188,
+  "pythonTests": 25,
+  "phoneTested": false,
+  "remoteUiChecks": "pending",
+  "githubVerify": {
+    "result": "success",
+    "url": "https://github.com/Nilscost/Calisthenics-app/actions/runs/38908181791"
+  },
+  "connectedChecks": {
+    "result": "success",
+    "tests": 9,
+    "failures": 0,
+    "url": "https://github.com/Nilscost/Calisthenics-app/actions/runs/38908181793"
+  },
+  "status": "Superseded code-13 candidate; revised code-14 release pending"
+}
