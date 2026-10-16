@@ -275,6 +275,16 @@ class PreviewScreenTest {
         assertTrue(order.indexOf("exercise_squat") < order.indexOf("exercise_add-pushup-diamond") && order.indexOf("exercise_add-pushup-diamond") < order.indexOf("exercise_pull"))
     }
 
+    @Test fun specialistExerciseCategoriesRemainAvailableThroughManualAdd() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("add_start").performScrollTo().performClick(); rule.waitForIdle(); rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle()
+        for (category in listOf("power", "conditioning", "prehab", "stretches")) {
+            rule.onNodeWithTag("add_cat_$category").performScrollTo().assertExists()
+        }
+        rule.onNodeWithTag("add_cat_power").performSemanticsAction(click); rule.waitForIdle()
+        rule.onNodeWithTag("add_option_jump-squat").performScrollTo().assertExists()
+    }
+
     @Test fun theSwapSheetShowsTheWholeFamilyAndOtherTypesBehindAButton() {
         show(); rule.waitForIdle()
         openSwap("push")

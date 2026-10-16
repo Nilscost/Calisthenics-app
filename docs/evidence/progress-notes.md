@@ -807,3 +807,10 @@ Generalized initial alternative targets use explicit same-rung route membership,
 Verification: 435 domain tests, 188 app tests, lint and debug assembly pass (r8-release-candidate-verify-2026-10-16.log); 25 Python tests, content structure/rights and migration SQL checks pass. Debug fixture updated for the authored route rotation. Legacy clip checks validate the canonical R8 registry without overwriting Blender assets. Version 0.11.0-r8, code 13.
 
 NOT done: final fresh-clone build, GitHub emulator screenshots/connected checks and owner phone walk-through are still pending at this checkpoint. Content remains DRAFT. Choices: conservative 75% starting estimates are a product heuristic, not physiological equivalence; unclear videos stay written-only instead of teaching an incorrect pose. No owner acceptance or phone installation is claimed.
+
+
+### R8-T11 · Owner scope corrections · 2026-10-16
+
+Fixed programs now live under the Routine objective alongside saved routines; the separate Train header action is removed. Removed Extras and all four specialist-pool switches. Stored pool selections are cleared on load, so hidden settings cannot widen generated workouts. Specialist exercises remain manually addable in Preview with equipment filtering. Flow is explicitly accepted and retained. Light-theme text actions use the existing contrast-safe AppTextButton. Screenshot flows follow the requested structure and anchor swipes to actual scroll containers.
+
+Full domain/app tests, lint and assembly pass; log r8-routine-ui-final-verify-2026-10-16.log. Final emulator screenshots remain pending. The owner also rejected written-only substitutes for videos: all 25 held demonstrations are reopened for targeted anatomy, choreography and camera repairs. No completed revised APK or phone acceptance is claimed.

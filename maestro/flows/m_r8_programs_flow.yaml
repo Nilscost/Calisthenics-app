@@ -7,7 +7,7 @@ appId: app.calisthenics.personal
     when: { visible: { id: session_pause } }
     commands:
       - tapOn: { id: session_more }
-      - tapOn: { id: session_end }
+      - tapOn: "End workout"
       - tapOn: { id: session_end_confirm }
       - extendedWaitUntil: { visible: { id: end_done }, timeout: 15000 }
       - tapOn: { id: end_done }
@@ -17,7 +17,10 @@ appId: app.calisthenics.personal
       - tapOn: { id: end_done }
 - extendedWaitUntil: { visible: { id: bottom_bar }, timeout: 15000 }
 - tapOn: { id: tab_train }
-- tapOn: { id: open_programs }
+- scrollUntilVisible: { element: { id: objective_type_ROUTINE }, direction: DOWN, timeout: 10000 }
+- tapOn: { id: objective_type_ROUTINE }
+- scrollUntilVisible: { element: { id: routine_fixed_programs }, direction: DOWN, timeout: 10000 }
+- tapOn: { id: routine_fixed_programs }
 - extendedWaitUntil: { visible: { id: program_army-hsd }, timeout: 10000 }
 - assertVisible: { id: program_summary_army-hsd }
 - takeScreenshot: 01-programs-compact-${VARIANT}
@@ -39,7 +42,7 @@ appId: app.calisthenics.personal
 - assertNotVisible: { id: session_skip }
 - takeScreenshot: 03-flow-session-${VARIANT}
 - tapOn: { id: session_more }
-- tapOn: { id: session_end }
+- tapOn: "End workout"
 - tapOn: { id: session_end_confirm }
 - extendedWaitUntil: { visible: { id: end_done }, timeout: 15000 }
 - takeScreenshot: 04-flow-end-screen-${VARIANT}

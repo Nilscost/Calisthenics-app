@@ -40,6 +40,12 @@ object TrainSettingsStore {
 
     fun load(ctx: Context): TrainSettings {
         val prefs = PrefsStore.load(ctx)
+        // Specialist pools are now added manually from preview. Clear legacy selections so they
+        // cannot silently widen future workouts while keeping the serialized field readable.
+        val trainPrefs = p(ctx)
+        if (!trainPrefs.getStringSet("additional_pools", emptySet()).isNullOrEmpty()) {
+            trainPrefs.edit().putStringSet("additional_pools", emptySet()).apply()
+        }
         return TrainSettings(
             goalId = GoalStore.load(ctx),
             profileId = ProfileStore.selected(ctx).id,
@@ -54,7 +60,7 @@ object TrainSettingsStore {
             cooldownMode = runCatching { app.calisthenics.domain.model.CooldownMode.valueOf(p(ctx).getString("cooldown_mode", "STRETCHING")!!) }.getOrDefault(app.calisthenics.domain.model.CooldownMode.STRETCHING),
             cooldownMinutes = p(ctx).getInt("cooldown_minutes", 5),
             fixedProgramId = p(ctx).getString("fixed_program", null),
-            additionalPools = p(ctx).getStringSet("additional_pools", emptySet()).orEmpty().toSet(),
+            additionalPools = emptySet(),
             fixedProgramFlowOverrides = runCatching {
                 kotlinx.serialization.json.Json.parseToJsonElement(p(ctx).getString("fixed_program_flow", "{}")!!).jsonObject.mapNotNull { (k, v) -> (v as? JsonPrimitive)?.booleanOrNull?.let { k to it } }.toMap()
             }.getOrDefault(emptyMap()),

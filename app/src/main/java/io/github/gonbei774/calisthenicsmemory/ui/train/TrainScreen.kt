@@ -3,6 +3,7 @@ package io.github.gonbei774.calisthenicsmemory.ui.train
 
 import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
 
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.appSegmentedColors
 
@@ -83,8 +84,6 @@ fun TrainScreen(
     val minutes = plan?.plannedDurationSeconds?.let { (it + 30) / 60 }
     val exercises = plan?.blocks?.filter { it.type == BlockType.WORK || (resolved.routine.stretchSession.isNotEmpty() && it.type == BlockType.STRETCH) }?.mapNotNull { it.variationId }?.distinct()?.size
 
-    var poolsOpen by remember { mutableStateOf(false) }
-
     // Doc 17 §2.1: choices only; START WORKOUT and Workout preview stay at the bottom.
     Scaffold(
         modifier = modifier,
@@ -107,14 +106,12 @@ fun TrainScreen(
             Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.s),
             verticalArrangement = Arrangement.spacedBy(Spacing.m),
         ) {
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+            Column(Modifier.fillMaxWidth()) {
                 Text(stringResource(R.string.train_title).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("train_title"))
-                TextButton(onClick = { poolsOpen = !poolsOpen }, modifier = Modifier.testTag("additional_pools")) { Text(stringResource(R.string.train_extras)) }
-                TextButton(onClick = onPrograms, modifier = Modifier.testTag("open_programs")) { Text(stringResource(R.string.programs_open)) }
             }
             UnfinishedBanner(onStarted)
 
-            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, exercisesPerRound = null)) }, routines = saved, routineId = settings.routineId, onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } })
+            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, exercisesPerRound = null)) }, routines = saved, routineId = settings.routineId, onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } }, onPrograms = onPrograms)
 
             // R7-T09 (D2): a skill brings in its own exercises; show which
             val skillGoal = Goals.byId(settings.goalId)?.takeIf { it.entryVariationId != null && settings.routineId == null }
@@ -197,26 +194,6 @@ fun TrainScreen(
                     setsCard(Modifier.weight(1f).fillMaxHeight()); exercisesCard(Modifier.weight(1f).fillMaxHeight())
                 }
                 betweenCard(Modifier.fillMaxWidth())
-            }
-
-            // Specialist work is a deliberate choice, kept collapsed in an ordinary workout.
-            if (poolsOpen) {
-                Caption(stringResource(R.string.train_additional_pools))
-                listOf(
-                    "POWER" to R.string.train_pool_power,
-                    "CONDITIONING" to R.string.train_pool_conditioning,
-                    "PREHAB" to R.string.train_pool_prehab,
-                    "MOBILITY" to R.string.train_pool_mobility,
-                ).forEach { (pool, labelId) ->
-                    val label = stringResource(labelId)
-                    Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
-                        Text(label, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                        Switch(checked = pool in settings.additionalPools, onCheckedChange = { enabled ->
-                            val pools = if (enabled) settings.additionalPools + pool else settings.additionalPools - pool
-                            change(settings.copy(additionalPools = pools, exercisesPerRound = null))
-                        }, modifier = Modifier.semantics { contentDescription = label }.testTag("pool_$pool"))
-                    }
-                }
             }
 
             val warmupLabel = stringResource(R.string.train_warmup)

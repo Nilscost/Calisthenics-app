@@ -191,7 +191,7 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
                     availableRoutes.firstOrNull { routeGoalId in it.goalIds } ?: if (mode == ProgressMode.SKILL) null else availableRoutes.firstOrNull()
                 if (mode == ProgressMode.TYPE && c.progressionRoutes.isNotEmpty()) {
                     Row(Modifier.fillMaxWidth().padding(horizontal = Spacing.l), horizontalArrangement = Arrangement.End) {
-                        TextButton(onClick = { showAllProgressions = !showAllProgressions; selectedRouteId = ""; selected = null }, modifier = Modifier.testTag("all_progressions")) {
+                        AppTextButton(onClick = { showAllProgressions = !showAllProgressions; selectedRouteId = ""; selected = null }, modifier = Modifier.testTag("all_progressions")) {
                             Text(stringResource(if (showAllProgressions) R.string.progress_default_progressions else R.string.progress_all_progressions))
                         }
                     }
@@ -235,7 +235,7 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
                     val extras = activeRoute.members.filter { it.atVariationId == selected && it.role in setOf(ProgressionRole.ALTERNATE, ProgressionRole.SUPPORT) }
                         .filter { member -> c.variation(member.variationId)?.let { isAvailable(it, profile) } == true }
                     if (extras.isNotEmpty()) {
-                        TextButton(onClick = { showRouteExtras = !showRouteExtras }, modifier = Modifier.padding(horizontal = Spacing.l).testTag("route_extras_toggle")) {
+                        AppTextButton(onClick = { showRouteExtras = !showRouteExtras }, modifier = Modifier.padding(horizontal = Spacing.l).testTag("route_extras_toggle")) {
                             Text(stringResource(if (showRouteExtras) R.string.progress_hide_extras else R.string.progress_show_extras))
                         }
                         if (showRouteExtras) Column(Modifier.fillMaxWidth().heightIn(max = 144.dp).verticalScroll(rememberScrollState())) {

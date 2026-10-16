@@ -5,6 +5,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -56,7 +57,7 @@ fun ProgramsScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted:
     }
     Scaffold(topBar = {
         TopAppBar(title = { Text(stringResource(R.string.programs_title)) }, navigationIcon = {
-            TextButton(onClick = onBack, modifier = Modifier.testTag("programs_back")) { Text(stringResource(R.string.back)) }
+            AppTextButton(onClick = onBack, modifier = Modifier.testTag("programs_back")) { Text(stringResource(R.string.back)) }
         })
     }) { pad ->
         Column(modifier.padding(pad).fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -101,7 +102,7 @@ fun ProgramsScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted:
                                 Text(program.name, style = MaterialTheme.typography.titleMedium)
                             Text(stringResource(R.string.programs_summary, durationMinutes, equipmentSummary), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("program_summary_meta_${program.id}"))
                             }
-                            TextButton(onClick = { expandedProgram = if (expandedProgram == program.id) null else program.id }, modifier = Modifier.testTag("program_open_${program.id}")) {
+                            AppTextButton(onClick = { expandedProgram = if (expandedProgram == program.id) null else program.id }, modifier = Modifier.testTag("program_open_${program.id}")) {
                                 Text(stringResource(if (expandedProgram == program.id) R.string.programs_close else R.string.programs_details))
                             }
                         }

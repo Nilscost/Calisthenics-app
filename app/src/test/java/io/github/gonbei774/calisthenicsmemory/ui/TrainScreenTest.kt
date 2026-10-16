@@ -156,10 +156,20 @@ class TrainScreenTest {
 
     @Test fun fixedProgramsAreReachableFromTrainAndReturnToTheWorkoutBuilder() {
         rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { AppNav() } }
-        rule.onNodeWithTag("open_programs").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("objective_type_ROUTINE").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("routine_fixed_programs").performScrollTo().performClick(); rule.waitForIdle()
         rule.onNodeWithText("Fixed programs").assertExists()
         rule.onNodeWithTag("programs_back").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("train_title").assertExists()
+    }
+
+    @Test fun fixedProgramsStayReachableFromRoutineWithoutSavedRoutines() {
+        var opened = false
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { TrainScreen(onPreview = {}, onStarted = {}, onEditProfile = {}, onPrograms = { opened = true }) } }
+        rule.waitForIdle()
+        rule.onNodeWithTag("objective_type_ROUTINE").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("routine_fixed_programs").assertIsDisplayed().performClick()
+        assertTrue(opened)
     }
 
     @Test fun workoutFormatControlHasThreeFormatsPersistsAndRenamesRoundsToSets() {
@@ -234,15 +244,14 @@ class TrainScreenTest {
         assertTrue(minutes() >= before)   // counted in the time
         assertTrue(ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getBoolean("warmup", false))
     }
-    @Test fun optionalWorkoutPoolsAreCollapsedOffByDefaultAndPersistExplicitChoices() {
+    @Test fun specialistPoolsAreNotSelectedFromLegacyTrainSettings() {
+        ctx.getSharedPreferences("train", Context.MODE_PRIVATE).edit()
+            .putStringSet("additional_pools", setOf("POWER", "CONDITIONING", "PREHAB", "MOBILITY")).commit()
         show(); rule.waitForIdle()
+        assertTrue(io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx).additionalPools.isEmpty())
         rule.onNodeWithTag("pool_POWER").assertDoesNotExist()
-        rule.onNodeWithTag("additional_pools").performClick(); rule.waitForIdle()
-        listOf("POWER", "CONDITIONING", "PREHAB", "MOBILITY").forEach {
-            rule.onNodeWithTag("pool_$it").performScrollTo().assertIsOff()
-        }
-        rule.onNodeWithTag("pool_POWER").performScrollTo().performClick(); rule.waitForIdle()
-        assertEquals(setOf("POWER"), io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx).additionalPools)
+        rule.onNodeWithTag("additional_pools").assertDoesNotExist()
+        rule.onNodeWithTag("open_programs").assertDoesNotExist()
     }
 
 }

@@ -1,20 +1,24 @@
-# R8: inspect the additional workout pools and adjust preview recovery without starting a session.
+# R8: verify specialist exercises remain manually addable and adjust preview recovery without starting a session.
 appId: app.calisthenics.personal
 ---
 - launchApp
 - runFlow: ../common/dismiss_system_dialogs.yaml
 - extendedWaitUntil: { visible: { id: preview_button }, timeout: 15000 }
 - tapOn: { id: tab_train }
-- scrollUntilVisible: { element: { id: additional_pools }, direction: DOWN, timeout: 10000 }
-- runFlow:
-    when: { notVisible: { id: pool_POWER } }
-    commands:
-      - tapOn: { id: additional_pools }
-- assertVisible: { id: pool_POWER }
-- assertVisible: { id: pool_CONDITIONING }
-- assertVisible: { id: pool_PREHAB }
-- assertVisible: { id: pool_MOBILITY }
-- takeScreenshot: 01-additional-pools-${VARIANT}
+- assertNotVisible: { id: open_programs }
+- assertNotVisible: { id: additional_pools }
+- tapOn: { id: preview_button }
+- extendedWaitUntil: { visible: { id: start_button }, timeout: 15000 }
+- scrollUntilVisible: { element: { id: add_start }, direction: DOWN, timeout: 10000 }
+- tapOn: { id: add_start }
+- extendedWaitUntil: { visible: { id: add_categories }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: add_cat_power }, direction: DOWN, timeout: 10000 }
+- assertVisible: { id: add_cat_power }
+- tapOn: { id: add_cat_power }
+- assertVisible: { id: add_option_.* }
+- takeScreenshot: 01-manual-power-add-${VARIANT}
+- back
+- back
 # Show the plain-rest preview stepper; setting this is idempotent if a prior attempt already chose it.
 - scrollUntilVisible: { element: { id: between_rest }, direction: DOWN, timeout: 10000 }
 - tapOn: { id: between_rest }

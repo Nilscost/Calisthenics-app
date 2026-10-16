@@ -57,8 +57,15 @@ appId: app.calisthenics.personal
 - tapOn: { id: "swap_.*", index: 0 }
 - extendedWaitUntil: { visible: "Swap this exercise", timeout: 5000 }
 - takeScreenshot: 05-swap-sheet-${VARIANT}
-# R7.2-T02: Other types opens a list the sheet scrolls to; the own tab comes first in an accent box
-- scrollUntilVisible: { element: { id: swap_other_types }, direction: DOWN, timeout: 30000 }
+# R7.2-T02: Other types opens the other movement families; the own family comes first.
+# Swipe within the sheet viewport; the expanded catalog can put this below the fold.
+- repeat:
+    while: { notVisible: { id: swap_other_types } }
+    times: 24
+    commands:
+      - swipe:
+          from: { id: swap_sheet_body, point: "50%, 80%" }
+          direction: UP
 - tapOn: { id: swap_other_types }
 - extendedWaitUntil: { visible: "Same family.*", timeout: 5000 }
 - takeScreenshot: 05b-swap-other-types-${VARIANT}

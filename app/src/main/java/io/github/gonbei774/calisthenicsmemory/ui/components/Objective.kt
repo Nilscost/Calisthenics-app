@@ -34,11 +34,11 @@ private fun typeLabel(t: ObjectiveType) = when (t) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ObjectivePicker(goalId: String, onPick: (String) -> Unit, modifier: Modifier = Modifier, routines: List<SavedRoutine> = emptyList(), routineId: String? = null, onPickRoutine: (String) -> Unit = {}) {
+fun ObjectivePicker(goalId: String, onPick: (String) -> Unit, modifier: Modifier = Modifier, routines: List<SavedRoutine> = emptyList(), routineId: String? = null, onPickRoutine: (String) -> Unit = {}, onPrograms: (() -> Unit)? = null) {
     val goal = Goals.byId(goalId) ?: Goals.all.first()
     val saved = routines.firstOrNull { it.id == routineId }
     var type by remember(goalId, routineId) { mutableStateOf(if (saved != null) ObjectiveType.ROUTINE else Goals.typeOf(goal)) }
-    val types = Goals.availableTypes(routines.isNotEmpty())
+    val types = Goals.availableTypes(routines.isNotEmpty() || onPrograms != null)
     var open by remember { mutableStateOf(false) }
     val fieldDescription = stringResource(R.string.field_description, stringResource(R.string.objective_caption), if (saved != null && type == ObjectiveType.ROUTINE) saved.name else goal.name)
     Column(modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -63,6 +63,11 @@ fun ObjectivePicker(goalId: String, onPick: (String) -> Unit, modifier: Modifier
                 else Goals.goalsOf(type).forEach { g: Goal ->
                     DropdownMenuItem(text = { Text(g.name) }, onClick = { onPick(g.id); open = false }, modifier = Modifier.testTag("goal_${g.id}"))
                 }
+            }
+        }
+        if (type == ObjectiveType.ROUTINE && onPrograms != null) {
+            AppTextButton(onClick = onPrograms, modifier = Modifier.testTag("routine_fixed_programs")) {
+                Text(stringResource(R.string.programs_title))
             }
         }
     }

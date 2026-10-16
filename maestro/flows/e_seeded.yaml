@@ -114,9 +114,18 @@ appId: app.calisthenics.personal
           from: { id: progress_route_tabs, point: "10%, 50%" }
           direction: RIGHT
 - tapOn: { id: route_chip_planche }
-- scrollUntilVisible: { element: { id: tree_need_planche-lean }, direction: DOWN, timeout: 8000 }
+- repeat:
+    while: { notVisible: { id: tree_node_planche-lean } }
+    times: 8
+    commands:
+      - swipe:
+          from: { id: tree_rows, point: "50%, 80%" }
+          direction: UP
 - takeScreenshot: 07f-progress-push-planche-note-${VARIANT}
-- tapOn: { id: tree_need_planche-lean }
+- assertVisible: { id: tree_node_planche-lean }
+# The note is a clickable child of the merged tree-node semantics. Maestro exposes
+# its visible label more reliably than the Compose-only child test tag.
+- tapOn: { text: "needs Plank" }
 - extendedWaitUntil: { visible: { id: detail_edit }, timeout: 8000 }
 - tapOn: { id: detail_edit }
 - takeScreenshot: 07g-detail-edit-${VARIANT}

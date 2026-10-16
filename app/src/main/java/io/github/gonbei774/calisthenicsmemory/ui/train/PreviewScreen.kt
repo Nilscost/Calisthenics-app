@@ -477,7 +477,7 @@ private fun SwapSheet(family: List<ExerciseVariation>, others: List<Pair<app.cal
     var keep by remember { mutableStateOf(false) }
     var showOthers by remember { mutableStateOf(false) }
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
-        Column(Modifier.padding(horizontal = Spacing.l).padding(bottom = Spacing.xl).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+        Column(Modifier.padding(horizontal = Spacing.l).padding(bottom = Spacing.xl).testTag("swap_sheet_body").verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(stringResource(R.string.preview_swap_title), style = MaterialTheme.typography.titleLarge)
             Text(stringResource(R.string.preview_swap_hint), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             family.forEach { o -> SwapItem(o, catalog, o.id == currentId, onPick = { onPick(o.id, keep) }) }
