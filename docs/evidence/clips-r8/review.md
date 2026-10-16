@@ -184,3 +184,12 @@ LIMITATIONS: no independent pelvic/chest yaw or head yaw. Windmill look-back and
 
 
 Evidence: army_drill-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## stretches_c · 18 ids accepted for draft rendering
+
+Coordinator reviewed the Luna draft and rebuilt the supine grips, Sphinx, splits, Spiderman support and seated-twist setups. All 18 IDs pass the read-only reach/floor checker. Both split legs remain about176°; front split uses12cm support blocks and middle split has actual floor palms. Downward dog reuses the accepted fixed-support pike geometry. Sphinx elbows and wrists stay at4cm through dense keys; the doorway shoulder stretch has a bent elbow and nearly vertical forearm with a fixed hand. Opposite hand center follows the overhead working upper arm. Prayer and reverse prayer use opposing contact surfaces and distinct finger directions. Groin uses a static lateral lunge with the other leg long, avoiding a sliding planted foot.
+
+Twists now distinguish a long base leg, a folded base leg with crossed foot, elbow hook, instep reach, towel bind, and full hand clasp. Rear support hands reach the mat where specified; full-bind hand centers coincide. Back camera exposes the bind. These are DRAFT render sources: the rig shares pelvic/thoracic yaw, cannot isolate middle-back rotation, and cannot turn or sidebend the head independently. Seated neck-side is STATIC SETUP ONLY and does not demonstrate its instructed head tilt. Twists and neck-side need teaching-quality decisions before app inclusion. The existing thoracic-rotation feedback remains open. No new movies or app content are installed.
+
+
+Evidence: stretches_c-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.

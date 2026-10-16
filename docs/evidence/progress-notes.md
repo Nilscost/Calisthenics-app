@@ -765,3 +765,8 @@ Shoulder17 and wrist/hip12 accepted for draft Blender rendering after coordinato
 ### Army draft checkpoint · 2026-10-15
 
 Army16 accepted for draft rendering after coordinator rebuilds, independent static-pose review, and full-frame contact/angle checks. Total346/379 (121+66+159). Remaining33 are the final pair: stretches_c18 and pilates_mat15. Shared pelvic/chest rotation and head-look-back limits are recorded in clips-r8/review.md. All prior330 sources and cached inputs remain frozen. The simplicity review now includes teachability/rig limits; no app integration or behavior changed.
+
+
+### Final stretch drafts · 2026-10-16
+
+Stretches_c18 reviewed and added for draft rendering:364/379 ready (121+66+177). Splits, supine contacts, doorway forearm, Sphinx supports and the five distinct twist setups were repaired by the coordinator. Static neck-side setup and shared spinal-rotation limits remain explicit teaching-quality holds. Original346 accepted inputs remain unchanged. Pilates15 is the final group under review.
