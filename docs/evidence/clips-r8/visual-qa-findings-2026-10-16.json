@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-16",
+  "scope": {
+    "encodedIds": 379,
+    "encodedVideoReview": "The complete frozen 379-ID set was encoded. This visual pass is a targeted review, not semantic acceptance of every video.",
+    "broadContactSheetSampling": "For 95 higher-risk IDs containing flag, pullup, pushup, bridge, neck, chin, or Pilates, sheets show start, midpoint, and final frozen frame.",
+    "denseContactSheetSampling": "For 16 neck/chin/Pilates/flag-support candidates, sheets show eight evenly spaced unique frames excluding the duplicated loop endpoint.",
+    "imageAppearance": "Frozen rendered frames were alpha-composited on white and resized using the same Pillow path as tools/blender/encode.py. Inputs were read only.",
+    "limitations": [
+      "Contact sheets are visual triage; they do not replace watching each full movie or deciding exercise inclusion.",
+      "The frame samples may not show every short transient or subtle movement.",
+      "stretch-thoracic is an existing supplemental output outside the frozen 379-ID manifest and was reviewed separately."
+    ],
+    "contactSheets": {
+      "broad": "/tmp/r8-review-contact-sheets-2026-10-16/priority-01.jpg through priority-07.jpg",
+      "dense": "/tmp/r8-review-contact-sheets-2026-10-16/dense-01.jpg and dense-02.jpg"
+    }
+  },
+  "findings": [
+    {
+      "id": "flag-support-press",
+      "type": "prop_occlusion_and_teaching_clarity",
+      "severity": "hold_for_review",
+      "evidence": "Across eight samples, the opaque wall panel covers much of the body's working-side arm and the pole/wall contact area. The viewer can see the model beside the panel, but cannot clearly read the support/press action.",
+      "recommendation": "Keep on teaching hold unless an alternate camera/prop view makes the contact action legible. No geometry or frame changes were made."
+    },
+    {
+      "id": "neck-head-raise-manual",
+      "type": "subtle_cervical_motion_and_resistance_cue",
+      "severity": "hold_for_review",
+      "evidence": "Eight samples look nearly unchanged at contact-sheet scale. Joint data shows a small but nonzero cycle range (head 0.024 m, neck 0.012 m, one hand 0.039 m); the motion is not literally static, but neither the head raise nor the manual-resistance cue reads clearly in these samples.",
+      "recommendation": "Keep on teaching hold pending closer full-video review or a more legible demonstration. This is a visibility/teaching finding, not a claim that no movement exists."
+    },
+    {
+      "id": "chin-nod-supine",
+      "type": "insufficiently_legible_cervical_motion",
+      "severity": "existing_teaching_limit",
+      "evidence": "Eight evenly spaced samples are visually static. Joint range is about 0.010 m at the head and 0.005 m at the neck, with the rest of the body static.",
+      "recommendation": "Retain the previously recorded teaching hold/limitation."
+    },
+    {
+      "id": "chin-tuck-head-lift",
+      "type": "insufficiently_legible_independent_chin_tuck",
+      "severity": "existing_teaching_limit",
+      "evidence": "The head/neck move slightly (0.024 m/0.012 m), but eight samples do not make an independent tuck or lift clear; torso and limbs remain still.",
+      "recommendation": "Retain the previously recorded teaching hold/limitation."
+    },
+    {
+      "id": "chin-tuck-seated",
+      "type": "missing_cervical_motion",
+      "severity": "existing_teaching_limit",
+      "evidence": "The head and neck coordinates are unchanged across all 96 frames; the seated setup is static.",
+      "recommendation": "Retain the previously recorded teaching hold."
+    },
+    {
+      "id": "stretch-neck-side",
+      "type": "missing_neck_tilt",
+      "severity": "existing_teaching_limit",
+      "evidence": "The head and neck coordinates are unchanged across all 72 frames; the seated setup is static.",
+      "recommendation": "Retain the previously recorded teaching hold."
+    },
+    {
+      "id": "neck-isometric-4-way",
+      "type": "reviewed_as_expected_isometric_setup",
+      "severity": "no_new_hold_recommended",
+      "evidence": "The head/neck are stationary while the hands move through four positions. That matches an isometric-resistance setup; zero cervical excursion alone is not a defect here."
+    },
+    {
+      "id": "pilates-double-leg-kick",
+      "type": "partial_semantic_review_only",
+      "severity": "no_new_hold_recommended_from_contact_sheet",
+      "evidence": "The eight samples show visible arm, leg, and upper-body motion. Contact sheets do not establish whether the exercise-specific sequence is taught correctly; the known independent-head-turn rig limit remains applicable."
+    },
+    {
+      "id": "pilates-saw",
+      "type": "shared_pelvic_and_thoracic_yaw_limit",
+      "severity": "documented_teaching_limit",
+      "evidence": "The sequence visibly changes, but the rig cannot isolate thoracic rotation from pelvic yaw."
+    },
+    {
+      "id": "pilates-spine-twist",
+      "type": "shared_pelvic_and_thoracic_yaw_limit",
+      "severity": "documented_teaching_limit",
+      "evidence": "The sequence visibly changes, but the rig cannot isolate thoracic rotation from pelvic yaw."
+    },
+    {
+      "id": "stretch-thoracic",
+      "type": "existing_supplemental_output_reviewed",
+      "severity": "existing_owner_hold",
+      "evidence": "This ID is outside the frozen 379-ID manifest. Its current supplemental frames show a kneeling, flexed setup with arm movement; the torso/spine remains effectively fixed in the sampled frames, so isolated thoracic rotation is not demonstrated.",
+      "recommendation": "Keep the existing hold; do not treat this supplemental movie as an accepted clip."
+    }
+  ],
+  "encoding": {
+    "manifest": "work/clips-bakeoff/encode-review-2026-10-16.json",
+    "log": "work/clips-bakeoff/encode-review-2026-10-16.log",
+    "result": "379 encoded, 0 reused, 0 failed; 6.26 MiB total."
+  }
+}

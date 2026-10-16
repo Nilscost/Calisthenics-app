@@ -44,6 +44,7 @@ DEMONSTRATION_HOLD = {
     "stretch-thoracic", "scapular-pushup-wall", "scapular-pushup-knee",
     "scapular-pushup", "support-scapular-shrug", "wrist-palm-pulses",
     "chin-nod-supine", "chin-tuck-head-lift",
+    "neck-head-raise-manual", "flag-support-press",
 }
 
 # The six Explosive Calisthenics push-up variations are intentionally capped at
