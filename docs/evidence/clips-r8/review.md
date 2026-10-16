@@ -193,3 +193,14 @@ Twists now distinguish a long base leg, a folded base leg with crossed foot, elb
 
 
 Evidence: stretches_c-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.
+
+## pilates_mat · 15 ids accepted for draft rendering
+
+All15 IDs pass the read-only reach/floor checker after coordinator and Luna repairs. Coordinator viewed every representative movement family and extra phase sheets for Seal, Scissors and Double-Leg Kick. Rolls have dense continuous keys, upper-back contact and head clearance (minimum surface clearance9.4cm for the three compact/V rolls;4.4cm for Roll Over). Open-Leg Rocker preserves the V and ankle grips, with knees≥168° through sampling. Roll Over starts supine, lifts the hips, sends straight legs overhead, opens them and returns; actual forearm-floor construction removed the original elbow penetration. Source reference for maintaining the open-leg shape and rolling to shoulder blades: [Pilates Anytime teacher tutorial](https://www.pilatesanytime.com/workshop-view/1836/video/Pilates-Open-Leg-Rocker-by-Michael-Fritzke-and-Ton-Voogt).
+
+Supine circles keep a stable pelvis and constant leg radius, with actual floor forearms; the double-leg circle moves both legs together and reverses. Scissors swaps continuously, has two small pull pulses per held side and retains straight knees. Single/Double-Leg Stretch use correct +X leg extensions, numeric knee grips and continuous transitions; double stretch adds an overhead reach and return arm circle. Roll Up has long floor legs and an overhead-to-forward arm sweep. Saw reaches the opposite little-toe area with the rear arm back. Spine Twist retains long legs and two turn pulses. Double-Leg Kick shows three true heel kicks with supported knees, clasped upper-back hands, then long legs/arms and a chest lift. Mermaid has both feet folded to one side, opposite floor support and the knee-side arm reaching overhead.
+
+DRAFT/TEACHING LIMITS: this is a two-hinge spine, not vertebral articulation. Shared pelvic/chest yaw means Saw and Spine Twist cannot isolate thoracic rotation; their long-leg geometry accommodates a small foot displacement with pelvic yaw. The seated stretches have the same isolated-rotation limitation. Mermaid is a schematic side arc using fixed yaw and pitch. The rig cannot alternate independent head turns in Double-Leg Kick or show true foot/sole-roll and finger detail in Seal; its three open/close packets are schematic. None of these are accepted app instructional movies. Review the rendered motion and intended teaching role before inclusion; retain the owner's integration hold.
+
+
+Evidence: pilates_mat-describe.txt and representative contact sheets. Accepted pose sources only; Blender movies still need review.

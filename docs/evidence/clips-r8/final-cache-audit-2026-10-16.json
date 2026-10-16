@@ -1,0 +1,13 @@
+{
+  "accepted": 379,
+  "expected": 379,
+  "batches": {
+    "1": 121,
+    "2": 66,
+    "3": 192
+  },
+  "frozen_346_unchanged": true,
+  "source_cache_matches": true,
+  "reach_floor_checks": true,
+  "missing": []
+}

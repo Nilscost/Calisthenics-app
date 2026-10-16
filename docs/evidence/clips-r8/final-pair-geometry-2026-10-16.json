@@ -1,0 +1,21 @@
+{
+  "pilates-single-leg-circle_min_knee_deg": 175.641,
+  "pilates-corkscrew_min_knee_deg": 175.211,
+  "pilates-scissors_min_knee_deg": 174.462,
+  "pilates-roll-over_min_knee_deg": 176.113,
+  "pilates-spine-twist_min_knee_deg": 175.834,
+  "pilates-saw_min_knee_deg": 176.103,
+  "stretch-split-front_min_knee_deg": 176.112,
+  "stretch-split-middle_min_knee_deg": 175.894,
+  "pilates-rolling-like-a-ball_head_surface_min_m": 0.0941,
+  "pilates-rolling-like-a-ball_grip_error_max_m": 9.4e-05,
+  "pilates-seal_head_surface_min_m": 0.0941,
+  "pilates-seal_grip_error_max_m": 8.1e-05,
+  "pilates-open-leg-rocker_head_surface_min_m": 0.09426,
+  "pilates-open-leg-rocker_grip_error_max_m": 7.8e-05,
+  "pilates-roll-over_head_surface_min_m": 0.04456,
+  "full_bind_clasp_error_m": 0.0,
+  "shoulder_er_forearm_horizontal_max_m": 0.03304,
+  "sphinx_forearm_height_error_m": 0.0,
+  "scope": "Geometric checks on draft sources; no movie, phone, or instructional approval."
+}

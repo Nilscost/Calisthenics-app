@@ -2,6 +2,10 @@
 
 Goal: a Blender pose for every new id in `docs/23-new-exercises.json`, so the owner can render them overnight on his Mac. Written 2026-10-14.
 
+## Draft render checkpoint · 2026-10-16
+
+All **379/379** contract IDs now have reviewed draft inputs in the three render manifests (121 +66 +192). All caches match their deterministic sources and pass reach/floor checks; the earlier346 accepted cache payloads and nanosecond timestamps are unchanged. No source-authoring groups remain. Rendered movies, instructional quality, phone review and exercise inclusion remain separate gates. Neck/head, scapular, finger and isolated spinal-rotation limits are recorded in `docs/evidence/clips-r8/review.md` and `docs/28-r8-simplicity-review.md`. Use the cumulative command below after the current Blender job ends; a running job keeps its launch-time list.
+
 ## What you write
 - One file per pose group: `tools/blender/families/<group>.py`. The groups and their ids are in `docs/23-new-exercises.json` → `poseGroups` (24 groups, all new file names). `poses.py` loads every module in `families/` automatically.
 - **Follow `tools/blender/HAIKU-TASK.md` steps 1–5 exactly**, with one change: the exercise facts come from `docs/23-new-exercises.json` → `exercises` (the new ids are not in `work/clips-bakeoff/catalog-brief.json` yet). Fetch one entry with:

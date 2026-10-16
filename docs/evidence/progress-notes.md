@@ -770,3 +770,10 @@ Army16 accepted for draft rendering after coordinator rebuilds, independent stat
 ### Final stretch drafts · 2026-10-16
 
 Stretches_c18 reviewed and added for draft rendering:364/379 ready (121+66+177). Splits, supine contacts, doorway forearm, Sphinx supports and the five distinct twist setups were repaired by the coordinator. Static neck-side setup and shared spinal-rotation limits remain explicit teaching-quality holds. Original346 accepted inputs remain unchanged. Pilates15 is the final group under review.
+
+
+### All contract pose drafts prepared · 2026-10-16
+
+Pilates15 accepted for draft rendering after corrected continuous rolls, long-leg geometry, grip/support contacts, arm-circle and kick choreography. All379/379 contract IDs are now in their correct manifests (121+66+192), without duplicates. Read-only final audit confirms all saved caches equal deterministic sources, all reach/floor checks pass and original346 payloads/mtime_ns are unchanged. Audit: clips-r8/final-cache-audit-2026-10-16.json; semantic checks: clips-r8/final-pair-geometry-2026-10-16.json. No new exercise pose sources remain unwritten.
+
+This completes draft input preparation, not movie or app acceptance. Static neck setup, scapular/finger limitations, two-hinge spinal articulation and shared pelvic/thoracic yaw need deliberate teaching-quality decisions. Render/encode/visual review, the open thoracic-rotation complaint, exercise-role/progression debate and selected integration remain. User additionally requested editable preview rests and a rest/stretch card beside the existing +; that app fix is in progress independently of content inclusion.

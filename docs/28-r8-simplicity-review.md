@@ -49,3 +49,10 @@ The pose review adds a practical filter to the route decisions above. A source t
 - The reported **thoracic-rotation video problem remains open**. The same lack of independent spinal rotation can affect new twisting demonstrations. Review what a person would actually learn from the movie, rather than accepting a whole-body turn as proof of isolated thoracic motion.
 
 This strengthens the proposal to keep preparation and specialist work available through deliberate choices, with a small default training pool. A broad library is useful when the movement, instruction, demonstration and role in training agree. Availability alone should not create a progression edge or a default-workout slot. These are review findings, not implemented exclusions or approved wording changes.
+
+
+### Final pose-group review · 2026-10-16
+
+All379 draft render inputs are prepared, but breadth still exceeds what this mannequin can teach faithfully. **Neck-side stretch**, like seated chin tuck, has a static setup without its required independent neck action. The five seated twist variants, **Saw** and **Spine Twist** distinguish setups/choreography but cannot isolate thoracic rotation from pelvic yaw. **Roll Up/Roll Over** and the compact rolling exercises approximate spinal sequencing with two hinges. **Seal** uses schematic foot open/close packets, and **Double-Leg Kick** cannot alternate independent head turns. These need review after rendering; source completeness must not automatically activate them in the app or make them mandatory progression steps.
+
+The next inclusion discussion should decide the role and demonstration quality of these movements alongside the main/alternate/support/program-only route decisions above. Prefer a smaller taught default pool when an asset cannot clearly demonstrate its instruction; retain wider draft exploration for deliberate review. No exercise exclusions or additional catalog changes are implemented by this note.
