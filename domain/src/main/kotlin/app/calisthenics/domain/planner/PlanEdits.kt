@@ -106,9 +106,9 @@ fun addableExercises(catalog: Catalog, profile: EquipmentProfile, inPlan: Set<St
         if (list.isEmpty()) null else tab to list
     }
 
-/** R14: stretches that can be picked for a break or added after it (STRETCH kind, usable with this equipment). */
+/** R14: stretch and mobility drills that can be picked for a break or added after it, usable with this equipment. */
 fun stretchChoices(catalog: Catalog, profile: EquipmentProfile): List<ExerciseVariation> =
-    catalog.variations.filter { it.kind == Kind.STRETCH && isAvailable(it, profile) }.sortedBy { it.name }
+    catalog.variations.filter { it.kind in setOf(Kind.STRETCH, Kind.MOBILITY) && !it.demonstrationHold && isAvailable(it, profile) }.sortedBy { it.name }
 
 /** D3: the level stepper moves between levels 1..5 of the exercise and never leaves them. */
 fun stepLevel(current: Int, delta: Int, levels: Int = 5): Int = (current + delta).coerceIn(1, levels)

@@ -6,6 +6,9 @@ import sys
 import unittest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+from gen_r8_catalog import demonstration_is_held
+
 CONTRACT_PATH = ROOT / "docs/23-new-exercises.json"
 IMPORTER = ROOT / "tools/gen_r8_catalog.py"
 
@@ -255,12 +258,15 @@ class R8CatalogGeneratorTest(unittest.TestCase):
         self.assertNotIn("rollout", routes)
         self.assertEqual("anti-extension", next(r["id"] for r in self.catalog["progressionRoutes"] if "rollout-knees" in r["mainPath"]))
 
-    def test_unreviewed_teaching_clips_are_held_without_changing_their_roles(self):
+    def test_synthetic_teaching_hold_is_id_scoped_and_does_not_change_catalog_roles(self):
         variations = {v["id"]: v for v in self.catalog["variations"]}
-        held = {"stretch-thoracic", "scapular-pushup-wall", "scapular-pushup-knee",
-                "scapular-pushup", "support-scapular-shrug", "wrist-palm-pulses",
-                "chin-nod-supine", "chin-tuck-head-lift"}
-        self.assertTrue(all(variations[variation_id]["demonstrationHold"] for variation_id in held))
+        self.assertTrue(all(isinstance(v["demonstrationHold"], bool) for v in variations.values()))
+        # A synthetic hold keeps this contract covered after every currently held clip is approved.
+        synthetic_holds = {"synthetic-teaching-example"}
+        self.assertTrue(demonstration_is_held("synthetic-teaching-example", synthetic_holds))
+        self.assertFalse(demonstration_is_held("approved-example", synthetic_holds))
+        self.assertEqual({v_id for v_id in variations if demonstration_is_held(v_id)},
+                         {v_id for v_id, variation in variations.items() if variation["demonstrationHold"]})
         roles = {member["variationId"]: member["role"] for route in self.catalog["progressionRoutes"] for member in route["members"]}
         self.assertEqual("LIBRARY", roles["stretch-thoracic"])
         self.assertEqual("SUPPORT", roles["wrist-palm-pulses"])

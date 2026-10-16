@@ -2,12 +2,14 @@ package io.github.gonbei774.calisthenicsmemory.ui
 
 import android.app.Application
 import android.content.Intent
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import app.calisthenics.domain.equipment.SeedProfiles
 import app.calisthenics.domain.model.BlockType
+import app.calisthenics.domain.model.Catalog
 import app.calisthenics.domain.model.EquipmentItem
 import app.calisthenics.domain.model.EquipmentProfile
 import app.calisthenics.domain.model.TargetType
@@ -29,6 +31,7 @@ import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
 import io.github.gonbei774.calisthenicsmemory.ui.session.SessionScreen
+import io.github.gonbei774.calisthenicsmemory.ui.session.LiveScreen
 import io.github.gonbei774.calisthenicsmemory.ui.session.loggerBlock
 import io.github.gonbei774.calisthenicsmemory.ui.session.repLoggerBlock
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
@@ -79,15 +82,29 @@ class SessionScreenTest {
         rule.waitForIdle()
     }
 
+    private fun showLive(s: SessionState, catalogOverride: Catalog) {
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { LiveScreen(s, 0L, Modifier, catalogOverride) } }
+        rule.waitForIdle()
+    }
+
     private fun firstRecovery() = plan.blocks.indexOfFirst { it.type == BlockType.STRETCH || it.type == BlockType.PASSIVE_RECOVERY }
 
-    @Test fun aSavedWorkoutWithAHeldDemonstrationShowsWrittenInstructions() {
-        val v = catalog.variations.first { it.demonstrationHold }
-        val p = plan.copy(blocks = listOf(TimelineBlock("held-work", BlockType.WORK, 30,
-            variationId = v.id)), plannedDurationSeconds = 30, rounds = 1)
-        show(stateAt(p, 0))
+    @Test fun savedWorkoutWithSyntheticHeldDemonstrationShowsWrittenInstructionsInsteadOfItsClip() {
+        val v = catalog.variation("pushup-standard")!!.copy(
+            demonstrationHold = true,
+            instructions = listOf("Synthetic cue one", "Synthetic cue two"),
+        )
+        app.assets.open("demos/${v.id}.mp4").use { assertTrue("fixture needs the real bundled clip", it.read() >= 0) }
+        val syntheticCatalog = catalog.copy(variations = catalog.variations.map { if (it.id == v.id) v else it })
+        val savedPlan = plan.copy(
+            blocks = listOf(TimelineBlock("held-work", BlockType.WORK, 30, variationId = v.id)),
+            plannedDurationSeconds = 30,
+            rounds = 1,
+        )
+        showLive(stateAt(savedPlan, 0), syntheticCatalog)
         rule.onNodeWithTag("session_demo_held").assertExists()
-        rule.onNodeWithText(v.instructions.first()).assertExists()
+        rule.onNodeWithText("Synthetic cue one").assertExists()
+        rule.onNodeWithText("Synthetic cue two").assertExists()
         rule.onNodeWithContentDescription(app.getString(R.string.demo_clip_description)).assertDoesNotExist()
     }
     private fun lastIntent(): Intent { val i = shadowOf(app).nextStartedService; assertNotNull("no service command was sent", i); return i }

@@ -190,7 +190,7 @@ stretch("stretch-wrist-extensor", "Wrist Stretch (backs of the hands)", ["WRIST"
         cues=["Small, slow movement", "Never force the lean"],
         cautions=["Stop on wrist pain or tingling in the fingers. This is a strong stretch; start with a very small lean."],
         primary=["FOREARMS"])
-stretch("stretch-thoracic", "Thoracic Rotation (thread the needle)", ["BACK"], 30, True, "kneeling",
+stretch("stretch-thoracic", "Thoracic Rotation (quadruped)", ["BACK"], 30, True, "kneeling",
         ["Start on hands and knees; place one hand behind the head.", "Rotate the elbow down toward the other arm, then open it up toward the ceiling.",
          "Move slowly with the breath; the rotation comes from the upper back.", "Repeat for the time, then switch sides."],
         cues=["Hips stay still", "Follow the elbow with your eyes"],

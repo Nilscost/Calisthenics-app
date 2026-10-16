@@ -188,7 +188,7 @@ private class Planner(val input: PlanInput) {
     private fun stretchSession(): PlanResult {
         val out = mutableListOf<TimelineBlock>()
         for ((i, id) in input.routine.stretchSession.withIndex()) {
-            val v = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH && !it.demonstrationHold && isAvailable(it, input.profile) } ?: continue
+            val v = cat.variation(id)?.takeIf { it.kind in setOf(Kind.STRETCH, Kind.MOBILITY) && !it.demonstrationHold && isAvailable(it, input.profile) } ?: continue
             val sides = if (v.unilateral) listOf(Side.LEFT, Side.RIGHT) else listOf(Side.BOTH)
             for (side in sides) for ((k, hold) in listOf(10, 20, 30).withIndex()) {
                 val tag = "ss$i-${side.name.first()}-${k + 1}"
@@ -408,7 +408,7 @@ private class Planner(val input: PlanInput) {
             val isLast = pos == order.lastIndex
             fun extras() {
                 draft.extraStretches[c.slot.id].orEmpty().forEachIndexed { i, id ->
-                    val x = cat.variation(id)?.takeIf { it.kind == Kind.STRETCH && !it.demonstrationHold } ?: return@forEachIndexed
+                    val x = cat.variation(id)?.takeIf { it.kind in setOf(Kind.STRETCH, Kind.MOBILITY) && !it.demonstrationHold && isAvailable(it, input.profile) } ?: return@forEachIndexed
                     val secs = x.defaultSeconds ?: 30
                     if (x.unilateral) for (side in listOf(Side.LEFT, Side.RIGHT)) out += TimelineBlock("r$r-${c.slot.id}-x$i-${side.name.first()}", BlockType.STRETCH, secs, r, c.slot.id, x.id, side, recoveryForBlockIds = workIds, mediaId = x.mediaId, groupIndex = group)
                     else out += TimelineBlock("r$r-${c.slot.id}-x$i", BlockType.STRETCH, secs, r, c.slot.id, x.id, Side.BOTH, recoveryForBlockIds = workIds, mediaId = x.mediaId, groupIndex = group)
@@ -422,7 +422,7 @@ private class Planner(val input: PlanInput) {
                 out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.PASSIVE_RECOVERY, window, r, c.slot.id, recoveryForBlockIds = workIds, groupIndex = group)
             } else {
                 val cands = stretchesFor(v)
-                val s = (draft.roundStretchPicks["$r:${c.slot.id}"] ?: draft.stretchPicks[c.slot.id])?.let { cat.variation(it) }?.takeIf { it.kind == Kind.STRETCH && !it.demonstrationHold } ?: cands[(r - 1 + si) % cands.size]
+                val s = (draft.roundStretchPicks["$r:${c.slot.id}"] ?: draft.stretchPicks[c.slot.id])?.let { cat.variation(it) }?.takeIf { it.kind in setOf(Kind.STRETCH, Kind.MOBILITY) && !it.demonstrationHold && isAvailable(it, input.profile) } ?: cands[(r - 1 + si) % cands.size]
                 if (s.unilateral) {
                     val seg = maxOf((window + 1) / 2, s.defaultSeconds ?: 0) // never below the reviewed minimum recovery; a deep stretch keeps its own time per side (R7-T12)
                     for (side in listOf(Side.LEFT, Side.RIGHT)) out += TimelineBlock("r$r-${c.slot.id}-rec-${side.name.first()}", BlockType.STRETCH, seg, r, c.slot.id, s.id, side,
@@ -440,7 +440,7 @@ private class Planner(val input: PlanInput) {
      */
     private fun cooldownStretches(chosen: List<Chosen>): List<TimelineBlock> {
         fun secs(v: ExerciseVariation) = (v.defaultSeconds ?: 30) * (if (v.unilateral) 2 else 1)
-        val base: List<ExerciseVariation> = draft.cooldownStretches?.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind == Kind.STRETCH && !v.demonstrationHold } } ?: run {
+        val base: List<ExerciseVariation> = draft.cooldownStretches?.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind in setOf(Kind.STRETCH, Kind.MOBILITY) && !v.demonstrationHold && isAvailable(v, input.profile) } } ?: run {
             val score = chosen.flatMap { it.variation.compatibleStretchIds }.groupingBy { it }.eachCount()
             val out = mutableListOf<ExerciseVariation>(); var total = 0
             for (id in score.keys.sortedWith(compareBy({ -score.getValue(it) }, { it }))) {
@@ -453,7 +453,7 @@ private class Planner(val input: PlanInput) {
         }
         // R7.2-T04 (F5): the hand removals and additions come last, so they also apply to a hand-picked list
         val kept = base.filter { it.id !in draft.cooldownRemoved }
-        val picked = kept + draft.cooldownAdded.distinct().filter { id -> kept.none { it.id == id } }.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind == Kind.STRETCH && !v.demonstrationHold } }
+        val picked = kept + draft.cooldownAdded.distinct().filter { id -> kept.none { it.id == id } }.mapNotNull { cat.variation(it)?.takeIf { v -> v.kind in setOf(Kind.STRETCH, Kind.MOBILITY) && !v.demonstrationHold && isAvailable(v, input.profile) } }
         return picked.flatMapIndexed { i, v ->
             val s = v.defaultSeconds ?: 30
             if (v.unilateral) listOf(Side.LEFT, Side.RIGHT).map { TimelineBlock("cooldown-$i-${it.name.first()}", BlockType.COOLDOWN, s, variationId = v.id, side = it, mediaId = v.mediaId, note = "Cool-down") }

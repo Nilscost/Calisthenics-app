@@ -39,6 +39,8 @@ import androidx.compose.ui.graphics.Color
 import io.github.gonbei774.calisthenicsmemory.ui.theme.*
 import app.calisthenics.domain.feedback.Execution
 import app.calisthenics.domain.model.BlockType
+import app.calisthenics.domain.model.Catalog
+import app.calisthenics.domain.model.ExerciseVariation
 import app.calisthenics.domain.model.Side
 import app.calisthenics.domain.model.Target
 import app.calisthenics.domain.model.TargetType
@@ -103,6 +105,16 @@ fun SessionScreen(modifier: Modifier = Modifier, onExit: () -> Unit) {
     LiveScreen(st, nowTick, modifier)
 }
 
+/** Written fallback used while a demonstration is held for teaching review. Kept separate so synthetic holds remain testable after all clips are approved. */
+@Composable
+internal fun HeldDemoInstructions(demonstration: ExerciseVariation, modifier: Modifier = Modifier) {
+    if (!demonstration.demonstrationHold) return
+    Column(modifier.testTag("session_demo_held"), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        Text(stringResource(R.string.progress_teaching_hold), style = MaterialTheme.typography.labelLarge)
+        demonstration.instructions.take(3).forEach { Text(it, style = MaterialTheme.typography.bodyMedium) }
+    }
+}
+
 /** The state of the logger for the work block [work]: lifted out of the card so the DONE button in the bottom row can confirm it. */
 @Stable
 private class LoggerState(val ctx: android.content.Context, val work: TimelineBlock, saved: app.calisthenics.domain.session.BlockLog?) {
@@ -139,7 +151,7 @@ private fun blockLabel(b: TimelineBlock): Int = when (b.type) {
  * No Too hard / Too easy / Pain here: they are given on the end screen.
  */
 @Composable
-private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
+internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, catalogOverride: Catalog? = null) {
     val ctx = LocalContext.current
     val b = st.currentBlock ?: return
     val names = SessionBus.names
@@ -153,8 +165,12 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
     val repWork = repLoggerBlock(st)
     val logger = rememberLogger(st, logFor ?: repWork)
     val haptic = LocalHapticFeedback.current
-    val demonstration = remember(b.variationId) { b.variationId?.let { loadCatalog(ctx).variation(it) } }
-    val clip = remember(b.variationId) { b.variationId?.let { DemoClips.file(ctx, it) } }
+    val catalog = remember(catalogOverride) { catalogOverride ?: loadCatalog(ctx) }
+    val heldIds = remember(catalogOverride) { catalogOverride?.variations?.filter { it.demonstrationHold }?.map { it.id }?.toSet() }
+    val demonstration = remember(b.variationId, catalog) { b.variationId?.let { catalog.variation(it) } }
+    val clip = remember(b.variationId, catalogOverride) {
+        b.variationId?.let { id -> if (heldIds == null) DemoClips.file(ctx, id) else DemoClips.file(ctx, id, heldIds) }
+    }
     val elapsed = (st.activeElapsedMs / 1000).toInt()
 
     Column(modifier.fillMaxSize().background(Color.White)) {
@@ -163,10 +179,10 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
             CompositionLocalProvider(LocalAppAccent provides LightAccent) {
                 CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) { Box(Modifier.weight(1f).fillMaxWidth().background(Color.White)) {
                     if (clip != null) Box(Modifier.fillMaxSize().padding(top = 132.dp), contentAlignment = Alignment.Center) { DemoPlayer(clip, controls = false, fit = true) }
-                    else if (demonstration?.demonstrationHold == true) Column(Modifier.align(Alignment.Center).padding(horizontal = Spacing.l).padding(top = 132.dp).testTag("session_demo_held"), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                        Text(stringResource(R.string.progress_teaching_hold), style = MaterialTheme.typography.labelLarge)
-                        demonstration.instructions.take(3).forEach { Text(it, style = MaterialTheme.typography.bodyMedium) }
-                    }
+                    else if (demonstration?.demonstrationHold == true) HeldDemoInstructions(
+                        demonstration,
+                        Modifier.align(Alignment.Center).padding(horizontal = Spacing.l).padding(top = 132.dp),
+                    )
                     Column(Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = Spacing.l, vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Row(verticalAlignment = Alignment.Top) {
                             Column(Modifier.weight(1f)) {

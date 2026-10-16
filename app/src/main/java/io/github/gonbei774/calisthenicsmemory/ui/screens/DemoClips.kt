@@ -29,8 +29,14 @@ object DemoClips {
                 app.calisthenics.domain.content.parseCatalog(it.readText()).variations.filter { v -> v.demonstrationHold }.map { v -> v.id }.toSet()
             }.also { heldForVersion = version to it }
         }
+        return file(ctx, id, held)
+    }
+
+    /** Shared policy seam for exercising a synthetic teaching hold even when the shipped catalog has none. */
+    internal fun file(ctx: Context, id: String, heldIds: Set<String>): File? {
+        val version = androidx.core.content.pm.PackageInfoCompat.getLongVersionCode(ctx.packageManager.getPackageInfo(ctx.packageName, 0))
         // Applies to every caller, including old saved workouts, onboarding and program playback.
-        if (id in held) return null
+        if (id in heldIds) return null
         val asset = id
         return cachedClip(File(ctx.cacheDir, "demos"), version, asset, assetSize = { assetSize(ctx, asset) }, open = { ctx.assets.open("demos/$asset.mp4") })
     }

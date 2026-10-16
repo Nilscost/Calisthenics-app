@@ -53,3 +53,8 @@ All 379 new clips and thumbnails are installed. Six camera-only corrections were
 The owner wants videos for every included exercise; written instructions do not replace an unclear demonstration. Reopen and redo all 25 held videos, then review their actual rendered movements before final installation. Extend the mannequin where necessary instead of accepting missing neck, scapular, finger, arch or thoracic motion.
 
 Fixed programs belong in the Routine section alongside saved routines. Remove the separate header Programs action. The owner did not request extra switches: remove Extras and the Power, Conditioning, Preparation and Mobility pool switches. These exercises remain available for manual addition in Workout preview and fixed routines, with equipment filtering. Clear old hidden pool selections so they cannot silently broaden generated strength workouts. Flow mode is explicitly accepted and stays. New information expanders show progression alternatives/support and program details; they do not change training settings.
+
+
+## Manual specialist stretch policy · 2026-10-16
+
+Applying the final scope corrections also to flexibility: new contract stretches and mobility drills are available through manual Preview choices and fixed routines, with equipment filtering. They are excluded from automatic inter-set and cool-down matching, so a general-strength workout does not unexpectedly prescribe a front/middle split or another specialist flexibility drill. Existing default stretches remain available for automatic recovery. No new switches are added.

@@ -48,6 +48,11 @@ DEMONSTRATION_HOLD = {
     "short-foot", "rower-situp", "turn-and-lunge",
 }
 
+
+def demonstration_is_held(variation_id: str, held_ids: set[str] | None = None) -> bool:
+    """Whether a variation uses written teaching cues instead of its bundled clip."""
+    return variation_id in (DEMONSTRATION_HOLD if held_ids is None else held_ids)
+
 # The six Explosive Calisthenics push-up variations are intentionally capped at
 # three reps per set. Other drills do not inherit this cap.
 EC_PUSHUP_CAPS = {
@@ -278,6 +283,9 @@ def _exercise(exercise: dict[str, Any]) -> dict[str, Any]:
         result["compatibleStretchIds"] = []
     if exercise["kind"] in {"STRETCH", "MOBILITY"}:
         result["defaultSeconds"] = exercise.get("defaultSeconds", 30)
+        # R8 flexibility/mobility contract entries are deliberate Preview picks.
+        # Keep them out of automatic inter-set recovery and cooldown matching.
+        result["optIn"] = True
     if exercise.get("cautionStrong"):
         result["cautionStrong"] = True
     if exercise.get("routineOnly"):
@@ -796,7 +804,7 @@ def import_contract(base: dict[str, Any], contract: dict[str, Any]) -> tuple[dic
         )
         if variation["id"] in PREHAB_IDS:
             variation["progressionGroup"] = "prehab"
-        variation["demonstrationHold"] = variation["id"] in DEMONSTRATION_HOLD
+        variation["demonstrationHold"] = demonstration_is_held(variation["id"])
 
     # Preserve both the prior and newly authored metadata in the standalone
     # sidecar. These structures are consumed by the tabs/equipment and pose work.
