@@ -36,7 +36,9 @@ appId: app.calisthenics.personal
     while: { notVisible: { id: tab_chip_squat } }
     times: 4
     commands:
-      - swipe: { start: "90%, 20%", end: "10%, 20%" }
+      - swipe:
+          from: { id: progress_type_tabs, point: "90%, 50%" }
+          direction: LEFT
 - tapOn: { id: tab_chip_squat }
 - takeScreenshot: 05-progress-squat-${VARIANT}
 # The tab chips scroll sideways: swipe the row until the tab is on screen.
@@ -44,7 +46,9 @@ appId: app.calisthenics.personal
     while: { notVisible: { id: tab_chip_hips } }
     times: 4
     commands:
-      - swipe: { start: "90%, 20%", end: "10%, 20%" }
+      - swipe:
+          from: { id: progress_type_tabs, point: "90%, 50%" }
+          direction: LEFT
 - tapOn: { id: tab_chip_hips }
 - takeScreenshot: 06-progress-hips-${VARIANT}
 # Kettlebell deadlift is a library variation, so open it through search instead of implying a main-tree rung.
@@ -68,14 +72,18 @@ appId: app.calisthenics.personal
     while: { notVisible: { id: tab_chip_core } }
     times: 5
     commands:
-      - swipe: { start: "90%, 20%", end: "10%, 20%" }
+      - swipe:
+          from: { id: progress_type_tabs, point: "90%, 50%" }
+          direction: LEFT
 - tapOn: { id: tab_chip_core }
 - takeScreenshot: 07d-progress-core-${VARIANT}
 - repeat:
     while: { notVisible: { id: tab_chip_squat } }
     times: 6
     commands:
-      - swipe: { start: "10%, 20%", end: "90%, 20%" }
+      - swipe:
+          from: { id: progress_type_tabs, point: "10%, 50%" }
+          direction: RIGHT
 - tapOn: { id: tab_chip_squat }
 - takeScreenshot: 07e-progress-squat-weighted-${VARIANT}
 # R7-T11 (D5, D6, O2): the push tab's planche lean says it needs the plank (a link); the detail has Edit and tappable Needs
@@ -83,12 +91,28 @@ appId: app.calisthenics.personal
     while: { notVisible: { id: tab_chip_push } }
     times: 6
     commands:
-      - swipe: { start: "10%, 20%", end: "90%, 20%" }
+      - swipe:
+          from: { id: progress_type_tabs, point: "10%, 50%" }
+          direction: RIGHT
 - tapOn: { id: tab_chip_push }
 - runFlow:
-    when: { notVisible: { id: route_chip_planche } }
+    when: { visible: "All progressions" }
     commands:
       - tapOn: { id: all_progressions }
+- repeat:
+    while: { notVisible: { id: route_chip_planche } }
+    times: 8
+    commands:
+      - swipe:
+          from: { id: progress_route_tabs, point: "90%, 50%" }
+          direction: LEFT
+- repeat:
+    while: { notVisible: { id: route_chip_planche } }
+    times: 8
+    commands:
+      - swipe:
+          from: { id: progress_route_tabs, point: "10%, 50%" }
+          direction: RIGHT
 - tapOn: { id: route_chip_planche }
 - scrollUntilVisible: { element: { id: tree_need_planche-lean }, direction: DOWN, timeout: 8000 }
 - takeScreenshot: 07f-progress-push-planche-note-${VARIANT}
@@ -102,7 +126,9 @@ appId: app.calisthenics.personal
     while: { notVisible: { id: tab_chip_row } }
     times: 6
     commands:
-      - swipe: { start: "10%, 20%", end: "90%, 20%" }
+      - swipe:
+          from: { id: progress_type_tabs, point: "10%, 50%" }
+          direction: RIGHT
 - tapOn: { id: tab_chip_row }
 - takeScreenshot: 07f-progress-row-${VARIANT}
 # L13: the Lower legs tab
@@ -110,7 +136,9 @@ appId: app.calisthenics.personal
     while: { notVisible: { id: tab_chip_calves } }
     times: 8
     commands:
-      - swipe: { start: "90%, 20%", end: "10%, 20%" }
+      - swipe:
+          from: { id: progress_type_tabs, point: "90%, 50%" }
+          direction: LEFT
 - tapOn: { id: tab_chip_calves }
 - takeScreenshot: 07g-progress-lower-legs-${VARIANT}
 # V07: the stretch library tab and one new stretch (sheet with clip, steps and cautions).
@@ -118,7 +146,9 @@ appId: app.calisthenics.personal
     while: { notVisible: { id: tab_chip_stretches } }
     times: 5
     commands:
-      - swipe: { start: "90%, 20%", end: "10%, 20%" }
+      - swipe:
+          from: { id: progress_type_tabs, point: "90%, 50%" }
+          direction: LEFT
 - tapOn: { id: tab_chip_stretches }
 - extendedWaitUntil: { visible: { id: "stretch_stretch-calf-wall" }, timeout: 10000 }
 - takeScreenshot: 08-stretch-list-${VARIANT}

@@ -120,7 +120,7 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
                 SegmentedButton(selected = mode == ProgressMode.TYPE, onClick = { modeName = ProgressMode.TYPE.name; selected = null; selectedRouteId = "" }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("progress_mode_type")) { Text(stringResource(R.string.progress_by_type)) }
                 SegmentedButton(selected = mode == ProgressMode.SKILL, onClick = { modeName = ProgressMode.SKILL.name; selected = null; selectedRouteId = "" }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("progress_mode_skill")) { Text(stringResource(R.string.progress_by_skill)) }
             }
-            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.s), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            Row(Modifier.fillMaxWidth().testTag("progress_type_tabs").horizontalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.s), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
                 if (mode == ProgressMode.TYPE) TreeTabs.all.forEach { t ->
                     FilterChip(
                         selected = t.id == tab.id, onClick = { tabId = t.id; selected = null },
@@ -195,14 +195,14 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
                             Text(stringResource(if (showAllProgressions) R.string.progress_default_progressions else R.string.progress_all_progressions))
                         }
                     }
-                    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.xs), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                    Row(Modifier.fillMaxWidth().testTag("progress_route_tabs").horizontalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.xs), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         availableRoutes.forEach { route ->
                             FilterChip(selected = route.id == activeRoute?.id, onClick = { selectedRouteId = route.id; selected = null; showRouteExtras = false },
                                 label = { Text(route.name) }, modifier = Modifier.testTag("route_chip_${route.id}"))
                         }
                     }
                 } else if (mode == ProgressMode.SKILL && availableRoutes.size > 1) {
-                    Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.xs), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                    Row(Modifier.fillMaxWidth().testTag("progress_route_tabs").horizontalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.xs), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         availableRoutes.forEach { route ->
                             FilterChip(selected = route.id == activeRoute?.id, onClick = { selectedRouteId = route.id; selected = null },
                                 label = { Text(route.name) }, modifier = Modifier.testTag("skill_route_chip_${route.id}"))

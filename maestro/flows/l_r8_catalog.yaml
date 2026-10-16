@@ -7,15 +7,39 @@ appId: app.calisthenics.personal
 - tapOn: { id: tab_progress }
 - extendedWaitUntil: { visible: { id: progress_search }, timeout: 10000 }
 - tapOn: { id: progress_mode_type }
-- scrollUntilVisible: { element: { id: tab_chip_power }, direction: RIGHT, speed: 70, timeout: 10000, optional: true }
-- scrollUntilVisible: { element: { id: tab_chip_power }, direction: LEFT, speed: 70, timeout: 10000 }
+- repeat:
+    while: { notVisible: { id: tab_chip_power } }
+    times: 24
+    commands:
+      - swipe:
+          from: { id: progress_type_tabs, point: "90%, 50%" }
+          direction: LEFT
+- repeat:
+    while: { notVisible: { id: tab_chip_power } }
+    times: 24
+    commands:
+      - swipe:
+          from: { id: progress_type_tabs, point: "10%, 50%" }
+          direction: RIGHT
 - tapOn: { id: tab_chip_power }
 - runFlow:
     when: { visible: "All progressions" }
     commands:
       - tapOn: { id: all_progressions }
-- scrollUntilVisible: { element: { id: route_chip_jump }, direction: RIGHT, speed: 70, timeout: 10000, optional: true }
-- scrollUntilVisible: { element: { id: route_chip_jump }, direction: LEFT, speed: 70, timeout: 10000 }
+- repeat:
+    while: { notVisible: { id: route_chip_jump } }
+    times: 24
+    commands:
+      - swipe:
+          from: { id: progress_route_tabs, point: "90%, 50%" }
+          direction: LEFT
+- repeat:
+    while: { notVisible: { id: route_chip_jump } }
+    times: 24
+    commands:
+      - swipe:
+          from: { id: progress_route_tabs, point: "10%, 50%" }
+          direction: RIGHT
 - tapOn: { id: route_chip_jump }
 - extendedWaitUntil: { visible: { id: tree_node_jump-squat }, timeout: 10000 }
 - takeScreenshot: 01-power-progression-${VARIANT}

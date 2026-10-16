@@ -13,8 +13,20 @@ appId: app.calisthenics.personal
       - tapOn: { id: all_progressions }
 - takeScreenshot: 01-default-progression-pool-${VARIANT}
 - tapOn: { id: all_progressions }
-- scrollUntilVisible: { element: { id: route_chip_pushup }, direction: RIGHT, speed: 70, timeout: 10000, optional: true }
-- scrollUntilVisible: { element: { id: route_chip_pushup }, direction: LEFT, speed: 70, timeout: 10000 }
+- repeat:
+    while: { notVisible: { id: route_chip_pushup } }
+    times: 8
+    commands:
+      - swipe:
+          from: { id: progress_route_tabs, point: "90%, 50%" }
+          direction: LEFT
+- repeat:
+    while: { notVisible: { id: route_chip_pushup } }
+    times: 8
+    commands:
+      - swipe:
+          from: { id: progress_route_tabs, point: "10%, 50%" }
+          direction: RIGHT
 - extendedWaitUntil: { visible: { id: route_chip_pushup }, timeout: 10000 }
 - tapOn: { id: route_chip_pushup }
 - scrollUntilVisible: { element: { id: tree_node_pushup-feet-elevated }, direction: DOWN, timeout: 12000 }

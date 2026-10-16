@@ -20,8 +20,20 @@ appId: app.calisthenics.personal
     when: { visible: "All progressions" }
     commands:
       - tapOn: { id: all_progressions }
-- scrollUntilVisible: { element: { id: route_chip_planche }, direction: RIGHT, speed: 70, timeout: 10000, optional: true }
-- scrollUntilVisible: { element: { id: route_chip_planche }, direction: LEFT, speed: 70, timeout: 10000 }
+- repeat:
+    while: { notVisible: { id: route_chip_planche } }
+    times: 8
+    commands:
+      - swipe:
+          from: { id: progress_route_tabs, point: "90%, 50%" }
+          direction: LEFT
+- repeat:
+    while: { notVisible: { id: route_chip_planche } }
+    times: 8
+    commands:
+      - swipe:
+          from: { id: progress_route_tabs, point: "10%, 50%" }
+          direction: RIGHT
 - tapOn: { id: route_chip_planche }
 - scrollUntilVisible: { element: { id: tree_need_planche-lean }, direction: DOWN, timeout: 12000 }
 - takeScreenshot: 02b2-planche-needs-plank-${VARIANT}
