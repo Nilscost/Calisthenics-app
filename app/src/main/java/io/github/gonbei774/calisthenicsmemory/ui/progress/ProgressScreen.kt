@@ -60,16 +60,16 @@ private enum class ProgressMode { TYPE, SKILL }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProgressScreen(modifier: Modifier = Modifier) {
+fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = null) {
     val ctx = LocalContext.current
     var refresh by remember { mutableIntStateOf(0) }
     val data by rememberTrainData(refresh)
+    val c = catalogOverride ?: data.catalog
     val profile = remember { ProfileStore.selected(ctx) }
     var dismissed by remember { mutableStateOf(SuggestionStore.dismissed(ctx)) }
-    val suggestion = remember(data, profile, dismissed) { suggest(data.catalog, profile, data.progress, dismissed) }
+    val suggestion = remember(c, data, profile, dismissed) { suggest(c, profile, data.progress, dismissed) }
     val goalId = remember { GoalStore.load(ctx) }
     val goal = Goals.byId(goalId)
-    val c = data.catalog
     val startTab = remember(c) { goal?.entryVariationId?.let { TreeTabs.tabForVariation(c, it) }?.id ?: "push" }
     var modeName by rememberSaveable { mutableStateOf(ProgressMode.TYPE.name) }
     val mode = ProgressMode.valueOf(modeName)
@@ -105,7 +105,7 @@ fun ProgressScreen(modifier: Modifier = Modifier) {
         Column(Modifier.padding(pad).fillMaxSize()) {
             Text(stringResource(R.string.tab_progress).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("progress_title"))
             suggestion?.let { s ->
-                SuggestionCard(data.catalog, s, onDismiss = { SuggestionStore.dismiss(ctx, s.id); dismissed = dismissed + s.id },
+                SuggestionCard(c, s, onDismiss = { SuggestionStore.dismiss(ctx, s.id); dismissed = dismissed + s.id },
                     onAccept = when (s) {
                         is Suggestion.RaiseLevel -> { {
                             SuggestionStore.accept(ctx, s.variationId, s.toTier, java.time.LocalDate.now().toEpochDay().toInt()); SuggestionStore.dismiss(ctx, s.id); dismissed = dismissed + s.id; refresh++

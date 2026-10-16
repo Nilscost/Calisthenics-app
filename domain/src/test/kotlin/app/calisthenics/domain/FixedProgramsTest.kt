@@ -119,12 +119,17 @@ class FixedProgramsTest {
 
     @Test fun heldPilatesDemonstrationsKeepProgramTargetsButDoNotClaimAClip() {
         val program = byProgram.getValue("pilates-mat-beginner")
-        val plan = (buildFixedProgramPlan(catalog, program, SeedProfiles.home, flow = false) as FixedProgramPlanResult.Ready).plan
-        val heldIds = catalog.variations.filter { it.demonstrationHold }.map { it.id }.toSet()
-        val heldBlocks = plan.blocks.filter { it.variationId in heldIds }
+        val heldId = "pilates-roll-up"
+        val heldCatalog = catalog.copy(variations = catalog.variations.map {
+            if (it.id == heldId) it.copy(demonstrationHold = true, mediaId = "synthetic-held-demo") else it
+        })
+        val plan = (buildFixedProgramPlan(heldCatalog, program, SeedProfiles.home, flow = false) as FixedProgramPlanResult.Ready).plan
+        val heldBlocks = plan.blocks.filter { it.variationId == heldId }
         assertTrue(heldBlocks.isNotEmpty())
         assertTrue(heldBlocks.all { it.mediaId == null })
         assertTrue(heldBlocks.all { it.note?.contains("written instructions") == true })
+        val heldItem = program.items.single { it.exerciseId == heldId }
+        assertTrue(heldBlocks.all { it.target?.value == (heldItem.reps ?: heldItem.seconds) })
         assertEquals(program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.reps ?: item.seconds } },
             plan.blocks.filter { it.variationId != null }.map { it.target!!.value })
     }

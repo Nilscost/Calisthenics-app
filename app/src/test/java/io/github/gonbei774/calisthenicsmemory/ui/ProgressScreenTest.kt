@@ -7,12 +7,15 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import io.github.gonbei774.calisthenicsmemory.ui.progress.ProgressScreen
+import app.calisthenics.domain.model.Catalog
+import io.github.gonbei774.calisthenicsmemory.ui.screens.DemoClips
 import io.github.gonbei774.calisthenicsmemory.ui.screens.GoalStore
 import io.github.gonbei774.calisthenicsmemory.ui.screens.LevelStore
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -31,7 +34,7 @@ class ProgressScreenTest {
             ctx.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit()
     }
 
-    private fun show() { rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { ProgressScreen() } }; rule.waitForIdle() }
+    private fun show(catalogOverride: Catalog? = null) { rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { ProgressScreen(catalogOverride = catalogOverride) } }; rule.waitForIdle() }
     private fun desc(tag: String) = rule.onNodeWithTag(tag).fetchSemanticsNode().config.first { it.key.name == "ContentDescription" }.value.let { (it as List<*>).first().toString() }
     private fun revealTreeNode(id: String) { rule.onNodeWithTag("tree_rows").performScrollToNode(hasTestTag("tree_node_$id")) }
     private fun chooseRouteContaining(id: String) {
@@ -287,10 +290,19 @@ class ProgressScreenTest {
     }
 
     @Test fun heldDemonstrationShowsWrittenCuesWithoutPlayingItsClip() {
-        val variation = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx).variations.firstOrNull { it.demonstrationHold } ?: return
-        show()
-        rule.onNodeWithTag("progress_search").performTextInput(variation.name); rule.waitForIdle()
+        val bundled = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx)
+        val variation = bundled.variation("wrist-palm-pulses") ?: error("Missing bundled exercise wrist-palm-pulses")
+        assertTrue("The exercise has a bundled demonstration asset", ctx.assets.open("demos/${variation.id}.mp4").use { it.readBytes().isNotEmpty() })
+        val heldIds = setOf(variation.id)
+        assertNull("The shared clip policy suppresses a held variation", DemoClips.file(ctx, variation.id, heldIds))
+        val syntheticHeldCatalog = bundled.copy(variations = bundled.variations.map { v ->
+            if (v.id == variation.id) v.copy(demonstrationHold = true) else v
+        })
+        show(syntheticHeldCatalog)
+        val query = variation.aliases.firstOrNull() ?: variation.name
+        rule.onNodeWithTag("progress_search").performTextInput(query); rule.waitForIdle()
         rule.onNodeWithTag("search_result_${variation.id}").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_title").assertTextEquals(variation.name.uppercase())
         rule.onNodeWithTag("detail_demo_held").assertExists()
         rule.onNodeWithText("Text cue only", substring = true).assertExists()
         rule.onNodeWithTag("detail_demo").assertDoesNotExist()

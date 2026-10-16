@@ -1,6 +1,7 @@
 package app.calisthenics.domain
 
 import app.calisthenics.domain.content.parseCatalog
+import app.calisthenics.domain.equipment.isAvailable
 import app.calisthenics.domain.equipment.SeedProfiles
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.planner.*
@@ -19,7 +20,8 @@ class ManualMobilityTest {
         equipmentAlternatives = listOf(RequirementSet(needs = listOf(EquipmentNeed("pullup-bar")))),
         instructions = listOf("Move gently through a comfortable range."),
     )
-    private val catalog = base.copy(variations = base.variations + mobility)
+    private val heldMobility = mobility.copy(id = "held-manual-mobility-test", familyId = "held-manual-mobility-test", demonstrationHold = true)
+    private val catalog = base.copy(variations = base.variations + listOf(mobility, heldMobility))
 
     private fun plan(profile: app.calisthenics.domain.model.EquipmentProfile, edits: PlanEdits = PlanEdits(), cooldown: Boolean = false) =
         (buildTrainPlan(catalog, StarterRoutine.routine, none, profile,
@@ -46,6 +48,8 @@ class ManualMobilityTest {
     @Test fun mobilityIsGearFilteredInTheExistingStretchPickerAndManualAddsCreateBlocks() {
         assertTrue(stretchChoices(catalog, SeedProfiles.home).any { it.id == mobility.id })
         assertFalse(stretchChoices(catalog, SeedProfiles.travel).any { it.id == mobility.id })
+        assertTrue("the held fixture is available, so the exclusion check is non-vacuous", isAvailable(heldMobility, SeedProfiles.home))
+        assertFalse(stretchChoices(catalog, SeedProfiles.home).any { it.id == heldMobility.id })
         assertFalse(stretchChoices(catalog, SeedProfiles.home).any { it.demonstrationHold })
 
         val extra = plan(SeedProfiles.home, PlanEdits(extraStretches = mapOf("push" to listOf(mobility.id))))
