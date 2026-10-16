@@ -101,6 +101,8 @@ data class SessionEvidence(
     val ruleSessions: Int = 1,
     /** Route used by the work blocks, null for historical plans and context-free evidence. */
     val progressionRouteId: String? = null,
+    /** Initial estimate from a related main exercise; no completed tiers are transferred. */
+    val inferredStartTier: Int? = null,
 ) {
     /** Spec §5 / ADR C2 exposure definition. */
     val qualifying: Boolean
@@ -153,6 +155,7 @@ fun deriveEvidence(
             ruleMet = ruleMetOf(vid),
             ruleSessions = plan.rule.sessions,
             progressionRouteId = routeByVariation[vid],
+            inferredStartTier = plan.blocks.firstOrNull { it.type == BlockType.WORK && it.variationId == vid && it.inferredStartTier == tier }?.inferredStartTier?.takeIf { tier != null },
         )
     }
 }

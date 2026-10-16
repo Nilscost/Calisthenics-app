@@ -2,6 +2,7 @@ package app.calisthenics.domain.planner
 
 import app.calisthenics.domain.equipment.isAvailable
 import app.calisthenics.domain.goals.Goals
+import app.calisthenics.domain.load.isLoaded
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.model.Target
 import app.calisthenics.domain.progression.ProgressSnapshot
@@ -49,4 +50,23 @@ fun cappedTarget(target: Target, policy: ProgressionPolicy): Target {
     val cap = policy.maxRepsPerSet ?: return target
     if (target.type != TargetType.REPS) return target
     return target.copy(value = minOf(target.value, cap), max = target.max?.let { minOf(it, cap) })
+}
+
+/** Product starting estimate, not an achievement or a claim of physiological equivalence. */
+fun inferredAlternativeTier(catalog: Catalog, main: ExerciseVariation, alternative: ExerciseVariation,
+    progress: ProgressSnapshot, routeId: String?): Int? {
+    if (alternative.id in progress.variations || main.familyId != alternative.familyId ||
+        catalog.progressionGroupOf(main.id) != catalog.progressionGroupOf(alternative.id) ||
+        main.kind != Kind.REPS || alternative.kind != Kind.REPS || main.isLoaded() || alternative.isLoaded() ||
+        main.unilateral != alternative.unilateral || main.patterns.toSet() != alternative.patterns.toSet() ||
+        progress.holdFor(main.familyId) != null) return null
+    val route = catalog.routeById(routeId) ?: return null
+    if (main.id !in route.mainPath || route.members.none { it.variationId == alternative.id && it.role == ProgressionRole.ALTERNATE && it.atVariationId == main.id } ||
+        catalog.exerciseGroups.none { it.mainVariationId == main.id && alternative.id in it.alternativeVariationIds }) return null
+    val source = catalog.policyFor(main)?.tiers?.firstOrNull { it.index == progress.tierFor(main.id) }?.target ?: return null
+    if (source.type != TargetType.REPS) return null
+    val tiers = catalog.policyFor(alternative)?.tiers.orEmpty().filter { it.target.type == TargetType.REPS }
+    val top = tiers.maxOfOrNull { it.index } ?: return null
+    return tiers.filter { it.index < top && it.target.value <= source.value * 3 / 4 }
+        .maxByOrNull { it.target.value }?.index?.takeIf { it > 1 }
 }

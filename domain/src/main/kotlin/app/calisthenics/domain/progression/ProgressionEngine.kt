@@ -64,7 +64,7 @@ data class VariationProgress(
     val familyId: String,
     val tier: Int,
     val enrolledAtDay: Int,
-    val baselineTier: Int?, // self-reported, shown separately (C5)
+    val baselineTier: Int?, // starting level, self-reported or inferred; completed tiers remain separate (C5)
     val achievedTiers: Set<Int>,
     val lastAutoAdvanceDay: Int?,
     val streakDays: List<Int>,
@@ -181,7 +181,9 @@ class ProgressionEngine(private val catalog: Catalog) {
 
         for (ev in evidence) items += Item(ev.day, 0, ev.sessionId + ev.variationId) {
             val vid = ev.variationId
-            var p = ensure(vid, ev.day, tier = ev.prescribedTier ?: 1)
+            // This is a planned starting estimate, not evidence of completed tiers, including when skipped.
+            val inferred = ev.inferredStartTier?.takeIf { it == ev.prescribedTier }
+            var p = ensure(vid, ev.day, tier = ev.prescribedTier ?: 1, baseline = inferred)
             p = p.copy(lastTrainedDay = maxOf(p.lastTrainedDay ?: ev.day, ev.day))
             val start = p
             active.putIfAbsent(p.familyId, mainFor(vid, ev.progressionRouteId))

@@ -459,6 +459,8 @@ data class TimelineBlock(
     val note: String? = null,
     /** Route context for replaying main-path advancement; absent in plans saved before route support. */
     val progressionRouteId: String? = null,
+    /** Estimated initial level for an untried alternative, distinct from completed achievement tiers. */
+    val inferredStartTier: Int? = null,
 ) {
     init { require(durationSeconds > 0) { "block $id must have positive duration" } }
 }

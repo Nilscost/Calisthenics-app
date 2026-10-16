@@ -54,7 +54,7 @@ sealed interface PlanResult {
     data class Infeasible(val reasons: List<ConstraintFailure>, val alternatives: List<PlanOption>) : PlanResult
 }
 
-private data class Chosen(val slot: RoutineSlot, val variation: ExerciseVariation, val tier: Tier, val loadGrams: Int? = null)
+private data class Chosen(val slot: RoutineSlot, val variation: ExerciseVariation, val tier: Tier, val loadGrams: Int? = null, val inferredStartTier: Int? = null)
 
 fun generate(input: PlanInput): PlanResult = Planner(input).run()
 
@@ -259,8 +259,11 @@ private class Planner(val input: PlanInput) {
             }
             pref = easier
         }
+        var inferredTier: Int? = null
         if (hold == null && draft.swaps[slot.id] == null) {
             val rotated = rotatedExercise(cat, pref, input.progress, input.profile, input.excludedVariationIds, route?.id)
+            if (rotated.id != pref.id && !draft.rule.isRange && !draft.timed && draft.freeTargets.isEmpty())
+                inferredTier = inferredAlternativeTier(cat, pref, rotated, input.progress, route?.id)
             if (rotated.id != pref.id) explain += "${rotated.name} is today's alternative to ${pref.name}; each exercise keeps its own progress."
             pref = rotated
         }
@@ -289,7 +292,11 @@ private class Planner(val input: PlanInput) {
         }
         val pol = cat.policyFor(v) ?: run { warn += "${v.name} has no progression policy; skipped."; return null }
         var tierIdx = input.progress.tierFor(v.id)
-        if (tierIdx == null) { tierIdx = 1; explain += "${v.name}: no assessed level yet — starting at the easiest target (tier 1)." }
+        if (tierIdx == null) {
+            tierIdx = inferredTier ?: 1
+            explain += if (inferredTier != null) "${v.name}: estimated starting target from the main exercise, reduced for the first workout. Your own results will guide this exercise from here."
+                else "${v.name}: no assessed level yet — starting at the easiest target (tier 1)."
+        }
         input.progress.reentryNeeded(v.id, input.nowDay)?.let { lower ->
             tierIdx = lower; needsAcceptance = true
             warn += "Welcome back — you haven't trained ${v.name} for ${app.calisthenics.domain.progression.REENTRY_DAYS}+ days. Planned at tier $lower; choose your own re-entry level before starting. Earned stars are kept."
@@ -309,7 +316,8 @@ private class Planner(val input: PlanInput) {
             if (t != tierIdx) explain += "${v.name}: level set to $t for today (it only counts towards progress at your own level)."
             tierIdx = t
         }
-        return Chosen(slot.copy(progressionRouteId = route?.id), v, pol.tier(tierIdx!!), load)
+        return Chosen(slot.copy(progressionRouteId = route?.id), v, pol.tier(tierIdx!!), load,
+            inferredTier?.takeIf { it == tierIdx && slot.id !in draft.tierOverrides })
     }
 
     private fun substitute(slot: RoutineSlot, original: ExerciseVariation, route: ProgressionRoute?): Pair<ExerciseVariation, Boolean>? {
@@ -392,7 +400,7 @@ private class Planner(val input: PlanInput) {
                 val dur = if ((free != null || ruleTarget != null) && isHold) maxOf(secs, (target.max ?: target.value) + 3) else secs
                 out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, t.index,
                     mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams, freeTarget = free != null, groupIndex = group,
-                    progressionRouteId = c.slot.progressionRouteId)
+                    progressionRouteId = c.slot.progressionRouteId, inferredStartTier = c.inferredStartTier.takeIf { free == null && ruleTarget == null })
             }
             val isLast = pos == order.lastIndex
             fun extras() {
