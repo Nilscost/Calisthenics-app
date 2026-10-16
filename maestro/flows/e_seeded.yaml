@@ -46,18 +46,23 @@ appId: app.calisthenics.personal
     commands:
       - swipe: { start: "90%, 20%", end: "10%, 20%" }
 - tapOn: { id: tab_chip_hips }
-- scrollUntilVisible: { element: { id: "tree_node_kettlebell-deadlift" }, direction: DOWN, timeout: 15000 }
 - takeScreenshot: 06-progress-hips-${VARIANT}
-- tapOn: { id: "tree_node_kettlebell-deadlift" }
-- extendedWaitUntil: { visible: { id: node_panel }, timeout: 10000 }
-- takeScreenshot: 07-kettlebell-panel-${VARIANT}
-- tapOn: { id: panel_open_detail }
+# Kettlebell deadlift is a library variation, so open it through search instead of implying a main-tree rung.
+- tapOn: { id: progress_search }
+- inputText: "Kettlebell Deadlift"
+- hideKeyboard
+- extendedWaitUntil: { visible: { id: search_result_kettlebell-deadlift }, timeout: 10000 }
+- takeScreenshot: 07-kettlebell-search-${VARIANT}
+- tapOn: { id: search_result_kettlebell-deadlift }
 - extendedWaitUntil: { visible: { id: exercise_detail }, timeout: 10000 }
 - takeScreenshot: 07b-kettlebell-detail-${VARIANT}
 # V26: the weight track under the five levels
 - scrollUntilVisible: { element: { id: "weight_step_.*" }, direction: DOWN, timeout: 8000, optional: true }
 - takeScreenshot: 07c-kettlebell-weights-${VARIANT}
 - tapOn: { id: detail_back }
+- tapOn: { id: progress_search }
+- eraseText: 100
+- hideKeyboard
 # V25: the core tab with the tuck L-sit; R7-T11: the weighted exercises sit in the movement tabs (no "With weights" tab)
 - repeat:
     while: { notVisible: { id: tab_chip_core } }
@@ -80,13 +85,18 @@ appId: app.calisthenics.personal
     commands:
       - swipe: { start: "10%, 20%", end: "90%, 20%" }
 - tapOn: { id: tab_chip_push }
-- scrollUntilVisible: { element: { id: tree_need_planche-lean }, direction: DOWN, timeout: 8000, optional: true }
+- runFlow:
+    when: { notVisible: { id: route_chip_planche } }
+    commands:
+      - tapOn: { id: all_progressions }
+- tapOn: { id: route_chip_planche }
+- scrollUntilVisible: { element: { id: tree_need_planche-lean }, direction: DOWN, timeout: 8000 }
 - takeScreenshot: 07f-progress-push-planche-note-${VARIANT}
-- tapOn: { id: tree_need_planche-lean, optional: true }
-- extendedWaitUntil: { visible: { id: detail_edit }, timeout: 8000, optional: true }
-- tapOn: { id: detail_edit, optional: true }
+- tapOn: { id: tree_need_planche-lean }
+- extendedWaitUntil: { visible: { id: detail_edit }, timeout: 8000 }
+- tapOn: { id: detail_edit }
 - takeScreenshot: 07g-detail-edit-${VARIANT}
-- tapOn: { id: detail_back, optional: true }
+- tapOn: { id: detail_back }
 # L04: the Row tab (swipe the chip row back)
 - repeat:
     while: { notVisible: { id: tab_chip_row } }

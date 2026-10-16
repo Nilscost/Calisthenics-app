@@ -3,16 +3,44 @@ appId: app.calisthenics.personal
 ---
 - launchApp
 - runFlow: ../common/dismiss_system_dialogs.yaml
+- runFlow:
+    when: { visible: { id: session_pause } }
+    commands:
+      - tapOn: { id: session_more }
+      - tapOn: { id: session_end }
+      - tapOn: { id: session_end_confirm }
+      - extendedWaitUntil: { visible: { id: end_done }, timeout: 15000 }
+      - tapOn: { id: end_done }
+- runFlow:
+    when: { visible: { id: end_done } }
+    commands:
+      - tapOn: { id: end_done }
 - extendedWaitUntil: { visible: { id: bottom_bar }, timeout: 15000 }
 - tapOn: { id: tab_train }
 - tapOn: { id: open_programs }
 - extendedWaitUntil: { visible: { id: program_army-hsd }, timeout: 10000 }
+- assertVisible: { id: program_summary_army-hsd }
+- takeScreenshot: 01-programs-compact-${VARIANT}
+- runFlow:
+    when: { notVisible: { id: program_line_army-hsd_0 } }
+    commands:
+      - tapOn: { id: program_open_army-hsd }
+- extendedWaitUntil: { visible: { id: program_line_army-hsd_0 }, timeout: 10000 }
 - assertVisible: { id: program_flow_army-hsd }
-- takeScreenshot: 01-programs-${VARIANT}
+- scrollUntilVisible: { element: { id: program_start_army-hsd }, direction: DOWN, timeout: 15000 }
+- takeScreenshot: 02-program-details-${VARIANT}
 - tapOn: { id: program_start_army-hsd }
 - extendedWaitUntil: { visible: { id: session_pause }, timeout: 10000 }
 - assertVisible: { id: session_time }
 - assertNotVisible: { id: logger }
+- assertNotVisible: { id: logger_plus }
+- assertNotVisible: { id: logger_too_easy }
 - assertNotVisible: { id: session_done }
 - assertNotVisible: { id: session_skip }
-- takeScreenshot: 02-flow-session-${VARIANT}
+- takeScreenshot: 03-flow-session-${VARIANT}
+- tapOn: { id: session_more }
+- tapOn: { id: session_end }
+- tapOn: { id: session_end_confirm }
+- extendedWaitUntil: { visible: { id: end_done }, timeout: 15000 }
+- takeScreenshot: 04-flow-end-screen-${VARIANT}
+- tapOn: { id: end_done }

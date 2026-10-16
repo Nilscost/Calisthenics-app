@@ -1,0 +1,2617 @@
+{
+  "date": "2026-10-16",
+  "sourceManifest": "docs/evidence/clips-r8/render-input-freeze-2026-10-16.json",
+  "encodedManifest": "work/clips-bakeoff/encode-review-2026-10-16.json",
+  "scope": "Media QA triage only; this does not approve app installation, final exercise inclusion, or full semantic teaching quality. Correction: hspu-free-head was checked using shoulder\u2013elbow\u2013wrist angle across all frames after recognizing that constant bone-segment lengths are expected. Elbow angle spans 71.77\u00b0 to 164.79\u00b0 (93.02\u00b0 range), confirming visible press motion; removed it from new-hold recommendations.",
+  "sampling": {
+    "count": 6,
+    "from": "Actual encoded H.264 MP4 outputs, decoded with FFmpeg; evenly spaced unique frames at frame indices floor(k*N/6), k=0..5.",
+    "appearance": "Encoded outputs already use the canonical white-composited 480x360 view.",
+    "contactSheets": "/tmp/r8-mp4-qa-sheets-2026-10-16/all-01.jpg through all-32.jpg",
+    "coverage": 379,
+    "manualReview": "Six-frame contact sheets were visually triaged across all 379 frozen IDs. Known unresolved instructional/rig limitations from docs/evidence/clips-r8/review.md and docs/28-r8-simplicity-review.md remain explicitly unresolved. Specific follow-up: all 32 contact-sheet pages were accounted for (379/379 IDs). Rower sit-up was evaluated at the peak pose with all major support candidates and prop metadata; short-foot was checked for actual foot/ankle motion across all 120 joint frames."
+  },
+  "counts": {
+    "frozenIds": 379,
+    "sampled": 379,
+    "newHoldRecommended": 7,
+    "needsRootReview": 3,
+    "knownLimitUnresolved": 38,
+    "noObviousCriticalRenderDefectInSamples": 331
+  },
+  "newHoldCandidates": [
+    {
+      "id": "flag-support-press",
+      "type": "prop_occlusion",
+      "reason": "Across six actual MP4 samples, the opaque wall hides the working-side arm and pole/wall support contact; the defining press action is difficult to read."
+    },
+    {
+      "id": "neck-head-raise-manual",
+      "type": "subtle_action",
+      "reason": "The motion is nonzero (head range 2.4 cm, neck 1.2 cm, working hand 3.9 cm) but the head-raise/manual-resistance cue is not legible at the rendered scale."
+    },
+    {
+      "id": "handstand-wall-one-foot",
+      "type": "prop_occlusion",
+      "reason": "The wall blocks nearly the entire body and the foot-to-wall change that defines the one-foot variation."
+    },
+    {
+      "id": "headstand-wall",
+      "type": "prop_occlusion",
+      "reason": "The wall occludes nearly the whole inverted body through the sampled loop; head/hand support and posture cannot be checked visually."
+    },
+    {
+      "id": "hspu-wall-deficit",
+      "type": "prop_occlusion",
+      "reason": "The wall covers the inverted body through most of the loop; only a sliver remains visible, so the deficit press action is not reviewable."
+    },
+    {
+      "id": "rower-situp",
+      "type": "unsupported_peak_pose",
+      "reason": "Peak curl is unsupported: at frame 48/96 the lowest major body points are hips z=0.452 m and pelvis z=0.480 m, with knees at 0.609 m and no equipment/prop. The encoded MP4 shows the body suspended over the shadow; mark held pending correction."
+    },
+    {
+      "id": "short-foot",
+      "type": "defining_motion_not_visible",
+      "reason": "Static seated setup does not show intrinsic foot-arch shortening, the defining action. Hold the video pending a teachable replacement or corrected demonstration."
+    }
+  ],
+  "needsRootReview": [
+    {
+      "id": "handstand-press-wall-negative",
+      "reason": "Wall obscures much of the body. The lowering phase remains partly visible beside the wall, so ask root to decide whether the actual view is sufficient for the negative action."
+    },
+    {
+      "id": "stretch-shoulder-er",
+      "reason": "The model is beside a large panel and the active wall contact is partly occluded; root should decide if the contact cue is clear enough at phone scale."
+    },
+    {
+      "id": "turn-and-lunge",
+      "reason": "Late samples show a four-point, hands-and-knees posture after the turn/reach. This may be the authored ground-reach transition, but compare against the intended lunge cycle before accepting."
+    }
+  ],
+  "knownLimitsOutsideFrozenManifest": [
+    {
+      "id": "stretch-thoracic",
+      "reason": "Supplemental existing output outside the 379-ID frozen manifest; existing owner hold remains. Sampled loop shows arm movement without independent thoracic rotation."
+    }
+  ],
+  "perId": [
+    {
+      "id": "alternate-twist-jump",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The two-hinge mannequin has no independent pelvic/chest yaw or head yaw; turning is approximate and does not teach isolated trunk rotation/look-back."
+        }
+      ]
+    },
+    {
+      "id": "ankle-hop-hip-twist",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ankle-hop-side-to-side",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "arms-biceps-curl",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "arms-triceps-extension",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "back-extension-floor",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "back-lever",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "back-lever-adv-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "back-lever-one-leg",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "back-lever-straddle",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "back-lever-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "balance-single-leg",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "balance-single-leg-cushion",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "balance-single-leg-eyes-closed",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The rig has no eyelids; the required eyes-closed condition is not shown."
+        }
+      ]
+    },
+    {
+      "id": "band-pull-apart",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bear-crawl",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bear-plank",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bend-and-reach",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bent-leg-raise-army",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bicycle-crunch",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bird-dog",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bird-dog-arm-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bird-dog-leg-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bird-dog-quadruped",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "body-saw",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bounding-alternate",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bounding-single-leg",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "box-jump",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "box-jump-rebound",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "box-push-off-alternating",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "box-push-off-single",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "box-step-off-landing",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bridge-closing",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bridge-half",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bridge-reverse-plank",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bridge-stand-to-stand",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bridge-wall-push-off",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "bridge-wall-walkup",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "burpee",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "burpee-pushup",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "butt-kicks",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "calf-raise-bent-knee",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "calf-raise-single-bent-knee",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "calf-raise-step",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "calf-raise-step-bent-knee",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "calf-raise-step-single",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "calf-raise-step-single-bent-knee",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "carioca",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The two-hinge mannequin has no independent pelvic/chest yaw or head yaw; turning is approximate and does not teach isolated trunk rotation/look-back."
+        }
+      ]
+    },
+    {
+      "id": "chin-nod-supine",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The mannequin lacks independent cervical retraction/translation; supine nod and head lift are only small pitch/lift approximations, and isometric force is schematic."
+        }
+      ]
+    },
+    {
+      "id": "chin-tuck-head-lift",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The mannequin lacks independent cervical retraction/translation; supine nod and head lift are only small pitch/lift approximations, and isometric force is schematic."
+        }
+      ]
+    },
+    {
+      "id": "chin-tuck-seated",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The mannequin lacks independent cervical retraction/translation; supine nod and head lift are only small pitch/lift approximations, and isometric force is schematic."
+        }
+      ]
+    },
+    {
+      "id": "clamshell",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "cone-hops-front",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "cone-hops-lateral",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "copenhagen-adduction",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "crab-walk",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "criss-cross-jump",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "crouch-run",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "crunch",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "cuban-press",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "curl-up-mcgill",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dead-bug-90-90",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dead-bug-brace",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dead-bug-single-leg",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "deep-squat-hold",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "depth-jump",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dip-bench-bent-knee",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dip-bench-feet-elevated",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dip-bench-straight-leg",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dip-feet-supported",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dip-forward-lean",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dip-jumping",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dip-korean",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dip-l-sit",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dip-russian",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dip-straight-bar",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "donkey-kick",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dragon-flag",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dragon-flag-adv-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dragon-flag-candlestick",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dragon-flag-negative",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dragon-flag-one-leg",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "dragon-flag-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "eight-count-t-pushup",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "elbow-lever",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "elbow-lever-straddle",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "elbow-lever-umbrella",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "external-rotation-band",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "external-rotation-band-90",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "external-rotation-side-lying",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "face-pull",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "fire-hydrant",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-bent-leg-press",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-clutch",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-clutch-bent-leg",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-clutch-diagonal",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-clutch-diagonal-split",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-clutch-diagonal-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-clutch-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-clutch-horizontal-split",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-clutch-horizontal-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-kick-press",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-press",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-press-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-split-press",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-support-press",
+      "visualStatus": "NEW_HOLD_RECOMMENDED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "type": "prop_occlusion",
+          "reason": "Across six actual MP4 samples, the opaque wall hides the working-side arm and pole/wall support contact; the defining press action is difficult to read."
+        }
+      ]
+    },
+    {
+      "id": "flag-vertical-chamber-press",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "flag-vertical-press",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "floor-angel",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "forearm-rotation-fist",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "Fist orientation is schematic because independent forearm-bone twist and individual fingers are absent."
+        }
+      ]
+    },
+    {
+      "id": "four-square-hops",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "frog-jumps",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "frog-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "frogger",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "front-kick-toe-touch",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "front-lever",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "front-lever-one-leg",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "front-lever-row",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "front-lever-row-adv-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "front-lever-row-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "front-lever-row-straddle",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "front-lever-row-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "grip-eagle-claw",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "grip-horizontal-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "grip-one-arm-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "grip-one-arm-towel-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "grip-towel-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "grip-twin-towel-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "grip-uneven-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "grip-uneven-towel-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "half-jack",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "half-squat-laterals",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "handstand-free",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "handstand-kick-up",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "handstand-press-bent-arm",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "handstand-press-elevated",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "handstand-press-straddle",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "handstand-press-wall-negative",
+      "visualStatus": "NEEDS_ROOT_REVIEW",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "type": "visual_semantic_question",
+          "reason": "Wall obscures much of the body. The lowering phase remains partly visible beside the wall, so ask root to decide whether the actual view is sufficient for the negative action."
+        }
+      ]
+    },
+    {
+      "id": "handstand-toe-pulls",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "handstand-wall-one-foot",
+      "visualStatus": "NEW_HOLD_RECOMMENDED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "type": "prop_occlusion",
+          "reason": "The wall blocks nearly the entire body and the foot-to-wall change that defines the one-foot variation."
+        }
+      ]
+    },
+    {
+      "id": "handstand-wall-plank",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "handstand-wall-walk-up",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hanging-knee-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hanging-knee-raise-twisting",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hanging-leg-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hanging-leg-raise-bent",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hanging-windshield-wiper",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hanging-windshield-wiper-half",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "harop-curl",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "harop-curl-beginner",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "headstand-forearm",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "headstand-tripod",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "headstand-tripod-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "headstand-wall",
+      "visualStatus": "NEW_HOLD_RECOMMENDED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "type": "prop_occlusion",
+          "reason": "The wall occludes nearly the whole inverted body through the sampled loop; head/hand support and posture cannot be checked visually."
+        }
+      ]
+    },
+    {
+      "id": "heel-hook",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hexagon-drill",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "high-jumper",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "high-knees",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hip-lateral-leg-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hip-medial-leg-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hip-raise-pushup",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hip-thrust",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hip-thrust-single-leg",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hop-single-leg-lateral",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hop-single-leg-stick",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hspu-free",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "hspu-free-head",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": [],
+      "motionCheck": {
+        "joint": "elbow angle",
+        "minimumDegrees": 71.77,
+        "maximumDegrees": 164.79,
+        "rangeDegrees": 93.02,
+        "conclusion": "clear elbow flexion through the press; fixed segment lengths are expected and do not indicate absent movement"
+      }
+    },
+    {
+      "id": "hspu-wall-deficit",
+      "visualStatus": "NEW_HOLD_RECOMMENDED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "type": "prop_occlusion",
+          "reason": "The wall covers the inverted body through most of the loop; only a sliver remains visible, so the deficit press action is not reviewable."
+        }
+      ]
+    },
+    {
+      "id": "ice-cream-maker",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "inchworm",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "joint-circles",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-block",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-broad",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-broad-consecutive",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-butt-kick",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-lateral",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-rope",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "Body motion shows hops and wrist circles, but no rope loop/pass is represented."
+        }
+      ]
+    },
+    {
+      "id": "jump-rope-double-under",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "Body motion shows hops and wrist circles, but no rope loop/pass is represented."
+        }
+      ]
+    },
+    {
+      "id": "jump-split",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-split-cycle",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-squat",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-tuck-catch",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-tuck-slap",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jump-vertical",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "jumping-jack",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "knee-raise-supported",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "l-sit-compression-lift",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "l-sit-straddle",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "landing-stick",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "lateral-shuffle",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "leg-swings",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "leg-tuck-and-twist",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "lunge-lateral",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "lunge-reverse",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "lying-bent-knee-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "lying-knee-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "mountain-climber",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "mountain-climber-cross-body",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "mountain-climber-slow",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "muscle-up-kipping",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "muscle-up-negative",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "natural-leg-extension",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "neck-head-raise-manual",
+      "visualStatus": "NEW_HOLD_RECOMMENDED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "type": "subtle_action",
+          "reason": "The motion is nonzero (head range 2.4 cm, neck 1.2 cm, working hand 3.9 cm) but the head-raise/manual-resistance cue is not legible at the rendered scale."
+        }
+      ]
+    },
+    {
+      "id": "neck-isometric-4-way",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The mannequin lacks independent cervical retraction/translation; supine nod and head lift are only small pitch/lift approximations, and isometric force is schematic."
+        }
+      ]
+    },
+    {
+      "id": "petersen-step-up",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pike-pushup-hands-elevated",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pilates-corkscrew",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-double-leg-kick",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-double-leg-stretch",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-mermaid",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-open-leg-rocker",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-roll-over",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-roll-up",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-rolling-like-a-ball",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-saw",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-scissors",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-seal",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-single-leg-circle",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-single-leg-stretch",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-spine-stretch-forward",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "pilates-spine-twist",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The existing review keeps Pilates draft clips on an integration hold: two-hinge spine/shared yaw; no independent head turn, detailed foot roll, or finger motion where instructed. Sampled choreography is visible but this is not app teaching acceptance."
+        }
+      ]
+    },
+    {
+      "id": "planche-frog-stand",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "planche-frog-stand-straight-arm",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "planche-full",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "planche-straddle",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "planche-tuck-pushup",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "plank-arm-leg-reach",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "plank-contralateral",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "plank-long-lever",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pogo-hop",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "power-skip",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "prone-i-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "prone-l-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "prone-row-army",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "prone-t-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "prone-w-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "prone-y-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-archer",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-commando",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-false-grip-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-jumping",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-kip-swing",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-kipping",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-l-sit",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-one-arm",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-one-arm-assisted",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-one-arm-flex-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-one-arm-negative",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-partial",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-pullover",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-pullover-jumping",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-sternum",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-typewriter",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pullup-uneven",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-chest-strike",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-clap",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-half-one-arm",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-hindu",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-kneeling-push-off",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-one-arm-elevated",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-one-arm-straight-body",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-pop-up",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-pop-up-incline",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-pop-up-wide-close",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-pseudo-planche",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-single-leg",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-uneven",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "pushup-wall-push-away",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "quadraplex",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "quarter-turn-jump",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The two-hinge mannequin has no independent pelvic/chest yaw or head yaw; turning is approximate and does not teach isolated trunk rotation/look-back."
+        }
+      ]
+    },
+    {
+      "id": "reverse-crunch",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "reverse-nordic",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-dip",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-dip-l",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-dip-negative",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-dip-rto",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-false-grip-hang",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-l-sit",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-muscle-up",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-muscle-up-negative",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-pppu-40",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-pppu-60",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-pushup",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-pushup-rto",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-pushup-rto-archer",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-pushup-wide",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-support-hold",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "ring-support-rto",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "rolling-sit-up",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "rolling-squat",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "rollout-knees",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "rollout-negative",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "rollout-one-arm",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "rollout-ramp",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "rollout-standing",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "row-archer-arm-in",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "row-one-arm",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "row-one-arm-straddle",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "rower-situp",
+      "visualStatus": "NEW_HOLD_RECOMMENDED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "unsupported_peak_pose",
+          "reason": "At peak extension (frame 48/96), no body support contact is visible: pelvis z=0.480 m, hip z=0.452 m, knee z=0.609 m, ankle/toe z=0.752 m, shoulder/wrist z=0.935 m, head z=1.164 m; there are no props. The encoded MP4 shows the entire body floating above the floor shadow. This breaks the expected floor-supported sit-up/rower position."
+        }
+      ]
+    },
+    {
+      "id": "russian-twist",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "scapular-pushup",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "No scapula joint; isolated blade motion is only a tiny thorax approximation, so the defining scapular action is not demonstrated."
+        }
+      ]
+    },
+    {
+      "id": "scapular-pushup-knee",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "No scapula joint; isolated blade motion is only a tiny thorax approximation, so the defining scapular action is not demonstrated."
+        }
+      ]
+    },
+    {
+      "id": "scapular-pushup-wall",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "No scapula joint; isolated blade motion is only a tiny thorax approximation, so the defining scapular action is not demonstrated."
+        }
+      ]
+    },
+    {
+      "id": "seal-jack",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "seated-knee-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "short-foot",
+      "visualStatus": "NEW_HOLD_RECOMMENDED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "defining_motion_not_visible",
+          "reason": "The defining short-foot action (intrinsic arch shortening) is absent. In the 120-frame joint data, ankle/toe and hand/wrist positions are fixed; only pelvis/spine/chest/head translate by about 2 cm. The MP4 shows a static seated setup."
+        }
+      ]
+    },
+    {
+      "id": "shoulder-pop",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "shoulder-roll",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "shuttle-sprint",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "side-lying-leg-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "side-plank-hip-raise",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "side-plank-knee",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "side-skip",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "side-to-side-knee-lifts",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "sissy-squat",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "sissy-squat-assisted",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "sit-up",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "skater-bound",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "skin-the-cat",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "skipping",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "spanish-squat",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "sprawl",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-assisted",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-bender",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-box",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-close",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-cossack",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-half",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-horse-stance",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-pistol-elevated",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-pistol-negative",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-shrimp-deficit",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-shrimp-two-hand",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-thrust",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-thrust-step-back",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-uneven",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "squat-wall-sit",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stair-descent-slow",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "star-jack",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "step-up",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "step-up-deep",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "straddle-run",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stretch-downward-dog",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stretch-figure-four",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stretch-groin",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stretch-knee-to-chest",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stretch-neck-side",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "Static seated setup with no independent neck side tilt."
+        }
+      ]
+    },
+    {
+      "id": "stretch-overhead-arm-pull",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stretch-shoulder-er",
+      "visualStatus": "NEEDS_ROOT_REVIEW",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "type": "visual_semantic_question",
+          "reason": "The model is beside a large panel and the active wall contact is partly occluded; root should decide if the contact cue is clear enough at phone scale."
+        }
+      ]
+    },
+    {
+      "id": "stretch-sphinx",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stretch-spiderman",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stretch-split-front",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stretch-split-middle",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stretch-twist-easy",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "Seated twist variation is visible, but shared pelvic/thoracic yaw cannot teach isolated thoracic rotation."
+        }
+      ]
+    },
+    {
+      "id": "stretch-twist-full",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "Seated twist variation is visible, but shared pelvic/thoracic yaw cannot teach isolated thoracic rotation."
+        }
+      ]
+    },
+    {
+      "id": "stretch-twist-half",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "Seated twist variation is visible, but shared pelvic/thoracic yaw cannot teach isolated thoracic rotation."
+        }
+      ]
+    },
+    {
+      "id": "stretch-twist-straight-leg",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "Seated twist variation is visible, but shared pelvic/thoracic yaw cannot teach isolated thoracic rotation."
+        }
+      ]
+    },
+    {
+      "id": "stretch-twist-three-quarter",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "Seated twist variation is visible, but shared pelvic/thoracic yaw cannot teach isolated thoracic rotation."
+        }
+      ]
+    },
+    {
+      "id": "stretch-wrist-prayer",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "stretch-wrist-reverse-prayer",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "support-scapular-shrug",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "No scapula joint; isolated blade motion is only a tiny thorax approximation, so the defining scapular action is not demonstrated."
+        }
+      ]
+    },
+    {
+      "id": "swimmer",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "terminal-knee-extension",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "toes-to-bar",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "turn-and-lunge",
+      "visualStatus": "NEEDS_ROOT_REVIEW",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "type": "visual_semantic_question",
+          "reason": "Late samples show a four-point, hands-and-knees posture after the turn/reach. This may be the authored ground-reach transition, but compare against the intended lunge cycle before accepting."
+        }
+      ]
+    },
+    {
+      "id": "v-up-straddle",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "v-up-tuck",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "wall-slide",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "windmill-army",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "The two-hinge mannequin has no independent pelvic/chest yaw or head yaw; turning is approximate and does not teach isolated trunk rotation/look-back."
+        }
+      ]
+    },
+    {
+      "id": "windshield-wiper-bent-knee",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "windshield-wiper-floor",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "wrist-curl-eccentric",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "wrist-palm-pulses",
+      "visualStatus": "KNOWN_LIMIT_UNRESOLVED",
+      "sampledFrames": 6,
+      "flags": [
+        {
+          "code": "teaching_limit",
+          "reason": "Rigid hand/palm pivot is shown, but individual finger lifts cannot be demonstrated."
+        }
+      ]
+    },
+    {
+      "id": "wrist-pushup",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "wrist-pushup-knees",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "wrist-seated-mobility",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "y-squat",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    },
+    {
+      "id": "zigzag-hop",
+      "visualStatus": "SAMPLED_NO_OBVIOUS_CRITICAL_RENDER_DEFECT",
+      "sampledFrames": 6,
+      "flags": []
+    }
+  ],
+  "rootDisposition": {
+    "cameraRepairs": "Six full Cycles sequences repaired and installed; see camera-repair-2026-10-16.json. flag-support-press hold removed after review.",
+    "additionalHeld": [
+      "short-foot",
+      "rower-situp",
+      "turn-and-lunge"
+    ],
+    "reviewedWithoutNewHold": [
+      "planche",
+      "hspu-free-head",
+      "stretch-shoulder-er"
+    ],
+    "totalRuntimeHolds": 25,
+    "scope": "Baseline triage counts above precede camera repairs; retained as audit history. Sampled visual QA does not imply owner or clinical approval."
+  }
+}

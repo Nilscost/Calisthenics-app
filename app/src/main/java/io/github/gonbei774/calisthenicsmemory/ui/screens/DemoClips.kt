@@ -16,6 +16,7 @@ import androidx.compose.ui.semantics.semantics
 import java.io.File
 
 object DemoClips {
+    private var heldForVersion: Pair<Long, Set<String>>? = null
     /**
      * Clips are rendered in Blender (tools/blender, installed by install_clips.py) and bundled in assets/demos/<variationId>.mp4. VideoView needs a file, so the clip is copied to the cache.
      * R7-T07 (B10): the cached copy is keyed on the app's versionCode and the asset's size, and the first run of a new version clears the old files,
@@ -23,6 +24,13 @@ object DemoClips {
      */
     fun file(ctx: Context, id: String): File? {
         val version = androidx.core.content.pm.PackageInfoCompat.getLongVersionCode(ctx.packageManager.getPackageInfo(ctx.packageName, 0))
+        val held = synchronized(this) {
+            heldForVersion?.takeIf { it.first == version }?.second ?: ctx.assets.open("catalog.json").bufferedReader().use {
+                app.calisthenics.domain.content.parseCatalog(it.readText()).variations.filter { v -> v.demonstrationHold }.map { v -> v.id }.toSet()
+            }.also { heldForVersion = version to it }
+        }
+        // Applies to every caller, including old saved workouts, onboarding and program playback.
+        if (id in held) return null
         val asset = id
         return cachedClip(File(ctx.cacheDir, "demos"), version, asset, assetSize = { assetSize(ctx, asset) }, open = { ctx.assets.open("demos/$asset.mp4") })
     }

@@ -5,6 +5,8 @@ Galaxy S21's 1080×2400 at 420 dpi, in three variants: `light`, `dark`, `font13`
 
 - Flows run in file order per variant. `a_onboarding` starts from a fresh install (`clearState`); later flows continue
   from the state it leaves (onboarding done, Normal answers).
+- R8 coverage is split across `l_r8_catalog` (Power route + alias search), `m_r8_programs_flow` (compact Programs list, authored details and flow workout), `n_r8_preview_rest_extras` (Train's extra pools and adjustable plain recovery), and `o_r8_progress_routes` (default pool, deliberate all-routes picker and collapsed alternate). `d_tabs` also selects the Planche route explicitly before its linked prerequisite detail.
+- Progression routes that require equipment stay hidden until the selected profile has it. Route-picker flows should opt into All progressions and select a named route; do not treat a missing route chip under the default profile as a screen failure.
 - Each flow gets the variable `VARIANT`. Name screenshots `<NN>-<step>-${VARIANT}` with no folder (Maestro adds
   `.png`; it refuses paths outside its output folder, and the script files them under the flow's name).
 - Find controls by test tag (`id:`; the app exposes test tags as resource ids) or by visible text. Bottom sheets and

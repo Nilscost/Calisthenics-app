@@ -11,6 +11,7 @@ import app.calisthenics.domain.model.BlockType
 import app.calisthenics.domain.model.EquipmentItem
 import app.calisthenics.domain.model.EquipmentProfile
 import app.calisthenics.domain.model.TargetType
+import app.calisthenics.domain.model.TimelineBlock
 import app.calisthenics.domain.model.WorkoutPlan
 import app.calisthenics.domain.routine.Presets
 import app.calisthenics.domain.routine.resolveSaved
@@ -25,6 +26,7 @@ import app.calisthenics.domain.progression.ProgressSnapshot
 import app.calisthenics.domain.routine.StarterRoutine
 import app.calisthenics.domain.session.*
 import io.github.gonbei774.calisthenicsmemory.session.SessionBus
+import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
 import io.github.gonbei774.calisthenicsmemory.ui.session.SessionScreen
 import io.github.gonbei774.calisthenicsmemory.ui.session.loggerBlock
@@ -78,6 +80,16 @@ class SessionScreenTest {
     }
 
     private fun firstRecovery() = plan.blocks.indexOfFirst { it.type == BlockType.STRETCH || it.type == BlockType.PASSIVE_RECOVERY }
+
+    @Test fun aSavedWorkoutWithAHeldDemonstrationShowsWrittenInstructions() {
+        val v = catalog.variations.first { it.demonstrationHold }
+        val p = plan.copy(blocks = listOf(TimelineBlock("held-work", BlockType.WORK, 30,
+            variationId = v.id)), plannedDurationSeconds = 30, rounds = 1)
+        show(stateAt(p, 0))
+        rule.onNodeWithTag("session_demo_held").assertExists()
+        rule.onNodeWithText(v.instructions.first()).assertExists()
+        rule.onNodeWithContentDescription(app.getString(R.string.demo_clip_description)).assertDoesNotExist()
+    }
     private fun lastIntent(): Intent { val i = shadowOf(app).nextStartedService; assertNotNull("no service command was sent", i); return i }
 
     @Test fun workBlockShowsNameTargetRingDoneAndTheRepLogger() {

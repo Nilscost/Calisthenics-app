@@ -17,6 +17,9 @@ import os
 import sys
 import time
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from camera_views import camera_stamp
+
 import bpy
 import bmesh
 from mathutils import Matrix, Quaternion, Vector
@@ -457,6 +460,9 @@ def render(ex_id, engine, start_only):
     path = os.path.join(WORK, ex_id, "joints.json")
     with open(path) as fh:
         data = json.load(fh)
+    override = camera_stamp(ex_id)
+    if override:
+        data.update(override)
     sc = scene_setup(engine)
     props_ = Props(data["props"], material("prop", PROP), data["frames"][0])
     pts = list(props_.points)
@@ -482,6 +488,13 @@ def render(ex_id, engine, start_only):
         if i == 0:
             sc.render.filepath = os.path.join(WORK, ex_id, "blender", "start.png")
             bpy.ops.render.render(write_still=True)
+    # A start-only preview is deliberately incomplete and must never make a
+    # cached full render appear current. Stamp only after every frame succeeds.
+    if not start_only and override:
+        stamp_path = os.path.join(WORK, ex_id, "blender", "render-camera.json")
+        with open(stamp_path, "w") as fh:
+            json.dump(override, fh, sort_keys=True)
+            fh.write("\n")
     print(f"[bakeoff] {ex_id}: {len(frames)} frames in {time.time() - t0:.0f} s -> {out}")
 
 
@@ -489,6 +502,15 @@ def done_already(ex_id):
     """Resume: all frames exist and are newer than joints.json."""
     j = os.path.join(WORK, ex_id, "joints.json")
     out = os.path.join(WORK, ex_id, "blender", "frames")
+    expected_camera = camera_stamp(ex_id)
+    if expected_camera:
+        stamp_path = os.path.join(WORK, ex_id, "blender", "render-camera.json")
+        try:
+            with open(stamp_path) as fh:
+                if json.load(fh) != expected_camera:
+                    return False
+        except (OSError, ValueError):
+            return False
     if not os.path.isdir(out):
         return False
     with open(j) as fh:

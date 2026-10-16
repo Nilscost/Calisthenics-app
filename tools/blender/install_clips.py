@@ -19,6 +19,7 @@ from PIL import Image
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from encode import FFMPEG, WORK, ROOT, flat  # noqa: E402
+from camera_views import camera_stamp  # noqa: E402
 
 DEMOS = os.path.join(ROOT, "app", "src", "main", "assets", "demos")
 THUMBS = os.path.join(ROOT, "app", "src", "main", "assets", "thumbs")
@@ -44,6 +45,15 @@ def frame_problem(ex):
         return "invalid joints.json"
     if not isinstance(frames, list) or not frames:
         return "joints.json has no expected frames"
+
+    expected_camera = camera_stamp(ex)
+    if expected_camera:
+        try:
+            with open(os.path.join(WORK, ex, "blender", "render-camera.json")) as f:
+                if json.load(f) != expected_camera:
+                    return "camera view is outdated; render this exercise again"
+        except (OSError, ValueError):
+            return "missing reviewed camera view stamp; render this exercise again"
 
     expected = {f"{i:04d}.png" for i in range(len(frames))}
     actual = {name for name in os.listdir(src) if name.endswith(".png")}

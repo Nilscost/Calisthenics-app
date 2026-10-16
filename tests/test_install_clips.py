@@ -26,6 +26,18 @@ class InstallClipsTests(unittest.TestCase):
             os.utime(path, ns=(joints_ns + 2_000_000_000, joints_ns + 2_000_000_000))
         return work, source, joints
 
+    def test_requires_the_reviewed_camera_before_installing_an_occlusion_repair(self):
+        ex = "handstand-wall-one-foot"
+        with tempfile.TemporaryDirectory() as root:
+            work, source, _ = self.make_frames(root, ex)
+            stamp = source.parent / "render-camera.json"
+            with mock.patch.object(install_clips, "WORK", str(work)):
+                self.assertIn("camera view stamp", install_clips.frame_problem(ex))
+                stamp.write_text(json.dumps({"cam_az": -30, "cam_el": 12}))
+                self.assertIn("outdated", install_clips.frame_problem(ex))
+                stamp.write_text(json.dumps({"cam_az": -90, "cam_el": 12}))
+                self.assertIsNone(install_clips.frame_problem(ex))
+
     def test_catalog_variations_include_new_exercises(self):
         ids = install_clips.catalog_ids()
         self.assertIn("jefferson-curl", ids)

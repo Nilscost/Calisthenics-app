@@ -716,6 +716,44 @@ def pose_groups():
     for k, (fn, _kind) in POSES.items(): g.setdefault(id(fn), set()).add(k)
     return [frozenset(v) for v in g.values() if len(v) > 1]
 
+def canonical_blender_pose_ids():
+    """Load the Blender pose registry without building poses or writing cache files."""
+    sys.dont_write_bytecode = True
+    blender_tools = os.path.join(os.path.dirname(os.path.abspath(__file__)), "blender")
+    if blender_tools not in sys.path:
+        sys.path.insert(0, blender_tools)
+    import poses as blender_poses
+    blender_poses.load_families()
+    return set(blender_poses.EXERCISES)
+
+def pose_coverage_errors(catalog_ids, r8_ids, legacy_pose_ids, blender_pose_ids):
+    legacy_ids = set(catalog_ids) - set(r8_ids)
+    r8_ids = set(r8_ids)
+    catalog_ids = set(catalog_ids)
+    errors = []
+    errors.extend(f"R8 pose contract id is missing from catalog: {vid}" for vid in sorted(r8_ids - catalog_ids))
+    errors.extend(f"no canonical Blender pose for R8 catalog id: {vid}" for vid in sorted((r8_ids & catalog_ids) - set(blender_pose_ids)))
+    errors.extend(f"no legacy or Blender-only pose for catalog id: {vid}" for vid in sorted(legacy_ids - set(legacy_pose_ids) - BLENDER_ONLY))
+    errors.extend(f"no canonical Blender pose for Blender-only catalog id: {vid}" for vid in sorted((BLENDER_ONLY & catalog_ids) - set(blender_pose_ids)))
+    return errors
+
+def legacy_render_selection(catalog_ids, r8_ids, legacy_pose_ids, requested_ids=None):
+    """Select only ids this legacy renderer can draw; reject unsupported explicit requests."""
+    catalog_ids = list(catalog_ids)
+    catalog_set, r8_ids, legacy_pose_ids = set(catalog_ids), set(r8_ids), set(legacy_pose_ids)
+    if requested_ids is None:
+        return [vid for vid in catalog_ids if vid not in r8_ids and vid not in BLENDER_ONLY and vid in legacy_pose_ids]
+    requested_ids = list(requested_ids)
+    unknown = [vid for vid in requested_ids if vid not in catalog_set]
+    r8 = [vid for vid in requested_ids if vid in catalog_set and vid in r8_ids]
+    unsupported = [vid for vid in requested_ids if vid in catalog_set and vid not in r8_ids and (vid not in legacy_pose_ids or vid in BLENDER_ONLY)]
+    errors = []
+    if unknown: errors.append("unknown catalog ids: " + ", ".join(dict.fromkeys(unknown)))
+    if r8: errors.append("R8 ids use the canonical Blender pipeline: " + ", ".join(dict.fromkeys(r8)))
+    if unsupported: errors.append("ids have no legacy render pose: " + ", ".join(dict.fromkeys(unsupported)))
+    if errors: raise ValueError("; ".join(errors))
+    return requested_ids
+
 # Poses whose v1 function repeats twice per 0..1 are played once per 2 s loop; the rest are already periodic in p.
 ALTERNATING = {"dead-bug"}   # left/right alternate inside one loop: play as is
 def loop_fn(vid, fn, kind):
@@ -732,11 +770,12 @@ REGIONS = {
     "GLUTES": [("torso", 0.0, .13, "post", 1.0), ("thigh", 0.0, .3, "back", .8)], "HIP_FLEXORS": [("torso", 0.0, .1, "ant", .9), ("thigh", 0.0, .35, "front", .75)],
     "QUADS": [("thigh", .12, .92, "front", .8)], "HAMSTRINGS": [("thigh", .12, .92, "back", .8)], "ADDUCTORS": [("thigh", .15, .85, "inner", .7)],
     "CALVES": [("shin", .08, .78, "back", .8)],
+    "NECK": [("torso", .88, 1.0, "ant", .7)],
     "FRONT_DELTS": [("uarm", 0.0, .34, "ant", 1.0)], "SIDE_DELTS": [("uarm", 0.0, .34, "lat", 1.0)], "REAR_DELTS": [("uarm", 0.0, .34, "post", 1.0)],
     "TRICEPS": [("uarm", .28, .95, "extend", .85)], "BICEPS": [("uarm", .28, .95, "fold", .85)], "FOREARMS": [("farm", .05, .85, "fold", .85)],
 }
 ALL_MUSCLES = {"CHEST", "FRONT_DELTS", "SIDE_DELTS", "REAR_DELTS", "TRICEPS", "BICEPS", "FOREARMS", "LATS", "UPPER_BACK", "LOWER_BACK",
-               "ABS", "OBLIQUES", "GLUTES", "QUADS", "HAMSTRINGS", "CALVES", "HIP_FLEXORS", "ADDUCTORS"}
+               "ABS", "OBLIQUES", "GLUTES", "QUADS", "HAMSTRINGS", "CALVES", "HIP_FLEXORS", "ADDUCTORS", "NECK"}
 
 # ----------------------------------------------------------------------------------------------- 3-D lifting and projection
 def add(a, b): return tuple(x + y for x, y in zip(a, b))
@@ -970,10 +1009,35 @@ def main():
     args = sys.argv[1:]
     sheet = None
     if "--sheet" in args: i = args.index("--sheet"); sheet = args[i + 1]; del args[i:i + 2]
-    if "--frames" in args:   # review aid: a contact sheet of 6 frames per id, one row per id:  --frames out.png id ...
-        i = args.index("--frames"); out_png = args[i + 1]; ids = [x for x in args[i + 2:] if not x.startswith("--")]
-        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        byid = {v["id"]: v for v in json.load(open(os.path.join(root, "app/src/main/assets/catalog.json")))["variations"]}
+    frames_request = None
+    if "--frames" in args:
+        i = args.index("--frames"); frames_request = (args[i + 1], [x for x in args[i + 2:] if not x.startswith("--")])
+        del args[i:]
+    check = "--check" in args
+    args = [a for a in args if a != "--check"]
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    cat = json.load(open(os.path.join(root, "app/src/main/assets/catalog.json")))
+    byid = {v["id"]: v for v in cat["variations"]}
+    r8_contract = json.load(open(os.path.join(root, "docs/23-new-exercises.json")))
+    r8_ids = {v["id"] for v in r8_contract["exercises"]}
+    blender_pose_ids = canonical_blender_pose_ids()
+    # assertions the plan asks for
+    pose_errors = pose_coverage_errors(byid, r8_ids, POSES, blender_pose_ids)
+    assert not pose_errors, "; ".join(pose_errors)
+    used = {m for v in byid.values() for m in v.get("primaryMuscles", []) + v.get("secondaryMuscles", [])}
+    assert used <= set(REGIONS), f"muscles without a body region: {used - set(REGIONS)}"
+    assert set(REGIONS) == ALL_MUSCLES, "every Muscle needs a region"
+    assert all(v.get("primaryMuscles") for v in byid.values() if v["kind"] in ("REPS", "HOLD")), "strength exercise without primary muscles"
+    undeclared = [sorted(g) for g in pose_groups() if g not in SHARED_POSES]
+    assert not undeclared, f"ids share one pose without a declared difference (SHARED_POSES): {undeclared}"
+    stale = [sorted(g) for g in SHARED_POSES if g not in pose_groups()]
+    assert not stale, f"SHARED_POSES lists groups that no longer share a pose: {stale}"
+    if check: print("checks passed:", len(byid), "poses,", len(used), "muscles used"); return
+    if frames_request is not None:
+        out_png, requested = frames_request
+        try: ids = legacy_render_selection(byid, r8_ids, POSES, requested)
+        except ValueError as error:
+            print("error:", error, file=sys.stderr); return 2
         try: font = ImageFont.load_default(size=22 * SS)
         except TypeError: font = ImageFont.load_default()
         rows = []
@@ -986,30 +1050,15 @@ def main():
         for r, row in enumerate(rows):
             for c, t in enumerate(row): sheet_im.paste(t, (c * W // 2, r * H // 2))
         sheet_im.save(out_png); return
-    check = "--check" in args
-    args = [a for a in args if a != "--check"]
-    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    cat = json.load(open(os.path.join(root, "app/src/main/assets/catalog.json")))
-    byid = {v["id"]: v for v in cat["variations"]}
-    # assertions the plan asks for
-    missing = [v for v in byid if v not in POSES and v not in BLENDER_ONLY]
-    assert not missing, f"no pose for catalog ids: {missing}"
-    used = {m for v in byid.values() for m in v.get("primaryMuscles", []) + v.get("secondaryMuscles", [])}
-    assert used <= set(REGIONS), f"muscles without a body region: {used - set(REGIONS)}"
-    assert set(REGIONS) == ALL_MUSCLES, "every Muscle needs a region"
-    assert all(v.get("primaryMuscles") for v in byid.values() if v["kind"] in ("REPS", "HOLD")), "strength exercise without primary muscles"
-    undeclared = [sorted(g) for g in pose_groups() if g not in SHARED_POSES]
-    assert not undeclared, f"ids share one pose without a declared difference (SHARED_POSES): {undeclared}"
-    stale = [sorted(g) for g in SHARED_POSES if g not in pose_groups()]
-    assert not stale, f"SHARED_POSES lists groups that no longer share a pose: {stale}"
-    if check: print("checks passed:", len(byid), "poses,", len(used), "muscles used"); return
     try: font = ImageFont.load_default(size=22 * SS)
     except TypeError: font = ImageFont.load_default()
     outdir = os.path.join(root, "app/src/main/assets/demos"); os.makedirs(outdir, exist_ok=True)
     thumbdir = os.path.join(root, "app/src/main/assets/thumbs"); os.makedirs(thumbdir, exist_ok=True)
     thumbs_only = "--thumbs" in args
     args = [a for a in args if a != "--thumbs"]
-    ids = args or [i for i in byid if i not in BLENDER_ONLY]
+    try: ids = legacy_render_selection(byid, r8_ids, POSES, args or None)
+    except ValueError as error:
+        print("error:", error, file=sys.stderr); return 2
     groups = {i: sorted(g) for g in pose_groups() for i in g}
     meta = {}
     thumbs = []
@@ -1033,7 +1082,10 @@ def main():
         print(f"{vid:28s} {kind:5s} {size:6.0f} KB  thumb {tsize:4.1f} KB")
         if sheet: thumbs.append((vid, [render(vid, v["name"], kind, fn, q, cam, muscles, font) for q in (0.0, 0.25, 0.5)]))
     if not args or len(ids) == len(byid):
-        with open(os.path.join(root, "app/src/main/assets/clip_meta.json"), "w") as fh: json.dump(dict(sorted(meta.items())), fh, indent=1, sort_keys=True); fh.write("\n")
+        meta_path = os.path.join(root, "app/src/main/assets/clip_meta.json")
+        existing_meta = json.load(open(meta_path)) if os.path.exists(meta_path) else {}
+        existing_meta.update(meta)
+        with open(meta_path, "w") as fh: json.dump(dict(sorted(existing_meta.items())), fh, indent=1, sort_keys=True); fh.write("\n")
     if sheet:
         tw, th = W // 2, H // 2
         im = Image.new("RGB", (tw * 3, th * len(thumbs)), BG)

@@ -262,8 +262,11 @@ private class Planner(val input: PlanInput) {
         var inferredTier: Int? = null
         if (hold == null && draft.swaps[slot.id] == null) {
             val rotated = rotatedExercise(cat, pref, input.progress, input.profile, input.excludedVariationIds, route?.id)
-            if (rotated.id != pref.id && !draft.rule.isRange && !draft.timed && draft.freeTargets.isEmpty())
-                inferredTier = inferredAlternativeTier(cat, pref, rotated, input.progress, route?.id)
+            if (rotated.id != pref.id && !draft.rule.isRange && !draft.timed && draft.freeTargets.isEmpty()) {
+                val anchor = route?.members?.firstOrNull { it.variationId == rotated.id && it.role == ProgressionRole.ALTERNATE }
+                    ?.atVariationId?.let(cat::variation) ?: pref
+                inferredTier = inferredAlternativeTier(cat, anchor, rotated, input.progress, route?.id)
+            }
             if (rotated.id != pref.id) explain += "${rotated.name} is today's alternative to ${pref.name}; each exercise keeps its own progress."
             pref = rotated
         }

@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-16",
+  "method": "Camera-only renderer overrides; full Cycles sequences reviewed at start, midpoint and end. Original frames retained in frames-before-camera-2026-10-16. Pose data and frozen hashes remain unchanged.",
+  "repairs": [
+    {
+      "id": "handstand-wall-one-foot",
+      "frames": 72,
+      "camera": {
+        "cam_az": -90,
+        "cam_el": 12
+      },
+      "poseDataUnchanged": true
+    },
+    {
+      "id": "handstand-toe-pulls",
+      "frames": 72,
+      "camera": {
+        "cam_az": -90,
+        "cam_el": 12
+      },
+      "poseDataUnchanged": true
+    },
+    {
+      "id": "headstand-wall",
+      "frames": 72,
+      "camera": {
+        "cam_az": -90,
+        "cam_el": 18
+      },
+      "poseDataUnchanged": true
+    },
+    {
+      "id": "hspu-wall-deficit",
+      "frames": 72,
+      "camera": {
+        "cam_az": 90,
+        "cam_el": 15
+      },
+      "poseDataUnchanged": true
+    },
+    {
+      "id": "handstand-press-wall-negative",
+      "frames": 96,
+      "camera": {
+        "cam_az": 90,
+        "cam_el": 18
+      },
+      "poseDataUnchanged": true
+    },
+    {
+      "id": "flag-support-press",
+      "frames": 72,
+      "camera": {
+        "cam_az": -25,
+        "cam_el": 12
+      },
+      "poseDataUnchanged": true
+    }
+  ],
+  "installed": true,
+  "installerResult": "Six installed; zero problems. Canonical H.264 Main CRF30 outputs, all under 120KB.",
+  "heldDemonstrationsAfterReview": 25
+}

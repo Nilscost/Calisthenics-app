@@ -17,9 +17,7 @@ fun rotatedExercise(
         ?: catalog.mainRouteFor(main.id)
     val mainIndex = route?.mainPath?.indexOf(main.id) ?: -1
     val eligibleAnchors = route?.mainPath?.take(if (mainIndex < 0) route.mainPath.size else mainIndex + 1)?.toSet().orEmpty()
-    val ancestors = catalog.exerciseGroups.filter { group ->
-        if (route != null) group.mainVariationId in route.mainPath.take(route.mainPath.indexOf(main.id).let { if (it < 0) route.mainPath.size else it + 1 })
-        else {
+    val legacyAncestors = if (route == null) catalog.exerciseGroups.filter { group ->
             var id: String? = group.mainVariationId
             val seen = mutableSetOf<String>()
             var found = false
@@ -28,16 +26,18 @@ fun rotatedExercise(
                 id = catalog.policyForVariation(id)?.progressionSuccessors()?.firstOrNull()
             }
             found
-        }
-    }
-    val alternatives = ancestors.flatMap { it.alternativeVariationIds }.distinct().mapNotNull(catalog::variation)
+        } else emptyList()
+    val alternativeIds = if (route != null) {
+        route.members.filter { it.role == ProgressionRole.ALTERNATE && it.atVariationId != null && it.atVariationId in eligibleAnchors }
+            .map { it.variationId }
+    } else legacyAncestors.flatMap { it.alternativeVariationIds }
+    val alternatives = alternativeIds.distinct().mapNotNull(catalog::variation)
         .filter { v ->
-            (if (route == null) catalog.progressionGroupOf(v.id) == catalog.progressionGroupOf(main.id)
-             else route.members.any { it.variationId == v.id && it.role == ProgressionRole.ALTERNATE && it.atVariationId != null && it.atVariationId in eligibleAnchors }) &&
+            (route != null || catalog.progressionGroupOf(v.id) == catalog.progressionGroupOf(main.id)) &&
                 v.id !in excluded && !v.routineOnly && !v.demonstrationHold &&
                 catalog.policyFor(v) != null && isAvailable(v, profile) &&
                 Goals.unmet(catalog, v.id, progress).isEmpty() &&
-                progress.holdFor(v.familyId) == null
+                progress.holdFor(main.familyId) == null && progress.holdFor(v.familyId) == null
         }
     if (alternatives.isEmpty()) return main
     val completed = route?.let { progress.routeWorkoutCounts[it.id] } ?: progress.familyWorkoutCounts[main.familyId] ?: 0
@@ -55,17 +55,16 @@ fun cappedTarget(target: Target, policy: ProgressionPolicy): Target {
 /** Product starting estimate, not an achievement or a claim of physiological equivalence. */
 fun inferredAlternativeTier(catalog: Catalog, main: ExerciseVariation, alternative: ExerciseVariation,
     progress: ProgressSnapshot, routeId: String?): Int? {
-    if (alternative.id in progress.variations || main.familyId != alternative.familyId ||
-        catalog.progressionGroupOf(main.id) != catalog.progressionGroupOf(alternative.id) ||
-        main.kind != Kind.REPS || alternative.kind != Kind.REPS || main.isLoaded() || alternative.isLoaded() ||
+    if (alternative.id in progress.variations ||
+        (main.progressionGroup ?: main.familyId) != (alternative.progressionGroup ?: alternative.familyId) ||
+        main.kind !in setOf(Kind.REPS, Kind.HOLD) || main.kind != alternative.kind || main.isLoaded() || alternative.isLoaded() ||
         main.unilateral != alternative.unilateral || main.patterns.toSet() != alternative.patterns.toSet() ||
-        progress.holdFor(main.familyId) != null) return null
+        progress.holdFor(main.familyId) != null || progress.holdFor(alternative.familyId) != null) return null
     val route = catalog.routeById(routeId) ?: return null
-    if (main.id !in route.mainPath || route.members.none { it.variationId == alternative.id && it.role == ProgressionRole.ALTERNATE && it.atVariationId == main.id } ||
-        catalog.exerciseGroups.none { it.mainVariationId == main.id && alternative.id in it.alternativeVariationIds }) return null
+    if (main.id !in route.mainPath || route.members.none { it.variationId == alternative.id && it.role == ProgressionRole.ALTERNATE && it.atVariationId == main.id }) return null
     val source = catalog.policyFor(main)?.tiers?.firstOrNull { it.index == progress.tierFor(main.id) }?.target ?: return null
-    if (source.type != TargetType.REPS) return null
-    val tiers = catalog.policyFor(alternative)?.tiers.orEmpty().filter { it.target.type == TargetType.REPS }
+    if (source.type !in setOf(TargetType.REPS, TargetType.HOLD_SECONDS)) return null
+    val tiers = catalog.policyFor(alternative)?.tiers.orEmpty().filter { it.target.type == source.type }
     val top = tiers.maxOfOrNull { it.index } ?: return null
     return tiers.filter { it.index < top && it.target.value <= source.value * 3 / 4 }
         .maxByOrNull { it.target.value }?.index?.takeIf { it > 1 }

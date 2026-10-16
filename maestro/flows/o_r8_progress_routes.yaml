@@ -1,0 +1,26 @@
+# R8: compare the default progression pool with the deliberate route picker and its collapsed alternate.
+appId: app.calisthenics.personal
+---
+- launchApp
+- runFlow: ../common/dismiss_system_dialogs.yaml
+- extendedWaitUntil: { visible: { id: bottom_bar }, timeout: 15000 }
+- tapOn: { id: tab_progress }
+- tapOn: { id: progress_mode_type }
+- extendedWaitUntil: { visible: { id: all_progressions }, timeout: 10000 }
+- runFlow:
+    when: { visible: "Default progressions" }
+    commands:
+      - tapOn: { id: all_progressions }
+- takeScreenshot: 01-default-progression-pool-${VARIANT}
+- tapOn: { id: all_progressions }
+- scrollUntilVisible: { element: { id: route_chip_pushup }, direction: RIGHT, speed: 70, timeout: 10000, optional: true }
+- scrollUntilVisible: { element: { id: route_chip_pushup }, direction: LEFT, speed: 70, timeout: 10000 }
+- extendedWaitUntil: { visible: { id: route_chip_pushup }, timeout: 10000 }
+- tapOn: { id: route_chip_pushup }
+- scrollUntilVisible: { element: { id: tree_node_pushup-feet-elevated }, direction: DOWN, timeout: 12000 }
+- takeScreenshot: 02-push-up-main-spine-${VARIANT}
+- tapOn: { id: tree_node_pushup-feet-elevated }
+- extendedWaitUntil: { visible: { id: route_extras_toggle }, timeout: 8000 }
+- tapOn: { id: route_extras_toggle }
+- assertVisible: { id: route_member_pushup-diamond }
+- takeScreenshot: 03-push-up-other-ways-${VARIANT}

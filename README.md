@@ -1,12 +1,14 @@
 # Calisthenics App
 
-A personal Android app for bodyweight and kettlebell training. You get a circuit planned for the time you have, each exercise demonstrated, and progress tracked across 117 exercises and 35 stretch and warm-up items, up to skills such as the muscle-up, front lever and pistol squat. It runs fully offline: no account, no internet permission, and all data stays on the phone.
+A personal Android app for bodyweight and equipment-assisted training. Its library contains533 exercise, stretch and warm-up variations, with explicit progression paths toward skills such as the muscle-up, front lever and pistol squat. It runs fully offline: no account, no internet permission, and all data stays on the phone. Demonstrations that need improvement are withheld, with written instructions available instead.
 
 ![Six of the generated exercise demos](docs/media/exercises.png)
 
 I built it as the product owner. AI coding agents wrote most of the code; I set the scope, made the decisions, reviewed the results and tested on my phone. The repository shows the app and also how the work was run: specification, ordered workplan, decision log, approval gates and evidence for every step.
 
 ## What the app does
+
+**R8 (0.11.0-r8):** expands the library, adds eight fixed programs, equipment-aware selection and searchable aliases, and keeps the main progression paths compact. Completed workouts alternate approved variations; new comparable alternatives receive conservative starting targets, then follow their own results. Preview rests are editable, voice cues are slower and name the working side, and two-sided holds have a five-second changeover. Specialist pools are off by default. See the [phone walk-through](docs/evidence/owner-check-r8.md). R8 phone checks and owner acceptance remain open; training content remains DRAFT.
 
 - **Train:** pick a goal (a skill such as the handstand push-up, or a body focus), your equipment profile and the number of rounds. You get a circuit preview with the muscles worked; swap any exercise for today or permanently, then start.
 - **During the workout:** large timer, looping demo clip, voice cues and a foreground service, so it keeps time with the screen off. Stretches replace passive rest. You log reps on the exercise screen and holds during the following break.

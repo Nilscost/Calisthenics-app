@@ -153,6 +153,7 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
     val repWork = repLoggerBlock(st)
     val logger = rememberLogger(st, logFor ?: repWork)
     val haptic = LocalHapticFeedback.current
+    val demonstration = remember(b.variationId) { b.variationId?.let { loadCatalog(ctx).variation(it) } }
     val clip = remember(b.variationId) { b.variationId?.let { DemoClips.file(ctx, it) } }
     val elapsed = (st.activeElapsedMs / 1000).toInt()
 
@@ -162,6 +163,10 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
             CompositionLocalProvider(LocalAppAccent provides LightAccent) {
                 CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) { Box(Modifier.weight(1f).fillMaxWidth().background(Color.White)) {
                     if (clip != null) Box(Modifier.fillMaxSize().padding(top = 132.dp), contentAlignment = Alignment.Center) { DemoPlayer(clip, controls = false, fit = true) }
+                    else if (demonstration?.demonstrationHold == true) Column(Modifier.align(Alignment.Center).padding(horizontal = Spacing.l).padding(top = 132.dp).testTag("session_demo_held"), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                        Text(stringResource(R.string.progress_teaching_hold), style = MaterialTheme.typography.labelLarge)
+                        demonstration.instructions.take(3).forEach { Text(it, style = MaterialTheme.typography.bodyMedium) }
+                    }
                     Column(Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = Spacing.l, vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Row(verticalAlignment = Alignment.Top) {
                             Column(Modifier.weight(1f)) {
@@ -189,7 +194,7 @@ private fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier) {
                         }
                         Text(title, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_title"))
                         // R7-T12 (D9): the light-red "pay attention to" points of Jefferson curl and German hang, on the workout screen too
-                        val strongCautions = remember(b.variationId) { b.variationId?.let { id -> runCatching { loadCatalog(ctx).variation(id) }.getOrNull()?.takeIf { it.cautionStrong }?.cautions }.orEmpty() }
+                        val strongCautions = demonstration?.takeIf { it.cautionStrong }?.cautions.orEmpty()
                         if (strongCautions.isNotEmpty() && b.type != BlockType.TRANSITION) Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).background(CautionRedLightSurface).border(1.dp, CautionRedLightBorder, RoundedCornerShape(10.dp)).padding(Spacing.s).testTag("session_caution_red")) {
                             strongCautions.forEach { Text(it, style = MaterialTheme.typography.bodySmall, color = CautionRedLightText) }
                         }
