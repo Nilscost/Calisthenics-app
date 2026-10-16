@@ -123,9 +123,11 @@ appId: app.calisthenics.personal
           direction: UP
 - takeScreenshot: 07f-progress-push-planche-note-${VARIANT}
 - assertVisible: { id: tree_node_planche-lean }
-# The note is a clickable child of the merged tree-node semantics. Maestro exposes
-# its visible label more reliably than the Compose-only child test tag.
-- tapOn: { text: "needs Plank" }
+# Seeded progress already contains this exercise, so its unmet-prerequisite note
+# is intentionally absent. Open the node and its detail to check seeded editing.
+# The untrained prerequisite link is exercised by d_tabs and o_r8_progression_routes.
+- tapOn: { id: tree_node_planche-lean }
+- tapOn: { id: panel_open_detail }
 - extendedWaitUntil: { visible: { id: detail_edit }, timeout: 8000 }
 - tapOn: { id: detail_edit }
 - takeScreenshot: 07g-detail-edit-${VARIANT}

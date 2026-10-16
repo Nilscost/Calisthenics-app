@@ -12,6 +12,8 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.foundation.selection.toggleable
 import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
@@ -39,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -133,6 +136,7 @@ private fun movementTag(v: ExerciseVariation?): Int = when (v?.patterns?.firstOr
 @Composable
 private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name: String, levels: Int, onStep: (Int) -> Unit, onSwap: () -> Unit, onRemove: () -> Unit, sfx: String = "", onTypeNumber: (() -> Unit)? = null, badge: Int? = null, chain: Pair<Int, Int>? = null) {
     val removeLabel = stringResource(R.string.preview_remove)
+    val largeText = LocalDensity.current.fontScale > 1.2f
     Card(Modifier.fillMaxWidth().pointerInput(Unit) { detectTapGestures(onLongPress = { onRemove() }) }
         .semantics { onLongClick(label = removeLabel) { onRemove(); true } }.testTag("exercise_${e.slotId}$sfx"), shape = MaterialTheme.shapes.large) {
         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
@@ -143,11 +147,13 @@ private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name
                 io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(e.variationId, name, 56.dp)
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text(stringResource(R.string.preview_slot_tag, index + 1, stringResource(movementTag(v))), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("slot_tag_${e.slotId}$sfx"))
-                    Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("exercise_name_${e.slotId}$sfx"))
+                    if (!largeText) Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("exercise_name_${e.slotId}$sfx"))
                 }
                 if (v != null && v.primaryMuscles.isNotEmpty()) io.github.gonbei774.calisthenicsmemory.ui.components.BodyMap(v.primaryMuscles, v.secondaryMuscles, showNamesOnTap = false, tag = "muscles_${e.slotId}$sfx", viewWidth = 24.dp)
                 IconButton(onClick = onSwap, modifier = Modifier.testTag("swap_${e.slotId}$sfx")) { Icon(Icons.Filled.Refresh, stringResource(R.string.preview_swap, name)) }
             }
+            // Give long exercise names the card width when system text is enlarged.
+            if (largeText) Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("exercise_name_${e.slotId}$sfx"))
             // D3: the level stepper; the number between - and + is the target of that level
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                 FilledTonalIconButton(onClick = { onStep(-1) }, enabled = if (chain != null) chain.first > 0 else e.tier > 1, modifier = Modifier.size(Spacing.touch).testTag("level_minus_${e.slotId}$sfx")) { Icon(io.github.gonbei774.calisthenicsmemory.ui.theme.AppIcons.Remove, stringResource(R.string.stepper_decrease)) }
@@ -221,18 +227,20 @@ private fun AddButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: () -> Unit) {
+fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: () -> Unit, dataOverride: TrainData? = null) {
     val ctx = LocalContext.current
     val haptic = LocalHapticFeedback.current
-    val data by rememberTrainData()
+    val loadedData by rememberTrainData()
+    val data = dataOverride ?: loadedData
     val stored = remember { TrainSettingsStore.load(ctx) }
     val resolved = remember(data) { resolveTrain(ctx, data.routine, stored, data.catalog) }   // V18: the usual plan, or the saved routine chosen on Train
     val profile = remember { ProfileStore.selected(ctx) }
     // R7-T08 (D1): frozen when the Preview opens, so removing or adding an exercise here does not re-fill the list
-    val settings = remember(data) { withDefaultLength(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = resolved.edits) }
-    var routine by remember(data) { mutableStateOf(resolved.routine) }
-    var edits by remember(data) { mutableStateOf(resolved.edits) }
-    var restDurations by remember(data) { mutableStateOf<Map<String, Int>>(emptyMap()) }
+    val settings = remember { withDefaultLength(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = resolved.edits) }
+    // A Room progress refresh may replace TrainData while the Preview is open. Preserve the user's draft edits.
+    var routine by remember { mutableStateOf(resolved.routine) }
+    var edits by remember { mutableStateOf(resolved.edits) }
+    var restDurations by remember { mutableStateOf<Map<String, Int>>(emptyMap()) }
     var saveDialog by remember { mutableStateOf(false) }
     var savedNote by remember { mutableStateOf<String?>(null) }
     val editing = remember { SavedRoutineStore.get(ctx, stored.routineId) }
@@ -471,12 +479,12 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun SwapSheet(family: List<ExerciseVariation>, others: List<Pair<app.calisthenics.domain.tree.TreeTab, List<ExerciseVariation>>>, currentId: String, catalog: Catalog, onDismiss: () -> Unit, onPick: (String, Boolean) -> Unit) {
     var keep by remember { mutableStateOf(false) }
     var showOthers by remember { mutableStateOf(false) }
-    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
+    ModalBottomSheet(onDismissRequest = onDismiss, modifier = Modifier.semantics { testTagsAsResourceId = true }, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         Column(Modifier.padding(horizontal = Spacing.l).padding(bottom = Spacing.xl).testTag("swap_sheet_body").verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(stringResource(R.string.preview_swap_title), style = MaterialTheme.typography.titleLarge)
             Text(stringResource(R.string.preview_swap_hint), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -522,10 +530,10 @@ private fun SwapItem(o: ExerciseVariation, catalog: Catalog, current: Boolean, o
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun StretchPickerSheet(title: Int, options: List<ExerciseVariation>, autoLabel: Boolean, onDismiss: () -> Unit, hint: Int = R.string.preview_pick_stretch_hint, onPick: (String?) -> Unit) {
-    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
+    ModalBottomSheet(onDismissRequest = onDismiss, modifier = Modifier.semantics { testTagsAsResourceId = true }, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         Column(Modifier.padding(horizontal = Spacing.l).padding(bottom = Spacing.xl).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(stringResource(title), style = MaterialTheme.typography.titleLarge)
             Text(stringResource(hint), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -537,12 +545,12 @@ private fun StretchPickerSheet(title: Int, options: List<ExerciseVariation>, aut
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalComposeUiApi::class)
 @Composable
 private fun AddSheet(exercises: List<Pair<app.calisthenics.domain.tree.TreeTab, List<ExerciseVariation>>>, stretches: List<ExerciseVariation>, onDismiss: () -> Unit, onExercise: (ExerciseVariation) -> Unit, onStretch: (String) -> Unit) {
     // R7-T10 (D11): the category first (the Progress tab names), then only that category's list
     var category by remember { mutableStateOf("") }
-    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
+    ModalBottomSheet(onDismissRequest = onDismiss, modifier = Modifier.semantics { testTagsAsResourceId = true }, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         Column(Modifier.padding(horizontal = Spacing.l).padding(bottom = Spacing.xl).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(stringResource(R.string.preview_add_title), style = MaterialTheme.typography.titleLarge)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s), modifier = Modifier.testTag("add_categories")) {

@@ -31,6 +31,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -150,6 +152,7 @@ private fun blockLabel(b: TimelineBlock): Int = when (b.type) {
  * sheet holds the big centred timer with its bar, the exercise and set, the logger (during recovery) and Pause · DONE · Skip.
  * No Too hard / Too easy / Pain here: they are given on the end screen.
  */
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, catalogOverride: Catalog? = null) {
     val ctx = LocalContext.current
@@ -273,6 +276,7 @@ internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, cat
     }
 
     if (confirmEnd) AlertDialog(
+        modifier = Modifier.semantics { testTagsAsResourceId = true },
         onDismissRequest = { confirmEnd = false },
         title = { Text(stringResource(R.string.session_end_title)) },
         text = { Text(stringResource(R.string.session_end_text)) },

@@ -39,6 +39,21 @@ class StretchSessionTest {
         assertTrue(oneSide.filter { it.id.endsWith("-hold") }.all { "Hold for" in it.note!! })
     }
 
+    @Test fun startingToStretchPreparesTheSideChangeWithoutShorteningEitherSide() {
+        val p = plan(Presets.startingToStretch(catalog, home)[1])
+        val id = p.blocks.first { it.type == BlockType.STRETCH && it.side == Side.LEFT }.variationId!!
+        val left = p.blocks.withIndex().filter { it.value.variationId == id && it.value.side == Side.LEFT }
+        val right = p.blocks.withIndex().filter { it.value.variationId == id && it.value.side == Side.RIGHT }
+
+        assertEquals(listOf(10, 10, 10, 20, 10, 30), left.map { it.value.durationSeconds })
+        assertEquals(listOf(10, 10, 10, 20, 10, 30), right.map { it.value.durationSeconds })
+        assertEquals("the only addition is the setup between sides", left.last().index + 2, right.first().index)
+        val setup = p.blocks[left.last().index + 1]
+        assertEquals(BlockType.TRANSITION, setup.type)
+        assertEquals(SIDE_CHANGE_PREPARATION_SECONDS, setup.durationSeconds)
+        assertEquals(p.blocks.sumOf { it.durationSeconds }, p.plannedDurationSeconds)
+    }
+
     @Test fun totalIsAboutHalfAnHourForBothHalvesAndHalvesAreShorter() {
         val full = plan(Presets.startingToStretch(catalog, home)[0]); val up = plan(Presets.startingToStretch(catalog, home)[1]); val lo = plan(Presets.startingToStretch(catalog, home)[2])
         assertTrue("${full.plannedDurationSeconds}", full.plannedDurationSeconds in 20 * 60..32 * 60)

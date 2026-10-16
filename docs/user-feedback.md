@@ -58,3 +58,8 @@ Fixed programs belong in the Routine section alongside saved routines. Remove th
 ## Manual specialist stretch policy · 2026-10-16
 
 Applying the final scope corrections also to flexibility: new contract stretches and mobility drills are available through manual Preview choices and fixed routines, with equipment filtering. They are excluded from automatic inter-set and cool-down matching, so a general-strength workout does not unexpectedly prescribe a front/middle split or another specialist flexibility drill. Existing default stretches remain available for automatic recovery. No new switches are added.
+
+
+## Final feedback audit · 2026-10-16
+
+Extended the five-second same-exercise left-to-right setup to stretch-only sessions and unilateral cool-down holds, preserving the full hold durations. Preview rest and exercise edits now survive the asynchronous history refresh. At larger system text sizes, exercise names use the card width so long labels stay readable. Pop-up sheet controls now expose their existing identifiers to the emulator checks.

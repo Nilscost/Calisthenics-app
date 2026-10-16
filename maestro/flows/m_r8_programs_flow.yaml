@@ -29,6 +29,7 @@ appId: app.calisthenics.personal
     commands:
       - tapOn: { id: program_open_army-hsd }
 - extendedWaitUntil: { visible: { id: program_line_army-hsd_0 }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: program_flow_army-hsd }, direction: DOWN, visibilityPercentage: 100, centerElement: true, timeout: 15000 }
 - assertVisible: { id: program_flow_army-hsd }
 - scrollUntilVisible: { element: { id: program_start_army-hsd }, direction: DOWN, timeout: 15000 }
 - takeScreenshot: 02-program-details-${VARIANT}

@@ -7,10 +7,15 @@ on:
     branches: [main, 'ui-check/**']
     paths-ignore: ['docs/**', '**/*.md']
   workflow_dispatch:
+    inputs:
+      flows:
+        description: 'Flow filename glob; leave * for the full release check'
+        required: false
+        default: '*'
 permissions:
   contents: write   # only to push the ui-shots branch
 concurrency:
-  group: ui-screens-${{ github.ref }}
+  group: ui-screens-${{ github.ref }}-${{ inputs.flows || '*' }}
   cancel-in-progress: true
 jobs:
   screens:
@@ -23,6 +28,7 @@ jobs:
         variant: [light, dark, font13]
     env:
       MAESTRO_VERSION: '2.11.0'
+      FLOWS: ${{ inputs.flows || '*' }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-java@v5

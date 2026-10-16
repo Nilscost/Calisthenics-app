@@ -215,12 +215,12 @@ class PlannerTest {
         assertEquals(p.blocks.sumOf { it.durationSeconds }, p.plannedDurationSeconds)
     }
 
-    @Test fun `transitions only when position changes and never exceed five seconds`() {
+    @Test fun `position and side-change transitions never exceed five seconds`() {
         val standing = catalog.copy(variations = catalog.variations.map { if (it.id == "squat-air") it.copy(position = "standing") else it })
         val p = ready(input(30, cat = standing))
         val trs = p.blocks.filter { it.type == BlockType.TRANSITION }
         assertTrue(trs.isNotEmpty()); assertTrue(trs.all { it.durationSeconds <= TRANSITION_SECONDS })
-        assertTrue(ready(input(30)).blocks.none { it.type == BlockType.TRANSITION })
+        assertTrue(ready(input(30)).blocks.filter { it.type == BlockType.TRANSITION }.all { it.durationSeconds == TRANSITION_SECONDS })
     }
 
     @Test fun `draft content is flagged`() = assertTrue(ready(input(30)).usesDraftContent)

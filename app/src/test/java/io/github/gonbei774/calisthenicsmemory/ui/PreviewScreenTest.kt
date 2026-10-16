@@ -2,6 +2,7 @@ package io.github.gonbei774.calisthenicsmemory.ui
 
 import android.app.Application
 import android.content.Context
+import androidx.compose.runtime.*
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -11,6 +12,8 @@ import app.calisthenics.domain.model.BlockType
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import io.github.gonbei774.calisthenicsmemory.ui.train.PreviewScreen
+import io.github.gonbei774.calisthenicsmemory.ui.train.TrainData
+import io.github.gonbei774.calisthenicsmemory.ui.train.rememberTrainData
 import kotlinx.serialization.json.Json
 import org.junit.Assert.*
 import org.junit.Before
@@ -186,6 +189,32 @@ class PreviewScreenTest {
             assertTrue(plan.blocks.filter { it.type == BlockType.PASSIVE_RECOVERY && it.slotId == slot }.all { it.durationSeconds == seconds })
         }
         assertEquals(plan.blocks.sumOf { it.durationSeconds }, plan.plannedDurationSeconds)
+    }
+
+    @Test fun aProgressRefreshDoesNotDiscardPreviewRestEdits() {
+        val prefs = io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.load(app)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.save(app, prefs.copy(stretchOn = false))
+        lateinit var firstData: TrainData
+        lateinit var updateData: (TrainData) -> Unit
+        rule.setContent {
+            CalisthenicsMemoryTheme(darkTheme = false) {
+                val loaded = rememberTrainData().value
+                var data by remember { mutableStateOf(loaded) }
+                SideEffect { firstData = data; updateData = { data = it } }
+                PreviewScreen(onBack = {}, onStarted = {}, dataOverride = data)
+            }
+        }
+        rule.waitForIdle()
+        val original = rule.onNodeWithTag("rest_push_value").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString()
+        val originalSeconds = original.split(":").let { it[0].toInt() * 60 + it[1].toInt() }
+        val changed = "%d:%02d".format((originalSeconds + 15) / 60, (originalSeconds + 15) % 60)
+        rule.onNodeWithTag("rest_push_plus").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("rest_push_value").assertContentDescriptionEquals(changed)
+
+        rule.runOnUiThread { updateData(firstData.copy(routine = firstData.routine.copy(name = "Refreshed routine"))) }
+        rule.waitForIdle()
+        rule.onNodeWithTag("rest_push_value").assertContentDescriptionEquals(changed)
+        rule.onNodeWithTag("edits_reset").assertExists()
     }
 
     @Test fun resettingAPreviewRestChoiceRestoresItsOriginalDuration() {

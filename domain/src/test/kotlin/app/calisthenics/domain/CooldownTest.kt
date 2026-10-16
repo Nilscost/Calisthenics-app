@@ -51,6 +51,24 @@ class CooldownTest {
         assertEquals(swapped, c)
     }
 
+    @Test fun manuallyChosenUnilateralCooldownGetsFiveSecondsBeforeTheRightSide() {
+        val id = "stretch-calf-wall"
+        val v = catalog.variation(id)!!
+        assertTrue(v.unilateral)
+        val p = plan(
+            TrainSettings(rounds = 2, cooldownOn = true, cooldownMode = CooldownMode.STRETCHING),
+            PlanEdits(cooldownStretches = listOf(id)),
+        )
+        val pair = p.blocks.withIndex().filter { it.value.type == BlockType.COOLDOWN && it.value.variationId == id }
+        assertEquals(listOf(Side.LEFT, Side.RIGHT), pair.map { it.value.side })
+        assertEquals(pair.first().index + 2, pair.last().index)
+        val setup = p.blocks[pair.first().index + 1]
+        assertEquals(BlockType.TRANSITION, setup.type)
+        assertEquals(SIDE_CHANGE_PREPARATION_SECONDS, setup.durationSeconds)
+        assertEquals(listOf(v.defaultSeconds ?: 30, v.defaultSeconds ?: 30), pair.map { it.value.durationSeconds })
+        assertEquals(p.blocks.sumOf { it.durationSeconds }, p.plannedDurationSeconds)
+    }
+
     // R7.2-T04 (F5): remove, then add, then plan
     @Test fun aRemovedStretchLeavesTheCooldownAndAnAddedOneJoinsAtTheEnd() {
         val settings = TrainSettings(rounds = 2, cooldownOn = true)
