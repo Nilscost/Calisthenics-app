@@ -5,7 +5,7 @@ Floor contacts: ankle 0.08, wrist 0.035, knee 0.06, lying pelvis 0.11."""
 
 import math
 
-from poses import base_pose, pt, rep
+from poses import base_pose, pt, rep, solve
 
 FLOOR_WRIST_Z = 0.035
 
@@ -144,11 +144,23 @@ def supine_twist():
 
 # --- 9. all fours, thread the right arm under and then open toward the ceiling -------------------------------
 def thoracic_rotation():
-    a = _fours(0.0, ankle_x=-0.46, roll=15, pz=0.50, wrist_r=[0.60, -0.10, 0.52], hand_r=[0, 0, 1],
-               elbow_r=[0, -1, 0])
-    b = _fours(0.0, ankle_x=-0.46, roll=-15, pz=0.50, wrist_r=[0.45, -0.22, 0.95], hand_r=[0, 0, 1],
-               elbow_r=[0, -1, 0])
-    return dict(seconds=4.0, keys=rep(a, b), cam_az=60, cam_el=25, props=[])
+    # Hand-on-occiput quadruped rotation, matching the app's elbow-led cue.
+    def key(t):
+        q=(1-math.cos(2*math.pi*t))/2
+        phi=25-55*q
+        pose=_fours(0.0,ankle_x=-.46,pz=.50,wrist_l=[.47,.14,.04],elbow_l=[0,0,1],
+                    elbow_r=[0,-.6,-1+2*q],grip_r=.05,
+                    thoracic_twist=phi,head_turn=-.3*phi,head_detail=1)
+        joints=solve(pose,{})
+        up=[(joints['head'][i]-joints['neck'][i])/.099 for i in range(3)]
+        left=joints['head_left']
+        forward=[left[1]*up[2]-left[2]*up[1],left[2]*up[0]-left[0]*up[2],left[0]*up[1]-left[1]*up[0]]
+        pose['hand_r']=up;pose['palm_r']=forward
+        # Head center includes a 2 cm renderer offset; palm outer surface
+        # (4 mm center offset + 16 mm thickness) meets the occiput exactly.
+        pose['wrist_r']=[joints['head'][i]-.02675*up[i]-.118*forward[i] for i in range(3)]
+        return pose
+    return dict(seconds=4,keys=[(i/128,key(i/128)) for i in range(129)],cam_az=50,cam_el=22,props=[])
 
 
 # --- 10. standing, right palm flat on a wall beside the body, fingers back; the body turns away -------------

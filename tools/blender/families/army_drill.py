@@ -155,36 +155,73 @@ def prone_row_army():
 
 
 def turn_and_lunge():
-    def ease(u):return .5-.5*math.cos(math.pi*max(0,min(1,u)))
+    def ease(u): return .5 - .5 * math.cos(math.pi * max(0, min(1, u)))
+
     def key(t):
-        s=1 if t<.5 else -1;u=2*(t if t<.5 else t-.5)
-        if u<.18:step=ease(u/.18);sink=reach=0
-        elif u<.36:step=1;sink=ease((u-.18)/.18);reach=0
-        elif u<.50:step=sink=1;reach=ease((u-.36)/.14)
-        elif u<.62:step=sink=reach=1
-        elif u<.72:step=sink=1;reach=1-ease((u-.62)/.10)
-        elif u<.82:step=1;sink=1-ease((u-.72)/.10);reach=0
-        else:step=1-ease((u-.82)/.18);sink=reach=0
-        yaw=s*90*step;ang=math.radians(yaw);d=[math.cos(ang),math.sin(ang),0]
-        lead=[-.12*step,s*(.12+.88*step),.08+.15*math.sin(math.pi*step)]
-        feet=(lead,[0,-.12,.08]) if s>0 else ([0,.12,.08],lead)
-        p=_key((-.02*step,s*(.48*step+.13963*sink),.955-.275*step-.28974*sink),20*step+50*sink,20*step+60*sink,0,yaw=yaw,
-            feet=feet,knees=(d,d),footdirs=(d,d))
-        sh=_army_shoulders(p);working='r' if s>0 else 'l';other='l' if s>0 else 'r'
-        u1,left=trunk_frame(p['p1'],yaw,0)
-        rearhip=[p['pelvis'][i]-.03*u1[i]+(-s)*.09*left[i] for i in range(3)]
-        targetk=[0,s*.30895,.05]
-        pole=[targetk[i]-rearhip[i] for i in range(3)]
-        p['knee_'+working]=[pole[i]*step+(1-step)*(1 if i==0 else 0) for i in range(3)]
-        for side in ['l','r']:
-            default=[sh[side][0]+.10*d[0],sh[side][1]+.10*d[1],sh[side][2]-.30]
-            if side==working:
-                target=[.05,s*.82,.035]
-                p['wrist_'+side]=[default[i]*(1-reach)+target[i]*reach for i in range(3)]
-            else:p['wrist_'+side]=[sh[side][0]-.30*d[0]*sink,sh[side][1]-.30*d[1]*sink,sh[side][2]-.30*(1-sink)+.05*sink]
-            p['hand_'+side]=d;p['palm_'+side]=[0,0,-1];p['elbow_'+side]=[-d[1],d[0],0]
+        side = 1 if t < .5 else -1
+        u = 2 * (t if t < .5 else t - .5)
+        if u < .30:
+            # Widen the stance as the hips lower so neither leg has to stretch
+            # past its reach during the turn-in transition.
+            step = ease(u/.30)
+            sink = step
+            reach = 0.0
+        elif u < .40:
+            step, sink, reach = 1.0, 1.0, ease((u-.30)/.10)
+        elif u < .52:
+            step, sink, reach = 1.0, 1.0, 1.0
+        elif u < .63:
+            step, sink, reach = 1.0, 1.0, 1.0-ease((u-.52)/.11)
+        elif u < .82:
+            step, sink, reach = 1.0, 1.0, 0.0
+        else:
+            step, sink, reach = 1.0-ease((u-.82)/.18), 1.0-ease((u-.82)/.18), 0.0
+
+        # Turn toward the working side, step into a stable split stance, then
+        # hinge/reach from that stance. Alternate the lead leg for side two.
+        yaw = -side * 90.0 * step
+        a = math.radians(yaw)
+        d = [math.cos(a), math.sin(a), 0.0]
+        left = [-math.sin(a), math.cos(a), 0.0]
+        lead_side = 'r' if side > 0 else 'l'
+        rear_side = 'l' if lead_side == 'r' else 'r'
+        lateral = -1.0 if lead_side == 'r' else 1.0
+        front = [.54*d[i] + lateral*.08*left[i] for i in range(3)]
+        rear = [-.54*d[i] - lateral*.08*left[i] for i in range(3)]
+        neutral = {'l':[0,.12,.08], 'r':[0,-.12,.08]}
+        targets = {lead_side:[front[0],front[1],.08], rear_side:[rear[0],rear[1],.08]}
+        ankles = {s:[neutral[s][i]*(1-step)+targets[s][i]*step for i in range(3)] for s in ('l','r')}
+        flat = [1.0,0.0,0.0]
+        turnfoot = [d[0],d[1],0.0]
+        footdirs = {s:[flat[i]*(1-step)+turnfoot[i]*step for i in range(3)] for s in ('l','r')}
+        knee_dirs = {lead_side:d, rear_side:d}
+
+        # Hinge over a stable one-metre split stance. The torso stays above
+        # the hips while the opposite hand reaches down between the feet.
+        pz = .955 - .435*sink
+        p1 = 90.0*sink
+        p2 = 90.0*sink
+        pelvis = [.14*d[0]*step, .14*d[1]*step, pz]
+        p = _key(pelvis, p1, p2, 0, yaw=yaw,
+                 feet=(ankles['l'],ankles['r']), footdirs=(footdirs['l'],footdirs['r']),
+                 knees=(knee_dirs['l'],knee_dirs['r']))
+        sh = _army_shoulders(p)
+        reach_side = rear_side
+        for s in ('l','r'):
+            # One arm hangs naturally while the opposite palm moves to the
+            # floor in the middle of the front/rear foot span.
+            sign = 1 if s=='l' else -1
+            rest = [sh[s][0]+.02*d[0], sh[s][1]+sign*.18*left[1], sh[s][2]-.28]
+            target = [.38*d[0], .38*d[1], .035]
+            p['wrist_'+s] = [rest[i]*(1-reach)+target[i]*reach if s==reach_side else rest[i] for i in range(3)]
+            p['hand_'+s] = d
+            p['palm_'+s] = [0,0,-1]
+            p['elbow_'+s] = [-d[1],d[0],0]
+        # The first key remains the clearly readable standing start; there is
+        # no kneeling/all-fours transition in either half of the loop.
         return p
-    return dict(seconds=8,keys=[(i/256,key(i/256)) for i in range(256)],cam_az=22,cam_el=14,props=[])
+
+    return dict(seconds=8,keys=[(i/256,key(i/256)) for i in range(256)],cam_az=90,cam_el=15,props=[])
 
 
 def y_squat():

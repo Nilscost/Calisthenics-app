@@ -26,18 +26,35 @@ def _all_fours(wrist_z=0.035, hands=(1, 0, 0), palms=(0, 0, -1), pelvis=(-0.15, 
 
 
 def wrist_palm_pulses():
-    # The single rigid hand pivots about planted fingertips. Individual finger
-    # lifts cannot be represented by this rig.
-    def key(q):
-        wz=.035+.07*q
+    # First pulse the whole palm while fingertips remain planted. Then pin the
+    # wrists/palms and lift one modeled finger at a time (right hand first so
+    # the near-side action reads clearly in the fixed camera).
+    def key(t):
+        lift = 0.0
+        if t < .18:
+            lift = .045 * (0.5 - 0.5 * math.cos(math.pi * t / .18))
+        elif t < .28:
+            lift = .045
+        elif t < .46:
+            lift = .045 * (0.5 + 0.5 * math.cos(math.pi * (t - .28) / .18))
+        wz = .035 + lift
         k=_all_fours(wrist_z=wz)
-        dx=math.sqrt(.17**2-(wz-.035)**2)
+        dx=math.sqrt(.17**2-lift**2)
         for side in ('l','r'):
             k['wrist_'+side][0]=.65-dx
-            k['hand_'+side]=[dx/.17,0,(.035-wz)/.17]
+            k['hand_'+side]=[dx/.17,0,-lift/.17]
+            k['finger_lift_'+side]=[0,0,0,0,0]
+        if t >= .52 and t < .97:
+            phase = (t - .52) / .45 * 10.0
+            event = min(9, int(phase))
+            finger = event % 5
+            wave = math.sin(math.pi * (phase - event))
+            side = 'r' if event < 5 else 'l'
+            k['finger_lift_'+side][finger] = 20.0 * max(0.0, wave)
         return k
-    keys=[(i/80,key(.5-.5*math.cos(4*math.pi*i/80))) for i in range(80)]
-    return dict(seconds=4,keys=keys,cam_az=30,cam_el=22,props=[])
+    keys=[(i/200,key(i/200)) for i in range(200)]
+    return dict(seconds=5.0,keys=keys,cam_az=45,cam_el=18,props=[],
+                camera_focus=['wrist_l','wrist_r','hand_l','hand_r'], camera_padding=.05)
 
 
 def wrist_seated_mobility():

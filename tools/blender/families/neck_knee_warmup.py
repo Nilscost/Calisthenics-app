@@ -98,23 +98,36 @@ def _supine_head_pose(hp, hands=None):
 
 
 def chin_nod_supine():
-    # A tiny available head pitch (3 degrees) approximates a supported nod; no head lift is intended.
-    neutral=_supine_head_pose(0)
-    nod=_supine_head_pose(3)
-    return dict(seconds=4.0,keys=rep(neutral,nod,hold_top=.18,down_end=.46,hold_bottom=.16),cam_az=28,cam_el=16,props=[])
+    def key(q):
+        hp=5*q
+        radius=math.sqrt(.098**2*math.cos(math.radians(hp))**2+.118**2*math.sin(math.radians(hp))**2)
+        p=_supine_head_pose(hp)
+        p.update(head_retract=.219*math.sin(math.radians(hp))-(radius-.098),head_detail=1)
+        return p
+    return dict(seconds=6,keys=rep(key(0),key(1),hold_top=.12,down_end=.35,hold_bottom=.40),
+                cam_az=4,cam_el=24,props=[],camera_focus=['head','neck'],camera_padding=.12)
 
 
 def chin_tuck_seated():
-    # Head retraction/translation is absent on this rig. Keep the prescribed floor-seated setup still.
-    seated=_seated(p1=0,p2=0,hp=0)
-    return dict(seconds=4.0,keys=[(0,seated),(.18,seated),(.50,seated),(.68,seated)],cam_az=28,cam_el=12,props=[])
+    def key(q):
+        return base_pose(pelvis=[0,0,.53],p1=0,p2=0,hp=0,head_retract=-.020+.035*q,head_detail=1,
+            ankle_r=[.34,-.10,.08],ankle_l=[.34,.10,.08],foot_r=[1,0,0],foot_l=[1,0,0],
+            knee_r=[1,0,0],knee_l=[1,0,0],wrist_r=[.27,-.18,.64],wrist_l=[.27,.18,.64],
+            elbow_r=[1,-1,-1],elbow_l=[1,1,-1],hand_r=[1,0,0],hand_l=[1,0,0],grip_r=0,grip_l=0)
+    return dict(seconds=6,keys=rep(key(0),key(1),hold_top=.12,down_end=.35,hold_bottom=.40),
+                cam_az=0,cam_el=5,props=[dict(kind='chair',x=0,seat=.45)],
+                camera_focus=['head','neck','chest','shoulder_r','shoulder_l'])
 
 
 def chin_tuck_head_lift():
-    # Seven degrees of head pitch raises the head center about 2.4 cm while the trunk stays supine.
-    down=_supine_head_pose(0)
-    lift=_supine_head_pose(7)
-    return dict(seconds=4.0,keys=rep(down,lift,hold_top=.16,down_end=.46,hold_bottom=.14),cam_az=28,cam_el=18,props=[])
+    def key(q):
+        hp=6
+        radius=math.sqrt(.098**2*math.cos(math.radians(hp))**2+.118**2*math.sin(math.radians(hp))**2)
+        p=_supine_head_pose(hp)
+        p.update(head_retract=.219*math.sin(math.radians(hp))-(radius-.098)-.025*q,head_detail=1)
+        return p
+    return dict(seconds=6,keys=rep(key(0),key(1),hold_top=.15,down_end=.38,hold_bottom=.30),
+                cam_az=3,cam_el=20,props=[],camera_focus=['head','neck','chest','shoulder_r','shoulder_l'])
 
 
 def _head_center_seated():
@@ -169,21 +182,16 @@ def neck_isometric_4_way():
     return dict(seconds=8.0,keys=keys,cam_az=28,cam_el=12,props=[])
 
 def neck_head_raise_manual():
-    # Keep the thorax and pelvis down; pitch the head 7 degrees, with the hand midpoint following the forehead.
-    def key(hp):
-        p=_supine_head_pose(hp)
-        a=math.radians(hp)
-        face=[math.sin(a),0,math.cos(a)]
-        headward=[-math.cos(a),0,math.sin(a)]
-        center=[-.50-.199*math.cos(a)+.08*face[0]+.04*headward[0],
-                0,
-                .11+.199*math.sin(a)+.08*face[2]+.04*headward[2]]
-        p.update(wrist_l=[center[i]-.085*headward[i] for i in range(3)],
-                 hand_l=headward,palm_l=[-face[0],-face[1],-face[2]],grip_l=.2,
-                 elbow_l=[0,1,1])
+    from poses import solve,unit,sub,cross,add,mul
+    def key(q):
+        p=_supine_head_pose(3+22*q);p.update(head_retract=0,head_detail=1)
+        j=solve(p,{});up=unit(sub(j['head'],j['neck']));forward=unit(cross(j['head_left'],up))
+        forehead=add(add(j['head'],mul(forward,.091)),mul(up,.065))
+        p.update(wrist_r=add(add(forehead,mul(up,-.04675)),mul(forward,.004)),
+                 hand_r=up,palm_r=mul(forward,-1),grip_r=0,elbow_r=[0,-1,1])
         return p
-    down,up=key(0),key(7)
-    return dict(seconds=3.6,keys=rep(down,up,hold_top=.14,down_end=.43,hold_bottom=.14),cam_az=28,cam_el=20,props=[])
+    return dict(seconds=5,keys=rep(key(0),key(1),hold_top=.12,down_end=.48,hold_bottom=.10),
+                cam_az=12,cam_el=24,props=[],camera_focus=['head','neck','chest','shoulder_r','wrist_r','elbow_r'])
 
 
 def joint_circles():

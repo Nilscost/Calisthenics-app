@@ -109,18 +109,34 @@ def solve(k, report):
     P = k["pelvis"]
     yaw, roll = k.get("yaw", 0.0), k.get("roll", 0.0)
     up1, left1 = trunk_frame(k["p1"], yaw, roll)
-    up2, left2 = trunk_frame(k["p2"], yaw, roll)
+    upper_roll = roll + k.get("thoracic_twist", 0.0)
+    up2, left2 = trunk_frame(k["p2"], yaw, upper_roll)
     J["pelvis"] = P
     J["spine"] = add(P, mul(up1, L["lumbar"]))
     J["chest"] = add(J["spine"], mul(up2, L["thorax"]))
-    uph, _ = trunk_frame(k["p2"] + k.get("hp", 0.0), yaw, roll)
+    uph, lefth = trunk_frame(k["p2"] + k.get("hp", 0.0), yaw, upper_roll)
+    forwardh = unit(cross(lefth, uph))
+    side_tilt = k.get("head_side_tilt", 0.0)
+    if side_tilt:
+        uph, lefth = rot(uph, forwardh, side_tilt), rot(lefth, forwardh, side_tilt)
+    if k.get("head_turn", 0.0):
+        lefth = rot(lefth, uph, k["head_turn"])
     J["neck"] = add(J["chest"], mul(uph, L["neck"]))
+    if k.get("head_retract", 0.0):
+        J["neck"] = add(J["neck"], mul(unit(cross(left2, up2)), -k["head_retract"]))
     J["head"] = add(J["neck"], mul(uph, L["head_r"] * 0.9))
+    if any(name in k for name in ("head_turn", "head_side_tilt", "head_retract", "head_detail")):
+        J["head_left"] = lefth
+        J["head_detail"] = [k.get("head_detail", 1.0), 0.0, 0.0]
     J["pelvis_up"], J["chest_up"] = up1, up2
     J["pelvis_left"], J["chest_left"] = left1, left2
     for side, sgn in (("l", 1), ("r", -1)):
         hip = add(add(P, mul(left1, sgn * L["hip_w"])), mul(up1, -0.03))
         sh = add(add(J["chest"], mul(left2, sgn * L["sh_w"])), mul(up2, -0.03))
+        offset = k.get("shoulder_offset_" + side)
+        if offset is not None:
+            forward = unit(cross(left2, up2))
+            sh = add(sh, add(add(mul(forward, offset[0]), mul(left2, offset[1])), mul(up2, offset[2])))
         J["hip_" + side], J["shoulder_" + side] = hip, sh
         # legs
         tgt = k.get("ankle_" + side)
@@ -139,6 +155,11 @@ def solve(k, report):
         # palm normal (direction the palm faces) and finger curl 0..1, for render.py's hands
         J["palmn_" + side] = unit(k.get("palm_" + side, [0, 0, -1]))
         J["grip_" + side] = [k.get("grip_" + side, 0.15), 0.0, 0.0]
+        for feature in ("finger_lift", "foot_arch"):
+            name = feature + "_" + side
+            if name in k:
+                value = k[name]
+                J[name] = list(value) if isinstance(value, (list, tuple)) else [value, 0.0, 0.0]
     return J
 
 
@@ -335,9 +356,14 @@ def build(ex_id):
         J = solve(sample(spec["keys"], f / n), report)
         frames.append({k: [round(x, 5) for x in v] for k, v in J.items()})
     msgs = [f"{k}: target up to {v:.3f} m out of reach" for k, v in sorted(report.items())]
-    return dict(id=ex_id, fps=FPS, frames=frames, props=spec.get("props", []),
+    data = dict(id=ex_id, fps=FPS, frames=frames, props=spec.get("props", []),
                 cam_az=spec["cam_az"], cam_el=spec["cam_el"],
-                lengths=L), msgs
+                lengths=L)
+    if "camera_focus" in spec:
+        data["camera_focus"] = spec["camera_focus"]
+    if "camera_padding" in spec:
+        data["camera_padding"] = spec["camera_padding"]
+    return data, msgs
 
 
 # body surface radius around each joint (render.py shapes), for the floor check

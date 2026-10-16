@@ -221,7 +221,38 @@ def _situp(rower=False):
 
 
 def sit_up(): return _situp(False)
-def rower_situp(): return _situp(True)
+def rower_situp():
+    # Deliberately keep the glutes low: this is a seated rower tuck, not a
+    # sit-up with the pelvis lifted into the air. The knees tuck as the trunk
+    # rises and both arms reach toward the shins, then the body returns supine.
+    def pose(q):
+        ease = .5 - .5 * math.cos(math.pi * q)
+        p1 = -90 + 60 * ease
+        p2 = -90 + 78 * ease
+        radius = math.sqrt(.105**2*math.sin(math.radians(p1))**2 + .11**2*math.cos(math.radians(p1))**2)
+        pz = radius - .03*math.cos(math.radians(p1)) + .003
+        ankle = (.62 * (1-ease) + .22 * ease, 0, .05 * (1-ease) + .36 * ease)
+        wr_x = -.55 * (1-ease) + .55 * ease
+        wr_y = .12 * (1-ease) + .10 * ease
+        wr_z = -.075 * (1-ease)
+        hand_angle = math.pi * ease
+        arms = dict(
+            wrist_l_rel=[wr_x, wr_y, wr_z], wrist_r_rel=[wr_x, -wr_y, wr_z],
+            elbow_l=[-1,.2,0], elbow_r=[-1,-.2,0],
+            hand_l=[-math.cos(hand_angle),0,math.sin(hand_angle)],
+            hand_r=[-math.cos(hand_angle),0,math.sin(hand_angle)],
+            palm_l=[0,1,0], palm_r=[0,-1,0], grip_l=0, grip_r=0,
+        )
+        px=.13*ease
+        ax=px+.898*(1-ease)+.50*ease
+        return base_pose(pelvis=[px,0,pz],p1=p1,p2=p2,hp=4*ease,
+                         ankle_l=[ax,.10,.08+.12*ease],ankle_r=[ax,-.10,.08+.12*ease],
+                         knee_l=[0,0,1],knee_r=[0,0,1],foot_l=[1,0,0],foot_r=[1,0,0],**arms)
+
+    keys=[(0.0,pose(0)),(.12,pose(0))]
+    keys += _series(pose,.12,.50,36)+[(.62,pose(1))]
+    keys += _series(lambda s:pose(1-s),.62,.94,36)+[(.98,pose(0))]
+    return dict(seconds=4.0,keys=keys,cam_az=32,cam_el=22,props=[])
 
 
 def russian_twist():

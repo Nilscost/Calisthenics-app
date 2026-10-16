@@ -114,20 +114,15 @@ def balance_single_leg_cushion(): return _balance(cushion=True)
 
 
 def short_foot():
-    # Seated, knees bent, both feet planted and toes long. The current rig has
-    # no intrinsic arch/toe deformation, so this keeps the prescribed contact
-    # and avoids falsely curling or lifting the toes to imply a short-foot.
-    def pose(shift):
-        return base_pose(pelvis=[-.02 * shift, 0, .53 + .006 * shift], p1=-5, p2=-5,
-                         ankle_r=[.34, -.10, .08], ankle_l=[.34, .10, .08],
-                         foot_r=[1, 0, 0], foot_l=[1, 0, 0],
-                         knee_r=[1, 0, 0], knee_l=[1, 0, 0],
-                         wrist_l=[.05, .20, .72], wrist_r=[.05, -.20, .72],
-                         elbow_l=[0, 1, 0], elbow_r=[0, -1, 0],
-                         hand_l=[0, 0, -1], hand_r=[0, 0, -1])
-    chair=dict(kind="chair",x=0,seat=.45)
-    return dict(seconds=5.0,keys=[(0,pose(0)),(.12,pose(0)),(.35,pose(1)),(.55,pose(1)),(.78,pose(0)),(.94,pose(0))],
-                cam_az=30,cam_el=15,props=[chair])
+    def pose(q):
+        return base_pose(pelvis=[0,0,.53],p1=0,p2=0,
+            ankle_r=[.34,-.10,.08],ankle_l=[.34,.10,.08],foot_r=[1,0,0],foot_l=[1,0,0],
+            knee_r=[1,0,0],knee_l=[1,0,0],wrist_r=[.27,-.18,.64],wrist_l=[.27,.18,.64],
+            elbow_r=[1,-1,-1],elbow_l=[1,1,-1],hand_r=[1,0,0],hand_l=[1,0,0],grip_r=0,grip_l=0,
+            foot_arch_r=.018*q,foot_arch_l=0)
+    return dict(seconds=6,keys=[(0,pose(0)),(.12,pose(0)),(.35,pose(1)),(.72,pose(1)),(.92,pose(0))],
+                cam_az=6,cam_el=10,props=[dict(kind='chair',x=0,seat=.45)],
+                camera_focus=['ankle_r','toe_r'])
 
 
 EXERCISES={

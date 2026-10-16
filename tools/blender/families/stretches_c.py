@@ -79,13 +79,20 @@ def spiderman():
 
 
 def neck_side():
-    chair=dict(kind="chair",x=-.25,seat=.45)
-    # Static seated setup only: independent head sidebend and yaw are unavailable.
-    def k(y):
-        return base_pose(pelvis=[0,0,.48],p1=0,p2=0,hp=0,
+    chair=dict(kind="chair",x=0,seat=.45)
+    # Hold the right side of the seat so that shoulder stays low; tilt the
+    # head toward the free shoulder, with a small nose turn and chin pitch.
+    def k(tilt, turn, pitch):
+        return base_pose(pelvis=[0,0,.53],p1=0,p2=0,hp=pitch,
           ankle_l=[.35,.10,.08],ankle_r=[.35,-.10,.08],foot_l=[1,0,0],foot_r=[1,0,0],
-          wrist_r=[-.25,-.20,.47],elbow_r=[0,-1,0],wrist_l_rel=[.15,.15,.15],elbow_l=[0,1,0],yaw=y)
-    return dict(seconds=3,keys=rep(k(0),k(0)),cam_az=35,cam_el=12,props=[chair])
+          knee_l=[1,0,0],knee_r=[1,0,0],
+          wrist_r=[-.18,-.25,.55],hand_r=[0,0,-1],palm_r=[0,1,0],grip_r=.8,elbow_r=[1,-1,0],
+          wrist_l=[.14,.10,.56],hand_l=[0,0,-1],elbow_l=[1,1,0],
+          head_side_tilt=tilt,head_turn=turn)
+    a=k(0,0,0); b=k(-18,-6,5)
+    return dict(seconds=4,keys=rep(a,b,hold_top=.12,down_end=.50,hold_bottom=.12),
+                cam_az=35,cam_el=12,props=[chair],
+                camera_focus=["head","neck","shoulder_l","shoulder_r","wrist_r","chest"])
 
 
 def sphinx():
@@ -155,35 +162,69 @@ def split_middle():
 
 
 def _twist(variant):
-    # The fixed rig shares pelvic and thoracic yaw; show distinct leg/arm setups
-    # without animating a whole-body turn as if it were isolated spinal rotation.
-    k=base_pose(pelvis=[0,0,.11],p1=0,p2=0,yaw=-25,hp=0,
-      ankle_r=[.44,.44,.08],ankle_l=[.12,.03,.08],knee_r=[0,0,1],knee_l=[1,1,0],
-      foot_r=[1,0,0],foot_l=[-1,0,0])
-    if variant=='straight':
-        import math
-        j=solve(k,{});h=j['hip_l'];k['ankle_l']=[h[0]+math.sqrt(.8695**2-(h[1]-.10)**2),.10,.08]
-        k['ankle_r']=[.46,.22,.08];k['knee_l']=[0,0,1]
-    j=solve(k,{});props=[]
-    k['wrist_r']=[-.16,-.24,.035];k['hand_r']=[-1,0,0];k['palm_r']=[0,0,-1];k['elbow_r']=[-1,-1,0]
-    if variant in ('straight','easy'):
-        sh=j['shoulder_l'];kn=j['knee_r'];goal=[kn[0]+.025,kn[1]-.045,kn[2]]
-        v=[goal[i]-sh[i] for i in range(3)];n=sum(x*x for x in v)**.5;e=[sh[i]+.30*v[i]/n for i in range(3)]
-        k['wrist_l']=[e[0],e[1],e[2]+.27];k['elbow_l']=[e[i]-sh[i] for i in range(3)];k['hand_l']=[0,0,1];k['palm_l']=[0,-1,0]
-    elif variant=='half':
-        sh=j['shoulder_l'];a=k['ankle_r'];c=[a[0]+.08,a[1]-.035,a[2]+.025];v=[c[i]-sh[i] for i in range(3)];n=sum(x*x for x in v)**.5;hd=[x/n for x in v]
-        k['wrist_l']=[c[i]-.17*hd[i] for i in range(3)];k['hand_l']=hd;k['elbow_l']=[1,1,0];k['palm_l']=[0,-1,0]
-    else:
-        # The near arm passes outside the crossed calf; the other reaches around the back.
-        k['elbow_l']=[1,1,0];k['elbow_r']=[-1,-1,0]
-        k['hand_r']=[0,1,0];k['hand_l']=[0,-1,0];k['palm_r']=[1,0,0];k['palm_l']=[-1,0,0]
-        if variant=='full':
-            c=[-.14,.03,.28];k['wrist_r']=[c[0],c[1]-.085,c[2]];k['wrist_l']=[c[0],c[1]+.085,c[2]]
+    # The shoulder girdle turns over a still pelvis. The angle increases with
+    # each named level; arm positions then distinguish elbow anchor, calf reach,
+    # towel bind, and full clasp. All feet and knees remain in their authored
+    # support positions while the twist returns to neutral on each loop.
+    import math
+
+    # Show a right-knee cross-leg twist. In this rig positive thoracic_twist
+    # turns the chest toward figure-left, so the rightward twist is negative.
+    angles = {"straight": -48, "easy": -50, "half": -52, "threequarter": -54, "full": -56}
+    def key(twist):
+        if variant == "straight":
+            # One leg long; the other foot is planted beside the opposite knee.
+            ankle_l=[.86,.10,.08]; ankle_r=[.38,.38,.08]
+            knee_l=[0,0,1]; knee_r=[-1,1,2]
         else:
-            k['wrist_r']=[-.14,-.185,.28];k['wrist_l']=[-.14,.245,.28]
-            props=[dict(kind='rod',a=pt('wrist_r',[0,.085,0]),b=pt('wrist_l',[0,-.085,0]),r=.012)]
-        k['grip_l']=k['grip_r']=.7
-    return dict(seconds=3,keys=rep(k,k),cam_az=-65,cam_el=25,props=props)
+            # Fold the left foot beside the opposite buttock, knee on the mat,
+            # then cross the right foot beyond that leg.
+            ankle_l=[.18,-.18,.08]; ankle_r=[.38,.38,.08]
+            knee_l=[2,.5,0]; knee_r=[-1,1,2]
+        k=base_pose(pelvis=[0,0,.083],p1=0,p2=0,yaw=0,hp=0,
+          ankle_l=ankle_l,ankle_r=ankle_r,knee_l=knee_l,knee_r=knee_r,
+          foot_l=[1,0,0],foot_r=[1,0,0],thoracic_twist=twist,head_turn=twist*.35)
+        j=solve(k,{})
+        props=[]
+        # The opposite elbow braces outside the bent knee; half twist slides
+        # that hand down the outside of the crossed calf toward the instep.
+        if variant in ("straight", "easy", "half"):
+            kn=j["knee_r"]
+            if variant == "half":
+                ank=j["ankle_r"]
+                target=[kn[i]*.34+ank[i]*.66 for i in range(3)]
+                target[1]+=.01
+                k["wrist_l"]=target
+                k["hand_l"]=[.15,.35,-.92]; k["palm_l"]=[1,0,0]
+            else:
+                # Keep the hand just beyond the knee so the solved elbow,
+                # rather than the wrist, lands against its outside edge.
+                target=[kn[0]+.20,kn[1]+.20,kn[2]]
+                k["wrist_l"]=[target[i] for i in range(3)]
+                k["hand_l"]=[0,0,1]; k["palm_l"]=[1,0,0]
+                k["elbow_l"]=[-1,-1,0]
+            k["wrist_r"]=[-.04,-.20,.035]
+            k["hand_r"]=[-1,0,0]; k["palm_r"]=[0,0,-1]
+            k["elbow_r"]=[-1,-1,0]
+        else:
+            # The left arm wraps around the outside of the bent right knee;
+            # the right arm reaches behind to meet it. The towel bridges the
+            # gap at 3/4 level, then the wrists clasp at the full level.
+            k["wrist_l"]=[-.20,.23,.22]; k["hand_l"]=[0,-1,0]; k["palm_l"]=[1,0,0]
+            k["wrist_r"]=[-.20,-.17,.22]; k["hand_r"]=[0,1,0]; k["palm_r"]=[-1,0,0]
+            k["elbow_l"]=[1,0,.5]; k["elbow_r"]=[-1,-1,0]
+            k["grip_l"]=k["grip_r"]=.7
+            if variant == "threequarter":
+                props=[dict(kind="rod",a=pt("wrist_r"),b=pt("wrist_l"),r=.012)]
+            else:
+                # Close the wrapped front arm to the back arm for a visible clasp.
+                k["wrist_r"]=[-.20,.17,.22]
+        return k,props
+
+    neutral, _ = key(0)
+    turned, props = key(angles[variant])
+    return dict(seconds=4,keys=rep(neutral,turned,hold_top=.12,down_end=.50,hold_bottom=.12),
+                cam_az=140 if variant in ('straight','easy','half') else -140,cam_el=22,props=props)
 
 
 def twist_straight(): return _twist("straight")

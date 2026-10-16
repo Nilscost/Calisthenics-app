@@ -86,7 +86,7 @@ def sheet(data, path, moments=(0.0, 0.2, 0.35, 0.5, 0.75, 0.9)):
     img = Image.new("RGB", (CELL * len(projs), CELL * len(moments)), "white")
     d = ImageDraw.Draw(img)
     for ci, (name, pj) in enumerate(projs):
-        pts = [pj(p) for fr in frames for k, p in fr.items() if not (k.endswith(("_up", "_left")) or k.startswith(("palmn_", "grip_")))]
+        pts = [pj(p) for fr in frames for k, p in fr.items() if not (k.endswith(("_up", "_left")) or k.startswith(("palmn_", "grip_", "finger_lift_", "foot_arch_")) or k == "head_detail")]
         pts += [pj(p) for ln in props for p in ln] + [pj([0, 0, 0])]
         xs, ys = [p[0] for p in pts], [p[1] for p in pts]
         span = max(max(xs) - min(xs), max(ys) - min(ys)) * 1.15

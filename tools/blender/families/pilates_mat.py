@@ -3,17 +3,25 @@ import math
 from poses import base_pose, sample, solve, trunk_frame
 
 MAT = [dict(kind='box', center=[0, 0, -0.025], size=[2.4, 1.5, .05])]
+# Keep the repaired mat surface clear of the floor to prevent coplanar shading flicker.
+REPAIR_MAT = [dict(kind='box', center=[0, 0, -0.020], size=[2.4, 1.5, .05])]
 
-def _key(P, p1, p2, feet, wrists=None, *, yaw=0, hp=0, knees=None, arms=None, hands=None, feetdir=None, roll=0):
+def _key(P, p1, p2, feet, wrists=None, *, yaw=0, hp=0, knees=None, arms=None, hands=None, feetdir=None, roll=0,
+         thoracic_twist=0, head_turn=None, head_side_tilt=None, head_retract=None, head_detail=None):
     if wrists is None: wrists = [[-.12,-.22,.035],[-.12,.22,.035]]
     if knees is None: knees=[[1,0,0],[1,0,0]]
     if arms is None: arms=[[0,-1,0],[0,1,0]]
     if hands is None: hands=[[1,0,0],[1,0,0]]
     if feetdir is None: feetdir=[[1,0,0],[1,0,0]]
-    return base_pose(pelvis=P,p1=p1,p2=p2,hp=hp,yaw=yaw,roll=roll,
+    pose=base_pose(pelvis=P,p1=p1,p2=p2,hp=hp,yaw=yaw,roll=roll,
       ankle_r=feet[0],ankle_l=feet[1],knee_r=knees[0],knee_l=knees[1],foot_r=feetdir[0],foot_l=feetdir[1],
       wrist_r=wrists[0],wrist_l=wrists[1],elbow_r=arms[0],elbow_l=arms[1],hand_r=hands[0],hand_l=hands[1],
       palm_r=[0,0,-1],palm_l=[0,0,-1],grip_r=.1,grip_l=.1)
+    pose['thoracic_twist']=thoracic_twist
+    for name, value in [('head_turn',head_turn),('head_side_tilt',head_side_tilt),('head_retract',head_retract),('head_detail',head_detail)]:
+        if value is not None:
+            pose[name]=value
+    return pose
 
 def _lying(ankles, wrists=None, p1=-90, p2=-90, hp=0, P=[0,0,.11], **kw):
     return _key(P,p1,p2,ankles,wrists,hp=hp,**kw)
@@ -61,14 +69,17 @@ def _dense(fn, n=96): return [(i/n,fn(i/n)) for i in range(n+1)]
 
 def roll_up():
     def k(t):
-        s=(1-math.cos(2*math.pi*t))/2;p1=-90+118*s;p2=-90+138*s
+        # The upper segment leads the lower one on the curl; this staggers the
+        # available two hinges without claiming true vertebra-by-vertebra roll.
+        s=(1-math.cos(2*math.pi*t))/2
+        p1=-90+118*s;p2=-90+138*(s**.9 if s else 0.0)
         P=[.03*math.sin(math.radians(p1))+.03,0,.11];k=_key(P,p1,p2,[[.8995,-.10,.08],[.8995,.10,.08]],knees=[[0,0,1],[0,0,1]])
-        j=solve(k,{});a=math.radians(180*(1-s)-20*s)
+        j=solve(k,{});a=math.radians(180*(1-s))
         for side,sg in [('r',-1),('l',1)]:
             sh=j['shoulder_'+side];d=[math.cos(a),0,math.sin(a)]
             k['wrist_'+side]=[sh[i]+.568*d[i] for i in range(3)];k['hand_'+side]=d;k['elbow_'+side]=[0,sg,0]
         return k
-    return dict(seconds=5,keys=_dense(k),cam_az=24,cam_el=20,props=MAT)
+    return dict(seconds=5,keys=_dense(k),cam_az=24,cam_el=20,props=REPAIR_MAT)
 
 def rolling_like_a_ball():
     keys=_dense(lambda t:_roll(math.sin(math.pi*t)**2))
@@ -162,38 +173,64 @@ def corkscrew():
 
 def saw():
     def k(t):
-        q=math.sin(2*math.pi*t);b=abs(q);yaw=35*q
-        k=_key([0,0,.11],55*b,85*b,[[.7,-.5,.08],[.7,.5,.08]],yaw=yaw,hp=10*b,knees=[[0,0,1],[0,0,1]],feetdir=[[1,0,0],[1,0,0]])
+        # Each half-cycle sits tall, rotates the chest, reaches over the opposite
+        # foot, then stacks and untwists before repeating to the other side.
+        u=(2*t)%1.0; side=1.0 if t<.5 else -1.0
+        def ease(x):
+            x=max(0.0,min(1.0,x)); return x*x*(3-2*x)
+        turn=ease((u-.12)/.18)*(1.0-ease((u-.79)/.13))
+        bend=ease((u-.30)/.20)*(1.0-ease((u-.62)/.22))
+        twist=side*38.0*turn
+        k=_key([0,0,.11],60.0*bend,80.0*bend,
+               [[.846,-.30,.08],[.846,.30,.08]],yaw=0,
+               thoracic_twist=twist,head_turn=side*12.0*turn,
+               knees=[[0,0,1],[0,0,1]],feetdir=[[1,0,0],[1,0,0]])
         j=solve(k,{})
-        for side,sg in [('r',-1),('l',1)]:
-            hip=j['hip_'+side];dy=sg*.435
-            dx=math.sqrt(.8695**2-dy**2-(hip[2]-.08)**2)
-            k['ankle_'+side]=[hip[0]+dx,hip[1]+dy,.08]
-        j=solve(k,{});a=math.radians(yaw)
-        for side,sg in [('r',-1),('l',1)]:
-            sh=j['shoulder_'+side];d=[-sg*math.sin(a),sg*math.cos(a),0]
-            neutral=[sh[i]+.568*d[i] for i in range(3)]
-            front=(side=='r' and q>=0) or (side=='l' and q<0)
-            if front:
-                opp='l' if side=='r' else 'r';ank=k['ankle_'+opp];target=[ank[0]+.22,ank[1]+(-sg)*.025,.08]
-                v=[target[i]-sh[i] for i in range(3)];n=math.sqrt(sum(x*x for x in v));hd=[x/n for x in v];w=[target[i]-.17*hd[i] for i in range(3)]
-            else:
-                hd=[-math.cos(a),-math.sin(a),0];w=[sh[i]+.568*hd[i] for i in range(3)]
-            k['wrist_'+side]=[neutral[i]*(1-b)+w[i]*b for i in range(3)];k['hand_'+side]=[d[i]*(1-b)+hd[i]*b for i in range(3)];k['elbow_'+side]=[0,0,1]
+        # Keep the legs long and the heels planted in a wide V while the chest
+        # twists; derive the forward offset from each hip to avoid IK stretch.
+        for name,sgn in [('r',-1),('l',1)]:
+            hip=j['hip_'+name];dy=sgn*.30-hip[1]
+            dx=math.sqrt(max(0.0,.8695**2-dy**2-(hip[2]-.08)**2))
+            k['ankle_'+name]=[hip[0]+dx,sgn*.30,.08]
+        j=solve(k,{})
+        chest_left=j['chest_left']
+        for name,sgn in [('r',-1),('l',1)]:
+            d=[sgn*x for x in chest_left];sh=j['shoulder_'+name]
+            k['wrist_'+name]=[sh[i]+.568*d[i] for i in range(3)]
+            k['hand_'+name]=d;k['elbow_'+name]=[0,0,1]
+        # The hand on the opposite side reaches toward the little-toe edge;
+        # cap the wrist to arm length instead of hiding unreachable IK.
+        if bend>0 and turn>0:
+            reaching='r' if side>0 else 'l'
+            opposite='l' if reaching=='r' else 'r'
+            sh=j['shoulder_'+reaching];ank=k['ankle_'+opposite]
+            target=[ank[0]+.22,ank[1]+(.045 if opposite=='l' else -.045),ank[2]]
+            v=[target[i]-sh[i] for i in range(3)];n=math.sqrt(sum(x*x for x in v))
+            d=[x/n for x in v] if n else [1,0,0]
+            reach=min(.568,max(0.0,n-.17));k['wrist_'+reaching]=[sh[i]+reach*d[i] for i in range(3)]
+            k['hand_'+reaching]=d;k['elbow_'+reaching]=[0,0,1]
+            rear='l' if reaching=='r' else 'r';sr=j['shoulder_'+rear]
+            # Keep the back arm reaching behind in the horizontal plane;
+            # tilting the chest's lateral axis with the forward fold lifts it overhead.
+            upright_left=trunk_frame(0,0,twist)[1]
+            rd=[(-1.0 if rear=='r' else 1.0)*x for x in upright_left]
+            k['wrist_'+rear]=[sr[i]+.568*rd[i] for i in range(3)];k['hand_'+rear]=rd
         return k
-    return dict(seconds=6,keys=_dense(k,192),cam_az=30,cam_el=24,props=MAT)
+    return dict(seconds=8,keys=_dense(k,256),cam_az=34,cam_el=24,props=REPAIR_MAT)
 
 def roll_over():
-    # Start truly supine, legs straight up; arcs keep the legs at the same 0.8695 m radius.
+    # Start supine, curl from the pelvis through the upper trunk, then lower in
+    # reverse order. The contact formula keeps the trunk supported by the mat.
     def pose(s, opened=0):
-        q=s*s*(3-2*s)
-        p1=-90.0-60.0*q; p2=-90.0-30.0*q; hp=10.0+40.0*q
+        q1=s*s*(3-2*s)
+        q2=max(0.0,min(1.0,(s-.08)/.92));q2=q2*q2*(3-2*q2)
+        p1=-90.0-55.0*q1; p2=-90.0-25.0*q2; hp=10.0+40.0*q2
         u1,_=trunk_frame(p1);u2,_=trunk_frame(p2)
         sp=.24*u1[2]; ch=sp+.26*u2[2]
         pz=.01-min(-.09,sp-.09,ch-.10)
-        P=[-.18*q,0.0,pz]
+        P=[-.16*q1,0.0,pz]
         # Constant leg radius, with feet rotating from vertical to parallel beyond the head.
-        ang=math.pi/2*q
+        ang=math.pi/2*q1
         dx=-math.sin(ang); dz=math.cos(ang)
         spread=.03+.06*opened
         ankles=[]; feet=[]
@@ -216,31 +253,33 @@ def roll_over():
             s=1.0
         else:
             x=(1.0-t)/.45; x=max(0.0,min(1.0,x)); s=x*x*(3-2*x)
-        opened=max(0.0,min(1.0,(s-.78)/.22))
+        opened=max(0.0,min(1.0,(s-.76)/.24))
         keys.append((t,pose(s,opened)))
-    return dict(seconds=4,keys=keys,cam_az=24,cam_el=23,props=MAT)
+    return dict(seconds=4,keys=keys,cam_az=24,cam_el=23,props=REPAIR_MAT)
 
 def seal():
-    # Timed three-clap packets on both balance and shoulder-blade holds.
+    # Deliberate top and shoulder-blade holds make three ankle-clap pulses visible.
     def phase(t):
-        if .18 <= t < .47:
-            x=(t-.18)/.29; return x*x*(3-2*x)
-        if .47 <= t <= .68: return 1.0
-        if .68 < t <= .97:
-            x=(.97-t)/.29; return x*x*(3-2*x)
+        if .22 <= t < .48:
+            x=(t-.22)/.26; return x*x*(3-2*x)
+        if .48 <= t <= .72: return 1.0
+        if .72 < t <= .98:
+            x=(.98-t)/.26; return x*x*(3-2*x)
         return 0.0
     def pulse(t, centers):
         a=0.0
         for c in centers:
-            # Smooth, separated open-close pulses, visible in the feet without breaking compactness.
-            a=max(a, max(0.0,1.0-abs(t-c)/.018))
+            # A cosine pulse spans multiple movie frames at 24 fps, rather than
+            # being a one-frame triangular flick that disappears in playback.
+            x=abs(t-c)/.025
+            if x<1.0: a=max(a,.5+.5*math.cos(math.pi*x))
         return a
     keys=[]
     for i in range(193):
         t=i/192
         s=phase(t)
         k=_roll(s)
-        q=pulse(t,[.045,.095,.145,.525,.575,.625])
+        q=pulse(t,[.045,.115,.185,.515,.615,.715])
         for side,sgn in (('r',-1),('l',1)):
             # Feet touch together at rest; each clap briefly opens then returns the soles together.
             ank=k['ankle_'+side]
@@ -251,23 +290,33 @@ def seal():
             k['wrist_'+side]=wr;k['hand_'+side]=hd
         k['grip_r']=k['grip_l']=.98
         keys.append((t,k))
-    return dict(seconds=4.2,keys=keys,cam_az=25,cam_el=22,props=MAT)
+    return dict(seconds=6.0,keys=keys,cam_az=25,cam_el=22,props=REPAIR_MAT)
 
 def spine_twist():
     from poses import solve
-    def k(y):
-        # Shared pelvic/chest yaw limits this to a modest schematic twist.
-        k=_key([0,0,.11],0,0,[[.846,-.10,.08],[.846,.10,.08]],yaw=y,knees=[[0,0,1],[0,0,1]],feetdir=[[0,0,1],[0,0,1]])
-        j=solve(k,{});a=math.radians(y)
-        for side,sg in [('r',-1),('l',1)]:
-            hip=j['hip_'+side];dy=sg*.10-hip[1]
-            k['ankle_'+side]=[hip[0]+math.sqrt(.8695**2-dy**2-(hip[2]-.08)**2),sg*.10,.08]
-        for side,sg in [('r',-1),('l',1)]:
-            sh=j['shoulder_'+side];d=[-sg*math.sin(a),sg*math.cos(a),0]
-            k['wrist_'+side]=[sh[i]+.568*d[i] for i in range(3)];k['elbow_'+side]=[0,0,-1];k['hand_'+side]=d
+    def ease(x):
+        x=max(0.0,min(1.0,x)); return x*x*(3-2*x)
+    def k(t):
+        # Two short pulses per side, with pelvis and straight legs facing forward.
+        side=1.0 if t<.5 else -1.0
+        u=(2*t)%1.0
+        turn=ease((u-.16)/.18)*(1.0-ease((u-.72)/.16))
+        twist=side*32.0*turn
+        k=_key([0,0,.11],0,0,[[.8695,-.30,.08],[.8695,.30,.08]],yaw=0,
+               thoracic_twist=twist,head_turn=side*10.0*turn,
+               knees=[[0,0,1],[0,0,1]],feetdir=[[1,0,0],[1,0,0]])
+        j=solve(k,{})
+        for name,sgn in [('r',-1),('l',1)]:
+            hip=j['hip_'+name];dy=sgn*.30-hip[1]
+            dx=math.sqrt(max(0.0,.8695**2-dy**2-(hip[2]-.08)**2))
+            k['ankle_'+name]=[hip[0]+dx,sgn*.30,.08]
+        j=solve(k,{})
+        for name,sgn in [('r',-1),('l',1)]:
+            d=[sgn*x for x in j['chest_left']];sh=j['shoulder_'+name]
+            k['wrist_'+name]=[sh[i]+.568*d[i] for i in range(3)]
+            k['elbow_'+name]=[0,0,-1];k['hand_'+name]=d
         return k
-    keys=[(t,k(y)) for t,y in [(0,0),(.12,0),(.20,10),(.26,13),(.32,10),(.38,13),(.50,0),(.62,0),(.70,-10),(.76,-13),(.82,-10),(.88,-13),(1,0)]]
-    return dict(seconds=5,keys=keys,cam_az=28,cam_el=20,props=MAT)
+    return dict(seconds=6,keys=_dense(k,240),cam_az=34,cam_el=20,props=REPAIR_MAT)
 
 def double_leg_kick():
     def lift_progress(t):
@@ -286,11 +335,16 @@ def double_leg_kick():
         return q
 
     def pose(t):
-        lift=lift_progress(t)
+        # Show both head sides in one seamless loop: three kicks, chest lift,
+        # lower and turn, then repeat on the other cheek.
+        cycle=(2.0*t)%1.0
+        side=1.0 if t<.5 else -1.0
+        lift=lift_progress(cycle)
+        x=max(0.0,min(1.0,(cycle-.86)/.14));head_swap=x*x*(3-2*x)
+        head_turn=side*75.0*(1.0-2.0*head_swap)
         p=90.0-20.0*lift
         P=[0.0,0.0,.11] # sacrum/pelvis remains planted throughout
-        # The rig cannot turn the head independently; preserve the prone face-forward setup.
-        theta=math.radians(180.0-90.0*kick_pulse(t)) if lift < .5 else math.pi
+        theta=math.radians(180.0-90.0*kick_pulse(cycle)) if lift < .5 else math.pi
         u1,l1=trunk_frame(p)
         ankles=[]; knees=[]; feet=[]
         for sgn in (-1,1):
@@ -316,21 +370,26 @@ def double_leg_kick():
         # During the kicks, clasp the hands together over the upper back. As the chest rises,
         # keep the wrists behind the torso and extend both arms toward the feet.
         wrists=[[
-            .40+(-.096-.40)*lift,
-            sgn*(.085+(.080-.085)*lift),
+            .34+(-.07-.34)*lift,
+            sgn*(.035+(.12-.035)*lift),
             .20+(.12-.20)*lift
         ] for sgn in (-1,1)]
-        hands=[[0.0,1.0,0.0],[0.0,-1.0,0.0]]
+        hands=[]
+        for sgn in (-1.0,1.0):
+            # Blend from clasping inward behind the back to pointing toward the feet.
+            d=[-lift,-sgn*(1.0-lift),0.0]
+            n=math.sqrt(sum(x*x for x in d))
+            hands.append([x/n for x in d])
         arms=[[0.0,-1.0,-.25],[0.0,1.0,-.25]]
         k=_key(P,p,p,[ankles[0],ankles[1]],[wrists[0],wrists[1]],hp=0,
-               knees=[[0,0,-1],[0,0,-1]] if lift < .5 else [[0,0,-1],[0,0,-1]],
-               arms=arms,hands=hands,feetdir=feet)
-        k['grip_r']=k['grip_l']=.98
+               thoracic_twist=0,head_turn=head_turn,head_detail=1,
+               knees=[[0,0,-1],[0,0,-1]],arms=arms,hands=hands,feetdir=feet)
+        k['grip_r']=k['grip_l']=.98*(1.0-lift)+.1*lift
         k['palm_r']=[0,0,1]; k['palm_l']=[0,0,1]
         return k
 
-    keys=[(i/144,pose(i/144)) for i in range(145)]
-    return dict(seconds=4.0,keys=keys,cam_az=25,cam_el=22,props=MAT)
+    keys=[(i/288,pose(i/288)) for i in range(289)]
+    return dict(seconds=8.0,keys=keys,cam_az=25,cam_el=22,props=REPAIR_MAT)
 
 def mermaid():
     # Side-sit with both feet on +Y, knees folded toward -Y. The right (camera-near)

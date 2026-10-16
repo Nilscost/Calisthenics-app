@@ -86,31 +86,58 @@ def prone_w_raise(): return _prone_raise("W")
 
 
 def _wall_push(q):
-    # Fixed wrists on a vertical wall; only a subtle thorax pitch represents
-    # scapular motion because this rig has no scapula joint.
-    return base_pose(pelvis=[0,0,0.955],p1=0,p2=-0.15+0.30*q,hp=0,
+    # Translate the trunk toward the wall while holding shoulder roots and
+    # wrists still. The offset isolates scapular glide from arm movement.
+    glide = 0.035 * q
+    return base_pose(pelvis=[glide,0,0.955],p1=0,p2=0,hp=0,
         ankle_l=[0,0.10,0.08],ankle_r=[0,-0.10,0.08],
         knee_l=[1,0,0],knee_r=[1,0,0],foot_l=[1,0,0],foot_r=[1,0,0],
+        shoulder_offset_l=[-glide,0,0],shoulder_offset_r=[-glide,0,0],
         wrist_l=[0.568,0.18,1.425],wrist_r=[0.568,-0.18,1.425],
         elbow_l=[1,0,0],elbow_r=[1,0,0],hand_l=[0,0,1],hand_r=[0,0,1],
         palm_l=[1,0,0],palm_r=[1,0,0],grip_l=0,grip_r=0)
 
 
 def scapular_pushup_wall():
-    wall=dict(kind="box",center=[0.623,0,1.2],size=[0.06,1.6,2.4])
-    return dict(seconds=3.5,keys=_wave(_wall_push),cam_az=25,cam_el=16,props=[wall])
+    # The near face is x=.588; the rendered palm outer surface reaches x=.588.
+    wall=dict(kind="box",center=[0.618,0,1.2],size=[0.06,1.6,2.4])
+    return dict(seconds=3.5,keys=_wave(_wall_push),cam_az=0,cam_el=12,props=[wall],
+                camera_focus=['head','chest','shoulder_l','shoulder_r','elbow_l','elbow_r','wrist_l','wrist_r'],camera_padding=.10)
+
+
+def _rotate_y(point, pivot, degrees):
+    v=[point[i]-pivot[i] for i in range(3)]
+    v=rot(v,[0,1,0],degrees)
+    return [pivot[i]+v[i] for i in range(3)]
+
+
+def _fix_shoulder_roots(k, targets):
+    """Offset moved torso shoulders back to fixed world-space arm roots."""
+    joints=solve(k,{})
+    _,left=trunk_frame(k['p2'],k.get('yaw',0),k.get('roll',0))
+    up,_=trunk_frame(k['p2'],k.get('yaw',0),k.get('roll',0))
+    forward=[left[1]*up[2]-left[2]*up[1],
+             left[2]*up[0]-left[0]*up[2],
+             left[0]*up[1]-left[1]*up[0]]
+    for side in ('l','r'):
+        delta=[targets[side][i]-joints['shoulder_'+side][i] for i in range(3)]
+        k['shoulder_offset_'+side]=[
+            sum(delta[i]*forward[i] for i in range(3)),
+            sum(delta[i]*left[i] for i in range(3)),
+            sum(delta[i]*up[i] for i in range(3)),
+        ]
+    return k
 
 
 def _knee_plank(q, full=False):
-    # The rig has no scapula joints: keep the support and elbows straight,
-    # with only a tiny thorax change to suggest protraction/retraction.
+    """Small rigid trunk pivot with fixed arm roots and hand/knee/toe contacts."""
     if full:
-        ang=22.5;ax=-1.245
+        ang=22.5;ax=-1.248
         p=[ax+.898*math.cos(math.radians(ang)),0,.08+.898*math.sin(math.radians(ang))]
         pitch=90-ang
-        sh=_shoulder(p,pitch,pitch,side='l')
-        wrists=[[sh[0],.18,.035],[sh[0],-.18,.035]]
-        ankles=([-1.25,.10,.08],[-1.25,-.10,.08]);knees=([0,0,-1],[0,0,-1])
+        ankles=([-1.25,.10,.08],[-1.25,-.10,.08])
+        feet=([-1,0,0],[-1,0,0])
+        poles=([0,0,-1],[0,0,-1])
     else:
         # Hip, trunk and thigh form one line from the planted knees.
         lo,hi=30.,40.
@@ -121,27 +148,72 @@ def _knee_plank(q, full=False):
             else:hi=a
         a=(lo+hi)/2;r=math.radians(a);pitch=90-a
         p=[-.45+.47*math.cos(r),0,.05+.47*math.sin(r)]
-        wrists=[[.25,.23,.035],[.25,-.23,.035]]
         ankles=([-.88,.09,.05],[-.88,-.09,.05])
-        knees=([-math.cos(r),0,-math.sin(r)],[-math.cos(r),0,-math.sin(r)])
-    return base_pose(pelvis=p,p1=pitch,p2=pitch+.15*(2*q-1),hp=-3,
-        ankle_l=ankles[0],ankle_r=ankles[1],knee_l=knees[0],knee_r=knees[1],
-        foot_l=[-1,0,0],foot_r=[-1,0,0],wrist_l=wrists[0],wrist_r=wrists[1],
+        feet=([-1,0,0],[-1,0,0])
+        poles=([-math.cos(r),0,-math.sin(r)],[-math.cos(r),0,-math.sin(r)])
+
+    base=base_pose(pelvis=p,p1=pitch,p2=pitch,hp=-3,
+        ankle_l=ankles[0],ankle_r=ankles[1],knee_l=poles[0],knee_r=poles[1],
+        foot_l=feet[0],foot_r=feet[1],
+        wrist_l=[0,0,0],wrist_r=[0,0,0],
         elbow_l=[0,1,0],elbow_r=[0,-1,0],hand_l=[1,0,0],hand_r=[1,0,0],
         palm_l=[0,0,-1],palm_r=[0,0,-1],grip_l=0,grip_r=0)
+    base_j=solve(base,{})
+    roots={s:base_j['shoulder_'+s] for s in ('l','r')}
+    wrists={s:base_j['shoulder_'+s] for s in ('l','r')}
+    # Keep the arms slightly flexed but nearly straight, with the same wrist
+    # points throughout the cycle. The baseline reach is 0.564 m (about 175°).
+    for side in ('l','r'):
+        wrists[side]=[roots[side][0],roots[side][1],roots[side][2]-.568]
+
+    def pose():
+        delta=(1.3 if full else 1.8)*q
+        if full:
+            toe=[-1.45,0,.08]
+            pelvis=_rotate_y(p,toe,delta)
+            ankle_targets=tuple(_rotate_y(a,toe,delta) for a in ankles)
+            foot_dirs=tuple(rot(f,[0,1,0],delta) for f in feet)
+            knee_poles=tuple(rot(v,[0,1,0],delta) for v in poles)
+        else:
+            pivot=[-.45,0,.05]
+            pelvis=_rotate_y(p,pivot,delta)
+            ankle_targets=ankles
+            foot_dirs=feet
+            knee_poles=poles
+        k=base_pose(pelvis=pelvis,p1=pitch+delta,p2=pitch+delta,hp=-3,
+            ankle_l=ankle_targets[0],ankle_r=ankle_targets[1],
+            knee_l=knee_poles[0],knee_r=knee_poles[1],
+            foot_l=foot_dirs[0],foot_r=foot_dirs[1],
+            wrist_l=wrists['l'],wrist_r=wrists['r'],
+            elbow_l=[0,1,0],elbow_r=[0,-1,0],hand_l=[1,0,0],hand_r=[1,0,0],
+            palm_l=[0,0,-1],palm_r=[0,0,-1],grip_l=0,grip_r=0)
+        if not full:
+            # Aim the IK pole through the fixed knee contact as the thigh turns.
+            raw=solve(k,{})
+            for side,sign in (('l',1),('r',-1)):
+                fixed=[-.45,sign*.09,.05]
+                k['knee_'+side]=[fixed[i]-raw['hip_'+side][i] for i in range(3)]
+        return _fix_shoulder_roots(k,roots)
+    return pose()
 
 
 def scapular_pushup_knee():
-    return dict(seconds=3.5,keys=_wave(lambda q:_knee_plank(q)),cam_az=30,cam_el=20,props=[])
+    return dict(seconds=3.5,keys=_wave(lambda q:_knee_plank(q)),cam_az=30,cam_el=20,props=[],
+                camera_focus=['head','chest','shoulder_l','shoulder_r','wrist_l','wrist_r','knee_l','knee_r'],camera_padding=.10)
 
 
 def scapular_pushup():
-    return dict(seconds=3.5,keys=_wave(lambda q:_knee_plank(q,True)),cam_az=30,cam_el=20,props=[])
+    return dict(seconds=3.5,keys=_wave(lambda q:_knee_plank(q,True)),cam_az=30,cam_el=20,props=[],
+                camera_focus=['head','chest','shoulder_l','shoulder_r','elbow_l','elbow_r','wrist_l','wrist_r'],camera_padding=.12)
 
 
 def support_scapular_shrug():
     def pose(q):
-        return base_pose(pelvis=[0,0,1.244],p1=0,p2=0.25*(2*q-1),hp=0,
+        # Scapulae elevate relative to the torso. The torso sinks by the same
+        # small amount, keeping the straight-arm bar support at a fixed length.
+        rise = 0.05 * q
+        return base_pose(pelvis=[0,0,1.244-rise],p1=0,p2=0,hp=0,
+          shoulder_offset_l=[0,0,rise],shoulder_offset_r=[0,0,rise],
           wrist_l=[0,0.25,1.15],wrist_r=[0,-0.25,1.15],
           elbow_l=[0,1,0],elbow_r=[0,-1,0],hand_l=[1,0,0],hand_r=[1,0,0],
           palm_l=[0,0,-1],palm_r=[0,0,-1],grip_l=.8,grip_r=.8,
@@ -149,7 +221,8 @@ def support_scapular_shrug():
           knee_l=[1,0,0],knee_r=[1,0,0],foot_l=[0,0,-1],foot_r=[0,0,-1])
     bars=[dict(kind="rod",a=[-0.8,0.25,1.15],b=[0.8,0.25,1.15],r=.025),
           dict(kind="rod",a=[-0.8,-0.25,1.15],b=[0.8,-0.25,1.15],r=.025)]
-    return dict(seconds=3.5,keys=_wave(pose),cam_az=30,cam_el=15,props=bars)
+    return dict(seconds=3.5,keys=_wave(pose),cam_az=30,cam_el=15,props=bars,
+                camera_focus=['head','neck','chest','shoulder_l','shoulder_r','elbow_l','elbow_r','wrist_l','wrist_r'])
 
 
 def _wall_slide(q):

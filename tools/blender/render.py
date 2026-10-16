@@ -158,6 +158,18 @@ def foot_points(fr, side):
     return heel, tip
 
 
+def arch_points(fr, side):
+    """An opt-in articulated foot: grounded heel/forefoot, long uncurled toes."""
+    heel, tip = foot_points(fr, side)
+    fd = (tip - heel).normalized()
+    amount = max(0.0, min(0.025, fr["foot_arch_" + side][0]))
+    # The forefoot draws slightly toward the fixed heel as the midfoot rises.
+    ball = heel.lerp(tip, 0.70) - fd * amount * 0.5
+    toe = tip - fd * amount * 0.5
+    mid = heel.lerp(ball, 0.48) + Vector((0, 0, 0.018 + amount))
+    return heel, mid, ball, toe
+
+
 FINGERS = (  # (offset across the palm, proximal length, distal length)
     (0.030, 0.042, 0.036), (0.010, 0.047, 0.040), (-0.010, 0.045, 0.038), (-0.029, 0.037, 0.030))
 PALM_LEN = 0.085
@@ -183,16 +195,21 @@ def hand_segments(fr, side):
     wr, u, n, s = hand_frame(fr, side)
     g = max(0.0, min(1.0, fr["grip_" + side][0]))
     a = math.radians(85) * g
+    lifts = fr.get("finger_lift_" + side, [0, 0, 0, 0, 0])
+    if len(lifts) != 5:
+        lifts = [lifts[0]] * 5
     segs = []
-    for off, l1, l2 in FINGERS:
+    for index, (off, l1, l2) in enumerate(FINGERS):
+        lifted = a - math.radians(lifts[index])
         base = wr + u * PALM_LEN - s * off
-        d1 = u * math.cos(a) + n * math.sin(a)
+        d1 = u * math.cos(lifted) + n * math.sin(lifted)
         e1 = base + d1 * l1
-        d2 = u * math.cos(2 * a) + n * math.sin(2 * a)
+        distal = 2 * a - math.radians(lifts[index])
+        d2 = u * math.cos(distal) + n * math.sin(distal)
         segs.append((base, e1))
         segs.append((e1, e1 + d2 * l2))
     tb = wr + u * 0.025 + s * 0.032
-    td = (u * 0.75 + s * 0.55 + n * (0.15 + 0.7 * g)).normalized()
+    td = (u * 0.75 + s * 0.55 + n * (0.15 + 0.7 * g - math.sin(math.radians(lifts[4])))).normalized()
     segs.append((tb, tb + td * 0.055))
     palm_c = wr + u * (PALM_LEN * 0.55) + n * 0.004
     return palm_c, u, n, s, segs
@@ -207,7 +224,14 @@ class Figure:
             self.parts[name] = capsule(name, length, r1, r2, skin)
         for side in ("l", "r"):
             h, t = foot_points(f0, side)
-            self.parts["foot_" + side] = capsule("foot_" + side, (t - h).length, 0.036, 0.026, skin)
+            if "foot_arch_" + side in f0:
+                points = arch_points(f0, side)
+                for index, (a, b) in enumerate(zip(points, points[1:])):
+                    r1, r2 = ((.036, .023), (.023, .027), (.027, .024))[index]
+                    name = f"foot_{side}_{index}"
+                    self.parts[name] = capsule(name, (b - a).length, r1, r2, skin)
+            else:
+                self.parts["foot_" + side] = capsule("foot_" + side, (t - h).length, 0.036, 0.026, skin)
             _, _, _, _, segs = hand_segments(f0, side)
             self.parts["palm_" + side] = ellipsoid("palm_" + side, 0.042, 0.016, 0.052, skin)
             for i, (a, b) in enumerate(segs):
@@ -219,13 +243,21 @@ class Figure:
         self.parts["belly"] = ellipsoid("belly", 0.10, 0.145, 0.13, skin)
         self.parts["chest"] = ellipsoid("chest", 0.115, 0.175, 0.17, skin)
         self.parts["head"] = ellipsoid("head", 0.098, 0.082, 0.118, skin)
+        if f0.get("head_detail", [0])[0]:
+            self.parts["nose"] = ellipsoid("nose", .028, .020, .024, skin)
+            self.parts["chin"] = ellipsoid("chin", .035, .034, .026, skin)
 
     def pose(self, fr):
         for name, (a, b, _, _) in LIMBS.items():
             place_segment(self.parts[name], fr[a], fr[b])
         for side in ("l", "r"):
             h, t = foot_points(fr, side)
-            place_segment(self.parts["foot_" + side], h, t)
+            if "foot_arch_" + side in fr:
+                points = arch_points(fr, side)
+                for index, (a, b) in enumerate(zip(points, points[1:])):
+                    place_segment(self.parts[f"foot_{side}_{index}"], a, b)
+            else:
+                place_segment(self.parts["foot_" + side], h, t)
             for j in ("knee", "elbow", "ankle", "wrist"):
                 self.parts[f"{j}_{side}_ball"].location = fr[f"{j}_{side}"]
             pc, u, n, sv, segs = hand_segments(fr, side)
@@ -243,7 +275,13 @@ class Figure:
         place_basis(self.parts["belly"], (P + S) / 2 + up1 * 0.06, (up1 + up2).normalized(), (l1 + l2).normalized())
         place_basis(self.parts["chest"], C - up2 * 0.11, up2, l2)
         head_up = (Vector(fr["head"]) - Vector(fr["neck"])).normalized()
-        place_basis(self.parts["head"], Vector(fr["head"]) + head_up * 0.02, head_up, l2)
+        head_left = Vector(fr.get("head_left", l2))
+        center = Vector(fr["head"])
+        place_basis(self.parts["head"], center + head_up * 0.02, head_up, head_left)
+        if "nose" in self.parts:
+            forward = head_left.cross(head_up).normalized()
+            place_basis(self.parts["nose"], center + head_up * .025 + forward * .10, head_up, head_left)
+            place_basis(self.parts["chin"], center - head_up * .060 + forward * .078, head_up, head_left)
 
 
 # ---------------------------------------------------------------- props
@@ -431,6 +469,7 @@ def scene_setup(engine):
     else:
         sc.render.engine = "CYCLES"
         sc.cycles.samples = 24
+        sc.render.use_persistent_data = True
         sc.cycles.use_denoising = True
         try:  # Apple GPU if available
             prefs = bpy.context.preferences.addons["cycles"].preferences
@@ -469,10 +508,12 @@ def render(ex_id, engine, start_only):
     fig = Figure(data["frames"][0])
     for fr in data["frames"]:
         for k, v in fr.items():
-            if not (k.endswith(("_up", "_left")) or k.startswith(("palmn_", "grip_"))):
+            if not (k.endswith(("_up", "_left")) or k.startswith(("palmn_", "grip_", "finger_lift_", "foot_arch_")) or k == "head_detail"):
                 pts.append(tuple(v))
+    if data.get("camera_focus"):
+        pts = [tuple(fr[name]) for fr in data["frames"] for name in data["camera_focus"]]
     # pad every point by the body's thickness so limbs and head stay inside the frame
-    pad = 0.12
+    pad = data.get("camera_padding", 0.12)
     pts = [(p[0] + dx, p[1] + dy, max(p[2] + dz, 0.0)) for p in set(pts)
            for dx, dy, dz in ((0, 0, 0), (pad, 0, 0), (-pad, 0, 0), (0, pad, 0), (0, -pad, 0), (0, 0, pad), (0, 0, -pad))]
     camera(data, pts)
@@ -554,4 +595,5 @@ def main():
         fh.write(summary + "\n" + "\n".join("FAILED " + f for f in failed) + "\n")
 
 
-main()
+if __name__ == "__main__":
+    main()
