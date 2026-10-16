@@ -1,0 +1,1518 @@
+{
+  "squat-assisted": {
+    "sha256": "cfd8d5924a191dad067e35290be683461367858f7841f140361241e0ff1c2f3f",
+    "mtime_ns": 1792012500000000000
+  },
+  "squat-box": {
+    "sha256": "16df332cc7f6ae24f41c57df0537dfb6bf4f25fa32ca327ba1bcfb14151e0051",
+    "mtime_ns": 1792012500000000000
+  },
+  "squat-half": {
+    "sha256": "0b91b866191327bfde1db9b820644a666ca0639ccbc8371c7035c50780b790c1",
+    "mtime_ns": 1792012500000000000
+  },
+  "squat-close": {
+    "sha256": "98baf21362bcef98b226ee4318235ae3eec78946ff7ab32e64caf0c2900181be",
+    "mtime_ns": 1792012500000000000
+  },
+  "squat-uneven": {
+    "sha256": "c895d9bc01c784368971ef947c05aa615a091cd80f3a80c674964384c54d462b",
+    "mtime_ns": 1792012500000000000
+  },
+  "squat-cossack": {
+    "sha256": "298579c9f1bdf101603a16b75e8c8b470765970be9acd48a569cae977c1f7de0",
+    "mtime_ns": 1792012500000000000
+  },
+  "squat-pistol-negative": {
+    "sha256": "e303f184b531b632edd62cc90907d2342e9593557468cf321e2306b529224a4e",
+    "mtime_ns": 1792012500000000000
+  },
+  "squat-pistol-elevated": {
+    "sha256": "85de61df50c206c5f4e16fc27d867a1c37e1e6e35d8fb2b3b675e507ddd941e2",
+    "mtime_ns": 1792012500000000000
+  },
+  "squat-shrimp-two-hand": {
+    "sha256": "8d41efd91128e995fd8275eebbfe0d2f431af162a2c916f2c1f3552e18c7ff0b",
+    "mtime_ns": 1792012500000000000
+  },
+  "squat-shrimp-deficit": {
+    "sha256": "5d2cfe2dd7aaa4d4b0c87c9113fbd82943c3125aa0b31d8c200669f288c9e232",
+    "mtime_ns": 1792012500000000000
+  },
+  "pushup-uneven": {
+    "sha256": "c104d68df019d5981f851d77fa434d79d28d0f29f82889cbc6d1014e7becb53a",
+    "mtime_ns": 1792012626000000000
+  },
+  "pushup-half-one-arm": {
+    "sha256": "5829ff3f29c9e04795feadd2fae6f70316bd27924704f7d4c9e8bda52fba59c3",
+    "mtime_ns": 1792012626000000000
+  },
+  "pushup-one-arm-elevated": {
+    "sha256": "14a4e48c4f9a5331c6b45d4adb4089fedf3791be0a822be83be402d5690fab1d",
+    "mtime_ns": 1792012626000000000
+  },
+  "pushup-one-arm-straight-body": {
+    "sha256": "94b1d530811abd1e66d4018f581b96e8193b8961732c0be9e0b548ca40b56b58",
+    "mtime_ns": 1792012626000000000
+  },
+  "pushup-pseudo-planche": {
+    "sha256": "ae05d0e986e259f55fa8eee8cdc84c751b8b79196d653f7f74afc628b53e2096",
+    "mtime_ns": 1792012626000000000
+  },
+  "dip-bench-bent-knee": {
+    "sha256": "7bdae2b5b1e1dcb262f1bfb15a1fefa41c302e3d7d60a95ad52a938f64038e6e",
+    "mtime_ns": 1792013644000000000
+  },
+  "dip-bench-straight-leg": {
+    "sha256": "ee031a30a797eab9dda2b6968dd91577e5920351f3461998e9633677d06d9ebb",
+    "mtime_ns": 1792013644000000000
+  },
+  "dip-bench-feet-elevated": {
+    "sha256": "122c7c9ae09046f489af254cc4792bdc29640adf6358c73f56e43484100e32b5",
+    "mtime_ns": 1792013644000000000
+  },
+  "dip-feet-supported": {
+    "sha256": "1f6fe2db86bfe4027beffd3cd237e56f5e7d505849696b2ae85fbad5a3847530",
+    "mtime_ns": 1792013644000000000
+  },
+  "dip-jumping": {
+    "sha256": "cd3820b7114900d19d593a3b4d74c3c41864bc409f8288545296b7c816c3690c",
+    "mtime_ns": 1792013644000000000
+  },
+  "dip-straight-bar": {
+    "sha256": "cf2b95ff3ffe2c0dc2a3df207a1bb977713f18d78e741999e6f5d0e5dcf5918f",
+    "mtime_ns": 1792013644000000000
+  },
+  "dip-l-sit": {
+    "sha256": "a5a3426142f2afdb896bc5ae9d063f2e252d6bb2cafe725b369b948c1e335c92",
+    "mtime_ns": 1792013644000000000
+  },
+  "dip-forward-lean": {
+    "sha256": "ea1b9c402e4bc6eab5486aca56545c725bf1ba305b054d0e15335af0fe6ad3df",
+    "mtime_ns": 1792013644000000000
+  },
+  "planche-frog-stand": {
+    "sha256": "eee0c440789c466ff7f69536d9732efae6bd73186e7f8e2dc0154a07c8044e1e",
+    "mtime_ns": 1792013644000000000
+  },
+  "planche-frog-stand-straight-arm": {
+    "sha256": "248ea96d72f133c91eb30820968d4a77d621bd20e50534b358a287a5b0334cd6",
+    "mtime_ns": 1792013644000000000
+  },
+  "plank-long-lever": {
+    "sha256": "2dc2b4aea3c304cbd6992af1a7758e6dc122e8ee32dd2fde63f06b0518e979a6",
+    "mtime_ns": 1792048910000000000
+  },
+  "plank-contralateral": {
+    "sha256": "779073bb9e6c75fb591e64e32afe96aa024484d29a643347185f27d69adb0036",
+    "mtime_ns": 1792048910000000000
+  },
+  "l-sit-compression-lift": {
+    "sha256": "0e4a425232969d6bce3cab65d796e86fcc8d7c51f038887e708560231f0d3051",
+    "mtime_ns": 1792048910000000000
+  },
+  "l-sit-straddle": {
+    "sha256": "4e74593e848b2ee54c282c3e81fce28ab3ddda648cd000ded86ce29791aae894",
+    "mtime_ns": 1792048910000000000
+  },
+  "rollout-knees": {
+    "sha256": "9476cc1992da3004107b890e63ba4c6bfecf317c387e454e71835bd069a64dd1",
+    "mtime_ns": 1792048910000000000
+  },
+  "rollout-ramp": {
+    "sha256": "bf028d769bb2d52608274011a71f7ce5863d8e1c5560c22b4e550ac847fe9e7c",
+    "mtime_ns": 1792048910000000000
+  },
+  "rollout-negative": {
+    "sha256": "cabc84100809879b0515178507d6b00c539a0f4e27e81546bfc5897cd2091ff0",
+    "mtime_ns": 1792048910000000000
+  },
+  "rollout-standing": {
+    "sha256": "2a3fc6d99efc5b325aa7752505e1a19cc41c7c0ed77990119cf712ae71ec6bdf",
+    "mtime_ns": 1792048910000000000
+  },
+  "dead-bug-brace": {
+    "sha256": "7a1c99cda31fa2465aeebe890c6b86662f8ef1f9f489a7692f6d763f5cb6394f",
+    "mtime_ns": 1792048910000000000
+  },
+  "dead-bug-90-90": {
+    "sha256": "411c99232ead803aaccc82759237994687ae4985ac40f9cd13287623a8a39ab8",
+    "mtime_ns": 1792048910000000000
+  },
+  "bent-leg-raise-army": {
+    "sha256": "e2b74f890a01ea4a4af191d4a368264eec1e55fda449943f8104a59e3e6d37c6",
+    "mtime_ns": 1792048910000000000
+  },
+  "dead-bug-single-leg": {
+    "sha256": "4dd2a9916c984296d0bf3e336286c6cb892c12dc9f0663a51dd728747ead3405",
+    "mtime_ns": 1792048910000000000
+  },
+  "bird-dog-quadruped": {
+    "sha256": "a2f112a5295e0010f2182b0decf43da475991ad5506cb27376b3763227a9d8b7",
+    "mtime_ns": 1792048910000000000
+  },
+  "bird-dog-arm-raise": {
+    "sha256": "1ddf912a569a4b0280f286cbe3d77a07d9289319e5456dfe7eba6d3ee3d31d88",
+    "mtime_ns": 1792048910000000000
+  },
+  "bird-dog-leg-raise": {
+    "sha256": "fcb454f6a9ab7533954d4eb2b6d00ea78805eeb1919fe061c438279437ade2f2",
+    "mtime_ns": 1792048910000000000
+  },
+  "bird-dog": {
+    "sha256": "e5857c79416e4cd7477b0eee6a645787ecfad2c76b2afdfdd0b2c013d63c6fc7",
+    "mtime_ns": 1792048910000000000
+  },
+  "quadraplex": {
+    "sha256": "440d4c28c0740a41c1bbc3d894b95818bf334d7460190602cf30b6c8cb48d899",
+    "mtime_ns": 1792048910000000000
+  },
+  "swimmer": {
+    "sha256": "5c0cfbb236030eeeb2ed74b59845d2afc0aae724dbfa01736738155ef8c51461",
+    "mtime_ns": 1792048910000000000
+  },
+  "pike-pushup-hands-elevated": {
+    "sha256": "ffa469f195e731c1cb27b12b966576594f0982603dada5f516ad8540c065e967",
+    "mtime_ns": 1792050648000000000
+  },
+  "hspu-wall-deficit": {
+    "sha256": "eff3969e098334c87ca063552822ed1644c60dfdd1e7561f09d5258fa9078855",
+    "mtime_ns": 1792050648000000000
+  },
+  "hspu-free-head": {
+    "sha256": "07660185921fb62ea9ee75637a4059b06e4b3f74db52871df403e4727457334e",
+    "mtime_ns": 1792050648000000000
+  },
+  "hspu-free": {
+    "sha256": "580c44765e8cf2610bcc198213a1223040c811f3d3b59e8afe6033f3e6b8fff3",
+    "mtime_ns": 1792050648000000000
+  },
+  "handstand-wall-plank": {
+    "sha256": "557992225597488460b2faf73faea2f0a09b466b2742ad19a0f5fffd42df893d",
+    "mtime_ns": 1792050648000000000
+  },
+  "handstand-wall-walk-up": {
+    "sha256": "2f3eb39340d7ddbecdc35fafa60ad3498d895654c34cb7beb7c0d428b201a712",
+    "mtime_ns": 1792050648000000000
+  },
+  "handstand-toe-pulls": {
+    "sha256": "29bf87820103b2bc36a113b2e337e78da92300b52fed1d91c711d445dea7f92e",
+    "mtime_ns": 1792050648000000000
+  },
+  "handstand-wall-one-foot": {
+    "sha256": "869e66998b4d359198638abdc5578c843a5d8e4d0ad9327433960f66991f961c",
+    "mtime_ns": 1792050648000000000
+  },
+  "handstand-kick-up": {
+    "sha256": "553468608a44102fc8ff0cbf9c3bf9c63ddfd9ff88c2391a02735ce0be38cdcb",
+    "mtime_ns": 1792050648000000000
+  },
+  "handstand-free": {
+    "sha256": "12cb8f15aedb73548784f94938f0976e698f8c8aeb7bb4b7b7476224dca6228b",
+    "mtime_ns": 1792050648000000000
+  },
+  "headstand-tripod-tuck": {
+    "sha256": "8e8f100be8f4c067c43f1bbb8cca1380bab0feb74320e4c2eae6d9994096043f",
+    "mtime_ns": 1792050648000000000
+  },
+  "headstand-wall": {
+    "sha256": "dd6ad0daa0fd265ad1d0ae506eb99bdb8ebf3169ba0411d8b548066dc4a8041a",
+    "mtime_ns": 1792050648000000000
+  },
+  "headstand-tripod": {
+    "sha256": "a5c9d6e6bc7579b6e7336b02a2f80938c85a14c6251dc16dbad4f3bc914edfc4",
+    "mtime_ns": 1792050648000000000
+  },
+  "headstand-forearm": {
+    "sha256": "a908f12b955581632d8b3ddeeda9545691b2a7286bf2cce8622a0ef8d1f235ee",
+    "mtime_ns": 1792050648000000000
+  },
+  "pullup-jumping": {
+    "sha256": "2b12c2b8108d44bd6a81336cacba984ae362ab2bbacbd28bb1271b8ba8611464",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-partial": {
+    "sha256": "e24500c88b22c88c395c82d24ab992668f1638c3cbad3703aaf095ad38387146",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-false-grip-hang": {
+    "sha256": "e9e509ddaeac6418afc471b234e7a8737cca24bffcf05bc500953ab64fe9e60a",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-sternum": {
+    "sha256": "b9b5ae541c2455242422cf459c2576840483433420cad4a1a6da48ca6ade6f05",
+    "mtime_ns": 1792050903000000000
+  },
+  "muscle-up-negative": {
+    "sha256": "39d0c94f1dae6cf46a5999caab737cbeb31eeaaa46e0a90b64184307404dda4d",
+    "mtime_ns": 1792050903000000000
+  },
+  "muscle-up-kipping": {
+    "sha256": "124f28d60659e92d3f1971d2bfc41167af9f30be068cd4d84717ed429bf8ed65",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-l-sit": {
+    "sha256": "494810c88f5269e7803f36dd79f22112da84dae74854e659f86caa04c3e5af21",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-archer": {
+    "sha256": "e8417a9fa311626847c8ecaf3b63adad5f04b93bf391879b14fc5787f2f455f3",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-uneven": {
+    "sha256": "61236b17812e30b13f80c0a9025b52a1e43de792cc4a3e42ee96f15d2149fdc8",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-one-arm-flex-hang": {
+    "sha256": "e286d3a395a1cbf3cecdc08915416748f827953e8724f2f9a7387349b49ac69b",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-one-arm-assisted": {
+    "sha256": "976d16aa1d4a03612bd3f93f52877eed440a5d464fe72b63b6818213b084b0ab",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-one-arm-negative": {
+    "sha256": "58c065b954efe20f8dc9efa4d1a1aecaa1edd8ab9065c408193636c70842f031",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-one-arm": {
+    "sha256": "979d53f7ea6944fe988c4d8cdf1fab796fa6ef0566db50d56801d4c28d2f1bd7",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-pullover-jumping": {
+    "sha256": "e3ce8b3ae9b26210850a7538f0d918945b5612fadb22a1edae795a0570ca8261",
+    "mtime_ns": 1792050903000000000
+  },
+  "pullup-pullover": {
+    "sha256": "b4caff664fe41df8263555c41be3ce50faa832bf6e02998c7eb073aa06509cda",
+    "mtime_ns": 1792050903000000000
+  },
+  "front-lever-one-leg": {
+    "sha256": "2a621e987ed83d988df436509fa7c7182c52248e74cafcd2d5f189ce8c80c2f5",
+    "mtime_ns": 1792051407000000000
+  },
+  "front-lever": {
+    "sha256": "225ce4821722b87f6e5d0f847235f8c128c35e2b4183c13464f7be65ba932d95",
+    "mtime_ns": 1792051407000000000
+  },
+  "skin-the-cat": {
+    "sha256": "94ed11c1dbc3389bdffcdfeafd8fe7a2d0752dafd551a3744887d6e35ef4feea",
+    "mtime_ns": 1792051407000000000
+  },
+  "back-lever-tuck": {
+    "sha256": "ba6de0d225bd3db183a4f5f413d02b9e0bb37c73c4dac52e62261caec8f6d751",
+    "mtime_ns": 1792051407000000000
+  },
+  "back-lever-adv-tuck": {
+    "sha256": "397a84a250e5e3194dd7c3fbd4262dcf063b3487e7cdf46f48c39f90d2c4d1da",
+    "mtime_ns": 1792051407000000000
+  },
+  "back-lever-straddle": {
+    "sha256": "9da7691705b19acfcb61c16a856fc2a1abcd9df6e646a877980a4d13c96de1bb",
+    "mtime_ns": 1792051407000000000
+  },
+  "back-lever-one-leg": {
+    "sha256": "7134a8eb9e87559106284cbc441278e97d23a481c9d5616993f3c1acf9ed9bc2",
+    "mtime_ns": 1792051407000000000
+  },
+  "back-lever": {
+    "sha256": "6207c15c2c1a2174f4f66982a99e7bfb389cf7f8ba47294a57b0b6fd355c0ba4",
+    "mtime_ns": 1792051407000000000
+  },
+  "front-lever-row-tuck": {
+    "sha256": "14c723f0f988e85e3a1da6e923029ea54556831f124171ee48be220ece548bc9",
+    "mtime_ns": 1792051407000000000
+  },
+  "front-lever-row-adv-tuck": {
+    "sha256": "1809040571a254ff3a23a1e19d2af6ab399911d1db3970f2d4b6edd4b6fde8e6",
+    "mtime_ns": 1792051407000000000
+  },
+  "front-lever-row-straddle": {
+    "sha256": "de21ce790916338b3c5fa71a57d0c7e1401d96767dde260ec4b73ff598af8485",
+    "mtime_ns": 1792051407000000000
+  },
+  "front-lever-row-hang": {
+    "sha256": "c6c297f4073c2741e7dcc2878fd2c1a53ffed73b34860ea55ed2b7d8b45eae25",
+    "mtime_ns": 1792051407000000000
+  },
+  "front-lever-row": {
+    "sha256": "eaf3c770370a179158e75428db505045b61c4ddb0dbf538e9c2b91df2b061b10",
+    "mtime_ns": 1792051407000000000
+  },
+  "knee-raise-supported": {
+    "sha256": "c34c4b84ec7d8f53c3d275d4b3c70bc71bdd07757c5baa1948dfc1d327c21b53",
+    "mtime_ns": 1792076013657579691
+  },
+  "hanging-knee-raise": {
+    "sha256": "024241678572677965e2c381f6fb5fbbcd0e98d7452de7d65c49f4c5739885f0",
+    "mtime_ns": 1792076013666338604
+  },
+  "hanging-knee-raise-twisting": {
+    "sha256": "df9b7545cc1041fedd449bedf9cf5c0e803d1fb670a4efb9e3cefd9f1ca9bcf8",
+    "mtime_ns": 1792076013676722066
+  },
+  "hanging-leg-raise-bent": {
+    "sha256": "282a46720dbc51c72f60bcce5757b710e8e6dc7353388729e52d52facc4e8306",
+    "mtime_ns": 1792076013689040662
+  },
+  "hanging-leg-raise": {
+    "sha256": "3a0cf13e1814c60b9098db69bead8775fc7289845122aaa29816b4b9bd5a4514",
+    "mtime_ns": 1792076013699147289
+  },
+  "toes-to-bar": {
+    "sha256": "2d5181985df7227c0ceda8a066f3d849768354441d9b835eac3efec372cbca50",
+    "mtime_ns": 1792076013710636089
+  },
+  "dragon-flag-candlestick": {
+    "sha256": "35b6bd84022afee2fd9dbcd59ef7ae243b69aedd3ad52c1fabcbe8b8132dce85",
+    "mtime_ns": 1792076013770070682
+  },
+  "dragon-flag-tuck": {
+    "sha256": "5fcff59217ea7eb0709fbc3a063ff560271fba75a2241cd6ae58da65d94b0069",
+    "mtime_ns": 1792076013784729662
+  },
+  "dragon-flag-adv-tuck": {
+    "sha256": "f427864eaf08460525486c1168589698f25a5acf388128c25c99cb432ebfc5e4",
+    "mtime_ns": 1792076013798523472
+  },
+  "dragon-flag-one-leg": {
+    "sha256": "df55b29d035e2bc13ba45278c580637426c6a87124aac076ffd1def0659c8c5f",
+    "mtime_ns": 1792076013813421287
+  },
+  "dragon-flag-negative": {
+    "sha256": "d9efba19099274c409de8d4ecd85711798fd5222e6388890d85532769545c60f",
+    "mtime_ns": 1792076013831881909
+  },
+  "dragon-flag": {
+    "sha256": "413dfc7d6e5614fb3db10ada4390c117a020e7f56a3cf290308e8b524be62a05",
+    "mtime_ns": 1792076013847875229
+  },
+  "row-archer-arm-in": {
+    "sha256": "3bc3e4d4d44779b32ccbde4922b7293a321c851e7ba635c32b552c6145774618",
+    "mtime_ns": 1792076013364828165
+  },
+  "row-one-arm-straddle": {
+    "sha256": "0c0d672583d7566b4e77ac6c9008221f88e1f430601d1eb2981b8b8ac925b901",
+    "mtime_ns": 1792076013377195886
+  },
+  "row-one-arm": {
+    "sha256": "decca903ab32e59485f6f0403040f7278868d05f1cefa03f6099f3d6c533ef09",
+    "mtime_ns": 1792076013389496939
+  },
+  "grip-horizontal-hang": {
+    "sha256": "87df333b68e84a4ae83ece833d4bf7194d4f6345d277228c3d36a4baf2eaba5a",
+    "mtime_ns": 1792076013430282450
+  },
+  "grip-one-arm-hang": {
+    "sha256": "24894d14ae8dfd50379455d065d87fcdb815d7cdf7225ca186af7ce78cb92247",
+    "mtime_ns": 1792076013444807055
+  },
+  "lying-knee-tuck": {
+    "sha256": "47dfdcfb11019b76ed425aef390be5518a1e5fbef6638df6a22daee20fe051a3",
+    "mtime_ns": 1792076013048036618
+  },
+  "lying-bent-knee-raise": {
+    "sha256": "b3b27798a16ea337771e7751640a49a2bb0651b232958860c435c34579833a2f",
+    "mtime_ns": 1792076013057163032
+  },
+  "seated-knee-raise": {
+    "sha256": "062317310594a90220249cd59211c4f27040287a01349dd0014fd5e71e815b62",
+    "mtime_ns": 1792076013065551861
+  },
+  "frog-raise": {
+    "sha256": "a11bd49890c1ff79951c99b75b732a506c5f82041877c9adea0f16ea0cc28474",
+    "mtime_ns": 1792076013074899735
+  },
+  "reverse-crunch": {
+    "sha256": "940ceb161bf3d7d48ac5c87faecae3b9d861f67e7d2d43fc582654a879e90183",
+    "mtime_ns": 1792076013083733357
+  },
+  "v-up-tuck": {
+    "sha256": "26c54449cf7f70921818dca5ff9691d8040c0cab711bf2ceb8b6ce251f3343a3",
+    "mtime_ns": 1792076013094581321
+  },
+  "v-up-straddle": {
+    "sha256": "28c8cae2f18568136e72740fe59458c797bfd40f78e43ec73a340a8c936eac47",
+    "mtime_ns": 1792076013109627553
+  },
+  "calf-raise-bent-knee": {
+    "sha256": "1c309adb7157bd55412515855b862a73b77952a7421556e47bdec9cf4e03626a",
+    "mtime_ns": 1792076012557265563
+  },
+  "calf-raise-single-bent-knee": {
+    "sha256": "6846664c5247d74fd3c865750debfa543361ccfb2f612255348aa14653f6d4db",
+    "mtime_ns": 1792076012571026581
+  },
+  "calf-raise-step-bent-knee": {
+    "sha256": "6658d33d311066e9b2e9f2bffa201dae75946be85b9ae64d51722c37729f0f4b",
+    "mtime_ns": 1792076012584575015
+  },
+  "calf-raise-step": {
+    "sha256": "3bc17b2c523d4cfaf284230f6436724e474e951b395cd709d9646d473073db5f",
+    "mtime_ns": 1792076012598192408
+  },
+  "calf-raise-step-single-bent-knee": {
+    "sha256": "eec35bf009212bcc4e4cfbf417cdd319ee3686017504b1d8f02295fc3cdd2a8e",
+    "mtime_ns": 1792076012612070093
+  },
+  "calf-raise-step-single": {
+    "sha256": "653aa65a7d3e92df6dcd1f6d8b26be74932e78e3659182cfbc756a714aa2fae8",
+    "mtime_ns": 1792076012625696236
+  },
+  "bridge-half": {
+    "sha256": "6561a44a83c96fac449302a6b512156ca5df39859c529ccf51a50f69be8b54dd",
+    "mtime_ns": 1792076389411838536
+  },
+  "bridge-wall-walkup": {
+    "sha256": "4de59e296864a0fa74bcd6ea08e78bb0ca028ed9bbf1a2ba8f645c2f31d49f3d",
+    "mtime_ns": 1792076389426682309
+  },
+  "bridge-closing": {
+    "sha256": "fe2e9e145083923e9079ec7baf36f7024d7a1853551aab7ea58403530ee321a1",
+    "mtime_ns": 1792076389468146698
+  },
+  "bridge-stand-to-stand": {
+    "sha256": "f41fcd5e1587284efddf5fa6e538ed165ca94cbe8dd25204a80bdaf26c331ae2",
+    "mtime_ns": 1792076389500771465
+  },
+  "harop-curl-beginner": {
+    "sha256": "196b91b43723e78f44896351aaa669e5a2c044b2d0152ca1214a612fdffffa3f",
+    "mtime_ns": 1792076389594744875
+  },
+  "harop-curl": {
+    "sha256": "08af1b56b11c9e9a23fab6b88b25bed5d996f19c2e09838ed669e127df2bc6d1",
+    "mtime_ns": 1792076389604321542
+  },
+  "step-up": {
+    "sha256": "52ffeb4a5747e8f2cae2bb0a984a4496a46e738ab799c56296290f996c93112d",
+    "mtime_ns": 1792012500000000000
+  },
+  "step-up-deep": {
+    "sha256": "42aab4993e265fa558f485060af6b80ecdaf712657fef215d830905422db192f",
+    "mtime_ns": 1792012500000000000
+  },
+  "reverse-nordic": {
+    "sha256": "212636f97c451ab26b1b54cc75009d74a34566224db25d26318a2c5c331eb4f8",
+    "mtime_ns": 1792012500000000000
+  },
+  "sissy-squat-assisted": {
+    "sha256": "42012cba7d390670469b33ad97cf175cf2c9122863ae4855511f2d09ea149c7c",
+    "mtime_ns": 1792012500000000000
+  },
+  "sissy-squat": {
+    "sha256": "28cbf70f297a02b76f088f2d034d403219fa810b0ca2f7e9637f792cbab0a907",
+    "mtime_ns": 1792012500000000000
+  },
+  "natural-leg-extension": {
+    "sha256": "4c1398dc6a43a87e7b9e53df66860aa9331d7f259e8d3f2eaab6894050e9375e",
+    "mtime_ns": 1792012500000000000
+  },
+  "dip-russian": {
+    "sha256": "c06d34e5b0f5bded2be7a0abfbdb76869ab0afe77b9c85bd77f67eb9db2e6c5a",
+    "mtime_ns": 1792013644000000000
+  },
+  "dip-korean": {
+    "sha256": "74fdfbdeebb1e65198a013c952a23fdda8da56867fa0e593d4a6ca348210b2c4",
+    "mtime_ns": 1792013644000000000
+  },
+  "planche-tuck-pushup": {
+    "sha256": "d560454456e98b148fbc66b033cacb849c8e2d13a0bccdb6be5a146ea9f86cf0",
+    "mtime_ns": 1792076013337486088
+  },
+  "planche-straddle": {
+    "sha256": "74c02da09e895978db92aa65e6316c9d66a4daf580bee51abe0392755fa86993",
+    "mtime_ns": 1792076013344757911
+  },
+  "planche-full": {
+    "sha256": "8973b724b1099faefe82727b960d83a177cde87b50d53b737332af12d1875c5f",
+    "mtime_ns": 1792076013352090651
+  },
+  "rollout-one-arm": {
+    "sha256": "8b259cdc206f5861ad28ea0c57c996f2457e79e75d66995c31d5802680ff5787",
+    "mtime_ns": 1792076012951302071
+  },
+  "handstand-press-wall-negative": {
+    "sha256": "806579deaa479d4603eaef783621afc1a855ba054fd1c9dc5bf8616a84079737",
+    "mtime_ns": 1792076013567037713
+  },
+  "handstand-press-elevated": {
+    "sha256": "867915674a3556d6784297bbb2215f116943ce6c322132adda923694c9238216",
+    "mtime_ns": 1792076013578211304
+  },
+  "handstand-press-straddle": {
+    "sha256": "4decb3c6a50bb19ce9805b7fc8dcbcbb772b6a72dc1050e9ca39d70eee6088d7",
+    "mtime_ns": 1792076013588857100
+  },
+  "handstand-press-bent-arm": {
+    "sha256": "8a26e3ef898e4201c9c733bde8a4743903203a5206582feb2d2e949b6994e193",
+    "mtime_ns": 1792076013598986811
+  },
+  "elbow-lever-umbrella": {
+    "sha256": "36d1db00207bdd5ff192e9d6614ac2679ef6923bc0f6fb20ba267f40d2e77b58",
+    "mtime_ns": 1792076013635352011
+  },
+  "elbow-lever-straddle": {
+    "sha256": "ef051aa2a76a65c47db987e33088367c97246816bf7d1e2ec9d0456619ba833f",
+    "mtime_ns": 1792076013641959373
+  },
+  "elbow-lever": {
+    "sha256": "ed0bc9c97dd3781b4d29edcda294587b4e17f2e9a8ffcac3e6642d939bd74d46",
+    "mtime_ns": 1792076013648865112
+  },
+  "pullup-typewriter": {
+    "sha256": "a2cd5fffdfd85c1877fa53a493e32fc47d0240041fa1682d121a79763bd506d2",
+    "mtime_ns": 1792076014642322024
+  },
+  "pullup-kipping": {
+    "sha256": "db9c407130b25d748f55b898a14d4f3e9d06a7467e98785df09d54fe18502015",
+    "mtime_ns": 1792076014724199298
+  },
+  "ice-cream-maker": {
+    "sha256": "113429eff176a5428db840fe3ac6e8a5fcfc408476ccdca4b8a21b4deaa22d0c",
+    "mtime_ns": 1792076014351257172
+  },
+  "hanging-windshield-wiper-half": {
+    "sha256": "017bd42d906b6c91475e190db71667b1c945f71e1925eed631863d12a72d58fb",
+    "mtime_ns": 1792076013739048338
+  },
+  "hanging-windshield-wiper": {
+    "sha256": "24f01bd093617084a64fef1258349e3496b6e510d94316641415583894a8c24f",
+    "mtime_ns": 1792076013761133184
+  },
+  "grip-uneven-hang": {
+    "sha256": "ed2e3cd999938b0d1864a74b87c2c960a6d635f46af361e7812851d5fd881bc3",
+    "mtime_ns": 1792076013437628191
+  },
+  "grip-towel-hang": {
+    "sha256": "bf7f881aeaac82984d3844f5b7dc64eaf572a3834eaff54e3b2ea9b1408b1bb1",
+    "mtime_ns": 1792076013452085046
+  },
+  "grip-twin-towel-hang": {
+    "sha256": "61ed3fa2ac6225583abe38aac297ae0b57c3af396e025a6e2da12bfdc84795f8",
+    "mtime_ns": 1792076013459345369
+  },
+  "grip-uneven-towel-hang": {
+    "sha256": "171923f17495b245b19937842a03032a119fb7375a0cbd3190d76e198c0c7a28",
+    "mtime_ns": 1792076013466493358
+  },
+  "grip-one-arm-towel-hang": {
+    "sha256": "220e1c24b4952b4f1e80cb7a217b46bc219e5e97b338ce21577ba0ab94a2fb84",
+    "mtime_ns": 1792076013473335055
+  },
+  "windshield-wiper-bent-knee": {
+    "sha256": "4763e08128f1048a4ac4a778468e90b82e614b3b2a7188d74524167e2469ad97",
+    "mtime_ns": 1792076013120415392
+  },
+  "windshield-wiper-floor": {
+    "sha256": "7d874f2ec8eb50b443eb6c82edfbf3c22a0e6c2d9b545a2f20c5194555c771a8",
+    "mtime_ns": 1792076013131343022
+  },
+  "hip-thrust": {
+    "sha256": "935763c443e8c8e49d7829c8884ca4836980c3d1940dbe236cb4e72e34bf648f",
+    "mtime_ns": 1792076389552066897
+  },
+  "hip-thrust-single-leg": {
+    "sha256": "ea99ecb810a31b99de8e76c2b3f808980e7a4e0f02f86380393e23196dc42ed2",
+    "mtime_ns": 1792076389578052469
+  },
+  "back-extension-floor": {
+    "sha256": "6073d82aaac9f9a16ee7dee31c75ac0a9d4101707f7d1514f651005391a82e67",
+    "mtime_ns": 1792076389585739461
+  },
+  "flag-clutch-hang": {
+    "sha256": "952366951eaf34ca835604e6670f024a6951acf53e27a0358d002247d3f9a3f2",
+    "mtime_ns": 1792077068429202165
+  },
+  "flag-clutch-diagonal-split": {
+    "sha256": "83dd01b7abec2585bdebfdd894fcd6f8049367b9e83fca93b2b6734dbde1b707",
+    "mtime_ns": 1792077068458652834
+  },
+  "flag-clutch-diagonal-tuck": {
+    "sha256": "de2dbce95c3a3c52437d28a3e18c54592621d3c21caa30bc96a3d5d674e336fc",
+    "mtime_ns": 1792077068464099160
+  },
+  "flag-clutch-diagonal": {
+    "sha256": "201127976567a5cdc982b747c7a24aba16e6618f4f2de7ff209c31472a8833b9",
+    "mtime_ns": 1792077068469422153
+  },
+  "flag-clutch-horizontal-tuck": {
+    "sha256": "31e0d6cff30332baf330b461765597cceca5148107dc6cbe6f79d8cb38bd26f4",
+    "mtime_ns": 1792077068474610688
+  },
+  "flag-clutch-horizontal-split": {
+    "sha256": "0f7b8df868b05b96d6f3d90d2d1a6c69822e1ffd7e51451714526c52db47c0df",
+    "mtime_ns": 1792077068479903473
+  },
+  "flag-clutch-bent-leg": {
+    "sha256": "65f674dd6c8d7d90ff4a42f42ecfc9bcef6f19dd41328c548547ef1a72887b7d",
+    "mtime_ns": 1792077068501712735
+  },
+  "flag-clutch": {
+    "sha256": "293d64ca2cd4e93b6fb155781ece6e74934afa1b401c5c73bb692feb3ee232cc",
+    "mtime_ns": 1792077068507118687
+  },
+  "flag-support-press": {
+    "sha256": "6b7729005d43d2c00cd8ccf64dddd260e5b466a9fd3bc7a06357e5fdbc39fb38",
+    "mtime_ns": 1792077068528120700
+  },
+  "flag-press-hang": {
+    "sha256": "c188df5580a63a015a6ae51c8e932f98c6b2e4c45312ba839d030f335b5e7c0a",
+    "mtime_ns": 1792077068551805377
+  },
+  "flag-kick-press": {
+    "sha256": "a200da4c75a7b658767d36073709819a690889b2239ec7bdc297cac2dca4c0f6",
+    "mtime_ns": 1792077068558669952
+  },
+  "flag-vertical-chamber-press": {
+    "sha256": "bc7293559ea79b529828102edc8b66880b75feff4031534aa1c8164279925f5c",
+    "mtime_ns": 1792077068581254630
+  },
+  "flag-vertical-press": {
+    "sha256": "9c4f755731f325908ad9ef4be5392f454211fb1bd6ef4e4100f0e09e9242d8d4",
+    "mtime_ns": 1792077068586658540
+  },
+  "flag-split-press": {
+    "sha256": "8c718418775bf26de5c4060f524af1334138caa429f550527abd759f9051144b",
+    "mtime_ns": 1792077068608494511
+  },
+  "flag-bent-leg-press": {
+    "sha256": "0fd53bcdc201e1e36a62f8088e2629bb9d8ef1a62154ceafa530b09e52fb3dc3",
+    "mtime_ns": 1792077068630552898
+  },
+  "flag-press": {
+    "sha256": "cb9a1c21704337643ec15e2d0b18ff6ca3dabb628879f59337aa3fddeaa7ae06",
+    "mtime_ns": 1792077068635798641
+  },
+  "ring-support-hold": {
+    "sha256": "d0c64dfed0538af7538056cc937c8ac4caabd9c538039299a1b361cf302be39b",
+    "mtime_ns": 1792077161873293691
+  },
+  "ring-support-rto": {
+    "sha256": "1cf15d96d791bccc7a033444f71d2221faa519f09dc9211c751d101ba1190c71",
+    "mtime_ns": 1792077161878586475
+  },
+  "ring-l-sit": {
+    "sha256": "ca415214292cde6faff85afc50f5568923a2bbbc84897fd49eb8bb2e9e1a1e6f",
+    "mtime_ns": 1792077161883866260
+  },
+  "ring-dip-negative": {
+    "sha256": "329d9773dfabe26bff5ca976932737ada69100547aaf53b5c6b2c19f969ab316",
+    "mtime_ns": 1792077161918157465
+  },
+  "ring-dip": {
+    "sha256": "91f66e5f6c50138210d948beec7449fbcf3e776fec420febfcab3a2576855d8b",
+    "mtime_ns": 1792077161944455888
+  },
+  "ring-dip-l": {
+    "sha256": "a7d889230ef5a60ddfc95ab816a03ee2b23b5e9073cb07d619abb5ea47e7bfee",
+    "mtime_ns": 1792077161951770629
+  },
+  "ring-dip-rto": {
+    "sha256": "5139d44853e674c205956c3d7ebf96560ac22cb1cd061ae15d0f922a7243f60c",
+    "mtime_ns": 1792077161959785951
+  },
+  "ring-pushup-wide": {
+    "sha256": "5dab48d6c49db516f9a9a4b146c182b8ef2d42925e31eff48ccce93bdc0d62fe",
+    "mtime_ns": 1792077161968083440
+  },
+  "ring-pushup": {
+    "sha256": "dacda7ed1a02968c675a6446a24d049745f65566cd05b8aab689087860f0efc2",
+    "mtime_ns": 1792077161975581514
+  },
+  "ring-pushup-rto": {
+    "sha256": "d1feb316a59ea9a9e3cb37ee9b386189cfff07258db04c8dd081788f12351c8a",
+    "mtime_ns": 1792077161982811046
+  },
+  "ring-pushup-rto-archer": {
+    "sha256": "50c67093120bb0736822e6a489a3486f283ecd0eebbe76671ad6a9fe517f9227",
+    "mtime_ns": 1792077161991529993
+  },
+  "ring-pppu-40": {
+    "sha256": "dd37478f2fe3d21947aaee56bbe61bf96fe6989dcd5bc7293f54c9f2b23f66e2",
+    "mtime_ns": 1792077162019079706
+  },
+  "ring-pppu-60": {
+    "sha256": "a4206289e6391ec80459374d864ba382658c91477d5e110c85dabf7f8a22b437",
+    "mtime_ns": 1792077162028418027
+  },
+  "ring-false-grip-hang": {
+    "sha256": "21bf2b7697130bc5265f02fb8096fcc1ea56d91bcb9bceede332cc0b2e90820f",
+    "mtime_ns": 1792077162051531539
+  },
+  "ring-muscle-up-negative": {
+    "sha256": "0d038b487d17c63da86f2058532ee567fa724663788141a14b221dcf54a21a1a",
+    "mtime_ns": 1792077162067614392
+  },
+  "ring-muscle-up": {
+    "sha256": "5cb82152a623739afc8862f7616acb1cca6cba1a1093e8e7b8cb33315211b996",
+    "mtime_ns": 1792077162096952520
+  },
+  "squat-wall-sit": {
+    "sha256": "11e79ac2ed588c9f32a7063c2365eaff39398a91804ef2763cfd05725c07b08f",
+    "mtime_ns": 1792076015083659114
+  },
+  "squat-horse-stance": {
+    "sha256": "36e6d35321850aaeac0468c521634e6c9bdbbc5086ff5ceb33509894e6498814",
+    "mtime_ns": 1792076015091197272
+  },
+  "lunge-reverse": {
+    "sha256": "b8a031ecc80c586ae4561a62324747f718ed07d4b57e21b0167aca5f581a83b0",
+    "mtime_ns": 1792076015119238435
+  },
+  "lunge-lateral": {
+    "sha256": "93f6d5f0657f79490f629a46c03dd09abe559c33691f481b4cc48a72e0dbf9f9",
+    "mtime_ns": 1792076015127515305
+  },
+  "pushup-single-leg": {
+    "sha256": "13461ff23150121a6ee3dedd53744cd1887ab7dd8368050c7ba3164f8d47ce49",
+    "mtime_ns": 1792076014935574176
+  },
+  "pushup-hindu": {
+    "sha256": "2ec8358c9d23d5854775ba421aa863a737c17c4cbca7425d87fed561fcd8ec7e",
+    "mtime_ns": 1792076014944836759
+  },
+  "pushup-pop-up-incline": {
+    "sha256": "3602491438cc2c3b4927a699c4f82dd7d8749cbbd8139b8f821a2be23d5f8405",
+    "mtime_ns": 1792076014950346532
+  },
+  "pushup-kneeling-push-off": {
+    "sha256": "e2ddca25bb9b5b3dd6b6b234e01a2fc9c71c6b866dd0adc0440814830dfcb2c2",
+    "mtime_ns": 1792076014956987270
+  },
+  "pushup-pop-up": {
+    "sha256": "1e4aafddf2caf6f39a945b27025a02428ffa9022427cbd6b34c8e07082a8d9b9",
+    "mtime_ns": 1792076014963806633
+  },
+  "pushup-pop-up-wide-close": {
+    "sha256": "9e1cae1e72eeeae5a2faab122f9059eea1c15995f0a9c1b342b373dc2a7f9c9d",
+    "mtime_ns": 1792076014970817705
+  },
+  "pushup-clap": {
+    "sha256": "400ce33ed4112884d1e61796895732bd1a370ad69c4319fc22689edb228bd787",
+    "mtime_ns": 1792076014977701568
+  },
+  "pushup-chest-strike": {
+    "sha256": "81d37f20319c974466dfc2995985b2993fac6f61c1086aaeb3be2926f1ab97d0",
+    "mtime_ns": 1792076014984206305
+  },
+  "pushup-wall-push-away": {
+    "sha256": "699c7d3d9182f2bfdba5f1399886349bba1b73dad819e21c90358e22ce406be3",
+    "mtime_ns": 1792076014990142248
+  },
+  "plank-arm-leg-reach": {
+    "sha256": "e6117d09ebf4c2a7475ea9ba1e984edc56c5282659cedd6abf030fab951bd8a7",
+    "mtime_ns": 1792076012866732120
+  },
+  "body-saw": {
+    "sha256": "40b5a0731dbe696b13d352f36bab8c4174218d99ad98882369c5ff6b493642a4",
+    "mtime_ns": 1792076012877791293
+  },
+  "pullup-commando": {
+    "sha256": "7413d1af206e4268208a4966b7d37401b6c277592a2dd55d54eb18455f8e0ca4",
+    "mtime_ns": 1792076014704226836
+  },
+  "pullup-kip-swing": {
+    "sha256": "9313992c78d1813d9d7b1abe773834bd0cf9b6c1651c70736410778208933a1d",
+    "mtime_ns": 1792076014713941336
+  },
+  "heel-hook": {
+    "sha256": "e4856151f2cf9bb1c46abbff0205fcaf57327ea4ea07dc41599085a6b448d265",
+    "mtime_ns": 1792076013721792930
+  },
+  "arms-biceps-curl": {
+    "sha256": "05113121ff4bcb81f40da023fdf9163ae1194dfa4bed2e7e9df4370fafef4084",
+    "mtime_ns": 1792076013401733659
+  },
+  "arms-triceps-extension": {
+    "sha256": "348e77b357cca3182d968ec0b7675aad949ecbb4790976857661c29a539f025e",
+    "mtime_ns": 1792076013414152255
+  },
+  "grip-eagle-claw": {
+    "sha256": "da150dfe5a9aef3e3c79da75821a0b2bec1d5ea5fd1ac53a081849ea9c043a2a",
+    "mtime_ns": 1792076013423352587
+  },
+  "curl-up-mcgill": {
+    "sha256": "505fdc231cc475e3bf1b5dae3cb7caaa0eedd233ec2cef7f5c5ffd2250c4e6d1",
+    "mtime_ns": 1792076013142053819
+  },
+  "crunch": {
+    "sha256": "020dbeb7aaed84c3df86c966052d7dc3b0f734a23f0cfee39d3c882829b28c03",
+    "mtime_ns": 1792076013149943312
+  },
+  "bicycle-crunch": {
+    "sha256": "7a3bc51aeee5ef9a7b93c8ba20fc379b5bcd3a89bd37f71e9d9fe8e973a46ad6",
+    "mtime_ns": 1792076013159977356
+  },
+  "sit-up": {
+    "sha256": "d221f7789b8f44bb95df316e303a52e0e3e2d9a410fdd42c4e2badabad3ef9c7",
+    "mtime_ns": 1792076013172096992
+  },
+  "rower-situp": {
+    "sha256": "91ff7af846d8e87488cd0a5966a4c8047db1421587215a60a7926774d7445a16",
+    "mtime_ns": 1792076013183721542
+  },
+  "russian-twist": {
+    "sha256": "ddd0341739a81eb79f1aeb19038b748f387784a38a42ce861a943bc24c1de226",
+    "mtime_ns": 1792076013193622294
+  },
+  "side-plank-knee": {
+    "sha256": "d81d4cb80babdba8ba598d2e053cb9f9a0feadc3718a53ebdec0dec2c57a74b7",
+    "mtime_ns": 1792076013201336286
+  },
+  "side-plank-hip-raise": {
+    "sha256": "8099f89a9d289a694889513f167ef7863596c161b256b89032f98a8918ab3c6f",
+    "mtime_ns": 1792076013209877115
+  },
+  "copenhagen-adduction": {
+    "sha256": "876a1c5f7aedda519ffe72d719a21493f3344624502d48e4c1130e0682ffb726",
+    "mtime_ns": 1792076013224316719
+  },
+  "balance-single-leg": {
+    "sha256": "c6da3a0e68f32639354b456dd6ca2f3abec598ec7fe6e8ff21cff4628a53ba23",
+    "mtime_ns": 1792076012634968443
+  },
+  "balance-single-leg-eyes-closed": {
+    "sha256": "06ade398e52a187f14f5253aadcac04a25d3c3888e5e070ee49181ead476c4ab",
+    "mtime_ns": 1792076012644291359
+  },
+  "balance-single-leg-cushion": {
+    "sha256": "b2d3e847999eee9099e4a43e27c91ffb65916b0ed63eea0fa396d74d52e005fb",
+    "mtime_ns": 1792076012653467024
+  },
+  "short-foot": {
+    "sha256": "dc95970d4ac835badce1c15d3b16821b52ce07a5e599d90cf73327053d495e8e",
+    "mtime_ns": 1792076012667697294
+  },
+  "bridge-reverse-plank": {
+    "sha256": "31dd7e8680395ba191a64446991267aa2ba901dcaedd75bbfb52886686cec722",
+    "mtime_ns": 1792076389404054794
+  },
+  "bridge-wall-push-off": {
+    "sha256": "bedd8d70962a0a6fcdbf16c661f4105888bc96e51af88587e41287ee0b5431c1",
+    "mtime_ns": 1792076389527615041
+  },
+  "landing-stick": {
+    "sha256": "0b1681815e68e1d95a131174e875721377fd7a1fb32778b3b265aba2dea32513",
+    "mtime_ns": 1792077692293649642
+  },
+  "pogo-hop": {
+    "sha256": "31ccf0f76cb5d245424f4f7ffbd9a4531b74637c98be5e394b03daf3a1dbd75f",
+    "mtime_ns": 1792077692296875013
+  },
+  "ankle-hop-side-to-side": {
+    "sha256": "79798501c1c78087466d7c7bf72e82096eadbd9465d0f46e8e4d95657ce365be",
+    "mtime_ns": 1792077692301221674
+  },
+  "ankle-hop-hip-twist": {
+    "sha256": "cab9b468c92f4a02987cccfe01b4203733c56d24969c76c14258af40ac9278ea",
+    "mtime_ns": 1792077692306015501
+  },
+  "jump-squat": {
+    "sha256": "b3ba7f9916005b272087f91b3ea349782d8ec9f6fcf0d211b835fd5040485797",
+    "mtime_ns": 1792077692341450912
+  },
+  "jump-vertical": {
+    "sha256": "379c06c1796f84fe7ab7d6aff02c3ae635eaee4d7eafa47baf8e141a27326d49",
+    "mtime_ns": 1792077692364759090
+  },
+  "jump-butt-kick": {
+    "sha256": "f2fa4a47dc375f9a29318b0a20e78e7075da4e07198c19dba4d141b92aabfbbe",
+    "mtime_ns": 1792077692370775582
+  },
+  "jump-tuck-slap": {
+    "sha256": "13b0304e354b9d1f843272bc6a7c03b00275006535f9faaf844e054e4b6029b6",
+    "mtime_ns": 1792077692400474085
+  },
+  "jump-tuck": {
+    "sha256": "ec46846c023f312080dba12c2d8a270bb21dfe19123f978fed92e4402ec9efb3",
+    "mtime_ns": 1792077692407148117
+  },
+  "jump-tuck-catch": {
+    "sha256": "00633b0d019694f68f85a6f8702a40e338eb3262f82e674789ad72261781a724",
+    "mtime_ns": 1792077692433206833
+  },
+  "jump-split": {
+    "sha256": "10752d538cf979418c2d7962632f3a4357224f59627344656402ec68ea0cf260",
+    "mtime_ns": 1792077692459156965
+  },
+  "jump-split-cycle": {
+    "sha256": "a98e7cd4a52c60a14646fa7fa9fa69a6072b197d6e3ff442c67cdefde8031fa2",
+    "mtime_ns": 1792077692465424332
+  },
+  "jump-block": {
+    "sha256": "12a54a5470dac396e026c02ac843f3bef7c353722f1eeb669e096a8273deb553",
+    "mtime_ns": 1792077692476287401
+  },
+  "jump-lateral": {
+    "sha256": "942c1f050dd1589883eb09541079d9109ef458928330062adf9fa2eefadd350a",
+    "mtime_ns": 1792078170604776724
+  },
+  "jump-broad": {
+    "sha256": "1715cc74113238d1c371bf68c07deeb85d440e8aa7e4e0678cabca2f72c821ac",
+    "mtime_ns": 1792078170614435711
+  },
+  "jump-broad-consecutive": {
+    "sha256": "a120e9dfbd738d758d2ade6d0af39bef02772729bd259fdbe111a08f26992b00",
+    "mtime_ns": 1792078170628600359
+  },
+  "cone-hops-front": {
+    "sha256": "f2f0eaaec3ca7dcc1e063972c99b5374c4c66051349307b158e0c5e2f767ef75",
+    "mtime_ns": 1792078170640575593
+  },
+  "cone-hops-lateral": {
+    "sha256": "7b314789fb12fb69dc03ee48aa8e09955b7b20a05fc3027cddc0a59e08b25003",
+    "mtime_ns": 1792078170654879949
+  },
+  "skater-bound": {
+    "sha256": "7bc05335983ce518cc3c99a41b92528be631dd9fc7d36da8dd3160b530275449",
+    "mtime_ns": 1792078170661506816
+  },
+  "hop-single-leg-stick": {
+    "sha256": "fb992c77cc184f5869d0d4ed5cad4e06e800058eb4f7cf8ad31b3217e9a15bfa",
+    "mtime_ns": 1792078170705237591
+  },
+  "hop-single-leg-lateral": {
+    "sha256": "82fea4acb61b2c50fe88c1d819439d153c1db200eeca74762df0f4657d794222",
+    "mtime_ns": 1792078170713125998
+  },
+  "zigzag-hop": {
+    "sha256": "54094c9bf2734baf231468a365d09a426e8caff73c3be6d11358dc0572908b4c",
+    "mtime_ns": 1792078170729985809
+  },
+  "bounding-alternate": {
+    "sha256": "8dfd3c3d92daa236c13ad059a6bd1006de8bf38d299e2bc6b5cd340d11b16734",
+    "mtime_ns": 1792078170744050457
+  },
+  "bounding-single-leg": {
+    "sha256": "518a892d1927027cc52f260dcaedc9d05753101f58cc0b7014f63c706425e15d",
+    "mtime_ns": 1792078170754889652
+  },
+  "box-step-off-landing": {
+    "sha256": "daa30172ab98975e55517838bc1c99a09bae4b47e480d8c2e69e81c93c4da485",
+    "mtime_ns": 1792078170762853183
+  },
+  "box-push-off-alternating": {
+    "sha256": "c1e7e1831d621d851590246723db31e3eef65d2488c63cf5b69465b479174f18",
+    "mtime_ns": 1792078170769972340
+  },
+  "box-push-off-single": {
+    "sha256": "fc058cd0d3f29e9f164b86c826f4f6e1dfdd1b3f595a8602302f9c367b7d064d",
+    "mtime_ns": 1792078170778020079
+  },
+  "box-jump": {
+    "sha256": "c0633ddc0653afa45cb0f678de5033cd971e5a29b5307ee5457a249d67ddf9ed",
+    "mtime_ns": 1792078170794024683
+  },
+  "box-jump-rebound": {
+    "sha256": "786aaa0aff13ecb1f4d497de0a6eefd93a11f811a9c800d6dbd5bc127ea458d1",
+    "mtime_ns": 1792078170838955374
+  },
+  "depth-jump": {
+    "sha256": "48e67025a6bb4d8cd757b46a8770d056fc63e218f99b0bf6d9b87e493376dae6",
+    "mtime_ns": 1792078170880219861
+  },
+  "squat-thrust-step-back": {
+    "sha256": "9f1cb7e6fd7091e3150762659d303575726cf28d64237b5e2468dd02e7a931a9",
+    "mtime_ns": 1792093832420545520
+  },
+  "squat-thrust": {
+    "sha256": "4359960e2497328e9c2573e28f301bd30ebd53c6c1bad3e1ce11245750017f3f",
+    "mtime_ns": 1792093832431342164
+  },
+  "sprawl": {
+    "sha256": "df6b1dfa98662a8d87f605ab89e0cde5c2dcb1ec94b4c397bbe728beec0f4ad2",
+    "mtime_ns": 1792093832440911888
+  },
+  "burpee": {
+    "sha256": "2b3582432bb1e2cd5cc15d00aea3d090257b838e1f0754db3177daa1d3976c36",
+    "mtime_ns": 1792093832450372404
+  },
+  "burpee-pushup": {
+    "sha256": "e3dc4eb47288c90bfbca874284ab11461cecf3296f2e287a66e1c33282288a4e",
+    "mtime_ns": 1792093832461896799
+  },
+  "eight-count-t-pushup": {
+    "sha256": "cd9229525248c16520185cd5d09c908fef967400511bb5ec779151134bb7e22d",
+    "mtime_ns": 1792093832503682411
+  },
+  "mountain-climber-slow": {
+    "sha256": "031e3e87e70d80a85f9a8b3d3c04fc92c8d4ba0901776d6878526a83a2d66f69",
+    "mtime_ns": 1792093832540945433
+  },
+  "mountain-climber": {
+    "sha256": "646cbceaf3fa09ff599a0bf11afcacde04458582de7293eaa28b830572d004df",
+    "mtime_ns": 1792093832548732904
+  },
+  "mountain-climber-cross-body": {
+    "sha256": "9d47daa200b7ca06e2648a0e8e77a5aaaf33f23ea9d335f7dabc808ca18eed96",
+    "mtime_ns": 1792093832556714126
+  },
+  "half-jack": {
+    "sha256": "947648ef4e71a704126670c9a6577cce175734b0847d3102c550cced2e9edd0e",
+    "mtime_ns": 1792093832586603011
+  },
+  "jumping-jack": {
+    "sha256": "93cdafc6cade34a66792958d27954469c5f334ecea6adb88be6c95fb92ab1c87",
+    "mtime_ns": 1792093832592932896
+  },
+  "seal-jack": {
+    "sha256": "c2185549e199173e7b5d42b90c18082426874fc58fb3d03a58f74646d8201b7a",
+    "mtime_ns": 1792093832599230448
+  },
+  "star-jack": {
+    "sha256": "e7dabe340dcd3f47758bb587925398b9bb360332a187bbe838aa4828aade36ec",
+    "mtime_ns": 1792093832606118669
+  },
+  "butt-kicks": {
+    "sha256": "53942a6a7c8ba5d757c103875895238fc6bcf8d89a967edec17805cf444e42f6",
+    "mtime_ns": 1792093832612502013
+  },
+  "high-knees": {
+    "sha256": "137fde9de132de30e8738425abae9873242f80dbdd6db5af96411f05f4acb201",
+    "mtime_ns": 1792093832618612690
+  },
+  "skipping": {
+    "sha256": "d858c7c3dec9335142e3f220a010b637bc9e421cc2340a6305966f0a36a10ad4",
+    "mtime_ns": 1792093832631565837
+  },
+  "side-skip": {
+    "sha256": "cbb1e3c4a6efa6812d6da8eceb8a48bf98d670ecfb60de4badebcc412275f214",
+    "mtime_ns": 1792093832649505950
+  },
+  "power-skip": {
+    "sha256": "5d72379c49a33b959a13646e0730235ae39a91fec36a1ca28cc3844a4fe6cadf",
+    "mtime_ns": 1792093832682684048
+  },
+  "jump-rope": {
+    "sha256": "f6508e0f46877d19259b9c42617a44a742a276ea6449e49764118c83e1e63315",
+    "mtime_ns": 1792093832708704759
+  },
+  "jump-rope-double-under": {
+    "sha256": "5e1262c648e3b1d2d4cee58c1a40a009e1314ec3e42af88c790081ed46f00638",
+    "mtime_ns": 1792093832713595018
+  },
+  "lateral-shuffle": {
+    "sha256": "95e41f6d541c0cf503d1d544c688c2641b6571283e3429b08c69b52f0bf1e00d",
+    "mtime_ns": 1792094085663293307
+  },
+  "carioca": {
+    "sha256": "732fa9f476ad6e35510541cd7247fd9dc4714f5195e78386917323bc0df4b9d4",
+    "mtime_ns": 1792094085672999656
+  },
+  "shuttle-sprint": {
+    "sha256": "aea3bc32cfa435264f9a464e11d1cb174dc17a86bd9fcf8e7acdabb496102b4c",
+    "mtime_ns": 1792094085683556591
+  },
+  "crouch-run": {
+    "sha256": "9464e5fef34809aade64425f8e8a2cf5f24f7ac208243b4ef1c0fe594f1460a1",
+    "mtime_ns": 1792094085693937567
+  },
+  "four-square-hops": {
+    "sha256": "609f21e5ef4feb8466dc00544a760cd624c777e8fca32a0a8cab727c8e51a9ae",
+    "mtime_ns": 1792094085700863579
+  },
+  "hexagon-drill": {
+    "sha256": "c0fc4dee66b2fe7b1b66bd8c4adb24804e3b17ea179b340fb63fe242a5d678bb",
+    "mtime_ns": 1792094085712972016
+  },
+  "bear-plank": {
+    "sha256": "ca036995d91aad74096054028aaafd08ad7fe19e30b1401ecf67b0639871b76e",
+    "mtime_ns": 1792094085718080150
+  },
+  "bear-crawl": {
+    "sha256": "285182469356607f8ca428ff888357ac0c58e3c5f546c37560a178b47a08f04b",
+    "mtime_ns": 1792094085724860828
+  },
+  "crab-walk": {
+    "sha256": "4783b3f7da9a6e390b63f8c607b4ff03217ced5781538afcbfe21bdf3588cc9c",
+    "mtime_ns": 1792094085755134171
+  },
+  "inchworm": {
+    "sha256": "409dc63d62e81df1f63f39052170d0229cfa38b41a225e317b966b7ecd05e1fd",
+    "mtime_ns": 1792094085834302680
+  },
+  "frogger": {
+    "sha256": "201ef8d1119e1b802dc8ce1b812b15bf7991141dc4a6232b1dd7b5cfe88e2d94",
+    "mtime_ns": 1792094085864221481
+  },
+  "shoulder-roll": {
+    "sha256": "46061f421d7f0abcce111a7de3ac5fe201b59b674877aebc38b7d4b4410a8847",
+    "mtime_ns": 1792094085917830780
+  },
+  "rolling-sit-up": {
+    "sha256": "66a42e49d27b437324c5a96bbe9d568429040eae745536151486db3b54a96be7",
+    "mtime_ns": 1792094085948328207
+  },
+  "rolling-squat": {
+    "sha256": "313f2e224dcd5d488b72a9e97ba59852ba8c006c2b1648be6be3f31b6e57a46e",
+    "mtime_ns": 1792094085961050770
+  },
+  "shoulder-pop": {
+    "sha256": "ffb3150183009675f8425179e59971587e8545c8fbd4b736505c572e5a454507",
+    "mtime_ns": 1792094085975744087
+  },
+  "prone-i-raise": {
+    "sha256": "17c1bec0b3d157af73e36c57936d43c5a59da1138b59db8fde36bc379b986cda",
+    "mtime_ns": 1792095208697448400
+  },
+  "prone-t-raise": {
+    "sha256": "a6a8a6585480155919003956be58670897986380b8b79bc30ae848094f950928",
+    "mtime_ns": 1792095208726900012
+  },
+  "prone-y-raise": {
+    "sha256": "63cb69fc7593757ca5d5c51e936904d90ca7024026ec698023dac7870bff9d5e",
+    "mtime_ns": 1792095208735043604
+  },
+  "prone-l-raise": {
+    "sha256": "e9a19cb7737dcd51d76f441be3077ba85acf2a141246c509008a75ce6810faa5",
+    "mtime_ns": 1792095208743077529
+  },
+  "prone-w-raise": {
+    "sha256": "ac5d837024eb8e400d3e6672e3a636137a7c1c1823df1389b63173b9c5c65189",
+    "mtime_ns": 1792095208768988013
+  },
+  "scapular-pushup-wall": {
+    "sha256": "71a5a28798383064b5b3e10e9cec590c0284213c84c96a483c075dff3d5da91a",
+    "mtime_ns": 1792095208793811080
+  },
+  "scapular-pushup-knee": {
+    "sha256": "8b9aa62d3ef070a112bc1adca98d7f0fbd3b43b24aab43e063e9895223d5cbde",
+    "mtime_ns": 1792095208817976479
+  },
+  "scapular-pushup": {
+    "sha256": "2896cab1042753f886f9c60e27055aa309b5326a8a2d592116cbae765748916b",
+    "mtime_ns": 1792095208843907547
+  },
+  "support-scapular-shrug": {
+    "sha256": "5b9e6d0347e8bc8c7ff4db9a45cb7946d419d06cb009d45e2d1e12b7a80fe161",
+    "mtime_ns": 1792095208869232322
+  },
+  "wall-slide": {
+    "sha256": "674d5396e9a55390876dbf7c444908280fa35eea557de4991aa5d340463b091a",
+    "mtime_ns": 1792095208894105139
+  },
+  "floor-angel": {
+    "sha256": "354f790147f6ddff8fb25f65dba6a7a9cd8082d20cfaa49c9afa2fc2cba36150",
+    "mtime_ns": 1792095208919976207
+  },
+  "external-rotation-side-lying": {
+    "sha256": "ebda627a68bc468a9927a989adb482b08c3b8bdbe137d8cd6bb3b249fb131328",
+    "mtime_ns": 1792095208946713650
+  },
+  "external-rotation-band": {
+    "sha256": "663512f52904945bde5e1c85288c1a3f67e0bd7d3b331a225a461a0a45938592",
+    "mtime_ns": 1792095208976094305
+  },
+  "external-rotation-band-90": {
+    "sha256": "9c7d435b38a2f8edc4bb6bbcf3e2921da75e11dd215b27712a2998bbeb309ed1",
+    "mtime_ns": 1792095209002886332
+  },
+  "band-pull-apart": {
+    "sha256": "a660124cb8559db7a3ae703df56002d22416b1feebc6520b05f451abaa40d485",
+    "mtime_ns": 1792095209033262821
+  },
+  "face-pull": {
+    "sha256": "eaa26055c2433928f166d0ba3cc7995f7869d520da6d99f75e065f00627f414b",
+    "mtime_ns": 1792095209061708599
+  },
+  "cuban-press": {
+    "sha256": "9576493297c1c180cb4cef97c5bdf97265ca007afef7ce98010a50f5341224e1",
+    "mtime_ns": 1792095209092674547
+  },
+  "wrist-palm-pulses": {
+    "sha256": "3e256563939a677dc7ffc17f3ce95ab96bc88fdae7cb80e882b757b0c8b6eb01",
+    "mtime_ns": 1792095209173596045
+  },
+  "wrist-seated-mobility": {
+    "sha256": "5f9adc467ece562603e427810d0fff6edbd7e6353701fcb33b0470d88cdfccb5",
+    "mtime_ns": 1792095209230944978
+  },
+  "forearm-rotation-fist": {
+    "sha256": "4732412929561dc7dd0366f3ee366b4756deb4b64df3c47558c2a985da345839",
+    "mtime_ns": 1792095209265835513
+  },
+  "wrist-pushup-knees": {
+    "sha256": "885b3be12859e43d6d5d3181195f8cdf5677613ceb88c9cfda117e3f0f6e609d",
+    "mtime_ns": 1792095209292853790
+  },
+  "wrist-pushup": {
+    "sha256": "edad9a71304c78e70565f46733bf210092da8bac79e8827791b68cd58544a9dd",
+    "mtime_ns": 1792095209319602109
+  },
+  "wrist-curl-eccentric": {
+    "sha256": "9c1eb4f820e3051fb80d35556511239d98c254a9bb1af403b7150d643af6bc3c",
+    "mtime_ns": 1792095209353659518
+  },
+  "hip-lateral-leg-raise": {
+    "sha256": "94fb3a234d506c68a07b063aecc3aec5cb839e128d7bda7c38433e521ce0aaed",
+    "mtime_ns": 1792095209384529716
+  },
+  "hip-medial-leg-raise": {
+    "sha256": "3605ca8c8d015a6666843eaee2bfdf8df01847681108a12a893d30f7f2f435e0",
+    "mtime_ns": 1792095209412292285
+  },
+  "clamshell": {
+    "sha256": "043c0506d2d6f3ca433e0aad63d79afb3d103c11b2b86cc0b226cf9e666ec6cf",
+    "mtime_ns": 1792095209440086980
+  },
+  "side-lying-leg-tuck": {
+    "sha256": "19ea2488245e3ee9144c92672ddfcdf62d352e4cb70bb13a94967563b5fcda08",
+    "mtime_ns": 1792095209468196467
+  },
+  "fire-hydrant": {
+    "sha256": "11a219d6885174045c842b0ce344bb320e1df1761577851cd515382f7603dbd5",
+    "mtime_ns": 1792095209494968202
+  },
+  "donkey-kick": {
+    "sha256": "6d188ab5ef83f478013aec5e7fb300e72436962461de23850b30871b6498839d",
+    "mtime_ns": 1792095209520678728
+  },
+  "spanish-squat": {
+    "sha256": "6b534e8643686b844461aa26563b2f0aa6b87474c8d2f588f9175a09b9e8bd5d",
+    "mtime_ns": 1792096514192293172
+  },
+  "terminal-knee-extension": {
+    "sha256": "7c92aa8c92b346a835986f8c767ef5c441a69b7892dadc3ae879c123b0cdfe34",
+    "mtime_ns": 1792096514218063073
+  },
+  "petersen-step-up": {
+    "sha256": "696999ca8836bdde9e035127c7c78cc01377ae84daadc532e62bc8431f651878",
+    "mtime_ns": 1792096514239914470
+  },
+  "stair-descent-slow": {
+    "sha256": "67c5d38c747cae0d8c38a35cc4a00b3047f2c1a0f6dd854561b680a94f3dc8f0",
+    "mtime_ns": 1792096514269123916
+  },
+  "chin-nod-supine": {
+    "sha256": "774d58d75368fe6956c77830f78f4d7823f5154036f70e9ffef66400ceb617c1",
+    "mtime_ns": 1792096514291750397
+  },
+  "chin-tuck-seated": {
+    "sha256": "10149735de9b7161d3c84980d8b826569539db210f9ab48851ab724125efdae5",
+    "mtime_ns": 1792096514314046170
+  },
+  "chin-tuck-head-lift": {
+    "sha256": "41f61ab1f8cf70685f05fdf2678086487e33022e12e2305281796918a7dc4687",
+    "mtime_ns": 1792096514336690526
+  },
+  "neck-isometric-4-way": {
+    "sha256": "91733d0450486915c297ca8ba515757323a80a5cc17682dcc4e8bc24a6d0fa06",
+    "mtime_ns": 1792096514365910972
+  },
+  "neck-head-raise-manual": {
+    "sha256": "c13d6ec2dfc587b1fbf57c891ceb688766142c68f9481bd3c228338544ff3251",
+    "mtime_ns": 1792096514389824955
+  },
+  "joint-circles": {
+    "sha256": "1ac58d660e050dfa359c5dd84f84de891ee2bab2191ab91029cdca4f3a0c2448",
+    "mtime_ns": 1792096514430762329
+  },
+  "leg-swings": {
+    "sha256": "e1f5b39166679fc456d914cbd6398a1aaa159e929a82ffb68e18e1a12f84d807",
+    "mtime_ns": 1792096514465292989
+  },
+  "deep-squat-hold": {
+    "sha256": "417f5534ec4e2639c743b14e5d6077c61fec9636766fed75d7cb262b8a12f052",
+    "mtime_ns": 1792096514488390679
+  },
+  "hip-raise-pushup": {
+    "sha256": "e56502f046294ed5851778ab5f5dc8c0f498e3317ee0a0eac048dc815daaa4de",
+    "mtime_ns": 1792096514519031835
+  },
+  "bend-and-reach": {
+    "sha256": "816fa8a7afb43c26345a662249d3b41548748d72c54106747b0c7d60d778b7b4",
+    "mtime_ns": 1792096975751658227
+  },
+  "high-jumper": {
+    "sha256": "27c21968329974de93ebbd37a0f1de3cc9a0c4ecd2ea55bd34f4a6645e247084",
+    "mtime_ns": 1792096975791492427
+  },
+  "squat-bender": {
+    "sha256": "2f14e6b2d52366d11667f162886469db4e1766af6d30fa3ead743d45e9c862f7",
+    "mtime_ns": 1792096975832503284
+  },
+  "windmill-army": {
+    "sha256": "632a0a81a42e1d0b0b3ac484c0d465fddd83391e069e83816e7f400454895abb",
+    "mtime_ns": 1792096975875728874
+  },
+  "prone-row-army": {
+    "sha256": "763123a4dc6aeee41fab22b713ba64bac4696e64aa62e519b7c118ad06798df5",
+    "mtime_ns": 1792096975899136364
+  },
+  "turn-and-lunge": {
+    "sha256": "99eec72aefd4090f943b9677451100647cadd965b0933d5dffa9d480f3b76d76",
+    "mtime_ns": 1792096975959585116
+  },
+  "y-squat": {
+    "sha256": "a50dee30b9074e4b995101ddd27ff10077de7e66f547dcdfa28ba2f54f3dfe89",
+    "mtime_ns": 1792096975982027946
+  },
+  "front-kick-toe-touch": {
+    "sha256": "41c6986e9c14ac74ee2c8889bb95bbc8891d742ca1b2eb7aeaa230da99a3476a",
+    "mtime_ns": 1792096976019979535
+  },
+  "leg-tuck-and-twist": {
+    "sha256": "7f8b21ca8aebc62e2a179304b94d71506a040978d6885efcec3b87c4ace8fc49",
+    "mtime_ns": 1792096976051224049
+  },
+  "side-to-side-knee-lifts": {
+    "sha256": "923e5610be2605603e1fc0e3cef44a5fc9b839f19ffd53d90042cbde57df3932",
+    "mtime_ns": 1792096976092021116
+  },
+  "straddle-run": {
+    "sha256": "2c33c092332b4ffbcf76c676cf246c328c653801243bd8ac2bfb7402c7aa7fa5",
+    "mtime_ns": 1792096976135029791
+  },
+  "half-squat-laterals": {
+    "sha256": "4c247c73c3a5dcef9cde59d3c60cd6d33e8b44812ab2d8321460eedc04fd3a4f",
+    "mtime_ns": 1792096976174338453
+  },
+  "frog-jumps": {
+    "sha256": "ae864b34620f1a38f2427fc6896f2c9bb3b37cabb75609e1cce18bbd49cbbdad",
+    "mtime_ns": 1792096976214109695
+  },
+  "quarter-turn-jump": {
+    "sha256": "1d9a11a6ba9bec1d6f5a4b8bb03de464f338dc28ea7924fa0e528901510905f0",
+    "mtime_ns": 1792096976253707854
+  },
+  "criss-cross-jump": {
+    "sha256": "25c4b8603bf7c361729f5b8e14fc025354af742f720ccc41bc41fd558f24bff8",
+    "mtime_ns": 1792096976292077606
+  },
+  "alternate-twist-jump": {
+    "sha256": "cca3de18a70b78d63c696d3c0b6dbc5635d12b525e4102f5bd0a0044246df161",
+    "mtime_ns": 1792096976330252901
+  },
+  "stretch-overhead-arm-pull": {
+    "sha256": "48240f97462c3a3cae9ed18e2721f9a8b4ccb07b6faf55826fd3865a345735d6",
+    "mtime_ns": 1792136319296798865
+  },
+  "stretch-downward-dog": {
+    "sha256": "5743b14628f4ec3ac3cd2e230aac1e889ac65f497e9784fff97016d0dd81dfc2",
+    "mtime_ns": 1792136319319989850
+  },
+  "stretch-groin": {
+    "sha256": "4337ff91af03532f4c933b933ab0fc0363b8d9b61c76a1bf0f0addc4ebe099e2",
+    "mtime_ns": 1792136319324261768
+  },
+  "stretch-shoulder-er": {
+    "sha256": "da238338da6b0981c60be2858ddaa7e01212929128fef12cc6947099024aecbe",
+    "mtime_ns": 1792136319345192063
+  },
+  "stretch-wrist-prayer": {
+    "sha256": "03828b199b5f04d24983598f09583899f236f4afaac1c568dcd3fea7a6f4601e",
+    "mtime_ns": 1792136319365335850
+  },
+  "stretch-wrist-reverse-prayer": {
+    "sha256": "947a061834f47010601028ee80d554ce28527174e79367208455852e495431d8",
+    "mtime_ns": 1792136319369698727
+  },
+  "stretch-spiderman": {
+    "sha256": "0f645294c5aa7ad4f174523e9c24ac2b0f542724ae45c288cae610b059fe2313",
+    "mtime_ns": 1792136319374067896
+  },
+  "stretch-neck-side": {
+    "sha256": "31cfab630d1ab5b372c983bf9c31b8ce95d0fc2068851b4e859cdedb38ab9ec9",
+    "mtime_ns": 1792136319378323690
+  },
+  "stretch-sphinx": {
+    "sha256": "6aa0f8ae2875a18fc2c4fb31f3eaef98bc14bdd2dfefd0e2483c7e538d1284ac",
+    "mtime_ns": 1792136319387988829
+  },
+  "stretch-knee-to-chest": {
+    "sha256": "c70e52f8a17df45af17f26deb1b2f2224ef2f9b2bdac48fc38bd127bcd304435",
+    "mtime_ns": 1792136319408395077
+  },
+  "stretch-figure-four": {
+    "sha256": "4de7b95240ee04ebb45a3b1fcbb493dee0c8af74823ca708987868bb1a3479c3",
+    "mtime_ns": 1792136319430160297
+  },
+  "stretch-split-front": {
+    "sha256": "790a496d1b3b0aa78759e6d811517b46936b73ad2cc414dfa64deb9f0c77946f",
+    "mtime_ns": 1792136319452982570
+  },
+  "stretch-split-middle": {
+    "sha256": "76a377f0fd2b8d12d42de4216b7ad8fae56989dbe887102e4d7a1c352931d96e",
+    "mtime_ns": 1792136319473902698
+  },
+  "stretch-twist-straight-leg": {
+    "sha256": "0590cdc4dba948e1dd27f16306ebd8e120908241cc87dd80bd5582f773e90b0f",
+    "mtime_ns": 1792136319495650043
+  },
+  "stretch-twist-easy": {
+    "sha256": "8e374187dad241db3bce2f3c7263c3551d02c9d67ffa15adc7503163b7e2800e",
+    "mtime_ns": 1792136319518121437
+  },
+  "stretch-twist-half": {
+    "sha256": "6eff2981812dae44742dba32d0118fdb57c4bcca0d1c7bbd98a6bbd5713bb250",
+    "mtime_ns": 1792136319540413871
+  },
+  "stretch-twist-three-quarter": {
+    "sha256": "d61dd6ad958a24d36b74b870bf296b06a34fe0a3ae58eadff091acfe2006bc61",
+    "mtime_ns": 1792136319562993891
+  },
+  "stretch-twist-full": {
+    "sha256": "b705e0e76de9d221dbf714d53f101d891e5089b0544648d41933770565e7bd31",
+    "mtime_ns": 1792136319586152208
+  },
+  "pilates-roll-up": {
+    "sha256": "190f8d3aad5afd46276d7fde08608df67c30d0668694d0757d3273d4373c2c43",
+    "mtime_ns": 1792136258982144573
+  },
+  "pilates-rolling-like-a-ball": {
+    "sha256": "9126b7e030038d549b11066b8cb16cfb76b489868dd761eb27f083a6f06cf004",
+    "mtime_ns": 1792136259015150824
+  },
+  "pilates-single-leg-circle": {
+    "sha256": "974958e860ef3030986fddabde9543337a5505f823265dbd108f57cdc68b6c00",
+    "mtime_ns": 1792136259046195429
+  },
+  "pilates-single-leg-stretch": {
+    "sha256": "2759fc0962c1f579d4adfd9de57e1e6e909fed56f17c8d42d4656038c07e7128",
+    "mtime_ns": 1792136259086902508
+  },
+  "pilates-double-leg-stretch": {
+    "sha256": "2bfd2a26b1248ddc8f8b4b4b30ede97f4e932d4651f9701ccbecdd40c6b9af47",
+    "mtime_ns": 1792136259127779796
+  },
+  "pilates-scissors": {
+    "sha256": "8b895ff58d72ff5d495c020d33b01b52252698bb6186945317670223ffe8f423",
+    "mtime_ns": 1792136259165678304
+  },
+  "pilates-spine-stretch-forward": {
+    "sha256": "7a20d0ce3e98ccddcc97834a67123e5b4bba6dffcf5159d052d49dd59032f063",
+    "mtime_ns": 1792136259197544752
+  },
+  "pilates-open-leg-rocker": {
+    "sha256": "127320e21edcc74ee13fdc3193498dd399bf3076ec971e604208838246a3c46e",
+    "mtime_ns": 1792136259225533785
+  },
+  "pilates-corkscrew": {
+    "sha256": "9da4f01ef5065770e6eab293afc5d35ddbc71b447e994a57e96e3bf6260fe90d",
+    "mtime_ns": 1792136259255259252
+  },
+  "pilates-saw": {
+    "sha256": "c6aa4f7d845a3f5345588123f06761ac0ac2162d96296f7ab0ca5aac42adc100",
+    "mtime_ns": 1792136259302727274
+  },
+  "pilates-roll-over": {
+    "sha256": "0cd526fc672e34bd3fee9b9ba4c12fb60f6ac68eed652a5722e2b9615744e886",
+    "mtime_ns": 1792136259335570439
+  },
+  "pilates-seal": {
+    "sha256": "545890494158bcf4c8848e1e36d65f5053ff732e7d0049e1a7b854c59d9fb01a",
+    "mtime_ns": 1792136259377331112
+  },
+  "pilates-spine-twist": {
+    "sha256": "9b2caf22519d65866d2178b7a863e07a7471186cea86cc673e89d4829ed5f443",
+    "mtime_ns": 1792136259401008435
+  },
+  "pilates-double-leg-kick": {
+    "sha256": "22a6e5776a6ffac2491198a8c9e92296f6311e43c5bb70b7903bea4de66caaac",
+    "mtime_ns": 1792136259429684183
+  },
+  "pilates-mermaid": {
+    "sha256": "ed96b967d9ee9f2a1264201c22ab6c96d0bffcabd3d4b42e0fa41e0ad1778802",
+    "mtime_ns": 1792136259457224837
+  }
+}
