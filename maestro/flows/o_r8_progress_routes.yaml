@@ -38,8 +38,7 @@ appId: app.calisthenics.personal
           direction: UP
 - assertVisible: { id: tree_node_pushup-feet-elevated }
 - takeScreenshot: 02-push-up-main-spine-${VARIANT}
+# R8.1-T10 (F13): the same-rung alternate is a node beside its rung, no toggle
+- assertVisible: { id: tree_node_pushup-diamond }
 - tapOn: { id: tree_node_pushup-feet-elevated }
-- extendedWaitUntil: { visible: { id: route_extras_toggle }, timeout: 8000 }
-- tapOn: { id: route_extras_toggle }
-- assertVisible: { id: route_member_pushup-diamond }
 - takeScreenshot: 03-push-up-other-ways-${VARIANT}

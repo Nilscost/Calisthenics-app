@@ -21,10 +21,11 @@ appId: app.calisthenics.personal
 - tapOn: { id: objective_type_ROUTINE }
 # R8.1-T08 (F9): programs and my routines share one dropdown in two sections; a program loads into the Preview as a starting point
 - tapOn: { id: goal_field }
-- extendedWaitUntil: { visible: { id: section_programs }, timeout: 8000 }
-- assertVisible: { id: section_my_routines }
+# the menu is a popup window: select by text there
+- extendedWaitUntil: { visible: "PROGRAMS", timeout: 8000 }
+- assertVisible: "MY ROUTINES"
 - takeScreenshot: 01-programs-dropdown-${VARIANT}
-- tapOn: { id: program_army-prt }
+- tapOn: "Army PRT session"
 - scrollUntilVisible: { element: { id: preview_button }, direction: DOWN, timeout: 10000 }
 - takeScreenshot: 01b-program-selected-${VARIANT}
 - tapOn: { id: preview_button }

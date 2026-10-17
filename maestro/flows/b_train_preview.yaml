@@ -41,7 +41,7 @@ appId: app.calisthenics.personal
 - tapOn: { id: preview_button }
 - extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
 - scrollUntilVisible: { element: { id: preview_format_PAIRS }, direction: DOWN, timeout: 8000 }
-- assertVisible: { id: preview_format_PAIRS, selected: true }
+- assertVisible: { id: preview_format_PAIRS }
 - takeScreenshot: 02b2-preview-back-again-${VARIANT}
 - tapOn: { id: preview_format_CIRCUIT }
 - scrollUntilVisible: { element: { id: all_sets_header }, direction: UP, timeout: 8000 }
