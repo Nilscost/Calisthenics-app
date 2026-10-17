@@ -190,6 +190,17 @@ class TrainScreenTest {
         rule.onNodeWithTag("train_start_button").assertIsEnabled()
         return minutes()
     }
+    // R8.1-T12: a program's Flow start value does not stay on when the objective goes back to a body part
+    @Test fun leavingAProgramForABodyPartTurnsFlowOff() {
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx)
+        io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.save(ctx, app.calisthenics.domain.routine.settingsForProgram(catalog.fixedPrograms.first { it.id == "army-prt" }, io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx)))
+        assertTrue(io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx).flow)
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("objective_type_BODY_PART").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick); rule.waitForIdle()
+        val s = io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx)
+        assertFalse(s.flow); assertNull(s.fixedProgramId)
+    }
+
     @Test fun theMergedArmySessionShowsAtLeastThirtyMinutes() { val m = programMinutes("army-prt"); assertTrue("$m min", m >= 30) }
     @Test fun theMergedPilatesSessionShowsAtLeastThirtyMinutes() { val m = programMinutes("pilates-mat"); assertTrue("$m min", m >= 30) }
 

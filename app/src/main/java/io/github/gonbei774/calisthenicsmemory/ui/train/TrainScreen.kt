@@ -124,8 +124,9 @@ fun TrainScreen(
             }
             UnfinishedBanner(onStarted)
 
+            // Flow belongs to the objective: a program's start value must not leak into the next workout
             val catalogPrograms = remember(data.catalog, profile) { data.catalog.fixedPrograms.filter { it.listed }.map { p -> ProgramEntry(p.id, p.name, programSummaryText(ctx, data.catalog, p, profile)) } }
-            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, fixedProgramId = null, exercisesPerRound = null)) }, routines = saved, routineId = settings.routineId,
+            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, fixedProgramId = null, exercisesPerRound = null, flow = false)) }, routines = saved, routineId = settings.routineId,
                 onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } },
                 fixedPrograms = catalogPrograms, programId = settings.fixedProgramId,
                 onPickProgram = { id -> data.catalog.fixedPrograms.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsForProgram(it, settings)) } })

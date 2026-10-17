@@ -965,3 +965,7 @@ Tests: Docker full verify exit 0 (`r8.1-t11-verify-2026-10-17.log`).
 NOT done: no phone testing; the new icons are first drafts of simple pictograms and need a look in the screenshot review.
 
 Choices not in the plan: chair and foot anchor sit under Legs, pole under Pull; the Preview header keeps "rounds" for every format (as before).
+
+### R8.1-T12 · ui-screens flows and screenshot review · 2026-10-17
+
+Flows adjusted with their UI: `b_train_preview` (format, Flow, back and return, scroll to the stepper and the + at font 1.3), `m_r8_programs_flow` (dropdown with Programs and My routines, program Preview, Flow session, then the objective back to a body part; the dropdown is a popup, so it is selected by text), `o_r8_progress_routes` (the alternate is a node beside its rung). Cause found by the first CI run: a program's Flow start value stayed in the Train settings after leaving the program, so the next workout was a Flow workout without breaks (`n_r8_preview_rest_extras` found no rest stepper). Fix: choosing a goal turns Flow off (`TrainScreenTest.leavingAProgramForABodyPartTurnsFlowOff`).
