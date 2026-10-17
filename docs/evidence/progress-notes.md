@@ -863,3 +863,15 @@ Tests: Docker full verify exit 0 (`r8.1-t02-verify-2026-10-17.log`). No existing
 NOT done: no phone testing; content stays DRAFT.
 
 Choices not in the plan: skill-session supports from another route of the same family (for example pike push-up beside the wall handstand hold) are left out when they share a logical route; no existing test showed a loss. Same exercise twice in synthetic routines (tests) is left as is.
+
+### R8.1-T03 · F3 logged reps are the actual reps · 2026-10-17
+
+Cause: I first ran the owner's case (prescribed 10, logged 6) through the whole chain as the app runs it: session reducer, saved block results and row feedback, `effectiveFeedback`, `deriveEvidence`, the replay, `effectiveSetSeries` (chart, best) and `exerciseDetails` (History). A number that is typed into the logger is used everywhere (6 reaches the chart, the History rounds and the evidence as below target, so the level is held); that test (`ActualRepsTest`) passed before any change. The prescription replaced the actual number in two other places: (1) every set started the logger at the prescribed target again, so after logging 6 on set 1 the person accepted sets 2 and 3 as they stood and they were stored as "as planned", that is as 10, which the chart and History then showed; (2) Skip on a work block threw a typed number away (outcome SKIPPED, which the chart, evidence and History ignore). A third place, the end-screen editor, is hidden whenever a plan runs in flow; it is handled with the Flow option in R8.1-T06.
+
+Fix: the logger now starts a set at the number just logged on the previous set of the same exercise and side (`carriedReps`), records it at once so that DONE without editing keeps what the screen showed, and the first set still starts at the target. Skip with a typed number is kept as a partial set with that number; with nothing typed it is still a skip. Tests: `ActualRepsTest` (6 cases: chart, History rounds, evidence and level, accepted target, one edited set, carry-over, correction of one round, skip), `SessionScreenTest.theNextSetStartsAtTheLastLoggedNumberAndRecordsIt`.
+
+Tests: Docker full verify exit 0 (`r8.1-t03-verify-2026-10-17.log`).
+
+NOT done: I could not reproduce a drop of a typed number on the direct path, so the two causes above are what the code allowed; the owner phone check should confirm. No phone testing.
+
+Choices not in the plan: the carried number applies to holds on the break logger as well; a partial skip counts as not qualifying (like any partial set).

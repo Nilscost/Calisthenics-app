@@ -119,11 +119,14 @@ internal fun HeldDemoInstructions(demonstration: ExerciseVariation, modifier: Mo
 
 /** The state of the logger for the work block [work]: lifted out of the card so the DONE button in the bottom row can confirm it. */
 @Stable
-private class LoggerState(val ctx: android.content.Context, val work: TimelineBlock, saved: app.calisthenics.domain.session.BlockLog?) {
+private class LoggerState(val ctx: android.content.Context, val work: TimelineBlock, saved: app.calisthenics.domain.session.BlockLog?, /** R8.1-T03 (F3): the number of the previous set of this exercise. */ val carried: Int? = null) {
     val target: Target? = work.target
     val hold = target?.type == TargetType.HOLD_SECONDS
-    var reps by mutableIntStateOf(saved?.reps ?: target?.shownValue() ?: 0)
-    var typed by mutableStateOf(saved?.reps != null)
+    /** The previous set's number is shown and accepted as typed, so DONE without editing records what the screen showed. */
+    private val fromCarry = saved?.reps == null && carried != null
+    var reps by mutableIntStateOf(saved?.reps ?: carried ?: target?.shownValue() ?: 0)
+    var typed by mutableStateOf(saved?.reps != null || fromCarry)
+    fun pushCarried() { if (fromCarry) push() }
     // The ratings (Too hard / Too easy / Pain) are given on the end screen (doc 17 §2.3); what the logger keeps is passed through unchanged.
     private val tooHard = saved?.tooHard ?: false
     var tooEasy by mutableStateOf(saved?.tooEasy ?: false)
@@ -135,7 +138,9 @@ private class LoggerState(val ctx: android.content.Context, val work: TimelineBl
 private fun rememberLogger(st: SessionState, work: TimelineBlock?): LoggerState? {
     val ctx = LocalContext.current
     if (work == null) return null
-    return remember(work.id) { LoggerState(ctx, work, st.logged[work.id]) }
+    val state = remember(work.id) { LoggerState(ctx, work, st.logged[work.id], app.calisthenics.domain.session.carriedReps(st.plan, st.logged, work)) }
+    LaunchedEffect(work.id) { state.pushCarried() }
+    return state
 }
 
 private fun blockLabel(b: TimelineBlock): Int = when (b.type) {

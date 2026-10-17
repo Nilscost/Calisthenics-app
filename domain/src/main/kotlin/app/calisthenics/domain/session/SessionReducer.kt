@@ -206,7 +206,9 @@ private fun resume(s: SessionState, now: Long): Reduced {
 private fun skip(s: SessionState, now: Long): Reduced {
     val b = s.currentBlock ?: return Reduced(s)
     val t = if (s.phase == Phase.RUNNING) addActive(s, now) else s
-    val exec = if (b.type == BlockType.WORK) Execution.SKIPPED else Execution.SKIPPED
+    // R8.1-T03 (F3): a work block with a number typed into the logger was (partly) done: the number is kept as a partial set, not thrown away as skipped
+    val typed = b.type == BlockType.WORK && (t.logged[b.id]?.reps ?: 0) > 0
+    val exec = if (typed) Execution.PARTIAL else Execution.SKIPPED
     return moveOn(t.copy(executions = t.executions + (b.id to exec)), now)
 }
 

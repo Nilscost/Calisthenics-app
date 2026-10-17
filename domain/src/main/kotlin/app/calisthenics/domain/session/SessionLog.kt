@@ -4,6 +4,7 @@ package app.calisthenics.domain.session
 
 import app.calisthenics.domain.feedback.Rating
 import app.calisthenics.domain.model.BlockType
+import app.calisthenics.domain.model.TimelineBlock
 import app.calisthenics.domain.model.WorkoutPlan
 import kotlinx.serialization.Serializable
 
@@ -26,4 +27,15 @@ fun rowLogsFrom(plan: WorkoutPlan, logged: Map<String, BlockLog>): List<RowLog> 
         val easy = logs.any { it.second.tooEasy }
         RowLog(vid, if (below) Rating.BELOW else if (easy) Rating.ABOVE else Rating.MET, logs.any { it.second.discomfort }, reps)
     }
+}
+
+/**
+ * R8.1-T03 (F3): the number the person logged on the previous set of the same exercise (same side), or null. The logger starts the next set
+ * at this number instead of the prescribed target, so that "DONE without editing" means what the screen showed and not the prescription.
+ */
+fun carriedReps(plan: WorkoutPlan, logged: Map<String, BlockLog>, work: TimelineBlock): Int? {
+    val at = plan.blocks.indexOfFirst { it.id == work.id }
+    if (at <= 0) return null
+    return plan.blocks.take(at).lastOrNull { it.type == BlockType.WORK && it.variationId == work.variationId && it.side == work.side && logged[it.id]?.reps != null }
+        ?.let { logged.getValue(it.id).reps }
 }

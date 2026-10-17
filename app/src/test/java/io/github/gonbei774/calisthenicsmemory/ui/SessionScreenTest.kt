@@ -248,6 +248,19 @@ class SessionScreenTest {
         rule.onNodeWithTag("logger_value").assertTextEquals("4")
     }
 
+    // R8.1-T03 (F3): the next set of an exercise starts at the number just logged, and that number is recorded without touching the stepper
+    @Test fun theNextSetStartsAtTheLastLoggedNumberAndRecordsIt() {
+        val firstWork = plan.blocks.first { it.type == BlockType.WORK && it.target?.type == TargetType.REPS }
+        val second = plan.blocks.first { it.type == BlockType.WORK && it.variationId == firstWork.variationId && it.id != firstWork.id }
+        val s0 = reduce(stateAt(plan.blocks.indexOf(second)), SessionEvent.LogBlock(firstWork.id, BlockLog(reps = 3))).state
+        show(s0)
+        rule.onNodeWithTag("logger_value").assertTextEquals("3")
+        rule.waitForIdle()
+        val log = generateSequence { shadowOf(app).nextStartedService }.toList().last { it.action == WorkoutSessionService.ACTION_LOG }
+        assertEquals(second.id, log.getStringExtra(WorkoutSessionService.EXTRA_BLOCK_ID))
+        assertEquals(3, log.getIntExtra(WorkoutSessionService.EXTRA_REPS, -2))
+    }
+
     @Test fun getReadyBlocksNameTheNextExerciseAndNothingIsEverCalledRestWithStretchOn() {
         val sawGetReady = mutableListOf<String>()
         for (i in plan.blocks.indices) {
