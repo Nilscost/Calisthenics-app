@@ -50,3 +50,7 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: { id: end_done }, timeout: 15000 }
 - takeScreenshot: 04-flow-end-screen-${VARIANT}
 - tapOn: { id: end_done }
+# leave the objective on a body part so the flows that follow start from the usual workout
+- extendedWaitUntil: { visible: { id: bottom_bar }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: objective_type_BODY_PART }, direction: UP, timeout: 10000 }
+- tapOn: { id: objective_type_BODY_PART }

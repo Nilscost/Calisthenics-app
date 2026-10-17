@@ -34,6 +34,7 @@ appId: app.calisthenics.personal
 - takeScreenshot: 02a2-preview-flow-${VARIANT}
 - tapOn: { id: preview_flow_switch }
 - scrollUntilVisible: { element: { id: all_sets_header }, direction: UP, timeout: 8000 }
+- scrollUntilVisible: { element: { id: "level_plus_.*" }, direction: DOWN, timeout: 8000 }
 - tapOn: { id: "level_plus_.*", index: 0 }
 - takeScreenshot: 02b-preview-level-${VARIANT}
 - back
