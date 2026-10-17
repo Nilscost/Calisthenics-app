@@ -1,0 +1,14 @@
+Running on test
+ > Flow k2_chart
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: bottom_bar is visible... COMPLETED
+Tap on id: tab_history... COMPLETED
+Assert that id: session_.* is visible... COMPLETED
+Scrolling DOWN until id: progression_.* is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Tap on id: progression_.*, Index: 0... COMPLETED
+Scrolling DOWN until id: chart_.* is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Take screenshot 01-chart-2-sessions-${VARIANT}... COMPLETED

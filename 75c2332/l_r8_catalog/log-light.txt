@@ -1,0 +1,35 @@
+Running on test
+ > Flow l_r8_catalog
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: bottom_bar is visible... COMPLETED
+Tap on id: tab_progress... COMPLETED
+Assert that id: progress_search is visible... COMPLETED
+Tap on id: progress_mode_type... COMPLETED
+Repeat while id: tab_chip_power is not visible (up to 24 times)...
+  Swiping in LEFT direction on id: progress_type_tabs at 90%, 50%... COMPLETED
+Repeat while id: tab_chip_power is not visible (up to 24 times)... COMPLETED
+Repeat while id: tab_chip_power is not visible (up to 24 times)...
+Repeat while id: tab_chip_power is not visible (up to 24 times)... SKIPPED
+Tap on id: tab_chip_power... COMPLETED
+Run flow when "All progressions" is visible...
+  Tap on id: all_progressions... COMPLETED
+Run flow when "All progressions" is visible... COMPLETED
+Repeat while id: route_chip_jump is not visible (up to 24 times)...
+  Swiping in LEFT direction on id: progress_route_tabs at 90%, 50%... COMPLETED
+Repeat while id: route_chip_jump is not visible (up to 24 times)... COMPLETED
+Repeat while id: route_chip_jump is not visible (up to 24 times)...
+Repeat while id: route_chip_jump is not visible (up to 24 times)... SKIPPED
+Tap on id: route_chip_jump... COMPLETED
+Assert that id: tree_node_jump-squat is visible... COMPLETED
+Take screenshot 01-power-progression-${VARIANT}... COMPLETED
+Tap on id: progress_search... COMPLETED
+Erase 40 characters... COMPLETED
+Input text Teaser (Pilates)... COMPLETED
+Assert that id: search_result_v-up is visible... COMPLETED
+Tap on id: search_result_v-up... COMPLETED
+Assert that id: detail_aliases is visible... COMPLETED
+Take screenshot 02-alias-detail-${VARIANT}... COMPLETED

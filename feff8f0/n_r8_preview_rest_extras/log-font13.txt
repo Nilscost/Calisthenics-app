@@ -1,0 +1,34 @@
+Running on test
+ > Flow n_r8_preview_rest_extras
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Tap on id: tab_train... COMPLETED
+Assert that id: open_programs is not visible... COMPLETED
+Assert that id: additional_pools is not visible... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Scrolling DOWN until id: add_start is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Tap on id: add_start... COMPLETED
+Assert that id: add_categories is visible... COMPLETED
+Scrolling DOWN until id: add_cat_power is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Assert that id: add_cat_power is visible... COMPLETED
+Tap on id: add_cat_power... COMPLETED
+Assert that id: add_option_.* is visible... COMPLETED
+Take screenshot 01-manual-power-add-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Press back... COMPLETED
+Scrolling DOWN until id: between_rest is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Tap on id: between_rest... COMPLETED
+Scrolling UP until id: preview_button is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Scrolling DOWN until id: rest_.*_plus is visible with speed 40, visibility percentage 100%, timeout 20000 ms, with centering disabled... COMPLETED
+Take screenshot 02-preview-recovery-${VARIANT}... COMPLETED
+Tap on id: rest_.*_plus, Index: 0... COMPLETED
+Take screenshot 03-preview-recovery-adjusted-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Assert that id: bottom_bar is visible... COMPLETED
