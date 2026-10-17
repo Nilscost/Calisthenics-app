@@ -851,3 +851,15 @@ Tests: Docker full verify exit 0 (`r8.1-t01-verify-2026-10-17.log`).
 NOT done: no phone testing; content stays DRAFT.
 
 Choices not in the plan: a completed session on a higher-rung exercise moves the position even if it was chosen by hand in Preview (the plan says work on a higher rung counts). A hold on an exercise with discomfort still wins over the position.
+
+### R8.1-T02 · F2 two exercises of one progression in a session · 2026-10-17
+
+Cause: the duplicate check in the planner (`sameProgressionForSlots`, by progression group) ran only for automatic slots (`ext-` fillers and skill slots) and only against earlier ones. Slots of a saved, edited or older routine (the base slots) were never checked, so a routine naming knee push-up in one slot and standard push-up in another planned both, and likewise alternates next to their main step (feet-elevated and diamond) and a lunge slot next to the squat slot (squat plus split squat). The key was also the group, not the logical route.
+
+Fix: `Catalog.logicalRoutesOf` / `sharesLogicalRoute` (a route with a main path, where the exercise is a main step, an alternate or a support drill; the library and the program/pool routes are not progressions). The planner now keeps one exercise per logical route for every slot that was not picked or added by hand in the Preview; the later one is left out and the plan says so. An exercise added with the Preview "+" or swapped in by hand may still repeat a progression (the plan's only exception). Tests (`OneExercisePerRouteTest`, 5): the owner's knee plus standard case, alternate plus main step, hand-added exception, and two sweeps over every goal, history, profile, exercises-per-round and workout count, and the other starting routines; three were red before the fix.
+
+Tests: Docker full verify exit 0 (`r8.1-t02-verify-2026-10-17.log`). No existing assertion changed.
+
+NOT done: no phone testing; content stays DRAFT.
+
+Choices not in the plan: skill-session supports from another route of the same family (for example pike push-up beside the wall handstand hold) are left out when they share a logical route; no existing test showed a loss. Same exercise twice in synthetic routines (tests) is left as is.

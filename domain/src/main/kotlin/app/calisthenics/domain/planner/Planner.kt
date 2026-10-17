@@ -86,8 +86,12 @@ private class Planner(val input: PlanInput) {
             val automaticSlot = slot.id.startsWith("ext-") || app.calisthenics.domain.goals.Goals.isSkillSlot(slot.id)
             val explicitPick = draft.swaps.containsKey(slot.id) || slot.id.startsWith("add-")
             if (automaticSlot && !explicitPick && !routeEligibleForAutomatic(candidate.variation, slot.id, draft)) return@let
-            if (automaticSlot && !explicitPick && chosen.any { sameProgressionForSlots(it, candidate) }) {
-                explain += "${candidate.variation.name} was left out because this workout already trains its progression."
+            // R8.1-T02 (F2): one exercise per logical route per session (main step, alternate and support alike), whatever kind of slot it is.
+            // Only an exercise the person picked or added by hand in the Preview may repeat a progression.
+            val repeats = chosen.firstOrNull { (automaticSlot && sameProgressionForSlots(it, candidate)) ||
+                cat.sharesLogicalRoute(it.variation.id, candidate.variation.id) }
+            if (!explicitPick && repeats != null) {
+                explain += "${candidate.variation.name} was left out because this workout already trains its progression (${repeats.variation.name})."
             } else chosen += candidate
         }
         if (chosen.isEmpty()) return fail("nothing-available",

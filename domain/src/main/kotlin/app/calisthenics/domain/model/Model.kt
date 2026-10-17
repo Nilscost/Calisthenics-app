@@ -340,6 +340,18 @@ data class Catalog(
         id in route.mainPath || route.members.any { it.variationId == id }
     }
 
+    /**
+     * R8.1-T02 (F2): the progressions an exercise belongs to as a main step, an alternate or a support drill. Pools without a main path
+     * (library, program-only, prehab and conditioning pools) are not progressions. Two exercises of one session must not share any of these.
+     */
+    fun logicalRoutesOf(id: String): Set<String> = progressionRoutes.filter { route ->
+        route.mainPath.isNotEmpty() && (id in route.mainPath || route.members.any {
+            it.variationId == id && it.role in setOf(ProgressionRole.MAIN, ProgressionRole.ALTERNATE, ProgressionRole.SUPPORT)
+        })
+    }.map { it.id }.toSet()
+
+    fun sharesLogicalRoute(a: String, b: String): Boolean = a != b && logicalRoutesOf(a).intersect(logicalRoutesOf(b)).isNotEmpty()
+
     fun routeById(id: String?): ProgressionRoute? = id?.let { routeId -> progressionRoutes.firstOrNull { it.id == routeId } }
 
     fun progressionGroupOf(id: String): String? = variation(id)?.let { it.progressionGroup ?: it.familyId }
