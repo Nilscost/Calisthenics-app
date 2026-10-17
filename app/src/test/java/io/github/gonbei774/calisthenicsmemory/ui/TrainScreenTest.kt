@@ -42,6 +42,19 @@ class TrainScreenTest {
             rule.onNodeWithTag(tag).assertIsDisplayed()
     }
 
+    // R8.1-T05 (F6): the Preview's edits belong to the objective; picking another goal starts clean
+    @Test fun changingTheObjectiveDropsThePreviewDraft() {
+        val key = io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx))
+        io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.put(ctx, io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraft(key, app.calisthenics.domain.planner.PlanEdits(removed = setOf("core"))))
+        assertNotNull(io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(ctx, key))
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("rounds_plus").performClick(); rule.waitForIdle()   // rounds are not the objective: the draft stays
+        assertNotNull(io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(ctx, key))
+        rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("goal_body-upper").performClick(); rule.waitForIdle()
+        assertNull(io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(ctx, key))
+    }
+
     @Test fun previewButtonIsEnabledAndOpensThePreview() {
         var opened = false
         show { opened = true }

@@ -78,6 +78,44 @@ class PreviewScreenTest {
         rule.onNodeWithTag("cooldown_swap_0").assertExists()
     }
 
+    // R8.1-T05 (F5): Straight sets / Pairs / Circuit and the number of sets are chosen in the Preview too
+    @Test fun theSetFormatAndTheNumberOfSetsAreChosenInThePreview() {
+        show(); rule.waitForIdle()
+        for (f in listOf("CIRCUIT", "PAIRS", "STRAIGHT")) rule.onNodeWithTag("preview_format_$f").performScrollTo().assertExists()
+        rule.onNodeWithTag("preview_format_CIRCUIT").assertIsSelected()
+        rule.onNodeWithTag("preview_format_STRAIGHT").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("preview_format_STRAIGHT").assertIsSelected()
+        assertEquals("STRAIGHT", app.getSharedPreferences("train", Context.MODE_PRIVATE).getString("format", null))
+        rule.onNodeWithTag("preview_rounds_plus").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(5, app.getSharedPreferences("train", Context.MODE_PRIVATE).getInt("rounds", 0))
+        rule.onNodeWithTag("preview_header").assertTextContains("5 rounds", substring = true)
+    }
+
+    // R8.1-T05 (F6): every change survives going back to Train and returning; only another objective resets it
+    @Test fun editsSurviveLeavingThePreviewAndComingBack() {
+        io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.save(app, io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.load(app).copy(stretchOn = false))   // plain rest, so the rest steppers exist
+        var visible by mutableStateOf(true)
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { if (visible) PreviewScreen(onBack = {}, onStarted = {}) else androidx.compose.foundation.layout.Box {} } }
+        rule.waitForIdle()
+        openSwap("push")
+        rule.onNodeWithTag("swap_option_pushup-knee").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick); rule.waitForIdle()
+        rule.onNodeWithTag("level_plus_squat").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("rest_pull_plus").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("preview_format_PAIRS").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_core2").performScrollTo().performTouchInput { longClick() }; rule.waitForIdle()
+        rule.onNodeWithTag("remove_confirm").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick); rule.waitForIdle()
+        val level = rule.onNodeWithTag("level_squat").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.toString()
+        fun rest() = rule.onNodeWithTag("rest_pull_value").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.ContentDescription].joinToString()
+        val rest = rest()
+        visible = false; rule.waitForIdle()
+        visible = true; rule.waitForIdle()
+        rule.onNodeWithTag("exercise_name_push").assertTextEquals("Knee Push-Up")
+        rule.onNodeWithTag("exercise_core2").assertDoesNotExist()
+        assertEquals(level, rule.onNodeWithTag("level_squat").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.toString())
+        assertEquals(rest, rest())
+        rule.onNodeWithTag("preview_format_PAIRS").assertIsSelected()
+    }
+
     @Test fun headerSaysRoundsMinutesAndStyle() {
         show(); rule.waitForIdle()
         rule.onNodeWithTag("preview_header").assertTextContains("4 rounds", substring = true)

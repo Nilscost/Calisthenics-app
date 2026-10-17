@@ -24,8 +24,22 @@ appId: app.calisthenics.personal
 # V16 / R7.2-T01: "All sets" header (no set tabs), the level stepper, and the "+" between blocks
 - assertVisible: { id: all_sets_header }
 - assertNotVisible: { id: set_tab_2 }
+# R8.1-T05 (F5, F6): the set format is chosen in the Preview, and an edit survives going back to Train and returning
+- scrollUntilVisible: { element: { id: preview_format_PAIRS }, direction: DOWN, timeout: 8000 }
+- takeScreenshot: 02a-preview-format-${VARIANT}
+- tapOn: { id: preview_format_PAIRS }
+- scrollUntilVisible: { element: { id: all_sets_header }, direction: UP, timeout: 8000 }
 - tapOn: { id: "level_plus_.*", index: 0 }
 - takeScreenshot: 02b-preview-level-${VARIANT}
+- back
+- extendedWaitUntil: { visible: { id: preview_button }, timeout: 10000 }
+- tapOn: { id: preview_button }
+- extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: preview_format_PAIRS }, direction: DOWN, timeout: 8000 }
+- assertVisible: { id: preview_format_PAIRS, selected: true }
+- takeScreenshot: 02b2-preview-back-again-${VARIANT}
+- tapOn: { id: preview_format_CIRCUIT }
+- scrollUntilVisible: { element: { id: all_sets_header }, direction: UP, timeout: 8000 }
 - tapOn: { id: "add_after_.*", index: 0 }
 - extendedWaitUntil: { visible: "Add to the workout", timeout: 5000 }
 - takeScreenshot: 02c-add-sheet-${VARIANT}

@@ -887,3 +887,15 @@ Tests: Docker full verify exit 0 (`r8.1-t04-verify-2026-10-17.log`).
 NOT done: no phone testing; content stays DRAFT.
 
 Choices not in the plan: "within any rolling 14-day window" is read as 14 calendar days (days 0, 7 and 14 do not count as one window); the Rep range / Custom rule (`ruleSessions`) is unchanged because it is not the app-levels rule.
+
+### R8.1-T05 · F5 set formats in the Preview, F6 Preview edits survive navigation · 2026-10-17
+
+F5 cause: Straight sets / Pairs / Circuit were only a control on the Train tab (and a saved routine's own format); the Preview had no way to change them and the program screen never had one. Restored in the Preview (`preview_format_*` and a sets/rounds stepper, hidden under a rep range rule whose sets come from the rule); they write today's Train settings, so both screens agree. The planner order for each format has a regression test for generated workouts and for the ready-made Recommended Routine (`FormatOrderRegressionTest`). Programs get the same controls when they open in the Preview (R8.1-T08).
+
+F6 cause: the Preview kept its edits (`PlanEdits`, rest choices) in `remember`, so leaving it for Train threw them away. `PreviewDraft` / `PreviewDraftStore` now keep them (SharedPreferences, keyed by goal, saved routine and program); they are dropped only when Train changes that key (another objective, routine or program) or when the person taps Reset. Level, swap, add, remove, rest, stretch picks, typed numbers, rule and cool-down edits are in `PlanEdits`; the format and sets are Train settings. Tests: `PreviewScreenTest.editsSurviveLeavingThePreviewAndComingBack` (swap, level, rest, format, remove, then leave and return), `theSetFormatAndTheNumberOfSetsAreChosenInThePreview`, `TrainScreenTest.changingTheObjectiveDropsThePreviewDraft`. Maestro `b_train_preview` extended (format, back and return).
+
+Tests: Docker full verify exit 0 (`r8.1-t05-verify-2026-10-17.log`).
+
+NOT done: the Preview draft is not part of the backup (it is working state). No phone testing.
+
+Choices not in the plan: changing the number of sets or the format in the Preview changes the Train settings (not only today's plan); the draft key ignores the equipment profile, so a profile change keeps the edits.

@@ -235,12 +235,20 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     val stored = remember { TrainSettingsStore.load(ctx) }
     val resolved = remember(data) { resolveTrain(ctx, data.routine, stored, data.catalog) }   // V18: the usual plan, or the saved routine chosen on Train
     val profile = remember { ProfileStore.selected(ctx) }
+    // R8.1-T05 (F6): the edits made before survive going back to Train and returning; they belong to the objective
+    val draftKey = remember { draftKey(stored) }
+    val draft = remember { PreviewDraftStore.get(ctx, draftKey) }
     // R7-T08 (D1): frozen when the Preview opens, so removing or adding an exercise here does not re-fill the list
-    val settings = remember { withDefaultLength(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = resolved.edits) }
+    val openingSettings = remember { withDefaultLength(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = draft?.edits ?: resolved.edits) }
+    // R8.1-T05 (F5): the set format and the number of sets are chosen here too; they are today's settings, so Train shows the same
+    var format by remember { mutableStateOf(openingSettings.format) }
+    var sets by remember { mutableStateOf(openingSettings.rounds) }
+    val settings = remember(format, sets) { openingSettings.copy(format = format, rounds = sets) }
     // A Room progress refresh may replace TrainData while the Preview is open. Preserve the user's draft edits.
     var routine by remember { mutableStateOf(resolved.routine) }
-    var edits by remember { mutableStateOf(resolved.edits) }
-    var restDurations by remember { mutableStateOf<Map<String, Int>>(emptyMap()) }
+    var edits by remember { mutableStateOf(draft?.edits ?: resolved.edits) }
+    var restDurations by remember { mutableStateOf(draft?.rest ?: emptyMap<String, Int>()) }
+    LaunchedEffect(edits, restDurations) { PreviewDraftStore.put(ctx, PreviewDraft(draftKey, edits, restDurations)) }
     var saveDialog by remember { mutableStateOf(false) }
     var savedNote by remember { mutableStateOf<String?>(null) }
     val editing = remember { SavedRoutineStore.get(ctx, stored.routineId) }
@@ -252,7 +260,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     var typeFor by remember { mutableStateOf<Pair<String, Int>?>(null) }      // slot and set of the number being typed
     var addAfter by remember { mutableStateOf<String?>("") }   // "" = closed, null = at the start, else after that slot
     var timelineOpen by remember { mutableStateOf(false) }
-    val result = remember(data, routine, edits) {
+    val result = remember(data, routine, edits, settings) {
         buildTrainPlan(data.catalog, routine, data.progress, profile, settings, edits = edits, nowEpochMs = System.currentTimeMillis())
     }
     val names = remember(data) { data.catalog.variations.associate { it.id to it.name } }
@@ -299,6 +307,21 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                         style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"),
                     )
                     InfoRow(p)
+                    // R8.1-T05 (F5): Straight sets / Pairs / Circuit, and the number of sets, in the Preview
+                    Column(Modifier.fillMaxWidth().testTag("format_picker"), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Caption(stringResource(R.string.train_format_caption))
+                        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
+                            WorkoutFormat.entries.forEachIndexed { i, f ->
+                                SegmentedButton(selected = format == f, onClick = { format = f; TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(format = f)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(i, WorkoutFormat.entries.size), icon = {}, modifier = Modifier.testTag("preview_format_${f.name}")) {
+                                    Text(stringResource(when (f) { WorkoutFormat.CIRCUIT -> R.string.format_circuit; WorkoutFormat.PAIRS -> R.string.format_pairs; WorkoutFormat.STRAIGHT -> R.string.format_straight }), maxLines = 1)
+                                }
+                            }
+                        }
+                        if (!(edits.rule ?: routine.rule).isRange) Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(stringResource(if (format == WorkoutFormat.CIRCUIT) R.string.train_rounds_caption else R.string.train_sets_caption), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                            io.github.gonbei774.calisthenicsmemory.ui.components.Stepper(sets, { sets = it; TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(rounds = it)) }, MIN_TRAIN_ROUNDS..MAX_EXPLICIT_ROUNDS, tag = "preview_rounds")
+                        }
+                    }
                     savedNote?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("routine_saved_note")) }
                     val rule = edits.rule ?: routine.rule
                     RulePicker(rule) { edits = edits.copy(rule = it) }

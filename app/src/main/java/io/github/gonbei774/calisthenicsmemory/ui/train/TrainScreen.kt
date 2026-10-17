@@ -73,7 +73,11 @@ fun TrainScreen(
     val data by rememberTrainData()
     val profiles = remember { ProfileStore.load(ctx) }
     var settings by remember { mutableStateOf(TrainSettingsStore.load(ctx)) }
-    fun change(s: TrainSettings) { settings = s; TrainSettingsStore.save(ctx, s) }
+    fun change(s: TrainSettings) {
+        // R8.1-T05 (F6): the Preview's edits belong to the objective; another objective, routine or program starts clean
+        if (draftKey(s) != draftKey(settings)) PreviewDraftStore.clear(ctx)
+        settings = s; TrainSettingsStore.save(ctx, s)
+    }
     val profile = profiles.firstOrNull { it.id == settings.profileId } ?: profiles.first()
     val saved = remember(settings.routineId, settings.profileId) { routinesFor(ctx, data.catalog) }
     val resolved = remember(settings, data, saved) { resolveTrain(ctx, data.routine, settings, data.catalog) }
