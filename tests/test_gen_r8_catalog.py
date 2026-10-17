@@ -154,7 +154,7 @@ class R8CatalogGeneratorTest(unittest.TestCase):
         self.assertEqual(self.contract["equipmentNew"], self.meta["equipment"])
         self.assertEqual(self.contract["familiesNew"], self.meta["families"])
         self.assertEqual(self.contract["sourcesNew"], self.meta["sources"])
-        self.assertEqual(len(self.catalog["fixedPrograms"]), 8)
+        self.assertEqual(len(self.catalog["fixedPrograms"]), 10)  # R8.1-T09: the eight drills plus the merged Army PRT and Pilates mat sessions
 
     def test_aliases_options_programs_groups_and_reviewed_edges_are_imported(self):
         variations = {v["id"]: v for v in self.catalog["variations"]}

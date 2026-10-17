@@ -124,7 +124,7 @@ fun TrainScreen(
             }
             UnfinishedBanner(onStarted)
 
-            val catalogPrograms = remember(data.catalog, profile) { data.catalog.fixedPrograms.map { p -> ProgramEntry(p.id, p.name, programSummaryText(ctx, data.catalog, p, profile)) } }
+            val catalogPrograms = remember(data.catalog, profile) { data.catalog.fixedPrograms.filter { it.listed }.map { p -> ProgramEntry(p.id, p.name, programSummaryText(ctx, data.catalog, p, profile)) } }
             ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, fixedProgramId = null, exercisesPerRound = null)) }, routines = saved, routineId = settings.routineId,
                 onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } },
                 fixedPrograms = catalogPrograms, programId = settings.fixedProgramId,

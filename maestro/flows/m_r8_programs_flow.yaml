@@ -24,7 +24,7 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: { id: section_programs }, timeout: 8000 }
 - assertVisible: { id: section_my_routines }
 - takeScreenshot: 01-programs-dropdown-${VARIANT}
-- tapOn: { id: program_army-hsd }
+- tapOn: { id: program_army-prt }
 - scrollUntilVisible: { element: { id: preview_button }, direction: DOWN, timeout: 10000 }
 - takeScreenshot: 01b-program-selected-${VARIANT}
 - tapOn: { id: preview_button }

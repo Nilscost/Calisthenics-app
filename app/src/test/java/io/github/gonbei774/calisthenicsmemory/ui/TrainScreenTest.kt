@@ -177,14 +177,26 @@ class TrainScreenTest {
         rule.onNodeWithTag("section_programs").assertExists()
         rule.onNodeWithTag("section_my_routines").assertExists()
         rule.onNodeWithTag("my_routines_empty").assertExists()
-        catalog.fixedPrograms.forEach { rule.onNodeWithTag("program_${it.id}").assertExists() }
+        catalog.fixedPrograms.filter { it.listed }.forEach { rule.onNodeWithTag("program_${it.id}").assertExists() }
+        catalog.fixedPrograms.filter { !it.listed }.forEach { rule.onNodeWithTag("program_${it.id}").assertDoesNotExist() }   // R8.1-T09: the merged sessions replace the separate drills in the list
         rule.onNodeWithTag("routine_${app.calisthenics.domain.routine.Presets.RR}").assertExists()   // the ready-made routines are programs too
     }
+
+    // R8.1-T09 (F11): the Army PRT session and the Pilates mat session each show at least 30 minutes
+    private fun programMinutes(id: String): Int {
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx)
+        io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.save(ctx, app.calisthenics.domain.routine.settingsForProgram(catalog.fixedPrograms.first { it.id == id }, io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx)))
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("train_start_button").assertIsEnabled()
+        return minutes()
+    }
+    @Test fun theMergedArmySessionShowsAtLeastThirtyMinutes() { val m = programMinutes("army-prt"); assertTrue("$m min", m >= 30) }
+    @Test fun theMergedPilatesSessionShowsAtLeastThirtyMinutes() { val m = programMinutes("pilates-mat"); assertTrue("$m min", m >= 30) }
 
     @Test fun pickingAProgramLoadsItAsTheStartingPointWithOneSetAndItsOwnFlow() {
         show(); rule.waitForIdle()
         val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx)
-        val program = catalog.fixedPrograms.first()
+        val program = catalog.fixedPrograms.first { it.listed }
         rule.onNodeWithTag("objective_type_ROUTINE").performScrollTo().performClick(); rule.waitForIdle()
         rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("program_${program.id}").performClick(); rule.waitForIdle()

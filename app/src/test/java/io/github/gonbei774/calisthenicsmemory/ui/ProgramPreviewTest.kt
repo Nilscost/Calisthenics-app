@@ -38,7 +38,7 @@ class ProgramPreviewTest {
     }
 
     /** A program the Home profile can do. */
-    private val program get() = catalog.fixedPrograms.first { buildFixedProgramPlan(catalog, it, SeedProfiles.home) is FixedProgramPlanResult.Ready }
+    private val program get() = catalog.fixedPrograms.first { it.id == "army-ssd" }   // a short building block keeps the Robolectric screen small; the merged sessions have the same screen
     private fun open(p: app.calisthenics.domain.model.FixedProgram = program) {
         TrainSettingsStore.save(ctx, settingsForProgram(p, TrainSettingsStore.load(ctx)))
         rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { PreviewScreen(onBack = {}, onStarted = {}) } }
@@ -102,7 +102,7 @@ class ProgramPreviewTest {
 
     @Test fun anItemTheEquipmentCannotDoBlocksStartUntilItIsRemoved() {
         ProfileStore.select(ctx, "travel")
-        val pilates = catalog.fixedPrograms.first { buildFixedProgramPlan(catalog, it, SeedProfiles.travel) is FixedProgramPlanResult.Unavailable }
+        val pilates = catalog.fixedPrograms.first { it.id == "pilates-mat-beginner" }
         open(pilates)
         rule.onNodeWithTag("program_unavailable").performScrollTo().assertExists()
         rule.onNodeWithTag("start_button").assertIsNotEnabled()

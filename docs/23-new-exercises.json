@@ -24341,6 +24341,435 @@
  ],
  "routines": [
   {
+   "id": "army-prt",
+   "name": "Army PRT session",
+   "source": "ATP 7-22.02: PD, 4C, HSD, SSD, CD1, RD in the manual order",
+   "flow": true,
+   "notes": "One Army Physical Readiness Training session: Preparation Drill, 4 for the Core, Hip Stability Drill, Shoulder Stability Drill, Conditioning Drill 1, Recovery Drill, in that order, with the written ATP counts. About 36 minutes. DRAFT. Start point only: change anything in the Preview.",
+   "items": [
+    {
+     "exerciseId": "bend-and-reach",
+     "reps": 10,
+     "perSide": false,
+     "notes": "slow",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "lunge-reverse",
+     "reps": 10,
+     "perSide": false,
+     "notes": "Rear Lunge; slow; alternate legs.",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "high-jumper",
+     "reps": 10,
+     "perSide": false,
+     "notes": "moderate",
+     "estSeconds": 30
+    },
+    {
+     "exerciseId": "rower-situp",
+     "reps": 10,
+     "perSide": false,
+     "notes": "Rower; slow; manual allows 5-10.",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "squat-bender",
+     "reps": 10,
+     "perSide": false,
+     "notes": "slow; manual allows 5-10.",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "windmill-army",
+     "reps": 10,
+     "perSide": false,
+     "notes": "slow; manual allows 5-10.",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "walking-lunge",
+     "reps": 10,
+     "perSide": false,
+     "notes": "Forward Lunge: step out and return (option), alternate legs; slow.",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "prone-row-army",
+     "reps": 10,
+     "perSide": false,
+     "notes": "slow",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "windshield-wiper-bent-knee",
+     "reps": 10,
+     "perSide": false,
+     "notes": "Bent-Leg Body Twist; slow.",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "pushup-standard",
+     "reps": 10,
+     "perSide": false,
+     "notes": "moderate",
+     "estSeconds": 30
+    },
+    {
+     "exerciseId": "bent-leg-raise-army",
+     "seconds": 60,
+     "perSide": false,
+     "notes": "Up to 60 s; if the low-back pressure on the hands drops, knees to chest 3-5 s, then resume."
+    },
+    {
+     "exerciseId": "side-plank",
+     "seconds": 60,
+     "perSide": true,
+     "notes": "Side Bridge on the elbow."
+    },
+    {
+     "exerciseId": "bridge-single-leg",
+     "seconds": 30,
+     "perSide": false,
+     "notes": "Back Bridge: hips up with one knee straight, switch legs every 5 s, 6 x 5 s (alternating-hold option)."
+    },
+    {
+     "exerciseId": "quadraplex",
+     "seconds": 60,
+     "perSide": true
+    },
+    {
+     "exerciseId": "hip-lateral-leg-raise",
+     "reps": 10,
+     "perSide": true,
+     "notes": "Manual: 5-10 per side, slow cadence.",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "hip-medial-leg-raise",
+     "reps": 10,
+     "perSide": true,
+     "notes": "5-10 per side.",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "clamshell",
+     "reps": 10,
+     "perSide": true,
+     "notes": "Bent-Leg Lateral Raise; 5-10 per side.",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "side-lying-leg-tuck",
+     "reps": 10,
+     "perSide": true,
+     "notes": "Single-Leg Tuck; 5-10 per side.",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "stretch-supine-twist",
+     "seconds": 30,
+     "perSide": true,
+     "notes": "Single Leg Over; hold 20-30 s per side.",
+     "estSeconds": 30
+    },
+    {
+     "exerciseId": "prone-i-raise",
+     "reps": 10,
+     "perSide": false,
+     "notes": "10 reps is the app's choice (FLAG: the manual prints no rep count).",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "prone-t-raise",
+     "reps": 10,
+     "perSide": false,
+     "notes": "10 reps is the app's choice (FLAG: the manual prints no rep count).",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "prone-y-raise",
+     "reps": 10,
+     "perSide": false,
+     "notes": "10 reps is the app's choice (FLAG: the manual prints no rep count).",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "prone-l-raise",
+     "reps": 10,
+     "perSide": false,
+     "notes": "10 reps is the app's choice (FLAG: the manual prints no rep count).",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "prone-w-raise",
+     "reps": 10,
+     "perSide": false,
+     "notes": "10 reps is the app's choice (FLAG: the manual prints no rep count).",
+     "estSeconds": 48
+    },
+    {
+     "exerciseId": "jump-vertical",
+     "reps": 10,
+     "perSide": false,
+     "estSeconds": 30,
+     "notes": "Power Jump: jump up with the arms swinging; moderate pace."
+    },
+    {
+     "exerciseId": "v-up",
+     "reps": 10,
+     "perSide": false,
+     "estSeconds": 48,
+     "notes": "V-Up; slow."
+    },
+    {
+     "exerciseId": "mountain-climber",
+     "reps": 10,
+     "perSide": false,
+     "estSeconds": 48,
+     "notes": "Mountain Climber; 10 per drill count."
+    },
+    {
+     "exerciseId": "leg-tuck-and-twist",
+     "reps": 10,
+     "perSide": false,
+     "estSeconds": 48,
+     "notes": "Leg-Tuck and Twist; slow."
+    },
+    {
+     "exerciseId": "pushup-single-leg",
+     "reps": 10,
+     "perSide": true,
+     "estSeconds": 48,
+     "notes": "Single-Leg Push-up; 10 per leg."
+    },
+    {
+     "exerciseId": "stretch-overhead-arm-pull",
+     "seconds": 30,
+     "perSide": true,
+     "estSeconds": 30
+    },
+    {
+     "exerciseId": "stretch-hip-flexor",
+     "seconds": 30,
+     "perSide": true,
+     "notes": "Rear Lunge stretch.",
+     "estSeconds": 30
+    },
+    {
+     "exerciseId": "stretch-cobra",
+     "seconds": 20,
+     "perSide": false,
+     "notes": "Extend and Flex, part 1: straight-arm hip sag.",
+     "estSeconds": 20
+    },
+    {
+     "exerciseId": "stretch-downward-dog",
+     "seconds": 20,
+     "perSide": false,
+     "notes": "Extend and Flex, part 2: hips up, heels down.",
+     "estSeconds": 20
+    },
+    {
+     "exerciseId": "stretch-quad-standing",
+     "seconds": 30,
+     "perSide": true,
+     "notes": "Thigh Stretch: side-lying option.",
+     "estSeconds": 30
+    },
+    {
+     "exerciseId": "stretch-supine-twist",
+     "seconds": 30,
+     "perSide": true,
+     "notes": "Single-Leg Over.",
+     "estSeconds": 30
+    },
+    {
+     "exerciseId": "stretch-groin",
+     "seconds": 30,
+     "perSide": true,
+     "estSeconds": 30
+    },
+    {
+     "exerciseId": "stretch-calf-wall",
+     "seconds": 30,
+     "perSide": true,
+     "notes": "Bent knee first (soleus), then straight knee.",
+     "estSeconds": 30
+    },
+    {
+     "exerciseId": "stretch-hamstring",
+     "seconds": 30,
+     "perSide": false,
+     "notes": "Seated; reach, then repeat reaching further.",
+     "estSeconds": 30
+    }
+   ],
+   "listed": true
+  },
+  {
+   "id": "pilates-mat",
+   "name": "Pilates mat session",
+   "source": "Classical mat order from the beginner and intermediate sequences (own wording)",
+   "flow": true,
+   "notes": "One classical mat sequence of about 33 minutes, built from the beginner and intermediate items in the usual order: abdominal series, spine work, back extension, then bridges and the seal. Slow, controlled. DRAFT. Start point only: change anything in the Preview.",
+   "items": [
+    {
+     "exerciseId": "hollow-tuck",
+     "seconds": 50,
+     "perSide": false,
+     "estSeconds": 50
+    },
+    {
+     "exerciseId": "hollow-hold",
+     "seconds": 70,
+     "perSide": false,
+     "estSeconds": 70
+    },
+    {
+     "exerciseId": "pilates-roll-up",
+     "reps": 10,
+     "perSide": false,
+     "estSeconds": 78
+    },
+    {
+     "exerciseId": "pilates-roll-over",
+     "reps": 8,
+     "perSide": false,
+     "estSeconds": 62
+    },
+    {
+     "exerciseId": "pilates-single-leg-circle",
+     "reps": 8,
+     "perSide": true,
+     "estSeconds": 62
+    },
+    {
+     "exerciseId": "pilates-rolling-like-a-ball",
+     "reps": 10,
+     "perSide": false,
+     "estSeconds": 52
+    },
+    {
+     "exerciseId": "pilates-single-leg-stretch",
+     "reps": 12,
+     "perSide": true,
+     "estSeconds": 62
+    },
+    {
+     "exerciseId": "pilates-double-leg-stretch",
+     "reps": 12,
+     "perSide": false,
+     "estSeconds": 78
+    },
+    {
+     "exerciseId": "pilates-scissors",
+     "reps": 10,
+     "perSide": true,
+     "estSeconds": 52
+    },
+    {
+     "exerciseId": "bicycle-crunch",
+     "reps": 10,
+     "perSide": true,
+     "estSeconds": 64
+    },
+    {
+     "exerciseId": "pilates-spine-stretch-forward",
+     "reps": 6,
+     "perSide": false,
+     "estSeconds": 46
+    },
+    {
+     "exerciseId": "pilates-open-leg-rocker",
+     "reps": 8,
+     "perSide": false,
+     "estSeconds": 52
+    },
+    {
+     "exerciseId": "pilates-corkscrew",
+     "reps": 5,
+     "perSide": true,
+     "estSeconds": 64
+    },
+    {
+     "exerciseId": "pilates-saw",
+     "reps": 6,
+     "perSide": true,
+     "estSeconds": 62
+    },
+    {
+     "exerciseId": "stretch-cobra",
+     "seconds": 35,
+     "perSide": false,
+     "estSeconds": 35
+    },
+    {
+     "exerciseId": "pilates-double-leg-kick",
+     "reps": 5,
+     "perSide": true,
+     "estSeconds": 64
+    },
+    {
+     "exerciseId": "pilates-spine-twist",
+     "reps": 6,
+     "perSide": true,
+     "estSeconds": 46
+    },
+    {
+     "exerciseId": "v-up",
+     "reps": 8,
+     "perSide": false,
+     "estSeconds": 62
+    },
+    {
+     "exerciseId": "swimmer",
+     "seconds": 45,
+     "perSide": false,
+     "estSeconds": 45
+    },
+    {
+     "exerciseId": "plank",
+     "seconds": 50,
+     "perSide": false,
+     "estSeconds": 50
+    },
+    {
+     "exerciseId": "bridge-reverse-plank",
+     "seconds": 35,
+     "perSide": false,
+     "estSeconds": 35
+    },
+    {
+     "exerciseId": "hip-lateral-leg-raise",
+     "reps": 12,
+     "perSide": true,
+     "estSeconds": 46
+    },
+    {
+     "exerciseId": "bridge-single-leg",
+     "reps": 8,
+     "perSide": true,
+     "estSeconds": 64
+    },
+    {
+     "exerciseId": "glute-bridge",
+     "reps": 10,
+     "perSide": false,
+     "estSeconds": 52
+    },
+    {
+     "exerciseId": "pilates-seal",
+     "reps": 10,
+     "perSide": false,
+     "estSeconds": 52
+    }
+   ],
+   "listed": true
+  },
+  {
    "id": "army-4c",
    "name": "Four for the Core (Army 4C)",
    "source": "ATP 7-22.02 C1 pp. 4-8-4-11",
@@ -24370,7 +24799,8 @@
      "perSide": true
     }
    ],
-   "notes": "Rest between items is a 3-5 s return to the start position. flow=false so hold times can be logged (4C works as a core test)."
+   "notes": "Rest between items is a 3-5 s return to the start position. flow=false so hold times can be logged (4C works as a core test).",
+   "listed": false
   },
   {
    "id": "army-hsd",
@@ -24414,7 +24844,8 @@
      "estSeconds": 30
     }
    ],
-   "notes": "Start sitting; change sides by swivelling on the buttocks. Slow cadence = 50 counts/min (about 4.8 s per 4-count rep)."
+   "notes": "Start sitting; change sides by swivelling on the buttocks. Slow cadence = 50 counts/min (about 4.8 s per 4-count rep).",
+   "listed": false
   },
   {
    "id": "army-ssd",
@@ -24458,7 +24889,8 @@
      "estSeconds": 48
     }
    ],
-   "notes": "All prone, head slightly raised, arms lifted 3-6 in, slow 4-count. REP COUNT FLAGGED: 10 per raise chosen by the app from the PD/CD 10-rep standard."
+   "notes": "All prone, head slightly raised, arms lifted 3-6 in, slow 4-count. REP COUNT FLAGGED: 10 per raise chosen by the app from the PD/CD 10-rep standard.",
+   "listed": false
   },
   {
    "id": "army-pd",
@@ -24537,7 +24969,8 @@
      "estSeconds": 30
     }
    ],
-   "notes": "10 reps each as 4-count reps. Order is fixed. Alternatives (Table 1-1) not modelled: power-focused, condensed-time, PD MOD."
+   "notes": "10 reps each as 4-count reps. Order is fixed. Alternatives (Table 1-1) not modelled: power-focused, condensed-time, PD MOD.",
+   "listed": false
   },
   {
    "id": "army-rd",
@@ -24607,7 +25040,8 @@
      "estSeconds": 30
     }
    ],
-   "notes": "Eight stretches, 20-30 s per side. Extend and Flex is split into two app items."
+   "notes": "Eight stretches, 20-30 s per side. Extend and Flex is split into two app items.",
+   "listed": false
   },
   {
    "id": "pilates-mat-beginner",
@@ -24688,7 +25122,8 @@
      "estSeconds": 24
     }
    ],
-   "notes": "About 11 exercises, roughly 12-15 min. Continuous: auto-advance, no rest timer, no per-set logging."
+   "notes": "About 11 exercises, roughly 12-15 min. Continuous: auto-advance, no rest timer, no per-set logging.",
+   "listed": false
   },
   {
    "id": "pilates-mat-intermediate",
@@ -24844,7 +25279,8 @@
      "estSeconds": 32
     }
    ],
-   "notes": "23 items in classical order, roughly 25-30 min. Continuous: auto-advance, no rest timer, no per-set logging."
+   "notes": "23 items in classical order, roughly 25-30 min. Continuous: auto-advance, no rest timer, no per-set logging.",
+   "listed": false
   },
   {
    "id": "pilates-core-10",
@@ -24937,7 +25373,8 @@
      "estSeconds": 30
     }
    ],
-   "notes": "Work is about 8.5 min plus about 5 s auto-advance per item, about 10 min total. Continuous."
+   "notes": "Work is about 8.5 min plus about 5 s auto-advance per item, about 10 min total. Continuous.",
+   "listed": false
   }
  ],
  "poseGroups": {

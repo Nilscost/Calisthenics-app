@@ -601,6 +601,7 @@ def _routine(routine: dict[str, Any]) -> dict[str, Any]:
         "flow": routine.get("flow", False),
         "items": items,
         "notes": routine.get("notes", ""),
+        "listed": routine.get("listed", True),
     }
 
 

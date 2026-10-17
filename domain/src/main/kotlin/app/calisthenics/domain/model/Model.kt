@@ -269,6 +269,8 @@ data class FixedProgram(
     val flow: Boolean = false,
     val items: List<FixedProgramItem> = emptyList(),
     val notes: String = "",
+    /** R8.1-T09 (F11): false = a building block of a merged program (kept for the contract), not offered in the dropdown. */
+    val listed: Boolean = true,
 )
 
 /** L11: BETWEEN_SETS = short and gentle enough to go between sets; COOL_DOWN = a deeper hold for after the workout only; BOTH = either. */

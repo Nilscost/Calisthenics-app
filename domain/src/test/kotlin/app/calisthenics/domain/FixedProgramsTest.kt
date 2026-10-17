@@ -25,10 +25,12 @@ class FixedProgramsTest {
     private val catalog = parseCatalog(File(System.getProperty("repo.root") ?: ".", "content/starter/catalog.json").readText())
     private val byProgram = catalog.fixedPrograms.associateBy { it.id }
 
-    @Test fun exactlyEightProgramsKeepContractOrderAndPrescriptions() {
+    // R8.1-T09 (F11): was "exactlyEight...": the eight drills stay as unlisted building blocks and two merged sessions (Army PRT, Pilates mat) are listed
+    @Test fun theEightDrillsAndTheTwoMergedSessionsKeepContractOrderAndPrescriptions() {
         val contract = Json.parseToJsonElement(File(System.getProperty("repo.root") ?: ".", "docs/23-new-exercises.json").readText())
             .jsonObject.getValue("routines").jsonArray.associate { it.jsonObject.getValue("id").jsonPrimitive.content to it.jsonObject }
-        assertEquals(8, catalog.fixedPrograms.size)
+        assertEquals(10, catalog.fixedPrograms.size)
+        assertEquals(listOf("army-prt", "pilates-mat"), catalog.fixedPrograms.filter { it.listed }.map { it.id })
         for ((id, source) in contract) {
             val program = byProgram.getValue(id)
             val expectedItems = source.getValue("items").jsonArray.map { it.jsonObject }
@@ -132,5 +134,21 @@ class FixedProgramsTest {
         assertTrue(heldBlocks.all { it.target?.value == (heldItem.reps ?: heldItem.seconds) })
         assertEquals(program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.reps ?: item.seconds } },
             plan.blocks.filter { it.variationId != null }.map { it.target!!.value })
+    }
+
+    // R8.1-T09 (F11): one 30+ minute session each, as the Preview estimates it
+    @Test fun theMergedArmyAndPilatesSessionsAreAtLeastThirtyMinutesInOneSession() {
+        for (id in listOf("army-prt", "pilates-mat")) {
+            val plan = (buildFixedProgramPlan(catalog, byProgram.getValue(id), SeedProfiles.home) as FixedProgramPlanResult.Ready).plan
+            assertTrue("$id ${plan.plannedDurationSeconds / 60} min", plan.plannedDurationSeconds >= 30 * 60)
+            assertTrue(plan.blocks.sumOf { it.durationSeconds } == plan.plannedDurationSeconds)
+        }
+        val army = byProgram.getValue("army-prt").items.map { it.exerciseId }
+        val parts = listOf("army-pd", "army-4c", "army-hsd", "army-ssd").flatMap { byProgram.getValue(it).items.map { i -> i.exerciseId } }
+        assertEquals(parts, army.take(parts.size))                                   // Preparation Drill, 4 for the Core, Hip, Shoulder in the manual order
+        val cd1 = army.drop(parts.size).take(5)
+        assertEquals(listOf("jump-vertical", "v-up", "mountain-climber", "leg-tuck-and-twist", "pushup-single-leg"), cd1)   // Conditioning Drill 1
+        assertEquals(byProgram.getValue("army-rd").items.map { it.exerciseId }, army.takeLast(byProgram.getValue("army-rd").items.size))   // Recovery Drill last
+        assertTrue(byProgram.getValue("pilates-mat").items.size >= 20)
     }
 }

@@ -933,3 +933,13 @@ Changed assertions: `PreviewScreenTest.warningsAreOneCompactRowThatExpands` asse
 NOT done: the save dialog of the program Preview is not exercised in a Robolectric test (the dialog window never idles there, as for the workout Preview); its content is covered in the domain test and in the Maestro flow only if the flow is extended in R8.1-T12. No phone testing.
 
 Choices not in the plan: ready-made routines count as Programs (they are pre-registered); with Flow off a program now has a 20 s rest between exercises (adjustable, 0 for none), because Flow is the toggle for exactly that; a program saved as a routine keeps its original program id so the session treats a Flow run like a program (timers, no per-item logger).
+
+### R8.1-T09 · F11 merged Army PRT and Pilates mat sessions · 2026-10-17
+
+The contract `docs/23-new-exercises.json` gained two routines, generated into the catalog by `tools/gen_r8_catalog.py` (catalog and assets regenerated, same bytes elsewhere): **Army PRT session** (`army-prt`): Preparation Drill, 4 for the Core, Hip Stability Drill, Shoulder Stability Drill, Conditioning Drill 1 (vertical power jump, V-up, mountain climber, leg-tuck and twist, single-leg push-up, 10 each, the manual's 10-rep standard), Recovery Drill, all with their written ATP prescriptions; about 37 minutes, so no Conditioning Drill 2 was needed. **Pilates mat session** (`pilates-mat`): 25 items in the classical mat order built from the beginner and intermediate sequences, at a slow mat cadence (about 5 s per rep), about 33 minutes. Both start with Flow on. The eight old drills and sessions stay in the catalog as unlisted building blocks (`FixedProgram.listed = false`, kept for the contract tests and as the source of the merged lists); the dropdown lists only the two merged sessions, which replaces the separate programs for the person.
+
+Tests: `FixedProgramsTest` (count now 10, listed ones, order of the merged army session and Conditioning Drill 1, both sessions at least 30 minutes), `TrainScreenTest.theMergedArmySessionShowsAtLeastThirtyMinutes` and `...PilatesSession...` (the Train minutes tile, which is the same plan as the Preview), Python `test_gen_r8_catalog` (count 10). Changed assertion: "exactly eight programs" became ten (8 contract drills plus 2 merged). Maestro `m_r8_programs_flow` picks `army-prt`. Docker full verify exit 0 (`r8.1-t09-verify-2026-10-17.log`).
+
+NOT done: Conditioning Drill 1 numbers are the manual's standard as recorded in the notes (10 per move); the pilates counts are our own cadence, DRAFT. No phone testing.
+
+Choices not in the plan: the vertical jump with arm swing stands in for the manual's Power Jump; the building-block programs stay in the catalog but unlisted instead of being deleted.
