@@ -46,7 +46,13 @@ appId: app.calisthenics.personal
 - tapOn: { id: tab_chip_shoulders }
 - extendedWaitUntil: { visible: { id: "route_chip_.*" }, timeout: 8000 }
 - takeScreenshot: 04-category-handstand-${VARIANT}
-- scrollUntilVisible: { element: { id: tab_chip_pilates }, direction: RIGHT, timeout: 10000 }
+- repeat:
+    while: { notVisible: { id: tab_chip_pilates } }
+    times: 12
+    commands:
+      - swipe:
+          from: { id: progress_type_tabs, point: "85%, 50%" }
+          direction: LEFT
 - tapOn: { id: tab_chip_pilates }
 - extendedWaitUntil: { visible: { id: "tab_exercise_.*" }, timeout: 8000 }
 - takeScreenshot: 05-category-pilates-${VARIANT}
