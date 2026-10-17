@@ -171,7 +171,7 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
                         val hasUsableEntry = route.mainPath.any { id -> c.variation(id)?.let { isAvailable(it, profile) } == true } ||
                             route.members.any { it.role == ProgressionRole.ALTERNATE && c.variation(it.variationId)?.let { v -> isAvailable(v, profile) } == true }
                         route.mainPath.isNotEmpty() && (if (mode == ProgressMode.SKILL) isGoal else inTab || showAllProgressions) &&
-                            (mode == ProgressMode.SKILL || showAllProgressions || route.defaultPool || isGoal) && hasUsableEntry
+                            (mode == ProgressMode.SKILL || showAllProgressions || route.defaultPool || isGoal || (inTab && c.progressionRoutes.none { r -> r.defaultPool && r.mainPath.firstNotNullOfOrNull { id -> c.variation(id)?.familyId } in tab.familyIds })) && hasUsableEntry   // R8.1-T10b: a category the person opens shows all its routes, not only the default pool
                     }.distinctBy { it.id }
                 }
                 val activeRoute = availableRoutes.firstOrNull { it.id == selectedRouteId } ?:
@@ -214,7 +214,16 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
                     }
                 }
                 val mastered = remember(nodes) { nodes.filterValues { it.state == TreeNodeState.MASTERED }.keys }
-                if (c.progressionRoutes.isNotEmpty() && activeRoute == null) {
+                if (c.progressionRoutes.isNotEmpty() && activeRoute == null && mode == ProgressMode.TYPE) {
+                    // R8.1-T10b: a category without a drawable route (rings without rings, prehab, Pilates) still lists its exercises
+                    val inTabList = remember(c, tab.id) { c.variations.filter { it.familyId in tab.familyIds && it.kind != Kind.STRETCH }.sortedBy { it.name } }
+                    Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).testTag("tab_exercise_list")) {
+                        if (inTabList.isEmpty()) Text(stringResource(R.string.progress_no_routes), Modifier.padding(Spacing.l).testTag("route_empty"), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        inTabList.forEach { v ->
+                            Text(v.name, Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable { detailStack = v.id }.padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("tab_exercise_${v.id}"), style = MaterialTheme.typography.bodyLarge)
+                        }
+                    }
+                } else if (c.progressionRoutes.isNotEmpty() && activeRoute == null) {
                     Text(stringResource(R.string.progress_no_routes), Modifier.weight(1f).fillMaxWidth().padding(Spacing.l).testTag("route_empty"), color = MaterialTheme.colorScheme.onSurfaceVariant)
                 } else SkillTreeCanvas(layout, nodes, mastered, selected, onNode = { selected = if (selected == it) null else it },
                     modifier = Modifier.weight(1f).fillMaxWidth().testTag("tree_area"), onNeed = { detailStack = it })

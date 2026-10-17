@@ -42,3 +42,11 @@ appId: app.calisthenics.personal
 - assertVisible: { id: tree_node_pushup-diamond }
 - tapOn: { id: tree_node_pushup-feet-elevated }
 - takeScreenshot: 03-push-up-other-ways-${VARIANT}
+# R8.1-T10b: opening a by-type category shows its exercises (Handstand, then Pilates)
+- tapOn: { id: tab_chip_shoulders }
+- extendedWaitUntil: { visible: { id: "route_chip_.*" }, timeout: 8000 }
+- takeScreenshot: 04-category-handstand-${VARIANT}
+- scrollUntilVisible: { element: { id: tab_chip_pilates }, direction: RIGHT, timeout: 10000 }
+- tapOn: { id: tab_chip_pilates }
+- extendedWaitUntil: { visible: { id: "tab_exercise_.*" }, timeout: 8000 }
+- takeScreenshot: 05-category-pilates-${VARIANT}

@@ -3,6 +3,7 @@ package io.github.gonbei774.calisthenicsmemory.ui
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore
 import android.content.Context
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
@@ -445,5 +446,31 @@ class ProgressScreenTest {
         assertEquals(y("tree_node_pushup-feet-elevated"), y("tree_node_pushup-diamond"), 2f)   // same row
         assertTrue(x("tree_node_pushup-diamond") > x("tree_node_pushup-feet-elevated"))        // beside it
         rule.onNodeWithTag("route_extras_toggle").assertDoesNotExist()                          // support drills only appear once a node is open
+    }
+
+    // R8.1-T10b (owner bug): tapping a category in "By type" must show its exercises
+    private fun tagStarts(p: String) = SemanticsMatcher("tag starts with $p") { n -> (n.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.TestTag) ?: "").startsWith(p) }
+    @Test fun everyByTypeCategoryShowsExercises() {
+        show(); rule.waitForIdle()
+        val missing = mutableListOf<String>()
+        for (t in app.calisthenics.domain.tree.TreeTabs.all) {
+            rule.onNodeWithTag("tab_chip_${t.id}").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
+            val shown = rule.onAllNodes(tagStarts("tree_node_")).fetchSemanticsNodes().isNotEmpty() || rule.onAllNodes(tagStarts("stretch")).fetchSemanticsNodes().isNotEmpty() || rule.onAllNodes(tagStarts("tab_exercise_")).fetchSemanticsNodes().isNotEmpty()
+            if (!shown) missing += t.id
+        }
+        assertTrue("categories with no exercises: $missing", missing.isEmpty())
+    }
+
+    @Test fun everySkillShowsItsRouteAndSearchFindsExercises() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("progress_mode_skill").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
+        val missing = mutableListOf<String>()
+        for (g in app.calisthenics.domain.goals.Goals.goalsOf(app.calisthenics.domain.goals.ObjectiveType.SKILL)) {
+            rule.onNodeWithTag("skill_chip_${g.id}").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
+            if (rule.onAllNodes(tagStarts("tree_node_")).fetchSemanticsNodes().isEmpty() && rule.onAllNodesWithTag("route_empty").fetchSemanticsNodes().isEmpty()) missing += g.id
+        }
+        assertTrue("skills with nothing shown: $missing", missing.isEmpty())
+        rule.onNodeWithTag("progress_search").performTextInput("diamond"); rule.waitForIdle()
+        rule.onNodeWithTag("search_result_pushup-diamond").assertExists()
     }
 }
