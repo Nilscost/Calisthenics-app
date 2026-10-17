@@ -71,15 +71,6 @@ import java.util.UUID
 
 fun formatClock(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 
-/** Apply the Preview's rest choices to every set and keep the displayed and started duration in sync. */
-private fun withRestDurations(plan: WorkoutPlan, durations: Map<String, Int>): WorkoutPlan {
-    if (durations.isEmpty()) return plan
-    val blocks = plan.blocks.map { block ->
-        if (block.type == BlockType.PASSIVE_RECOVERY && block.slotId in durations) block.copy(durationSeconds = durations.getValue(block.slotId!!)) else block
-    }
-    return plan.copy(blocks = blocks, plannedDurationSeconds = blocks.sumOf { it.durationSeconds })
-}
-
 /** The circuit: the work of round 1, one entry per exercise (both sides of a unilateral exercise are one entry). */
 data class CircuitEntry(val slotId: String, val variationId: String, val target: Target?, val perSide: Boolean, val loadGrams: Int? = null, val tier: Int = 1, val free: Boolean = false)
 
@@ -111,8 +102,9 @@ private fun InfoRow(p: WorkoutPlan) {
         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
                 Icon(Icons.Filled.Info, contentDescription = null)
+                // R8.1-T08 (F10): no "unreviewed draft" bubble; the row only points at the notes of this plan
                 Text(
-                    stringResource(if (p.usesDraftContent) R.string.preview_draft_note else R.string.preview_note), Modifier.weight(1f),
+                    stringResource(R.string.preview_note), Modifier.weight(1f),
                     style = MaterialTheme.typography.bodyMedium,
                 )
                 if (notes.isNotEmpty()) Text(stringResource(R.string.preview_more_notes, notes.size), style = MaterialTheme.typography.labelLarge)
@@ -215,7 +207,7 @@ private fun BreakRow(slotId: String, p: WorkoutPlan, round: Int, names: Map<Stri
 }
 
 @Composable
-private fun AddButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun AddButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     val addHere = stringResource(R.string.preview_add_here)
     val line = MaterialTheme.colorScheme.outline
     Box(modifier.size(Spacing.touch).clickable(onClick = onClick, role = androidx.compose.ui.semantics.Role.Button).semantics { contentDescription = addHere }, contentAlignment = Alignment.Center) {
@@ -225,19 +217,31 @@ private fun AddButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * The Preview: the workout as a list of exercises to change, or (R8.1-T08, F9) a program loaded as a starting point: the same controls
+ * (format, sets, Flow, rest), its own item list. Everything is edited here; the program in the catalog never changes.
+ */
 @Composable
 fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: () -> Unit, dataOverride: TrainData? = null) {
     val ctx = LocalContext.current
-    val haptic = LocalHapticFeedback.current
     val loadedData by rememberTrainData()
     val data = dataOverride ?: loadedData
     val stored = remember { TrainSettingsStore.load(ctx) }
+    val draft = remember { PreviewDraftStore.get(ctx, draftKey(stored)) }
+    val programMode = remember(data.catalog) { resolveProgramMode(ctx, data.catalog, stored, draft) }
+    if (programMode != null) ProgramPreview(modifier, data, programMode, stored, onBack, onStarted)
+    else WorkoutPreview(modifier, data, stored, draft, onBack, onStarted)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSettings, draft: PreviewDraft?, onBack: () -> Unit, onStarted: () -> Unit) {
+    val ctx = LocalContext.current
+    val haptic = LocalHapticFeedback.current
     val resolved = remember(data) { resolveTrain(ctx, data.routine, stored, data.catalog) }   // V18: the usual plan, or the saved routine chosen on Train
     val profile = remember { ProfileStore.selected(ctx) }
     // R8.1-T05 (F6): the edits made before survive going back to Train and returning; they belong to the objective
     val draftKey = remember { draftKey(stored) }
-    val draft = remember { PreviewDraftStore.get(ctx, draftKey) }
     // R7-T08 (D1): frozen when the Preview opens, so removing or adding an exercise here does not re-fill the list
     val openingSettings = remember { withDefaultLength(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = draft?.edits ?: resolved.edits) }
     // R8.1-T05 (F5): the set format and the number of sets are chosen here too; they are today's settings, so Train shows the same
@@ -307,7 +311,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                         stringResource(R.string.preview_header, p.rounds, (p.plannedDurationSeconds + 30) / 60, stringResource(if (p.timed) R.string.style_timed else R.string.style_reps)),
                         style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"),
                     )
-                    InfoRow(p)
+                    if (p.warnings.isNotEmpty() || p.changesExplained.any { it.isNotBlank() }) InfoRow(p)
                     // R8.1-T05 (F5): Straight sets / Pairs / Circuit, and the number of sets, in the Preview
                     Column(Modifier.fillMaxWidth().testTag("format_picker"), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         Caption(stringResource(R.string.train_format_caption))
@@ -565,7 +569,7 @@ private fun SwapItem(o: ExerciseVariation, catalog: Catalog, current: Boolean, o
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-private fun StretchPickerSheet(title: Int, options: List<ExerciseVariation>, autoLabel: Boolean, onDismiss: () -> Unit, hint: Int = R.string.preview_pick_stretch_hint, onPick: (String?) -> Unit) {
+internal fun StretchPickerSheet(title: Int, options: List<ExerciseVariation>, autoLabel: Boolean, onDismiss: () -> Unit, hint: Int = R.string.preview_pick_stretch_hint, onPick: (String?) -> Unit) {
     ModalBottomSheet(onDismissRequest = onDismiss, modifier = Modifier.semantics { testTagsAsResourceId = true }, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
         Column(Modifier.padding(horizontal = Spacing.l).padding(bottom = Spacing.xl).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(stringResource(title), style = MaterialTheme.typography.titleLarge)
@@ -580,7 +584,7 @@ private fun StretchPickerSheet(title: Int, options: List<ExerciseVariation>, aut
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalComposeUiApi::class)
 @Composable
-private fun AddSheet(exercises: List<Pair<app.calisthenics.domain.tree.TreeTab, List<ExerciseVariation>>>, stretches: List<ExerciseVariation>, onDismiss: () -> Unit, onExercise: (ExerciseVariation) -> Unit, onStretch: (String) -> Unit) {
+internal fun AddSheet(exercises: List<Pair<app.calisthenics.domain.tree.TreeTab, List<ExerciseVariation>>>, stretches: List<ExerciseVariation>, onDismiss: () -> Unit, onExercise: (ExerciseVariation) -> Unit, onStretch: (String) -> Unit) {
     // R7-T10 (D11): the category first (the Progress tab names), then only that category's list
     var category by remember { mutableStateOf("") }
     ModalBottomSheet(onDismissRequest = onDismiss, modifier = Modifier.semantics { testTagsAsResourceId = true }, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {

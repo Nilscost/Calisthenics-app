@@ -167,22 +167,32 @@ class TrainScreenTest {
         rule.onNodeWithTag("preview_header").assertIsDisplayed()
     }
 
-    @Test fun fixedProgramsAreReachableFromTrainAndReturnToTheWorkoutBuilder() {
-        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { AppNav() } }
+    // R8.1-T08 (F9): programs and the person's routines share one dropdown, in two labelled sections; there is no separate programs screen
+    @Test fun programsAndMyRoutinesShareOneDropdownInTwoSections() {
+        show(); rule.waitForIdle()
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx)
         rule.onNodeWithTag("objective_type_ROUTINE").performScrollTo().performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("routine_fixed_programs").performScrollTo().performClick(); rule.waitForIdle()
-        rule.onNodeWithText("Fixed programs").assertExists()
-        rule.onNodeWithTag("programs_back").performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("train_title").assertExists()
+        rule.onNodeWithTag("routine_fixed_programs").assertDoesNotExist()
+        rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("section_programs").assertExists()
+        rule.onNodeWithTag("section_my_routines").assertExists()
+        rule.onNodeWithTag("my_routines_empty").assertExists()
+        catalog.fixedPrograms.forEach { rule.onNodeWithTag("program_${it.id}").assertExists() }
+        rule.onNodeWithTag("routine_${app.calisthenics.domain.routine.Presets.RR}").assertExists()   // the ready-made routines are programs too
     }
 
-    @Test fun fixedProgramsStayReachableFromRoutineWithoutSavedRoutines() {
-        var opened = false
-        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { TrainScreen(onPreview = {}, onStarted = {}, onEditProfile = {}, onPrograms = { opened = true }) } }
-        rule.waitForIdle()
-        rule.onNodeWithTag("objective_type_ROUTINE").performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("routine_fixed_programs").assertIsDisplayed().performClick()
-        assertTrue(opened)
+    @Test fun pickingAProgramLoadsItAsTheStartingPointWithOneSetAndItsOwnFlow() {
+        show(); rule.waitForIdle()
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx)
+        val program = catalog.fixedPrograms.first()
+        rule.onNodeWithTag("objective_type_ROUTINE").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("program_${program.id}").performClick(); rule.waitForIdle()
+        val s = io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx)
+        assertEquals(program.id, s.fixedProgramId); assertEquals(1, s.rounds); assertEquals(program.flow, s.flow); assertNull(s.routineId)
+        rule.onNodeWithTag("exercise_count").assertTextEquals(program.items.size.toString())
+        rule.onNodeWithTag("warmup_switch").assertDoesNotExist()   // a program is a list: no generated warm-up, cool-down or extra exercises
+        rule.onNodeWithTag("exercises_plus").assertDoesNotExist()
     }
 
     @Test fun workoutFormatControlHasThreeFormatsPersistsAndRenamesRoundsToSets() {
@@ -214,9 +224,9 @@ class TrainScreenTest {
         rule.onNodeWithTag("exercise_count").assertTextEquals("9")
         assertEquals("preset-rr", ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getString("routine", null))
         rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("routine_preset-minimalist").assertIsDisplayed()
-        rule.onNodeWithTag("routine_rt-1").assertIsDisplayed()          // the person's own routines follow the ready-made ones
-        rule.onNodeWithTag("routine_preset-minimalist").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("routine_preset-minimalist").assertExists()
+        rule.onNodeWithTag("routine_rt-1").assertExists()          // the person's own routines follow the ready-made ones
+        rule.onNodeWithTag("routine_preset-minimalist").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick); rule.waitForIdle()
         rule.onNodeWithTag("format_CIRCUIT").assertIsSelected(); rule.onNodeWithTag("exercise_count").assertTextEquals("4")
     }
 
@@ -225,7 +235,7 @@ class TrainScreenTest {
         rule.onNodeWithTag("objective_type_ROUTINE").assertIsDisplayed().performClick(); rule.waitForIdle()
         rule.onNodeWithTag("objective_type_ROUTINE").assertIsSelected()
         rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("routine_rt-1").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("routine_rt-1").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick); rule.waitForIdle()   // R8.1-T08: the menu now also lists the programs, so the entry can be below the fold
         rule.onNodeWithTag("goal_field").assertTextContains("Push day")
         rule.onNodeWithTag("format_PAIRS").assertIsSelected()
         rule.onNodeWithTag("between_rest").assertIsSelected()

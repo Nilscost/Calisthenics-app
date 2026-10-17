@@ -35,6 +35,7 @@ import app.calisthenics.domain.model.WorkoutFormat
 import app.calisthenics.domain.model.StrengthFocus
 import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
 import io.github.gonbei774.calisthenicsmemory.ui.components.ObjectivePicker
+import io.github.gonbei774.calisthenicsmemory.ui.components.ProgramEntry
 import app.calisthenics.domain.planner.*
 import app.calisthenics.domain.routine.toggleFocus
 import io.github.gonbei774.calisthenicsmemory.R
@@ -66,7 +67,6 @@ fun TrainScreen(
     onPreview: () -> Unit,
     onStarted: () -> Unit,
     onEditProfile: (String?) -> Unit,
-    onPrograms: () -> Unit = {},
 ) {
     val ctx = LocalContext.current
     val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
@@ -81,12 +81,21 @@ fun TrainScreen(
     val profile = profiles.firstOrNull { it.id == settings.profileId } ?: profiles.first()
     val saved = remember(settings.routineId, settings.profileId) { routinesFor(ctx, data.catalog) }
     val resolved = remember(settings, data, saved) { resolveTrain(ctx, data.routine, settings, data.catalog) }
+    // R8.1-T05/T08: what was changed in the Preview belongs to the objective and also applies when the workout is started from here
+    val draft = remember(settings.goalId, settings.routineId, settings.fixedProgramId) { PreviewDraftStore.get(ctx, draftKey(settings)) }
+    val programMode = remember(settings, data, saved, draft) { resolveProgramMode(ctx, data.catalog, settings, draft) }
+    val editsNow = draft?.edits ?: resolved.edits
     // R7-T08 (D1): the default number of exercises per round (30 minutes at least) unless the person set one
-    val eff = remember(resolved, data, profile) { withDefaultLength(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = resolved.edits) }
-    val result = remember(eff, resolved, data, profile) { buildTrainPlan(data.catalog, resolved.routine, data.progress, profile, eff, edits = resolved.edits) }
-    val plan = (result as? PlanResult.Ready)?.plan
+    val eff = remember(resolved, data, profile, editsNow) { withDefaultLength(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = editsNow) }
+    val result: PlanResult = remember(eff, resolved, data, profile, editsNow, programMode) {
+        if (programMode != null) when (val r = buildProgramPlan(data.catalog, programMode.content, profile, settings.flow, settings.rounds, settings.format)) {
+            is FixedProgramPlanResult.Ready -> PlanResult.Ready(r.plan)
+            is FixedProgramPlanResult.Unavailable -> PlanResult.Infeasible(r.items.map { ConstraintFailure("unavailable", ctx.getString(R.string.programs_missing_item, data.catalog.variation(it.exerciseId)?.name ?: it.exerciseId, it.missing)) }, emptyList())
+        } else buildTrainPlan(data.catalog, resolved.routine, data.progress, profile, eff, edits = editsNow)
+    }
+    val plan = (result as? PlanResult.Ready)?.plan?.let { withRestDurations(it, draft?.rest.orEmpty()) }
     val minutes = plan?.plannedDurationSeconds?.let { (it + 30) / 60 }
-    val exercises = plan?.blocks?.filter { it.type == BlockType.WORK || (resolved.routine.stretchSession.isNotEmpty() && it.type == BlockType.STRETCH) }?.mapNotNull { it.variationId }?.distinct()?.size
+    val exercises = if (programMode != null) programMode.content.items.size else plan?.blocks?.filter { it.type == BlockType.WORK || (resolved.routine.stretchSession.isNotEmpty() && it.type == BlockType.STRETCH) }?.mapNotNull { it.variationId }?.distinct()?.size
 
     // Doc 17 §2.1: choices only; START WORKOUT and Workout preview stay at the bottom.
     Scaffold(
@@ -115,7 +124,11 @@ fun TrainScreen(
             }
             UnfinishedBanner(onStarted)
 
-            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, exercisesPerRound = null)) }, routines = saved, routineId = settings.routineId, onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } }, onPrograms = onPrograms)
+            val catalogPrograms = remember(data.catalog, profile) { data.catalog.fixedPrograms.map { p -> ProgramEntry(p.id, p.name, programSummaryText(ctx, data.catalog, p, profile)) } }
+            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, fixedProgramId = null, exercisesPerRound = null)) }, routines = saved, routineId = settings.routineId,
+                onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } },
+                fixedPrograms = catalogPrograms, programId = settings.fixedProgramId,
+                onPickProgram = { id -> data.catalog.fixedPrograms.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsForProgram(it, settings)) } })
 
             // R7-T09 (D2): a skill brings in its own exercises; show which
             val skillGoal = Goals.byId(settings.goalId)?.takeIf { it.entryVariationId != null && settings.routineId == null }
@@ -192,7 +205,8 @@ fun TrainScreen(
                     }
                 }
             }
-            if (stacked) { setsCard(Modifier.fillMaxWidth()); exercisesCard(Modifier.fillMaxWidth()); betweenCard(Modifier.fillMaxWidth()) }
+            if (programMode != null) setsCard(Modifier.fillMaxWidth())   // a program is a list: sets and format only (R8.1-T08)
+            else if (stacked) { setsCard(Modifier.fillMaxWidth()); exercisesCard(Modifier.fillMaxWidth()); betweenCard(Modifier.fillMaxWidth()) }
             else {
                 Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                     setsCard(Modifier.weight(1f).fillMaxHeight()); exercisesCard(Modifier.weight(1f).fillMaxHeight())
@@ -200,6 +214,7 @@ fun TrainScreen(
                 betweenCard(Modifier.fillMaxWidth())
             }
 
+            if (programMode == null) {
             val warmupLabel = stringResource(R.string.train_warmup)
             // V23: a warm-up before any workout (the routine's own list when it has one, else the catalog's)
             Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
@@ -225,6 +240,8 @@ fun TrainScreen(
                         Text(stringResource(if (m == app.calisthenics.domain.model.CooldownMode.STRETCHING) R.string.cooldown_stretching else R.string.cooldown_timed), maxLines = 1)
                     }
                 }
+            }
+
             }
 
             Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {

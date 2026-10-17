@@ -197,7 +197,9 @@ class PreviewScreenTest {
 
     @Test fun warningsAreOneCompactRowThatExpands() {
         show(); rule.waitForIdle()
-        rule.onNodeWithTag("info_row").assertExists().assertTextContains("unreviewed draft", substring = true)
+        // R8.1-T08 (F10): was asserting the "unreviewed draft" bubble; the row now only points at the notes, and no draft bubble exists anywhere in the Preview
+        rule.onNodeWithTag("info_row").assertExists().assertTextContains("Check the notes", substring = true)
+        rule.onNodeWithText("unreviewed draft", substring = true).assertDoesNotExist()
     }
 
     @Test fun startLaunchesTheServiceWithAFreshPlanId() {

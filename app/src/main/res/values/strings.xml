@@ -124,6 +124,12 @@
     <string name="objective_body_part">Body part</string>
     <string name="objective_skill">Skill</string>
     <string name="objective_routine">Routine</string>
+    <string name="section_programs">Programs</string>
+    <string name="program_preview_header">%1$d exercises · %2$d min</string>
+    <string name="program_preview_start_point">A starting point: change anything here. Saving makes your own routine; the program stays as it is.</string>
+    <string name="program_save_text">It keeps your exercises and targets, the set format, sets, Flow and rest, and appears under My routines on Train. The program itself does not change.</string>
+    <string name="section_my_routines">My routines</string>
+    <string name="section_my_routines_empty">None yet: edit a program or a workout in the Preview and save it.</string>
     <string name="routine_save">Save as routine</string>
     <string name="routine_save_title">Save as routine</string>
     <string name="routine_save_text">It keeps your exercises, levels, stretches, format, progression rule and rest, and appears under Routine on Train.</string>
@@ -284,7 +290,6 @@
     <string name="target_with_load">%1$s · %2$s kg</string>
     <string name="sheet_load_now">Kettlebell: %1$s kg. Levels count per weight; a heavier bell in your profile starts this exercise again at level 1.</string>
     <string name="sheet_load_earlier">Earlier at %1$s kg: %2$d of 5 stars</string>
-    <string name="preview_draft_note">Exercise content is an unreviewed draft.</string>
     <string name="preview_note">Check the notes before you start.</string>
     <string name="preview_more_notes">%1$d notes</string>
     <string name="preview_swap">Swap %1$s</string>
@@ -435,7 +440,6 @@
     <string name="sheet_missing">Missing in this profile: %1$s</string>
     <string name="sheet_cautions">Cautions</string>
     <string name="sheet_sources">Ladder order from: %1$s</string>
-    <string name="sheet_draft">Numbers are an unreviewed draft, not medical advice.</string>
     <string name="history_loading">Loading…</string>
     <string name="history_prev_week">Previous week</string>
     <string name="history_next_week">Next week</string>
@@ -471,7 +475,7 @@
     <string name="settings_section_data">Your data</string>
     <string name="settings_section_about">About</string>
     <string name="settings_privacy">Privacy policy</string>
-    <string name="settings_about">%1$s %2$s · free software (GPL-3.0) · all exercise content is an unreviewed draft</string>
+    <string name="settings_about">%1$s %2$s · free software (GPL-3.0)</string>
     <string name="backup_intro">Backups are plain files; you choose where to save them. Demo clips ship inside the app and are not part of backups.</string>
     <string name="backup_export">Export backup</string>
     <string name="backup_check">Check a backup file</string>

@@ -4,6 +4,7 @@ package io.github.gonbei774.calisthenicsmemory.ui.train
 
 import android.content.Context
 import app.calisthenics.domain.planner.PlanEdits
+import app.calisthenics.domain.planner.ProgramContent
 import app.calisthenics.domain.planner.TrainSettings
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -15,6 +16,8 @@ data class PreviewDraft(
     val edits: PlanEdits = PlanEdits(),
     /** Rest per slot chosen with the rest steppers. */
     val rest: Map<String, Int> = emptyMap(),
+    /** R8.1-T08 (F9): the items of a program being edited in the Preview (the catalog program itself never changes). */
+    val program: ProgramContent? = null,
 )
 
 /** The objective a draft belongs to: a goal or body focus, a saved routine, or a program. */

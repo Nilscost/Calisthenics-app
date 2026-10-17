@@ -35,6 +35,8 @@ data class SavedRoutine(
     val cooldownMinutes: Int = 5,
     /** R8.1-T06 (F7): the Flow option the routine was saved with. */
     val flow: Boolean = false,
+    /** R8.1-T08 (F9): set when the routine was made from a program: the program's items as edited (the slots are then empty). The program itself never changes. */
+    val program: app.calisthenics.domain.planner.ProgramContent? = null,
 )
 
 /** Builds what is saved from the Preview's state. [base] is the routine the plan was made from, [edits] the Preview's changes. */
@@ -57,7 +59,7 @@ fun resolveSaved(saved: SavedRoutine, today: TrainSettings): ResolvedRoutine = R
 
 /** Choosing a saved routine on Train copies its format, rest type and sets into today's settings (the person can still change them there). */
 fun settingsFor(saved: SavedRoutine, today: TrainSettings): TrainSettings =
-    today.copy(goalId = "general", format = saved.format, stretchOn = saved.stretchOn, rounds = saved.sets, focus = null, routineId = saved.id, warmupOn = saved.warmupOn, exercisesPerRound = saved.exercisesPerRound, cooldownOn = saved.cooldownOn, cooldownMode = saved.cooldownMode, cooldownMinutes = saved.cooldownMinutes, flow = saved.flow)
+    today.copy(goalId = "general", format = saved.format, stretchOn = saved.stretchOn, rounds = saved.sets, focus = null, routineId = saved.id, fixedProgramId = null, warmupOn = saved.warmupOn, exercisesPerRound = saved.exercisesPerRound, cooldownOn = saved.cooldownOn, cooldownMode = saved.cooldownMode, cooldownMinutes = saved.cooldownMinutes, flow = saved.flow)
 
 /** D5: "Update this routine" keeps the id and bumps the revision (older plans keep their own snapshot); "Save as new" gets a new id. */
 fun updateSaved(old: SavedRoutine, new: SavedRoutine) = new.copy(id = old.id, revision = old.revision + 1, createdAtEpochMs = old.createdAtEpochMs, routine = new.routine.copy(id = old.id, revision = old.revision + 1))
@@ -70,3 +72,15 @@ fun mergeSaved(local: List<SavedRoutine>, incoming: List<SavedRoutine>): List<Sa
     for (r in incoming) { val have = out.firstOrNull { it.id == r.id }; if (have == null || r.revision > have.revision) out = upsertSaved(out, r) }
     return out
 }
+
+/** R8.1-T08 (F9): saves an edited program as a new "My routine"; the program in the catalog is untouched. */
+fun savedFromProgram(id: String, name: String, revision: Int, content: app.calisthenics.domain.planner.ProgramContent, settings: TrainSettings, now: Long, createdAt: Long = now): SavedRoutine {
+    val title = name.trim().ifBlank { content.name }
+    return SavedRoutine(id, title, revision, Routine(id, revision, title, emptyList()), PlanEdits(), settings.format, ProgressionRule(), false, settings.rounds, createdAt, now,
+        warmupOn = false, exercisesPerRound = null, cooldownOn = false, flow = settings.flow, program = content.copy(name = title))
+}
+
+/** Choosing a program on Train: it loads as the starting point, with its own flow as the start value of the Flow option and one set. */
+fun settingsForProgram(program: app.calisthenics.domain.model.FixedProgram, today: TrainSettings): TrainSettings =
+    today.copy(goalId = "general", focus = null, routineId = null, fixedProgramId = program.id, format = WorkoutFormat.CIRCUIT, rounds = 1, stretchOn = false,
+        warmupOn = false, cooldownOn = false, exercisesPerRound = null, flow = program.flow)

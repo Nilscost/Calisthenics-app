@@ -507,7 +507,6 @@ private fun NodeSheet(c: Catalog, v: ExerciseVariation, progress: app.calistheni
             if (!isAvailable(v, profile)) Text(stringResource(R.string.sheet_missing, missingLabel(v, profile)), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodyMedium)
             SheetSection(R.string.sheet_cautions, v.cautions.map { stringResource(R.string.bullet_item, it) }, error = true)
             if (v.sourceIds.isNotEmpty()) Text(stringResource(R.string.sheet_sources, v.sourceIds.joinToString()), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Text(stringResource(R.string.sheet_draft), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }

@@ -1,4 +1,4 @@
-# R8 T07: open the fixed program list and verify the flow player exposes timers without per-item controls.
+# R8 T07 / R8.1-T08: pick a program in the Routine dropdown, open it in the Preview, start it, and verify the flow player exposes timers without per-item controls.
 appId: app.calisthenics.personal
 ---
 - launchApp
@@ -19,21 +19,22 @@ appId: app.calisthenics.personal
 - tapOn: { id: tab_train }
 - scrollUntilVisible: { element: { id: objective_type_ROUTINE }, direction: DOWN, timeout: 10000 }
 - tapOn: { id: objective_type_ROUTINE }
-- scrollUntilVisible: { element: { id: routine_fixed_programs }, direction: DOWN, timeout: 10000 }
-- tapOn: { id: routine_fixed_programs }
-- extendedWaitUntil: { visible: { id: program_army-hsd }, timeout: 10000 }
-- assertVisible: { id: program_summary_army-hsd }
-- takeScreenshot: 01-programs-compact-${VARIANT}
-- runFlow:
-    when: { notVisible: { id: program_line_army-hsd_0 } }
-    commands:
-      - tapOn: { id: program_open_army-hsd }
-- extendedWaitUntil: { visible: { id: program_line_army-hsd_0 }, timeout: 10000 }
-- scrollUntilVisible: { element: { id: program_flow_army-hsd }, direction: DOWN, visibilityPercentage: 100, centerElement: true, timeout: 15000 }
-- assertVisible: { id: program_flow_army-hsd }
-- scrollUntilVisible: { element: { id: program_start_army-hsd }, direction: DOWN, timeout: 15000 }
-- takeScreenshot: 02-program-details-${VARIANT}
-- tapOn: { id: program_start_army-hsd }
+# R8.1-T08 (F9): programs and my routines share one dropdown in two sections; a program loads into the Preview as a starting point
+- tapOn: { id: goal_field }
+- extendedWaitUntil: { visible: { id: section_programs }, timeout: 8000 }
+- assertVisible: { id: section_my_routines }
+- takeScreenshot: 01-programs-dropdown-${VARIANT}
+- tapOn: { id: program_army-hsd }
+- scrollUntilVisible: { element: { id: preview_button }, direction: DOWN, timeout: 10000 }
+- takeScreenshot: 01b-program-selected-${VARIANT}
+- tapOn: { id: preview_button }
+- extendedWaitUntil: { visible: { id: program_title }, timeout: 10000 }
+- assertVisible: { id: program_item_0 }
+- takeScreenshot: 02-program-preview-${VARIANT}
+- scrollUntilVisible: { element: { id: preview_flow_switch }, direction: DOWN, timeout: 10000 }
+- takeScreenshot: 02b-program-preview-controls-${VARIANT}
+- scrollUntilVisible: { element: { id: start_button }, direction: DOWN, timeout: 10000 }
+- tapOn: { id: start_button }
 - extendedWaitUntil: { visible: { id: session_pause }, timeout: 10000 }
 - assertVisible: { id: session_time }
 - assertNotVisible: { id: logger }

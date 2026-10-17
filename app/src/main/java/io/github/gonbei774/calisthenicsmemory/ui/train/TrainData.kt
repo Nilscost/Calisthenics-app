@@ -94,3 +94,41 @@ fun resolveTrain(ctx: Context, base: Routine, s: TrainSettings, catalog: Catalog
     val saved = routinesFor(ctx, catalog).firstOrNull { it.id == s.routineId } ?: return app.calisthenics.domain.routine.ResolvedRoutine(base, s.copy(routineId = null), app.calisthenics.domain.planner.PlanEdits())
     return app.calisthenics.domain.routine.resolveSaved(saved, s)
 }
+
+/** Apply the Preview's rest choices to every set and keep the displayed and started duration in sync. */
+fun withRestDurations(plan: app.calisthenics.domain.model.WorkoutPlan, durations: Map<String, Int>): app.calisthenics.domain.model.WorkoutPlan {
+    if (durations.isEmpty()) return plan
+    val blocks = plan.blocks.map { block ->
+        if (block.type == app.calisthenics.domain.model.BlockType.PASSIVE_RECOVERY && block.slotId in durations) block.copy(durationSeconds = durations.getValue(block.slotId!!)) else block
+    }
+    return plan.copy(blocks = blocks, plannedDurationSeconds = blocks.sumOf { it.durationSeconds })
+}
+
+/**
+ * R8.1-T08 (F9): what Train and the Preview work on when the objective is a program: a catalog program picked as the starting point,
+ * or a routine saved from one. [content] is the working copy (the Preview draft when there is one); [base] is the catalog program it started from.
+ */
+data class ProgramMode(val content: app.calisthenics.domain.planner.ProgramContent, val saved: app.calisthenics.domain.routine.SavedRoutine?, val base: app.calisthenics.domain.model.FixedProgram?)
+
+fun resolveProgramMode(ctx: Context, catalog: Catalog, s: TrainSettings, draft: PreviewDraft?): ProgramMode? {
+    val saved = routinesFor(ctx, catalog).firstOrNull { it.id == s.routineId }?.takeIf { it.program != null }
+    if (saved != null) return ProgramMode(draft?.program ?: saved.program!!, saved, catalog.fixedPrograms.firstOrNull { it.id == saved.program!!.programId })
+    val base = catalog.fixedPrograms.firstOrNull { it.id == s.fixedProgramId } ?: return null
+    return ProgramMode(draft?.program ?: app.calisthenics.domain.planner.programContentOf(base), null, base)
+}
+
+/** The compact description of a catalog program in the dropdown: about how long it takes, and the equipment it needs. */
+fun programSummaryText(ctx: Context, catalog: Catalog, program: app.calisthenics.domain.model.FixedProgram, profile: app.calisthenics.domain.model.EquipmentProfile): String {
+    val seconds = fixedProgramDurationSeconds(catalog, program, app.calisthenics.domain.planner.buildFixedProgramPlan(catalog, program, profile))
+    val minutes = ((seconds + 59) / 60).coerceAtLeast(1)
+    val equipment = program.items.mapNotNull { catalog.variation(it.exerciseId) }.flatMap { v -> v.equipmentAlternatives.firstOrNull()?.needs.orEmpty().map { it.equipmentId } }.distinct().sorted()
+    val value = if (equipment.isEmpty()) ctx.getString(io.github.gonbei774.calisthenicsmemory.R.string.programs_no_equipment) else equipment.joinToString(" + ") { ctx.getString(io.github.gonbei774.calisthenicsmemory.ui.screens.equipmentLabelShortPublic(it)) }
+    return ctx.getString(io.github.gonbei774.calisthenicsmemory.R.string.programs_summary, minutes, ctx.getString(io.github.gonbei774.calisthenicsmemory.R.string.programs_equipment_label, value))
+}
+
+internal fun fixedProgramDurationSeconds(catalog: Catalog, program: app.calisthenics.domain.model.FixedProgram, result: app.calisthenics.domain.planner.FixedProgramPlanResult): Int =
+    (result as? app.calisthenics.domain.planner.FixedProgramPlanResult.Ready)?.plan?.plannedDurationSeconds ?: run {
+        var total = 0
+        program.items.forEach { item -> total += app.calisthenics.domain.planner.itemSeconds(item) * (if (item.perSide) 2 else 1) }
+        total
+    }

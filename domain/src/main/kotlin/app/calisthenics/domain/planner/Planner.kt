@@ -397,23 +397,7 @@ private class Planner(val input: PlanInput) {
     }
 
     /** One entry per (set, exercise, group) in the order of the chosen format (V19). */
-    private fun sequenceOf(n: Int, sets: Int, groups: List<Int?> = emptyList()): List<Triple<Int, Int, Int?>> = when (draft.format) {
-        WorkoutFormat.CIRCUIT -> (1..sets).flatMap { r -> (0 until n).map { Triple(r, it, null) } }
-        WorkoutFormat.STRAIGHT -> (0 until n).flatMap { i -> (1..sets).map { r -> Triple(r, i, i + 1) } }
-        // V22: slots with an explicit group (RR: three pairs and a core triplet) alternate inside their group; a slot without one stands alone
-        WorkoutFormat.PAIRS -> if (groups.any { it != null }) {
-            val keys = (0 until n).map { groups.getOrNull(it) ?: (1000 + it) }.distinct()
-            keys.flatMapIndexed { gi, key ->
-                val members = (0 until n).filter { (groups.getOrNull(it) ?: (1000 + it)) == key }
-                (1..sets).flatMap { r -> members.map { Triple(r, it, gi + 1) } }
-            }
-        } else
-        // two exercises alternate for all their sets, then the next pair; an odd last exercise is a straight exercise on its own
-        (0 until n step 2).flatMap { a ->
-            val pair = if (a + 1 < n) listOf(a, a + 1) else listOf(a)
-            (1..sets).flatMap { r -> pair.map { Triple(r, it, a / 2 + 1) } }
-        }
-    }
+    private fun sequenceOf(n: Int, sets: Int, groups: List<Int?> = emptyList()): List<Triple<Int, Int, Int?>> = orderedEntries(draft.format, n, sets, groups)
 
     private fun rounds(sl: List<Chosen>, rounds: Int): List<TimelineBlock> {
         val out = mutableListOf<TimelineBlock>()
@@ -456,11 +440,7 @@ private class Planner(val input: PlanInput) {
             val restSecs = c.slot.restSeconds ?: t.minRecoverySeconds   // V22: a routine can set its own rest (0 = none)
             // R8.1-T06 (F7): Flow drops the rest between exercises; the rest after a set (before the same exercise again, or at the end of a round) stays
             val next = order.getOrNull(pos + 1)
-            val betweenExercises = next != null && when (draft.format) {
-                WorkoutFormat.CIRCUIT -> next.first == r
-                WorkoutFormat.PAIRS -> next.third != group || (next.first == r && next.second != si)
-                WorkoutFormat.STRAIGHT -> next.second != si
-            }
+            val betweenExercises = next != null && isBetweenExercises(draft.format, r, si, group, next)
             if (isLast || restSecs <= 0 || (draft.flow && betweenExercises)) { extras(); continue }
             // Timed mode keeps one 60 s cycle per exercise: the time a short hold does not use goes to the recovery (the stretch when stretch is on).
             val window = if (draft.timed) TIMED_REST_SECONDS + (TIMED_WORK_SECONDS - workTotal).coerceAtLeast(0) else restSecs
@@ -549,4 +529,31 @@ private class Planner(val input: PlanInput) {
     }
 
     private fun fmt(s: Int) = if (s % 60 == 0) "${s / 60} min" else "${s / 60} min ${s % 60} s"
+}
+
+/**
+ * One entry per (set, exercise index, group) in the order of [format]: circuit = round by round; straight sets = all sets of one exercise;
+ * pairs = two exercises alternate for all their sets (a slot with an explicit group alternates inside its group; an odd last exercise stands alone). V19/V22.
+ */
+fun orderedEntries(format: WorkoutFormat, n: Int, sets: Int, groups: List<Int?> = emptyList()): List<Triple<Int, Int, Int?>> = when (format) {
+    WorkoutFormat.CIRCUIT -> (1..sets).flatMap { r -> (0 until n).map { Triple(r, it, null) } }
+    WorkoutFormat.STRAIGHT -> (0 until n).flatMap { i -> (1..sets).map { r -> Triple(r, i, i + 1) } }
+    WorkoutFormat.PAIRS -> if (groups.any { it != null }) {
+        val keys = (0 until n).map { groups.getOrNull(it) ?: (1000 + it) }.distinct()
+        keys.flatMapIndexed { gi, key ->
+            val members = (0 until n).filter { (groups.getOrNull(it) ?: (1000 + it)) == key }
+            (1..sets).flatMap { r -> members.map { Triple(r, it, gi + 1) } }
+        }
+    } else
+        (0 until n step 2).flatMap { a ->
+            val pair = if (a + 1 < n) listOf(a, a + 1) else listOf(a)
+            (1..sets).flatMap { r -> pair.map { Triple(r, it, a / 2 + 1) } }
+        }
+}
+
+/** R8.1-T06 (F7): is the break after the entry (set [r], exercise [si], [group]) a break between exercises (dropped by Flow) rather than between sets? */
+fun isBetweenExercises(format: WorkoutFormat, r: Int, si: Int, group: Int?, next: Triple<Int, Int, Int?>): Boolean = when (format) {
+    WorkoutFormat.CIRCUIT -> next.first == r
+    WorkoutFormat.PAIRS -> next.third != group || (next.first == r && next.second != si)
+    WorkoutFormat.STRAIGHT -> next.second != si
 }
