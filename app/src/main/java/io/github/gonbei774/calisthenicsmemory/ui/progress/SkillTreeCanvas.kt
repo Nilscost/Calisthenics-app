@@ -56,7 +56,7 @@ private val TileHeight = 52.dp
 private val TopGap = 6.dp
 
 /** [tier] is the level the person is at (1..5), shown in the tile's number cell. */
-data class NodeUi(val id: String, val name: String, val familyId: String, val state: TreeNodeState, val stars: Int, val inGoal: Boolean, val missingEquipmentId: String?, val tier: Int = 1, /** R7-T11 (O2): a prerequisite from another tab that is still open: its id and name, shown as a tappable "needs X" note. */ val needs: Pair<String, String>? = null)
+data class NodeUi(val id: String, val name: String, val familyId: String, val state: TreeNodeState, val stars: Int, val inGoal: Boolean, val missingEquipmentId: String?, val tier: Int = 1, /** R7-T11 (O2): a prerequisite from another tab that is still open: its id and name, shown as a tappable "needs X" note. */ val needs: Pair<String, String>? = null, /** R8.1-T10 (F13): a same-rung alternate shown beside its rung */ val alternate: Boolean = false)
 
 @Composable
 fun stateLabel(s: TreeNodeState) = stringResource(
@@ -146,6 +146,7 @@ private fun TreeNode(n: NodeUi, selected: Boolean, onNeed: (String) -> Unit, onC
         }
         Text(n.name, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center, maxLines = 2, modifier = Modifier.padding(horizontal = 2.dp))
         StarRow(n.stars, size = 13.dp)
+        if (n.alternate) Text(stringResource(R.string.node_other_way), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("tree_alt_${n.id}"))
         n.needs?.let { (id, name) -> Text(stringResource(R.string.node_needs_note, name), style = MaterialTheme.typography.labelSmall, color = AppAccentTheme.colors.text, textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline, maxLines = 1,
             modifier = Modifier.heightIn(min = 24.dp).clickable(role = Role.Button) { onNeed(id) }.testTag("tree_need_${n.id}")) }
     }

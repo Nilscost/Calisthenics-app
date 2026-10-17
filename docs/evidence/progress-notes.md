@@ -943,3 +943,13 @@ Tests: `FixedProgramsTest` (count now 10, listed ones, order of the merged army 
 NOT done: Conditioning Drill 1 numbers are the manual's standard as recorded in the notes (10 per move); the pilates counts are our own cadence, DRAFT. No phone testing.
 
 Choices not in the plan: the vertical jump with arm swing stands in for the manual's Power Jump; the building-block programs stay in the catalog but unlisted instead of being deleted.
+
+### R8.1-T10 · F12 search on top, suggestions gone · F13 alternatives in the tree · 2026-10-17
+
+F12: the Progress tab now starts with the title, then the search field (and its results), then the By type / By skill switch. The suggestion card is removed from the tab (`SuggestionCard` and its text tests stay as a component; nothing shows it on this tab). Changed assertion: `aSuggestionCardShowsOneSuggestionAndCanBeClosed` became `noSuggestionSectionAndTheSearchFieldIsAboveTheTypeSkillSwitch`. Under Robolectric a touch tap on the By skill button no longer arrived once the search field sat above it (the node tree and bounds are right; the semantic click works), so the tests that switch to skills use the semantic click; the button itself is unchanged and the Maestro flows tap it on the emulator.
+
+F13 cause: a route's same-rung alternates (diamond next to feet-elevated) were only listed behind the "Show other ways" toggle of an opened node. New `routeTreeLayout` draws the main spine in column 0 and every alternate of a rung beside it (columns 1 and 2, extra rows for a third or fourth alternate such as the squat route's split-squat lunges), each marked "other way"; edges stay on the spine. Support drills stay behind "Helps with" (the toggle now lists support only). Tests: `RouteTreeAlternatesTest` checks all routes of the catalog (every alternate is in its route's tree, in columns 1 to 2, beside or below its rung, no shared cell, supports not drawn), and `ProgressScreenTest.theDiamondPushUpIsVisibleBesideFeetElevatedInTheTree` (same row, to the right). Changed assertions: `theWidePushTreeScrollsToR8NodesAtItsRightEdge` looked for the alternate in the toggle list and now looks for its node; `skillProgressUsesItsNamedRoute...` picks its "foreign" exercise outside the route's members, since alternates of the route are now (correctly) drawn.
+
+NOT done: the node panel still opens "Helps with" only for support; the horizontal scroll of the tree now shows up to three columns on the phone. No phone testing.
+
+Choices not in the plan: alternates that need missing equipment are drawn too (locked, with the wrench), so nothing is hidden because of the profile.

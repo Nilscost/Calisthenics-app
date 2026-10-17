@@ -124,6 +124,7 @@
     <string name="objective_body_part">Body part</string>
     <string name="objective_skill">Skill</string>
     <string name="objective_routine">Routine</string>
+    <string name="node_other_way">other way</string>
     <string name="section_programs">Programs</string>
     <string name="program_preview_header">%1$d exercises · %2$d min</string>
     <string name="program_preview_start_point">A starting point: change anything here. Saving makes your own routine; the program stays as it is.</string>

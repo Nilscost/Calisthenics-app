@@ -175,3 +175,25 @@ fun displayStars(c: Catalog, progress: ProgressSnapshot, id: String): Int {
     }
     return own
 }
+
+/**
+ * R8.1-T10 (F13): the tree of one route: the main spine in column 0, and every same-rung alternate right beside its rung (columns 1 and 2,
+ * more rows when a rung has more than two), so "diamond next to feet-elevated" is on the screen without opening anything.
+ * Support drills are not drawn here: they stay behind "Helps with".
+ */
+fun routeTreeLayout(route: app.calisthenics.domain.model.ProgressionRoute, exists: (String) -> Boolean = { true }): TreeLayout {
+    val nodes = mutableListOf<TreeNodeLayout>()
+    var row = 0
+    var cols = if (route.mainPath.isEmpty()) 0 else 1
+    for (id in route.mainPath) {
+        nodes += TreeNodeLayout(id, 0, row)
+        val alternates = route.members.filter { it.role == app.calisthenics.domain.model.ProgressionRole.ALTERNATE && it.atVariationId == id && it.variationId !in route.mainPath && exists(it.variationId) }
+            .map { it.variationId }.distinct()
+        alternates.chunked(2).forEachIndexed { k, chunk ->
+            chunk.forEachIndexed { j, alt -> nodes += TreeNodeLayout(alt, 1 + j, row + k) }
+            cols = maxOf(cols, 1 + chunk.size)
+        }
+        row += maxOf(1, (alternates.size + 1) / 2)
+    }
+    return TreeLayout(nodes, route.mainPath.zipWithNext().map { (a, b) -> TreeEdge(a, b, EdgeKind.NEXT) }, cols, row)
+}

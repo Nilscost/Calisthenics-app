@@ -66,8 +66,6 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
     val data by rememberTrainData(refresh)
     val c = catalogOverride ?: data.catalog
     val profile = remember { ProfileStore.selected(ctx) }
-    var dismissed by remember { mutableStateOf(SuggestionStore.dismissed(ctx)) }
-    val suggestion = remember(c, data, profile, dismissed) { suggest(c, profile, data.progress, dismissed) }
     val goalId = remember { GoalStore.load(ctx) }
     val goal = Goals.byId(goalId)
     val startTab = remember(c) { goal?.entryVariationId?.let { TreeTabs.tabForVariation(c, it) }?.id ?: "push" }
@@ -104,41 +102,7 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
     Scaffold(modifier = modifier) { pad ->
         Column(Modifier.padding(pad).fillMaxSize()) {
             Text(stringResource(R.string.tab_progress).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("progress_title"))
-            suggestion?.let { s ->
-                SuggestionCard(c, s, onDismiss = { SuggestionStore.dismiss(ctx, s.id); dismissed = dismissed + s.id },
-                    onAccept = when (s) {
-                        is Suggestion.RaiseLevel -> { {
-                            SuggestionStore.accept(ctx, s.variationId, s.toTier, java.time.LocalDate.now().toEpochDay().toInt()); SuggestionStore.dismiss(ctx, s.id); dismissed = dismissed + s.id; refresh++
-                        } }
-                        is Suggestion.NextExercise -> { {
-                            SuggestionStore.acceptNext(ctx, s.variationId, s.toVariationId, java.time.LocalDate.now().toEpochDay().toInt()); SuggestionStore.dismiss(ctx, s.id); dismissed = dismissed + s.id; refresh++
-                        } }
-                        else -> null
-                    })
-            }
-            SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(horizontal = Spacing.l).height(48.dp)) {
-                SegmentedButton(selected = mode == ProgressMode.TYPE, onClick = { modeName = ProgressMode.TYPE.name; selected = null; selectedRouteId = "" }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("progress_mode_type")) { Text(stringResource(R.string.progress_by_type)) }
-                SegmentedButton(selected = mode == ProgressMode.SKILL, onClick = { modeName = ProgressMode.SKILL.name; selected = null; selectedRouteId = "" }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("progress_mode_skill")) { Text(stringResource(R.string.progress_by_skill)) }
-            }
-            Row(Modifier.fillMaxWidth().testTag("progress_type_tabs").horizontalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.s), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                if (mode == ProgressMode.TYPE) TreeTabs.all.forEach { t ->
-                    FilterChip(
-                        selected = t.id == tab.id, onClick = { tabId = t.id; selected = null },
-                        label = { Text(t.title) },
-                        border = FilterChipDefaults.filterChipBorder(true, t.id == tab.id, borderColor = MaterialTheme.colorScheme.outlineVariant, selectedBorderColor = AppAccentTheme.colors.accent, selectedBorderWidth = 2.dp),
-                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = MaterialTheme.colorScheme.surface, selectedLabelColor = AppAccentTheme.colors.text),
-                        modifier = Modifier.testTag("tab_chip_${t.id}"),
-                    )
-                } else skills.forEach { g ->
-                    FilterChip(
-                        selected = g.id == skill.id, onClick = { skillId = g.id; selected = null; selectedRouteId = "" },
-                        label = { Text(g.name) },
-                        border = FilterChipDefaults.filterChipBorder(true, g.id == skill.id, borderColor = MaterialTheme.colorScheme.outlineVariant, selectedBorderColor = AppAccentTheme.colors.accent, selectedBorderWidth = 2.dp),
-                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = MaterialTheme.colorScheme.surface, selectedLabelColor = AppAccentTheme.colors.text),
-                        modifier = Modifier.testTag("skill_chip_${g.id}"),
-                    )
-                }
-            }
+            // R8.1-T10 (F12): search first, above the by-type / by-skill switch; the suggestions section is gone
             OutlinedTextField(
                 value = catalogQuery, onValueChange = { catalogQuery = it }, singleLine = true,
                 label = { Text(stringResource(R.string.progress_search)) },
@@ -167,6 +131,29 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
                         }
                     }
                     if (matches.isEmpty()) Text(stringResource(R.string.progress_search_empty), Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
+            SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(horizontal = Spacing.l).height(48.dp)) {
+                SegmentedButton(selected = mode == ProgressMode.TYPE, onClick = { modeName = ProgressMode.TYPE.name; selected = null; selectedRouteId = "" }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("progress_mode_type")) { Text(stringResource(R.string.progress_by_type)) }
+                SegmentedButton(selected = mode == ProgressMode.SKILL, onClick = { modeName = ProgressMode.SKILL.name; selected = null; selectedRouteId = "" }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("progress_mode_skill")) { Text(stringResource(R.string.progress_by_skill)) }
+            }
+            Row(Modifier.fillMaxWidth().testTag("progress_type_tabs").horizontalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.s), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                if (mode == ProgressMode.TYPE) TreeTabs.all.forEach { t ->
+                    FilterChip(
+                        selected = t.id == tab.id, onClick = { tabId = t.id; selected = null },
+                        label = { Text(t.title) },
+                        border = FilterChipDefaults.filterChipBorder(true, t.id == tab.id, borderColor = MaterialTheme.colorScheme.outlineVariant, selectedBorderColor = AppAccentTheme.colors.accent, selectedBorderWidth = 2.dp),
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = MaterialTheme.colorScheme.surface, selectedLabelColor = AppAccentTheme.colors.text),
+                        modifier = Modifier.testTag("tab_chip_${t.id}"),
+                    )
+                } else skills.forEach { g ->
+                    FilterChip(
+                        selected = g.id == skill.id, onClick = { skillId = g.id; selected = null; selectedRouteId = "" },
+                        label = { Text(g.name) },
+                        border = FilterChipDefaults.filterChipBorder(true, g.id == skill.id, borderColor = MaterialTheme.colorScheme.outlineVariant, selectedBorderColor = AppAccentTheme.colors.accent, selectedBorderWidth = 2.dp),
+                        colors = FilterChipDefaults.filterChipColors(selectedContainerColor = MaterialTheme.colorScheme.surface, selectedLabelColor = AppAccentTheme.colors.text),
+                        modifier = Modifier.testTag("skill_chip_${g.id}"),
+                    )
                 }
             }
             if (mode == ProgressMode.SKILL) Text(skill.description, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.padding(horizontal = Spacing.l).testTag("skill_description"))
@@ -210,7 +197,7 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
                     }
                 }
                 val layout = remember(c, tab.id, mode, skill.id, activeRoute?.id) {
-                    if (activeRoute != null) TreeLayout(activeRoute.mainPath.mapIndexed { index, id -> TreeNodeLayout(id, 0, index) }, activeRoute.mainPath.zipWithNext().map { (a, b) -> TreeEdge(a, b, EdgeKind.NEXT) }, if (activeRoute.mainPath.isEmpty()) 0 else 1, activeRoute.mainPath.size)
+                    if (activeRoute != null) routeTreeLayout(activeRoute) { c.variation(it) != null }   // R8.1-T10 (F13): the same-rung alternates sit beside their rung
                     else if (c.progressionRoutes.isNotEmpty()) TreeLayout(emptyList(), emptyList(), 0, 0)
                     else layoutTreeVertical(c, tab.familyIds)
                 }
@@ -223,7 +210,7 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
                         val missing = v.equipmentAlternatives.minByOrNull { s -> s.needs.count { n -> !app.calisthenics.domain.equipment.needSatisfied(n, profile) } }
                             ?.needs?.firstOrNull { n -> !app.calisthenics.domain.equipment.needSatisfied(n, profile) }?.equipmentId
                         val needs = if (mode == ProgressMode.TYPE && v.id !in data.progress.variations) Goals.unmet(c, v.id, data.progress).map { it.variationId }.firstOrNull { c.variation(it)?.familyId !in tab.familyIds }?.let { it to (c.variation(it)?.name ?: it) } else null
-                        v.id to NodeUi(v.id, v.name, v.familyId, state, displayStars(c, data.progress, v.id), v.id in goalChain, missing, data.progress.tierFor(v.id) ?: 1, needs)
+                        v.id to NodeUi(v.id, v.name, v.familyId, state, displayStars(c, data.progress, v.id), v.id in goalChain, missing, data.progress.tierFor(v.id) ?: 1, needs, alternate = activeRoute?.let { r -> v.id !in r.mainPath && r.members.any { it.variationId == v.id && it.role == ProgressionRole.ALTERNATE } } == true)
                     }
                 }
                 val mastered = remember(nodes) { nodes.filterValues { it.state == TreeNodeState.MASTERED }.keys }
@@ -232,7 +219,7 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
                 } else SkillTreeCanvas(layout, nodes, mastered, selected, onNode = { selected = if (selected == it) null else it },
                     modifier = Modifier.weight(1f).fillMaxWidth().testTag("tree_area"), onNeed = { detailStack = it })
                 if (activeRoute != null && selected != null) {
-                    val extras = activeRoute.members.filter { it.atVariationId == selected && it.role in setOf(ProgressionRole.ALTERNATE, ProgressionRole.SUPPORT) }
+                    val extras = activeRoute.members.filter { it.atVariationId == selected && it.role == ProgressionRole.SUPPORT }   // R8.1-T10 (F13): alternates are in the tree now
                         .filter { member -> c.variation(member.variationId)?.let { isAvailable(it, profile) } == true }
                     if (extras.isNotEmpty()) {
                         AppTextButton(onClick = { showRouteExtras = !showRouteExtras }, modifier = Modifier.padding(horizontal = Spacing.l).testTag("route_extras_toggle")) {

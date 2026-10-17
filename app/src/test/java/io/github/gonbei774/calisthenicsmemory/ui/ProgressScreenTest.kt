@@ -271,11 +271,11 @@ class ProgressScreenTest {
                 app.calisthenics.domain.goals.Goals.typeOf(it) == app.calisthenics.domain.goals.ObjectiveType.SKILL
             }
             val firstFamily = route.mainPath.firstOrNull()?.let { catalog.variation(it)?.familyId }
-            val extra = catalog.variations.firstOrNull { it.familyId == firstFamily && it.id !in route.mainPath && !it.routineOnly && route.mainPath.isNotEmpty() }
+            val extra = catalog.variations.firstOrNull { it.familyId == firstFamily && it.id !in route.mainPath && route.members.none { m -> m.variationId == it.id } && !it.routineOnly && route.mainPath.isNotEmpty() }   // R8.1-T10: a route's own alternates are drawn beside their rung now, so the 'foreign' exercise must not be a member
             if (goal != null && extra != null) Triple(route, goal, extra) else null
         } ?: return
         show(); rule.waitForIdle()
-        rule.onNodeWithTag("progress_mode_skill").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("progress_mode_skill").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick)   /* R8.1-T10: a touch tap does not reach the switch under Robolectric now that the search field sits above it */; rule.waitForIdle()
         rule.onNodeWithTag("skill_chip_${routeAndGoal.second.id}").performScrollTo().performClick(); rule.waitForIdle()
         val goalRoutes = catalog.progressionRoutes.filter { routeAndGoal.second.id in it.goalIds }
         if (goalRoutes.size > 1) rule.onNodeWithTag("skill_route_chip_${routeAndGoal.first.id}").performScrollTo().performClick(); rule.waitForIdle()
@@ -324,20 +324,17 @@ class ProgressScreenTest {
         rule.onNodeWithTag("node_panel").assertDoesNotExist()
     }
 
-    @Test fun aSuggestionCardShowsOneSuggestionAndCanBeClosed() {   // V27
-        LevelStore.save(ctx, mapOf("pushup-standard" to 5))     // a solid push-up: dip support is hinted (the home profile has none)
+    // R8.1-T10 (F12): was "a suggestion card shows one suggestion and can be closed"; the suggestions section is gone from the Progress tab
+    // (the SuggestionCard composable and its text tests above stay). The search field is the first control, above the by-type / by-skill switch.
+    @Test fun noSuggestionSectionAndTheSearchFieldIsAboveTheTypeSkillSwitch() {
+        LevelStore.save(ctx, mapOf("pushup-standard" to 5))     // this used to make a card (dip support is hinted)
         show(); rule.waitForIdle()
         chooseRouteContaining("pushup-standard")
-        rule.onNodeWithTag("suggestion_card").assertIsDisplayed()
-        rule.onNodeWithTag("suggestion_text").assertTextContains("opens", substring = true)
-        rule.onAllNodesWithTag("suggestion_card").assertCountEquals(1)
-        fun text() = rule.onNodeWithTag("suggestion_text").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
-        val first = text()
-        rule.onNodeWithTag("suggestion_dismiss").performClick(); rule.waitForIdle()
-        // the closed one does not come back; at most one other may follow, still only one card
-        rule.onAllNodesWithTag("suggestion_card").assertCountEquals(rule.onAllNodesWithTag("suggestion_card").fetchSemanticsNodes().size.coerceAtMost(1))
-        if (rule.onAllNodesWithTag("suggestion_card").fetchSemanticsNodes().isNotEmpty()) assertNotEquals(first, text())
-        rule.onNodeWithTag("tree_area").assertIsDisplayed()      // never blocks the tree
+        rule.onAllNodesWithTag("suggestion_card").assertCountEquals(0)
+        val search = rule.onNodeWithTag("progress_search").fetchSemanticsNode().boundsInRoot.top
+        val switch = rule.onNodeWithTag("progress_mode_type").fetchSemanticsNode().boundsInRoot.top
+        assertTrue("search $search must be above the switch $switch", search < switch)
+        rule.onNodeWithTag("tree_area").assertIsDisplayed()
     }
 
     @Test fun aKettlebellDetailShowsTheWeightTrackFromTheBellInUseUpward() {   // V26
@@ -377,7 +374,7 @@ class ProgressScreenTest {
         show()
         rule.onNodeWithTag("progress_title").assertTextEquals("PROGRESS")
         rule.onNodeWithTag("progress_mode_type").assertIsSelected()
-        rule.onNodeWithTag("progress_mode_skill").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("progress_mode_skill").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
         rule.onNodeWithTag("progress_mode_skill").assertIsSelected()
         rule.onNodeWithTag("skill_chip_muscle-up").performScrollTo().performClick(); rule.waitForIdle()
         rule.onNodeWithTag("tree_node_pullup-band-assisted").assertDoesNotExist()
@@ -415,9 +412,9 @@ class ProgressScreenTest {
         } ?: return
         show(); chooseRouteContaining(candidate.second.atVariationId!!)
         revealTreeNode(candidate.second.atVariationId!!)
-        rule.onNodeWithTag("tree_node_${candidate.second.atVariationId}").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
-        rule.onNodeWithTag("route_extras_toggle").performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("route_member_${candidate.second.variationId}").assertExists()
+        // R8.1-T10 (F13): was opening "Other ways" behind a toggle; the same-rung alternate is a node beside its rung now
+        rule.onNodeWithTag("tree_node_${candidate.second.variationId}").assertExists()
+        rule.onNodeWithTag("tree_alt_${candidate.second.variationId}", useUnmergedTree = true).assertExists()
     }
 
     @Test fun deepTreeRowsAreComposedOnDemandAndRemainReachable() {
@@ -435,5 +432,18 @@ class ProgressScreenTest {
         show()
         rule.onNodeWithTag("tab_chip_stretches").performScrollTo().performClick(); rule.waitForIdle()
         rule.onNodeWithTag("stretch_stretch-hamstring").assertExists()
+    }
+
+    // R8.1-T10 (F13): "I cannot see the diamond push-up": it is beside feet-elevated, not behind a disclosure
+    @Test fun theDiamondPushUpIsVisibleBesideFeetElevatedInTheTree() {
+        show(); chooseRouteContaining("pushup-standard")
+        revealTreeNode("pushup-feet-elevated")
+        rule.onNodeWithTag("tree_node_pushup-diamond").assertExists()
+        rule.onNodeWithTag("tree_alt_pushup-diamond", useUnmergedTree = true).assertExists()
+        val y = { t: String -> rule.onNodeWithTag(t).fetchSemanticsNode().boundsInRoot.top }
+        val x = { t: String -> rule.onNodeWithTag(t).fetchSemanticsNode().boundsInRoot.left }
+        assertEquals(y("tree_node_pushup-feet-elevated"), y("tree_node_pushup-diamond"), 2f)   // same row
+        assertTrue(x("tree_node_pushup-diamond") > x("tree_node_pushup-feet-elevated"))        // beside it
+        rule.onNodeWithTag("route_extras_toggle").assertDoesNotExist()                          // support drills only appear once a node is open
     }
 }
