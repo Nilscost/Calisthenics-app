@@ -152,6 +152,21 @@ class ProgressionEngine(private val catalog: Catalog) {
         return policy(vid)?.progressionSuccessors()?.firstOrNull()
     }
 
+    /**
+     * R8.1-T01 (F1): the route position follows the highest rung the person has trained, whether on the main step or on an alternate of
+     * that rung (split squat after air squat, feet-elevated or diamond after standard). It never moves down; successor transitions still move it up.
+     */
+    private fun raiseActive(active: MutableMap<String, String>, familyId: String, vid: String, routeId: String?, trained: Boolean) {
+        val main = mainFor(vid, routeId)
+        val current = active[familyId]
+        if (current == null) { active[familyId] = main; return }
+        if (!trained || current == main) return
+        val route = selectedRoute(vid, routeId) ?: return
+        val from = route.mainPath.indexOf(current)
+        val to = route.mainPath.indexOf(main)
+        if (from >= 0 && to > from) active[familyId] = main
+    }
+
     private fun seed(p: ProgressionPolicy) = SeedPolicy(
         variationId = p.variationId,
         version = p.version,
@@ -186,7 +201,7 @@ class ProgressionEngine(private val catalog: Catalog) {
             var p = ensure(vid, ev.day, tier = ev.prescribedTier ?: 1, baseline = inferred)
             p = p.copy(lastTrainedDay = maxOf(p.lastTrainedDay ?: ev.day, ev.day))
             val start = p
-            active.putIfAbsent(p.familyId, mainFor(vid, ev.progressionRouteId))
+            raiseActive(active, p.familyId, vid, ev.progressionRouteId, ev.completedWorkBlocks > 0 && !ev.skippedOrPartial)
             val hold = holds[p.familyId]
             // Kettlebell weight: levels are earned per weight (owner 2026-10-08).
             val load = ev.loadGrams
@@ -267,7 +282,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                         // R7-T04 (B1): above the top step: the top step is achieved too (five stars) and the successor is active at level 1
                         val p = ensure(a.variationId, a.day, top, top)
                         vars[a.variationId] = p.copy(tier = top, baselineTier = top, enrolledAtDay = a.day, achievedTiers = (1..top).toSet())
-                        active.putIfAbsent(p.familyId, mainFor(a.variationId))
+                        raiseActive(active, p.familyId, a.variationId, null, true)
                         val next = if (isRotationAlternative(a.variationId)) null else mainSuccessor(a.variationId)?.takeIf { catalog.variation(it) != null && prerequisitesMet(it, vars) }
                         if (next != null) {
                             if (!vars.containsKey(next)) vars[next] = VariationProgress(next, family(next), 1, a.day, null, emptySet(), null, emptyList(), 0, 0, false, false, null, null)
@@ -277,11 +292,11 @@ class ProgressionEngine(private val catalog: Catalog) {
                         // R7-T11 (D5): set by hand: levels 1..achievedUpTo are done, [tier] is the one trained next
                         val p = ensure(a.variationId, a.day, a.tier, 1)
                         vars[a.variationId] = p.copy(tier = a.tier, baselineTier = 1, enrolledAtDay = a.day, achievedTiers = (1..a.achievedUpTo).toSet())
-                        active.putIfAbsent(p.familyId, mainFor(a.variationId))
+                        raiseActive(active, p.familyId, a.variationId, null, true)
                     } else {
                         val p = ensure(a.variationId, a.day, a.tier, a.tier)
                         vars[a.variationId] = p.copy(tier = a.tier, baselineTier = a.tier, enrolledAtDay = a.day)
-                        active.putIfAbsent(p.familyId, mainFor(a.variationId))
+                        raiseActive(active, p.familyId, a.variationId, null, true)
                     }
                 }
                 is UserAction.AcceptHarder -> {

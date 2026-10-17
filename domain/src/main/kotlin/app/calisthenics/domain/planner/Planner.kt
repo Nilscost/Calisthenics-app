@@ -242,8 +242,9 @@ private class Planner(val input: PlanInput) {
                 selected.mainPath.getOrNull(selected.mainPath.indexOf(latest) + 1) ?: latest else latest
         }
         if (active != null && active != pref.id && draft.swaps[slot.id] == null) {
-            cat.variation(active)?.takeIf { usable(it) && (route?.let { r -> it.id in r.mainPath } ?: (cat.progressionGroupOf(it.id) == group)) }?.let {
-                explain += "${it.name} replaces ${pref.name} because you completed all tiers of ${pref.name}."
+            // R8.1-T01 (F1): the route position is kept even when its exercise needs equipment that is missing today; the substitution below then stays at or above this rung
+            cat.variation(active)?.takeIf { (route?.let { r -> it.id in r.mainPath } ?: (cat.progressionGroupOf(it.id) == group)) && (usable(it) || route != null) }?.let {
+                if (usable(it)) explain += "${it.name} replaces ${pref.name} because you completed all tiers of ${pref.name}."
                 pref = it
             }
         }
@@ -323,14 +324,43 @@ private class Planner(val input: PlanInput) {
             inferredTier?.takeIf { it == tierIdx && slot.id !in draft.tierOverrides })
     }
 
+    /**
+     * R8.1-T01 (F1): the highest rung of [route] the person has shown, counting the route's active main step and any main step or
+     * same-rung alternate with earned stars. -1 = nothing yet. Nothing below it is ever prescribed.
+     */
+    private fun routeFloor(route: ProgressionRoute): Int {
+        var floor = input.progress.activeInFamily.values.maxOfOrNull { route.mainPath.indexOf(it) } ?: -1
+        for ((id, vp) in input.progress.variations) {
+            if (vp.earnedStars() < 1) continue
+            val role = route.members.firstOrNull { it.variationId == id }?.role
+            if (id !in route.mainPath && role != ProgressionRole.ALTERNATE) continue
+            val anchor = cat.routeAnchorFor(id, route) ?: continue
+            floor = maxOf(floor, route.mainPath.indexOf(anchor))
+        }
+        return floor
+    }
+
     private fun substitute(slot: RoutineSlot, original: ExerciseVariation, route: ProgressionRoute?): Pair<ExerciseVariation, Boolean>? {
-        val pool = cat.variations.filter { !it.demonstrationHold && !it.routineOnly && usable(it) && it.id != original.id && cat.policyFor(it) != null && app.calisthenics.domain.goals.Goals.unmet(cat, it.id, input.progress).isEmpty() }
+        val floor = route?.let { routeFloor(it) } ?: -1
+        fun belowFloor(c: ExerciseVariation): Boolean {
+            if (route == null || floor < 0) return false
+            val idx = cat.routeAnchorFor(c.id, route)?.let { route.mainPath.indexOf(it) } ?: return false
+            return idx in 0 until floor
+        }
+        val pool = cat.variations.filter { !it.demonstrationHold && !it.routineOnly && usable(it) && it.id != original.id && cat.policyFor(it) != null && !belowFloor(it) && app.calisthenics.domain.goals.Goals.unmet(cat, it.id, input.progress).isEmpty() }
         fun rank(list: List<ExerciseVariation>) = list.sortedWith(compareBy({ kotlin.math.abs(it.difficultyRank - original.difficultyRank) }, { it.id }))
         val sameRungAlternatives = if (route == null || cat.progressionRoutes.isEmpty()) pool else pool.filter { candidate ->
             route.members.any { it.variationId == candidate.id && it.role == ProgressionRole.ALTERNATE && it.atVariationId == original.id } &&
                 cat.exerciseGroups.any { it.mainVariationId == original.id && candidate.id in it.alternativeVariationIds }
         }
         rank(sameRungAlternatives.filter { slot.intent in it.patterns && slot.area in it.areas }).firstOrNull()?.let { return it to true }
+        // still the same route: a step or alternate of this progression at or above the rung already shown, never below it
+        if (route != null && floor >= 0) {
+            rank(pool.filter { c ->
+                slot.intent in c.patterns && slot.area in c.areas &&
+                    (c.id in route.mainPath || route.members.any { it.variationId == c.id && it.role == ProgressionRole.ALTERNATE }) && cat.routeAnchorFor(c.id, route) != null
+            }).firstOrNull()?.let { return it to true }
+        }
         rank(pool.filter { slot.area in it.areas }).firstOrNull()?.let { return it to false }
         return null
     }

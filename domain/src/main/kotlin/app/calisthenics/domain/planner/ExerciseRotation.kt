@@ -15,8 +15,9 @@ fun rotatedExercise(
     val route = catalog.routeById(progressionRouteId)
         ?.takeIf { main.id in it.mainPath }
         ?: catalog.mainRouteFor(main.id)
-    val mainIndex = route?.mainPath?.indexOf(main.id) ?: -1
-    val eligibleAnchors = route?.mainPath?.take(if (mainIndex < 0) route.mainPath.size else mainIndex + 1)?.toSet().orEmpty()
+    // R8.1-T01 (F1, owner 2026-10-17): only alternates of the main step's own rung rotate in. An alternate anchored at a lower rung
+    // (knee push-up next to incline, when the person works at feet-elevated) is below what they have shown and is never prescribed.
+    val eligibleAnchors = route?.let { r -> catalog.routeAnchorFor(main.id, r)?.let(::setOf) }.orEmpty()
     val legacyAncestors = if (route == null) catalog.exerciseGroups.filter { group ->
             var id: String? = group.mainVariationId
             val seen = mutableSetOf<String>()

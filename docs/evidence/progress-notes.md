@@ -837,3 +837,17 @@ NOT done: no phone testing and no owner gate approval; content stays DRAFT. The 
 
 Choices not in the plan: the host's Python 3.11 with a cached Pillow and a stub `imageio_ffmpeg` pointing at Homebrew ffmpeg was used for the installer and the Python tests, because the host had no Pillow. The fresh clone was taken from the local repository at the CI-verified commit `95fa4fc` (the sandbox proxy refuses GitHub); the later documentation-only commits do not change the code or APK inputs. The earlier code-13 `r8-build-2026-10-16.json` and the stale 2026-10-16 fresh-clone and GitHub logs are kept as history only.
 
+
+### R8.1-T01 · F1 wrong level after progress on a related exercise · 2026-10-17
+
+Cause (three, all reproduced first by `LevelNeverBelowTest`, 5 tests, all red before the fix): (1) `rotatedExercise` offered alternates of every rung up to the main step, so a person at feet-elevated got knee push-up (an alternate at incline) and a person at split squat got box or half squat (alternates at assisted squat); (2) the route position (`activeInFamily`) was set once with `putIfAbsent` and only moved on a successor transition, so air-squat sessions followed by split-squat sessions kept the squat slot at the air squat; (3) when the position's exercise was unavailable (feet-elevated needs a chair, the Home profile has none) the planner silently fell back to the slot's starter, incline push-up.
+
+Fix: rotation now takes only alternates of the main step's own rung; the engine moves the route position up (never down) when a completed session, or a self-assessment, trains a main step or alternate of a higher rung; the planner keeps the position when its exercise needs missing equipment and substitutes from the same-rung alternates, then the route at or above the rung already shown, never below (`routeFloor`). Tests: owner scenarios feet-elevated at 4 stars (no knee, no standard), split squat then squat slot, alternate-only history (diamond), imported evidence-only history.
+
+Changed assertion (owner decision 2026-10-17, F1, supersedes R8): `AlternativeStartingTargetTest.firstAlternativeAfterMainAdvancementUsesItsOriginalRungHistory` expected diamond to keep rotating in after the main step moved on to archer. It is replaced by `alternativeOfALowerRungIsNotPrescribedOnceTheMainStepHasMovedOn`. The 12 to 8 estimate for an untried same-rung alternative is unchanged and still tested. The debug seed fixture was regenerated (rotation changed the seeded plans).
+
+Tests: Docker full verify exit 0 (`r8.1-t01-verify-2026-10-17.log`).
+
+NOT done: no phone testing; content stays DRAFT.
+
+Choices not in the plan: a completed session on a higher-rung exercise moves the position even if it was chosen by hand in Preview (the plan says work on a higher rung counts). A hold on an exercise with discomfort still wins over the position.

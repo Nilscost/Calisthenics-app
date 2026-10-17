@@ -33,15 +33,20 @@ class AlternativeStartingTargetTest {
         assertFalse(progress.variations.containsKey(alt.id)) // preview is read-only
     }
 
-    @Test fun firstAlternativeAfterMainAdvancementUsesItsOriginalRungHistory() {
+    // R8.1-T01 (F1, owner decision 2026-10-17, supersedes the R8 assertion that diamond keeps rotating in once the main step has moved
+    // on to archer): an alternate of a lower rung is below what the person has shown, so it is no longer prescribed. The estimate itself
+    // (12 feet-elevated reps -> 8 diamond reps) still applies while feet-elevated is the main step (the tests above and below).
+    @Test fun alternativeOfALowerRungIsNotPrescribedOnceTheMainStepHasMovedOn() {
         val progressed = ProgressionEngine(c).replay(emptyList(), listOf(
             UserAction.SelfAssessment(0, "pushup-standard", 6), UserAction.SelfAssessment(0, main.id, 6)))
             .copy(routeWorkoutCounts = mapOf("pushup" to 1))
         assertEquals("pushup-archer", progressed.activeInFamily[main.familyId])
-        val otherAlternatives = c.routeById("pushup")!!.members.filter { it.role == ProgressionRole.ALTERNATE && it.variationId != alt.id }.map { it.variationId }.toSet()
-        val generated = (generate(PlanInput("advanced", 0, 1, c, routine, draft, SeedProfiles.home,
-            excludedVariationIds = otherAlternatives, progress = progressed)) as PlanResult.Ready).plan
-        assertTrue(generated.blocks.filter { it.type == BlockType.WORK }.all { it.variationId == alt.id && it.target!!.value == 8 && it.inferredStartTier == 3 })
+        for (count in 0..5) {
+            val p = progressed.copy(routeWorkoutCounts = mapOf("pushup" to count))
+            val generated = (generate(PlanInput("advanced", 0, 1, c, routine, draft, SeedProfiles.home, progress = p)) as PlanResult.Ready).plan
+            val used = generated.blocks.filter { it.type == BlockType.WORK }.mapNotNull { it.variationId }.toSet()
+            assertFalse("count $count: $used", alt.id in used)
+        }
     }
 
     @Test fun completedWorkoutKeepsItsStartingLevelWithoutTransferringAchievements() {
