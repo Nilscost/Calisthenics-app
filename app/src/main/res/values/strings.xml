@@ -236,7 +236,7 @@
     <string name="rule_app_levels">App levels</string>
     <string name="rule_rep_range">Rep range</string>
     <string name="rule_custom">Custom</string>
-    <string name="rule_app_levels_hint">Five levels per exercise; a level rises after 3 good sessions over at least 7 days.</string>
+    <string name="rule_app_levels_hint">Five levels per exercise; a level rises after 3 good sessions within 14 days.</string>
     <string name="rule_rep_range_hint">%1$d sets of %2$d–%3$d reps (holds %4$d–%5$d s). When every set reaches the top you move on to the next exercise and start again at the bottom. A set you do not log counts as last time\'s number.</string>
     <string name="rule_custom_hint">%1$d sets of %2$d–%3$d reps; %6$d session(s) in a row with every set at the top move you on.</string>
     <string name="rule_sets">Sets</string>

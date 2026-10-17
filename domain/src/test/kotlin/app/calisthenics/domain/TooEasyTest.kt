@@ -22,9 +22,10 @@ class TooEasyTest {
     }
 
     @Test fun `a normal session between restarts the count and a new too easy counts again`() {   // was: asserted raiseSuggested false (it needed two in a row)
-        val p = engine.replay(listOf(ev(0, above = true), ev(2), ev(4, above = true)), listOf(start)).variations.getValue(V)
+        // R8.1-T04: days moved from 0/2/4 to 0/20/40, so that three sessions inside 14 days (now a level up) do not also fire; the test is about the too-easy count
+        val p = engine.replay(listOf(ev(0, above = true), ev(20), ev(40, above = true)), listOf(start)).variations.getValue(V)
         assertEquals(1, p.consecutiveAbove); assertTrue(p.raiseSuggested)
-        assertEquals(0, engine.replay(listOf(ev(0, above = true), ev(2)), listOf(start)).variations.getValue(V).consecutiveAbove)
+        assertEquals(0, engine.replay(listOf(ev(0, above = true), ev(20)), listOf(start)).variations.getValue(V).consecutiveAbove)
     }
 
     @Test fun `below target or discomfort or skipped in the same session never counts as too easy`() {   // was: a first too easy, then the bad one
@@ -35,11 +36,11 @@ class TooEasyTest {
     }
 
     @Test fun `the suggestion is made once and only the owner's acceptance moves the tier and counts the skipped levels as done`() {
-        val e = listOf(ev(0, above = true), ev(2, above = true), ev(4, above = true))
+        val e = listOf(ev(0, above = true), ev(20, above = true), ev(40, above = true))   // R8.1-T04: spread over 40 days (was 0/2/4) so the 3-in-14 level-up does not fire
         val s = engine.replay(e, listOf(start))
         assertEquals(1, s.events.count { it.message.contains("too easy") })
         assertEquals(2, s.tierFor(V)); assertEquals(3, s.variations.getValue(V).consecutiveAbove)
-        val acc = engine.replay(e, listOf(start, UserAction.AcceptHarder(5, V, 4))).variations.getValue(V)
+        val acc = engine.replay(e, listOf(start, UserAction.AcceptHarder(41, V, 4))).variations.getValue(V)
         assertEquals(4, acc.tier); assertFalse(acc.raiseSuggested); assertEquals(0, acc.consecutiveAbove)
         assertTrue("the jumped levels 2 and 3 are done", acc.achievedTiers.containsAll(setOf(2, 3)))
         assertEquals(3, acc.earnedStars())   // baseline 2: levels 2 and 3 done, 1 counts below the start

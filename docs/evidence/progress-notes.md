@@ -875,3 +875,15 @@ Tests: Docker full verify exit 0 (`r8.1-t03-verify-2026-10-17.log`).
 NOT done: I could not reproduce a drop of a typed number on the direct path, so the two causes above are what the code allowed; the owner phone check should confirm. No phone testing.
 
 Choices not in the plan: the carried number applies to holds on the break logger as well; a partial skip counts as not qualifying (like any partial set).
+
+### R8.1-T04 · F4 level-up rule: 3 qualifying sessions within 14 days · 2026-10-17
+
+Owner decision 2026-10-17, superseding ADR 0002 §C3 (3 exposures spanning at least 7 days, one advancement per rolling 7 days, 7 days at the tier): an exercise's level rises after 3 qualifying sessions on 3 different days inside any rolling 14-day window (the first and the last at most 13 days apart). Qualifying = target met without Too hard or Pain (unchanged `SessionEvidence.qualifying`). A session that is not qualifying (below target, skipped, partial, easier override) no longer wipes the qualifying days already inside the window; pain still pauses the whole family. Sessions of the same exercise or of its same-rung alternates (the main step and the alternates at that rung, for example feet-elevated and diamond) count together, each exercise rising at its own level and using the days only for the level it has just earned. A gap longer than 14 days costs nothing. Too easy keeps its one-tap jump (`AcceptHarder`).
+
+Changed assertions (each explained in the tests): `ProgressionTest` G3-P02 (days 0/2/6 now advance), G3-P06 (three new sessions after an advancement advance again; the 7-day cap is gone), G3-P07 (kept NoChange, new reason: sessions from before the enrollment day do not count). `ProgressionEngineTest`: "days 0 2 6" (now advance, once a week does not), "below target restarts the streak" (now keeps the earlier qualifying day), "only one tier per seven days" (now: a level needs three sessions of its own, expected tier 4). `TooEasyTest`: two tests moved their evidence days from 0/2/4 to 0/20/40 so that three sessions inside 14 days (now a level up) do not also fire; they test the too-easy count. New: `LevelUpWindowTest` (5 cases: 3 in 10 days, 3 over 3 weeks, a month off keeps stars, too hard and pain, feet-elevated plus diamond, too easy jump) and window-edge cases in `ProgressionTest`. UI copy ("3 good sessions within 14 days") and the README line were updated; the debug seed fixture was regenerated.
+
+Tests: Docker full verify exit 0 (`r8.1-t04-verify-2026-10-17.log`).
+
+NOT done: no phone testing; content stays DRAFT.
+
+Choices not in the plan: "within any rolling 14-day window" is read as 14 calendar days (days 0, 7 and 14 do not count as one window); the Rep range / Custom rule (`ruleSessions`) is unchanged because it is not the app-levels rule.

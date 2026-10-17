@@ -42,10 +42,12 @@ class ProgressionTest {
         assertEquals(listOf(0, 3, 7), r.evidenceDays)
     }
 
+    // R8.1-T04 (F4, owner decision 2026-10-17, supersedes ADR 0002 §C3): was "days 0 2 6 do not span seven days and do not advance".
+    // The span rule is gone: three qualifying sessions inside any rolling 14-day window advance one tier.
     @Test
-    fun `G3-P02 days 0 2 6 do not span seven days and do not advance`() {
+    fun `G3-P02 days 0 2 6 are three sessions inside one 14-day window and advance`() {
         val r = evaluateAdvancement(input(now = 6, days = listOf(0, 2, 6)))
-        assertEquals(AdvancementResult.NoChange, r)
+        assertTrue("expected Advance, got $r", r is AdvancementResult.Advance)
     }
 
     @Test
@@ -81,8 +83,10 @@ class ProgressionTest {
         assertEquals(AdvancementResult.NoChange, evaluateAdvancement(input(current = 5, enrolledAt = 0, now = 30, days = listOf(0, 10, 20))))
     }
 
+    // R8.1-T04 (F4): was "another advancement within seven days of the previous one is refused". The pace cap is gone; the next level
+    // needs three qualifying sessions of its own (the engine clears the earlier ones), so three new sessions advance it again.
     @Test
-    fun `G3-P06 another advancement within seven days of the previous one is refused`() {
+    fun `G3-P06 three new qualifying sessions after an advancement advance again, with no seven-day cap`() {
         val r = evaluateAdvancement(
             AdvancementInput(
                 policy = policy,
@@ -97,13 +101,30 @@ class ProgressionTest {
                 lastAutoAdvancementDay = 7,
             )
         )
-        assertEquals(AdvancementResult.NoChange, r)
+        assertTrue("expected Advance, got $r", r is AdvancementResult.Advance)
+    }
+
+    // R8.1-T04 (F4): was "first advancement needs seven days at the tier" (same expectation, new reason): the 7 days at the tier are gone,
+    // but sessions from before the tier was enrolled never count towards it.
+    @Test
+    fun `G3-P07 sessions from before the tier was enrolled do not count`() {
+        assertEquals(AdvancementResult.NoChange, evaluateAdvancement(input(enrolledAt = 3, now = 8, days = listOf(0, 3, 8))))
+        assertTrue(evaluateAdvancement(input(enrolledAt = 3, now = 8, days = listOf(3, 5, 8))) is AdvancementResult.Advance)
     }
 
     @Test
-    fun `G3-P07 first advancement needs seven days at the tier`() {
-        // Enrolled tier 2 only 5 days ago; even 3 qualifying exposures spanning 7 -> no.
-        assertEquals(AdvancementResult.NoChange, evaluateAdvancement(input(enrolledAt = 3, now = 8, days = listOf(0, 3, 8))))
+    fun `R8-1-F4 the window is 14 calendar days so the first and last session are at most 13 days apart`() {
+        assertTrue(evaluateAdvancement(input(now = 13, days = listOf(0, 7, 13))) is AdvancementResult.Advance)
+        assertEquals(AdvancementResult.NoChange, evaluateAdvancement(input(now = 14, days = listOf(0, 7, 14))))
+        assertTrue(evaluateAdvancement(input(now = 14, days = listOf(0, 1, 7, 14))) is AdvancementResult.Advance) // 0, 1, 7 are inside one window
+    }
+
+    @Test
+    fun `R8-1-F4 a long gap before the sessions costs nothing and a slow pace still advances`() {
+        assertTrue(evaluateAdvancement(input(now = 61, days = listOf(0, 59, 60, 61))) is AdvancementResult.Advance)
+        assertEquals(AdvancementResult.NoChange, evaluateAdvancement(input(now = 61, days = listOf(0, 30, 61))))
+        // the pace is not capped: three sessions in four days advance
+        assertTrue(evaluateAdvancement(input(now = 4, days = listOf(2, 3, 4))) is AdvancementResult.Advance)
     }
 
     @Test

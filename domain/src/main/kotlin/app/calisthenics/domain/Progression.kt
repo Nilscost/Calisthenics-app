@@ -7,10 +7,8 @@ package app.calisthenics.domain
  * (spec §2: deterministic tests with fixed values). Defaults implement ADR
  * 0002 §C (owner-approved 2026-09-28) and spec §5:
  *  - an "exposure" is one qualifying session for the variation (C2);
- *  - 3 qualifying exposures spanning >= 7 days advance the prescription by
- *    ONE tier (C3);
- *  - at most one automatic advancement per rolling 7-day period (C3);
- *  - first advancement also needs 7 days since enrollment at the tier (C3).
+ *  - R8.1-T04 (owner 2026-10-17, supersedes C3): 3 qualifying exposures within any rolling 14-day window advance the
+ *    prescription by ONE tier; the earlier "spanning >= 7 days / one per 7 days / 7 days at the tier" pacing is gone.
  */
 
 /** One reviewed prescription tier. Targets are authored per variation; no
@@ -72,30 +70,25 @@ data class AdvancementInput(
     }
 }
 
+/** R8.1-T04 (F4, owner decision 2026-10-17): a level rises after this many qualifying sessions ... */
+const val LEVEL_UP_SESSIONS = 3
+/** ... that fall inside any rolling window of this many days (a window holds 14 calendar days, so the first and the last session are at most 13 days apart). */
+const val LEVEL_UP_WINDOW_DAYS = 14
+
 /**
- * Evaluate advancement under the owner-approved defaults (ADR 0002 §C3):
- *  - need >= 3 qualifying exposures for the variation;
- *  - exposures must span at least 7 days (maxDay - minDay >= 7);
- *  - at most one automatic advancement per rolling 7-day window;
- *  - first advancement requires 7 days since enrollment at the tier.
- * ABOVE ratings, extra rounds and same-day sessions never accelerate this.
+ * Evaluate advancement under the owner decision of 2026-10-17 (R8.1-T04, F4), which supersedes ADR 0002 §C3 ("3 exposures spanning at
+ * least 7 days, one advancement per 7 days, 7 days at the tier"):
+ *  - a level rises after [LEVEL_UP_SESSIONS] qualifying sessions (distinct days) inside any rolling [LEVEL_UP_WINDOW_DAYS]-day window;
+ *  - sessions before the day the tier was enrolled do not count; a longer gap between sessions never costs anything already earned;
+ *  - ABOVE ratings, extra rounds and same-day sessions never accelerate this (each day counts once).
+ * [AdvancementInput.lastAutoAdvancementDay] is kept for callers but no longer limits the pace.
  */
 fun evaluateAdvancement(input: AdvancementInput): AdvancementResult {
     val p = input.policy
     val next = p.nextTierIndex(input.currentTier) ?: return AdvancementResult.NoChange
 
-    val relevant = input.exposures.filter { it.variationId == p.variationId }
-    if (relevant.size < 3) return AdvancementResult.NoChange
-
-    val days = relevant.map { it.day }.distinct().sorted()
-    val span = days.last() - days.first()
-    if (span < 7) return AdvancementResult.NoChange // e.g. days 0/2/6 -> no
-
-    if (input.nowDay - input.enrolledAtDay < 7) return AdvancementResult.NoChange
-
-    input.lastAutoAdvancementDay?.let { last ->
-        if (input.nowDay - last < 7) return AdvancementResult.NoChange
-    }
-
+    val days = input.exposures.filter { it.variationId == p.variationId && it.day >= input.enrolledAtDay }.map { it.day }.distinct().sorted()
+    val inWindow = (0..days.size - LEVEL_UP_SESSIONS).any { days[it + LEVEL_UP_SESSIONS - 1] - days[it] < LEVEL_UP_WINDOW_DAYS }
+    if (!inWindow) return AdvancementResult.NoChange
     return AdvancementResult.Advance(input.currentTier, next, days)
 }

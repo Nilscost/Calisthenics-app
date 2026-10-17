@@ -25,8 +25,10 @@ class ProgressionEngineTest {
         assertEquals(1, p.earnedStars().let { if (p.baselineTier == 2) 1 else it }.coerceAtLeast(1))
     }
 
-    @Test fun `days 0 2 6 do not advance`() {
-        assertEquals(2, engine.replay(listOf(ev(0), ev(2), ev(6)), listOf(start)).tierFor(V))
+    // R8.1-T04 (F4, owner decision 2026-10-17): was "days 0 2 6 do not advance" (needed a 7-day span); three sessions in 14 days advance now
+    @Test fun `days 0 2 6 are three sessions in one 14-day window and advance`() {
+        assertEquals(3, engine.replay(listOf(ev(0), ev(2), ev(6)), listOf(start)).tierFor(V))
+        assertEquals(2, engine.replay(listOf(ev(0), ev(7), ev(14)), listOf(start)).tierFor(V))   // once a week is too slow for the window
     }
 
     @Test fun `no advancement from calendar passage alone`() {
@@ -41,10 +43,14 @@ class ProgressionEngineTest {
         assertEquals(a, b); assertEquals(a, c)
     }
 
-    @Test fun `below target restarts the streak and two in a row suggest a lower target without changing it`() {
+    // R8.1-T04 (F4): was "below target restarts the streak ...": a session below target is just not a qualifying one now and no longer wipes the
+    // qualifying day already inside the window (the lower-target suggestion after two in a row is unchanged).
+    @Test fun `below target does not count, keeps earlier qualifying days, and two in a row suggest a lower target without changing it`() {
         val s = engine.replay(listOf(ev(0), ev(2, below = true), ev(4, below = true)), listOf(start))
         val p = s.variations.getValue(V)
-        assertEquals(2, p.tier); assertTrue(p.lowerTargetSuggested); assertTrue(p.streakDays.isEmpty())
+        assertEquals(2, p.tier); assertTrue(p.lowerTargetSuggested); assertEquals(listOf(0), p.streakDays)
+        // a below session in between does not stop three good ones inside the window from counting
+        assertEquals(3, engine.replay(listOf(ev(0), ev(3, below = true), ev(6), ev(9)), listOf(start)).tierFor(V))
     }
 
     @Test fun `skipped or one block sessions do not count`() {
@@ -94,10 +100,15 @@ class ProgressionEngineTest {
         assertEquals(2, resumed.tierFor(V))
     }
 
-    @Test fun `only one tier per seven days even with many sessions`() {
+    // R8.1-T04 (F4): was "only one tier per seven days even with many sessions" (expected tier 3). With the 3-in-14 rule the pace is not capped, but a level
+    // needs three sessions of its own: days 0-2 at level 2 advance it on day 2; the sessions prescribed on days 3-7 were still planned for level 2 and
+    // do not count for level 3; days 8-10 are level 3 and advance it to 4.
+    @Test fun `a level needs three qualifying sessions of its own and a day never gives two levels`() {
         val days = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
         val s = engine.replay(days.map { ev(it, tier = if (it <= 7) 2 else 3) }, listOf(start))
-        assertEquals(3, s.tierFor(V))
+        assertEquals(4, s.tierFor(V))
+        assertEquals(2, engine.replay(listOf(ev(0), ev(0), ev(0), ev(1)), listOf(start)).tierFor(V))   // four sessions on two days are two days
+        assertEquals(2, engine.replay(listOf(ev(0), ev(0), ev(1)), listOf(start)).tierFor(V))   // same-day sessions are one day
     }
 
     @Test fun `five stars kept and successor chosen after top tier`() {

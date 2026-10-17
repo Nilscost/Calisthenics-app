@@ -167,6 +167,25 @@ class ProgressionEngine(private val catalog: Catalog) {
         if (from >= 0 && to > from) active[familyId] = main
     }
 
+    /** R8.1-T04 (F4): the other exercises of the same rung of the route: the main step and its same-rung alternates. */
+    private fun rungMates(vid: String, routeId: String?): List<String> {
+        val route = selectedRoute(vid, routeId)
+        if (route != null) {
+            val anchor = catalog.routeAnchorFor(vid, route) ?: return emptyList()
+            return (listOf(anchor) + route.members.filter { it.role == app.calisthenics.domain.model.ProgressionRole.ALTERNATE && it.atVariationId == anchor }.map { it.variationId })
+                .filter { it != vid }
+        }
+        val group = catalog.exerciseGroups.firstOrNull { vid == it.mainVariationId || vid in it.alternativeVariationIds } ?: return emptyList()
+        return (listOf(group.mainVariationId) + group.alternativeVariationIds).filter { it != vid }
+    }
+
+    /** The qualifying days that count for [p]: its own and the ones of its same-rung exercises since the level was enrolled or last advanced. */
+    private fun pooledDays(p: VariationProgress, vars: Map<String, VariationProgress>, routeId: String?): List<Int> {
+        val floor = maxOf(p.enrolledAtDay, (p.lastAutoAdvanceDay ?: Int.MIN_VALUE).let { if (it == Int.MIN_VALUE) it else it + 1 })
+        val others = rungMates(p.variationId, routeId).flatMap { vars[it]?.streakDays.orEmpty() }.filter { it >= floor }
+        return (p.streakDays + others).distinct().sorted()
+    }
+
     private fun seed(p: ProgressionPolicy) = SeedPolicy(
         variationId = p.variationId,
         version = p.version,
@@ -236,11 +255,23 @@ class ProgressionEngine(private val catalog: Catalog) {
                     val days = (p.streakDays + ev.day).distinct().sorted()
                     p = p.copy(streakDays = days, streakAssumed = p.streakAssumed + if (ev.confirmedBlocks == 0) 1 else 0,
                         consecutiveBelow = 0, lowerTargetSuggested = false)
-                    if (autoProgression) p = tryAdvance(p, ev.day, events, active, vars, ev.progressionRouteId)
+                    if (autoProgression) {
+                        // R8.1-T04 (F4): the same session also counts for the exercises of the same rung (feet-elevated and diamond count together).
+                        // Everything is evaluated on the same snapshot, so one exercise's advance does not take the days away from the other.
+                        vars[vid] = p
+                        val snapshot = vars.toMap()
+                        val mates = rungMates(vid, ev.progressionRouteId).mapNotNull { mate ->
+                            val m = snapshot[mate]?.takeIf { !it.autoPaused && holds[it.familyId] == null } ?: return@mapNotNull null
+                            mate to tryAdvance(m, ev.day, events, active, snapshot, ev.progressionRouteId, pooledDays(m, snapshot, ev.progressionRouteId))
+                        }
+                        p = tryAdvance(p, ev.day, events, active, snapshot, ev.progressionRouteId, pooledDays(p, snapshot, ev.progressionRouteId))
+                        mates.forEach { (k, v) -> vars[k] = v }
+                    }
                 }
                 ev.anyBelow && !ev.discomfort -> {
+                    // R8.1-T04 (F4): a session below target is simply not a qualifying one; it no longer wipes the qualifying sessions already inside the 14-day window
                     val below = p.consecutiveBelow + 1
-                    p = p.copy(streakDays = emptyList(), streakAssumed = 0, consecutiveBelow = below)
+                    p = p.copy(consecutiveBelow = below)
                     if (below >= BELOW_SUGGEST_AFTER && !p.lowerTargetSuggested && p.tier > 1) {
                         p = p.copy(lowerTargetSuggested = true)
                         events += ProgressEvent(ev.day, vid, "Two sessions in a row below target — a lower target (tier ${p.tier - 1}) is suggested. Nothing changes unless you accept.")
@@ -248,9 +279,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                         events += ProgressEvent(ev.day, vid, "Below target — difficulty held at tier ${p.tier}; the qualifying streak restarts.")
                     }
                 }
-                ev.skippedOrPartial || ev.easierOverride -> {
-                    p = p.copy(streakDays = emptyList(), streakAssumed = 0)
-                }
+                ev.skippedOrPartial || ev.easierOverride -> Unit   // R8.1-T04 (F4): not qualifying, not a reset
                 else -> Unit
             }
             // V02 / D7, R7.2-T06 (F7, O1): "too easy" (once is enough) suggests a move on; the tier itself never changes here. What the move is (two levels, or the next exercise) is decided in [suggest].
@@ -382,6 +411,8 @@ class ProgressionEngine(private val catalog: Catalog) {
         active: MutableMap<String, String>,
         vars: Map<String, VariationProgress>,
         routeId: String? = null,
+        /** The qualifying days that count (own and same-rung); default: the exercise's own. */
+        days: List<Int> = p0.streakDays,
     ): VariationProgress {
         val pol = policy(p0.variationId) ?: return p0
         val r = evaluateAdvancement(
@@ -390,7 +421,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                 currentTier = p0.tier,
                 enrolledAtDay = p0.enrolledAtDay,
                 nowDay = day,
-                exposures = p0.streakDays.map { QualifyingExposure(pol.variationId, it) },
+                exposures = days.map { QualifyingExposure(pol.variationId, it) },
                 lastAutoAdvancementDay = p0.lastAutoAdvanceDay,
             ),
         )
@@ -398,12 +429,12 @@ class ProgressionEngine(private val catalog: Catalog) {
         if (r is AdvancementResult.Advance) {
             val newTarget = pol.tier(r.toTier).target
             events += ProgressEvent(day, p0.variationId,
-                "Tier ${r.fromTier} achieved after ${p0.streakDays.size} qualifying sessions over ${p0.streakDays.last() - p0.streakDays.first()} days. Next target: $newTarget (tier ${r.toTier}).$assumedNote")
+                "Tier ${r.fromTier} achieved after ${r.evidenceDays.size} qualifying sessions over ${r.evidenceDays.last() - r.evidenceDays.first()} days. Next target: $newTarget (tier ${r.toTier}).$assumedNote")
             return p0.copy(tier = r.toTier, enrolledAtDay = day, achievedTiers = p0.achievedTiers + r.fromTier,
                 lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
         }
         // Top tier: same pacing gate (evaluated as if a 6th tier existed) then successor move.
-        if (p0.tier == 5 && 5 !in p0.achievedTiers && gateWouldPass(pol, p0, day)) {
+        if (p0.tier == 5 && 5 !in p0.achievedTiers && gateWouldPass(pol, p0, day, days)) {
             val achieved = p0.copy(achievedTiers = p0.achievedTiers + 5, lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
             val successor = if (isRotationAlternative(p0.variationId, routeId)) null else mainSuccessor(p0.variationId, routeId)?.takeIf { prerequisitesMet(it, vars + (p0.variationId to achieved)) }
             val name = catalog.variation(p0.variationId)?.name ?: p0.variationId
@@ -426,11 +457,11 @@ class ProgressionEngine(private val catalog: Catalog) {
         return p0
     }
 
-    private fun gateWouldPass(pol: ProgressionPolicy, p: VariationProgress, day: Int): Boolean {
+    private fun gateWouldPass(pol: ProgressionPolicy, p: VariationProgress, day: Int, days: List<Int> = p.streakDays): Boolean {
         // Same pacing gate as every other tier: evaluate it as a 4 -> 5 step (the gate only
         // depends on exposures, enrollment day and the 7-day cap, not on the tier numbers).
         val r = evaluateAdvancement(
-            AdvancementInput(seed(pol), 4, p.enrolledAtDay, day, p.streakDays.map { QualifyingExposure(pol.variationId, it) }, p.lastAutoAdvanceDay),
+            AdvancementInput(seed(pol), 4, p.enrolledAtDay, day, days.map { QualifyingExposure(pol.variationId, it) }, p.lastAutoAdvanceDay),
         )
         return r is AdvancementResult.Advance
     }
