@@ -909,3 +909,15 @@ Tests: `FlowOptionTest` (5: circuit, straight sets, pairs, shorter plan with str
 NOT done: the program-only flow switch is still on the Programs screen until R8.1-T08 replaces that screen. No phone testing.
 
 Choices not in the plan: between pairs counts as "between exercises" (no rest in Flow); the Train tab shows no flow control (the Preview is the one place, as asked).
+
+### R8.1-T07 · F8 each between-set stretch at most twice · 2026-10-17
+
+Cause: the planner chose the between-set stretch by `(round - 1 + slot) mod compatible stretches`, so with a long workout or a short list of compatible stretches the same one came back round after round. Now `rounds()` counts the uses of every stretch in the workout (a stretch with two sides is one use) and takes the next compatible stretch in rotation order that has been used fewer than `MAX_STRETCH_USES` (2) times; if none is left the break is plain rest (`PASSIVE_RECOVERY`) and the plan says so. A stretch the person picked by hand in the Preview is kept as chosen and only counted. Warm-up, cool-down and added extras are not between-set stretches and are not counted.
+
+Changed assertions (owner decision 2026-10-17): `PlannerTest` "stretch on has no passive recovery and every recovery follows a stretch" and the "generated matrix always satisfies the invariants" check `no PASSIVE_RECOVERY when stretch is on` become "each stretch at most twice, and plain rest only after a stretch reached two uses" (the fixture catalog has two stretches, so six rounds use them up). The planner's internal invariant `passive recovery with stretch on` is replaced by the plan note. New: `StretchVarietyTest` (rounds 1 to 10, every format, four goals, several exercise counts: no stretch above two; variety; hand pick kept). The debug seed fixture was regenerated.
+
+Tests: Docker full verify exit 0 (`r8.1-t07-verify-2026-10-17.log`).
+
+NOT done: no phone testing.
+
+Choices not in the plan: the count is per workout as generated; changing the format or rounds in the Preview regenerates it. Running out of compatible stretches gives plain rest, as the plan says, with the existing rest duration of the slot.

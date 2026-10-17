@@ -94,10 +94,22 @@ class PlannerTest {
         assertEquals("duration-range", infeasible(input(30).copy(draft = input(30).draft.copy(durationSeconds = 1830))).reasons.single().code)
     }
 
-    @Test fun `stretch on has no passive recovery and every recovery follows a stretch`() {
+    /** R8.1-T07 (F8): how many times each stretch is used between sets (both sides of a stretch are one use). */
+    private fun betweenSetUses(p: WorkoutPlan) = p.blocks.filter { it.type == BlockType.STRETCH && it.recoveryForBlockIds.isNotEmpty() }
+        .map { Triple(it.variationId, it.roundIndex, it.slotId) }.distinct().groupingBy { it.first }.eachCount()
+
+    // R8.1-T07 (F8, owner 2026-10-17): was "stretch on has no passive recovery". A stretch between sets now appears at most twice in a workout, so when the
+    // compatible stretches are used up the break is plain rest instead of a third repeat; before that, stretch on still means no passive recovery.
+    @Test fun `stretch on uses each stretch at most twice and falls back to plain rest only when they are used up`() {
         val p = ready(input(30))
-        assertTrue(p.blocks.none { it.type == BlockType.PASSIVE_RECOVERY })
         assertTrue(p.blocks.any { it.type == BlockType.STRETCH })
+        assertTrue("${betweenSetUses(p)}", betweenSetUses(p).values.all { it <= MAX_STRETCH_USES })
+        if (p.blocks.any { it.type == BlockType.PASSIVE_RECOVERY }) assertTrue("${betweenSetUses(p)}", betweenSetUses(p).values.any { it == MAX_STRETCH_USES })
+        // this fixture has only two usable stretches, so six rounds use them up: the remaining breaks are plain rest
+        val long = ready(input(10))
+        assertTrue(betweenSetUses(long).values.all { it <= MAX_STRETCH_USES })
+        assertTrue(long.blocks.any { it.type == BlockType.PASSIVE_RECOVERY })
+        assertTrue(long.changesExplained.any { it.contains("plain rest because each compatible stretch was already used twice") })
     }
 
     @Test fun `stretch off keeps ordinary recovery and no stretch blocks`() {
@@ -236,7 +248,8 @@ class PlannerTest {
                 val p = r.plan
                 assertTrue(p.plannedDurationSeconds <= m * 60)
                 assertEquals(p.blocks.sumOf { it.durationSeconds }, p.plannedDurationSeconds)
-                if (stretch) assertTrue(p.blocks.none { it.type == BlockType.PASSIVE_RECOVERY })
+                // R8.1-T07 (F8): was "no passive recovery with stretch on"; now plain rest is allowed once the compatible stretches were used twice
+                if (stretch) { assertTrue(betweenSetUses(p).values.all { it <= MAX_STRETCH_USES }); if (p.blocks.any { it.type == BlockType.PASSIVE_RECOVERY }) assertTrue(betweenSetUses(p).values.any { it == MAX_STRETCH_USES }) }
                 assertTrue(p.blocks.all { it.durationSeconds > 0 })
                 if (m * 60 - p.plannedDurationSeconds > UNDERFILL_TOLERANCE_SECONDS) assertTrue("underfill needs acceptance m=$m", p.needsAcceptance)
             } else assertTrue((r as PlanResult.Infeasible).alternatives.isNotEmpty())

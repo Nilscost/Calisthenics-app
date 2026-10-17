@@ -29,6 +29,8 @@ const val TIMED_WORK_SECONDS = 60
 const val TIMED_REST_SECONDS = 55
 /** NOT in the ADR: shortest stretch segment worth announcing. Needs owner review at G2. */
 const val MIN_STRETCH_SEGMENT_SECONDS = 10
+/** R8.1-T07 (F8): one stretch between sets may appear this many times in one workout. */
+const val MAX_STRETCH_USES = 2
 /** R7-T13 (D10): the stretching cool-down aims at 5 minutes and stays within 8. */
 const val COOLDOWN_TARGET_SECONDS = 5 * 60
 const val COOLDOWN_MAX_SECONDS = 8 * 60
@@ -171,7 +173,8 @@ private class Planner(val input: PlanInput) {
         // 10. invariants (defensive; failing here is a bug, not a user problem)
         val blocks = pick.blocks
         check(blocks.sumOf { it.durationSeconds } <= budget) { "plan exceeds budget" }
-        if (draft.stretchOn) check(blocks.none { it.type == BlockType.PASSIVE_RECOVERY }) { "passive recovery with stretch on" }
+        // R8.1-T07 (F8): with stretching on, plain rest appears only where every compatible stretch had already been used twice
+        if (blocks.any { it.type == BlockType.PASSIVE_RECOVERY } && draft.stretchOn) explain += "Some breaks are plain rest because each compatible stretch was already used twice in this workout."
         check(blocks.all { it.type != BlockType.TRANSITION || it.durationSeconds <= TRANSITION_SECONDS })
 
         val usesDraft = blocks.mapNotNull { it.variationId }.distinct().any { cat.variation(it)?.reviewState == ReviewState.DRAFT }
@@ -414,6 +417,8 @@ private class Planner(val input: PlanInput) {
 
     private fun rounds(sl: List<Chosen>, rounds: Int): List<TimelineBlock> {
         val out = mutableListOf<TimelineBlock>()
+        // R8.1-T07 (F8): a stretch between sets appears at most MAX_STRETCH_USES times in a workout; hand picks are the person's own and are only counted
+        val stretchUses = mutableMapOf<String, Int>()
         val order = sequenceOf(sl.size, rounds, sl.map { it.slot.group })
         for ((pos, item) in order.withIndex()) {
             val (r, si, group) = item
@@ -463,7 +468,16 @@ private class Planner(val input: PlanInput) {
                 out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.PASSIVE_RECOVERY, window, r, c.slot.id, recoveryForBlockIds = workIds, groupIndex = group)
             } else {
                 val cands = stretchesFor(v)
-                val s = (draft.roundStretchPicks["$r:${c.slot.id}"] ?: draft.stretchPicks[c.slot.id])?.let { cat.variation(it) }?.takeIf { it.kind in setOf(Kind.STRETCH, Kind.MOBILITY) && !it.demonstrationHold && isAvailable(it, input.profile) } ?: cands[(r - 1 + si) % cands.size]
+                val hand = (draft.roundStretchPicks["$r:${c.slot.id}"] ?: draft.stretchPicks[c.slot.id])?.let { cat.variation(it) }?.takeIf { it.kind in setOf(Kind.STRETCH, Kind.MOBILITY) && !it.demonstrationHold && isAvailable(it, input.profile) }
+                val start = (r - 1 + si) % cands.size
+                val s = hand ?: cands.indices.map { cands[(start + it) % cands.size] }.firstOrNull { (stretchUses[it.id] ?: 0) < MAX_STRETCH_USES }
+                if (s == null) {
+                    // every compatible stretch was used twice already: plain rest instead of repeating one a third time
+                    out += TimelineBlock("r$r-${c.slot.id}-rec", BlockType.PASSIVE_RECOVERY, window, r, c.slot.id, recoveryForBlockIds = workIds, groupIndex = group)
+                    extras()
+                    continue
+                }
+                stretchUses[s.id] = (stretchUses[s.id] ?: 0) + 1
                 if (s.unilateral) {
                     val seg = maxOf((window + 1) / 2, s.defaultSeconds ?: 0) // never below the reviewed minimum recovery; a deep stretch keeps its own time per side (R7-T12)
                     for (side in listOf(Side.LEFT, Side.RIGHT)) out += TimelineBlock("r$r-${c.slot.id}-rec-${side.name.first()}", BlockType.STRETCH, seg, r, c.slot.id, s.id, side,
