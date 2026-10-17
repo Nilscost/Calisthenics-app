@@ -28,6 +28,11 @@ appId: app.calisthenics.personal
 - scrollUntilVisible: { element: { id: preview_format_PAIRS }, direction: DOWN, timeout: 8000 }
 - takeScreenshot: 02a-preview-format-${VARIANT}
 - tapOn: { id: preview_format_PAIRS }
+# R8.1-T06 (F7): Flow, one toggle in the Preview (no rest between exercises); switched back off right away
+- scrollUntilVisible: { element: { id: preview_flow_switch }, direction: DOWN, timeout: 8000 }
+- tapOn: { id: preview_flow_switch }
+- takeScreenshot: 02a2-preview-flow-${VARIANT}
+- tapOn: { id: preview_flow_switch }
 - scrollUntilVisible: { element: { id: all_sets_header }, direction: UP, timeout: 8000 }
 - tapOn: { id: "level_plus_.*", index: 0 }
 - takeScreenshot: 02b-preview-level-${VARIANT}

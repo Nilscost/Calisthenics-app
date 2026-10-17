@@ -179,7 +179,7 @@ private class Planner(val input: PlanInput) {
             id = input.planId, routineId = input.routine.id, routineRevision = input.routine.revision,
             catalogVersion = cat.catalogVersion, createdAtEpochMs = input.createdAtEpochMs, profileId = input.profile.id,
             requestedDurationSeconds = budget, plannedDurationSeconds = pick.total, focus = draft.focus,
-            stretchOn = draft.stretchOn, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed, format = draft.format, rule = draft.rule,
+            stretchOn = draft.stretchOn, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed, format = draft.format, rule = draft.rule, flow = draft.flow,
             changesExplained = explain.distinct(), warnings = warn.distinct(), needsAcceptance = needsAcceptance,
             usesDraftContent = usesDraft, blocks = blocks,
         ))
@@ -449,7 +449,14 @@ private class Planner(val input: PlanInput) {
                 }
             }
             val restSecs = c.slot.restSeconds ?: t.minRecoverySeconds   // V22: a routine can set its own rest (0 = none)
-            if (isLast || restSecs <= 0) { extras(); continue }
+            // R8.1-T06 (F7): Flow drops the rest between exercises; the rest after a set (before the same exercise again, or at the end of a round) stays
+            val next = order.getOrNull(pos + 1)
+            val betweenExercises = next != null && when (draft.format) {
+                WorkoutFormat.CIRCUIT -> next.first == r
+                WorkoutFormat.PAIRS -> next.third != group || (next.first == r && next.second != si)
+                WorkoutFormat.STRAIGHT -> next.second != si
+            }
+            if (isLast || restSecs <= 0 || (draft.flow && betweenExercises)) { extras(); continue }
             // Timed mode keeps one 60 s cycle per exercise: the time a short hold does not use goes to the recovery (the stretch when stretch is on).
             val window = if (draft.timed) TIMED_REST_SECONDS + (TIMED_WORK_SECONDS - workTotal).coerceAtLeast(0) else restSecs
             if (!draft.stretchOn) {

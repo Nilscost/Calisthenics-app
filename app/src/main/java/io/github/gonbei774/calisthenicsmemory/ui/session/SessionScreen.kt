@@ -345,7 +345,8 @@ private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) 
                 else Text(stringResource(R.string.end_saved), style = MaterialTheme.typography.bodyMedium)
             }
         }
-        if (exercises.isNotEmpty() && !st.plan.flow) {
+        // R8.1-T06 (F7): a Flow workout still logs actual reps, so the editor is there to correct DONE; only a flow program has no per-item results
+        if (exercises.isNotEmpty() && !(st.plan.fixedProgramId != null && st.plan.flow)) {
             AppTextButton(onClick = { editing = !editing }, modifier = Modifier.testTag("end_edit")) { Text(stringResource(R.string.end_edit_logged)) }
             if (editing) exercises.forEach { vid ->
                 val blocks = st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid && st.executions[it.id] == Execution.COMPLETED }

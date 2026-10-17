@@ -170,6 +170,8 @@
     <string name="train_new_profile">New profile</string>
     <string name="train_sets_caption">Sets</string>
     <string name="train_format_caption">Workout format</string>
+    <string name="preview_flow">Flow</string>
+    <string name="preview_flow_hint">No rest timer between exercises: the next one starts after the reps or the time. Rest between sets stays as set.</string>
     <string name="format_circuit">Circuit</string>
     <string name="format_pairs">Pairs</string>
     <string name="format_straight">Straight sets</string>

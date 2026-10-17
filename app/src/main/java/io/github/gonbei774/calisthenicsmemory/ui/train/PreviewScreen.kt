@@ -243,7 +243,8 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
     // R8.1-T05 (F5): the set format and the number of sets are chosen here too; they are today's settings, so Train shows the same
     var format by remember { mutableStateOf(openingSettings.format) }
     var sets by remember { mutableStateOf(openingSettings.rounds) }
-    val settings = remember(format, sets) { openingSettings.copy(format = format, rounds = sets) }
+    var flow by remember { mutableStateOf(openingSettings.flow) }   // R8.1-T06 (F7)
+    val settings = remember(format, sets, flow) { openingSettings.copy(format = format, rounds = sets, flow = flow) }
     // A Room progress refresh may replace TrainData while the Preview is open. Preserve the user's draft edits.
     var routine by remember { mutableStateOf(resolved.routine) }
     var edits by remember { mutableStateOf(draft?.edits ?: resolved.edits) }
@@ -321,6 +322,15 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
                             Text(stringResource(if (format == WorkoutFormat.CIRCUIT) R.string.train_rounds_caption else R.string.train_sets_caption), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
                             io.github.gonbei774.calisthenicsmemory.ui.components.Stepper(sets, { sets = it; TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(rounds = it)) }, MIN_TRAIN_ROUNDS..MAX_EXPLICIT_ROUNDS, tag = "preview_rounds")
                         }
+                    }
+                    // R8.1-T06 (F7): Flow next to the rest controls: no rest timer between exercises, the rest between sets stays as set
+                    Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
+                        Column(Modifier.weight(1f)) {
+                            Text(stringResource(R.string.preview_flow), style = MaterialTheme.typography.bodyLarge)
+                            Text(stringResource(R.string.preview_flow_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("preview_flow_hint"))
+                        }
+                        val flowLabel = stringResource(R.string.preview_flow)
+                        Switch(checked = flow, onCheckedChange = { flow = it; TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(flow = it)) }, modifier = Modifier.semantics { contentDescription = flowLabel }.testTag("preview_flow_switch"))
                     }
                     savedNote?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("routine_saved_note")) }
                     val rule = edits.rule ?: routine.rule

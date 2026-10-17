@@ -83,6 +83,8 @@ data class SessionDraft(
     /** R7.2-T04 (F5): cool-down stretches removed / added by hand in the Preview. */
     val cooldownRemoved: Set<String> = emptySet(),
     val cooldownAdded: List<String> = emptyList(),
+    /** R8.1-T06 (F7): Flow = no rest between exercises (auto-advance after reps or time); rest between sets stays as set. */
+    val flow: Boolean = false,
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(

@@ -318,6 +318,24 @@ class SessionScreenTest {
         assertTrue(exited)
     }
 
+    // R8.1-T06 (F7): a Flow workout still logs actual reps, so its end screen keeps the editor; only a flow program has no per-item results
+    @Test fun aFlowWorkoutKeepsTheEndScreenEditorButAFlowProgramDoesNot() {
+        val flowPlan = plan.copy(flow = true)
+        val s = reduce(newSession("S", flowPlan), SessionEvent.Start(0)).state.let { reduce(it, SessionEvent.Tick(10_000_000)).state }
+        assertEquals(Phase.COMPLETED, s.phase)
+        SessionBus.saved = true
+        show(s)
+        rule.onNodeWithTag("end_edit").assertIsDisplayed()
+    }
+
+    @Test fun aFlowProgramHasNoPerItemEditorOnTheEndScreen() {
+        val program = plan.copy(flow = true, fixedProgramId = "army-pd")
+        val s = reduce(newSession("S", program), SessionEvent.Start(0)).state.let { reduce(it, SessionEvent.Tick(10_000_000)).state }
+        SessionBus.saved = true
+        show(s)
+        rule.onNodeWithTag("end_edit").assertDoesNotExist()
+    }
+
     @Test fun theEndScreenEditorHasOneNumberPerRoundAndTooEasyNextToTooHard() {
         val s = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
         SessionBus.saved = true

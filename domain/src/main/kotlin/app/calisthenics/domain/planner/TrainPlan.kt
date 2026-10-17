@@ -40,6 +40,8 @@ data class TrainSettings(
     val fixedProgramFlowOverrides: Map<String, Boolean> = emptyMap(),
     /** Opt-in route pools (POWER, CONDITIONING, PREHAB, MOBILITY); empty by default. */
     val additionalPools: Set<String> = emptySet(),
+    /** R8.1-T06 (F7): Flow, a Preview option for every workout: no rest between exercises; rest between sets stays. A program's authored flow is only the starting value. */
+    val flow: Boolean = false,
 ) {
     fun effectiveFocus(): Set<StrengthFocus> = focus ?: Goals.focusFor(goalId)
 }
@@ -132,7 +134,7 @@ private fun planFor(
         .copy(cooldownOn = s.cooldownOn, cooldownMode = s.cooldownMode, cooldownMinutes = edits.cooldownMinutes ?: s.cooldownMinutes, cooldownStretches = edits.cooldownStretches, cooldownRemoved = edits.cooldownRemoved, cooldownAdded = edits.cooldownAdded,
             focus = s.effectiveFocus(), swaps = swaps + edits.swaps, rounds = (if ((edits.rule ?: routine.rule).isRange) (edits.rule ?: routine.rule).sets else s.rounds).coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed, format = s.format,
             tierOverrides = edits.tierOverrides, stretchPicks = edits.stretchPicks, extraStretches = edits.extraStretches,
-            roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, rule = edits.rule ?: routine.rule)
+            roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, rule = edits.rule ?: routine.rule, flow = s.flow)
     return withTimedExtras(catalog, generate(PlanInput("draft", nowEpochMs, nowDay, catalog, routine, draft, profile, progress = progress)), progress, profile, s.additionalPools)
 }
 

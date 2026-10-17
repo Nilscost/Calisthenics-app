@@ -91,6 +91,18 @@ class PreviewScreenTest {
         rule.onNodeWithTag("preview_header").assertTextContains("5 rounds", substring = true)
     }
 
+    // R8.1-T06 (F7): Flow is one toggle in the Preview, next to the rest controls, for every workout
+    @Test fun flowIsOneToggleInThePreviewAndShortensTheWorkout() {
+        show(); rule.waitForIdle()
+        fun minutes() = rule.onNodeWithTag("preview_header").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.Text].first().text.split("·")[1].filter { it.isDigit() }.toInt()
+        val before = minutes()
+        rule.onNodeWithTag("preview_flow_switch").performScrollTo().assertIsOff().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("preview_flow_switch").assertIsOn()
+        assertTrue("$before -> ${minutes()}", minutes() < before)
+        assertTrue(app.getSharedPreferences("train", Context.MODE_PRIVATE).getBoolean("flow", false))
+        rule.onNodeWithTag("preview_flow_hint").assertExists()
+    }
+
     // R8.1-T05 (F6): every change survives going back to Train and returning; only another objective resets it
     @Test fun editsSurviveLeavingThePreviewAndComingBack() {
         io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.save(app, io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore.load(app).copy(stretchOn = false))   // plain rest, so the rest steppers exist

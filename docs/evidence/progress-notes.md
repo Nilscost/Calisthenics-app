@@ -899,3 +899,13 @@ Tests: Docker full verify exit 0 (`r8.1-t05-verify-2026-10-17.log`).
 NOT done: the Preview draft is not part of the backup (it is working state). No phone testing.
 
 Choices not in the plan: changing the number of sets or the format in the Preview changes the Train settings (not only today's plan); the draft key ignores the equipment profile, so a profile change keeps the edits.
+
+### R8.1-T06 · F7 Flow as a Preview option between exercises · 2026-10-17
+
+Flow was a per-program switch (the Programs screen, `fixedProgramFlowOverrides`) and meant "no per-item controls" only for programs. It is now one option of every workout: `TrainSettings.flow`, `SessionDraft.flow`, `SavedRoutine.flow` (saved with a routine, carried to today's settings, kept by the backup) and `WorkoutPlan.flow`, switched in the Preview next to the format (`preview_flow_switch`). Planner: with Flow on, the break after an exercise is dropped when the next block is another exercise (circuit: inside a round; pairs: inside a pair and between pairs; straight sets: after the last set of an exercise); the rest after a set before the same exercise again, or at the end of a circuit round, stays, including the stretch between sets. Flow auto-advances as before (the timer of the block ends it; DONE still ends a set early). A Flow workout logs actual reps like any other (logger on the work block, F3), and the end screen keeps the editor so DONE can be corrected; only a flow program (`fixedProgramId` set) has no per-item results, as before. Programs keep their authored flow as the start value of the toggle when they open in the Preview (R8.1-T08, where the program-only switch goes).
+
+Tests: `FlowOptionTest` (5: circuit, straight sets, pairs, shorter plan with stretches kept at round ends, save/settings/backup round trip), `PreviewScreenTest.flowIsOneToggleInThePreviewAndShortensTheWorkout`, `SessionScreenTest` (flow workout keeps the end editor, flow program does not). Maestro `b_train_preview` taps the toggle. Docker full verify exit 0 (`r8.1-t06-verify-2026-10-17.log`).
+
+NOT done: the program-only flow switch is still on the Programs screen until R8.1-T08 replaces that screen. No phone testing.
+
+Choices not in the plan: between pairs counts as "between exercises" (no rest in Flow); the Train tab shows no flow control (the Preview is the one place, as asked).
