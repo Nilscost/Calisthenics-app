@@ -457,6 +457,7 @@ class ProgressScreenTest {
             rule.onNodeWithTag("tab_chip_${t.id}").performSemanticsAction(SemanticsActions.OnClick); rule.waitForIdle()
             val shown = rule.onAllNodes(tagStarts("tree_node_")).fetchSemanticsNodes().isNotEmpty() || rule.onAllNodes(tagStarts("stretch")).fetchSemanticsNodes().isNotEmpty() || rule.onAllNodes(tagStarts("tab_exercise_")).fetchSemanticsNodes().isNotEmpty()
             if (!shown) missing += t.id
+            if (t.id == "shoulders") rule.onAllNodesWithTag("tree_node_pushup-standard").assertCountEquals(0)   // not the previous category's route
         }
         assertTrue("categories with no exercises: $missing", missing.isEmpty())
     }

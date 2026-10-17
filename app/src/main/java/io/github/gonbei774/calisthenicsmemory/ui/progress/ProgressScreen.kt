@@ -140,7 +140,7 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
             Row(Modifier.fillMaxWidth().testTag("progress_type_tabs").horizontalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.s), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
                 if (mode == ProgressMode.TYPE) TreeTabs.all.forEach { t ->
                     FilterChip(
-                        selected = t.id == tab.id, onClick = { tabId = t.id; selected = null },
+                        selected = t.id == tab.id, onClick = { tabId = t.id; selected = null; selectedRouteId = "" },   // R8.1-T10b: a new category starts on its own first route
                         label = { Text(t.title) },
                         border = FilterChipDefaults.filterChipBorder(true, t.id == tab.id, borderColor = MaterialTheme.colorScheme.outlineVariant, selectedBorderColor = AppAccentTheme.colors.accent, selectedBorderWidth = 2.dp),
                         colors = FilterChipDefaults.filterChipColors(selectedContainerColor = MaterialTheme.colorScheme.surface, selectedLabelColor = AppAccentTheme.colors.text),
