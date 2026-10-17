@@ -37,6 +37,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.session.EditorRound
 import io.github.gonbei774.calisthenicsmemory.ui.session.RoundEditor
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
 import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -111,7 +112,7 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
                 Card(Modifier.fillMaxWidth().clickable { onOpen(o.sessionId) }.testTag("session_${o.sessionId}"), shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                         Text(dateFmt.format(o.day), style = MaterialTheme.typography.titleMedium)
-                        Text(stringResource(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.string.history_session_line else R.string.history_session_line_sets, o.minutes, o.rounds, o.exercises), style = MaterialTheme.typography.bodyLarge)
+                        Text(stringResource(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.string.history_session_line else R.string.history_session_line_sets, o.minutes, countText(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.plurals.count_rounds else R.plurals.count_sets, o.rounds), countText(R.plurals.count_exercises, o.exercises)), style = MaterialTheme.typography.bodyLarge)
                         if (o.finishedEarly) Text(stringResource(R.string.history_finished_early), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text)
                     }
                 }
@@ -222,7 +223,7 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
             if (s == null) { Text(stringResource(if (loaded) R.string.history_not_found else R.string.history_loading)); return@Column }
             val o = overviewOf(s.plan, s.record, ZoneId.systemDefault())
             Text(dateFmt.format(o.day), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("detail_title"))
-            Text(stringResource(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.string.history_session_line else R.string.history_session_line_sets, o.minutes, o.rounds, o.exercises), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("detail_summary"))
+            Text(stringResource(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.string.history_session_line else R.string.history_session_line_sets, o.minutes, countText(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.plurals.count_rounds else R.plurals.count_sets, o.rounds), countText(R.plurals.count_exercises, o.exercises)), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("detail_summary"))
             if (s.plan == null) Text(stringResource(R.string.history_no_plan), style = MaterialTheme.typography.bodyMedium)
             val details = s.plan?.let { exerciseDetails(it, s.record.blocks) }.orEmpty()
             val achieved = s.record.blocks.filter { it.outcome == "MET" || it.outcome == "PARTIAL" }.associate { it.blockId to it.achievedValue }

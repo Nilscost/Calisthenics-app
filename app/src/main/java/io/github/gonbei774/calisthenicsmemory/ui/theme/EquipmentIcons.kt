@@ -54,7 +54,18 @@ object EquipmentIcons {
     val Barbell by lazy { icon("Barbell") { rect(2f, 11f, 22f, 13f); rect(3f, 7f, 5f, 17f); rect(6f, 8.5f, 8f, 15.5f); rect(16f, 8.5f, 18f, 15.5f); rect(19f, 7f, 21f, 17f) } }
     val Vest by lazy { icon("Vest") { rect(6f, 4f, 10f, 20f); rect(14f, 4f, 18f, 20f); rect(9f, 4f, 15f, 8f); rect(5f, 10f, 19f, 12f) } }
 
+    // R8.1-T11 (F14): the R8 gear, in the same one-colour style
+    val Rings by lazy { icon("Rings", evenOdd = true) { rect(6.2f, 2f, 7.8f, 10.5f); rect(16.2f, 2f, 17.8f, 10.5f); circle(7f, 15.5f, 5f); circle(7f, 15.5f, 3.2f); circle(17f, 15.5f, 5f); circle(17f, 15.5f, 3.2f) } }
+    val AbWheel by lazy { icon("AbWheel") { circle(12f, 14f, 6.5f); rect(2f, 12.5f, 6f, 15.5f); rect(18f, 12.5f, 22f, 15.5f) } }
+    val Step by lazy { icon("Step") { rect(3f, 15f, 21f, 21f); rect(10f, 9f, 21f, 15f) } }
+    val Box by lazy { icon("Box", evenOdd = true) { rect(3f, 7f, 21f, 21f); rect(6f, 10f, 18f, 18f) } }
+    val Bench by lazy { icon("Bench") { rect(2f, 10f, 22f, 13.5f); rect(4f, 13.5f, 6.5f, 21f); rect(17.5f, 13.5f, 20f, 21f) } }
+    val Pole by lazy { icon("Pole") { rect(10.5f, 3.5f, 13.5f, 20.5f); rect(5f, 2f, 19f, 4f); rect(5f, 20f, 19f, 22f) } }
+    val Sliders by lazy { icon("Sliders") { circle(7.5f, 15f, 5f); circle(16.5f, 15f, 5f); rect(5f, 5f, 10f, 7f); rect(14f, 5f, 19f, 7f) } }
+    val JumpRope by lazy { icon("JumpRope") { rect(2f, 3f, 6f, 10f); rect(18f, 3f, 22f, 10f); rect(4f, 10f, 5.8f, 18f); rect(18.2f, 10f, 20f, 18f); rect(4f, 18f, 20f, 20f) } }
+
     fun forId(id: String): ImageVector? = when (id) {
+        "rings" -> Rings; "ab-wheel" -> AbWheel; "step" -> Step; "box" -> Box; "bench" -> Bench; "pole" -> Pole; "sliders" -> Sliders; "jump-rope" -> JumpRope
         "pullup-bar" -> PullUpBar; "high-bar" -> HighBar; "low-bar" -> LowBar; "resistance-band" -> Band
         "kettlebell" -> Kettlebell; "weight" -> Dumbbell; "chair" -> Chair; "wall" -> Wall; "mat" -> Mat; "parallettes" -> Parallettes
         "barbell" -> Barbell; "weighted-vest" -> Vest; "dip-support" -> DipSupport; "foot-anchor" -> FootAnchor

@@ -99,7 +99,7 @@ internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMo
             // the compact description of the program: name, how many exercises and how long, and what it is
             val minutes = ((plan?.plannedDurationSeconds ?: 0) + 30) / 60
             Text(content.name, style = MaterialTheme.typography.titleLarge, modifier = Modifier.testTag("program_title"))
-            Text(stringResource(R.string.program_preview_header, content.items.size, minutes), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"))
+            Text(stringResource(R.string.program_preview_header, io.github.gonbei774.calisthenicsmemory.ui.components.countText(R.plurals.count_exercises, content.items.size), minutes), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"))
             mode.base?.notes?.takeIf { it.isNotBlank() }?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 3, modifier = Modifier.testTag("program_description")) }
             Text(stringResource(R.string.program_preview_start_point), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("program_start_point"))
             savedNote?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("routine_saved_note")) }

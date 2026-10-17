@@ -308,7 +308,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                     }
                     val set = 1
                     Text(
-                        stringResource(R.string.preview_header, p.rounds, (p.plannedDurationSeconds + 30) / 60, stringResource(if (p.timed) R.string.style_timed else R.string.style_reps)),
+                        stringResource(R.string.preview_header, io.github.gonbei774.calisthenicsmemory.ui.components.countText(R.plurals.count_rounds, p.rounds), (p.plannedDurationSeconds + 30) / 60, stringResource(if (p.timed) R.string.style_timed else R.string.style_reps)),
                         style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"),
                     )
                     if (p.warnings.isNotEmpty() || p.changesExplained.any { it.isNotBlank() }) InfoRow(p)

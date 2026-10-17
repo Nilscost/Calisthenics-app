@@ -340,7 +340,7 @@ private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) 
         Text(stringResource(if (st.phase == Phase.COMPLETED) R.string.end_complete else R.string.end_early), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("end_title"))
         Card(Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
             Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                Text(stringResource(R.string.end_summary, minutes, rounds, exercises.size), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("end_summary"))
+                Text(stringResource(R.string.end_summary, minutes, io.github.gonbei774.calisthenicsmemory.ui.components.countText(R.plurals.count_rounds, rounds), io.github.gonbei774.calisthenicsmemory.ui.components.countText(R.plurals.count_exercises, exercises.size)), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("end_summary"))
                 if (events.isNotEmpty()) events.forEach { Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("end_event")) }
                 else Text(stringResource(R.string.end_saved), style = MaterialTheme.typography.bodyMedium)
             }

@@ -50,6 +50,12 @@
     <string name="eq_foot_anchor">Foot anchor (a sofa or heavy furniture to hook the heels under)</string>
     <string name="eq_parallettes">Parallettes</string>
     <string name="eq_other">Other</string>
+    <string name="eq_group_pull">Pull</string>
+    <string name="eq_group_push">Push</string>
+    <string name="eq_group_legs">Legs</string>
+    <string name="eq_group_core">Core</string>
+    <string name="eq_group_weights">Weights</string>
+    <string name="eq_group_other">Other</string>
     <string name="eq_pullup_bar_short">Pull-up bar</string>
     <string name="eq_high_bar_short">High bar</string>
     <string name="eq_low_bar_short">Low bar</string>
@@ -126,7 +132,7 @@
     <string name="objective_routine">Routine</string>
     <string name="node_other_way">other way</string>
     <string name="section_programs">Programs</string>
-    <string name="program_preview_header">%1$d exercises · %2$d min</string>
+    <string name="program_preview_header">%1$s · %2$d min</string>
     <string name="program_preview_start_point">A starting point: change anything here. Saving makes your own routine; the program stays as it is.</string>
     <string name="program_save_text">It keeps your exercises and targets, the set format, sets, Flow and rest, and appears under My routines on Train. The program itself does not change.</string>
     <string name="section_my_routines">My routines</string>
@@ -281,7 +287,7 @@
     <string name="preview_add_exercise">Add exercise</string>
     <string name="preview_add_stretch">Add stretch</string>
     <string name="preview_start">Start</string>
-    <string name="preview_header">%1$d rounds · %2$d min · %3$s</string>
+    <string name="preview_header">%1$s · %2$d min · %3$s</string>
     <string name="target_reps">%1$d reps</string>
     <string name="target_seconds">%1$d s</string>
     <string name="target_reps_range">%1$d–%2$d reps</string>
@@ -337,10 +343,13 @@
     <string name="logger_edit">Change</string>
     <string name="end_complete">Workout complete</string>
     <string name="end_early">Workout finished early</string>
-    <string name="end_summary">%1$d min · %2$d rounds · %3$d exercises</string>
+    <string name="end_summary">%1$d min · %2$s · %3$s</string>
     <string name="end_saved">Saved to your history.</string>
     <string name="end_edit_logged">Edit what I logged</string>
     <string name="end_done">Done</string>
+    <plurals name="count_rounds"><item quantity="one">%1$d round</item><item quantity="other">%1$d rounds</item></plurals>
+    <plurals name="count_sets"><item quantity="one">%1$d set</item><item quantity="other">%1$d sets</item></plurals>
+    <plurals name="count_exercises"><item quantity="one">%1$d exercise</item><item quantity="other">%1$d exercises</item></plurals>
     <plurals name="stars_of">
         <item quantity="one">%1$d of %2$d stars</item>
         <item quantity="other">%1$d of %2$d stars</item>
@@ -448,8 +457,8 @@
     <string name="history_week_summary">%1$d workouts · %2$d min of work · %3$d min of stretching</string>
     <string name="history_empty">No finished workouts yet. Missed weeks are never penalised.</string>
     <string name="history_empty_week">No workouts this week.</string>
-    <string name="history_session_line">%1$d min · %2$d rounds · %3$d exercises</string>
-    <string name="history_session_line_sets">%1$d min · %2$d sets · %3$d exercises</string>
+    <string name="history_session_line">%1$d min · %2$s · %3$s</string>
+    <string name="history_session_line_sets">%1$d min · %2$s · %3$s</string>
     <string name="history_finished_early">Finished early</string>
     <string name="history_detail_title">Workout</string>
     <string name="history_not_found">This workout is not available.</string>

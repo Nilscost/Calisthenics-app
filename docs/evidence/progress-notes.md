@@ -953,3 +953,15 @@ F13 cause: a route's same-rung alternates (diamond next to feet-elevated) were o
 NOT done: the node panel still opens "Helps with" only for support; the horizontal scroll of the tree now shows up to three columns on the phone. No phone testing.
 
 Choices not in the plan: alternates that need missing equipment are drawn too (locked, with the wrench), so nothing is hidden because of the profile.
+
+### R8.1-T11 · F14 equipment icons and order · F15 "1 round" · 2026-10-17
+
+F14: the checklist (onboarding and the profile editor), the Settings profile summaries and the program equipment line now list equipment by movement area, in one shared order held by `EquipmentOptions.all` and `EquipmentGroup`: Pull (pull-up bar, high bar, low bar, rings, pole), Push (dip support, parallettes), Legs (box, step, bench, chair, foot anchor), Core (ab wheel, sliders), Weights (dumbbells, kettlebell, barbell, weighted vest), Other (band, wall, mat, jump rope). The checklist shows the group name above each block. The eight pieces of gear that had no icon (rings, ab wheel, step, box, bench, pole, sliders, jump rope) got icons in the existing one-colour style. The plan names towel and cones: the catalog has no such equipment id, so there is nothing to add for them. Tests: `EquipmentOrderTest` (groups contiguous and in tab order, every needed id has a row), `EquipmentIconsTest` (every row has an icon; the rendered checklist is in order with its group captions). The order of `EquipmentOptions.all` changed, which only changes the item order inside newly built profiles; no assertion depended on it.
+
+F15: the History rows, the workout detail, the end screen and the Preview header use plurals resources for rounds, sets and exercises, so one round reads "1 round" and one exercise "1 exercise". Changed assertion: `HistorySettingsTest` expected "1 exercises" and now expects "1 exercise"; new `oneRoundIsSingular`.
+
+Tests: Docker full verify exit 0 (`r8.1-t11-verify-2026-10-17.log`).
+
+NOT done: no phone testing; the new icons are first drafts of simple pictograms and need a look in the screenshot review.
+
+Choices not in the plan: chair and foot anchor sit under Legs, pole under Pull; the Preview header keeps "rounds" for every format (as before).

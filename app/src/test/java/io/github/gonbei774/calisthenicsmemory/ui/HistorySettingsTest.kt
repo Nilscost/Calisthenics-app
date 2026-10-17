@@ -62,8 +62,14 @@ class HistorySettingsTest {
         rule.waitForIdle()
         rule.onNodeWithTag("dot_2026-10-05", useUnmergedTree = true).assertExists(); rule.onNodeWithTag("dot_2026-10-07", useUnmergedTree = true).assertExists(); rule.onNodeWithTag("nodot_2026-10-06", useUnmergedTree = true).assertExists()
         rule.onNodeWithTag("session_a").assertExists(); rule.onNodeWithTag("session_b").assertExists(); rule.onNodeWithTag("session_old").assertDoesNotExist()
-        rule.onNodeWithTag("session_a").assertTextContains("40 min · 3 rounds · 1 exercises", substring = true)
+        rule.onNodeWithTag("session_a").assertTextContains("40 min · 3 rounds · 1 exercise", substring = true)
         rule.onNodeWithTag("week_summary").assertTextContains("2 workouts", substring = true)
+    }
+
+    // R8.1-T11 (F15): "1 round", not "1 rounds"
+    @Test fun oneRoundIsSingular() {
+        showHistory(FakeHistory(listOf(session("one", LocalDate.of(2026, 10, 6), 8)))); rule.waitForIdle()
+        rule.onNodeWithTag("session_one").assertTextContains("1 round · 1 exercise", substring = true)
     }
 
     @Test fun historyHasATitleSummaryTilesAndAProgressionWithItsChart() {   // V27b (doc 17 section 2.5)

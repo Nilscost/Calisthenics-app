@@ -5,6 +5,9 @@ package app.calisthenics.domain.equipment
 import app.calisthenics.domain.model.EquipmentItem
 import app.calisthenics.domain.model.EquipmentProfile
 
+/** R8.1-T11 (F14): the movement areas of the Progress tabs, in the order the equipment is listed everywhere. */
+enum class EquipmentGroup { PULL, PUSH, LEGS, CORE, WEIGHTS, OTHER }
+
 /** [CAPABILITY] entries (a wall) are not items you own; they go into [EquipmentProfile.capabilities]. */
 enum class OptionKind { ITEM, CAPABILITY }
 
@@ -21,37 +24,46 @@ data class EquipmentOption(
     val suitability: Set<String> = emptySet(),
     val strengthLabel: String? = null,
     val future: Boolean = false,
+    val group: EquipmentGroup = EquipmentGroup.OTHER,
 )
 
 object EquipmentOptions {
     const val FLOOR_SPACE = "floor-space"
     /** Display order of the checklist. Ids match `equipmentId` in the catalog (kettlebell, weight, chair, ...). */
     val all = listOf(
-        EquipmentOption("pullup-bar"),
-        EquipmentOption("high-bar"),          // hang with the feet clear of the floor (muscle-up, levers)
-        EquipmentOption("low-bar"),           // low bar / sturdy table for inverted rows
+        // Pull
+        EquipmentOption("pullup-bar", group = EquipmentGroup.PULL),
+        EquipmentOption("high-bar", group = EquipmentGroup.PULL),          // hang with the feet clear of the floor (muscle-up, levers)
+        EquipmentOption("low-bar", group = EquipmentGroup.PULL),           // low bar / sturdy table for inverted rows
+        EquipmentOption("rings", group = EquipmentGroup.PULL),
+        EquipmentOption("pole", group = EquipmentGroup.PULL),
+        // Push
+        EquipmentOption("dip-support", group = EquipmentGroup.PUSH),       // V21b: parallel bars, two sturdy chairs or a counter corner (dips, support hold)
+        EquipmentOption("parallettes", group = EquipmentGroup.PUSH),
+        // Legs
+        EquipmentOption("box", group = EquipmentGroup.LEGS),
+        EquipmentOption("step", group = EquipmentGroup.LEGS),
+        EquipmentOption("bench", group = EquipmentGroup.LEGS),
+        EquipmentOption("chair", suitability = setOf("stable"), group = EquipmentGroup.LEGS),
+        EquipmentOption("foot-anchor", group = EquipmentGroup.LEGS),       // V21b: a sofa or heavy furniture to hook the heels under (Nordic curls)
+        // Core
+        EquipmentOption("ab-wheel", group = EquipmentGroup.CORE),
+        EquipmentOption("sliders", group = EquipmentGroup.CORE),
+        // Weights
+        EquipmentOption("weight", weighted = true, defaultMassGrams = 2_500, quantity = 2, group = EquipmentGroup.WEIGHTS), // dumbbells, a pair
+        EquipmentOption("kettlebell", weighted = true, defaultMassGrams = 12_000, group = EquipmentGroup.WEIGHTS),
+        EquipmentOption("barbell", weighted = true, defaultMassGrams = 20_000, group = EquipmentGroup.WEIGHTS),          // V27: the bar and plates, in total
+        EquipmentOption("weighted-vest", weighted = true, defaultMassGrams = 5_000, group = EquipmentGroup.WEIGHTS),     // V27: a load for push-ups, pull-ups, dips and squats
+        // Other
         // Ticking a band means you can anchor it (a door anchor, a post): row-band needs "stable-anchor".
-        EquipmentOption("resistance-band", strengthLabel = "assorted", suitability = setOf("stable-anchor")),
-        EquipmentOption("kettlebell", weighted = true, defaultMassGrams = 12_000),
-        EquipmentOption("weight", weighted = true, defaultMassGrams = 2_500, quantity = 2), // dumbbells, a pair
-        EquipmentOption("chair", suitability = setOf("stable")),
-        EquipmentOption("wall", kind = OptionKind.CAPABILITY),
-        EquipmentOption("mat"),
-        EquipmentOption("barbell", weighted = true, defaultMassGrams = 20_000),          // V27: the bar and plates, in total
-        EquipmentOption("weighted-vest", weighted = true, defaultMassGrams = 5_000),     // V27: a load for push-ups, pull-ups, dips and squats
-        EquipmentOption("dip-support"),       // V21b: parallel bars, two sturdy chairs or a counter corner (dips, support hold)
-        EquipmentOption("foot-anchor"),       // V21b: a sofa or heavy furniture to hook the heels under (Nordic curls)
-        EquipmentOption("parallettes"),
-        EquipmentOption("rings"),
-        EquipmentOption("ab-wheel"),
-        EquipmentOption("step"),
-        EquipmentOption("box"),
-        EquipmentOption("bench"),
-        EquipmentOption("pole"),
-        EquipmentOption("sliders"),
-        EquipmentOption("jump-rope"),
+        EquipmentOption("resistance-band", strengthLabel = "assorted", suitability = setOf("stable-anchor"), group = EquipmentGroup.OTHER),
+        EquipmentOption("wall", kind = OptionKind.CAPABILITY, group = EquipmentGroup.OTHER),
+        EquipmentOption("mat", group = EquipmentGroup.OTHER),
+        EquipmentOption("jump-rope", group = EquipmentGroup.OTHER),
     )
     fun byId(id: String) = all.firstOrNull { it.id == id }
+    /** The position of an equipment id in the shared order (unknown ids last). */
+    fun orderOf(id: String) = all.indexOfFirst { it.id == id }.let { if (it < 0) all.size else it }
 }
 
 /** A ticked row. [massGrams] only for weighted options. */

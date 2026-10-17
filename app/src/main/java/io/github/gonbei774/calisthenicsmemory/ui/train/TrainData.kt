@@ -121,7 +121,7 @@ fun resolveProgramMode(ctx: Context, catalog: Catalog, s: TrainSettings, draft: 
 fun programSummaryText(ctx: Context, catalog: Catalog, program: app.calisthenics.domain.model.FixedProgram, profile: app.calisthenics.domain.model.EquipmentProfile): String {
     val seconds = fixedProgramDurationSeconds(catalog, program, app.calisthenics.domain.planner.buildFixedProgramPlan(catalog, program, profile))
     val minutes = ((seconds + 59) / 60).coerceAtLeast(1)
-    val equipment = program.items.mapNotNull { catalog.variation(it.exerciseId) }.flatMap { v -> v.equipmentAlternatives.firstOrNull()?.needs.orEmpty().map { it.equipmentId } }.distinct().sorted()
+    val equipment = program.items.mapNotNull { catalog.variation(it.exerciseId) }.flatMap { v -> v.equipmentAlternatives.firstOrNull()?.needs.orEmpty().map { it.equipmentId } }.distinct().sortedBy { app.calisthenics.domain.equipment.EquipmentOptions.orderOf(it) }
     val value = if (equipment.isEmpty()) ctx.getString(io.github.gonbei774.calisthenicsmemory.R.string.programs_no_equipment) else equipment.joinToString(" + ") { ctx.getString(io.github.gonbei774.calisthenicsmemory.ui.screens.equipmentLabelShortPublic(it)) }
     return ctx.getString(io.github.gonbei774.calisthenicsmemory.R.string.programs_summary, minutes, ctx.getString(io.github.gonbei774.calisthenicsmemory.R.string.programs_equipment_label, value))
 }

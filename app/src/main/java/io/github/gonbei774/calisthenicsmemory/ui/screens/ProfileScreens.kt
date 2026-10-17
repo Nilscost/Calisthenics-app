@@ -23,9 +23,15 @@ import androidx.compose.ui.unit.dp
 import app.calisthenics.domain.equipment.*
 import app.calisthenics.domain.model.EquipmentProfile
 import io.github.gonbei774.calisthenicsmemory.R
+import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
 import io.github.gonbei774.calisthenicsmemory.ui.components.Stepper
 import io.github.gonbei774.calisthenicsmemory.ui.theme.EquipmentIcons
 import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
+
+fun equipmentGroupLabel(g: EquipmentGroup): Int = when (g) {
+    EquipmentGroup.PULL -> R.string.eq_group_pull; EquipmentGroup.PUSH -> R.string.eq_group_push; EquipmentGroup.LEGS -> R.string.eq_group_legs
+    EquipmentGroup.CORE -> R.string.eq_group_core; EquipmentGroup.WEIGHTS -> R.string.eq_group_weights; EquipmentGroup.OTHER -> R.string.eq_group_other
+}
 
 fun equipmentLabel(id: String): Int = when (id) {
     "pullup-bar" -> R.string.eq_pullup_bar
@@ -78,8 +84,9 @@ fun ProfilesScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onEdit: (S
 
 @Composable
 private fun equipmentSummary(p: EquipmentProfile): String {
-    val labels = p.items.map { stringResource(equipmentLabelShort(it.equipmentId)) } +
-        p.capabilities.filter { EquipmentOptions.byId(it)?.kind == OptionKind.CAPABILITY }.map { stringResource(equipmentLabelShort(it)) }
+    // R8.1-T11 (F14): in the shared movement-area order
+    val ids = (p.items.map { it.equipmentId } + p.capabilities.filter { EquipmentOptions.byId(it)?.kind == OptionKind.CAPABILITY }).sortedBy { EquipmentOptions.orderOf(it) }
+    val labels = ids.map { stringResource(equipmentLabelShort(it)) }
     return if (labels.isEmpty()) stringResource(R.string.profile_no_equipment) else labels.joinToString(", ")
 }
 
@@ -173,7 +180,13 @@ fun ProfileEditScreen(modifier: Modifier = Modifier, profileId: String?, onDone:
 /** The equipment rows shared by the profile editor and the questionnaire. [weights] are grams for weighted rows. */
 @Composable
 fun EquipmentChecklist(picked: List<String>, onPicked: (List<String>) -> Unit, weights: Map<String, Int>, onWeights: (Map<String, Int>) -> Unit) {
+    var lastGroup: EquipmentGroup? = null
     EquipmentOptions.all.forEach { opt ->
+        // R8.1-T11 (F14): listed by movement area, with the same names as the groups of the Progress tabs
+        if (opt.group != lastGroup) {
+            lastGroup = opt.group
+            Caption(stringResource(equipmentGroupLabel(opt.group)), Modifier.padding(top = Spacing.s).testTag("eq_group_${opt.group.name}"))
+        }
         val on = opt.id in picked
         Row(
             Modifier.fillMaxWidth().heightIn(min = Spacing.touch).clickable(role = Role.Checkbox) {
