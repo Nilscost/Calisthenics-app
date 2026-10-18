@@ -12,9 +12,9 @@ appId: app.calisthenics.personal
 - scrollUntilVisible: { element: { id: add_start }, direction: DOWN, timeout: 10000 }
 - tapOn: { id: add_start }
 - extendedWaitUntil: { visible: { id: add_categories }, timeout: 10000 }
-- scrollUntilVisible: { element: { id: add_cat_power }, direction: DOWN, timeout: 10000 }
-- assertVisible: { id: add_cat_power }
-- tapOn: { id: add_cat_power }
+- scrollUntilVisible: { element: { id: add_cat_squat }, direction: DOWN, timeout: 10000 }
+- assertVisible: { id: add_cat_squat }
+- tapOn: { id: add_cat_squat }
 - assertVisible: { id: add_option_.* }
 - takeScreenshot: 01-manual-power-add-${VARIANT}
 - back

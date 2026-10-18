@@ -187,11 +187,11 @@ class ProgressScreenTest {
         val home = profiles.first { it.id == "home" }
         if (home.items.none { it.equipmentId == "rings" }) ProfileStore.save(ctx, profiles.map { if (it.id == "home") it.copy(items = it.items + app.calisthenics.domain.model.EquipmentItem("rings")) else it })
         show()
-        for (tab in listOf("rings", "power", "conditioning", "prehab", "pilates")) {
+        for (tab in listOf("rings", "squat", "conditioning", "prehab", "pilates")) {   // R8.2-T01: the power exercises are under Squat
             rule.onNodeWithTag("tab_chip_$tab").performScrollTo().performClick(); rule.waitForIdle()
             val family = when (tab) {
                 "rings" -> "ring-support-hold"
-                "power" -> "jump-squat"
+                "squat" -> "jump-squat"
                 "conditioning" -> "bear-crawl"
                 "prehab" -> "external-rotation-band"
                 else -> "pilates-roll-up"
@@ -226,13 +226,17 @@ class ProgressScreenTest {
         }
         val defaultRoute = catalog.progressionRoutes.firstOrNull { it.defaultPool && eligible(it) }
             ?: return // Legacy fixture catalogs have not yet loaded route metadata.
-        val extraRoute = catalog.progressionRoutes.firstOrNull { !it.defaultPool && eligible(it) }
+        // R8.2-T01 (G1): was "the extra (non-default) route of this tab is hidden until All progressions"; a category now lists all its own routes (the power push-ups sit in Push)
         show(); rule.waitForIdle()
         rule.onNodeWithTag("route_chip_${defaultRoute.id}").assertExists()
-        if (extraRoute != null) {
-            rule.onNodeWithTag("route_chip_${extraRoute.id}").assertDoesNotExist()
+        catalog.progressionRoutes.filter { !it.defaultPool && eligible(it) }.forEach { rule.onNodeWithTag("route_chip_${it.id}").assertExists() }
+        // routes of other categories stay behind the deliberate All progressions
+        val other = catalog.progressionRoutes.firstOrNull { r -> r.mainPath.firstOrNull()?.let { catalog.variation(it)?.familyId !in tabFamilies } == true && r.goalIds.isEmpty() &&
+            r.mainPath.any { id -> catalog.variation(id)?.let { app.calisthenics.domain.equipment.isAvailable(it, profile) } == true } }
+        if (other != null) {
+            rule.onNodeWithTag("route_chip_${other.id}").assertDoesNotExist()
             rule.onNodeWithTag("all_progressions").performClick(); rule.waitForIdle()
-            rule.onNodeWithTag("route_chip_${extraRoute.id}").assertExists()
+            rule.onNodeWithTag("route_chip_${other.id}").assertExists()
         }
     }
 

@@ -171,7 +171,7 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
                         val hasUsableEntry = route.mainPath.any { id -> c.variation(id)?.let { isAvailable(it, profile) } == true } ||
                             route.members.any { it.role == ProgressionRole.ALTERNATE && c.variation(it.variationId)?.let { v -> isAvailable(v, profile) } == true }
                         route.mainPath.isNotEmpty() && (if (mode == ProgressMode.SKILL) isGoal else inTab || showAllProgressions) &&
-                            (mode == ProgressMode.SKILL || showAllProgressions || route.defaultPool || isGoal || (inTab && c.progressionRoutes.none { r -> r.defaultPool && r.mainPath.firstNotNullOfOrNull { id -> c.variation(id)?.familyId } in tab.familyIds })) && hasUsableEntry   // R8.1-T10b: a category the person opens shows all its routes, not only the default pool
+                            (mode == ProgressMode.SKILL || showAllProgressions || route.defaultPool || isGoal || inTab) && hasUsableEntry   // R8.2-T01: a category lists all its routes (power routes sit with their strength routes); the default pool only decides what the planner picks   // R8.1-T10b: a category the person opens shows all its routes, not only the default pool
                     }.distinctBy { it.id }
                 }
                 val activeRoute = availableRoutes.firstOrNull { it.id == selectedRouteId } ?:

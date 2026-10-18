@@ -104,7 +104,7 @@ class SkillTreeTest {
 
     @Test fun r8TabsExposeEveryPublicFamilyAndKeepRoutineDrillsOutOfBrowseAndSearch() {
         assertEquals("Handstand", TreeTabs.byId("shoulders")?.title)
-        for (id in listOf("rings", "power", "conditioning", "prehab", "pilates")) assertNotNull(TreeTabs.byId(id))
+        for (id in listOf("rings", "conditioning", "prehab", "pilates")) assertNotNull(TreeTabs.byId(id))   // R8.2-T01: "power" is no tab any more
         assertEquals("German Hang", catalog.variation("german-hang")?.name)
         assertTrue(catalog.variations.filter { it.routineOnly }.all { v -> TreeTabs.all.none { v.familyId in it.familyIds } })
         assertTrue(TreeTabs.all.flatMap { layoutTreeVertical(catalog, it.familyIds).nodes }.none { n -> catalog.variation(n.variationId)?.routineOnly == true })
@@ -184,5 +184,20 @@ class SkillTreeTest {
         }
         val all = engine.replay(emptyList(), listOf(app.calisthenics.domain.progression.selfAssessmentFor("v-up", app.calisthenics.domain.progression.storedForLevelsDone(5))))
         assertEquals(5, displayStars(catalog, all, "v-up"))
+    }
+
+    // R8.2-T01 (G1): no Power tab; the lower-body power families sit in Squat with their routes, the power push-ups stay in Push, the gates are untouched
+    @Test fun powerHasNoTabAndItsExercisesSitWithTheirMovement() {
+        assertNull(TreeTabs.byId("power"))
+        for (id in listOf("jump-squat", "box-jump", "depth-jump", "jump-broad", "skater-bound", "hop-single-leg-stick", "landing-stick")) assertEquals(id, "squat", TreeTabs.tabForVariation(catalog, id)?.id)
+        for (id in listOf("pushup-pop-up", "pushup-clap", "pushup-chest-strike", "pushup-pop-up-incline")) assertEquals(id, "push", TreeTabs.tabForVariation(catalog, id)?.id)
+        for (r in listOf("jump", "bound", "power-pushup")) { val route = catalog.routeById(r)!!; assertTrue(route.mainPath.size >= 5); assertFalse("$r stays out of the automatic pool", route.defaultPool) }
+        assertEquals(listOf("landing-stick", "pogo-hop", "jump-squat", "jump-tuck", "box-jump", "box-jump-rebound", "depth-jump"), catalog.routeById("jump")!!.mainPath)
+        // every exercise of the old tab still has a tab
+        catalog.variations.filter { it.familyId in listOf("plyo", "plyo-lateral", "plyo-box") && !it.routineOnly }.forEach { assertNotNull(it.id, TreeTabs.tabForVariation(catalog, it.id)) }
+        // the gates: power push-ups need a standard push-up, depth jumps need solid box jumps
+        assertTrue(catalog.policyForVariation("pushup-pop-up")!!.prerequisiteRule!!.allOf.flatten().any { it.variationTierMet?.variationId == "pushup-standard" })
+        assertTrue(catalog.policyForVariation("depth-jump")!!.prerequisiteRule!!.allOf.flatten().any { it.variationTierMet?.variationId == "box-jump" })
+        assertEquals(3, catalog.policyForVariation("pushup-clap")!!.maxRepsPerSet)
     }
 }

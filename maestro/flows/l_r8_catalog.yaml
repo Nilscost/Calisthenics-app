@@ -1,4 +1,4 @@
-# R8: deliberately open the Power progression, then find an exercise by its Pilates alias.
+# R8 / R8.2-T01: open the Jump progression (power work sits in Squat), then, then find an exercise by its Pilates alias.
 appId: app.calisthenics.personal
 ---
 - launchApp
@@ -8,24 +8,20 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: { id: progress_search }, timeout: 10000 }
 - tapOn: { id: progress_mode_type }
 - repeat:
-    while: { notVisible: { id: tab_chip_power } }
+    while: { notVisible: { id: tab_chip_squat } }
     times: 24
     commands:
       - swipe:
           from: { id: progress_type_tabs, point: "90%, 50%" }
           direction: LEFT
 - repeat:
-    while: { notVisible: { id: tab_chip_power } }
+    while: { notVisible: { id: tab_chip_squat } }
     times: 24
     commands:
       - swipe:
           from: { id: progress_type_tabs, point: "10%, 50%" }
           direction: RIGHT
-- tapOn: { id: tab_chip_power }
-- runFlow:
-    when: { visible: "All progressions" }
-    commands:
-      - tapOn: { id: all_progressions }
+- tapOn: { id: tab_chip_squat }
 - repeat:
     while: { notVisible: { id: route_chip_jump } }
     times: 24
