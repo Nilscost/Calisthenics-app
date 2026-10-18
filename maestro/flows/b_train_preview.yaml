@@ -100,6 +100,9 @@ appId: app.calisthenics.personal
 - scrollUntilVisible: { element: { id: cooldown_caption }, direction: DOWN, speed: 20, timeout: 30000 }
 - takeScreenshot: 02f-preview-cooldown-${VARIANT}
 # R7.2-T04 (F5): remove a cool-down stretch with its x, then the + opens the stretch picker
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: cooldown_remove_0 }
 - tapOn: { id: cooldown_remove_0 }
 - takeScreenshot: 02g-cooldown-removed-${VARIANT}
 - scrollUntilVisible: { element: { id: cooldown_add }, direction: DOWN, visibilityPercentage: 100, centerElement: true, timeout: 12000 }
