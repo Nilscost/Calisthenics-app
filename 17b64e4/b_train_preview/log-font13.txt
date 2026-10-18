@@ -1,0 +1,41 @@
+Running on test
+ > Flow b_train_preview
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Take screenshot 01-train-${VARIANT}... COMPLETED
+Scrolling DOWN until id: exercises_plus is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Take screenshot 01b-train-exercises-${VARIANT}... COMPLETED
+Tap on id: exercises_plus... COMPLETED
+Scrolling DOWN until id: cooldown_switch is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering enabled... COMPLETED
+Run flow when id: cooldown_mode_STRETCHING is not visible...
+Run flow when id: cooldown_mode_STRETCHING is not visible... SKIPPED
+Assert that id: cooldown_mode_STRETCHING is visible... COMPLETED
+Take screenshot 01c-train-cooldown-${VARIANT}... COMPLETED
+Scrolling UP until id: warmup_switch is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering enabled... COMPLETED
+Run flow when id: warmup_switch is not visible...
+Run flow when id: warmup_switch is not visible... SKIPPED
+Run flow when id: conditioning_switch is not visible...
+Run flow when id: conditioning_switch is not visible... SKIPPED
+Take screenshot 01d-train-include-${VARIANT}... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Take screenshot 02-preview-${VARIANT}... COMPLETED
+Scrolling DOWN until id: conditioning_caption is visible with speed 25, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Take screenshot 02-preview-included-blocks-${VARIANT}... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 85, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: preview_format_PAIRS is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_format_PAIRS is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 85, visibility percentage 100%, timeout 60000 ms, with centering disabled... WARNED
+  Run flow when id: all_sets_header is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+    Scrolling DOWN until id: ${ID} is visible with speed 85, visibility percentage 100%, timeout 60000 ms, with centering disabled...

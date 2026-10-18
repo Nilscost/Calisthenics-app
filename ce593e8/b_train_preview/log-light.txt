@@ -1,0 +1,159 @@
+Running on test
+ > Flow b_train_preview
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Take screenshot 01-train-${VARIANT}... COMPLETED
+Scrolling DOWN until id: exercises_plus is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Take screenshot 01b-train-exercises-${VARIANT}... COMPLETED
+Tap on id: exercises_plus... COMPLETED
+Scrolling DOWN until id: cooldown_switch is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering enabled... COMPLETED
+Run flow when id: cooldown_mode_STRETCHING is not visible...
+  Tap on id: cooldown_switch... COMPLETED
+Run flow when id: cooldown_mode_STRETCHING is not visible... COMPLETED
+Assert that id: cooldown_mode_STRETCHING is visible... COMPLETED
+Take screenshot 01c-train-cooldown-${VARIANT}... COMPLETED
+Scrolling UP until id: warmup_switch is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering enabled... COMPLETED
+Run flow when id: warmup_switch is not visible...
+  Tap on id: warmup_switch... COMPLETED
+Run flow when id: warmup_switch is not visible... COMPLETED
+Run flow when id: conditioning_switch is not visible...
+  Tap on id: conditioning_switch... COMPLETED
+Run flow when id: conditioning_switch is not visible... COMPLETED
+Take screenshot 01d-train-include-${VARIANT}... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Take screenshot 02-preview-${VARIANT}... COMPLETED
+Scrolling DOWN until id: conditioning_caption is visible with speed 25, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Take screenshot 02-preview-included-blocks-${VARIANT}... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 85, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: preview_format_PAIRS is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_format_PAIRS is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: all_sets_header is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: all_sets_header is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Assert that id: all_sets_header is visible... COMPLETED
+Assert that id: set_tab_2 is not visible... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_format_PAIRS is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_format_PAIRS is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Take screenshot 02a-preview-format-${VARIANT}... COMPLETED
+Tap on id: preview_format_PAIRS... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_flow_switch is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_flow_switch is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: preview_flow_switch... COMPLETED
+Take screenshot 02a2-preview-flow-${VARIANT}... COMPLETED
+Tap on id: preview_flow_switch... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: all_sets_header is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: all_sets_header is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 85, visibility percentage 100%, timeout 60000 ms, with centering disabled... WARNED
+  Run flow when id: level_plus_.* is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+    Scrolling DOWN until id: ${ID} is visible with speed 85, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: level_plus_.* is not visible... COMPLETED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: level_plus_.*, Index: 0... COMPLETED
+Take screenshot 02b-preview-level-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_format_PAIRS is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_format_PAIRS is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Assert that id: preview_format_PAIRS is visible... COMPLETED
+Take screenshot 02b2-preview-back-again-${VARIANT}... COMPLETED
+Tap on id: preview_format_CIRCUIT... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: all_sets_header is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: all_sets_header is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 85, visibility percentage 100%, timeout 60000 ms, with centering disabled... WARNED
+  Run flow when id: add_after_.* is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+    Scrolling DOWN until id: ${ID} is visible with speed 85, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: add_after_.* is not visible... COMPLETED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: add_after_.*, Index: 0... COMPLETED
+Assert that "Add to the workout" is visible... COMPLETED
+Take screenshot 02c-add-sheet-${VARIANT}... COMPLETED
+Tap on "Push"... COMPLETED
+Take screenshot 02c2-add-sheet-push-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: rule_REP_RANGE is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: rule_REP_RANGE is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: rule_REP_RANGE... COMPLETED
+Take screenshot 02e-rule-rep-range-${VARIANT}... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 85, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: rule_APP_LEVELS is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: rule_APP_LEVELS is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: rule_APP_LEVELS... COMPLETED
+Scrolling DOWN until id: cooldown_caption is visible with speed 20, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Take screenshot 02f-preview-cooldown-${VARIANT}... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: cooldown_remove_0 is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: cooldown_remove_0 is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: cooldown_remove_0... COMPLETED
+Take screenshot 02g-cooldown-removed-${VARIANT}... COMPLETED
+Scrolling DOWN until id: cooldown_add is visible with speed 40, visibility percentage 100%, timeout 12000 ms, with centering enabled... COMPLETED
+Tap on id: cooldown_add... COMPLETED
+Assert that "Cool-down stretch" is visible... COMPLETED
+Take screenshot 02h-cooldown-add-sheet-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Scrolling DOWN until id: timeline_toggle is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Take screenshot 03-preview-bottom-${VARIANT}... COMPLETED
+Tap on id: timeline_toggle... COMPLETED
+Scrolling DOWN until id: round_badge_.*_s2 is visible with speed 70, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+Take screenshot 04-timeline-${VARIANT}... COMPLETED
+Scrolling UP until id: swap_.* is visible with speed 40, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Tap on id: swap_.*, Index: 0... COMPLETED
+Assert that "Swap this exercise" is visible... COMPLETED
+Take screenshot 05-swap-sheet-${VARIANT}... COMPLETED
+Repeat while id: swap_other_types is not visible (up to 24 times)...
+Repeat while id: swap_other_types is not visible (up to 24 times)... SKIPPED
+Tap on id: swap_other_types... COMPLETED
+Assert that "Same family.*" is visible... COMPLETED
+Take screenshot 05b-swap-other-types-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Press back... COMPLETED

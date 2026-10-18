@@ -1,0 +1,35 @@
+Running on test
+ > Flow c_session
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Tap on id: start_button... COMPLETED
+Assert that id: session_title is visible... COMPLETED
+Take screenshot 01-first-block-${VARIANT}... COMPLETED
+Repeat while id: session_done, enabled is not visible (up to 6 times)...
+  Tap on id: session_skip... COMPLETED
+Repeat while id: session_done, enabled is not visible (up to 6 times)... COMPLETED
+Take screenshot 02-work-block-${VARIANT}... COMPLETED
+Tap on id: logger_plus... COMPLETED
+Tap on id: logger_too_easy... COMPLETED
+Take screenshot 03-work-logger-${VARIANT}... COMPLETED
+Tap on id: session_done... COMPLETED
+Assert that id: break_done is visible... COMPLETED
+Take screenshot 04-stretch-block-${VARIANT}... COMPLETED
+Tap on id: break_done... COMPLETED
+Assert that id: session_caption is visible... COMPLETED
+Take screenshot 04b-stretch-caption-${VARIANT}... COMPLETED
+Tap on id: break_done... COMPLETED
+Assert that id: session_title is visible... COMPLETED
+Repeat while id: session_done, enabled is not visible (up to 6 times)...
+  Tap on id: session_skip... COMPLETED
+Repeat while id: session_done, enabled is not visible (up to 6 times)... COMPLETED
+Take screenshot 05-next-work-block-${VARIANT}... COMPLETED
+Tap on id: session_pause... COMPLETED
+Take screenshot 06-paused-${VARIANT}... COMPLETED
+Tap on id: session_more...

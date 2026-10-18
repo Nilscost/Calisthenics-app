@@ -1,0 +1,73 @@
+Running on test
+ > Flow b_train_preview
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Take screenshot 01-train-${VARIANT}... COMPLETED
+Scrolling DOWN until id: exercises_plus is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Take screenshot 01b-train-exercises-${VARIANT}... COMPLETED
+Tap on id: exercises_plus... COMPLETED
+Scrolling DOWN until id: cooldown_switch is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering enabled... COMPLETED
+Run flow when id: cooldown_mode_STRETCHING is not visible...
+Run flow when id: cooldown_mode_STRETCHING is not visible... SKIPPED
+Assert that id: cooldown_mode_STRETCHING is visible... COMPLETED
+Take screenshot 01c-train-cooldown-${VARIANT}... COMPLETED
+Scrolling UP until id: warmup_switch is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering enabled... COMPLETED
+Run flow when id: warmup_switch is not visible...
+Run flow when id: warmup_switch is not visible... SKIPPED
+Run flow when id: conditioning_switch is not visible...
+Run flow when id: conditioning_switch is not visible... SKIPPED
+Take screenshot 01d-train-include-${VARIANT}... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Take screenshot 02-preview-${VARIANT}... COMPLETED
+Scrolling DOWN until id: conditioning_caption is visible with speed 25, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Take screenshot 02-preview-included-blocks-${VARIANT}... COMPLETED
+Scrolling UP until id: preview_format_PAIRS is visible with speed 25, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Scrolling DOWN until id: all_sets_header is visible with speed 25, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Assert that id: all_sets_header is visible... COMPLETED
+Assert that id: set_tab_2 is not visible... COMPLETED
+Scrolling UP until id: preview_format_PAIRS is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Take screenshot 02a-preview-format-${VARIANT}... COMPLETED
+Tap on id: preview_format_PAIRS... COMPLETED
+Scrolling DOWN until id: preview_flow_switch is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Tap on id: preview_flow_switch... COMPLETED
+Take screenshot 02a2-preview-flow-${VARIANT}... COMPLETED
+Tap on id: preview_flow_switch... COMPLETED
+Scrolling UP until id: all_sets_header is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Scrolling DOWN until id: level_plus_.* is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Tap on id: level_plus_.*, Index: 0... COMPLETED
+Take screenshot 02b-preview-level-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Scrolling DOWN until id: preview_format_PAIRS is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Assert that id: preview_format_PAIRS is visible... COMPLETED
+Take screenshot 02b2-preview-back-again-${VARIANT}... COMPLETED
+Tap on id: preview_format_CIRCUIT... COMPLETED
+Scrolling UP until id: all_sets_header is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Scrolling DOWN until id: add_after_.* is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Tap on id: add_after_.*, Index: 0... COMPLETED
+Assert that "Add to the workout" is visible... COMPLETED
+Take screenshot 02c-add-sheet-${VARIANT}... COMPLETED
+Tap on "Push"... COMPLETED
+Take screenshot 02c2-add-sheet-push-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Tap on id: rule_REP_RANGE... FAILED
+
+Element not found: Id matching regex: rule_REP_RANGE
+
+Element with Id matching regex: rule_REP_RANGE not found. Check the UI hierarchy in debug artifacts to verify if the element exists.
+
+Possible causes:
+- Element selector may be incorrect - check if there are similar elements with slightly different names/properties.
+- Element may be temporarily unavailable due to loading state.
+- This could be a real regression that needs to be addressed.
+
+==== Debug output (logs & screenshots) ====
+
+/tmp/tmp.0uKU9XH4QB/2026-10-18_063048
