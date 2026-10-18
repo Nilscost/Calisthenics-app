@@ -1019,3 +1019,9 @@ NOT done: nothing; no phone testing.
 ### R8.2-T05 · ui-screens and screenshot review · 2026-10-18
 
 Flows: `b_train_preview` (Include row with all three parts, included blocks), `o_r8_progress_routes` (Squat with Jump, Warm-up by area), `l_r8_catalog`, `n_r8_preview_rest_extras`; a `common/reveal.yaml` helper brings an element on screen whatever the scroll position, because the Preview with warm-up, conditioning and a long stretching cool-down is several screens long. The review of the first complete run found a real defect: the conditioning finisher's exercises also appeared as ordinary round tiles in the Preview and were counted in the exercises per round. Fixed (`circuitOf` and `exercisesPerRoundOf` skip the finisher; tests `PreviewScreenTest.included...` and `ConditioningFinisherTest.theFinisherIsNotCounted...`).
+
+### R8.2-T06 · release 0.11.2-r8, versionCode 16 · 2026-10-18
+
+Version 0.11.2-r8 / 16. Fresh clone of `ce593e8` in Docker: preflight, migration SQL, 495 domain and 211 app tests, lint, assembleDebug and content validation all exit 0 (`r8.2-fresh-clone-verify-2026-10-18.log`). APK `Apps/builds/app-debug-R8.2.apk` (24,813,802 bytes, SHA-256 8309858a…ced886), certificate 8638d15f… equals R7.2. CI on `ce593e8`: verify 39160885835 success; ui-screens 39160885932 success, 51 of 51 PASS, reviewed (`ui/R8.2-review.md`). Build record `r8.2-build-2026-10-18.json`; walk-through `owner-check-r8.2.md`.
+
+NOT done (R8.2): no phone testing; no owner gate approved; the 10 advanced Pilates mat exercises were out of scope; the conditioning minutes live in the Preview, not on the Include button; content stays DRAFT.
