@@ -102,7 +102,23 @@ private class Planner(val input: PlanInput) {
 
         // 6–7. templates
         val warmIds = Ramp.order(cat, input.profile, input.progress, input.routine.warmup.ifEmpty { cat.warmupTemplate }, chosen.flatMap { it.variation.patterns })   // L12: RAMP order, gated items
-        val warm = if (draft.warmupOn) template(warmIds, BlockType.WARMUP, "warmup") else emptyList()
+        // R8.2-T02 (G2): matched prehab items join the template's warm-up; the whole warm-up stays within the template's own time (an authored routine warm-up is left as written)
+        val matchedIds = if (draft.warmupOn && input.routine.warmup.isEmpty())
+            Ramp.matched(cat, input.profile, input.progress, chosen.map { it.variation }, warmIds) else emptyList()
+        val baseWarm = if (draft.warmupOn) template(warmIds, BlockType.WARMUP, "warmup") else emptyList()
+        val warm = if (matchedIds.isEmpty()) baseWarm else run {
+            val budget = baseWarm.sumOf { it.durationSeconds }
+            val matchedBlocks = template(matchedIds, BlockType.WARMUP, "warmup-m").map { it.copy(note = "Warm-up · matched to today's exercises: slow, controlled reps") }
+            val keep = mutableListOf<TimelineBlock>(); var used = 0
+            for (b in matchedBlocks) { if (used + b.durationSeconds > budget) break; keep += b; used += b.durationSeconds }
+            val ids = keep.mapNotNull { it.variationId }.toSet()
+            if (ids.isNotEmpty()) explain += "Warm-up matched to today's exercises: ${ids.joinToString { cat.variation(it)?.name ?: it }}."
+            // the template items follow in their own RAMP order while the time allows (a unilateral item has both sides in its blocks)
+            val rest = mutableListOf<TimelineBlock>()
+            for (group in baseWarm.groupBy { it.variationId }.values) { val sec = group.sumOf { it.durationSeconds }; if (used + sec > budget) continue; rest += group; used += sec }
+            val orderedRest = baseWarm.filter { it in rest }
+            keep + orderedRest
+        }
         val cool = if (!draft.cooldownOn) emptyList() else when (draft.cooldownMode) {
             null -> template(cat.cooldownTemplate, BlockType.COOLDOWN, "cooldown")
             CooldownMode.TIMED -> listOf(TimelineBlock("cooldown-relax", BlockType.COOLDOWN, draft.cooldownMinutes.coerceIn(1, 30) * 60, note = "Relax and breathe: in for 4, out for 6. Let the body settle."))

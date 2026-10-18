@@ -104,7 +104,7 @@ class SkillTreeTest {
 
     @Test fun r8TabsExposeEveryPublicFamilyAndKeepRoutineDrillsOutOfBrowseAndSearch() {
         assertEquals("Handstand", TreeTabs.byId("shoulders")?.title)
-        for (id in listOf("rings", "conditioning", "prehab", "pilates")) assertNotNull(TreeTabs.byId(id))   // R8.2-T01: "power" is no tab any more
+        for (id in listOf("rings", "conditioning", "warmup", "pilates")) assertNotNull(TreeTabs.byId(id))   // R8.2-T01: "power" is no tab any more
         assertEquals("German Hang", catalog.variation("german-hang")?.name)
         assertTrue(catalog.variations.filter { it.routineOnly }.all { v -> TreeTabs.all.none { v.familyId in it.familyIds } })
         assertTrue(TreeTabs.all.flatMap { layoutTreeVertical(catalog, it.familyIds).nodes }.none { n -> catalog.variation(n.variationId)?.routineOnly == true })

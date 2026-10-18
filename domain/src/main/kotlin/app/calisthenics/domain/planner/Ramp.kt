@@ -46,4 +46,36 @@ object Ramp {
             v != null && isAvailable(v, profile) && (it == null || ((!it.pushOnly || push) && (it.gate.isEmpty() || it.gate.any { g -> Goals.reached(c, g, progress) })))
         }.withIndex().sortedWith(compareBy({ order.indexOf(phaseOf(it.value)) }, { it.index })).map { it.value }
     }
+
+    /**
+     * R8.2-T02 (G2): 2 to 4 prehab items matched to what the session trains: wrist prep for push, handstand and planche work; band external
+     * rotation or Y/T raises for dips and handstand push-ups; Spanish squat or terminal knee extension for pistol and sissy work; hip stability
+     * for single-leg work. Only items the profile allows and the person has unlocked; each at most once, in this priority order.
+     */
+    fun matched(c: Catalog, profile: EquipmentProfile, progress: ProgressSnapshot, trained: List<ExerciseVariation>, alreadyIn: Collection<String>): List<String> {
+        fun any(pred: (ExerciseVariation) -> Boolean) = trained.any(pred)
+        fun fam(v: ExerciseVariation, vararg f: String) = v.familyId in f
+        val wanted = buildList {
+            if (any { fam(it, "handstand", "planche") }) add("wrist-pushup-knees")
+            if (any { fam(it, "pushup", "hspu", "handstand", "planche", "dip") || Pattern.PUSH_HORIZONTAL in it.patterns || Pattern.PUSH_VERTICAL in it.patterns }) add("wrist-palm-pulses")
+            if (any { fam(it, "dip", "hspu") || Pattern.PUSH_VERTICAL in it.patterns }) addAll(listOf("external-rotation-band", "prone-y-raise", "prone-t-raise"))
+            if (any { it.id.startsWith("squat-pistol") || it.id.startsWith("squat-shrimp") || fam(it, "quad") }) addAll(listOf("spanish-squat", "terminal-knee-extension"))
+            if (any { it.unilateral && (Pattern.LUNGE in it.patterns || Pattern.SQUAT in it.patterns) }) addAll(listOf("clamshell", "hip-lateral-leg-raise"))
+        }.distinct()
+        val out = mutableListOf<String>()
+        var wrist = 0; var shoulder = 0; var knee = 0
+        for (id in wanted) {
+            if (id in alreadyIn || out.size >= 4) continue
+            if (id.startsWith("wrist-") && "warmup-wrist-prep" in alreadyIn) continue   // the template already prepares the wrists
+            val v = c.variation(id) ?: continue
+            if (v.demonstrationHold || !isAvailable(v, profile) || Goals.unmet(c, id, progress).isNotEmpty()) continue
+            // one item per need: the first usable one of each group wins
+            val group = when (id) { "external-rotation-band", "prone-y-raise", "prone-t-raise" -> "shoulder"; "spanish-squat", "terminal-knee-extension" -> "knee"; "clamshell", "hip-lateral-leg-raise" -> "hip"; else -> "wrist" }
+            val used = when (group) { "shoulder" -> shoulder; "knee" -> knee; "wrist" -> wrist; else -> out.count { it == "clamshell" || it == "hip-lateral-leg-raise" } }
+            if (used >= 1) continue
+            when (group) { "shoulder" -> shoulder++; "knee" -> knee++; "wrist" -> wrist++ }
+            out += id
+        }
+        return out
+    }
 }

@@ -359,7 +359,7 @@ class PreviewScreenTest {
     @Test fun specialistExerciseCategoriesRemainAvailableThroughManualAdd() {
         show(); rule.waitForIdle()
         rule.onNodeWithTag("add_start").performScrollTo().performClick(); rule.waitForIdle(); rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle()
-        for (category in listOf("squat", "conditioning", "prehab", "stretches")) {   // R8.2-T01: no Power category, the jumps are under Squat
+        for (category in listOf("squat", "conditioning", "warmup", "stretches")) {   // R8.2-T01: no Power category, the jumps are under Squat
             rule.onNodeWithTag("add_cat_$category").performScrollTo().assertExists()
         }
         rule.onNodeWithTag("add_cat_power").assertDoesNotExist()

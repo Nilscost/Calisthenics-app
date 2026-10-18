@@ -12,6 +12,15 @@ import app.calisthenics.domain.progression.ProgressSnapshot
 /** One chip of the family picker. [familyIds] are catalog family ids; an empty list is the stretches tab. */
 data class TreeTab(val id: String, val title: String, val familyIds: List<String>)
 
+/** R8.2-T02 (G2): the body areas of the Warm-up category, in display order, with the catalog families they hold. */
+enum class WarmupArea(val title: String, val familyIds: List<String>) {
+    SHOULDER("Shoulder", listOf("prehab-shoulder")), WRIST("Wrist", listOf("prehab-wrist")), HIP("Hip", listOf("prehab-hip")),
+    KNEE("Knee", listOf("prehab-knee")), NECK("Neck", listOf("neck")),
+    GENERAL("General warm-up", listOf("warmup-arch-hang", "warmup-dead-bug", "warmup-hinge-easier", "warmup-shoulder-band", "warmup-shoulder-towel", "warmup-squat-easier", "warmup-squat-sky-reach", "warmup-support-hold", "warmup-wrist-prep")),
+}
+val WARMUP_FAMILIES: List<String> = WarmupArea.entries.flatMap { it.familyIds }
+fun warmupAreaOf(familyId: String): WarmupArea? = WarmupArea.entries.firstOrNull { familyId in it.familyIds }
+
 object TreeTabs {
     const val STRETCHES = "stretches"
     val all = listOf(
@@ -27,7 +36,8 @@ object TreeTabs {
         TreeTab("calves", "Lower legs", listOf("calf", "tibialis", "balance")),
         TreeTab("rings", "Rings", listOf("ring-support", "ring-dip", "ring-pushup", "ring-mu")),
         TreeTab("conditioning", "Conditioning", listOf("conditioning", "agility", "crawl")),
-        TreeTab("prehab", "Prehab", listOf("prehab-shoulder", "prehab-wrist", "prehab-hip", "prehab-knee", "neck")),
+        // R8.2-T02 (G2): prehab and the warm-up items are one Warm-up category, listed by body area (see [warmupAreaOf])
+        TreeTab("warmup", "Warm-up", WARMUP_FAMILIES),
         TreeTab("pilates", "Pilates", listOf("pilates")),
         TreeTab(STRETCHES, "Stretches", emptyList()),
     )

@@ -216,10 +216,13 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
                 val mastered = remember(nodes) { nodes.filterValues { it.state == TreeNodeState.MASTERED }.keys }
                 if (c.progressionRoutes.isNotEmpty() && activeRoute == null && mode == ProgressMode.TYPE) {
                     // R8.1-T10b: a category without a drawable route (rings without rings, prehab, Pilates) still lists its exercises
-                    val inTabList = remember(c, tab.id) { c.variations.filter { it.familyId in tab.familyIds && it.kind != Kind.STRETCH }.sortedBy { it.name } }
+                    val inTabList = remember(c, tab.id) { c.variations.filter { it.familyId in tab.familyIds && it.kind != Kind.STRETCH }.sortedWith(compareBy({ if (tab.id == "warmup") WarmupArea.entries.indexOf(warmupAreaOf(it.familyId)) else 0 }, { it.name })) }
                     Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).testTag("tab_exercise_list")) {
                         if (inTabList.isEmpty()) Text(stringResource(R.string.progress_no_routes), Modifier.padding(Spacing.l).testTag("route_empty"), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        var lastArea: WarmupArea? = null
                         inTabList.forEach { v ->
+                            // R8.2-T02 (G2): the Warm-up category is listed by body area
+                            if (tab.id == "warmup") warmupAreaOf(v.familyId)?.let { a -> if (a != lastArea) { lastArea = a; Caption(a.title, Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("warmup_area_${a.name}")) } }
                             Text(v.name, Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable { detailStack = v.id }.padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("tab_exercise_${v.id}"), style = MaterialTheme.typography.bodyLarge)
                         }
                     }

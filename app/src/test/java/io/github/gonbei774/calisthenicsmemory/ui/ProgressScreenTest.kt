@@ -187,13 +187,13 @@ class ProgressScreenTest {
         val home = profiles.first { it.id == "home" }
         if (home.items.none { it.equipmentId == "rings" }) ProfileStore.save(ctx, profiles.map { if (it.id == "home") it.copy(items = it.items + app.calisthenics.domain.model.EquipmentItem("rings")) else it })
         show()
-        for (tab in listOf("rings", "squat", "conditioning", "prehab", "pilates")) {   // R8.2-T01: the power exercises are under Squat
+        for (tab in listOf("rings", "squat", "conditioning", "warmup", "pilates")) {   // R8.2-T01: the power exercises are under Squat
             rule.onNodeWithTag("tab_chip_$tab").performScrollTo().performClick(); rule.waitForIdle()
             val family = when (tab) {
                 "rings" -> "ring-support-hold"
                 "squat" -> "jump-squat"
                 "conditioning" -> "bear-crawl"
-                "prehab" -> "external-rotation-band"
+                "warmup" -> "external-rotation-band"
                 else -> "pilates-roll-up"
             }
             val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx)
