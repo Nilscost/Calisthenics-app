@@ -34,8 +34,9 @@ appId: app.calisthenics.personal
 - takeScreenshot: 02-preview-${VARIANT}
 - scrollUntilVisible: { element: { id: conditioning_caption }, direction: DOWN, speed: 25, timeout: 30000 }
 - takeScreenshot: 02-preview-included-blocks-${VARIANT}
-- scrollUntilVisible: { element: { id: all_sets_header }, direction: UP, speed: 25, timeout: 30000 }
+- scrollUntilVisible: { element: { id: preview_format_PAIRS }, direction: UP, speed: 25, timeout: 30000 }
 # V16 / R7.2-T01: "All sets" header (no set tabs), the level stepper, and the "+" between blocks
+- scrollUntilVisible: { element: { id: all_sets_header }, direction: DOWN, speed: 25, timeout: 30000 }
 - assertVisible: { id: all_sets_header }
 - assertNotVisible: { id: set_tab_2 }
 # R8.1-T05 (F5, F6): the set format is chosen in the Preview, and an edit survives going back to Train and returning

@@ -70,7 +70,14 @@ appId: app.calisthenics.personal
           from: { id: progress_type_tabs, point: "15%, 50%" }
           direction: RIGHT
 - tapOn: { id: tab_chip_squat }
-- extendedWaitUntil: { visible: { id: route_chip_jump }, timeout: 8000 }
+- repeat:
+    while: { notVisible: { id: route_chip_jump } }
+    times: 8
+    commands:
+      - swipe:
+          from: { id: progress_route_tabs, point: "90%, 50%" }
+          direction: LEFT
+- assertVisible: { id: route_chip_jump }
 - takeScreenshot: 06-category-squat-${VARIANT}
 - repeat:
     while: { notVisible: { id: tab_chip_warmup } }
