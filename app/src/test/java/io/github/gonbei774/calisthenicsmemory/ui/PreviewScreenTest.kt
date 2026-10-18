@@ -128,6 +128,22 @@ class PreviewScreenTest {
         rule.onNodeWithTag("preview_format_PAIRS").assertIsSelected()
     }
 
+    // R8.2-T03 (G3): the included parts are blocks in the Preview, editable, and the edits survive like all others
+    @Test fun includedWarmupConditioningAndCooldownAreBlocksInThePreview() {
+        app.getSharedPreferences("train", Context.MODE_PRIVATE).edit().putBoolean("warmup", true).putBoolean("conditioning", true).putBoolean("cooldown", true).putString("cooldown_mode", "STRETCHING").commit()
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("warmup_caption").performScrollTo().assertExists()
+        rule.onNodeWithTag("conditioning_caption").performScrollTo().assertExists()
+        rule.onNodeWithTag("cooldown_caption").performScrollTo().assertExists()
+        rule.onNodeWithTag("conditioning_item_0").performScrollTo().assertExists()
+        val first = rule.onAllNodes(hasTestTag("conditioning_item_0")).fetchSemanticsNodes().size
+        rule.onNodeWithTag("conditioning_minutes_plus").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("conditioning_minutes_value").assertTextEquals("7")   // the circuit then fits as much of the 7 minutes as whole rounds allow
+        rule.onNodeWithTag("conditioning_remove_0").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("warmup_remove_0").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(1, first)
+    }
+
     @Test fun headerSaysRoundsMinutesAndStyle() {
         show(); rule.waitForIdle()
         rule.onNodeWithTag("preview_header").assertTextContains("4 rounds", substring = true)

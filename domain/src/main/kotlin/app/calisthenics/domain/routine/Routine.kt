@@ -85,6 +85,8 @@ data class SessionDraft(
     val cooldownAdded: List<String> = emptyList(),
     /** R8.1-T06 (F7): Flow = no rest between exercises (auto-advance after reps or time); rest between sets stays as set. */
     val flow: Boolean = false,
+    /** R8.2-T03 (G3): warm-up items taken out in the Preview. */
+    val warmupRemoved: Set<String> = emptySet(),
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(

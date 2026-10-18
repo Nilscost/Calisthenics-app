@@ -101,10 +101,10 @@ private class Planner(val input: PlanInput) {
             listOf(PlanOption("change-profile", "Switch equipment profile."), PlanOption("clear-exclusions", "Review excluded exercises.")))
 
         // 6–7. templates
-        val warmIds = Ramp.order(cat, input.profile, input.progress, input.routine.warmup.ifEmpty { cat.warmupTemplate }, chosen.flatMap { it.variation.patterns })   // L12: RAMP order, gated items
+        val warmIds = Ramp.order(cat, input.profile, input.progress, input.routine.warmup.ifEmpty { cat.warmupTemplate }, chosen.flatMap { it.variation.patterns }).filter { it !in draft.warmupRemoved }   // L12: RAMP order, gated items
         // R8.2-T02 (G2): matched prehab items join the template's warm-up; the whole warm-up stays within the template's own time (an authored routine warm-up is left as written)
         val matchedIds = if (draft.warmupOn && input.routine.warmup.isEmpty())
-            Ramp.matched(cat, input.profile, input.progress, chosen.map { it.variation }, warmIds) else emptyList()
+            Ramp.matched(cat, input.profile, input.progress, chosen.map { it.variation }, warmIds).filter { it !in draft.warmupRemoved } else emptyList()
         val baseWarm = if (draft.warmupOn) template(warmIds, BlockType.WARMUP, "warmup") else emptyList()
         val warm = if (matchedIds.isEmpty()) baseWarm else run {
             val budget = baseWarm.sumOf { it.durationSeconds }
@@ -124,7 +124,7 @@ private class Planner(val input: PlanInput) {
             CooldownMode.TIMED -> listOf(TimelineBlock("cooldown-relax", BlockType.COOLDOWN, draft.cooldownMinutes.coerceIn(1, 30) * 60, note = "Relax and breathe: in for 4, out for 6. Let the body settle."))
             CooldownMode.STRETCHING -> cooldownStretches(chosen)
         }
-        if (draft.warmupOn && warmIds.isEmpty()) return fail("no-warmup-template", "Warm-up is on but no reviewed warm-up template exists.",
+        if (draft.warmupOn && warmIds.isEmpty() && draft.warmupRemoved.isEmpty()) return fail("no-warmup-template", "Warm-up is on but no reviewed warm-up template exists.",
             listOf(PlanOption("warmup-off", "Turn warm-up off.")))
         if (draft.cooldownOn && draft.cooldownMode == null && cat.cooldownTemplate.isEmpty()) return fail("no-cooldown-template", "Cooldown is on but no reviewed cooldown template exists.",
             listOf(PlanOption("cooldown-off", "Turn cooldown off.")))

@@ -18,9 +18,23 @@ appId: app.calisthenics.personal
       - tapOn: { id: cooldown_switch }
 - extendedWaitUntil: { visible: { id: cooldown_mode_STRETCHING }, timeout: 8000 }
 - takeScreenshot: 01c-train-cooldown-${VARIANT}
+# R8.2-T03 (G3): the Include row with all three parts in (idempotent on a retry)
+- scrollUntilVisible: { element: { id: warmup_switch }, direction: UP, visibilityPercentage: 100, centerElement: true, timeout: 8000 }
+- runFlow:
+    when: { notVisible: { id: warmup_switch, checked: true } }
+    commands:
+      - tapOn: { id: warmup_switch }
+- runFlow:
+    when: { notVisible: { id: conditioning_switch, checked: true } }
+    commands:
+      - tapOn: { id: conditioning_switch }
+- takeScreenshot: 01d-train-include-${VARIANT}
 - tapOn: { id: preview_button }
 - extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
 - takeScreenshot: 02-preview-${VARIANT}
+- scrollUntilVisible: { element: { id: conditioning_caption }, direction: DOWN, speed: 25, timeout: 30000 }
+- takeScreenshot: 02-preview-included-blocks-${VARIANT}
+- scrollUntilVisible: { element: { id: all_sets_header }, direction: UP, speed: 25, timeout: 30000 }
 # V16 / R7.2-T01: "All sets" header (no set tabs), the level stepper, and the "+" between blocks
 - assertVisible: { id: all_sets_header }
 - assertNotVisible: { id: set_tab_2 }

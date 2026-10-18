@@ -201,6 +201,21 @@ class TrainScreenTest {
         assertFalse(s.flow); assertNull(s.fixedProgramId)
     }
 
+    // R8.2-T03 (G3): one Include row with Warm-up, Conditioning and Cool-down; gold when included
+    @Test fun theIncludeRowHasThreeToggleButtonsThatPersistAndChangeTheTime() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("include_row").performScrollTo().assertExists()
+        for (t in listOf("warmup_switch", "conditioning_switch", "cooldown_switch")) rule.onNodeWithTag(t).performScrollTo().assertIsOff()
+        val before = minutes()
+        rule.onNodeWithTag("conditioning_switch").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("conditioning_switch").assertIsOn()
+        assertTrue(minutes() > before)
+        assertTrue(ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getBoolean("conditioning", false))
+        rule.onNodeWithTag("warmup_switch").performClick(); rule.onNodeWithTag("cooldown_switch").performClick(); rule.waitForIdle()
+        for (t in listOf("warmup_switch", "conditioning_switch", "cooldown_switch")) rule.onNodeWithTag(t).assertIsOn()
+        rule.onNodeWithTag("cooldown_mode_STRETCHING").performScrollTo().assertExists()   // the cool-down keeps its modes
+    }
+
     @Test fun theMergedArmySessionShowsAtLeastThirtyMinutes() { val m = programMinutes("army-prt"); assertTrue("$m min", m >= 30) }
     @Test fun theMergedPilatesSessionShowsAtLeastThirtyMinutes() { val m = programMinutes("pilates-mat"); assertTrue("$m min", m >= 30) }
 

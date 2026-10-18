@@ -175,7 +175,7 @@
     <string name="weight_ready">Ready · starts at level 1</string>
     <string name="weight_locked_kb">Needs a %1$s kg kettlebell</string>
     <string name="weight_locked_db">Needs %1$s kg dumbbells</string>
-    <string name="train_warmup">Warm-up first</string>
+    <string name="train_warmup">Warm-up</string>
     <string name="train_warmup_hint">A few mobility moves before the workout; counted in the time.</string>
     <string name="routine_summary">%1$d exercises · %2$s</string>
     <string name="routine_summary_ready">Ready-made · %1$d exercises · %2$s</string>
@@ -183,6 +183,10 @@
     <string name="train_new_profile">New profile</string>
     <string name="train_sets_caption">Sets</string>
     <string name="train_format_caption">Workout format</string>
+    <string name="train_include_caption">Include</string>
+    <string name="train_conditioning">Conditioning</string>
+    <string name="preview_warmup_caption">Warm-up · %1$d min</string>
+    <string name="preview_conditioning_caption">Conditioning · %1$d min</string>
     <string name="preview_flow">Flow</string>
     <string name="preview_flow_hint">No rest timer between exercises: the next one starts after the reps or the time. Rest between sets stays as set.</string>
     <string name="format_circuit">Circuit</string>

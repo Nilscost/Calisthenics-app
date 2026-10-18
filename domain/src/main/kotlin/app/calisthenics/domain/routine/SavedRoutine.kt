@@ -37,6 +37,9 @@ data class SavedRoutine(
     val flow: Boolean = false,
     /** R8.1-T08 (F9): set when the routine was made from a program: the program's items as edited (the slots are then empty). The program itself never changes. */
     val program: app.calisthenics.domain.planner.ProgramContent? = null,
+    /** R8.2-T03 (G3): the conditioning finisher the routine was saved with. */
+    val conditioningOn: Boolean = false,
+    val conditioningMinutes: Int = 6,
 )
 
 /** Builds what is saved from the Preview's state. [base] is the routine the plan was made from, [edits] the Preview's changes. */
@@ -45,7 +48,7 @@ fun savedFrom(id: String, name: String, revision: Int, base: Routine, edits: Pla
     val slots = applied.slots.map { s -> edits.swaps[s.id]?.let { s.copy(preferredVariationId = it) } ?: s }
     val overlay = edits.copy(swaps = emptyMap(), removed = emptySet(), added = emptyList(), rule = null)
     return SavedRoutine(id, name.trim().ifBlank { "My routine" }, revision, applied.copy(id = id, revision = revision, name = name.trim().ifBlank { "My routine" }, slots = slots, rule = rule),
-        overlay, settings.format, rule, settings.stretchOn, settings.rounds, createdAt, now, settings.warmupOn, exercisesPerRound = settings.exercisesPerRound, cooldownOn = settings.cooldownOn, cooldownMode = settings.cooldownMode, cooldownMinutes = settings.cooldownMinutes, flow = settings.flow)
+        overlay, settings.format, rule, settings.stretchOn, settings.rounds, createdAt, now, settings.warmupOn, exercisesPerRound = settings.exercisesPerRound, cooldownOn = settings.cooldownOn, cooldownMode = settings.cooldownMode, cooldownMinutes = settings.cooldownMinutes, flow = settings.flow, conditioningOn = settings.conditioningOn, conditioningMinutes = settings.conditioningMinutes)
 }
 
 /** Everything the planner needs to rebuild the saved workout: the routine, the Train settings and the Preview edits it was saved with. */
@@ -59,7 +62,7 @@ fun resolveSaved(saved: SavedRoutine, today: TrainSettings): ResolvedRoutine = R
 
 /** Choosing a saved routine on Train copies its format, rest type and sets into today's settings (the person can still change them there). */
 fun settingsFor(saved: SavedRoutine, today: TrainSettings): TrainSettings =
-    today.copy(goalId = "general", format = saved.format, stretchOn = saved.stretchOn, rounds = saved.sets, focus = null, routineId = saved.id, fixedProgramId = null, warmupOn = saved.warmupOn, exercisesPerRound = saved.exercisesPerRound, cooldownOn = saved.cooldownOn, cooldownMode = saved.cooldownMode, cooldownMinutes = saved.cooldownMinutes, flow = saved.flow)
+    today.copy(goalId = "general", format = saved.format, stretchOn = saved.stretchOn, rounds = saved.sets, focus = null, routineId = saved.id, fixedProgramId = null, warmupOn = saved.warmupOn, exercisesPerRound = saved.exercisesPerRound, cooldownOn = saved.cooldownOn, cooldownMode = saved.cooldownMode, cooldownMinutes = saved.cooldownMinutes, flow = saved.flow, conditioningOn = saved.conditioningOn, conditioningMinutes = saved.conditioningMinutes)
 
 /** D5: "Update this routine" keeps the id and bumps the revision (older plans keep their own snapshot); "Save as new" gets a new id. */
 fun updateSaved(old: SavedRoutine, new: SavedRoutine) = new.copy(id = old.id, revision = old.revision + 1, createdAtEpochMs = old.createdAtEpochMs, routine = new.routine.copy(id = old.id, revision = old.revision + 1))

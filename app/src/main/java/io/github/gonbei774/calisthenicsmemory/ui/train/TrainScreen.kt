@@ -216,24 +216,14 @@ fun TrainScreen(
             }
 
             if (programMode == null) {
-            val warmupLabel = stringResource(R.string.train_warmup)
-            // V23: a warm-up before any workout (the routine's own list when it has one, else the catalog's)
-            Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.train_warmup), style = MaterialTheme.typography.bodyLarge)
-                    Text(stringResource(R.string.train_warmup_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-                Switch(checked = settings.warmupOn, onCheckedChange = { change(settings.copy(warmupOn = it)) }, modifier = Modifier.semantics { contentDescription = warmupLabel }.testTag("warmup_switch"))
-            }
-
-            // R7-T13 (D10): the cool-down after the workout: stretches matched to the session, or a timed relax block
-            val cooldownLabel = stringResource(R.string.train_cooldown)
-            Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.train_cooldown), style = MaterialTheme.typography.bodyLarge)
-                    Text(stringResource(R.string.train_cooldown_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-                Switch(checked = settings.cooldownOn, onCheckedChange = { change(settings.copy(cooldownOn = it)) }, modifier = Modifier.semantics { contentDescription = cooldownLabel }.testTag("cooldown_switch"))
+            // R8.2-T03 (G3): one horizontal Include row: Warm-up, Conditioning, Cool-down (gold = in the workout)
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Caption(stringResource(R.string.train_include_caption))
+                io.github.gonbei774.calisthenicsmemory.ui.components.IncludeRow(listOf(
+                    io.github.gonbei774.calisthenicsmemory.ui.components.IncludeOption(stringResource(R.string.train_warmup), settings.warmupOn, "warmup_switch") { change(settings.copy(warmupOn = it)) },
+                    io.github.gonbei774.calisthenicsmemory.ui.components.IncludeOption(stringResource(R.string.train_conditioning), settings.conditioningOn, "conditioning_switch") { change(settings.copy(conditioningOn = it)) },
+                    io.github.gonbei774.calisthenicsmemory.ui.components.IncludeOption(stringResource(R.string.train_cooldown), settings.cooldownOn, "cooldown_switch") { change(settings.copy(cooldownOn = it)) },
+                ))
             }
             if (settings.cooldownOn) SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
                 app.calisthenics.domain.model.CooldownMode.entries.forEachIndexed { i, m ->

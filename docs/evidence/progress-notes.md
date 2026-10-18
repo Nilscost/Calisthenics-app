@@ -997,3 +997,15 @@ Automatic warm-up (`Ramp.matched`, used by the planner when Warm-up is on and th
 NOT done: the Warm-up category has no routes (the items are listed, tap opens the detail); no phone testing.
 
 Choices not in the plan: prehab items run as 30 s blocks of slow reps (a unilateral item has both sides) because they carry no hold time of their own; a beginner's session often has no matching movement, then the template warm-up is unchanged.
+
+### R8.2-T03 · G3 one horizontal Include row, conditioning finisher, Preview blocks · 2026-10-17
+
+Train: the Warm-up and Cool-down switches are replaced by one **Include** row under the format control with three toggle buttons, Warm-up, Conditioning and Cool-down (`IncludeRow`; gold and filled when in, outlined when out; tags `warmup_switch`, `conditioning_switch`, `cooldown_switch` kept for the tests and flows). The cool-down keeps its Stretching / Timed modes under the row. Programs show no Include row (they are a list).
+
+Conditioning (`conditioningExercises`, `conditioningBlocks`, `withConditioningFinisher`): 5 to 10 minutes (setting, default 6, changed in the Preview) after the last strength block and before the cool-down; a timed flow circuit of 30 s intervals with no rest between exercises and 10 s between rounds, fitted to the minutes without going over (4 to 6 exercises, 1 to 4 rounds). Exercises come from the Conditioning category by need: burpee route (the easy step-back burpee until standard push-ups and air squats are reached, then the person's own burpee step), jumping or half jacks, mountain climbers (slow until the same level), jump rope else high knees, lateral shuffle, bear crawl; equipment filtered. The blocks carry no target and `freeTarget`, so they never count towards a level. Settings (`conditioningOn`, `conditioningMinutes`) are stored with Train, saved with routines and in the backup.
+
+Preview: the included parts are blocks: the warm-up (its items removable), the conditioning finisher (minutes stepper and removable exercises) and the cool-down; the edits are in `PlanEdits` (`warmupRemoved`, `conditioningMinutes`, `conditioningRemoved`), so the F6 persistence applies. Tests: `ConditioningFinisherTest` (4), `TrainScreenTest.theIncludeRowHasThreeToggleButtons...`, `PreviewScreenTest.includedWarmupConditioningAndCooldownAreBlocksInThePreview`; Maestro `b_train_preview` turns all three on and shows the blocks. Debug seed regenerated. Docker full verify exit 0 (`r8.2-t03-verify-2026-10-17.log`).
+
+NOT done: the finisher's Flow is its own (no rest between exercises) and is not tied to the Flow option; no phone testing.
+
+Choices not in the plan: the minutes setting lives in the Preview (stepper) rather than on the Include button; a requested length that whole rounds cannot fill exactly shows the real length in the caption (for example 7 min asked, 6 min built).

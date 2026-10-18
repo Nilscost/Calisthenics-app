@@ -37,6 +37,11 @@ data class PlanEdits(
     val cooldownRemoved: Set<String> = emptySet(),
     /** R7.2-T04 (F5): cool-down stretches the person added with the +, in order, after the others. */
     val cooldownAdded: List<String> = emptyList(),
+    /** R8.2-T03 (G3): the conditioning finisher's minutes (null = the setting) and the exercises removed from it. */
+    val conditioningMinutes: Int? = null,
+    val conditioningRemoved: Set<String> = emptySet(),
+    /** R8.2-T03 (G3): warm-up items the person removed in the Preview. */
+    val warmupRemoved: Set<String> = emptySet(),
 ) {
     fun isEmpty() = this == PlanEdits()
 }

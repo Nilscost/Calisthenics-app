@@ -12,6 +12,9 @@ import kotlinx.serialization.Serializable
 
 const val MIN_TRAIN_ROUNDS = 1
 const val DEFAULT_TRAIN_ROUNDS = 4
+const val DEFAULT_CONDITIONING_MINUTES = 6
+const val MIN_CONDITIONING_MINUTES = 5
+const val MAX_CONDITIONING_MINUTES = 10
 
 @Serializable
 data class TrainSettings(
@@ -42,6 +45,9 @@ data class TrainSettings(
     val additionalPools: Set<String> = emptySet(),
     /** R8.1-T06 (F7): Flow, a Preview option for every workout: no rest between exercises; rest between sets stays. A program's authored flow is only the starting value. */
     val flow: Boolean = false,
+    /** R8.2-T03 (G3): the "Include" row: an optional conditioning finisher of [conditioningMinutes] (5 to 10) at the end of the workout. */
+    val conditioningOn: Boolean = false,
+    val conditioningMinutes: Int = DEFAULT_CONDITIONING_MINUTES,
 ) {
     fun effectiveFocus(): Set<StrengthFocus> = focus ?: Goals.focusFor(goalId)
 }
@@ -134,8 +140,9 @@ private fun planFor(
         .copy(cooldownOn = s.cooldownOn, cooldownMode = s.cooldownMode, cooldownMinutes = edits.cooldownMinutes ?: s.cooldownMinutes, cooldownStretches = edits.cooldownStretches, cooldownRemoved = edits.cooldownRemoved, cooldownAdded = edits.cooldownAdded,
             focus = s.effectiveFocus(), swaps = swaps + edits.swaps, rounds = (if ((edits.rule ?: routine.rule).isRange) (edits.rule ?: routine.rule).sets else s.rounds).coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed, format = s.format,
             tierOverrides = edits.tierOverrides, stretchPicks = edits.stretchPicks, extraStretches = edits.extraStretches,
-            roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, rule = edits.rule ?: routine.rule, flow = s.flow)
-    return withTimedExtras(catalog, generate(PlanInput("draft", nowEpochMs, nowDay, catalog, routine, draft, profile, progress = progress)), progress, profile, s.additionalPools)
+            roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, rule = edits.rule ?: routine.rule, flow = s.flow, warmupRemoved = edits.warmupRemoved)
+    val generated = withTimedExtras(catalog, generate(PlanInput("draft", nowEpochMs, nowDay, catalog, routine, draft, profile, progress = progress)), progress, profile, s.additionalPools)
+    return if (s.conditioningOn) withConditioningFinisher(catalog, generated, progress, profile, edits.conditioningMinutes ?: s.conditioningMinutes, edits.conditioningRemoved) else generated
 }
 
 /** The routine as the plan uses it before hand edits: the goal's step in front and the exercises per round brought to [TrainSettings.exercisesPerRound]. A saved routine keeps exactly this list. */

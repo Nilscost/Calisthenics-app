@@ -355,12 +355,44 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                             chain = if (rule.isRange && idx >= 0) idx to options.size else null)
                         BreakRow(e.slotId, p, st, names, onChange = { breakSlot = e.slotId to (if (typed) st else null) }, onRestChange = { restDurations = restDurations + (e.slotId to it) }, onAdd = { addAfter = e.slotId }, sfx = sfx)
                     }
+                    // R8.2-T03 (G3): the included warm-up as a block, its items removable
+                    val warmBlocks = p.blocks.filter { it.type == BlockType.WARMUP }
+                    if (settings.warmupOn && warmBlocks.isNotEmpty()) {
+                        Caption(stringResource(R.string.preview_warmup_caption, (warmBlocks.sumOf { it.durationSeconds } + 30) / 60), Modifier.padding(top = Spacing.s).testTag("warmup_caption"))
+                        warmBlocks.mapNotNull { it.variationId }.distinct().forEachIndexed { i, id ->
+                            Card(Modifier.fillMaxWidth().testTag("warmup_item_$i"), shape = MaterialTheme.shapes.large) {
+                                Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                                    io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(id, names[id] ?: id, 44.dp)
+                                    Column(Modifier.weight(1f)) { Text(names[id] ?: id, style = MaterialTheme.typography.titleMedium); Text(formatClock(warmBlocks.filter { it.variationId == id }.sumOf { it.durationSeconds }), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline) }
+                                    IconButton(onClick = { edits = edits.copy(warmupRemoved = edits.warmupRemoved + id) }, modifier = Modifier.testTag("warmup_remove_$i")) { Icon(Icons.Filled.Close, stringResource(R.string.preview_remove)) }
+                                }
+                            }
+                        }
+                    }
                     // R7.2-T01 (F1): one round view for all sets (the edits apply to every set), no set tabs; the full timeline below lists every set
                     Text(stringResource(R.string.preview_all_sets, (p.blocks.filter { it.roundIndex == set }.sumOf { it.durationSeconds } + 30) / 60), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("all_sets_header").padding(top = Spacing.xs))
                     Caption(stringResource(R.string.preview_applies_to_all))
                     AddButton({ addAfter = null }, Modifier.align(Alignment.End).testTag("add_start"))
                     circuitOf(p, set).forEachIndexed { i, e -> Tile(i, e, set, "", null, false) }
                     // R7-T13 (D10): the cool-down after the last set: timed minutes with - / +, or stretches that can be swapped
+                    // R8.2-T03 (G3): the included conditioning finisher: minutes with - / + and its exercises removable
+                    val condBlocks = p.blocks.filter { it.slotId?.startsWith("cond") == true }
+                    if (settings.conditioningOn && condBlocks.isNotEmpty()) {
+                        val condMinutes = edits.conditioningMinutes ?: settings.conditioningMinutes
+                        Row(Modifier.fillMaxWidth().padding(top = Spacing.s), verticalAlignment = Alignment.CenterVertically) {
+                            Caption(stringResource(R.string.preview_conditioning_caption, (condBlocks.sumOf { it.durationSeconds } + 30) / 60), Modifier.weight(1f).testTag("conditioning_caption"))
+                            io.github.gonbei774.calisthenicsmemory.ui.components.Stepper(condMinutes, { edits = edits.copy(conditioningMinutes = it) }, MIN_CONDITIONING_MINUTES..MAX_CONDITIONING_MINUTES, tag = "conditioning_minutes")
+                        }
+                        condBlocks.filter { it.type == BlockType.WORK }.mapNotNull { it.variationId }.distinct().forEachIndexed { i, id ->
+                            Card(Modifier.fillMaxWidth().testTag("conditioning_item_$i"), shape = MaterialTheme.shapes.large) {
+                                Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                                    io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(id, names[id] ?: id, 44.dp)
+                                    Text(names[id] ?: id, Modifier.weight(1f), style = MaterialTheme.typography.titleMedium)
+                                    IconButton(onClick = { edits = edits.copy(conditioningRemoved = edits.conditioningRemoved + id) }, modifier = Modifier.testTag("conditioning_remove_$i")) { Icon(Icons.Filled.Close, stringResource(R.string.preview_remove)) }
+                                }
+                            }
+                        }
+                    }
                     val cool = p.blocks.filter { it.type == BlockType.COOLDOWN }
                     if (settings.cooldownOn) {
                         Caption(stringResource(R.string.preview_cooldown_caption), Modifier.padding(top = Spacing.s).testTag("cooldown_caption"))
