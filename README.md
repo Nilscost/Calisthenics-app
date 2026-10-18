@@ -8,6 +8,8 @@ I built it as the product owner. AI coding agents wrote most of the code; I set 
 
 ## What the app does
 
+**R8.1 (0.11.1-r8):** engine fixes from the owner's R8 phone test (never below the shown level, one exercise per progression, actual reps, 3 good sessions within 14 days), set formats, Flow and persistent edits in the Preview, programs and routines in one dropdown, merged 30+ minute Army and Pilates sessions, search on top and visible alternatives in Progress, equipment icons and order. Walk-through: [phone check](docs/evidence/owner-check-r8.1.md). Not phone-tested; content DRAFT.
+
 **R8 (0.11.0-r8):** expands the library, adds eight fixed programs, equipment-aware selection and searchable aliases, and keeps the main progression paths compact. Completed workouts alternate approved variations; new comparable alternatives receive conservative starting targets, then follow their own results. Preview rests are editable, voice cues are slower and name the working side, and two-sided holds have a five-second changeover. Fixed programs live under Routine; specialist exercises can be added manually in Preview and follow the selected equipment profile. See the [phone walk-through](docs/evidence/owner-check-r8.md). All 25 previously unclear demonstration videos are replaced and no demonstration is withheld. The final APK is verified on CI and in a fresh Docker clone (`docs/evidence/r8-build-2026-10-17.json`). R8 phone checks and owner acceptance remain open; training content remains DRAFT.
 
 - **Train:** pick a goal (a skill such as the handstand push-up, or a body focus), your equipment profile and the number of rounds. You get a circuit preview with the muscles worked; swap any exercise for today or permanently, then start.

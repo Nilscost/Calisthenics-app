@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-17",
+  "sourceCommit": "187521f",
+  "sourceNote": "Fresh clone of the final R8.1 code commit (later commits change documentation only).",
+  "package": "app.calisthenics.personal",
+  "versionName": "0.11.1-r8",
+  "versionCode": 15,
+  "apk": "/Users/nils/Documents/hermes/Apps/builds/app-debug-R8.1.apk",
+  "bytes": 24779386,
+  "sha256": "b59c6b6f48fdf248b21aecd60cabc529ea0b2ae7516825f4f1771e2d02d1e656",
+  "certificateSha256": "8638d15f7e5327d0a4f3197dad470e70b1425dfcb00a6bfc4bbcdc96a63bd940",
+  "certificateMatchesR72": true,
+  "freshCloneVerify": "docs/evidence/r8.1-fresh-clone-verify-2026-10-17.log (preflight, migration SQL, domain, app tests, lint, assembleDebug, content validation all exit 0)",
+  "domainTests": 483,
+  "appTests": 208,
+  "githubVerify": {"result": "success", "url": "https://github.com/Nilscost/Calisthenics-app/actions/runs/39072032905"},
+  "uiScreens": {"result": "success", "flowResults": "51 PASS (17 flows x light, dark, font13; one RETRY on b_train_preview font13 passed)", "url": "https://github.com/Nilscost/Calisthenics-app/actions/runs/39072032888"},
+  "phoneTested": false
+}
