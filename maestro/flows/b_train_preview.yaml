@@ -34,34 +34,52 @@ appId: app.calisthenics.personal
 - takeScreenshot: 02-preview-${VARIANT}
 - scrollUntilVisible: { element: { id: conditioning_caption }, direction: DOWN, speed: 25, timeout: 30000 }
 - takeScreenshot: 02-preview-included-blocks-${VARIANT}
-- scrollUntilVisible: { element: { id: preview_format_PAIRS }, direction: UP, speed: 25, timeout: 30000 }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: "preview_format_PAIRS" }
 # V16 / R7.2-T01: "All sets" header (no set tabs), the level stepper, and the "+" between blocks
-- scrollUntilVisible: { element: { id: all_sets_header }, direction: DOWN, speed: 25, timeout: 30000 }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: "all_sets_header" }
 - assertVisible: { id: all_sets_header }
 - assertNotVisible: { id: set_tab_2 }
 # R8.1-T05 (F5, F6): the set format is chosen in the Preview, and an edit survives going back to Train and returning
-- scrollUntilVisible: { element: { id: preview_format_PAIRS }, direction: UP, timeout: 8000 }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: "preview_format_PAIRS" }
 - takeScreenshot: 02a-preview-format-${VARIANT}
 - tapOn: { id: preview_format_PAIRS }
 # R8.1-T06 (F7): Flow, one toggle in the Preview (no rest between exercises); switched back off right away
-- scrollUntilVisible: { element: { id: preview_flow_switch }, direction: DOWN, timeout: 8000 }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: "preview_flow_switch" }
 - tapOn: { id: preview_flow_switch }
 - takeScreenshot: 02a2-preview-flow-${VARIANT}
 - tapOn: { id: preview_flow_switch }
-- scrollUntilVisible: { element: { id: all_sets_header }, direction: UP, timeout: 8000 }
-- scrollUntilVisible: { element: { id: "level_plus_.*" }, direction: DOWN, timeout: 8000 }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: all_sets_header }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: "level_plus_.*" }
 - tapOn: { id: "level_plus_.*", index: 0 }
 - takeScreenshot: 02b-preview-level-${VARIANT}
 - back
 - extendedWaitUntil: { visible: { id: preview_button }, timeout: 10000 }
 - tapOn: { id: preview_button }
 - extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
-- scrollUntilVisible: { element: { id: preview_format_PAIRS }, direction: DOWN, timeout: 8000 }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: "preview_format_PAIRS" }
 - assertVisible: { id: preview_format_PAIRS }
 - takeScreenshot: 02b2-preview-back-again-${VARIANT}
 - tapOn: { id: preview_format_CIRCUIT }
-- scrollUntilVisible: { element: { id: all_sets_header }, direction: UP, timeout: 8000 }
-- scrollUntilVisible: { element: { id: "add_after_.*" }, direction: DOWN, timeout: 8000 }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: "all_sets_header" }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: "add_after_.*" }
 - tapOn: { id: "add_after_.*", index: 0 }
 - extendedWaitUntil: { visible: "Add to the workout", timeout: 5000 }
 - takeScreenshot: 02c-add-sheet-${VARIANT}
@@ -69,9 +87,14 @@ appId: app.calisthenics.personal
 - takeScreenshot: 02c2-add-sheet-push-${VARIANT}
 - back
 # V21: the progression rule picker (Rep range shows ranges and three sets), then back to App levels
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: rule_REP_RANGE }
 - tapOn: { id: rule_REP_RANGE }
 - takeScreenshot: 02e-rule-rep-range-${VARIANT}
-- scrollUntilVisible: { element: { id: rule_APP_LEVELS }, direction: UP, timeout: 8000 }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: rule_APP_LEVELS }
 - tapOn: { id: rule_APP_LEVELS }
 # a slower scroll: at speed 40 the caption could pass between two visibility checks (dark run da9d667 overshot it)
 - scrollUntilVisible: { element: { id: cooldown_caption }, direction: DOWN, speed: 20, timeout: 30000 }

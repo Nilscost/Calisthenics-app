@@ -1,0 +1,11 @@
+# Brings the element with id ${ID} on screen from wherever the page is scrolled: up first, then down.
+appId: app.calisthenics.personal
+---
+- runFlow:
+    when: { notVisible: { id: "${ID}" } }
+    commands:
+      - scrollUntilVisible: { element: { id: "${ID}" }, direction: UP, timeout: 6000, optional: true }
+- runFlow:
+    when: { notVisible: { id: "${ID}" } }
+    commands:
+      - scrollUntilVisible: { element: { id: "${ID}" }, direction: DOWN, timeout: 20000 }
