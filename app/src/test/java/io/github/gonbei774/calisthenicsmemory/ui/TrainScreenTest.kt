@@ -38,7 +38,7 @@ class TrainScreenTest {
     @Test fun everythingFitsOnOneScreenWithoutScrolling() {
         show()
         rule.waitForIdle()
-        for (tag in listOf("goal_field", "profile_field", "rounds_plus", "between_rest", "minutes", "exercise_count", "preview_button", "train_start_button"))
+        for (tag in listOf("goal_field", "profile_field", "rounds_plus", "between_rest", "minutes", "exercises_plus", "preview_button", "train_start_button"))
             rule.onNodeWithTag(tag).assertIsDisplayed()
     }
 
@@ -53,6 +53,17 @@ class TrainScreenTest {
         rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("goal_body-upper").performClick(); rule.waitForIdle()
         assertNull(io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(ctx, key))
+    }
+
+    // R8.2-T04 (G4): the "exercises in each set" tile at the bottom duplicated the Exercises per round stepper: only the stepper is left, and it drives the plan
+    @Test fun onlyTheExercisesPerRoundStepperIsLeftAndItDrivesThePlan() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_count").assertDoesNotExist()
+        rule.onNodeWithTag("exercises_plus").performScrollTo().assertExists()
+        val before = minutes()
+        rule.onNodeWithTag("exercises_plus").performClick(); rule.waitForIdle()
+        assertTrue(minutes() > before)
+        assertTrue(ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getInt("exercises", -1) > 0)
     }
 
     @Test fun previewButtonIsEnabledAndOpensThePreview() {
@@ -151,7 +162,7 @@ class TrainScreenTest {
     @Test fun summaryTilesShowTimeAndExercisesAndStartIsNextToTheirPreview() {
         show(); rule.waitForIdle()
         assertTrue(minutes() in 40..50)
-        rule.onNodeWithTag("exercise_count").assertIsDisplayed()
+        rule.onNodeWithTag("exercises_plus").assertIsDisplayed()
         rule.onNodeWithTag("train_start_button").assertIsEnabled().assertTextContains("START WORKOUT")
         rule.onNodeWithTag("preview_button").assertIsEnabled().assertTextContains("Workout preview")
         val sx = rule.onNodeWithTag("train_start_button").fetchSemanticsNode().boundsInRoot
@@ -228,7 +239,7 @@ class TrainScreenTest {
         rule.onNodeWithTag("program_${program.id}").performClick(); rule.waitForIdle()
         val s = io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx)
         assertEquals(program.id, s.fixedProgramId); assertEquals(1, s.rounds); assertEquals(program.flow, s.flow); assertNull(s.routineId)
-        rule.onNodeWithTag("exercise_count").assertTextEquals(program.items.size.toString())
+        rule.onNodeWithTag("exercises_value", useUnmergedTree = true).assertDoesNotExist()   // R8.2-T04: the duplicate count is gone
         rule.onNodeWithTag("warmup_switch").assertDoesNotExist()   // a program is a list: no generated warm-up, cool-down or extra exercises
         rule.onNodeWithTag("exercises_plus").assertDoesNotExist()
     }
@@ -242,7 +253,7 @@ class TrainScreenTest {
         rule.onNodeWithTag("format_PAIRS").assertIsSelected()
         rule.onNodeWithText("Sets", ignoreCase = true).assertExists()
         assertEquals("PAIRS", ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getString("format", ""))
-        rule.onNodeWithTag("exercise_count").assertExists() // the plan still builds in every format
+        rule.onNodeWithTag("exercises_plus").assertExists() // the plan still builds in every format
     }
 
     private fun saveRoutine(name: String = "Push day", format: app.calisthenics.domain.model.WorkoutFormat = app.calisthenics.domain.model.WorkoutFormat.PAIRS): app.calisthenics.domain.routine.SavedRoutine {
@@ -259,13 +270,13 @@ class TrainScreenTest {
         // the first ready-made routine is chosen: the Recommended Routine = pairs, plain rest, 9 exercises, 3 sets
         rule.onNodeWithTag("goal_field").assertTextContains("Recommended Routine")
         rule.onNodeWithTag("format_PAIRS").assertIsSelected(); rule.onNodeWithTag("between_rest").assertIsSelected()
-        rule.onNodeWithTag("exercise_count").assertTextEquals("9")
+        rule.onNodeWithTag("exercises_value", useUnmergedTree = true).assertTextEquals("9")   // R8.2-T04: the stepper is the one control
         assertEquals("preset-rr", ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getString("routine", null))
         rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("routine_preset-minimalist").assertExists()
         rule.onNodeWithTag("routine_rt-1").assertExists()          // the person's own routines follow the ready-made ones
         rule.onNodeWithTag("routine_preset-minimalist").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick); rule.waitForIdle()
-        rule.onNodeWithTag("format_CIRCUIT").assertIsSelected(); rule.onNodeWithTag("exercise_count").assertTextEquals("4")
+        rule.onNodeWithTag("format_CIRCUIT").assertIsSelected(); rule.onNodeWithTag("exercises_value", useUnmergedTree = true).assertTextEquals("4")   // R8.2-T04: the stepper is the one control
     }
 
     @Test fun choosingASavedRoutineLoadsItsFormatRestAndSetsAndItsExercises() {
@@ -279,7 +290,7 @@ class TrainScreenTest {
         rule.onNodeWithTag("between_rest").assertIsSelected()
         assertEquals("rt-1", ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getString("routine", null))
         // five original exercises minus core2 plus the added push-up: still six exercises per set
-        rule.onNodeWithTag("exercise_count").assertTextEquals("6")
+        rule.onNodeWithTag("exercises_value", useUnmergedTree = true).assertTextEquals("6")   // R8.2-T04: the stepper is the one control
         // picking a body part again leaves the routine
         rule.onNodeWithTag("objective_type_BODY_PART").performClick(); rule.waitForIdle()
         assertNull(ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getString("routine", null))

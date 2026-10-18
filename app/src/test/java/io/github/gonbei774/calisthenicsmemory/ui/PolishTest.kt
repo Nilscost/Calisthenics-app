@@ -180,7 +180,7 @@ class FontScaleReachTest {
 
     @Test fun trainTabKeepsItsControlsReachable() {
         rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { TrainScreen(onPreview = {}, onStarted = {}, onEditProfile = {}) } }
-        for (tag in listOf("goal_field", "profile_field", "rounds_plus", "between_rest", "minutes", "exercise_count")) rule.onNodeWithTag(tag).performScrollTo().assertIsDisplayed()
+        for (tag in listOf("goal_field", "profile_field", "rounds_plus", "between_rest", "minutes", "exercises_plus")) rule.onNodeWithTag(tag).performScrollTo().assertIsDisplayed()
         for (tag in listOf("preview_button", "train_start_button")) rule.onNodeWithTag(tag).assertIsDisplayed() // the bottom bar
     }
 

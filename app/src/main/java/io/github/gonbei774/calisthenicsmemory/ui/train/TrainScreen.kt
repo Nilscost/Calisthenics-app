@@ -95,7 +95,6 @@ fun TrainScreen(
     }
     val plan = (result as? PlanResult.Ready)?.plan?.let { withRestDurations(it, draft?.rest.orEmpty()) }
     val minutes = plan?.plannedDurationSeconds?.let { (it + 30) / 60 }
-    val exercises = if (programMode != null) programMode.content.items.size else plan?.blocks?.filter { it.type == BlockType.WORK || (resolved.routine.stretchSession.isNotEmpty() && it.type == BlockType.STRETCH) }?.mapNotNull { it.variationId }?.distinct()?.size
 
     // Doc 17 §2.1: choices only; START WORKOUT and Workout preview stay at the bottom.
     Scaffold(
@@ -235,10 +234,8 @@ fun TrainScreen(
 
             }
 
-            Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-                SummaryTile(R.string.train_time_caption, minutes?.let { stringResource(R.string.train_minutes, it) } ?: stringResource(R.string.train_minutes_unknown), null, "minutes", Modifier.weight(1f))
-                SummaryTile(R.string.train_exercises_caption, exercises?.toString() ?: stringResource(R.string.train_minutes_unknown), stringResource(R.string.train_exercises_per_round), "exercise_count", Modifier.weight(1f))
-            }
+            // R8.2-T04 (G4): only the time; the exercises-per-round count lives in its stepper above
+            SummaryTile(R.string.train_time_caption, minutes?.let { stringResource(R.string.train_minutes, it) } ?: stringResource(R.string.train_minutes_unknown), null, "minutes", Modifier.fillMaxWidth())
 
             if (result is PlanResult.Infeasible) {
                 Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer), modifier = Modifier.fillMaxWidth()) {

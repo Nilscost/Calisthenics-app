@@ -1009,3 +1009,9 @@ Preview: the included parts are blocks: the warm-up (its items removable), the c
 NOT done: the finisher's Flow is its own (no rest between exercises) and is not tied to the Flow option; no phone testing.
 
 Choices not in the plan: the minutes setting lives in the Preview (stepper) rather than on the Include button; a requested length that whole rounds cannot fill exactly shows the real length in the caption (for example 7 min asked, 6 min built).
+
+### R8.2-T04 · G4 "exercises in each set" removed from the bottom of Train · 2026-10-17
+
+The summary tile at the bottom of the Train page ("Exercises, per round", tag `exercise_count`) only displayed the plan's exercise count and duplicated the Exercises per round stepper next to the rounds; it never wrote a setting. It is removed (UI only, no migration needed); the time tile is now full width and the stepper (`exercises_*`, stored as `exercises`) is the one control and drives the plan. Tests: `TrainScreenTest.onlyTheExercisesPerRoundStepperIsLeftAndItDrivesThePlan`; changed assertions: the tests that read the count from the tile (ready-made routine, saved routine, format, one-screen fit, font-scale reach) read the stepper value (`exercises_value`) or check the stepper exists, and the program test now asserts the tile is gone. Docker full verify exit 0 (`r8.2-t04-verify-2026-10-17.log`).
+
+NOT done: nothing; no phone testing.
