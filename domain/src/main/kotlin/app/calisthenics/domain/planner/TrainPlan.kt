@@ -210,4 +210,4 @@ private fun withTimedExtras(c: Catalog, result: PlanResult, progress: ProgressSn
 }
 
 /** The exercises one round has in [plan]: what the stepper shows. */
-fun exercisesPerRoundOf(plan: WorkoutPlan): Int = plan.blocks.filter { it.type == BlockType.WORK }.mapNotNull { it.slotId }.distinct().size
+fun exercisesPerRoundOf(plan: WorkoutPlan): Int = plan.blocks.filter { it.type == BlockType.WORK }.mapNotNull { it.slotId }.filter { !it.startsWith("cond") }.distinct().size   // R8.2-T03: the conditioning finisher is not an exercise of the round

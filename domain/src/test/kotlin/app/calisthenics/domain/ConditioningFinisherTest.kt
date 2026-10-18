@@ -43,6 +43,11 @@ class ConditioningFinisherTest {
         assertTrue(work.all { c.variation(it.variationId!!)!!.familyId in listOf("conditioning", "agility", "crawl") })
     }
 
+    @Test fun theFinisherIsNotCountedAsAnExerciseOfTheRound() {
+        val base = plan(TrainSettings(rounds = 2)); val p = plan(TrainSettings(rounds = 2, conditioningOn = true))
+        assertEquals(exercisesPerRoundOf(base), exercisesPerRoundOf(p))
+    }
+
     @Test fun equipmentAndLevelDecideTheExercises() {
         val withRope = SeedProfiles.home.copy(items = SeedProfiles.home.items + EquipmentItem("jump-rope"))
         val a = cond(plan(TrainSettings(rounds = 1, conditioningOn = true), profile = SeedProfiles.home)).mapNotNull { it.variationId }.toSet()

@@ -142,6 +142,7 @@ class PreviewScreenTest {
         rule.onNodeWithTag("conditioning_remove_0").performScrollTo().performClick(); rule.waitForIdle()
         rule.onNodeWithTag("warmup_remove_0").performScrollTo().performClick(); rule.waitForIdle()
         assertEquals(1, first)
+        for (i in 0..5) rule.onNodeWithTag("exercise_cond-$i").assertDoesNotExist()   // the finisher is not one of the round tiles
     }
 
     @Test fun headerSaysRoundsMinutesAndStyle() {

@@ -75,7 +75,7 @@ fun formatClock(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 data class CircuitEntry(val slotId: String, val variationId: String, val target: Target?, val perSide: Boolean, val loadGrams: Int? = null, val tier: Int = 1, val free: Boolean = false)
 
 fun circuitOf(plan: WorkoutPlan, round: Int = 1): List<CircuitEntry> =
-    plan.blocks.filter { it.type == BlockType.WORK && (it.roundIndex ?: 1) == round && it.slotId != null && it.variationId != null }
+    plan.blocks.filter { it.type == BlockType.WORK && (it.roundIndex ?: 1) == round && it.slotId != null && it.variationId != null && !it.slotId!!.startsWith("cond") }   // R8.2-T03: the conditioning finisher has its own block
         .groupBy { it.slotId!! }.values.map { bs -> CircuitEntry(bs.first().slotId!!, bs.first().variationId!!, bs.first().target, bs.size > 1, bs.first().loadGrams, bs.first().prescriptionTier ?: 1, bs.first().freeTarget) }
 
 @Composable
