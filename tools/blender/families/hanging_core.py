@@ -112,7 +112,8 @@ def toes_to_bar():
     for _, pose in keys:
         pose["knee_l"]=[0,1,0]
         pose["knee_r"]=[0,-1,0]
-    return dict(seconds=4.8,keys=keys,cam_az=35,cam_el=15,props=[_bar()])
+    from strict_toes import with_straight_legs
+    return with_straight_legs(dict(seconds=5.6,keys=keys,cam_az=35,cam_el=15,props=[_bar()]))
 
 
 def heel_hook():

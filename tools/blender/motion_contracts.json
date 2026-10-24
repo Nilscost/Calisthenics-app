@@ -1055,6 +1055,18 @@
           "min": 0.0,
           "max": 0.005
         },
+        "strict_full_cycle_knee_min_deg": {
+          "min": 165.0,
+          "max": 180.0
+        },
+        "hip_knee_length_error_m": {
+          "min": 0.0,
+          "max": 3e-05
+        },
+        "knee_ankle_length_error_m": {
+          "min": 0.0,
+          "max": 3e-05
+        },
         "bar_prop_present": {
           "min": 1,
           "max": 1

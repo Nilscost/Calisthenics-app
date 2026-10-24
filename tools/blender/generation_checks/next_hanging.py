@@ -158,6 +158,13 @@ def audit(data):
         _metric(metrics, failures, name+"_drift_m", wrists[side], 0., .005)
 
     if exercise == "toes-to-bar":
+        angles = [_angle(f["hip_"+side], f["knee_"+side], f["ankle_"+side])
+                  for f in frames for side in ("l", "r")]
+        _metric(metrics, failures, "strict_full_cycle_knee_min_deg", min(angles), 165., 180.)
+        for first, last, length in (("hip", "knee", .44), ("knee", "ankle", .43)):
+            error = max(abs(_dist(f[first+"_"+side], f[last+"_"+side])-length)
+                        for f in frames for side in ("l", "r"))
+            _metric(metrics, failures, first+"_"+last+"_length_error_m", error, 0., .00003)
         bars = [p for p in data.get("props", []) if p.get("kind") == "bar"]
         bar = bars[0] if bars else None
         _metric(metrics, failures, "bar_prop_present", int(bar is not None), 1, 1)

@@ -187,6 +187,26 @@ class NextHangingBatchTests(unittest.TestCase):
         checks = {failure["check"] for failure in audit_next_hanging(damaged)["failures"]}
         self.assertIn("l_bar_contact", checks)
 
+    def test_strict_toes_keeps_long_legs_for_the_entire_raise_and_lower(self):
+        import gzip, json
+        result = audit_next_hanging(self.data["toes-to-bar"])
+        self.assertTrue(result["metrics"]["strict_full_cycle_knee_min_deg"]["ok"])
+        self.assertTrue(result["metrics"]["hip_knee_length_error_m"]["ok"])
+        self.assertTrue(result["metrics"]["knee_ankle_length_error_m"]["ok"])
+        with gzip.open(ROOT / "tests/fixtures/motion/toes-to-bar-bent-transition.json.gz", "rt") as f:
+            before = json.load(f)
+        failures = {x["check"] for x in audit_next_hanging(before)["failures"]}
+        self.assertIn("strict_full_cycle_knee_min_deg", failures)
+
+    def test_collinear_half_length_knees_cannot_fake_strict_leg_form(self):
+        import copy
+        data = copy.deepcopy(self.data["toes-to-bar"])
+        for f in data["frames"]:
+            for side in ("l", "r"):
+                f["knee_"+side] = [(a+b)*.5 for a,b in zip(f["hip_"+side],f["ankle_"+side])]
+        failures = {x["check"] for x in audit_next_hanging(data)["failures"]}
+        self.assertIn("hip_knee_length_error_m", failures)
+
     def test_tapered_foot_contact_stays_clear_through_the_full_cycle(self):
         for exercise in ("toes-to-bar", "heel-hook"):
             result = audit_next_hanging(self.data[exercise])

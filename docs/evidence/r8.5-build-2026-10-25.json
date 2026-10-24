@@ -49,8 +49,34 @@
     "reason": "No connected device/emulator; no new screenshot approval."
   },
   "pythonTests": {
-    "tests": 236,
+    "tests": 238,
     "failures": 0,
     "note": "Next-video source tests are separate from app/phone verification."
-  }
+  },
+  "sourceCommit": "c70a32eb",
+  "publication": {
+    "status": "awaiting_explicit_broad_payload_approval",
+    "remote": "https://github.com/Nilscost/Calisthenics-app",
+    "visibility": "public",
+    "branch": "codex/session-reset-video-review",
+    "uploaded": false,
+    "reason": "Automatic approval review rejected a 389-file source push as broader than the explicit videos/procedure authorization.",
+    "mediaOnly": {
+      "status": "awaiting_explicit_public_payload_approval",
+      "branch": "codex/video-review-media",
+      "commit": "08db11f0",
+      "files": 38,
+      "uploaded": false,
+      "reason": "Automatic approval review rejected the public push because the review evidence and destination require explicit approval. No further upload attempted."
+    }
+  },
+  "finalWorkingVerify": {
+    "exitCode": 0,
+    "log": "docs/evidence/r8.5-verify-final-2026-10-25.log",
+    "domainTests": 539,
+    "appTests": 256,
+    "failures": 0,
+    "skipped": 0
+  },
+  "sourceCommitNote": "APK build inputs match c70a32eb and the unchanged build-source manifest; subsequent isolated review-tool refinements do not alter app build inputs."
 }

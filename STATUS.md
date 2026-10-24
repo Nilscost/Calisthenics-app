@@ -6,7 +6,7 @@ Changing the exercise count rebuilds the automatic selection without shared-rout
 alternatives; manual choices survive other navigation/settings until count changes.
 Deleting the only exercise leaves Add/Undo available; final-row deletion preserves
 remaining work. The exact six-to-eight transition agrees across both Start paths.
-539 domain, 256 app and 236 Python tests pass, alongside lint, packaging and content
+539 domain, 256 app and 238 Python tests pass, alongside lint, packaging and content
 checks. Five eligible updated videos/thumbnails are installed; the rigid ring hand
 experiment is isolated because full arm/wrist checks still fail. Phone audio/music,
 manual-lock/timeout, upgrade/recovery, screenshots and form acceptance remain open.

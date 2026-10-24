@@ -1,0 +1,103 @@
+{
+  "status": "pass",
+  "clips": [
+    {
+      "id": "flag-kick-press",
+      "width": 480,
+      "height": 360,
+      "duration": 3.208333,
+      "full_playback_rate": 1,
+      "full_playback_to_ended": true,
+      "replay": true,
+      "pause": true,
+      "frame_step": true
+    },
+    {
+      "id": "dip-russian",
+      "width": 480,
+      "height": 360,
+      "duration": 4,
+      "full_playback_rate": 1,
+      "full_playback_to_ended": true,
+      "replay": true,
+      "pause": true,
+      "frame_step": true
+    },
+    {
+      "id": "heel-hook",
+      "width": 480,
+      "height": 360,
+      "duration": 4.791667,
+      "full_playback_rate": 1,
+      "full_playback_to_ended": true,
+      "replay": true,
+      "pause": true,
+      "frame_step": true
+    },
+    {
+      "id": "toes-to-bar",
+      "width": 480,
+      "height": 360,
+      "duration": 5.583333,
+      "full_playback_rate": 1,
+      "full_playback_to_ended": true,
+      "replay": true,
+      "pause": true,
+      "frame_step": true
+    },
+    {
+      "id": "dragon-flag-negative",
+      "width": 480,
+      "height": 360,
+      "duration": 7,
+      "full_playback_rate": 1,
+      "full_playback_to_ended": true,
+      "replay": true,
+      "pause": true,
+      "frame_step": true
+    },
+    {
+      "id": "handstand-wall-walk-up",
+      "width": 480,
+      "height": 360,
+      "duration": 5,
+      "full_playback_rate": 1,
+      "full_playback_to_ended": true,
+      "replay": true,
+      "pause": true,
+      "frame_step": true
+    },
+    {
+      "id": "pilates-saw",
+      "width": 480,
+      "height": 360,
+      "duration": 8.5,
+      "full_playback_rate": 1,
+      "full_playback_to_ended": true,
+      "replay": true,
+      "pause": true,
+      "frame_step": true
+    },
+    {
+      "id": "pullup-pullover",
+      "width": 480,
+      "height": 360,
+      "duration": 11,
+      "full_playback_rate": 1,
+      "full_playback_to_ended": true,
+      "replay": true,
+      "pause": true,
+      "frame_step": true
+    }
+  ],
+  "saved_notes_and_selection_restored": true,
+  "state_delivery": "openai:set_globals event",
+  "feedback_retained": true,
+  "speed": true,
+  "layout_widths": [
+    736,
+    320
+  ],
+  "errors": [],
+  "meaning": "Actual encoded desktop media and controls; no phone or expert form approval."
+}
