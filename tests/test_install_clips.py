@@ -13,6 +13,49 @@ from tools.blender import install_clips
 
 
 class InstallClipsTests(unittest.TestCase):
+    def test_failed_motion_is_blocked_even_with_complete_fresh_frames(self):
+        import gzip
+        fixture=Path(__file__).parent/'fixtures/motion/pushup-archer-before.json.gz'
+        with gzip.open(fixture) as f:data=json.load(f)
+        with tempfile.TemporaryDirectory() as root:
+            work,source,joints=self.make_frames(root,ex='pushup-archer',count=len(data['frames']))
+            joints.write_text(json.dumps(data));fresh=joints.stat().st_mtime_ns+2_000_000_000
+            for frame in source.iterdir():os.utime(frame,ns=(fresh,fresh))
+            with mock.patch.object(install_clips,'WORK',str(work)):
+                self.assertIn('motion rules failed',install_clips.frame_problem('pushup-archer'))
+
+    def test_passing_motion_with_outdated_source_metadata_is_blocked(self):
+        import poses
+        from tools.blender.render_contract import render_stamp
+        poses.load_families();data=poses.build('pushup-archer')[0]
+        data['anatomy_detail']=False
+        with tempfile.TemporaryDirectory() as root:
+            work,source,joints=self.make_frames(root,ex='pushup-archer',count=len(data['frames']))
+            joints.write_text(json.dumps(data));fresh=joints.stat().st_mtime_ns+2_000_000_000
+            for frame in source.iterdir():os.utime(frame,ns=(fresh,fresh))
+            (source.parent/'render-detail.json').write_text(json.dumps(render_stamp()))
+            with mock.patch.object(install_clips,'WORK',str(work)):
+                self.assertIn('motion source has changed',install_clips.frame_problem('pushup-archer'))
+
+    def test_grip_critical_clip_requires_current_renderer_and_every_inset_frame(self):
+        from tools.blender.render_contract import render_stamp
+        with tempfile.TemporaryDirectory() as root:
+            work,source,joints=self.make_frames(root)
+            joints.write_text(json.dumps({'frames':[{},{}],'grip_detail':'Palms away'}))
+            stamp_time=joints.stat().st_mtime_ns+2_000_000_000
+            for frame in source.iterdir():os.utime(frame,ns=(stamp_time,stamp_time))
+            stamp=source.parent/'render-detail.json'
+            with mock.patch.object(install_clips,'WORK',str(work)):
+                self.assertIn('render stamp',install_clips.frame_problem('test-exercise'))
+                stamp.write_text(json.dumps(render_stamp()))
+                self.assertIn('incomplete grip',install_clips.frame_problem('test-exercise'))
+                detail=source.parent/'grip-frames';detail.mkdir()
+                for name in ('0000.png','0001.png'):
+                    f=detail/name;f.write_bytes(b'frame');os.utime(f,ns=(stamp_time,stamp_time))
+                self.assertIsNone(install_clips.frame_problem('test-exercise'))
+                stamp.write_text('{}')
+                self.assertIn('renderer has changed',install_clips.frame_problem('test-exercise'))
+
     def make_frames(self, root, ex="test-exercise", count=2):
         work = Path(root)
         source = work / ex / "blender" / "frames"

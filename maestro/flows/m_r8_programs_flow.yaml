@@ -32,7 +32,12 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: { id: program_title }, timeout: 10000 }
 - assertVisible: { id: program_item_0 }
 - takeScreenshot: 02-program-preview-${VARIANT}
-- scrollUntilVisible: { element: { id: preview_flow_switch }, direction: DOWN, timeout: 10000 }
+- scrollUntilVisible: { element: { id: between_stretch }, direction: DOWN, timeout: 10000 }
+- tapOn: { id: between_stretch }
+- takeScreenshot: 02a-program-stretch-${VARIANT}
+- tapOn: { id: between_flow }
+- takeScreenshot: 02a2-program-flow-${VARIANT}
+- scrollUntilVisible: { element: { id: preparation_seconds_plus }, direction: DOWN, timeout: 10000 }
 - takeScreenshot: 02b-program-preview-controls-${VARIANT}
 - scrollUntilVisible: { element: { id: start_button }, direction: DOWN, timeout: 10000 }
 - tapOn: { id: start_button }

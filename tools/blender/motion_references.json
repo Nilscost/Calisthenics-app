@@ -1,0 +1,246 @@
+{
+  "schema": 1,
+  "purpose": "Two-exercise motion-quality pilot; all numerical comparisons remain screening only",
+  "references": [
+    {
+      "video_id": "GBcUcATb8RQ",
+      "url": "https://www.youtube.com/watch?v=GBcUcATb8RQ",
+      "channel": "FitnessFAQs",
+      "title": "Pull-Ups OR Chin-Ups? (CHOOSE WISELY)",
+      "exercises": [
+        "pullup-full"
+      ],
+      "view": "rear oblique",
+      "analysis": {
+        "pullup-full": "work/motion-quality-pilot/GBcUcATb8RQ-pullup-reference.json"
+      },
+      "review": {
+        "pullup-full": {
+          "interval": [
+            71.2,
+            73.3
+          ],
+          "view_comparable": true,
+          "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+          "note": "Manual approximate view-category match, not calibrated; individual style and perspective differences remain.",
+          "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+        }
+      },
+      "local_video": "work/form-reference-pilot/GBcUcATb8RQ.mp4",
+      "comparison_camera": {
+        "pullup-full": {
+          "cam_az": -65,
+          "cam_el": 5
+        }
+      },
+      "candidate_projection": {
+        "pullup-full": "work/motion-quality-pilot/GBcUcATb8RQ-pullup-projection.json"
+      }
+    },
+    {
+      "video_id": "eGo4IYlbE5g",
+      "url": "https://www.youtube.com/watch?v=eGo4IYlbE5g",
+      "channel": "Calisthenicmovement",
+      "title": "The Perfect Pull Up - Do it right!",
+      "exercises": [
+        "pullup-full"
+      ],
+      "view": "side oblique",
+      "analysis": {
+        "pullup-full": "work/motion-quality-pilot/eGo4IYlbE5g-pullup-reference.json"
+      },
+      "review": {
+        "pullup-full": {
+          "interval": [
+            230,
+            234.5
+          ],
+          "view_comparable": true,
+          "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+          "note": "Manual approximate view-category match, not calibrated; individual style and perspective differences remain.",
+          "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+        }
+      },
+      "local_video": "work/form-reference-pilot/eGo4IYlbE5g.mp4",
+      "comparison_camera": {
+        "pullup-full": {
+          "cam_az": 0,
+          "cam_el": 5
+        }
+      },
+      "candidate_projection": {
+        "pullup-full": "work/motion-quality-pilot/eGo4IYlbE5g-pullup-projection.json"
+      }
+    },
+    {
+      "video_id": "Hdc7Mw6BIEE",
+      "url": "https://www.youtube.com/watch?v=Hdc7Mw6BIEE",
+      "channel": "Jeff Nippard",
+      "title": "The Best Way To Do Pull Ups For A Wide Back",
+      "exercises": [
+        "pullup-full"
+      ],
+      "view": "rear",
+      "analysis": {
+        "pullup-full": "work/motion-quality-pilot/Hdc7Mw6BIEE-pullup-reference.json"
+      },
+      "review": {
+        "pullup-full": {
+          "interval": [
+            307.6,
+            311.8
+          ],
+          "view_comparable": true,
+          "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+          "note": "Manual approximate view-category match, not calibrated; individual style and perspective differences remain.",
+          "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+        }
+      },
+      "local_video": "work/form-reference-pilot/Hdc7Mw6BIEE.mp4",
+      "comparison_camera": {
+        "pullup-full": {
+          "cam_az": -90,
+          "cam_el": 5
+        }
+      },
+      "candidate_projection": {
+        "pullup-full": "work/motion-quality-pilot/Hdc7Mw6BIEE-pullup-projection.json"
+      }
+    },
+    {
+      "video_id": "G8BvsXteJ2s",
+      "url": "https://www.youtube.com/watch?v=G8BvsXteJ2s",
+      "channel": "FitnessFAQs",
+      "title": "Chest and Tricep Home Workout",
+      "exercises": [
+        "pushup-archer"
+      ],
+      "local_video": "work/motion-quality-pilot/G8BvsXteJ2s.mp4",
+      "analysis": {
+        "pushup-archer": "work/motion-quality-pilot/G8BvsXteJ2s-archer.json"
+      },
+      "comparison_camera": {
+        "pushup-archer": {
+          "cam_az": 90,
+          "cam_el": 25
+        }
+      },
+      "candidate_projection": {
+        "pushup-archer": "work/motion-quality-pilot/G8BvsXteJ2s-archer-projection.json"
+      },
+      "comparison_joints": [
+        "elbow_l",
+        "elbow_r",
+        "shoulder_l",
+        "shoulder_r"
+      ],
+      "review": {
+        "pushup-archer": {
+          "interval": [
+            9.7,
+            12.8
+          ],
+          "view_comparable": true,
+          "grip": "Hands-out direction checked in decoded source montage; owner phone readability pending",
+          "note": "Whole-rep source selected from decoded contact sheets. Camera category manually approximated, not calibrated. Source cycle may show one or both sides."
+        }
+      },
+      "candidate_interval": {
+        "pushup-archer": [
+          0,
+          3
+        ]
+      }
+    },
+    {
+      "video_id": "ZLWko5aP1FM",
+      "url": "https://www.youtube.com/watch?v=ZLWko5aP1FM",
+      "channel": "Minus The Gym",
+      "title": "Archer Push Ups Tutorial | Progressions From Basic Push Ups",
+      "exercises": [
+        "pushup-archer"
+      ],
+      "local_video": "work/motion-quality-pilot/ZLWko5aP1FM.mp4",
+      "analysis": {
+        "pushup-archer": "work/motion-quality-pilot/ZLWko5aP1FM-archer.json"
+      },
+      "comparison_camera": {
+        "pushup-archer": {
+          "cam_az": -30,
+          "cam_el": 30
+        }
+      },
+      "candidate_projection": {
+        "pushup-archer": "work/motion-quality-pilot/ZLWko5aP1FM-archer-projection.json"
+      },
+      "comparison_joints": [
+        "elbow_l",
+        "elbow_r",
+        "shoulder_l",
+        "shoulder_r"
+      ],
+      "review": {
+        "pushup-archer": {
+          "interval": [
+            303,
+            306
+          ],
+          "view_comparable": true,
+          "grip": "Hands-out direction checked in decoded source montage; owner phone readability pending",
+          "note": "Whole-rep source selected from decoded contact sheets. Camera category manually approximated, not calibrated. Source cycle may show one or both sides."
+        }
+      },
+      "candidate_interval": {
+        "pushup-archer": [
+          0,
+          3
+        ]
+      }
+    },
+    {
+      "video_id": "x-WosgklhR0",
+      "url": "https://www.youtube.com/watch?v=x-WosgklhR0",
+      "channel": "Calisthenicmovement",
+      "title": "The 5 Most Important Push Up Exercises",
+      "exercises": [
+        "pushup-archer"
+      ],
+      "local_video": "work/motion-quality-pilot/x-WosgklhR0.mp4",
+      "analysis": {
+        "pushup-archer": "work/motion-quality-pilot/x-WosgklhR0-archer.json"
+      },
+      "comparison_camera": {
+        "pushup-archer": {
+          "cam_az": 90,
+          "cam_el": 5
+        }
+      },
+      "candidate_projection": {
+        "pushup-archer": "work/motion-quality-pilot/x-WosgklhR0-archer-projection.json"
+      },
+      "comparison_joints": [
+        "elbow_l",
+        "elbow_r",
+        "shoulder_l",
+        "shoulder_r"
+      ],
+      "review": {
+        "pushup-archer": {
+          "interval": [
+            105.8,
+            110.4
+          ],
+          "view_comparable": true,
+          "grip": "Hands-out direction checked in decoded source montage; owner phone readability pending",
+          "note": "Whole-rep source selected from decoded contact sheets. Camera category manually approximated, not calibrated. Source cycle may show one or both sides."
+        }
+      },
+      "candidate_interval": {
+        "pushup-archer": [
+          0,
+          6
+        ]
+      }
+    }
+  ]
+}

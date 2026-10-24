@@ -1,0 +1,60 @@
+{
+  "date": "2026-10-20",
+  "package": "app.calisthenics.personal",
+  "versionName": "0.11.4-r8",
+  "versionCode": 18,
+  "sourceBaseCommit": "847ef65191fde66a5ca11927bd6a73f8c4d8b150",
+  "sourceNote": "Fresh local checkout plus preserved working-source overlay; all final source files match the workspace. No release commit/push.",
+  "sourceManifest": "docs/evidence/r8.4-source-manifest-2026-10-20.json",
+  "sourceManifestSha256": "9627b124ca6072ad223871caf0edc78d0e6ed82c961a786ea043af242c2698d5",
+  "sourceFileCount": 1444,
+  "sourceComparisonMismatches": [],
+  "apk": "/Users/nils/Documents/hermes/Apps/builds/app-debug-R8.4.apk",
+  "workspaceApk": "/Users/nils/Documents/hermes/Apps/calisthenics/app/build/outputs/apk/debug/app-debug-R8.4.apk",
+  "bytes": 25754794,
+  "sha256": "b5c4dd20b1bb66648bb0b3527263b045da1e960651f9e51d90428980d7cfd851",
+  "certificateSha256": "8638d15f7e5327d0a4f3197dad470e70b1425dfcb00a6bfc4bbcdc96a63bd940",
+  "certificateMatchesR83": true,
+  "certificateMatchesR72": true,
+  "priorR83Sha256": "cec3959ff4256c6c3cc5d7e7ca945003369a71de164edf8ee1fac1eaca7b281a",
+  "verifyCommand": "bash scripts/verify.sh",
+  "freshCheckoutVerify": {
+    "exitCode": 0,
+    "log": "docs/evidence/r8.4-fresh-verify-2026-10-20.log"
+  },
+  "tests": {
+    "domain": {
+      "tests": 539,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "tests": 252,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "data": {
+      "tests": 0,
+      "note": "Unit-test task has no sources; connected tests not run."
+    }
+  },
+  "lint": "passed",
+  "debugApk": "passed",
+  "contentValidation": "passed (structure and rights, not training quality)",
+  "preflight": "passed",
+  "migrationSqlCheck": "passed (9 Room and 9 migration statements)",
+  "roomSchemaChanged": false,
+  "uiScreens": {
+    "result": "pending",
+    "reason": "No emulator/Maestro/connected device; no R8.4 screenshots reviewed."
+  },
+  "phoneTested": false,
+  "musicCoexistencePhoneVerified": false,
+  "beepAudibilityPhoneVerified": false,
+  "manualLockPhoneVerified": false,
+  "upgradeOnPhoneVerified": false,
+  "ownerAccepted": false,
+  "published": false
+}

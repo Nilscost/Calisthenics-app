@@ -146,9 +146,9 @@ def chair_assisted_pullup():
 
 def chinup_full():
     # Palms face the body (underhand grip); chin over the bar.
-    hands = _hands(palm=(-1, 0, 0), elbow=(0.2, 1.0, -0.2))
-    hang = _pose(*HANG, hands, _hang_legs())
-    top = _pose(*TOP, hands, _hang_legs())
+    hands = _hands(x=0.045, palm=(-1, 0, 0), elbow=(0.2, 1.0, -0.2))
+    hang = _pose(HANG[0], HANG[1] + 0.09, HANG[2], HANG[3], hands, _hang_legs())
+    top = _pose(TOP[0], TOP[1] + 0.09, TOP[2], TOP[3], hands, _hang_legs())
     return dict(seconds=3.0, keys=rep(hang, top), cam_az=35, cam_el=8, props=[_bar()])
 
 

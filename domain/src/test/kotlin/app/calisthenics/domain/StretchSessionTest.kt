@@ -42,8 +42,8 @@ class StretchSessionTest {
     @Test fun startingToStretchPreparesTheSideChangeWithoutShorteningEitherSide() {
         val p = plan(Presets.startingToStretch(catalog, home)[1])
         val id = p.blocks.first { it.type == BlockType.STRETCH && it.side == Side.LEFT }.variationId!!
-        val left = p.blocks.withIndex().filter { it.value.variationId == id && it.value.side == Side.LEFT }
-        val right = p.blocks.withIndex().filter { it.value.variationId == id && it.value.side == Side.RIGHT }
+        val left = p.blocks.withIndex().filter { it.value.type == BlockType.STRETCH && it.value.variationId == id && it.value.side == Side.LEFT }
+        val right = p.blocks.withIndex().filter { it.value.type == BlockType.STRETCH && it.value.variationId == id && it.value.side == Side.RIGHT }
 
         assertEquals(listOf(10, 10, 10, 20, 10, 30), left.map { it.value.durationSeconds })
         assertEquals(listOf(10, 10, 10, 20, 10, 30), right.map { it.value.durationSeconds })

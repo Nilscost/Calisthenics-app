@@ -38,6 +38,7 @@ fun SettingsScreen(
     var confirmRedo by remember { mutableStateOf(false) }
     var defaults by remember { mutableStateOf(TrainSettingsStore.load(ctx)) }
     var voice by remember { mutableStateOf(PrefsStore.load(ctx).audioEnabled) }
+    var appVolume by remember { mutableIntStateOf(PrefsStore.load(ctx).appVolumePercent.coerceIn(0, 100)) }
     var autoProg by remember { mutableStateOf(PrefsStore.load(ctx).autoProgression) }
     val version = remember { runCatching { ctx.packageManager.getPackageInfo(ctx.packageName, 0).versionName }.getOrNull().orEmpty() }
     fun saveDefaults(s: app.calisthenics.domain.planner.TrainSettings) { defaults = s; TrainSettingsStore.save(ctx, s) }
@@ -57,8 +58,29 @@ fun SettingsScreen(
                         SegmentedButton(selected = !defaults.timed, onClick = { saveDefaults(defaults.copy(timed = false)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("set_reps")) { Text(stringResource(R.string.style_reps)) }
                         SegmentedButton(selected = defaults.timed, onClick = { saveDefaults(defaults.copy(timed = true)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("set_timed")) { Text(stringResource(R.string.style_timed)) }
                     }
-                    SwitchRow(R.string.train_stretch, defaults.stretchOn, "set_stretch") { saveDefaults(defaults.copy(stretchOn = it)) }
+                    Text(stringResource(R.string.train_between_caption), style = MaterialTheme.typography.bodyLarge)
+                    SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().testTag("set_between_sets")) {
+                        app.calisthenics.domain.model.BetweenSetMode.entries.forEachIndexed { index, mode ->
+                            SegmentedButton(
+                                selected = defaults.effectiveBetweenSetMode() == mode,
+                                onClick = { saveDefaults(defaults.copy(betweenSetMode = mode, flow = mode == app.calisthenics.domain.model.BetweenSetMode.FLOW, stretchOn = mode == app.calisthenics.domain.model.BetweenSetMode.STRETCH)) },
+                                colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(index, 3), icon = {},
+                                modifier = Modifier.testTag("set_between_${mode.name.lowercase()}"),
+                            ) { Text(mode.name.lowercase().replaceFirstChar { it.uppercase() }) }
+                        }
+                    }
                     SwitchRow(R.string.settings_voice, voice, "set_voice") { voice = it; PrefsStore.save(ctx, PrefsStore.load(ctx).copy(audioEnabled = it)) }
+                    Column(Modifier.fillMaxWidth().testTag("set_app_volume")) {
+                        Text(stringResource(R.string.feedback_app_volume, appVolume), style = MaterialTheme.typography.bodyLarge)
+                        Slider(
+                            value = appVolume.toFloat(),
+                            onValueChange = { appVolume = it.toInt().coerceIn(0, 100) },
+                            onValueChangeFinished = { PrefsStore.save(ctx, PrefsStore.load(ctx).copy(appVolumePercent = appVolume)) },
+                            valueRange = 0f..100f,
+                            steps = 99,
+                        )
+                        Text(stringResource(R.string.feedback_app_volume_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
                 }
             }
             Section(R.string.settings_section_progression)

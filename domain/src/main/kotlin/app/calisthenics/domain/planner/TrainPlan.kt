@@ -48,8 +48,12 @@ data class TrainSettings(
     /** R8.2-T03 (G3): the "Include" row: an optional conditioning finisher of [conditioningMinutes] (5 to 10) at the end of the workout. */
     val conditioningOn: Boolean = false,
     val conditioningMinutes: Int = DEFAULT_CONDITIONING_MINUTES,
+    /** R8.3: authoritative recovery choice; nullable for backward decoding. */
+    val betweenSetMode: BetweenSetMode? = null,
+    val preparationSeconds: Int = 5,
 ) {
     fun effectiveFocus(): Set<StrengthFocus> = focus ?: Goals.focusFor(goalId)
+    fun effectiveBetweenSetMode(): BetweenSetMode = effectiveBetweenSetMode(betweenSetMode, flow, stretchOn)
 }
 
 /** The routine the plan is built from: the usual plan, with the goal's next step in front. */
@@ -110,7 +114,8 @@ fun defaultExercisesPerRound(
     val routine = withAdditionalPools(catalog, trainRoutine(catalog, baseRoutine, progress, s.goalId, profile), progress, profile, s.goalId, s.additionalPools)
     val focus = fillFocusOf(routine, s)
     val base = slotsForFocus(routine, focus).size
-    val top = maxExercisesPerRound(catalog, routine, focus, profile, progress, s.stretchOn)
+    val stretchBetween = s.effectiveBetweenSetMode() == BetweenSetMode.STRETCH
+    val top = maxExercisesPerRound(catalog, routine, focus, profile, progress, stretchBetween)
     fun build(n: Int) = planFor(catalog, baseRoutine, progress, profile, s, swaps, 0L, 0, prefs, edits, n)
     var best = base
     for (n in base..maxOf(base, top)) {
@@ -134,13 +139,15 @@ private fun planFor(
 ): PlanResult {
     var withGoal = trainRoutine(catalog, baseRoutine, progress, s.goalId, profile)
     withGoal = withAdditionalPools(catalog, withGoal, progress, profile, s.goalId, s.additionalPools)
-    if (count != null) withGoal = withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s), count, profile, progress, s.stretchOn)
+    val stretchBetween = s.effectiveBetweenSetMode() == BetweenSetMode.STRETCH
+    if (count != null) withGoal = withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s), count, profile, progress, stretchBetween)
     val routine = applyEdits(withGoal, edits)
-    val draft = SessionDraft.from(prefs.copy(stretchOn = s.stretchOn, selectedProfileId = profile.id, warmupOn = s.warmupOn), routine)
+    val mode = s.effectiveBetweenSetMode()
+    val draft = SessionDraft.from(prefs.copy(stretchOn = mode == BetweenSetMode.STRETCH, selectedProfileId = profile.id, warmupOn = s.warmupOn), routine)
         .copy(cooldownOn = s.cooldownOn, cooldownMode = s.cooldownMode, cooldownMinutes = edits.cooldownMinutes ?: s.cooldownMinutes, cooldownStretches = edits.cooldownStretches, cooldownRemoved = edits.cooldownRemoved, cooldownAdded = edits.cooldownAdded,
             focus = s.effectiveFocus(), swaps = swaps + edits.swaps, rounds = (if ((edits.rule ?: routine.rule).isRange) (edits.rule ?: routine.rule).sets else s.rounds).coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed, format = s.format,
             tierOverrides = edits.tierOverrides, stretchPicks = edits.stretchPicks, extraStretches = edits.extraStretches,
-            roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, rule = edits.rule ?: routine.rule, flow = s.flow, warmupRemoved = edits.warmupRemoved)
+            roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, levelFiveTargets = edits.levelFiveTargets, rule = edits.rule ?: routine.rule, flow = mode == BetweenSetMode.FLOW, betweenSetMode = mode, preparationSeconds = s.preparationSeconds.coerceIn(1, 30), warmupRemoved = edits.warmupRemoved)
     val generated = withTimedExtras(catalog, generate(PlanInput("draft", nowEpochMs, nowDay, catalog, routine, draft, profile, progress = progress)), progress, profile, s.additionalPools)
     return if (s.conditioningOn) withConditioningFinisher(catalog, generated, progress, profile, edits.conditioningMinutes ?: s.conditioningMinutes, edits.conditioningRemoved) else generated
 }
@@ -148,7 +155,7 @@ private fun planFor(
 /** The routine as the plan uses it before hand edits: the goal's step in front and the exercises per round brought to [TrainSettings.exercisesPerRound]. A saved routine keeps exactly this list. */
 fun routineForPlan(catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, profile: EquipmentProfile, s: TrainSettings): Routine {
     val withGoal = withAdditionalPools(catalog, trainRoutine(catalog, baseRoutine, progress, s.goalId, profile), progress, profile, s.goalId, s.additionalPools)
-    return s.exercisesPerRound?.let { withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s), it, profile, progress, s.stretchOn) } ?: withGoal
+    return s.exercisesPerRound?.let { withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s), it, profile, progress, s.effectiveBetweenSetMode() == BetweenSetMode.STRETCH) } ?: withGoal
 }
 
 /** Power joins strength work only by deliberate selection; the other extras are timed blocks. */

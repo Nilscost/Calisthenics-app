@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "purpose": "Depth-jump qualitative reference screening; not form approval",
+  "references": [
+    {
+      "video_id": "GeN0S3XCZnM",
+      "url": "https://www.youtube.com/watch?v=GeN0S3XCZnM",
+      "channel": "Catalyst Athletics",
+      "title": "Depth Jump | Olympic Weightlifting Exercise Library",
+      "exercises": [
+        "depth-jump"
+      ],
+      "view": "source camera differs from app; quantitative form comparison inconclusive",
+      "local_video": "work/depth-jump-refinement-2026-10-21/references/GeN0S3XCZnM.mp4",
+      "analysis": {
+        "depth-jump": "work/depth-jump-refinement-2026-10-21/references/GeN0S3XCZnM-depth-jump.json"
+      },
+      "review": {
+        "depth-jump": {
+          "interval": [
+            9.1,
+            11.1
+          ],
+          "view_comparable": false,
+          "note": "Arm-swing variant; exclude later hands-on-chest and box-to-box variations.",
+          "segment_review": "Reviewed actual decoded source frames; timing boundaries uncertain by sampled intervals; no calibrated 3D or force comparison."
+        }
+      }
+    },
+    {
+      "video_id": "AzPJZHOmGEg",
+      "url": "https://www.youtube.com/watch?v=AzPJZHOmGEg",
+      "channel": "Wil Fleming",
+      "title": "Max Effort Plyometrics: Depth Jumps",
+      "exercises": [
+        "depth-jump"
+      ],
+      "view": "source camera differs from app; quantitative form comparison inconclusive",
+      "local_video": "work/depth-jump-refinement-2026-10-21/references/AzPJZHOmGEg.mp4",
+      "analysis": {
+        "depth-jump": "work/depth-jump-refinement-2026-10-21/references/AzPJZHOmGEg-depth-jump.json"
+      },
+      "review": {
+        "depth-jump": {
+          "interval": [
+            9.0,
+            10.9
+          ],
+          "view_comparable": false,
+          "note": "First attempt only; later repeated sequence may be retimed and is excluded from timing interpretation.",
+          "segment_review": "Reviewed actual decoded source frames; timing boundaries uncertain by sampled intervals; no calibrated 3D or force comparison."
+        }
+      }
+    },
+    {
+      "video_id": "DxzbXy0lC6Y",
+      "url": "https://www.youtube.com/watch?v=DxzbXy0lC6Y",
+      "channel": "Third Space London",
+      "title": "How To Depth Jumps",
+      "exercises": [
+        "depth-jump"
+      ],
+      "view": "source camera differs from app; quantitative form comparison inconclusive",
+      "local_video": "work/depth-jump-refinement-2026-10-21/references/DxzbXy0lC6Y.mp4",
+      "analysis": {
+        "depth-jump": "work/depth-jump-refinement-2026-10-21/references/DxzbXy0lC6Y-depth-jump.json"
+      },
+      "review": {
+        "depth-jump": {
+          "interval": [
+            1.2,
+            3.6
+          ],
+          "view_comparable": false,
+          "note": "Overhead starting arms and deeper loading variant; compare sequence qualitatively, not as identical contact prescription.",
+          "segment_review": "Reviewed actual decoded source frames; timing boundaries uncertain by sampled intervals; no calibrated 3D or force comparison."
+        }
+      }
+    }
+  ]
+}

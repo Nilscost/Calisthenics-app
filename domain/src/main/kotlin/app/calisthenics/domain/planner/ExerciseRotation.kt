@@ -6,6 +6,7 @@ import app.calisthenics.domain.load.isLoaded
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.model.Target
 import app.calisthenics.domain.progression.ProgressSnapshot
+import app.calisthenics.domain.progression.specs
 
 /** Rotation is driven by completed history, so reopening the preview never changes the exercise. */
 fun rotatedExercise(
@@ -69,4 +70,55 @@ fun inferredAlternativeTier(catalog: Catalog, main: ExerciseVariation, alternati
     val top = tiers.maxOfOrNull { it.index } ?: return null
     return tiers.filter { it.index < top && it.target.value <= source.value * 3 / 4 }
         .maxByOrNull { it.target.value }?.index?.takeIf { it > 1 }
+}
+
+/**
+ * Conservative N-1 starting estimate for an untried choice at the same route rung, but only after another choice
+ * at that rung has been demonstrated with complete actual results. This remains an estimate: it does not transfer
+ * baseline stars, achievements, or progression state to [candidate].
+ */
+fun demonstratedRungStartingTier(catalog: Catalog, candidate: ExerciseVariation, progress: ProgressSnapshot, routeId: String?): Int? {
+    if (candidate.id in progress.variations || candidate.kind !in setOf(Kind.REPS, Kind.HOLD) || candidate.isLoaded() ||
+        progress.holdFor(candidate.familyId) != null) return null
+    val route = catalog.routeById(routeId) ?: return null
+    val anchorId = catalog.routeAnchorFor(candidate.id, route) ?: return null
+    if (candidate.id != anchorId && route.members.none {
+            it.variationId == candidate.id && it.role == ProgressionRole.ALTERNATE && it.atVariationId == anchorId
+        }) return null
+    val sameRung = (listOf(anchorId) + route.members.filter {
+        it.role == ProgressionRole.ALTERNATE && it.atVariationId == anchorId
+    }.map { it.variationId }).distinct()
+    val candidatePolicy = catalog.policyFor(candidate) ?: return null
+    var best: Int? = null
+
+    for (sourceId in sameRung.filter { it != candidate.id }) {
+        val source = catalog.variation(sourceId) ?: continue
+        if (source.kind != candidate.kind || source.isLoaded() || source.unilateral != candidate.unilateral ||
+            source.patterns.toSet() != candidate.patterns.toSet() ||
+            (source.progressionGroup ?: source.familyId) != (candidate.progressionGroup ?: candidate.familyId) ||
+            progress.holdFor(source.familyId) != null) continue
+        val state = progress.variations[sourceId] ?: continue
+        if (state.autoPaused) continue
+        val demonstrated = state.demonstratedTier ?: continue
+        if (demonstrated !in 2..5 || state.demonstratedTargetRevision != state.targetRevision ||
+            state.targetRevision != (catalog.personalTargets[sourceId]?.revision ?: 0)) continue
+        val sourcePolicy = state.effectivePolicySnapshot ?: catalog.policyFor(source) ?: continue
+        if (sourcePolicy != catalog.policyFor(source)) continue
+        val sourceTier = sourcePolicy.tiers.firstOrNull { it.index == demonstrated } ?: continue
+        val candidateTier = candidatePolicy.tiers.firstOrNull { it.index == demonstrated - 1 } ?: continue
+        if (candidateTier.target.type != sourceTier.target.type || candidateTier.target.shownValue() > sourceTier.target.shownValue()) continue
+        if (candidateTier.minQualifyingBlocks > sourceTier.minQualifyingBlocks) continue
+
+        val sourceSpecs = sourcePolicy.tierProfile?.specs()
+        val candidateSpecs = candidatePolicy.tierProfile?.specs()
+        if ((sourceSpecs == null) != (candidateSpecs == null)) continue
+        if (sourceSpecs != null && candidateSpecs != null) {
+            val sourceSpec = sourceSpecs.getOrNull(demonstrated - 1) ?: continue
+            val candidateSpec = candidateSpecs.getOrNull(demonstrated - 2) ?: continue
+            if (candidateSpec.sets > sourceSpec.sets ||
+                (candidateSpec.seconds != null && (sourceSpec.seconds == null || candidateSpec.seconds > sourceSpec.seconds))) continue
+        }
+        best = maxOf(best ?: 0, demonstrated - 1)
+    }
+    return best
 }

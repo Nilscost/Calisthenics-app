@@ -1,0 +1,107 @@
+<div id="complex-movement-review">
+  <div class="viz-controls">
+    <label class="form-label">Movement
+      <select class="form-select" id="cmr-select" aria-label="Choose one of eight movements"></select>
+    </label>
+    <label class="form-label">Playback speed
+      <select class="form-select" id="cmr-speed"><option value="1">Normal</option><option value="0.5">Half speed</option><option value="0.25">Quarter speed</option></select>
+    </label>
+  </div>
+  <div class="viz-row">
+    <button type="button" class="btn" id="cmr-prev">Previous clip</button>
+    <span id="cmr-position" class="tabular-nums" aria-live="polite"></span>
+    <button type="button" class="btn" id="cmr-next">Next clip</button>
+  </div>
+  <h3 id="cmr-title"></h3>
+  <video id="cmr-video" controls playsinline preload="metadata" aria-label="Selected exercise demonstration"></video>
+  <div class="viz-row">
+    <button type="button" class="btn" id="cmr-back">Back one frame</button>
+    <button type="button" class="btn" id="cmr-forward">Forward one frame</button>
+    <span id="cmr-time" class="tabular-nums"></span>
+  </div>
+  <dl>
+    <dt>Movement challenge</dt><dd id="cmr-focus"></dd>
+    <dt>Review question</dt><dd id="cmr-question"></dd>
+    <dt>Screening prompt</dt><dd id="cmr-flag"></dd>
+  </dl>
+  <label class="form-label" for="cmr-feedback">Your observations</label>
+  <textarea class="form-control" rows="2" id="cmr-feedback" placeholder="What looks convincing, unclear or unnatural?"></textarea>
+  <button type="button" class="btn btn-primary" id="cmr-send" disabled>Send feedback on this clip</button>
+  <span id="cmr-message" role="status"></span>
+</div>
+<style>
+  #complex-movement-review video { display:block; width:100%; max-width:640px; aspect-ratio:4/3; margin:12px auto; }
+  #complex-movement-review dl { margin:16px 0; }
+  #complex-movement-review dt { font-weight:500; margin-top:10px; }
+  #complex-movement-review dd { margin:4px 0 0; }
+  #complex-movement-review textarea { margin-bottom:10px; }
+</style>
+<script type="application/json" id="cmr-data">__CLIPS__</script>
+<script>
+(() => {
+  const root = document.getElementById('complex-movement-review');
+  const clips = JSON.parse(document.getElementById('cmr-data').textContent);
+  const get = id => root.querySelector('#cmr-' + id);
+  const select = get('select'), video = get('video'), speed = get('speed');
+  const notes = {};
+  let index = 0;
+  for (const clip of clips) {
+    const option = document.createElement('option'); option.value = clip.id; option.textContent = clip.name; select.appendChild(option);
+  }
+  const remember = () => {
+    if (window.openai && window.openai.setWidgetState) {
+      window.openai.setWidgetState({modelContent:{selectedMovement:clips[index].id,notes},privateContent:{speed:speed.value}}).catch(()=>{});
+    }
+  };
+  const show = (next, save=true) => {
+    if (save) notes[clips[index].id] = get('feedback').value;
+    index = Math.max(0,Math.min(clips.length-1,next));
+    const clip = clips[index];
+    video.pause();video.src = clip.video;video.load();video.playbackRate = Number(speed.value);
+    select.value = clip.id;
+    get('position').textContent = `${index+1} / ${clips.length}`;
+    get('title').textContent = clip.name;
+    get('focus').textContent = clip.focus;
+    get('question').textContent = clip.question;
+    get('flag').textContent = clip.screening_prompt;
+    get('feedback').value = notes[clip.id] || '';
+    get('send').disabled = !get('feedback').value.trim();
+    get('prev').disabled = index===0; get('next').disabled = index===clips.length-1;
+    get('time').textContent = `0.00 / ${clip.duration_s.toFixed(2)} s`;
+    get('message').textContent = '';
+    if (save) remember();
+  };
+  select.addEventListener('change',()=>show(clips.findIndex(c=>c.id===select.value)));
+  get('prev').addEventListener('click',()=>show(index-1));
+  get('next').addEventListener('click',()=>show(index+1));
+  speed.addEventListener('change',()=>{video.playbackRate=Number(speed.value);remember();});
+  const step = delta => {video.pause();video.currentTime=Math.max(0,Math.min(clips[index].duration_s-1/24,video.currentTime+delta/24));};
+  get('back').addEventListener('click',()=>step(-1)); get('forward').addEventListener('click',()=>step(1));
+  video.addEventListener('loadedmetadata',()=>{video.playbackRate=Number(speed.value);});
+  video.addEventListener('timeupdate',()=>{get('time').textContent=`${video.currentTime.toFixed(2)} / ${clips[index].duration_s.toFixed(2)} s`;});
+  get('feedback').addEventListener('input',()=>{get('send').disabled=!get('feedback').value.trim();});
+  get('feedback').addEventListener('change',()=>{notes[clips[index].id]=get('feedback').value;remember();});
+  get('send').addEventListener('click',async()=>{
+    const feedback=get('feedback').value.trim(); if(!feedback)return;
+    notes[clips[index].id]=feedback;remember();
+    if (window.openai && window.openai.sendFollowUpMessage) {
+      try {await window.openai.sendFollowUpMessage({prompt:`Please refine the generated ${clips[index].name} video (${clips[index].id}). My observations: ${feedback}`,title:'Review this exercise video'});}
+      catch {get('message').textContent='Feedback was not sent. You can paste it into the conversation.';}
+    } else {get('message').textContent='Paste your observations into the conversation to continue.';}
+  });
+  const restore = state => {
+    if (!state || !state.modelContent)return;
+    Object.assign(notes,state.modelContent.notes||{});
+    const savedSpeed=state.privateContent && state.privateContent.speed;
+    if (['1','0.5','0.25'].includes(savedSpeed))speed.value=savedSpeed;
+    const chosen=clips.findIndex(c=>c.id===state.modelContent.selectedMovement);
+    show(chosen>=0?chosen:0,false);
+  };
+  show(0,false);
+  if (window.openai)restore(window.openai.widgetState);
+  window.addEventListener('openai:set_globals',event=>{
+    const globals=event.detail && event.detail.globals;
+    if(globals && globals.widgetState)restore(globals.widgetState);
+  });
+})();
+</script>

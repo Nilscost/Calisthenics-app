@@ -15,7 +15,7 @@ data class AddedSlot(val afterSlotId: String?, val slot: RoutineSlot)
 data class PlanEdits(
     /** slot -> exercise (a swap; a different movement type triggers the "not the same movement" warning). */
     val swaps: Map<String, String> = emptyMap(),
-    /** slot -> level 1..5, the - / + stepper. Counts towards progress only when it equals your own level. */
+    /** slot -> selected app level 1..5, the - / + stepper. Current-version confirmed results can establish the level actually demonstrated. */
     val tierOverrides: Map<String, Int> = emptyMap(),
     val removed: Set<String> = emptySet(),
     val added: List<AddedSlot> = emptyList(),
@@ -25,7 +25,7 @@ data class PlanEdits(
     val extraStretches: Map<String, List<String>> = emptyMap(),
     /** Detailed edit (D6): a stretch for one set only, key "<set>:<slot>". */
     val roundStretchPicks: Map<String, String> = emptyMap(),
-    /** Detailed edit (D3): a typed number for one set ("<set>:<slot>") or every set ("<slot>"). It does not count towards progression. */
+    /** Detailed edit (D3): a typed number for one set ("<set>:<slot>") or every set ("<slot>"). Legacy arbitrary targets remain ineligible for demonstrated-level evidence. */
     val freeTargets: Map<String, Int> = emptyMap(),
     /** V21: the progression rule chosen in the Preview (null = the routine's own). */
     val rule: ProgressionRule? = null,
@@ -42,6 +42,10 @@ data class PlanEdits(
     val conditioningRemoved: Set<String> = emptySet(),
     /** R8.2-T03 (G3): warm-up items the person removed in the Preview. */
     val warmupRemoved: Set<String> = emptySet(),
+    /** Deliberate app-level-5 extensions, keyed by slot (or set:slot), unlike arbitrary legacy free targets. */
+    val levelFiveTargets: Map<String, Int> = emptyMap(),
+    /** Mode revision at which these extras were last explicitly edited (old drafts decode as revision 0). */
+    val extraStretchModeRevision: Long = 0L,
 ) {
     fun isEmpty() = this == PlanEdits()
 }

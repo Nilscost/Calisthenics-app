@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -57,6 +58,41 @@ internal fun programSwapOptions(catalog: Catalog, current: ExerciseVariation, pr
     }.sortedWith(compareBy({ if (it.id == current.id) 0 else 1 }, { if (it.areas.any { a -> a in current.areas } || it.stretchAreas.any { a -> a in current.stretchAreas }) 0 else 1 }, { it.name }))
 }
 
+private fun programItemLevel(item: FixedProgramItem, catalog: Catalog): Int? {
+    item.appLevel?.let { return it.coerceIn(1, 5) }
+    val current = item.reps ?: item.seconds ?: return null
+    val policy = catalog.policyForVariation(item.exerciseId) ?: return null
+    return policy.tiers.filter { it.target.type == if (item.reps != null) TargetType.REPS else TargetType.HOLD_SECONDS }
+        .minByOrNull { kotlin.math.abs(it.target.value - current) }?.index
+}
+
+private fun stepProgramItem(item: FixedProgramItem, delta: Int, catalog: Catalog): FixedProgramItem {
+    val policy = catalog.policyForVariation(item.exerciseId)
+    val kind = if (item.reps != null) TargetType.REPS else TargetType.HOLD_SECONDS
+    val tiers = policy?.tiers.orEmpty().filter { it.target.type == kind }.sortedBy { it.index }
+    if (tiers.isEmpty()) return adjustProgramItem(item, delta)
+    val level = programItemLevel(item, catalog)?.coerceIn(1, tiers.size) ?: return adjustProgramItem(item, delta)
+    val increment = if (kind == TargetType.REPS) 1 else 5
+    val top = tiers.last()
+    val extension = item.levelFiveTarget
+    if (extension != null) {
+        val next = extension + delta * increment
+        if (delta < 0 && next <= top.target.value) {
+            if (next == top.target.value) return programItemWith(item, top.target.value).copy(appLevel = top.index, levelFiveTarget = null)
+            val previous = tiers.getOrNull(tiers.lastIndex - 1) ?: return item.copy(levelFiveTarget = null, appLevel = top.index)
+            return programItemWith(item, previous.target.value).copy(appLevel = previous.index, levelFiveTarget = null)
+        }
+        return programItemWith(item, next.coerceIn(top.target.value + increment, 999)).copy(appLevel = top.index, levelFiveTarget = next.coerceIn(top.target.value + increment, 999))
+    }
+    if (level >= top.index) {
+        return if (delta > 0) programItemWith(item, top.target.value + increment).copy(appLevel = top.index, levelFiveTarget = top.target.value + increment)
+        else tiers.getOrNull(tiers.lastIndex - 1)?.let { programItemWith(item, it.target.value).copy(appLevel = it.index, levelFiveTarget = null) } ?: item
+    }
+    val nextLevel = (level + delta).coerceIn(1, top.index)
+    val nextTier = tiers.firstOrNull { it.index == nextLevel } ?: return item
+    return programItemWith(item, nextTier.target.value).copy(appLevel = nextTier.index, levelFiveTarget = null)
+}
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMode, stored: TrainSettings, onBack: () -> Unit, onStarted: () -> Unit) {
@@ -67,15 +103,25 @@ internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMo
     var content by remember { mutableStateOf(mode.content) }
     var format by remember { mutableStateOf(stored.format) }
     var sets by remember { mutableStateOf(stored.rounds) }
-    var flow by remember { mutableStateOf(stored.flow) }
+    val savedDraft = remember { PreviewDraftStore.get(ctx, draftKey(stored)) }
+    var betweenMode by remember { mutableStateOf(stored.effectiveBetweenSetMode()) }
+    var preparationSeconds by remember { mutableIntStateOf(stored.preparationSeconds.coerceIn(1, 30)) }
     var swapIndex by remember { mutableStateOf<Int?>(null) }
     var addAfter by remember { mutableStateOf<Int?>(Int.MIN_VALUE) }   // MIN_VALUE = closed, -1 = at the start, else after that item
     var saveDialog by remember { mutableStateOf(false) }
     var savedNote by remember { mutableStateOf<String?>(null) }
-    LaunchedEffect(content) { PreviewDraftStore.put(ctx, PreviewDraft(key, program = content)) }
+    LaunchedEffect(content, preparationSeconds, betweenMode) {
+        val latest = PreviewDraftStore.get(ctx, key) ?: savedDraft ?: PreviewDraft(key)
+        PreviewDraftStore.put(ctx, latest.copy(program = content, preparationSeconds = preparationSeconds.coerceIn(1, 30)))
+    }
+    fun chooseBetween(mode: BetweenSetMode) {
+        val latest = PreviewDraftStore.get(ctx, key) ?: savedDraft ?: PreviewDraft(key, program = content, ruleDefaultVersion = 1)
+        updateBetweenSetMode(ctx, TrainSettingsStore.load(ctx), latest, mode)
+        betweenMode = mode
+    }
     val names = remember(data) { data.catalog.variations.associate { it.id to it.name } }
     val original = remember { mode.saved?.program ?: mode.base?.let(::programContentOf) }
-    val result = remember(content, format, sets, flow, profile) { buildProgramPlan(data.catalog, content, profile, flow, sets, format, System.currentTimeMillis()) }
+    val result = remember(content, format, sets, betweenMode, preparationSeconds, profile) { buildProgramPlan(data.catalog, content, profile, betweenMode == BetweenSetMode.FLOW, sets, format, System.currentTimeMillis(), betweenMode, preparationSeconds) }
     val plan = (result as? FixedProgramPlanResult.Ready)?.plan
     val unavailable = (result as? FixedProgramPlanResult.Unavailable)?.items.orEmpty().associateBy { it.exerciseId }
 
@@ -100,6 +146,7 @@ internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMo
             val minutes = ((plan?.plannedDurationSeconds ?: 0) + 30) / 60
             Text(content.name, style = MaterialTheme.typography.titleLarge, modifier = Modifier.testTag("program_title"))
             Text(stringResource(R.string.program_preview_header, io.github.gonbei774.calisthenicsmemory.ui.components.countText(R.plurals.count_exercises, content.items.size), minutes), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"))
+            if (plan?.changesExplained?.isNotEmpty() == true) Text(stringResource(R.string.program_stretch_fallback), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("program_stretch_fallback"))
             mode.base?.notes?.takeIf { it.isNotBlank() }?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 3, modifier = Modifier.testTag("program_description")) }
             Text(stringResource(R.string.program_preview_start_point), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("program_start_point"))
             savedNote?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("routine_saved_note")) }
@@ -119,13 +166,13 @@ internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMo
                     Stepper(sets, { sets = it; TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(rounds = it)) }, MIN_TRAIN_ROUNDS..MAX_EXPLICIT_ROUNDS, tag = "preview_rounds")
                 }
             }
-            Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.preview_flow), style = MaterialTheme.typography.bodyLarge)
-                    Text(stringResource(R.string.preview_flow_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("preview_flow_hint"))
-                }
-                val flowLabel = stringResource(R.string.preview_flow)
-                Switch(checked = flow, onCheckedChange = { flow = it; TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(flow = it)) }, modifier = Modifier.semantics { contentDescription = flowLabel }.testTag("preview_flow_switch"))
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Text(stringResource(R.string.feedback_preparation_time), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                Stepper(preparationSeconds, { preparationSeconds = it.coerceIn(1, 30); val m = betweenMode; TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(preparationSeconds = it.coerceIn(1, 30), betweenSetMode = m, flow = m == BetweenSetMode.FLOW, stretchOn = m == BetweenSetMode.STRETCH)) }, 1..30, tag = "preparation_seconds", valueText = { "$it s" })
+            }
+            Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                Caption(stringResource(R.string.train_between_caption))
+                BetweenSetSelector(betweenMode, ::chooseBetween)
             }
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(stringResource(R.string.block_rest), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
@@ -150,10 +197,25 @@ internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMo
                             IconButton(onClick = { content = content.copy(items = content.items.filterIndexed { k, _ -> k != i }) }, modifier = Modifier.testTag("program_remove_$i")) { Icon(Icons.Filled.Close, stringResource(R.string.preview_remove)) }
                         }
                         val seconds = item.reps == null
-                        val value = item.reps ?: item.seconds ?: 1
+                        val levelFiveTarget = item.levelFiveTarget
+                        val explicitAppLevel = item.appLevel
+                        val effectiveTier = explicitAppLevel?.let { level -> data.catalog.policyForVariation(item.exerciseId)?.tiers?.firstOrNull { it.index == level } }
+                        val value = if (effectiveTier != null) maxOf(effectiveTier.target.shownValue(), levelFiveTarget ?: 0)
+                            else levelFiveTarget ?: item.reps ?: item.seconds ?: 1
+                        val appLevel = programItemLevel(item, data.catalog)
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                            Text(if (item.perSide) stringResource(R.string.programs_per_side) else "", Modifier.weight(1f), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Stepper(value, { nv -> content = content.copy(items = content.items.mapIndexed { k, it -> if (k == i) programItemWith(it, nv) else it }) },
+                            Column(Modifier.weight(1f)) {
+                                Text(if (item.perSide) stringResource(R.string.programs_per_side) else "", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                if (levelFiveTarget != null) Text(stringResource(R.string.preview_level_extension), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("program_level_$i"))
+                                else if (explicitAppLevel != null) Text(stringResource(R.string.preview_level, explicitAppLevel, 5), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("program_level_$i"))
+                                else if (appLevel != null) Text(stringResource(R.string.preview_level, appLevel, 5), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("program_level_$i"))
+                                else Text(stringResource(R.string.program_level_authored), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("program_level_$i"))
+                            }
+                            if (data.catalog.policyForVariation(item.exerciseId) != null && v?.kind != Kind.STRETCH && v?.kind != Kind.MOBILITY) {
+                                FilledTonalIconButton(onClick = { content = content.copy(items = content.items.mapIndexed { k, it -> if (k == i) stepProgramItem(it, -1, data.catalog) else it }) }, enabled = appLevel == null || appLevel > 1 || item.levelFiveTarget != null, modifier = Modifier.size(Spacing.touch).testTag("program_target_${i}_minus")) { Icon(io.github.gonbei774.calisthenicsmemory.ui.theme.AppIcons.Remove, stringResource(R.string.stepper_decrease)) }
+                                Text(if (seconds) "$value s" else "$value x", style = MaterialTheme.typography.titleLarge, modifier = Modifier.testTag("program_target_${i}_value"))
+                                FilledTonalIconButton(onClick = { content = content.copy(items = content.items.mapIndexed { k, it -> if (k == i) stepProgramItem(it, 1, data.catalog) else it }) }, modifier = Modifier.size(Spacing.touch).testTag("program_target_${i}_plus")) { Icon(Icons.Filled.Add, stringResource(R.string.stepper_increase)) }
+                            } else Stepper(value, { nv -> content = content.copy(items = content.items.mapIndexed { k, it -> if (k == i) programItemWith(it, nv) else it }) },
                                 (if (seconds) 5 else 1)..999, tag = "program_target_$i", step = if (seconds) 5 else 1, valueText = { if (seconds) "$it s" else "$it x" })
                         }
                     }

@@ -1,0 +1,3991 @@
+{
+  "summary": {
+    "pass": 10,
+    "fail": 0,
+    "unscoped": 523
+  },
+  "seconds": 1.325,
+  "staged": [],
+  "reports": [
+    {
+      "exercise": "alternate-twist-jump",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ankle-hop-hip-twist",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ankle-hop-side-to-side",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "arch-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "arch-hold-y",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "arch-rocks",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "archer-row",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "arms-biceps-curl",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "arms-triceps-extension",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "back-extension-floor",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "back-lever",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "back-lever-adv-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "back-lever-one-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "back-lever-straddle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "back-lever-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "balance-single-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "balance-single-leg-cushion",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "balance-single-leg-eyes-closed",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "band-pull-apart",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "barbell-rdl",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "barbell-squat",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bear-crawl",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bear-plank",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bend-and-reach",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bent-leg-raise-army",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bicycle-crunch",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bird-dog",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bird-dog-arm-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bird-dog-leg-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bird-dog-quadruped",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "body-saw",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bounding-alternate",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bounding-single-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "box-jump",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "box-jump-rebound",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "box-push-off-alternating",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "box-push-off-single",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "box-step-off-landing",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-back",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-closing",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-half",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-head",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-incline",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-reverse-plank",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-single-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-stand-to-stand",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-table",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-wall-push-off",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-wall-walkdown",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "bridge-wall-walkup",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "burpee",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "burpee-pushup",
+      "style": "Full burpee cycle with hands planted for a high-to-low-to-high push-up, deliberate leg transfer, loaded jump, landing absorption, and return to the opening stand.",
+      "status": "pass",
+      "metrics": {
+        "wrist_l_drift_m": {
+          "value": 0.98627,
+          "min": null,
+          "max": 2.0,
+          "ok": true
+        },
+        "wrist_r_drift_m": {
+          "value": 0.98627,
+          "min": null,
+          "max": 2.0,
+          "ok": true
+        },
+        "valid_timeline": {
+          "value": 1.0,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "finite_geometry": {
+          "value": 1.0,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "foot_mesh_floor_min_z_m": {
+          "value": 0.00402,
+          "min": -0.002,
+          "max": null,
+          "ok": true
+        },
+        "duration_s": {
+          "value": 10.5,
+          "min": 8.0,
+          "max": null,
+          "ok": true
+        },
+        "loop_seam_max_m": {
+          "value": 0.00897,
+          "min": null,
+          "max": 0.08,
+          "ok": true
+        },
+        "max_joint_speed_m_s": {
+          "value": 3.36048,
+          "min": null,
+          "max": 3.5,
+          "ok": true
+        },
+        "pushup_plank_frames": {
+          "value": 73.0,
+          "min": 12,
+          "max": null,
+          "ok": true
+        },
+        "pushup_chest_excursion_m": {
+          "value": 0.28399,
+          "min": 0.12,
+          "max": null,
+          "ok": true
+        },
+        "pushup_press_rise_m": {
+          "value": 0.28395,
+          "min": 0.12,
+          "max": null,
+          "ok": true
+        },
+        "pushup_top_elbow_deg": {
+          "value": 169.82532,
+          "min": 145,
+          "max": null,
+          "ok": true
+        },
+        "pushup_bottom_elbow_bend_deg": {
+          "value": 93.87465,
+          "min": 30,
+          "max": null,
+          "ok": true
+        },
+        "pushup_phase_order": {
+          "value": 1.0,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "plank_contact_drift_m": {
+          "value": 0.00089,
+          "min": null,
+          "max": 0.003,
+          "ok": true
+        },
+        "leg_transfer_m": {
+          "value": 0.8,
+          "min": 0.65,
+          "max": null,
+          "ok": true
+        },
+        "jump_height_m": {
+          "value": 0.23,
+          "min": 0.18,
+          "max": null,
+          "ok": true
+        },
+        "jump_preload_depth_m": {
+          "value": 0.13768,
+          "min": 0.1,
+          "max": null,
+          "ok": true
+        },
+        "landing_contact": {
+          "value": 1.0,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "landing_absorption_m": {
+          "value": 0.13822,
+          "min": 0.08,
+          "max": null,
+          "ok": true
+        },
+        "recovery_to_start_m": {
+          "value": 0.0021,
+          "min": null,
+          "max": 0.08,
+          "ok": true
+        },
+        "common_max_joint_speed_m_s": {
+          "value": 3.36048,
+          "min": null,
+          "max": 3.5,
+          "ok": true
+        },
+        "loop_gap_m": {
+          "value": 0.0048,
+          "min": null,
+          "max": 0.012,
+          "ok": true
+        }
+      },
+      "failures": [],
+      "data_sha256": "43902ca18e86930e3c79b5b5bbd0dbb9ed1e2bdb9b50e5bbeb496c4a9b3b31fd",
+      "contract_sha256": "fc0e6b3be2d6fd768f5806733e822dcd9fd1dea2df48cd9c46bec7b1644cb741",
+      "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+    },
+    {
+      "exercise": "butt-kicks",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "calf-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "calf-raise-bent-knee",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "calf-raise-single",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "calf-raise-single-bent-knee",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "calf-raise-single-loaded",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "calf-raise-step",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "calf-raise-step-bent-knee",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "calf-raise-step-single",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "calf-raise-step-single-bent-knee",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "carioca",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "chair-assisted-pullup",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "chin-nod-supine",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "chin-tuck-head-lift",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "chin-tuck-seated",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "chinup-full",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "clamshell",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "cone-hops-front",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "cone-hops-lateral",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "copenhagen-adduction",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "copenhagen-side-plank",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "copenhagen-side-plank-short",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "crab-walk",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "criss-cross-jump",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "crouch-run",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "crunch",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "cuban-press",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "curl-up-mcgill",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dead-bug",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dead-bug-90-90",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dead-bug-brace",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dead-bug-single-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dead-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "deep-squat-hold",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "depth-jump",
+      "style": "Step the lead foot forward off a 30 cm box into flight, release the rear foot, land bilaterally, rebound quickly, land and rest, then walk around and step back onto the box.",
+      "status": "pass",
+      "metrics": {
+        "wrist_l_drift_m": {
+          "value": 1.41263,
+          "min": 0.0,
+          "max": 1.5,
+          "ok": true
+        },
+        "wrist_r_drift_m": {
+          "value": 1.41263,
+          "min": 0.0,
+          "max": 1.5,
+          "ok": true
+        },
+        "finite_geometry": {
+          "value": 1,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "known_variant": {
+          "value": 1,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "max_joint_speed_m_s": {
+          "value": 7.42843,
+          "min": 0.0,
+          "max": 8.0,
+          "ok": true
+        },
+        "lead_foot_steps_into_air_frames": {
+          "value": 5,
+          "min": 3,
+          "max": 8,
+          "ok": true
+        },
+        "no_early_single_floor_support_frames": {
+          "value": 0,
+          "min": 0,
+          "max": 0,
+          "ok": true
+        },
+        "both_feet_airborne_before_landing_frames": {
+          "value": 10,
+          "min": 8,
+          "max": 20,
+          "ok": true
+        },
+        "first_landing_contact_frames": {
+          "value": 7,
+          "min": 5,
+          "max": 9,
+          "ok": true
+        },
+        "first_landing_contact_duration_s": {
+          "value": 0.29167,
+          "min": 0.2,
+          "max": 0.45,
+          "ok": true
+        },
+        "first_landing_pair_offset_m": {
+          "value": 0.0,
+          "min": 0.0,
+          "max": 0.04,
+          "ok": true
+        },
+        "first_landing_entry_drift_m": {
+          "value": 0.02751,
+          "min": 0.0,
+          "max": 0.08,
+          "ok": true
+        },
+        "first_landing_planted_contact_frames": {
+          "value": 3,
+          "min": 1,
+          "max": 4,
+          "ok": true
+        },
+        "first_landing_planted_slip_m": {
+          "value": 0.0,
+          "min": 0.0,
+          "max": 0.003,
+          "ok": true
+        },
+        "first_absorption_pelvis_m": {
+          "value": 0.54171,
+          "min": 0.48,
+          "max": 0.75,
+          "ok": true
+        },
+        "first_landing_to_takeoff_pelvis_excursion_m": {
+          "value": 0.53577,
+          "min": 0.14,
+          "max": 0.7,
+          "ok": true
+        },
+        "rebound_airborne_frames": {
+          "value": 16,
+          "min": 8,
+          "max": 18,
+          "ok": true
+        },
+        "rebound_peak_ankle_m": {
+          "value": 0.6276,
+          "min": 0.4,
+          "max": 0.72,
+          "ok": true
+        },
+        "second_landing_contact_frames": {
+          "value": 6,
+          "min": 4,
+          "max": 9,
+          "ok": true
+        },
+        "second_landing_pair_offset_m": {
+          "value": 0.0,
+          "min": 0.0,
+          "max": 0.04,
+          "ok": true
+        },
+        "second_landing_planted_contact_frames": {
+          "value": 6,
+          "min": 5,
+          "max": 8,
+          "ok": true
+        },
+        "second_landing_planted_slip_m": {
+          "value": 0.0,
+          "min": 0.0,
+          "max": 0.003,
+          "ok": true
+        },
+        "second_absorption_pelvis_m": {
+          "value": 0.56703,
+          "min": 0.48,
+          "max": 0.72,
+          "ok": true
+        },
+        "walk_around_box_clear_frames": {
+          "value": 29,
+          "min": 20,
+          "max": 40,
+          "ok": true
+        },
+        "post_landing_rest_frames": {
+          "value": 17,
+          "min": 12,
+          "max": 20,
+          "ok": true
+        },
+        "return_step_one_foot_on_box_frames": {
+          "value": 3,
+          "min": 3,
+          "max": 15,
+          "ok": true
+        },
+        "return_finish_both_feet_on_box_frames": {
+          "value": 4,
+          "min": 2,
+          "max": 6,
+          "ok": true
+        },
+        "loop_seam_joint_gap_m": {
+          "value": 0.0,
+          "min": 0.0,
+          "max": 0.012,
+          "ok": true
+        },
+        "common_max_joint_speed_m_s": {
+          "value": 7.42843,
+          "min": null,
+          "max": 8.0,
+          "ok": true
+        },
+        "loop_gap_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.012,
+          "ok": true
+        }
+      },
+      "failures": [],
+      "data_sha256": "695b8822a5d4cf925c8fb4b7c0a1b07d00bb79a7f04d44778aa34591364090af",
+      "contract_sha256": "fc0e6b3be2d6fd768f5806733e822dcd9fd1dea2df48cd9c46bec7b1644cb741",
+      "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+    },
+    {
+      "exercise": "dip-bench-bent-knee",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-bench-feet-elevated",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-bench-straight-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-feet-supported",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-forward-lean",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-jumping",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-korean",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-l-sit",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-parallel",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-russian",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-straight-bar",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dip-support-hold",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "donkey-kick",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dragon-flag",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dragon-flag-adv-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dragon-flag-candlestick",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dragon-flag-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dragon-flag-one-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dragon-flag-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dumbbell-rdl",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dumbbell-row",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "dumbbell-single-leg-rdl",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "eight-count-t-pushup",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "elbow-lever",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "elbow-lever-straddle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "elbow-lever-umbrella",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "external-rotation-band",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "external-rotation-band-90",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "external-rotation-side-lying",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "face-pull",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "fire-hydrant",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-bent-leg-press",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-clutch",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-clutch-bent-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-clutch-diagonal",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-clutch-diagonal-split",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-clutch-diagonal-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-clutch-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-clutch-horizontal-split",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-clutch-horizontal-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-kick-press",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-press",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-press-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-split-press",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-support-press",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-vertical-chamber-press",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flag-vertical-press",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "flexed-arm-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "floor-angel",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "forearm-rotation-fist",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "four-square-hops",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "frog-jumps",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "frog-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "frogger",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "front-kick-toe-touch",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "front-lever",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "front-lever-adv-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "front-lever-one-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "front-lever-row",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "front-lever-row-adv-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "front-lever-row-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "front-lever-row-straddle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "front-lever-row-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "front-lever-straddle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "front-lever-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "german-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "glute-bridge",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "goblet-squat",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "grip-eagle-claw",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "grip-horizontal-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "grip-one-arm-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "grip-one-arm-towel-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "grip-towel-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "grip-twin-towel-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "grip-uneven-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "grip-uneven-towel-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "half-jack",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "half-squat-laterals",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "handstand-free",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "handstand-kick-up",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "handstand-press-bent-arm",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "handstand-press-elevated",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "handstand-press-straddle",
+      "style": "Existing straddle press body path with rotating feet and a controlled closed return; foot-direction screening only",
+      "status": "pass",
+      "metrics": {
+        "wrist_l_drift_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.003,
+          "ok": true
+        },
+        "wrist_r_drift_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.003,
+          "ok": true
+        },
+        "duration_s": {
+          "value": 8.0,
+          "min": 7.5,
+          "max": null,
+          "ok": true
+        },
+        "l_foot_turn_deg": {
+          "value": 250.00025,
+          "min": 235,
+          "max": 265,
+          "ok": true
+        },
+        "l_foot_angular_speed_deg_s": {
+          "value": 88.88229,
+          "min": null,
+          "max": 100,
+          "ok": true
+        },
+        "l_heel_frame_norm": {
+          "value": 0.31506,
+          "min": 0.25,
+          "max": null,
+          "ok": true
+        },
+        "l_heel_frame_step_cos": {
+          "value": 0.99792,
+          "min": 0.99,
+          "max": null,
+          "ok": true
+        },
+        "l_initial_toe_forward": {
+          "value": 1.0,
+          "min": 0.99,
+          "max": null,
+          "ok": true
+        },
+        "l_top_toe_shin_dot": {
+          "value": 0.93833,
+          "min": 0.9,
+          "max": null,
+          "ok": true
+        },
+        "l_ankle_joint_min_deg": {
+          "value": 45.437,
+          "min": 40,
+          "max": null,
+          "ok": true
+        },
+        "l_ankle_joint_max_deg": {
+          "value": 161.63548,
+          "min": null,
+          "max": 165,
+          "ok": true
+        },
+        "r_foot_turn_deg": {
+          "value": 250.00025,
+          "min": 235,
+          "max": 265,
+          "ok": true
+        },
+        "r_foot_angular_speed_deg_s": {
+          "value": 88.88229,
+          "min": null,
+          "max": 100,
+          "ok": true
+        },
+        "r_heel_frame_norm": {
+          "value": 0.31506,
+          "min": 0.25,
+          "max": null,
+          "ok": true
+        },
+        "r_heel_frame_step_cos": {
+          "value": 0.99792,
+          "min": 0.99,
+          "max": null,
+          "ok": true
+        },
+        "r_initial_toe_forward": {
+          "value": 1.0,
+          "min": 0.99,
+          "max": null,
+          "ok": true
+        },
+        "r_top_toe_shin_dot": {
+          "value": 0.93833,
+          "min": 0.9,
+          "max": null,
+          "ok": true
+        },
+        "r_ankle_joint_min_deg": {
+          "value": 45.437,
+          "min": 40,
+          "max": null,
+          "ok": true
+        },
+        "r_ankle_joint_max_deg": {
+          "value": 161.63548,
+          "min": null,
+          "max": 165,
+          "ok": true
+        },
+        "max_joint_speed_m_s": {
+          "value": 0.92848,
+          "min": null,
+          "max": 2.5,
+          "ok": true
+        },
+        "loop_gap_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.012,
+          "ok": true
+        }
+      },
+      "failures": [],
+      "data_sha256": "386c81080eb22ecadd6c286a2cd7264fe6a01532d3d272e537aa07e26234ad47",
+      "contract_sha256": "fc0e6b3be2d6fd768f5806733e822dcd9fd1dea2df48cd9c46bec7b1644cb741",
+      "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+    },
+    {
+      "exercise": "handstand-press-wall-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "handstand-toe-pulls",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "handstand-wall-one-foot",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "handstand-wall-plank",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "handstand-wall-walk-up",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hanging-knee-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hanging-knee-raise-twisting",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hanging-leg-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hanging-leg-raise-bent",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hanging-windshield-wiper",
+      "style": "Fixed bar hand contacts, active shoulders, full-height raise, controlled bilateral lateral sweep with visible torso counter-roll, centered return and lower.",
+      "status": "pass",
+      "metrics": {
+        "wrist_l_drift_m": {
+          "value": 0.00226,
+          "min": null,
+          "max": 0.005,
+          "ok": true
+        },
+        "wrist_r_drift_m": {
+          "value": 0.00224,
+          "min": null,
+          "max": 0.005,
+          "ok": true
+        },
+        "valid_geometry": {
+          "value": 1,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "duration_s": {
+          "value": 6.5,
+          "min": 6.4,
+          "max": 6.6,
+          "ok": true
+        },
+        "max_joint_speed_m_s": {
+          "value": 3.23212,
+          "min": 0,
+          "max": 3.5,
+          "ok": true
+        },
+        "loop_seam_max_m": {
+          "value": 0.0,
+          "min": 0,
+          "max": 0.04,
+          "ok": true
+        },
+        "hand_drift_max_m": {
+          "value": 0.00226,
+          "min": 0,
+          "max": 0.005,
+          "ok": true
+        },
+        "torso_counterroll_max_deg": {
+          "value": 12.89132,
+          "min": 3.5,
+          "max": 18,
+          "ok": true
+        },
+        "lateral_sweep_range_m": {
+          "value": 0.6915,
+          "min": 0.6,
+          "max": 0.85,
+          "ok": true
+        },
+        "both_sweep_sides_m": {
+          "value": 0.34343,
+          "min": 0.2,
+          "max": 0.5,
+          "ok": true
+        },
+        "floor_surface_min_m": {
+          "value": 0.09631,
+          "min": -0.02,
+          "max": 10,
+          "ok": true
+        },
+        "heel_frame_condition_min": {
+          "value": 0.26318,
+          "min": 0.15,
+          "max": null,
+          "ok": true
+        },
+        "heel_frame_normal_step_max_deg": {
+          "value": 11.78861,
+          "min": null,
+          "max": 45,
+          "ok": true
+        },
+        "common_max_joint_speed_m_s": {
+          "value": 2.43155,
+          "min": null,
+          "max": 3.5,
+          "ok": true
+        },
+        "loop_gap_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.012,
+          "ok": true
+        }
+      },
+      "failures": [],
+      "data_sha256": "b5e127289abbcbaa809ec54ed19b1d8bcc09eef674af5de1f76f49c82be0811f",
+      "contract_sha256": "fc0e6b3be2d6fd768f5806733e822dcd9fd1dea2df48cd9c46bec7b1644cb741",
+      "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+    },
+    {
+      "exercise": "hanging-windshield-wiper-half",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "harop-curl",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "harop-curl-beginner",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "headstand-forearm",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "headstand-tripod",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "headstand-tripod-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "headstand-wall",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "heel-hook",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hexagon-drill",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "high-jumper",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "high-knees",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hip-lateral-leg-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hip-medial-leg-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hip-raise-pushup",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hip-thrust",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hip-thrust-single-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hollow-hold",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hollow-one-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hollow-rocks",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hollow-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hop-single-leg-lateral",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hop-single-leg-stick",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hspu-free",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hspu-free-head",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hspu-wall",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hspu-wall-deficit",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "hspu-wall-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ice-cream-maker",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "inchworm",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "inverted-row",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "inverted-row-bent-knees",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "inverted-row-feet-elevated",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "inverted-row-wide",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jefferson-curl",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "joint-circles",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-block",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-broad",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-broad-consecutive",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-butt-kick",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-lateral",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-rope",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-rope-double-under",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-split",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-split-cycle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-squat",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-tuck-catch",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-tuck-slap",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jump-vertical",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "jumping-jack",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "kettlebell-deadlift",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "kettlebell-one-arm-row",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "kettlebell-single-leg-rdl",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "kettlebell-suitcase-carry",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "kettlebell-swing",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "kettlebell-swing-one-arm",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "knee-raise-supported",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "l-sit-advanced-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "l-sit-compression-lift",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "l-sit-floor",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "l-sit-foot-supported",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "l-sit-one-foot",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "l-sit-one-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "l-sit-straddle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "l-sit-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "landing-stick",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "lateral-shuffle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "leg-raise-lying",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "leg-swings",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "leg-tuck-and-twist",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "lunge-lateral",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "lunge-reverse",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "lying-bent-knee-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "lying-knee-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "mountain-climber",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "mountain-climber-cross-body",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "mountain-climber-slow",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "muscle-up-bar",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "muscle-up-kipping",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "muscle-up-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "natural-leg-extension",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "neck-head-raise-manual",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "neck-isometric-4-way",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "nordic-banded",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "nordic-curl",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "nordic-negative-banded",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pallof-hold",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pallof-press",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "petersen-step-up",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pike-pushup",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pike-pushup-elevated",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pike-pushup-hands-elevated",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-corkscrew",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-double-leg-kick",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-double-leg-stretch",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-mermaid",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-open-leg-rocker",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-roll-over",
+      "style": "Progressive pelvis-to-upper-trunk curl over the shoulder blades, slight leg opening overhead, slow reverse roll and fixed floor hand contacts.",
+      "status": "pass",
+      "metrics": {
+        "wrist_l_drift_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.005,
+          "ok": true
+        },
+        "wrist_r_drift_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.005,
+          "ok": true
+        },
+        "valid_geometry": {
+          "value": 1,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "duration_s": {
+          "value": 4.0,
+          "min": 3.9,
+          "max": 4.1,
+          "ok": true
+        },
+        "max_joint_speed_m_s": {
+          "value": 2.04752,
+          "min": 0,
+          "max": 2.25,
+          "ok": true
+        },
+        "loop_seam_max_m": {
+          "value": 1e-05,
+          "min": 0,
+          "max": 0.04,
+          "ok": true
+        },
+        "hand_drift_max_m": {
+          "value": 0.0,
+          "min": 0,
+          "max": 0.005,
+          "ok": true
+        },
+        "trunk_curl_max_deg": {
+          "value": 54.00034,
+          "min": 45,
+          "max": 65,
+          "ok": true
+        },
+        "pelvis_lift_range_m": {
+          "value": 0.24199,
+          "min": 0.18,
+          "max": 0.4,
+          "ok": true
+        },
+        "leg_opening_max_m": {
+          "value": 0.36,
+          "min": 0.3,
+          "max": 0.42,
+          "ok": true
+        },
+        "floor_surface_min_m": {
+          "value": 0.01,
+          "min": -0.02,
+          "max": 10,
+          "ok": true
+        },
+        "chest_surface_min_m": {
+          "value": 0.0011,
+          "min": 0.001,
+          "max": null,
+          "ok": true
+        },
+        "heel_frame_condition_min": {
+          "value": 0.21128,
+          "min": 0.15,
+          "max": null,
+          "ok": true
+        },
+        "heel_frame_normal_step_max_deg": {
+          "value": 1.1583,
+          "min": null,
+          "max": 45,
+          "ok": true
+        },
+        "common_max_joint_speed_m_s": {
+          "value": 1.68223,
+          "min": null,
+          "max": 2.25,
+          "ok": true
+        },
+        "loop_gap_m": {
+          "value": 1e-05,
+          "min": null,
+          "max": 0.012,
+          "ok": true
+        }
+      },
+      "failures": [],
+      "data_sha256": "37a657f71320121af21ad5043feaf846011f9be4307f23d0ddfeefa76a0dc806",
+      "contract_sha256": "fc0e6b3be2d6fd768f5806733e822dcd9fd1dea2df48cd9c46bec7b1644cb741",
+      "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+    },
+    {
+      "exercise": "pilates-roll-up",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-rolling-like-a-ball",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-saw",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-scissors",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-seal",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-single-leg-circle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-single-leg-stretch",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-spine-stretch-forward",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pilates-spine-twist",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "planche-adv-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "planche-frog-stand",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "planche-frog-stand-straight-arm",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "planche-full",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "planche-lean",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "planche-straddle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "planche-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "planche-tuck-pushup",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "plank",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "plank-arm-leg-reach",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "plank-contralateral",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "plank-long-lever",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "plank-shoulder-tap",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pogo-hop",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "power-skip",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "prone-i-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "prone-l-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "prone-row-army",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "prone-t-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "prone-w-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "prone-y-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-archer",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-band-assisted",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-chest-to-bar",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-commando",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-false-grip-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-full",
+      "style": "Controlled mild arch, shoulder initiation, no kip",
+      "status": "pass",
+      "metrics": {
+        "wrist_l_drift_m": {
+          "value": 0.00027,
+          "min": null,
+          "max": 0.003,
+          "ok": true
+        },
+        "wrist_r_drift_m": {
+          "value": 0.00027,
+          "min": null,
+          "max": 0.003,
+          "ok": true
+        },
+        "top_back_tilt_deg": {
+          "value": 16.80209,
+          "min": 12,
+          "max": 25,
+          "ok": true
+        },
+        "tilt_change_deg": {
+          "value": 12.24188,
+          "min": 8,
+          "max": null,
+          "ok": true
+        },
+        "hip_travel_m": {
+          "value": 0.19,
+          "min": 0.12,
+          "max": 0.3,
+          "ok": true
+        },
+        "shoulder_action_m": {
+          "value": 0.035,
+          "min": 0.025,
+          "max": 0.065,
+          "ok": true
+        },
+        "rise_m": {
+          "value": 0.47532,
+          "min": 0.4,
+          "max": null,
+          "ok": true
+        },
+        "interior_speed_min_m_s": {
+          "value": 0.33744,
+          "min": 0.12,
+          "max": null,
+          "ok": true
+        },
+        "rise_vertical_speed_ratio": {
+          "value": 1.00036,
+          "min": null,
+          "max": 1.03,
+          "ok": true
+        },
+        "rise_torso_speed_ratio": {
+          "value": 1.06668,
+          "min": null,
+          "max": 1.12,
+          "ok": true
+        },
+        "descent_vertical_speed_ratio": {
+          "value": 1.00036,
+          "min": null,
+          "max": 1.03,
+          "ok": true
+        },
+        "descent_torso_speed_ratio": {
+          "value": 1.06744,
+          "min": null,
+          "max": 1.12,
+          "ok": true
+        },
+        "finger_bar_clearance_m": {
+          "value": 0.00117,
+          "min": 0.0005,
+          "max": null,
+          "ok": true
+        },
+        "hang_elbow_l_deg": {
+          "value": 173.75432,
+          "min": 165,
+          "max": null,
+          "ok": true
+        },
+        "top_elbow_l_deg": {
+          "value": 38.4613,
+          "min": 30,
+          "max": 100,
+          "ok": true
+        },
+        "palm_l_forward": {
+          "value": 1.0,
+          "min": 0.95,
+          "max": null,
+          "ok": true
+        },
+        "hang_elbow_r_deg": {
+          "value": 173.75432,
+          "min": 165,
+          "max": null,
+          "ok": true
+        },
+        "top_elbow_r_deg": {
+          "value": 38.4613,
+          "min": 30,
+          "max": 100,
+          "ok": true
+        },
+        "palm_r_forward": {
+          "value": 1.0,
+          "min": 0.95,
+          "max": null,
+          "ok": true
+        },
+        "max_joint_speed_m_s": {
+          "value": 0.44335,
+          "min": null,
+          "max": 2.5,
+          "ok": true
+        },
+        "loop_gap_m": {
+          "value": 0.00049,
+          "min": null,
+          "max": 0.012,
+          "ok": true
+        }
+      },
+      "failures": [],
+      "data_sha256": "7bd5c49b8f86b505b07b4783915702843716402d3f1af0df941c12094b6bfcf4",
+      "contract_sha256": "fc0e6b3be2d6fd768f5806733e822dcd9fd1dea2df48cd9c46bec7b1644cb741",
+      "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+    },
+    {
+      "exercise": "pullup-jumping",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-kip-swing",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-kipping",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-l-sit",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-one-arm",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-one-arm-assisted",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-one-arm-flex-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-one-arm-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-partial",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-pullover",
+      "style": "Controlled full bar pullover and slower reverse, continuous rotation with hands rolling around the bar",
+      "status": "pass",
+      "metrics": {
+        "wrist_l_drift_m": {
+          "value": 0.1581,
+          "min": null,
+          "max": 0.17,
+          "ok": true
+        },
+        "wrist_r_drift_m": {
+          "value": 0.1581,
+          "min": null,
+          "max": 0.17,
+          "ok": true
+        },
+        "duration_s": {
+          "value": 11.0,
+          "min": 9,
+          "max": null,
+          "ok": true
+        },
+        "rotation_range_deg": {
+          "value": 360.0,
+          "min": 350,
+          "max": 370,
+          "ok": true
+        },
+        "angular_speed_deg_s": {
+          "value": 151.24165,
+          "min": null,
+          "max": 165,
+          "ok": true
+        },
+        "angular_acceleration_deg_s2": {
+          "value": 414.33354,
+          "min": null,
+          "max": 500,
+          "ok": true
+        },
+        "turnover_interior_speed_deg_s": {
+          "value": 98.68956,
+          "min": 15,
+          "max": null,
+          "ok": true
+        },
+        "return_interior_speed_deg_s": {
+          "value": 85.83284,
+          "min": 15,
+          "max": null,
+          "ok": true
+        },
+        "descent_ascent_time_ratio": {
+          "value": 1.16667,
+          "min": 1.05,
+          "max": null,
+          "ok": true
+        },
+        "joint_acceleration_m_s2": {
+          "value": 5.969,
+          "min": null,
+          "max": 8,
+          "ok": true
+        },
+        "rolling_grip": {
+          "value": 1,
+          "min": 1,
+          "max": null,
+          "ok": true
+        },
+        "wrist_l_contact_error_m": {
+          "value": 1e-05,
+          "min": null,
+          "max": 0.0001,
+          "ok": true
+        },
+        "wrist_l_axial_drift_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.003,
+          "ok": true
+        },
+        "wrist_r_contact_error_m": {
+          "value": 1e-05,
+          "min": null,
+          "max": 0.0001,
+          "ok": true
+        },
+        "wrist_r_axial_drift_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.003,
+          "ok": true
+        },
+        "body_bar_volume_clearance_m": {
+          "value": 0.00998,
+          "min": 0.001,
+          "max": null,
+          "ok": true
+        },
+        "finger_bar_clearance_m": {
+          "value": 0.00117,
+          "min": 0.0005,
+          "max": null,
+          "ok": true
+        },
+        "support_chest_above_bar_m": {
+          "value": 0.657,
+          "min": 0.5,
+          "max": null,
+          "ok": true
+        },
+        "hang_elbow_l_deg": {
+          "value": 163.89802,
+          "min": 160,
+          "max": null,
+          "ok": true
+        },
+        "support_elbow_l_deg": {
+          "value": 169.84782,
+          "min": 150,
+          "max": null,
+          "ok": true
+        },
+        "hang_elbow_r_deg": {
+          "value": 163.89802,
+          "min": 160,
+          "max": null,
+          "ok": true
+        },
+        "support_elbow_r_deg": {
+          "value": 169.84782,
+          "min": 150,
+          "max": null,
+          "ok": true
+        },
+        "max_joint_speed_m_s": {
+          "value": 2.07883,
+          "min": null,
+          "max": 2.5,
+          "ok": true
+        },
+        "loop_gap_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.012,
+          "ok": true
+        }
+      },
+      "failures": [],
+      "data_sha256": "eeeb511269432b151ba7b0ea9c18d5f36fdee1881b58600b8bc0779930b1289d",
+      "contract_sha256": "fc0e6b3be2d6fd768f5806733e822dcd9fd1dea2df48cd9c46bec7b1644cb741",
+      "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+    },
+    {
+      "exercise": "pullup-pullover-jumping",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-sternum",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-typewriter",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pullup-uneven",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-archer",
+      "style": "Fixed wide hands, alternating sides, assisting arm stays extended",
+      "status": "pass",
+      "metrics": {
+        "wrist_l_drift_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.003,
+          "ok": true
+        },
+        "wrist_r_drift_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.003,
+          "ok": true
+        },
+        "lateral_range_m": {
+          "value": 0.37656,
+          "min": 0.3,
+          "max": null,
+          "ok": true
+        },
+        "chest_range_m": {
+          "value": 0.30741,
+          "min": 0.2,
+          "max": null,
+          "ok": true
+        },
+        "right_low_frames": {
+          "value": 31,
+          "min": 4,
+          "max": null,
+          "ok": true
+        },
+        "right_support_elbow_deg": {
+          "value": 170.38297,
+          "min": 165,
+          "max": null,
+          "ok": true
+        },
+        "right_working_elbow_deg": {
+          "value": 66.28778,
+          "min": null,
+          "max": 105,
+          "ok": true
+        },
+        "right_working_min_deg": {
+          "value": 60.52388,
+          "min": 40,
+          "max": null,
+          "ok": true
+        },
+        "left_low_frames": {
+          "value": 31,
+          "min": 4,
+          "max": null,
+          "ok": true
+        },
+        "left_support_elbow_deg": {
+          "value": 170.38297,
+          "min": 165,
+          "max": null,
+          "ok": true
+        },
+        "left_working_elbow_deg": {
+          "value": 66.28778,
+          "min": null,
+          "max": 105,
+          "ok": true
+        },
+        "left_working_min_deg": {
+          "value": 60.52388,
+          "min": 40,
+          "max": null,
+          "ok": true
+        },
+        "toe_l_drift_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.008,
+          "ok": true
+        },
+        "toe_r_drift_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.008,
+          "ok": true
+        },
+        "body_line_deg": {
+          "value": 176.14725,
+          "min": 165,
+          "max": null,
+          "ok": true
+        },
+        "max_joint_speed_m_s": {
+          "value": 0.73838,
+          "min": null,
+          "max": 2.5,
+          "ok": true
+        },
+        "loop_gap_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.012,
+          "ok": true
+        }
+      },
+      "failures": [],
+      "data_sha256": "145a8f0bd2e610981b48b4eb3499cc11b15bdea35901aad191677c3d532d9f47",
+      "contract_sha256": "fc0e6b3be2d6fd768f5806733e822dcd9fd1dea2df48cd9c46bec7b1644cb741",
+      "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+    },
+    {
+      "exercise": "pushup-chest-strike",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-clap",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-diamond",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-feet-elevated",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-half-one-arm",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-hindu",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-incline",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-incline-high",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-knee",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-kneeling-push-off",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-one-arm",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-one-arm-elevated",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-one-arm-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-one-arm-straight-body",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-pop-up",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-pop-up-incline",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-pop-up-wide-close",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-pseudo-planche",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-single-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-standard",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-uneven",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-wall",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "pushup-wall-push-away",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "quadraplex",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "quarter-turn-jump",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "rdl-bodyweight",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "reverse-crunch",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "reverse-hyperextension",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "reverse-nordic",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-dip",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-dip-l",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-dip-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-dip-rto",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-false-grip-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-l-sit",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-muscle-up",
+      "style": "Strict neutral-ring support, close smooth crossover, straight hanging legs and controlled descent",
+      "status": "pass",
+      "metrics": {
+        "wrist_l_drift_m": {
+          "value": 0.10314,
+          "min": null,
+          "max": 0.15,
+          "ok": true
+        },
+        "wrist_r_drift_m": {
+          "value": 0.10314,
+          "min": null,
+          "max": 0.15,
+          "ok": true
+        },
+        "visible_rings_count": {
+          "value": 2,
+          "min": 2,
+          "max": 2,
+          "ok": true
+        },
+        "ring_grip_geometry": {
+          "value": 1,
+          "min": 1,
+          "max": null,
+          "ok": true
+        },
+        "ring_grip_closeup": {
+          "value": 1,
+          "min": 1,
+          "max": null,
+          "ok": true
+        },
+        "ring_radius_m": {
+          "value": 0.105,
+          "min": 0.09,
+          "max": null,
+          "ok": true
+        },
+        "arm_ring_volume_clearance_m": {
+          "value": 0.0071,
+          "min": 0.0005,
+          "max": null,
+          "ok": true
+        },
+        "wrist_l_bend_deg": {
+          "value": 47.42139,
+          "min": null,
+          "max": 60,
+          "ok": true
+        },
+        "wrist_l_frame_change_deg": {
+          "value": 7.45504,
+          "min": null,
+          "max": 8,
+          "ok": true
+        },
+        "wrist_l_contact_error_m": {
+          "value": 1e-05,
+          "min": null,
+          "max": 2e-05,
+          "ok": true
+        },
+        "wrist_r_bend_deg": {
+          "value": 47.42139,
+          "min": null,
+          "max": 60,
+          "ok": true
+        },
+        "wrist_r_frame_change_deg": {
+          "value": 7.45504,
+          "min": null,
+          "max": 8,
+          "ok": true
+        },
+        "wrist_r_contact_error_m": {
+          "value": 1e-05,
+          "min": null,
+          "max": 2e-05,
+          "ok": true
+        },
+        "chest_fore_aft_m": {
+          "value": 0.22164,
+          "min": null,
+          "max": 0.28,
+          "ok": true
+        },
+        "pelvis_fore_aft_m": {
+          "value": 0.10254,
+          "min": null,
+          "max": 0.14,
+          "ok": true
+        },
+        "chest_forward_speed_m_s": {
+          "value": 0.47496,
+          "min": null,
+          "max": 0.7,
+          "ok": true
+        },
+        "chest_speed_m_s": {
+          "value": 0.82162,
+          "min": null,
+          "max": 1.0,
+          "ok": true
+        },
+        "rise_m": {
+          "value": 1.1943,
+          "min": 1.0,
+          "max": null,
+          "ok": true
+        },
+        "leg_tuck_change_l_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.025,
+          "ok": true
+        },
+        "hang_elbow_l_deg": {
+          "value": 164.18839,
+          "min": 160,
+          "max": null,
+          "ok": true
+        },
+        "support_elbow_l_deg": {
+          "value": 162.14182,
+          "min": 160,
+          "max": null,
+          "ok": true
+        },
+        "leg_tuck_change_r_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.025,
+          "ok": true
+        },
+        "hang_elbow_r_deg": {
+          "value": 164.18839,
+          "min": 160,
+          "max": null,
+          "ok": true
+        },
+        "support_elbow_r_deg": {
+          "value": 162.14182,
+          "min": 160,
+          "max": null,
+          "ok": true
+        },
+        "max_joint_speed_m_s": {
+          "value": 0.84121,
+          "min": null,
+          "max": 2.5,
+          "ok": true
+        },
+        "loop_gap_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.012,
+          "ok": true
+        }
+      },
+      "failures": [],
+      "data_sha256": "dc3a0b95add197cb8cf86e285827963e4f220bc484a8df7dba2516ed47ac618b",
+      "contract_sha256": "fc0e6b3be2d6fd768f5806733e822dcd9fd1dea2df48cd9c46bec7b1644cb741",
+      "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+    },
+    {
+      "exercise": "ring-muscle-up-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-pppu-40",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-pppu-60",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-pushup",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-pushup-rto",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-pushup-rto-archer",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-pushup-wide",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-support-hold",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "ring-support-rto",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "rolling-sit-up",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "rolling-squat",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "rollout-knees",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "rollout-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "rollout-one-arm",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "rollout-ramp",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "rollout-standing",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "row-archer-arm-in",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "row-band",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "row-one-arm",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "row-one-arm-straddle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "rower-situp",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "russian-twist",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "scapular-pull",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "scapular-pushup",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "scapular-pushup-knee",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "scapular-pushup-wall",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "seal-jack",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "seated-knee-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "short-foot",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "shoulder-pop",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "shoulder-roll",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "shuttle-sprint",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "side-lying-leg-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "side-plank",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "side-plank-hip-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "side-plank-knee",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "side-plank-leg-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "side-skip",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "side-to-side-knee-lifts",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "single-leg-deadlift",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "sissy-squat",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "sissy-squat-assisted",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "sit-up",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "skater-bound",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "skin-the-cat",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "skipping",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "slide-hamstring",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "slide-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "slide-negative-single",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "slide-single-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "spanish-squat",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "split-squat",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "split-squat-bulgarian",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "sprawl",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-air",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-assisted",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-bender",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-box",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-close",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-cossack",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-half",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-horse-stance",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-pistol",
+      "style": "Controlled full-depth unilateral squat with a planted support foot, straight forward free leg, clear bottom hold, and explicit full return to standing.",
+      "status": "pass",
+      "metrics": {
+        "wrist_l_drift_m": {
+          "value": 0.72168,
+          "min": 0.0,
+          "max": 0.75,
+          "ok": true
+        },
+        "wrist_r_drift_m": {
+          "value": 0.72168,
+          "min": 0.0,
+          "max": 0.75,
+          "ok": true
+        },
+        "finite_geometry": {
+          "value": 1,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "known_variant": {
+          "value": 1,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "max_joint_speed_m_s": {
+          "value": 0.68654,
+          "min": 0.0,
+          "max": 2.5,
+          "ok": true
+        },
+        "support_ankle_drift_m": {
+          "value": 0.0,
+          "min": 0.0,
+          "max": 0.003,
+          "ok": true
+        },
+        "full_depth_range_m": {
+          "value": 0.595,
+          "min": 0.52,
+          "max": 0.64,
+          "ok": true
+        },
+        "deepest_pelvis_m": {
+          "value": 0.36,
+          "min": 0.32,
+          "max": 0.43,
+          "ok": true
+        },
+        "raised_leg_forward_reach_m": {
+          "value": 0.82469,
+          "min": 0.42,
+          "max": 0.9,
+          "ok": true
+        },
+        "raised_foot_clearance_m": {
+          "value": 0.15714,
+          "min": 0.1,
+          "max": 0.3,
+          "ok": true
+        },
+        "raised_leg_knee_angle_deg": {
+          "value": 164.96139,
+          "min": 160.0,
+          "max": 180.0,
+          "ok": true
+        },
+        "cycle_return_error_m": {
+          "value": 0.0,
+          "min": 0.0,
+          "max": 0.08,
+          "ok": true
+        },
+        "loop_seam_joint_gap_m": {
+          "value": 0.0,
+          "min": 0.0,
+          "max": 0.012,
+          "ok": true
+        },
+        "support_ankle_height_range_m": {
+          "value": 0.0,
+          "min": 0.0,
+          "max": 0.003,
+          "ok": true
+        },
+        "common_max_joint_speed_m_s": {
+          "value": 0.76417,
+          "min": null,
+          "max": 2.5,
+          "ok": true
+        },
+        "loop_gap_m": {
+          "value": 0.0,
+          "min": null,
+          "max": 0.012,
+          "ok": true
+        }
+      },
+      "failures": [],
+      "data_sha256": "38b35035b200183e9bbcfe7c550ce1ab5f394108ef289c2426e26f6da1f40ab4",
+      "contract_sha256": "fc0e6b3be2d6fd768f5806733e822dcd9fd1dea2df48cd9c46bec7b1644cb741",
+      "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+    },
+    {
+      "exercise": "squat-pistol-assisted",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-pistol-box",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-pistol-counterbalance",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-pistol-elevated",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-pistol-negative",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-shrimp",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-shrimp-advanced",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-shrimp-deficit",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-shrimp-intermediate",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-shrimp-two-hand",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-thrust",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-thrust-step-back",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-uneven",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "squat-wall-sit",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stair-descent-slow",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "star-jack",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "step-up",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "step-up-deep",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "straddle-run",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-90-90",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-ankle-mobility",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-back",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-butterfly",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-calf-wall",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-chest-door",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-cobra",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-downward-dog",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-figure-four",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-frog",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-groin",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-hamstring",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-hamstring-standing",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-hip-flexor",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-knee-to-chest",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-lat-wall",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-neck-side",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-overhead-arm-pull",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-pancake",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-pigeon",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-pike-one-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-quad-couch",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-quad-standing",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-rear-clasp",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-shoulder",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-shoulder-backbend",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-shoulder-er",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-sleeper",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-sphinx",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-spiderman",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-split-front",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-split-middle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-supine-twist",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-thoracic",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-twist-easy",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-twist-full",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-twist-half",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-twist-straight-leg",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-twist-three-quarter",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-wrist-biceps",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-wrist-extensor",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-wrist-flexor",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-wrist-prayer",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "stretch-wrist-reverse-prayer",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "superman-hold",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "support-scapular-shrug",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "swimmer",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "terminal-knee-extension",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "tibialis-raise",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "tibialis-raise-single",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "toes-to-bar",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "towel-door-row",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "turn-and-lunge",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "v-sit-floor",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "v-up",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "v-up-straddle",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "v-up-tuck",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "walking-lunge",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "wall-handstand-hold",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "wall-slide",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "warmup-arch-hang",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "warmup-dead-bug",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "warmup-hinge-easier",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "warmup-shoulder-band",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "warmup-shoulder-towel",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "warmup-squat-easier",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "warmup-squat-sky-reach",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "warmup-support-hold",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "warmup-wrist-prep",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "weighted-dip",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "weighted-glute-bridge",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "weighted-pullup",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "weighted-pushup",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "weighted-squat",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "windmill-army",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "windshield-wiper-bent-knee",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "windshield-wiper-floor",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "wrist-curl-eccentric",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "wrist-palm-pulses",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "wrist-pushup",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "wrist-pushup-knees",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "wrist-seated-mobility",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "y-squat",
+      "status": "unscoped",
+      "failures": []
+    },
+    {
+      "exercise": "zigzag-hop",
+      "status": "unscoped",
+      "failures": []
+    }
+  ],
+  "scope": "Motion screening only; unscoped exercises have no movement-identity contract"
+}

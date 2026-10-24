@@ -8,6 +8,9 @@ import io.github.gonbei774.calisthenicsmemory.ui.nav.AppNav
 import io.github.gonbei774.calisthenicsmemory.ui.screens.OnboardingStore
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import io.github.gonbei774.calisthenicsmemory.ui.train.TrainScreen
+import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
+import kotlinx.serialization.json.Json
+import org.robolectric.Shadows.shadowOf
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -23,7 +26,7 @@ class TrainScreenTest {
     private val ctx: Context get() = ApplicationProvider.getApplicationContext()
 
     @Before fun clean() {
-        for (n in listOf("profiles", "mode", "planner_prefs", "train", "goal", "levels", "onboarding", "saved_routines"))
+        for (n in listOf("profiles", "mode", "planner_prefs", "train", "goal", "levels", "onboarding", "saved_routines", "preview_draft"))
             ctx.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit()
         OnboardingStore.setDone(ctx)
     }
@@ -38,8 +41,114 @@ class TrainScreenTest {
     @Test fun everythingFitsOnOneScreenWithoutScrolling() {
         show()
         rule.waitForIdle()
-        for (tag in listOf("goal_field", "profile_field", "rounds_plus", "between_rest", "minutes", "exercises_plus", "preview_button", "train_start_button"))
+        for (tag in listOf("goal_field", "profile_field", "rounds_plus", "between_flow", "minutes", "exercises_plus", "preview_button", "train_start_button"))
             rule.onNodeWithTag(tag).assertIsDisplayed()
+    }
+
+    @Test fun betweenSetModesAreExclusiveAndPersistedOnTrain() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("between_flow").performClick(); rule.waitForIdle()
+        assertEquals(app.calisthenics.domain.model.BetweenSetMode.FLOW, io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx).effectiveBetweenSetMode())
+        rule.onNodeWithTag("between_rest").performClick(); rule.waitForIdle()
+        assertEquals(app.calisthenics.domain.model.BetweenSetMode.REST, io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx).effectiveBetweenSetMode())
+    }
+
+    @Test fun directTrainStartUsesLatestModeAndStartsRealStretchBlocks() {
+        val settings = io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx)
+            .copy(betweenSetMode = app.calisthenics.domain.model.BetweenSetMode.REST, flow = false, stretchOn = false)
+        io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.save(ctx, settings)
+        val key = io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(settings)
+        io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.put(ctx,
+            io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraft(key, betweenSetMode = app.calisthenics.domain.model.BetweenSetMode.REST))
+        var started = false
+        rule.setContent {
+            CalisthenicsMemoryTheme(darkTheme = false) {
+                TrainScreen(onPreview = {}, onStarted = { started = true }, onEditProfile = {})
+            }
+        }
+        rule.waitForIdle()
+        rule.onNodeWithTag("between_stretch").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("train_start_button").performClick(); rule.waitForIdle()
+        assertTrue(started)
+        val intent = shadowOf(ctx.applicationContext as android.app.Application).nextStartedService
+        assertNotNull(intent)
+        val plan = Json { ignoreUnknownKeys = true }.decodeFromString(
+            app.calisthenics.domain.model.WorkoutPlan.serializer(),
+            intent.getStringExtra(WorkoutSessionService.EXTRA_PLAN)!!,
+        )
+        assertEquals(app.calisthenics.domain.model.BetweenSetMode.STRETCH, plan.betweenSetMode)
+        assertTrue(plan.blocks.any { it.type == app.calisthenics.domain.model.BlockType.STRETCH })
+    }
+
+    @Test fun modeEditOnSavedRoutineKeepsItsEditsAndSuppressesOldBreakExtras() {
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx)
+        val stretch = catalog.variations.first { it.kind == app.calisthenics.domain.model.Kind.STRETCH && !it.demonstrationHold }.id
+        val progressionRule = app.calisthenics.domain.model.ProgressionRule(app.calisthenics.domain.model.RuleKind.REP_RANGE, sets = 3, from = 5, to = 8, sessions = 1)
+        val edits = app.calisthenics.domain.planner.PlanEdits(
+            swaps = mapOf("push" to "pushup-knee"), tierOverrides = mapOf("squat" to 3),
+            extraStretches = mapOf("push" to listOf(stretch)), rule = progressionRule, extraStretchModeRevision = 10L,
+        )
+        val saved = app.calisthenics.domain.routine.savedFrom(
+            "saved-mode", "Saved mode", 1, app.calisthenics.domain.routine.StarterRoutine.routine,
+            edits, app.calisthenics.domain.planner.TrainSettings(rounds = 3, betweenSetMode = app.calisthenics.domain.model.BetweenSetMode.REST), progressionRule, 1L,
+        )
+        io.github.gonbei774.calisthenicsmemory.ui.screens.SavedRoutineStore.upsert(ctx, saved)
+        val savedKey = io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(
+            app.calisthenics.domain.routine.settingsFor(saved, io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx)),
+        )
+        io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.setModeRevision(ctx, savedKey, 50L)
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("objective_type_ROUTINE").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("routine_saved-mode").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("between_flow").performClick(); rule.waitForIdle()
+
+        val selected = io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx)
+        val draft = io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(ctx, io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(selected))!!
+        assertEquals(saved.edits.swaps, draft.edits.swaps) // savedFrom folds swaps into the routine slots
+        assertEquals(3, draft.edits.tierOverrides["squat"])
+        assertEquals(progressionRule, draft.edits.rule)
+        assertEquals(listOf(stretch), draft.edits.extraStretches["push"])
+        assertEquals(11L, draft.modeRevision) // objective re-entry reset its prior revision; saved authored extras are superseded
+
+        rule.onNodeWithTag("train_start_button").performClick(); rule.waitForIdle()
+        val intent = shadowOf(ctx.applicationContext as android.app.Application).nextStartedService
+        val plan = Json { ignoreUnknownKeys = true }.decodeFromString(
+            app.calisthenics.domain.model.WorkoutPlan.serializer(), intent.getStringExtra(WorkoutSessionService.EXTRA_PLAN)!!,
+        )
+        assertEquals(app.calisthenics.domain.model.BetweenSetMode.FLOW, plan.betweenSetMode)
+        assertTrue(plan.blocks.any { it.slotId == "push" && it.variationId == "pushup-knee" })
+        assertFalse(plan.blocks.any { it.variationId == stretch && it.type == app.calisthenics.domain.model.BlockType.STRETCH })
+    }
+
+    @Test fun savedRestDurationsApplyToDirectStartAndStayDormantForStretchBlocks() {
+        val base = io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore.load(ctx)
+        val saved = app.calisthenics.domain.routine.savedFrom(
+            "saved-rest", "Saved rest", 1, base, app.calisthenics.domain.planner.PlanEdits(),
+            app.calisthenics.domain.planner.TrainSettings(betweenSetMode = app.calisthenics.domain.model.BetweenSetMode.REST),
+            app.calisthenics.domain.model.ProgressionRule(), 1L,
+        ).copy(restDurations = mapOf("push" to 91))
+        io.github.gonbei774.calisthenicsmemory.ui.screens.SavedRoutineStore.upsert(ctx, saved)
+        io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.save(
+            ctx, app.calisthenics.domain.routine.settingsFor(saved, io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx)),
+        )
+        show(); rule.waitForIdle()
+
+        rule.onNodeWithTag("train_start_button").performClick(); rule.waitForIdle()
+        fun nextPlan() = Json { ignoreUnknownKeys = true }.decodeFromString(
+            app.calisthenics.domain.model.WorkoutPlan.serializer(),
+            shadowOf(ctx.applicationContext as android.app.Application).nextStartedService!!.getStringExtra(WorkoutSessionService.EXTRA_PLAN)!!,
+        )
+        val restPlan = nextPlan()
+        val pushRest = restPlan.blocks.filter { it.type == app.calisthenics.domain.model.BlockType.PASSIVE_RECOVERY && it.slotId == "push" }
+        assertTrue(pushRest.isNotEmpty())
+        assertTrue(pushRest.all { it.durationSeconds == 91 })
+
+        rule.onNodeWithTag("between_stretch").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("train_start_button").performClick(); rule.waitForIdle()
+        val stretchPlan = nextPlan()
+        assertTrue(stretchPlan.blocks.any { it.type == app.calisthenics.domain.model.BlockType.STRETCH })
+        assertFalse(stretchPlan.blocks.any { it.type == app.calisthenics.domain.model.BlockType.STRETCH && it.durationSeconds == 91 })
     }
 
     // R8.1-T05 (F6): the Preview's edits belong to the objective; picking another goal starts clean
@@ -53,6 +162,42 @@ class TrainScreenTest {
         rule.onNodeWithTag("goal_field").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("goal_body-upper").performClick(); rule.waitForIdle()
         assertNull(io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(ctx, key))
+    }
+
+    @Test fun changingExerciseCountDropsManualSelectionButPreservesModeAndDoesNotRestoreOldEdits() {
+        val settings = io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.load(ctx)
+            .copy(exercisesPerRound = 6, betweenSetMode = app.calisthenics.domain.model.BetweenSetMode.REST,
+                flow = false, stretchOn = false)
+        io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore.save(ctx, settings)
+        val key = io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(settings)
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx)
+        val manual = app.calisthenics.domain.planner.PlanEdits(
+            swaps = mapOf("push" to "pushup-knee"), removed = setOf("core"),
+            tierOverrides = mapOf("squat" to 3),
+            added = listOf(app.calisthenics.domain.planner.AddedSlot("push",
+                app.calisthenics.domain.planner.slotFor(catalog.variation("pushup-diamond")!!))))
+        io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.put(ctx,
+            io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraft(key, manual, rest = mapOf("push" to 91)))
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("rounds_plus").performClick(); rule.waitForIdle()
+        assertEquals(manual, io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(ctx, key)!!.edits)
+        rule.onNodeWithTag("exercises_plus").performScrollTo().performClick(); rule.waitForIdle()
+        val fresh = io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(ctx, key)!!
+        assertEquals(app.calisthenics.domain.planner.PlanEdits(), fresh.edits)
+        assertTrue(fresh.rest.isEmpty())
+        assertEquals(app.calisthenics.domain.model.BetweenSetMode.REST, fresh.betweenSetMode)
+        rule.onNodeWithTag("exercises_minus").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(app.calisthenics.domain.planner.PlanEdits(),
+            io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(ctx, key)!!.edits)
+        rule.onNodeWithTag("train_start_button").performClick(); rule.waitForIdle()
+        val intent = shadowOf(ctx.applicationContext as android.app.Application).nextStartedService!!
+        val plan = Json { ignoreUnknownKeys = true }.decodeFromString(
+            app.calisthenics.domain.model.WorkoutPlan.serializer(), intent.getStringExtra(WorkoutSessionService.EXTRA_PLAN)!!)
+        val ids = plan.blocks.filter { it.type == app.calisthenics.domain.model.BlockType.WORK }
+            .mapNotNull { it.variationId }.distinct()
+        for ((a, id) in ids.withIndex()) for (other in ids.drop(a+1)) {
+            assertFalse("automatic family duplicate: $id / $other", catalog.sharesLogicalRoute(id, other))
+        }
     }
 
     // R8.2-T04 (G4): the "exercises in each set" tile at the bottom duplicated the Exercises per round stepper: only the stepper is left, and it drives the plan

@@ -9,10 +9,12 @@ object PrefsStore {
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
     fun load(ctx: Context): Preferences = try {
         ctx.getSharedPreferences("planner_prefs", Context.MODE_PRIVATE).getString("prefs", null)
-            ?.let { json.decodeFromString(Preferences.serializer(), it) } ?: Preferences()
+            ?.let { json.decodeFromString(Preferences.serializer(), it).withClampedVolume() } ?: Preferences()
     } catch (_: Exception) { Preferences() } // unreadable -> defaults, never crash
     fun save(ctx: Context, p: Preferences) {
         ctx.getSharedPreferences("planner_prefs", Context.MODE_PRIVATE).edit()
-            .putString("prefs", json.encodeToString(Preferences.serializer(), p)).apply()
+            .putString("prefs", json.encodeToString(Preferences.serializer(), p.withClampedVolume())).apply()
     }
+
+    private fun Preferences.withClampedVolume() = copy(appVolumePercent = appVolumePercent.coerceIn(0, 100))
 }

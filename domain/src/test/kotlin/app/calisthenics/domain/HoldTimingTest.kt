@@ -57,24 +57,24 @@ class HoldTimingTest {
             for (b in p.blocks) {
                 val l = CueText.label(p, b.id, names)
                 assertFalse("'${l}' for ${b.type}", l.contains("rest", ignoreCase = true))
-                CueText.nextLabel(p, b.id, names)?.let { assertFalse("next after ${b.id}: $it", it.contains("rest", ignoreCase = true) || it.startsWith("Get ready")) }
+                CueText.nextLabel(p, b.id, names)?.let { assertFalse("next after ${b.id}: $it", it.contains("rest", ignoreCase = true) || it.startsWith("Prepare:")) }
             }
         }
     }
 
-    @Test fun transitionsReadGetReadyWithTheNextExerciseAndRestOnlyExistsWithoutStretch() {
+    @Test fun preparationTransitionsNameTheUpcomingExerciseAndRestOnlyExistsInRestMode() {
         val on = plan(stretch = true)
         val tr = on.blocks.firstOrNull { it.type == BlockType.TRANSITION }
         assertNotNull("this routine has a position change", tr)
         val next = on.blocks.drop(on.blocks.indexOf(tr) + 1).first { it.variationId != null }
         val side = when (next.side) { Side.LEFT -> " — Left side"; Side.RIGHT -> " — Right side"; else -> "" }
-        assertEquals("Get ready: ${names[next.variationId]}$side", CueText.label(on, tr!!.id, names))
+        assertEquals("Prepare: ${names[next.variationId]}$side", CueText.label(on, tr!!.id, names))
         val off = plan(stretch = false)
         assertTrue(off.blocks.any { it.type == BlockType.PASSIVE_RECOVERY })
         assertEquals("Rest", CueText.label(off, off.blocks.first { it.type == BlockType.PASSIVE_RECOVERY }.id, names))
     }
 
-    @Test fun spokenCuesIdentifySidesForWorkStretchNextAndGetReady() {
+    @Test fun spokenCuesIdentifySidesForWorkStretchNextAndPreparation() {
         val base = plan(stretch = true)
         val work = base.blocks.first { it.type == BlockType.WORK }
         val stretchBlock = base.blocks.first { it.type == BlockType.STRETCH }

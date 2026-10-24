@@ -35,8 +35,8 @@ class DesignSystemTest {
     @get:Rule val rule = createComposeRule()
 
     @Test fun paletteIsTheFixedDirectionBPaletteAndDiffersByTheme() {
-        assertEquals(Gold, appColorScheme(false, null).primary)
-        assertEquals(Gold, appColorScheme(true, null).primary)
+        assertEquals(Accent, appColorScheme(false, null).primary)
+        assertEquals(AccentOnDark, appColorScheme(true, null).primary)
         assertEquals(BgDark, appColorScheme(true, null).background); assertEquals(BgLight, appColorScheme(false, null).background)
         assertEquals(SurfaceDark, appColorScheme(true, null).surface); assertEquals(SurfaceLight, appColorScheme(false, null).surface)
         assertEquals(TextDark, appColorScheme(true, null).onBackground)
@@ -50,11 +50,11 @@ class DesignSystemTest {
         var dark by mutableStateOf(false)
         rule.setContent { CalisthenicsMemoryTheme(darkTheme = dark, dynamicColor = false) { primary = MaterialTheme.colorScheme.primary; accent = AppAccentTheme.colors.accent; Text("x") } }
         rule.waitForIdle()
-        assertEquals(Gold, primary)
-        assertEquals(Gold, accent)
+        assertEquals(Accent, primary)
+        assertEquals(Accent, accent)
         dark = true
         rule.waitForIdle()
-        assertEquals(Gold, primary)
+        assertEquals(AccentOnDark, primary)
     }
 
     @Test fun stepperClampsAndShowsValue() {

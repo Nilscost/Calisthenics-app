@@ -1,0 +1,4012 @@
+{
+  "date": "2026-10-21",
+  "status": "rendered_review_candidate_ready_not_installed",
+  "exercise": "burpee-pushup",
+  "source_checks": {
+    "reach": [],
+    "floor": [],
+    "motion": {
+      "exercise": "burpee-pushup",
+      "style": "Strict push-up burpee with sagittal knee flexion, bilateral feet-back and feet-in transfers, planted high-low-high push-up, small ballistic jump and soft landing.",
+      "status": "pass",
+      "metrics": {
+        "wrist_l_drift_m": {
+          "value": 0.9004,
+          "min": null,
+          "max": 2.0,
+          "ok": true
+        },
+        "wrist_r_drift_m": {
+          "value": 0.9004,
+          "min": null,
+          "max": 2.0,
+          "ok": true
+        },
+        "valid_timeline": {
+          "value": 1.0,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "finite_geometry": {
+          "value": 1.0,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "foot_mesh_floor_min_z_m": {
+          "value": 0.00401,
+          "min": -0.002,
+          "max": null,
+          "ok": true
+        },
+        "duration_s": {
+          "value": 10.5,
+          "min": 8.0,
+          "max": null,
+          "ok": true
+        },
+        "loop_seam_max_m": {
+          "value": 0.00018,
+          "min": null,
+          "max": 0.08,
+          "ok": true
+        },
+        "max_joint_speed_m_s": {
+          "value": 4.37219,
+          "min": null,
+          "max": 8.0,
+          "ok": true
+        },
+        "pushup_plank_frames": {
+          "value": 55.0,
+          "min": 12,
+          "max": null,
+          "ok": true
+        },
+        "pushup_chest_excursion_m": {
+          "value": 0.30903,
+          "min": 0.12,
+          "max": null,
+          "ok": true
+        },
+        "pushup_press_rise_m": {
+          "value": 0.28485,
+          "min": 0.12,
+          "max": null,
+          "ok": true
+        },
+        "pushup_top_elbow_deg": {
+          "value": 159.67839,
+          "min": 145,
+          "max": null,
+          "ok": true
+        },
+        "pushup_bottom_elbow_bend_deg": {
+          "value": 93.87465,
+          "min": 30,
+          "max": null,
+          "ok": true
+        },
+        "pushup_phase_order": {
+          "value": 1.0,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "plank_contact_drift_m": {
+          "value": 0.00174,
+          "min": null,
+          "max": 0.003,
+          "ok": true
+        },
+        "leg_transfer_m": {
+          "value": 0.8,
+          "min": 0.65,
+          "max": null,
+          "ok": true
+        },
+        "jump_height_m": {
+          "value": 0.25937,
+          "min": 0.18,
+          "max": null,
+          "ok": true
+        },
+        "jump_preload_depth_m": {
+          "value": 0.44241,
+          "min": 0.1,
+          "max": null,
+          "ok": true
+        },
+        "landing_contact": {
+          "value": 1.0,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "landing_absorption_m": {
+          "value": 0.47313,
+          "min": 0.08,
+          "max": null,
+          "ok": true
+        },
+        "recovery_to_start_m": {
+          "value": 2e-05,
+          "min": null,
+          "max": 0.08,
+          "ok": true
+        },
+        "exercise_id": {
+          "value": 1.0,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "finite_leg_geometry": {
+          "value": 1.0,
+          "min": 1,
+          "max": 1,
+          "ok": true
+        },
+        "max_knee_lateral_excursion_m": {
+          "value": 0.00617,
+          "min": null,
+          "max": 0.1,
+          "ok": true
+        },
+        "flexed_knee_samples": {
+          "value": 354.0,
+          "min": 8,
+          "max": null,
+          "ok": true
+        },
+        "minimum_knee_angle_deg": {
+          "value": 29.63386,
+          "min": null,
+          "max": 125,
+          "ok": true
+        },
+        "meaningfully_bent_knee_samples": {
+          "value": 306.0,
+          "min": 12,
+          "max": null,
+          "ok": true
+        },
+        "forward_sagittal_bend_fraction": {
+          "value": 0.99435,
+          "min": 0.6,
+          "max": null,
+          "ok": true
+        },
+        "flexed_sagittal_branch_flips": {
+          "value": 0.0,
+          "min": null,
+          "max": 0,
+          "ok": true
+        },
+        "stable_plank_frames": {
+          "value": 55.0,
+          "min": 12,
+          "max": null,
+          "ok": true
+        },
+        "squat_to_plank_knee_accel_m_s2": {
+          "value": 28.01922,
+          "min": null,
+          "max": 30,
+          "ok": true
+        },
+        "plank_to_squat_knee_accel_m_s2": {
+          "value": 11.024,
+          "min": null,
+          "max": 30,
+          "ok": true
+        },
+        "peak_lateral_knee_accel_m_s2": {
+          "value": 0.02003,
+          "min": null,
+          "max": 24,
+          "ok": true
+        },
+        "final_jump_flight_duration_s": {
+          "value": 0.33333,
+          "min": 0.3,
+          "max": 0.75,
+          "ok": true
+        },
+        "final_jump_peak_rise_m": {
+          "value": 0.1853,
+          "min": 0.1,
+          "max": 0.35,
+          "ok": true
+        },
+        "final_jump_apex_dwell_s": {
+          "value": 0.08333,
+          "min": null,
+          "max": 0.16,
+          "ok": true
+        },
+        "final_jump_apex_fraction": {
+          "value": 0.57143,
+          "min": 0.25,
+          "max": 0.75,
+          "ok": true
+        },
+        "final_jump_takeoff_knee_min_deg": {
+          "value": 159.66633,
+          "min": 155,
+          "max": null,
+          "ok": true
+        },
+        "final_jump_fit_frame_count": {
+          "value": 8.0,
+          "min": 3,
+          "max": null,
+          "ok": true
+        },
+        "final_jump_gravity_fit_m_s2": {
+          "value": 10.08542,
+          "min": 6.0,
+          "max": 13.5,
+          "ok": true
+        },
+        "final_jump_fit_rmse_m": {
+          "value": 0.0022,
+          "min": null,
+          "max": 0.035,
+          "ok": true
+        },
+        "common_max_joint_speed_m_s": {
+          "value": 3.43464,
+          "min": null,
+          "max": 8.0,
+          "ok": true
+        },
+        "loop_gap_m": {
+          "value": 9e-05,
+          "min": null,
+          "max": 0.012,
+          "ok": true
+        }
+      },
+      "failures": [],
+      "data_sha256": "e7ed211779e00a308df80a1b877938be63244c8f98869f323be941846a3c1599",
+      "contract_sha256": "9fb1fdeb16306eb1b464b3f5930ce6e8769ea7618ce7b511b28e34e752cf5dfc",
+      "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+    }
+  },
+  "before_articulation": {
+    "metrics": {
+      "exercise_id": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_timeline": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "finite_leg_geometry": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "max_knee_lateral_excursion_m": {
+        "value": 0.411384,
+        "min": null,
+        "max": 0.1,
+        "ok": false
+      },
+      "flexed_knee_samples": {
+        "value": 325.0,
+        "min": 8,
+        "max": null,
+        "ok": true
+      },
+      "minimum_knee_angle_deg": {
+        "value": 37.481926,
+        "min": null,
+        "max": 125,
+        "ok": true
+      },
+      "meaningfully_bent_knee_samples": {
+        "value": 309.0,
+        "min": 12,
+        "max": null,
+        "ok": true
+      },
+      "forward_sagittal_bend_fraction": {
+        "value": 0.0,
+        "min": 0.6,
+        "max": null,
+        "ok": false
+      },
+      "flexed_sagittal_branch_flips": {
+        "value": 0.0,
+        "min": null,
+        "max": 0,
+        "ok": true
+      },
+      "stable_plank_frames": {
+        "value": 73.0,
+        "min": 12,
+        "max": null,
+        "ok": true
+      },
+      "squat_to_plank_knee_accel_m_s2": {
+        "value": 44.617801,
+        "min": null,
+        "max": 30,
+        "ok": false
+      },
+      "plank_to_squat_knee_accel_m_s2": {
+        "value": 35.811426,
+        "min": null,
+        "max": 30,
+        "ok": false
+      },
+      "peak_lateral_knee_accel_m_s2": {
+        "value": 44.614519,
+        "min": null,
+        "max": 24,
+        "ok": false
+      },
+      "final_jump_flight_duration_s": {
+        "value": 1.083333,
+        "min": 0.3,
+        "max": 0.75,
+        "ok": false
+      },
+      "final_jump_peak_rise_m": {
+        "value": 0.3584,
+        "min": 0.1,
+        "max": 0.35,
+        "ok": false
+      },
+      "final_jump_apex_dwell_s": {
+        "value": 0.25,
+        "min": null,
+        "max": 0.16,
+        "ok": false
+      },
+      "final_jump_apex_fraction": {
+        "value": 0.48,
+        "min": 0.25,
+        "max": 0.75,
+        "ok": true
+      },
+      "final_jump_takeoff_knee_min_deg": {
+        "value": 90.225355,
+        "min": 155,
+        "max": null,
+        "ok": false
+      },
+      "final_jump_fit_frame_count": {
+        "value": 26.0,
+        "min": 3,
+        "max": null,
+        "ok": true
+      },
+      "final_jump_gravity_fit_m_s2": {
+        "value": 2.230694,
+        "min": 6.0,
+        "max": 13.5,
+        "ok": false
+      },
+      "final_jump_fit_rmse_m": {
+        "value": 0.008353,
+        "min": null,
+        "max": 0.035,
+        "ok": true
+      }
+    },
+    "failures": [
+      {
+        "check": "max_knee_lateral_excursion_m",
+        "value": 0.411384,
+        "frame": 45
+      },
+      {
+        "check": "forward_sagittal_bend_fraction",
+        "value": 0.0
+      },
+      {
+        "check": "squat_to_plank_knee_accel_m_s2",
+        "value": 44.617801,
+        "frame": 59
+      },
+      {
+        "check": "plank_to_squat_knee_accel_m_s2",
+        "value": 35.811426,
+        "frame": 131
+      },
+      {
+        "check": "peak_lateral_knee_accel_m_s2",
+        "value": 44.614519,
+        "frame": 59
+      },
+      {
+        "check": "final_jump_flight_duration_s",
+        "value": 1.083333,
+        "frame": 213
+      },
+      {
+        "check": "final_jump_peak_rise_m",
+        "value": 0.3584,
+        "frame": 225
+      },
+      {
+        "check": "final_jump_apex_dwell_s",
+        "value": 0.25,
+        "frame": 225
+      },
+      {
+        "check": "final_jump_takeoff_knee_min_deg",
+        "value": 90.225355,
+        "frame": 209
+      },
+      {
+        "check": "final_jump_gravity_fit_m_s2",
+        "value": 2.230694
+      }
+    ]
+  },
+  "after_articulation": {
+    "metrics": {
+      "exercise_id": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_timeline": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "finite_leg_geometry": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "max_knee_lateral_excursion_m": {
+        "value": 0.006165,
+        "min": null,
+        "max": 0.1,
+        "ok": true
+      },
+      "flexed_knee_samples": {
+        "value": 354.0,
+        "min": 8,
+        "max": null,
+        "ok": true
+      },
+      "minimum_knee_angle_deg": {
+        "value": 29.633858,
+        "min": null,
+        "max": 125,
+        "ok": true
+      },
+      "meaningfully_bent_knee_samples": {
+        "value": 306.0,
+        "min": 12,
+        "max": null,
+        "ok": true
+      },
+      "forward_sagittal_bend_fraction": {
+        "value": 0.99435,
+        "min": 0.6,
+        "max": null,
+        "ok": true
+      },
+      "flexed_sagittal_branch_flips": {
+        "value": 0.0,
+        "min": null,
+        "max": 0,
+        "ok": true
+      },
+      "stable_plank_frames": {
+        "value": 55.0,
+        "min": 12,
+        "max": null,
+        "ok": true
+      },
+      "squat_to_plank_knee_accel_m_s2": {
+        "value": 28.019217,
+        "min": null,
+        "max": 30,
+        "ok": true
+      },
+      "plank_to_squat_knee_accel_m_s2": {
+        "value": 11.023998,
+        "min": null,
+        "max": 30,
+        "ok": true
+      },
+      "peak_lateral_knee_accel_m_s2": {
+        "value": 0.020034,
+        "min": null,
+        "max": 24,
+        "ok": true
+      },
+      "final_jump_flight_duration_s": {
+        "value": 0.333333,
+        "min": 0.3,
+        "max": 0.75,
+        "ok": true
+      },
+      "final_jump_peak_rise_m": {
+        "value": 0.1853,
+        "min": 0.1,
+        "max": 0.35,
+        "ok": true
+      },
+      "final_jump_apex_dwell_s": {
+        "value": 0.083333,
+        "min": null,
+        "max": 0.16,
+        "ok": true
+      },
+      "final_jump_apex_fraction": {
+        "value": 0.571429,
+        "min": 0.25,
+        "max": 0.75,
+        "ok": true
+      },
+      "final_jump_takeoff_knee_min_deg": {
+        "value": 159.666325,
+        "min": 155,
+        "max": null,
+        "ok": true
+      },
+      "final_jump_fit_frame_count": {
+        "value": 8.0,
+        "min": 3,
+        "max": null,
+        "ok": true
+      },
+      "final_jump_gravity_fit_m_s2": {
+        "value": 10.085417,
+        "min": 6.0,
+        "max": 13.5,
+        "ok": true
+      },
+      "final_jump_fit_rmse_m": {
+        "value": 0.0022,
+        "min": null,
+        "max": 0.035,
+        "ok": true
+      }
+    },
+    "failures": []
+  },
+  "native_geometry": {
+    "data_sha256": "e7ed211779e00a308df80a1b877938be63244c8f98869f323be941846a3c1599",
+    "first_outside": null,
+    "frames": 252,
+    "id": "burpee-pushup",
+    "minimum_body_z_m": 0.00299999862909317,
+    "minimum_floor_frame": 36,
+    "minimum_floor_part": "wrist_l_ball",
+    "minimum_foot_z_m": 0.0040128715336322784,
+    "outside_vertices": 0,
+    "status": "pass",
+    "vertices": 3822336
+  },
+  "encoded_item": {
+    "data_sha256": "e7ed211779e00a308df80a1b877938be63244c8f98869f323be941846a3c1599",
+    "duration_s": 10.5,
+    "error": null,
+    "fps": 24,
+    "frames_expected": 252,
+    "grip_detail": false,
+    "joints_file_sha256": "f597d2a882fa49d0af58377dc3ac2767d34d01384f1aa480f8aad9d2a73f9953",
+    "log": "logs/burpee-pushup.log",
+    "render_exit_code": 0,
+    "requires_render_detail_stamp": true,
+    "state": "complete",
+    "video": {
+      "bytes": 51287,
+      "codec": "h264",
+      "duration_s": 10.5,
+      "frame_rate": "24/1",
+      "frames": 252,
+      "height": 360,
+      "pix_fmt": "yuv420p",
+      "profile": "Main",
+      "width": 480
+    },
+    "video_sha256": "631699408989bf45b4b62d9946cb41865e3739e52a061755e09a8f9679b9ab3b"
+  },
+  "tests": {
+    "python_unittests": 179,
+    "status": "pass",
+    "log": "/Users/nils/Documents/hermes/Apps/calisthenics/work/burpee-refinement-2026-10-21/tests.log"
+  },
+  "motion_catalog_summary": {
+    "pass": 10,
+    "fail": 0,
+    "unscoped": 523
+  },
+  "pose_preservation": {
+    "checked": 533,
+    "changed": [
+      "burpee-pushup"
+    ],
+    "unchanged": 532
+  },
+  "asset_preservation": {
+    "checked": 1066,
+    "changed": [],
+    "unchanged": 1066
+  },
+  "desktop_playback": {
+    "status": "pass",
+    "clips": [
+      {
+        "id": "ring-muscle-up",
+        "width": 480,
+        "height": 360,
+        "duration": 8,
+        "full_playback_rate": 2,
+        "full_playback_to_ended": true,
+        "replay": true,
+        "pause": true,
+        "frame_step": true
+      },
+      {
+        "id": "pullup-pullover",
+        "width": 480,
+        "height": 360,
+        "duration": 11,
+        "full_playback_rate": 2,
+        "full_playback_to_ended": true,
+        "replay": true,
+        "pause": true,
+        "frame_step": true
+      },
+      {
+        "id": "handstand-press-straddle",
+        "width": 480,
+        "height": 360,
+        "duration": 8,
+        "full_playback_rate": 2,
+        "full_playback_to_ended": true,
+        "replay": true,
+        "pause": true,
+        "frame_step": true
+      },
+      {
+        "id": "depth-jump",
+        "width": 480,
+        "height": 360,
+        "duration": 8.25,
+        "full_playback_rate": 2,
+        "full_playback_to_ended": true,
+        "replay": true,
+        "pause": true,
+        "frame_step": true
+      },
+      {
+        "id": "burpee-pushup",
+        "width": 480,
+        "height": 360,
+        "duration": 10.5,
+        "full_playback_rate": 1,
+        "full_playback_to_ended": true,
+        "replay": true,
+        "pause": true,
+        "frame_step": true
+      },
+      {
+        "id": "squat-pistol",
+        "width": 480,
+        "height": 360,
+        "duration": 4,
+        "full_playback_rate": 2,
+        "full_playback_to_ended": true,
+        "replay": true,
+        "pause": true,
+        "frame_step": true
+      },
+      {
+        "id": "pilates-roll-over",
+        "width": 480,
+        "height": 360,
+        "duration": 4,
+        "full_playback_rate": 2,
+        "full_playback_to_ended": true,
+        "replay": true,
+        "pause": true,
+        "frame_step": true
+      },
+      {
+        "id": "hanging-windshield-wiper",
+        "width": 480,
+        "height": 360,
+        "duration": 6.5,
+        "full_playback_rate": 2,
+        "full_playback_to_ended": true,
+        "replay": true,
+        "pause": true,
+        "frame_step": true
+      }
+    ],
+    "saved_notes_and_selection_restored": true,
+    "state_delivery": "openai:set_globals event",
+    "feedback_retained": true,
+    "speed": true,
+    "layout_widths": [
+      736,
+      320
+    ],
+    "errors": [],
+    "meaning": "Actual encoded desktop media and controls; no phone or expert form approval."
+  },
+  "reference_extraction": {
+    "schema": 1,
+    "purpose": "bounded pose-landmark extraction for visual research support; not form certification",
+    "models": {
+      "pose": "../../form-reference-pilot/pose_landmarker_full.task",
+      "hand": "../../form-reference-pilot/hand_landmarker.task"
+    },
+    "extractor": "../../../tools/blender/pose_compare.py extract",
+    "confidence_threshold": 0.5,
+    "references": [
+      {
+        "video_id": "TU8QYVW0gDU",
+        "creator": "CrossFit",
+        "source_file": "../references/TU8QYVW0gDU.mp4",
+        "extraction_file": "TU8QYVW0gDU-5-12.json",
+        "reviewed_interval_s": [
+          5.0,
+          12.0
+        ],
+        "extraction_hz": 8.0,
+        "frame_count": 56,
+        "image_space": "image_2d",
+        "body_frame_coverage_ge_2_angles": 0.929,
+        "hand_frame_coverage": 0.304,
+        "contact_sheet": "crossfit-1sec-contact.jpg",
+        "cycle_selection_note": "edited educational sequence; no clean uncut cycle is visible in chosen span",
+        "camera_note": "mostly frontal/three-quarter then side-profile phases; white background and on-screen text",
+        "variation_flag": "chest-and-thigh floor-contact convention; sports variant, not strict push-up",
+        "comparison_use": "descriptive only; do not compare image-plane angles across camera views or to 3D renderer/world angles"
+      },
+      {
+        "video_id": "SxDmxON_pZk",
+        "creator": "Rogue Fitness",
+        "source_file": "../references/SxDmxON_pZk.mp4",
+        "extraction_file": "SxDmxON_pZk-0-3.json",
+        "reviewed_interval_s": [
+          0.0,
+          3.0
+        ],
+        "extraction_hz": 8.0,
+        "frame_count": 24,
+        "image_space": "image_2d",
+        "body_frame_coverage_ge_2_angles": 0.958,
+        "hand_frame_coverage": 0.417,
+        "contact_sheet": "rogue-halfsec-contact.jpg",
+        "cycle_selection_note": "opening partial/fast cycle selected from 0\u20133 s; view contact sheet for phases",
+        "camera_note": "fixed side view; gym background",
+        "variation_flag": "explicit chest-and-thigh floor-contact convention; not strict push-up",
+        "comparison_use": "descriptive only; do not compare image-plane angles across camera views or to 3D renderer/world angles"
+      },
+      {
+        "video_id": "AuoDVuBK1uI",
+        "creator": "Peak Physio",
+        "source_file": "../references/AuoDVuBK1uI.mp4",
+        "extraction_file": "AuoDVuBK1uI-0-4.5.json",
+        "reviewed_interval_s": [
+          0.0,
+          4.5
+        ],
+        "extraction_hz": 8.0,
+        "frame_count": 36,
+        "image_space": "image_2d",
+        "body_frame_coverage_ge_2_angles": 1.0,
+        "hand_frame_coverage": 0.083,
+        "contact_sheet": "peak-halfsec-contact.jpg",
+        "cycle_selection_note": "opening repetition selected; appears to complete one rep then approach a new repetition",
+        "camera_note": "fixed side/three-quarter view; gym background",
+        "variation_flag": "strict push-up-and-jump label; visible chest lowering and press, but single-view sampling cannot confirm contact every rep",
+        "comparison_use": "descriptive only; do not compare image-plane angles across camera views or to 3D renderer/world angles"
+      }
+    ],
+    "limitations": [
+      "Intervals are visually selected, not independently motion-annotated ground truth.",
+      "CrossFit source is an edited instructional sequence with no clean continuous single cycle in selected interval.",
+      "Pose and hand landmarks have camera, scale, occlusion, and detector uncertainty.",
+      "No cross-video numeric ranking or 2D-to-3D angle comparison was performed.",
+      "Root must still use final rendered camera projection for any renderer comparison."
+    ]
+  },
+  "reference_alignment": {
+    "exercise": "burpee-pushup",
+    "status": "requires_visual_review",
+    "candidate_sha256": "42a444b50e76141780721158049c078b1012b87702b83bfc23c6f8a9dc1c3088",
+    "references": [
+      {
+        "video_id": "TU8QYVW0gDU",
+        "url": "https://www.youtube.com/watch?v=TU8QYVW0gDU",
+        "status": "inconclusive",
+        "comparison": {
+          "mean_deg": 24.09,
+          "path_coverage": 0.984,
+          "joints": {
+            "elbow_l": {
+              "mean_deg": 40.58,
+              "p95_deg": 70.64,
+              "coverage": 0.103
+            },
+            "elbow_r": {
+              "mean_deg": 14.01,
+              "p95_deg": 40.57,
+              "coverage": 0.984
+            },
+            "shoulder_l": {
+              "mean_deg": 79.56,
+              "p95_deg": 155.03,
+              "coverage": 0.111
+            },
+            "shoulder_r": {
+              "mean_deg": 25.41,
+              "p95_deg": 74.56,
+              "coverage": 0.984
+            },
+            "knee_l": {
+              "mean_deg": 47.61,
+              "p95_deg": 83.94,
+              "coverage": 0.099
+            },
+            "knee_r": {
+              "mean_deg": 26.53,
+              "p95_deg": 72.27,
+              "coverage": 0.956
+            }
+          },
+          "aligned_pairs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              5
+            ],
+            [
+              6,
+              6
+            ],
+            [
+              7,
+              7
+            ],
+            [
+              8,
+              8
+            ],
+            [
+              9,
+              9
+            ],
+            [
+              10,
+              10
+            ],
+            [
+              11,
+              11
+            ],
+            [
+              12,
+              12
+            ],
+            [
+              13,
+              12
+            ],
+            [
+              14,
+              12
+            ],
+            [
+              15,
+              12
+            ],
+            [
+              16,
+              12
+            ],
+            [
+              17,
+              12
+            ],
+            [
+              18,
+              12
+            ],
+            [
+              19,
+              12
+            ],
+            [
+              20,
+              12
+            ],
+            [
+              21,
+              12
+            ],
+            [
+              22,
+              12
+            ],
+            [
+              23,
+              12
+            ],
+            [
+              24,
+              13
+            ],
+            [
+              25,
+              14
+            ],
+            [
+              26,
+              15
+            ],
+            [
+              27,
+              16
+            ],
+            [
+              28,
+              17
+            ],
+            [
+              29,
+              18
+            ],
+            [
+              30,
+              19
+            ],
+            [
+              31,
+              20
+            ],
+            [
+              32,
+              20
+            ],
+            [
+              33,
+              20
+            ],
+            [
+              34,
+              20
+            ],
+            [
+              35,
+              21
+            ],
+            [
+              36,
+              21
+            ],
+            [
+              37,
+              21
+            ],
+            [
+              38,
+              21
+            ],
+            [
+              39,
+              21
+            ],
+            [
+              40,
+              21
+            ],
+            [
+              41,
+              21
+            ],
+            [
+              42,
+              21
+            ],
+            [
+              43,
+              21
+            ],
+            [
+              44,
+              21
+            ],
+            [
+              45,
+              21
+            ],
+            [
+              46,
+              21
+            ],
+            [
+              47,
+              21
+            ],
+            [
+              48,
+              21
+            ],
+            [
+              49,
+              21
+            ],
+            [
+              50,
+              21
+            ],
+            [
+              51,
+              21
+            ],
+            [
+              52,
+              21
+            ],
+            [
+              53,
+              21
+            ],
+            [
+              54,
+              21
+            ],
+            [
+              55,
+              21
+            ],
+            [
+              56,
+              21
+            ],
+            [
+              57,
+              21
+            ],
+            [
+              58,
+              21
+            ],
+            [
+              59,
+              21
+            ],
+            [
+              60,
+              21
+            ],
+            [
+              61,
+              21
+            ],
+            [
+              62,
+              21
+            ],
+            [
+              63,
+              21
+            ],
+            [
+              64,
+              21
+            ],
+            [
+              65,
+              21
+            ],
+            [
+              66,
+              21
+            ],
+            [
+              67,
+              21
+            ],
+            [
+              68,
+              21
+            ],
+            [
+              69,
+              21
+            ],
+            [
+              70,
+              21
+            ],
+            [
+              71,
+              21
+            ],
+            [
+              72,
+              21
+            ],
+            [
+              73,
+              21
+            ],
+            [
+              74,
+              21
+            ],
+            [
+              75,
+              22
+            ],
+            [
+              76,
+              23
+            ],
+            [
+              77,
+              24
+            ],
+            [
+              78,
+              24
+            ],
+            [
+              79,
+              25
+            ],
+            [
+              80,
+              25
+            ],
+            [
+              81,
+              25
+            ],
+            [
+              82,
+              25
+            ],
+            [
+              83,
+              25
+            ],
+            [
+              84,
+              25
+            ],
+            [
+              85,
+              25
+            ],
+            [
+              86,
+              25
+            ],
+            [
+              87,
+              26
+            ],
+            [
+              88,
+              27
+            ],
+            [
+              89,
+              28
+            ],
+            [
+              90,
+              28
+            ],
+            [
+              91,
+              28
+            ],
+            [
+              92,
+              28
+            ],
+            [
+              93,
+              28
+            ],
+            [
+              94,
+              28
+            ],
+            [
+              95,
+              28
+            ],
+            [
+              96,
+              28
+            ],
+            [
+              97,
+              28
+            ],
+            [
+              98,
+              28
+            ],
+            [
+              99,
+              28
+            ],
+            [
+              100,
+              28
+            ],
+            [
+              101,
+              28
+            ],
+            [
+              102,
+              28
+            ],
+            [
+              103,
+              28
+            ],
+            [
+              104,
+              28
+            ],
+            [
+              105,
+              28
+            ],
+            [
+              106,
+              28
+            ],
+            [
+              107,
+              28
+            ],
+            [
+              108,
+              28
+            ],
+            [
+              109,
+              28
+            ],
+            [
+              110,
+              28
+            ],
+            [
+              111,
+              29
+            ],
+            [
+              112,
+              29
+            ],
+            [
+              113,
+              29
+            ],
+            [
+              114,
+              29
+            ],
+            [
+              115,
+              29
+            ],
+            [
+              116,
+              29
+            ],
+            [
+              117,
+              30
+            ],
+            [
+              118,
+              30
+            ],
+            [
+              119,
+              30
+            ],
+            [
+              120,
+              30
+            ],
+            [
+              121,
+              30
+            ],
+            [
+              122,
+              30
+            ],
+            [
+              123,
+              30
+            ],
+            [
+              124,
+              30
+            ],
+            [
+              125,
+              30
+            ],
+            [
+              126,
+              31
+            ],
+            [
+              127,
+              31
+            ],
+            [
+              128,
+              32
+            ],
+            [
+              129,
+              33
+            ],
+            [
+              130,
+              33
+            ],
+            [
+              131,
+              33
+            ],
+            [
+              132,
+              33
+            ],
+            [
+              133,
+              33
+            ],
+            [
+              134,
+              33
+            ],
+            [
+              135,
+              33
+            ],
+            [
+              136,
+              33
+            ],
+            [
+              137,
+              33
+            ],
+            [
+              138,
+              33
+            ],
+            [
+              139,
+              33
+            ],
+            [
+              140,
+              33
+            ],
+            [
+              141,
+              33
+            ],
+            [
+              142,
+              33
+            ],
+            [
+              143,
+              33
+            ],
+            [
+              144,
+              33
+            ],
+            [
+              145,
+              33
+            ],
+            [
+              146,
+              33
+            ],
+            [
+              147,
+              33
+            ],
+            [
+              148,
+              33
+            ],
+            [
+              149,
+              34
+            ],
+            [
+              150,
+              34
+            ],
+            [
+              151,
+              34
+            ],
+            [
+              152,
+              34
+            ],
+            [
+              153,
+              34
+            ],
+            [
+              154,
+              34
+            ],
+            [
+              155,
+              34
+            ],
+            [
+              156,
+              34
+            ],
+            [
+              157,
+              34
+            ],
+            [
+              158,
+              34
+            ],
+            [
+              159,
+              34
+            ],
+            [
+              160,
+              34
+            ],
+            [
+              161,
+              34
+            ],
+            [
+              162,
+              34
+            ],
+            [
+              163,
+              34
+            ],
+            [
+              164,
+              34
+            ],
+            [
+              165,
+              34
+            ],
+            [
+              166,
+              34
+            ],
+            [
+              167,
+              34
+            ],
+            [
+              168,
+              34
+            ],
+            [
+              169,
+              34
+            ],
+            [
+              170,
+              34
+            ],
+            [
+              171,
+              35
+            ],
+            [
+              172,
+              36
+            ],
+            [
+              173,
+              37
+            ],
+            [
+              174,
+              38
+            ],
+            [
+              175,
+              39
+            ],
+            [
+              176,
+              40
+            ],
+            [
+              177,
+              41
+            ],
+            [
+              178,
+              42
+            ],
+            [
+              179,
+              42
+            ],
+            [
+              180,
+              42
+            ],
+            [
+              181,
+              42
+            ],
+            [
+              182,
+              42
+            ],
+            [
+              183,
+              43
+            ],
+            [
+              184,
+              44
+            ],
+            [
+              185,
+              45
+            ],
+            [
+              186,
+              45
+            ],
+            [
+              187,
+              45
+            ],
+            [
+              188,
+              45
+            ],
+            [
+              189,
+              45
+            ],
+            [
+              190,
+              45
+            ],
+            [
+              191,
+              46
+            ],
+            [
+              192,
+              46
+            ],
+            [
+              193,
+              46
+            ],
+            [
+              194,
+              47
+            ],
+            [
+              195,
+              47
+            ],
+            [
+              196,
+              47
+            ],
+            [
+              197,
+              48
+            ],
+            [
+              198,
+              49
+            ],
+            [
+              199,
+              50
+            ],
+            [
+              200,
+              51
+            ],
+            [
+              201,
+              51
+            ],
+            [
+              202,
+              51
+            ],
+            [
+              203,
+              52
+            ],
+            [
+              204,
+              52
+            ],
+            [
+              205,
+              52
+            ],
+            [
+              206,
+              52
+            ],
+            [
+              207,
+              52
+            ],
+            [
+              208,
+              52
+            ],
+            [
+              209,
+              52
+            ],
+            [
+              210,
+              53
+            ],
+            [
+              211,
+              54
+            ],
+            [
+              212,
+              54
+            ],
+            [
+              213,
+              54
+            ],
+            [
+              214,
+              54
+            ],
+            [
+              215,
+              54
+            ],
+            [
+              216,
+              54
+            ],
+            [
+              217,
+              54
+            ],
+            [
+              218,
+              54
+            ],
+            [
+              219,
+              54
+            ],
+            [
+              220,
+              54
+            ],
+            [
+              221,
+              54
+            ],
+            [
+              222,
+              54
+            ],
+            [
+              223,
+              54
+            ],
+            [
+              224,
+              54
+            ],
+            [
+              225,
+              54
+            ],
+            [
+              226,
+              54
+            ],
+            [
+              227,
+              54
+            ],
+            [
+              228,
+              54
+            ],
+            [
+              229,
+              54
+            ],
+            [
+              230,
+              54
+            ],
+            [
+              231,
+              54
+            ],
+            [
+              232,
+              54
+            ],
+            [
+              233,
+              54
+            ],
+            [
+              234,
+              54
+            ],
+            [
+              235,
+              54
+            ],
+            [
+              236,
+              54
+            ],
+            [
+              237,
+              54
+            ],
+            [
+              238,
+              54
+            ],
+            [
+              239,
+              54
+            ],
+            [
+              240,
+              54
+            ],
+            [
+              241,
+              54
+            ],
+            [
+              242,
+              55
+            ],
+            [
+              243,
+              55
+            ],
+            [
+              244,
+              55
+            ],
+            [
+              245,
+              55
+            ],
+            [
+              246,
+              55
+            ],
+            [
+              247,
+              55
+            ],
+            [
+              248,
+              55
+            ],
+            [
+              249,
+              55
+            ],
+            [
+              250,
+              55
+            ],
+            [
+              251,
+              55
+            ]
+          ]
+        },
+        "hand_frame_coverage": 0.304,
+        "comparison_joints": [
+          "elbow_l",
+          "elbow_r",
+          "shoulder_l",
+          "shoulder_r",
+          "knee_l",
+          "knee_r"
+        ],
+        "reference_video_sha256": "f7327622c61465fdbd901d71a1561a3a371f23eada524e4e11b273ab2717b076",
+        "analysis_sha256": "00bdc16a9e90f4da93d040a7282eb376053447bca989c5d597406e264e115668",
+        "visual_grip_review": "pending"
+      },
+      {
+        "video_id": "SxDmxON_pZk",
+        "url": "https://www.youtube.com/watch?v=SxDmxON_pZk",
+        "status": "inconclusive",
+        "comparison": {
+          "mean_deg": 25.5,
+          "path_coverage": 0.996,
+          "joints": {
+            "elbow_l": {
+              "mean_deg": 20.17,
+              "p95_deg": 63.15,
+              "coverage": 0.996
+            },
+            "shoulder_l": {
+              "mean_deg": 26.45,
+              "p95_deg": 75.94,
+              "coverage": 0.996
+            },
+            "knee_l": {
+              "mean_deg": 28.69,
+              "p95_deg": 74.97,
+              "coverage": 0.996
+            },
+            "knee_r": {
+              "mean_deg": 28.64,
+              "p95_deg": 70.38,
+              "coverage": 0.302
+            }
+          },
+          "aligned_pairs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              1
+            ],
+            [
+              5,
+              1
+            ],
+            [
+              6,
+              1
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              1
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              10,
+              1
+            ],
+            [
+              11,
+              1
+            ],
+            [
+              12,
+              1
+            ],
+            [
+              13,
+              1
+            ],
+            [
+              14,
+              2
+            ],
+            [
+              15,
+              2
+            ],
+            [
+              16,
+              2
+            ],
+            [
+              17,
+              3
+            ],
+            [
+              18,
+              3
+            ],
+            [
+              19,
+              3
+            ],
+            [
+              20,
+              3
+            ],
+            [
+              21,
+              3
+            ],
+            [
+              22,
+              3
+            ],
+            [
+              23,
+              3
+            ],
+            [
+              24,
+              3
+            ],
+            [
+              25,
+              3
+            ],
+            [
+              26,
+              3
+            ],
+            [
+              27,
+              3
+            ],
+            [
+              28,
+              3
+            ],
+            [
+              29,
+              3
+            ],
+            [
+              30,
+              3
+            ],
+            [
+              31,
+              3
+            ],
+            [
+              32,
+              3
+            ],
+            [
+              33,
+              3
+            ],
+            [
+              34,
+              3
+            ],
+            [
+              35,
+              3
+            ],
+            [
+              36,
+              3
+            ],
+            [
+              37,
+              3
+            ],
+            [
+              38,
+              3
+            ],
+            [
+              39,
+              3
+            ],
+            [
+              40,
+              3
+            ],
+            [
+              41,
+              3
+            ],
+            [
+              42,
+              3
+            ],
+            [
+              43,
+              3
+            ],
+            [
+              44,
+              3
+            ],
+            [
+              45,
+              3
+            ],
+            [
+              46,
+              3
+            ],
+            [
+              47,
+              3
+            ],
+            [
+              48,
+              3
+            ],
+            [
+              49,
+              3
+            ],
+            [
+              50,
+              3
+            ],
+            [
+              51,
+              3
+            ],
+            [
+              52,
+              3
+            ],
+            [
+              53,
+              3
+            ],
+            [
+              54,
+              3
+            ],
+            [
+              55,
+              3
+            ],
+            [
+              56,
+              3
+            ],
+            [
+              57,
+              3
+            ],
+            [
+              58,
+              3
+            ],
+            [
+              59,
+              3
+            ],
+            [
+              60,
+              3
+            ],
+            [
+              61,
+              3
+            ],
+            [
+              62,
+              3
+            ],
+            [
+              63,
+              3
+            ],
+            [
+              64,
+              3
+            ],
+            [
+              65,
+              3
+            ],
+            [
+              66,
+              3
+            ],
+            [
+              67,
+              3
+            ],
+            [
+              68,
+              3
+            ],
+            [
+              69,
+              3
+            ],
+            [
+              70,
+              3
+            ],
+            [
+              71,
+              3
+            ],
+            [
+              72,
+              3
+            ],
+            [
+              73,
+              3
+            ],
+            [
+              74,
+              3
+            ],
+            [
+              75,
+              4
+            ],
+            [
+              76,
+              5
+            ],
+            [
+              77,
+              5
+            ],
+            [
+              78,
+              5
+            ],
+            [
+              79,
+              6
+            ],
+            [
+              80,
+              6
+            ],
+            [
+              81,
+              6
+            ],
+            [
+              82,
+              6
+            ],
+            [
+              83,
+              6
+            ],
+            [
+              84,
+              6
+            ],
+            [
+              85,
+              7
+            ],
+            [
+              86,
+              8
+            ],
+            [
+              87,
+              8
+            ],
+            [
+              88,
+              8
+            ],
+            [
+              89,
+              8
+            ],
+            [
+              90,
+              8
+            ],
+            [
+              91,
+              8
+            ],
+            [
+              92,
+              8
+            ],
+            [
+              93,
+              8
+            ],
+            [
+              94,
+              8
+            ],
+            [
+              95,
+              8
+            ],
+            [
+              96,
+              8
+            ],
+            [
+              97,
+              8
+            ],
+            [
+              98,
+              8
+            ],
+            [
+              99,
+              8
+            ],
+            [
+              100,
+              8
+            ],
+            [
+              101,
+              8
+            ],
+            [
+              102,
+              8
+            ],
+            [
+              103,
+              8
+            ],
+            [
+              104,
+              8
+            ],
+            [
+              105,
+              8
+            ],
+            [
+              106,
+              8
+            ],
+            [
+              107,
+              8
+            ],
+            [
+              108,
+              8
+            ],
+            [
+              109,
+              9
+            ],
+            [
+              110,
+              10
+            ],
+            [
+              111,
+              10
+            ],
+            [
+              112,
+              10
+            ],
+            [
+              113,
+              10
+            ],
+            [
+              114,
+              10
+            ],
+            [
+              115,
+              11
+            ],
+            [
+              116,
+              11
+            ],
+            [
+              117,
+              11
+            ],
+            [
+              118,
+              12
+            ],
+            [
+              119,
+              12
+            ],
+            [
+              120,
+              12
+            ],
+            [
+              121,
+              12
+            ],
+            [
+              122,
+              12
+            ],
+            [
+              123,
+              12
+            ],
+            [
+              124,
+              12
+            ],
+            [
+              125,
+              12
+            ],
+            [
+              126,
+              12
+            ],
+            [
+              127,
+              12
+            ],
+            [
+              128,
+              12
+            ],
+            [
+              129,
+              12
+            ],
+            [
+              130,
+              12
+            ],
+            [
+              131,
+              12
+            ],
+            [
+              132,
+              12
+            ],
+            [
+              133,
+              12
+            ],
+            [
+              134,
+              12
+            ],
+            [
+              135,
+              13
+            ],
+            [
+              136,
+              14
+            ],
+            [
+              137,
+              15
+            ],
+            [
+              138,
+              15
+            ],
+            [
+              139,
+              15
+            ],
+            [
+              140,
+              15
+            ],
+            [
+              141,
+              15
+            ],
+            [
+              142,
+              15
+            ],
+            [
+              143,
+              15
+            ],
+            [
+              144,
+              15
+            ],
+            [
+              145,
+              15
+            ],
+            [
+              146,
+              15
+            ],
+            [
+              147,
+              15
+            ],
+            [
+              148,
+              15
+            ],
+            [
+              149,
+              15
+            ],
+            [
+              150,
+              15
+            ],
+            [
+              151,
+              15
+            ],
+            [
+              152,
+              15
+            ],
+            [
+              153,
+              15
+            ],
+            [
+              154,
+              15
+            ],
+            [
+              155,
+              15
+            ],
+            [
+              156,
+              15
+            ],
+            [
+              157,
+              15
+            ],
+            [
+              158,
+              15
+            ],
+            [
+              159,
+              15
+            ],
+            [
+              160,
+              15
+            ],
+            [
+              161,
+              15
+            ],
+            [
+              162,
+              15
+            ],
+            [
+              163,
+              15
+            ],
+            [
+              164,
+              15
+            ],
+            [
+              165,
+              15
+            ],
+            [
+              166,
+              16
+            ],
+            [
+              167,
+              17
+            ],
+            [
+              168,
+              17
+            ],
+            [
+              169,
+              17
+            ],
+            [
+              170,
+              17
+            ],
+            [
+              171,
+              17
+            ],
+            [
+              172,
+              17
+            ],
+            [
+              173,
+              17
+            ],
+            [
+              174,
+              17
+            ],
+            [
+              175,
+              17
+            ],
+            [
+              176,
+              17
+            ],
+            [
+              177,
+              17
+            ],
+            [
+              178,
+              17
+            ],
+            [
+              179,
+              17
+            ],
+            [
+              180,
+              17
+            ],
+            [
+              181,
+              17
+            ],
+            [
+              182,
+              17
+            ],
+            [
+              183,
+              17
+            ],
+            [
+              184,
+              17
+            ],
+            [
+              185,
+              17
+            ],
+            [
+              186,
+              17
+            ],
+            [
+              187,
+              17
+            ],
+            [
+              188,
+              17
+            ],
+            [
+              189,
+              17
+            ],
+            [
+              190,
+              17
+            ],
+            [
+              191,
+              17
+            ],
+            [
+              192,
+              17
+            ],
+            [
+              193,
+              17
+            ],
+            [
+              194,
+              18
+            ],
+            [
+              195,
+              18
+            ],
+            [
+              196,
+              18
+            ],
+            [
+              197,
+              18
+            ],
+            [
+              198,
+              18
+            ],
+            [
+              199,
+              18
+            ],
+            [
+              200,
+              18
+            ],
+            [
+              201,
+              18
+            ],
+            [
+              202,
+              18
+            ],
+            [
+              203,
+              18
+            ],
+            [
+              204,
+              18
+            ],
+            [
+              205,
+              18
+            ],
+            [
+              206,
+              18
+            ],
+            [
+              207,
+              18
+            ],
+            [
+              208,
+              18
+            ],
+            [
+              209,
+              18
+            ],
+            [
+              210,
+              18
+            ],
+            [
+              211,
+              18
+            ],
+            [
+              212,
+              18
+            ],
+            [
+              213,
+              18
+            ],
+            [
+              214,
+              18
+            ],
+            [
+              215,
+              18
+            ],
+            [
+              216,
+              18
+            ],
+            [
+              217,
+              18
+            ],
+            [
+              218,
+              18
+            ],
+            [
+              219,
+              18
+            ],
+            [
+              220,
+              18
+            ],
+            [
+              221,
+              18
+            ],
+            [
+              222,
+              18
+            ],
+            [
+              223,
+              18
+            ],
+            [
+              224,
+              18
+            ],
+            [
+              225,
+              18
+            ],
+            [
+              226,
+              18
+            ],
+            [
+              227,
+              18
+            ],
+            [
+              228,
+              18
+            ],
+            [
+              229,
+              18
+            ],
+            [
+              230,
+              18
+            ],
+            [
+              231,
+              18
+            ],
+            [
+              232,
+              18
+            ],
+            [
+              233,
+              18
+            ],
+            [
+              234,
+              18
+            ],
+            [
+              235,
+              18
+            ],
+            [
+              236,
+              18
+            ],
+            [
+              237,
+              18
+            ],
+            [
+              238,
+              18
+            ],
+            [
+              239,
+              18
+            ],
+            [
+              240,
+              18
+            ],
+            [
+              241,
+              18
+            ],
+            [
+              242,
+              18
+            ],
+            [
+              243,
+              19
+            ],
+            [
+              244,
+              20
+            ],
+            [
+              245,
+              21
+            ],
+            [
+              246,
+              22
+            ],
+            [
+              247,
+              23
+            ],
+            [
+              248,
+              23
+            ],
+            [
+              249,
+              23
+            ],
+            [
+              250,
+              23
+            ],
+            [
+              251,
+              23
+            ]
+          ]
+        },
+        "hand_frame_coverage": 0.417,
+        "comparison_joints": [
+          "elbow_l",
+          "elbow_r",
+          "shoulder_l",
+          "shoulder_r",
+          "knee_l",
+          "knee_r"
+        ],
+        "reference_video_sha256": "0906fdcc728a399d8a872242e6b097dd755191ff8f890a52256c60b85990a5fa",
+        "analysis_sha256": "0a56a1c9f22baca0ac16004b5afd33b75be113042d5ea032263c5b8ec4020214",
+        "visual_grip_review": "pending"
+      },
+      {
+        "video_id": "AuoDVuBK1uI",
+        "url": "https://www.youtube.com/watch?v=AuoDVuBK1uI",
+        "status": "inconclusive",
+        "comparison": {
+          "mean_deg": 19.49,
+          "path_coverage": 1.0,
+          "joints": {
+            "elbow_l": {
+              "mean_deg": 15.34,
+              "p95_deg": 64.38,
+              "coverage": 1.0
+            },
+            "shoulder_l": {
+              "mean_deg": 26.83,
+              "p95_deg": 72.36,
+              "coverage": 1.0
+            },
+            "knee_l": {
+              "mean_deg": 16.29,
+              "p95_deg": 54.48,
+              "coverage": 1.0
+            }
+          },
+          "aligned_pairs": [
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              3
+            ],
+            [
+              5,
+              3
+            ],
+            [
+              6,
+              3
+            ],
+            [
+              7,
+              3
+            ],
+            [
+              8,
+              3
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              10,
+              3
+            ],
+            [
+              11,
+              3
+            ],
+            [
+              12,
+              4
+            ],
+            [
+              13,
+              5
+            ],
+            [
+              14,
+              6
+            ],
+            [
+              15,
+              6
+            ],
+            [
+              16,
+              6
+            ],
+            [
+              17,
+              6
+            ],
+            [
+              18,
+              7
+            ],
+            [
+              19,
+              8
+            ],
+            [
+              20,
+              9
+            ],
+            [
+              21,
+              10
+            ],
+            [
+              22,
+              10
+            ],
+            [
+              23,
+              10
+            ],
+            [
+              24,
+              10
+            ],
+            [
+              25,
+              10
+            ],
+            [
+              26,
+              10
+            ],
+            [
+              27,
+              10
+            ],
+            [
+              28,
+              10
+            ],
+            [
+              29,
+              10
+            ],
+            [
+              30,
+              10
+            ],
+            [
+              31,
+              10
+            ],
+            [
+              32,
+              10
+            ],
+            [
+              33,
+              10
+            ],
+            [
+              34,
+              10
+            ],
+            [
+              35,
+              10
+            ],
+            [
+              36,
+              10
+            ],
+            [
+              37,
+              10
+            ],
+            [
+              38,
+              10
+            ],
+            [
+              39,
+              10
+            ],
+            [
+              40,
+              10
+            ],
+            [
+              41,
+              10
+            ],
+            [
+              42,
+              10
+            ],
+            [
+              43,
+              10
+            ],
+            [
+              44,
+              10
+            ],
+            [
+              45,
+              10
+            ],
+            [
+              46,
+              10
+            ],
+            [
+              47,
+              10
+            ],
+            [
+              48,
+              10
+            ],
+            [
+              49,
+              10
+            ],
+            [
+              50,
+              10
+            ],
+            [
+              51,
+              10
+            ],
+            [
+              52,
+              10
+            ],
+            [
+              53,
+              10
+            ],
+            [
+              54,
+              10
+            ],
+            [
+              55,
+              10
+            ],
+            [
+              56,
+              10
+            ],
+            [
+              57,
+              10
+            ],
+            [
+              58,
+              10
+            ],
+            [
+              59,
+              10
+            ],
+            [
+              60,
+              10
+            ],
+            [
+              61,
+              10
+            ],
+            [
+              62,
+              10
+            ],
+            [
+              63,
+              10
+            ],
+            [
+              64,
+              10
+            ],
+            [
+              65,
+              10
+            ],
+            [
+              66,
+              10
+            ],
+            [
+              67,
+              11
+            ],
+            [
+              68,
+              11
+            ],
+            [
+              69,
+              11
+            ],
+            [
+              70,
+              11
+            ],
+            [
+              71,
+              11
+            ],
+            [
+              72,
+              11
+            ],
+            [
+              73,
+              11
+            ],
+            [
+              74,
+              11
+            ],
+            [
+              75,
+              12
+            ],
+            [
+              76,
+              13
+            ],
+            [
+              77,
+              14
+            ],
+            [
+              78,
+              15
+            ],
+            [
+              79,
+              15
+            ],
+            [
+              80,
+              15
+            ],
+            [
+              81,
+              16
+            ],
+            [
+              82,
+              16
+            ],
+            [
+              83,
+              16
+            ],
+            [
+              84,
+              16
+            ],
+            [
+              85,
+              16
+            ],
+            [
+              86,
+              16
+            ],
+            [
+              87,
+              16
+            ],
+            [
+              88,
+              16
+            ],
+            [
+              89,
+              16
+            ],
+            [
+              90,
+              17
+            ],
+            [
+              91,
+              17
+            ],
+            [
+              92,
+              17
+            ],
+            [
+              93,
+              17
+            ],
+            [
+              94,
+              17
+            ],
+            [
+              95,
+              17
+            ],
+            [
+              96,
+              17
+            ],
+            [
+              97,
+              17
+            ],
+            [
+              98,
+              17
+            ],
+            [
+              99,
+              17
+            ],
+            [
+              100,
+              17
+            ],
+            [
+              101,
+              17
+            ],
+            [
+              102,
+              17
+            ],
+            [
+              103,
+              17
+            ],
+            [
+              104,
+              17
+            ],
+            [
+              105,
+              17
+            ],
+            [
+              106,
+              17
+            ],
+            [
+              107,
+              18
+            ],
+            [
+              108,
+              18
+            ],
+            [
+              109,
+              19
+            ],
+            [
+              110,
+              19
+            ],
+            [
+              111,
+              19
+            ],
+            [
+              112,
+              19
+            ],
+            [
+              113,
+              19
+            ],
+            [
+              114,
+              19
+            ],
+            [
+              115,
+              19
+            ],
+            [
+              116,
+              19
+            ],
+            [
+              117,
+              20
+            ],
+            [
+              118,
+              20
+            ],
+            [
+              119,
+              20
+            ],
+            [
+              120,
+              20
+            ],
+            [
+              121,
+              21
+            ],
+            [
+              122,
+              21
+            ],
+            [
+              123,
+              21
+            ],
+            [
+              124,
+              21
+            ],
+            [
+              125,
+              21
+            ],
+            [
+              126,
+              21
+            ],
+            [
+              127,
+              21
+            ],
+            [
+              128,
+              22
+            ],
+            [
+              129,
+              22
+            ],
+            [
+              130,
+              22
+            ],
+            [
+              131,
+              22
+            ],
+            [
+              132,
+              23
+            ],
+            [
+              133,
+              23
+            ],
+            [
+              134,
+              24
+            ],
+            [
+              135,
+              24
+            ],
+            [
+              136,
+              24
+            ],
+            [
+              137,
+              24
+            ],
+            [
+              138,
+              24
+            ],
+            [
+              139,
+              24
+            ],
+            [
+              140,
+              24
+            ],
+            [
+              141,
+              24
+            ],
+            [
+              142,
+              24
+            ],
+            [
+              143,
+              24
+            ],
+            [
+              144,
+              24
+            ],
+            [
+              145,
+              24
+            ],
+            [
+              146,
+              24
+            ],
+            [
+              147,
+              24
+            ],
+            [
+              148,
+              24
+            ],
+            [
+              149,
+              25
+            ],
+            [
+              150,
+              25
+            ],
+            [
+              151,
+              25
+            ],
+            [
+              152,
+              25
+            ],
+            [
+              153,
+              25
+            ],
+            [
+              154,
+              25
+            ],
+            [
+              155,
+              25
+            ],
+            [
+              156,
+              25
+            ],
+            [
+              157,
+              25
+            ],
+            [
+              158,
+              25
+            ],
+            [
+              159,
+              25
+            ],
+            [
+              160,
+              25
+            ],
+            [
+              161,
+              25
+            ],
+            [
+              162,
+              25
+            ],
+            [
+              163,
+              25
+            ],
+            [
+              164,
+              25
+            ],
+            [
+              165,
+              25
+            ],
+            [
+              166,
+              25
+            ],
+            [
+              167,
+              25
+            ],
+            [
+              168,
+              25
+            ],
+            [
+              169,
+              26
+            ],
+            [
+              170,
+              26
+            ],
+            [
+              171,
+              26
+            ],
+            [
+              172,
+              26
+            ],
+            [
+              173,
+              26
+            ],
+            [
+              174,
+              26
+            ],
+            [
+              175,
+              26
+            ],
+            [
+              176,
+              26
+            ],
+            [
+              177,
+              26
+            ],
+            [
+              178,
+              26
+            ],
+            [
+              179,
+              26
+            ],
+            [
+              180,
+              26
+            ],
+            [
+              181,
+              26
+            ],
+            [
+              182,
+              26
+            ],
+            [
+              183,
+              26
+            ],
+            [
+              184,
+              26
+            ],
+            [
+              185,
+              26
+            ],
+            [
+              186,
+              26
+            ],
+            [
+              187,
+              26
+            ],
+            [
+              188,
+              26
+            ],
+            [
+              189,
+              26
+            ],
+            [
+              190,
+              26
+            ],
+            [
+              191,
+              26
+            ],
+            [
+              192,
+              26
+            ],
+            [
+              193,
+              26
+            ],
+            [
+              194,
+              26
+            ],
+            [
+              195,
+              26
+            ],
+            [
+              196,
+              26
+            ],
+            [
+              197,
+              26
+            ],
+            [
+              198,
+              26
+            ],
+            [
+              199,
+              26
+            ],
+            [
+              200,
+              26
+            ],
+            [
+              201,
+              26
+            ],
+            [
+              202,
+              27
+            ],
+            [
+              203,
+              27
+            ],
+            [
+              204,
+              27
+            ],
+            [
+              205,
+              27
+            ],
+            [
+              206,
+              27
+            ],
+            [
+              207,
+              27
+            ],
+            [
+              208,
+              27
+            ],
+            [
+              209,
+              27
+            ],
+            [
+              210,
+              27
+            ],
+            [
+              211,
+              27
+            ],
+            [
+              212,
+              27
+            ],
+            [
+              213,
+              27
+            ],
+            [
+              214,
+              27
+            ],
+            [
+              215,
+              27
+            ],
+            [
+              216,
+              27
+            ],
+            [
+              217,
+              27
+            ],
+            [
+              218,
+              27
+            ],
+            [
+              219,
+              27
+            ],
+            [
+              220,
+              27
+            ],
+            [
+              221,
+              27
+            ],
+            [
+              222,
+              27
+            ],
+            [
+              223,
+              27
+            ],
+            [
+              224,
+              27
+            ],
+            [
+              225,
+              27
+            ],
+            [
+              226,
+              27
+            ],
+            [
+              227,
+              27
+            ],
+            [
+              228,
+              27
+            ],
+            [
+              229,
+              27
+            ],
+            [
+              230,
+              27
+            ],
+            [
+              231,
+              27
+            ],
+            [
+              232,
+              27
+            ],
+            [
+              233,
+              27
+            ],
+            [
+              234,
+              27
+            ],
+            [
+              235,
+              27
+            ],
+            [
+              236,
+              28
+            ],
+            [
+              237,
+              29
+            ],
+            [
+              238,
+              30
+            ],
+            [
+              239,
+              31
+            ],
+            [
+              240,
+              32
+            ],
+            [
+              241,
+              33
+            ],
+            [
+              242,
+              34
+            ],
+            [
+              243,
+              35
+            ],
+            [
+              244,
+              35
+            ],
+            [
+              245,
+              35
+            ],
+            [
+              246,
+              35
+            ],
+            [
+              247,
+              35
+            ],
+            [
+              248,
+              35
+            ],
+            [
+              249,
+              35
+            ],
+            [
+              250,
+              35
+            ],
+            [
+              251,
+              35
+            ]
+          ]
+        },
+        "hand_frame_coverage": 0.083,
+        "comparison_joints": [
+          "elbow_l",
+          "elbow_r",
+          "shoulder_l",
+          "shoulder_r",
+          "knee_l",
+          "knee_r"
+        ],
+        "reference_video_sha256": "cbcdea8ea16ba19bb8a29171dfe65f732312eb78c25fdaf02409a63095406358",
+        "analysis_sha256": "27186ebc0a6d62345174c4d6327ee9c43a1a5edb0cf44afd28df48095d7341e1",
+        "visual_grip_review": "pending"
+      }
+    ],
+    "limitations": [
+      "2D camera and occlusion affect angles; no biomechanics certification.",
+      "Hand detection coverage is not grip correctness.",
+      "Review whole reps, floor/bar contacts, thumbs and encoded phone-size output."
+    ]
+  },
+  "generation_credit_spend_usd": 0,
+  "device_verification": "not performed",
+  "form_status": "owner review and qualified form assessment remain open",
+  "app_assets_installed": false,
+  "apk_packaged": false
+}

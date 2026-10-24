@@ -78,7 +78,9 @@ class ContrastTest {
     @Test fun primaryAndSecondaryMuscleColoursDifferOnBothThemes() {
         assertTrue(contrast(DarkAccent.accent, DarkAccent.accentLight) >= 1.5)
         // doc 17 tokens: on white the two golds differ in saturation more than in lightness (about 1.05:1); the owner approved them, so only "different" is asserted
-        assertNotEquals(Gold, GoldDimLight)
+        assertNotEquals(LightAccent.accent, LightAccent.accentLight)
+        assertTrue(contrast(LightAccent.accentLight, SurfaceLight) >= 3.0)
+        assertTrue(contrast(DarkAccent.accentLight, SurfaceDark) >= 3.0)
     }
 }
 
@@ -197,6 +199,6 @@ class FontScaleReachTest {
 
     @Test fun settingsEveryRowIsReachable() {
         rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SettingsScreen(onLevels = {}, onBackup = {}, onLicenses = {}) } }
-        for (tag in listOf("settings_profiles", "set_stretch", "set_voice", "theme_dark", "settings_backup", "settings_privacy", "settings_licenses")) rule.onNodeWithTag(tag).performScrollTo().assertIsDisplayed()
+        for (tag in listOf("settings_profiles", "set_between_rest", "set_voice", "theme_dark", "settings_backup", "settings_privacy", "settings_licenses")) rule.onNodeWithTag(tag).performScrollTo().assertIsDisplayed()
     }
 }

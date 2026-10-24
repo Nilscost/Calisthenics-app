@@ -127,7 +127,7 @@ class PlannerTest {
     @Test fun `left and right stretch segments are equal and paired`() {
         val calfAll = catalog.copy(variations = catalog.variations.map { if (it.kind == Kind.REPS) it.copy(compatibleStretchIds = listOf("calf-stretch")) else it })
         val p = ready(input(30, areas = setOf(StretchArea.CALF), cat = calfAll))
-        val sides = p.blocks.filter { it.variationId == "calf-stretch" }
+        val sides = p.blocks.filter { it.type == BlockType.STRETCH && it.variationId == "calf-stretch" }
         assertTrue(sides.isNotEmpty())
         assertEquals(sides.count { it.side == Side.LEFT }, sides.count { it.side == Side.RIGHT })
         sides.groupBy { it.recoveryForBlockIds }.values.forEach { g -> assertEquals(1, g.map { it.durationSeconds }.distinct().size) }
@@ -227,11 +227,11 @@ class PlannerTest {
         assertEquals(p.blocks.sumOf { it.durationSeconds }, p.plannedDurationSeconds)
     }
 
-    @Test fun `position and side-change transitions never exceed five seconds`() {
+    @Test fun `position and side-change transitions use the clamped preparation duration`() {
         val standing = catalog.copy(variations = catalog.variations.map { if (it.id == "squat-air") it.copy(position = "standing") else it })
         val p = ready(input(30, cat = standing))
         val trs = p.blocks.filter { it.type == BlockType.TRANSITION }
-        assertTrue(trs.isNotEmpty()); assertTrue(trs.all { it.durationSeconds <= TRANSITION_SECONDS })
+        assertTrue(trs.isNotEmpty()); assertTrue(trs.all { it.durationSeconds in 1..30 })
         assertTrue(ready(input(30)).blocks.filter { it.type == BlockType.TRANSITION }.all { it.durationSeconds == TRANSITION_SECONDS })
     }
 

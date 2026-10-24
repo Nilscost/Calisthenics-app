@@ -22,8 +22,6 @@ object ProgressLoader {
         for (s in dao.sessions().sortedBy { it.startedAtEpochMs }) {
             if (s.status != "COMPLETED" && s.status != "PARTIAL_FINISHED") continue
             val plan = dao.plan(s.planId)?.let { try { json.decodeFromString(WorkoutPlan.serializer(), it.planJson) } catch (_: Exception) { null } } ?: continue
-            // Flow programs have no per-exercise performance log; elapsed time is not strength evidence.
-            if (plan.fixedProgramId != null && plan.flow) continue
             val exec = dao.blockResults(s.sessionId).associate { r ->
                 r.blockId to when (r.outcome) { "MET" -> Execution.COMPLETED; "PARTIAL" -> Execution.PARTIAL; "SKIPPED" -> Execution.SKIPPED; else -> Execution.NOT_STARTED }
             }
@@ -33,6 +31,22 @@ object ProgressLoader {
                 FeedbackRow(f.variationId, f.blockId, f.revision, runCatching { Rating.valueOf(f.rating) }.getOrNull(), f.discomfort, f.actualReps, f.actualHoldSeconds)
             }
             val rows = effectiveFeedback(plan, achieved, fbRows)
+            // Preserve per-set values after corrections. A row-level minimum is useful for display,
+            // but broadcasting it to each block can make one strong set look like a full exercise.
+            val blockFeedback = plan.blocks.filter { it.type == app.calisthenics.domain.model.BlockType.WORK && it.variationId != null }
+                .groupBy { it.variationId!! }.values.flatMap { work ->
+                    val vid = work.first().variationId!!
+                    effectiveRounds(plan, vid, achieved, fbRows).map { round ->
+                        val isHold = work.firstOrNull { it.id == round.blockId }?.target?.type == app.calisthenics.domain.model.TargetType.HOLD_SECONDS
+                        round.blockId to Feedback(
+                            rating = round.rating,
+                            actualReps = if (isHold) null else round.value,
+                            actualHoldSeconds = if (isHold) round.value else null,
+                            discomfort = round.discomfort,
+                            revision = fbRows.filter { it.variationId == vid }.maxOfOrNull { it.revision } ?: 1,
+                        )
+                    }
+                }.toMap()
             // V21: under a Rep range / Custom rule every set has to reach the top of the range
             val ruleMetOf: (String) -> Boolean? = { vid ->
                 if (!plan.rule.isRange) null else {
@@ -46,10 +60,19 @@ object ProgressLoader {
                 }
             }
             val day = Instant.ofEpochMilli(s.startedAtEpochMs).atZone(zone).toLocalDate().toEpochDay().toInt()
-            evidence += deriveEvidence(s.sessionId, day, plan, resolveFeedback(plan, exec, emptyMap(), rows),
+            val outcomes = resolveFeedback(plan, exec,
+                if (plan.progressionEvidenceVersion >= 1) blockFeedback else emptyMap(), rows)
+            evidence += deriveEvidence(s.sessionId, day, plan, outcomes,
                 { catalog.variation(it)?.familyId ?: it },
                 { v, tier -> catalog.policyForVariation(v)?.tiers?.firstOrNull { it.index == tier }?.minQualifyingBlocks ?: 2 },
-                ruleMetOf = ruleMetOf)
+                ruleMetOf = ruleMetOf, recordedAtEpochMs = s.startedAtEpochMs,
+                loggedBlockIds = achieved.filterValues { it != null }.keys + fbRows.filter { it.blockId != null && (it.actualReps != null || it.actualHoldSeconds != null) }.mapNotNull { it.blockId },
+                effectivePolicyOf = { vid ->
+                    val revisions = plan.blocks.filter { it.type == app.calisthenics.domain.model.BlockType.WORK && it.variationId == vid }.map { it.targetRevision }.distinct()
+                    val currentRevision = catalog.personalTargets[vid]?.revision
+                    if (revisions.size != 1 || (currentRevision != null && currentRevision != revisions.single())) null
+                    else catalog.policyForVariation(vid)
+                })
         }
         val actions = LevelStore.load(ctx).map { (v, t) -> selfAssessmentFor(v, t) } + SuggestionStore.accepted(ctx)
         return ProgressionEngine(catalog).replay(evidence, actions, PrefsStore.load(ctx).autoProgression)

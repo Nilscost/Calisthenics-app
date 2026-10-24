@@ -60,9 +60,13 @@ private data class Chosen(val slot: RoutineSlot, val variation: ExerciseVariatio
 
 fun generate(input: PlanInput): PlanResult = Planner(input).run()
 
-private class Planner(val input: PlanInput) {
-    val cat = input.catalog
-    val draft = input.draft
+private class Planner(input: PlanInput) {
+    val input: PlanInput = input.copy(draft = input.draft.let { d ->
+        val mode = effectiveBetweenSetMode(d.betweenSetMode, d.flow, d.stretchOn)
+        d.copy(stretchOn = mode == BetweenSetMode.STRETCH, flow = mode == BetweenSetMode.FLOW)
+    })
+    val cat = this.input.catalog
+    val draft = this.input.draft
     val explain = mutableListOf<String>()
     val warn = mutableListOf<String>()
     var needsAcceptance = false
@@ -187,20 +191,23 @@ private class Planner(val input: PlanInput) {
         if (draft.cooldownOn) explain += "Cooldown included in the time budget."
 
         // 10. invariants (defensive; failing here is a bug, not a user problem)
+        val mode = effectiveBetweenSetMode(draft.betweenSetMode, draft.flow, draft.stretchOn)
         val blocks = pick.blocks
         check(blocks.sumOf { it.durationSeconds } <= budget) { "plan exceeds budget" }
         // R8.1-T07 (F8): with stretching on, plain rest appears only where every compatible stretch had already been used twice
         if (blocks.any { it.type == BlockType.PASSIVE_RECOVERY } && draft.stretchOn) explain += "Some breaks are plain rest because each compatible stretch was already used twice in this workout."
-        check(blocks.all { it.type != BlockType.TRANSITION || it.durationSeconds <= TRANSITION_SECONDS })
+        check(blocks.all { it.type != BlockType.TRANSITION || it.durationSeconds in 1..30 })
 
         val usesDraft = blocks.mapNotNull { it.variationId }.distinct().any { cat.variation(it)?.reviewState == ReviewState.DRAFT }
         return PlanResult.Ready(WorkoutPlan(
+            progressionEvidenceVersion = 1,
+            progressionPolicies = blocks.mapNotNull { it.variationId }.distinct().mapNotNull { id -> cat.policyForVariation(id)?.let { id to it } }.toMap(),
             id = input.planId, routineId = input.routine.id, routineRevision = input.routine.revision,
             catalogVersion = cat.catalogVersion, createdAtEpochMs = input.createdAtEpochMs, profileId = input.profile.id,
             requestedDurationSeconds = budget, plannedDurationSeconds = pick.total, focus = draft.focus,
-            stretchOn = draft.stretchOn, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed, format = draft.format, rule = draft.rule, flow = draft.flow,
+            stretchOn = mode == BetweenSetMode.STRETCH, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed, format = draft.format, rule = draft.rule, flow = mode == BetweenSetMode.FLOW,
             changesExplained = explain.distinct(), warnings = warn.distinct(), needsAcceptance = needsAcceptance,
-            usesDraftContent = usesDraft, blocks = blocks,
+            usesDraftContent = usesDraft, blocks = blocks, betweenSetMode = mode, preparationSeconds = draft.preparationSeconds.coerceIn(1, 30),
         ))
     }
 
@@ -225,6 +232,8 @@ private class Planner(val input: PlanInput) {
         val blocks = withTransitions(out)
         val total = blocks.sumOf { it.durationSeconds }
         return PlanResult.Ready(WorkoutPlan(
+            progressionEvidenceVersion = 1,
+            progressionPolicies = blocks.mapNotNull { it.variationId }.distinct().mapNotNull { id -> cat.policyForVariation(id)?.let { id to it } }.toMap(),
             id = input.planId, routineId = input.routine.id, routineRevision = input.routine.revision, catalogVersion = cat.catalogVersion,
             createdAtEpochMs = input.createdAtEpochMs, profileId = input.profile.id, requestedDurationSeconds = total, plannedDurationSeconds = total,
             focus = draft.focus, stretchOn = true, goalId = null, rounds = 1, timed = false, format = WorkoutFormat.CIRCUIT, rule = ProgressionRule(),
@@ -317,11 +326,17 @@ private class Planner(val input: PlanInput) {
             warn += "${v.name} is not the same movement as the slot it replaces (${slot.intent.name.lowercase().replace('_', ' ')}). Confirm before starting."
             needsAcceptance = true
         }
+        // Explicitly demonstrated same-rung strength may suggest a conservative first target,
+        // without transferring achievements or overriding this exercise's own results.
+        if (hold == null && !draft.rule.isRange && !draft.timed && draft.freeTargets.isEmpty() &&
+            slot.id !in draft.tierOverrides && v.id !in input.progress.variations) {
+            inferredTier = demonstratedRungStartingTier(cat, v, input.progress, route?.id) ?: inferredTier
+        }
         val pol = cat.policyFor(v) ?: run { warn += "${v.name} has no progression policy; skipped."; return null }
         var tierIdx = input.progress.tierFor(v.id)
         if (tierIdx == null) {
             tierIdx = inferredTier ?: 1
-            explain += if (inferredTier != null) "${v.name}: estimated starting target from the main exercise, reduced for the first workout. Your own results will guide this exercise from here."
+            explain += if (inferredTier != null) "${v.name}: estimated starting target from a same-rung exercise, reduced for the first workout. Your own results will guide this exercise from here."
                 else "${v.name}: no assessed level yet — starting at the easiest target (tier 1)."
         }
         input.progress.reentryNeeded(v.id, input.nowDay)?.let { lower ->
@@ -340,7 +355,7 @@ private class Planner(val input: PlanInput) {
         }
         draft.tierOverrides[slot.id]?.let { o ->
             val t = o.coerceIn(pol.tiers.minOf { it.index }, pol.tiers.maxOf { it.index })
-            if (t != tierIdx) explain += "${v.name}: level set to $t for today (it only counts towards progress at your own level)."
+            if (t != tierIdx) explain += "${v.name}: level set to $t for today; explicitly logged results that meet its requirements can establish this level."
             tierIdx = t
         }
         return Chosen(slot.copy(progressionRouteId = route?.id), v, pol.tier(tierIdx!!), load,
@@ -435,14 +450,22 @@ private class Planner(val input: PlanInput) {
                 val secs = if (draft.timed && !isHold) (if (side == Side.NONE) TIMED_WORK_SECONDS else TIMED_WORK_SECONDS / 2) else t.workWindowSeconds
                 workTotal += secs
                 val free = draft.freeTargets["$r:${c.slot.id}"] ?: draft.freeTargets[c.slot.id]
+                val levelFive = draft.levelFiveTargets["$r:${c.slot.id}"] ?: draft.levelFiveTargets[c.slot.id]
                 val rng = draft.rule
                 val ruleTarget = if (rng.isRange) (if (isHold) Target(t.target.type, rng.holdFrom, rng.holdTo) else Target(t.target.type, c.slot.repFrom ?: rng.from, maxOf(c.slot.repTo ?: rng.to, c.slot.repFrom ?: rng.from))) else null
-                val requested = if (free != null) Target(t.target.type, free.coerceIn(1, 999)) else ruleTarget ?: t.target
-                val target = cappedTarget(requested, cat.policyFor(v)!!)
-                val dur = if ((free != null || ruleTarget != null) && isHold) maxOf(secs, (target.max ?: target.value) + 3) else secs
-                out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, t.index,
+                val policy = cat.policyFor(v)!!
+                val levelFiveEligible = free == null && ruleTarget == null && levelFive != null && t.index == 5
+                val requested = when {
+                    free != null -> Target(t.target.type, free.coerceIn(1, 999))
+                    levelFiveEligible -> Target(t.target.type, maxOf(levelFive!!.coerceIn(1, 999), policy.tier(5).target.value))
+                    else -> ruleTarget ?: t.target
+                }
+                val target = cappedTarget(requested, policy)
+                val dur = if ((free != null || ruleTarget != null || levelFiveEligible) && isHold) maxOf(secs, (target.max ?: target.value) + 3) else secs
+                out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, if (levelFiveEligible) 5 else t.index,
                     mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams, freeTarget = free != null, groupIndex = group,
-                    progressionRouteId = c.slot.progressionRouteId, inferredStartTier = c.inferredStartTier.takeIf { free == null && ruleTarget == null })
+                    progressionRouteId = c.slot.progressionRouteId, inferredStartTier = c.inferredStartTier.takeIf { free == null && ruleTarget == null && !levelFiveEligible },
+                    levelFiveEligible = levelFiveEligible, targetRevision = cat.personalTargets[v.id]?.revision ?: 0)
             }
             val isLast = pos == order.lastIndex
             fun extras() {
@@ -457,7 +480,11 @@ private class Planner(val input: PlanInput) {
             // R8.1-T06 (F7): Flow drops the rest between exercises; the rest after a set (before the same exercise again, or at the end of a round) stays
             val next = order.getOrNull(pos + 1)
             val betweenExercises = next != null && isBetweenExercises(draft.format, r, si, group, next)
-            if (isLast || restSecs <= 0 || (draft.flow && betweenExercises)) { extras(); continue }
+            val betweenMode = effectiveBetweenSetMode(draft.betweenSetMode, draft.flow, draft.stretchOn)
+            if (isLast || restSecs <= 0 || betweenMode == BetweenSetMode.FLOW) {
+                if (betweenMode != BetweenSetMode.FLOW) extras()
+                continue
+            }
             // Timed mode keeps one 60 s cycle per exercise: the time a short hold does not use goes to the recovery (the stretch when stretch is on).
             val window = if (draft.timed) TIMED_REST_SECONDS + (TIMED_WORK_SECONDS - workTotal).coerceAtLeast(0) else restSecs
             if (!draft.stretchOn) {
@@ -524,13 +551,20 @@ private class Planner(val input: PlanInput) {
     private fun withTransitions(blocks: List<TimelineBlock>): List<TimelineBlock> {
         val out = mutableListOf<TimelineBlock>(); var n = 0
         var prevPos: String? = null
-        for (b in blocks) {
+        var sawWork = false
+        val mode = effectiveBetweenSetMode(draft.betweenSetMode, draft.flow, draft.stretchOn)
+        val prep = draft.preparationSeconds.coerceIn(1, 30)
+        for (b0 in blocks) {
+            val b = b0
             val pos = b.variationId?.let { cat.variation(it)?.position }
-            if ((prevPos != null && pos != null && pos != prevPos) || needsSideChangePreparation(out.lastOrNull(), b)) {
-                out += TimelineBlock("tr-${++n}", BlockType.TRANSITION, TRANSITION_SECONDS, b.roundIndex, b.slotId, groupIndex = b.groupIndex)
+            val flowPrep = mode == BetweenSetMode.FLOW && b.type == BlockType.WORK && sawWork && out.lastOrNull()?.type != BlockType.TRANSITION
+            val ordinaryPrep = mode != BetweenSetMode.FLOW && ((b.type == BlockType.WORK && prevPos != null && pos != null && pos != prevPos) || needsSideChangePreparation(out.lastOrNull(), b))
+            if (flowPrep || ordinaryPrep) {
+                out += TimelineBlock("tr-${++n}", BlockType.TRANSITION, prep, b.roundIndex, b.slotId, b.variationId, b.side, b.target, prescriptionTier = b.prescriptionTier, groupIndex = b.groupIndex, mediaId = b.mediaId)
             }
             out += b
             if (pos != null) prevPos = pos
+            if (b.type == BlockType.WORK) sawWork = true
         }
         return out
     }

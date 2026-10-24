@@ -181,7 +181,7 @@ def saw():
         turn=ease((u-.12)/.18)*(1.0-ease((u-.79)/.13))
         bend=ease((u-.30)/.20)*(1.0-ease((u-.62)/.22))
         twist=side*38.0*turn
-        k=_key([0,0,.11],60.0*bend,80.0*bend,
+        k=_key([.03*math.sin(math.radians(60.0*bend)),0,.11],60.0*bend,80.0*bend,
                [[.846,-.30,.08],[.846,.30,.08]],yaw=0,
                thoracic_twist=twist,head_turn=side*12.0*turn,
                knees=[[0,0,1],[0,0,1]],feetdir=[[1,0,0],[1,0,0]])
@@ -190,8 +190,8 @@ def saw():
         # twists; derive the forward offset from each hip to avoid IK stretch.
         for name,sgn in [('r',-1),('l',1)]:
             hip=j['hip_'+name];dy=sgn*.30-hip[1]
-            dx=math.sqrt(max(0.0,.8695**2-dy**2-(hip[2]-.08)**2))
-            k['ankle_'+name]=[hip[0]+dx,sgn*.30,.08]
+            dx=math.sqrt(.8695**2-dy**2-.015**2)
+            k['ankle_'+name]=[dx,sgn*.30,.08]
         j=solve(k,{})
         chest_left=j['chest_left']
         for name,sgn in [('r',-1),('l',1)]:
@@ -207,27 +207,44 @@ def saw():
             target=[ank[0]+.22,ank[1]+(.045 if opposite=='l' else -.045),ank[2]]
             v=[target[i]-sh[i] for i in range(3)];n=math.sqrt(sum(x*x for x in v))
             d=[x/n for x in v] if n else [1,0,0]
-            reach=min(.568,max(0.0,n-.17));k['wrist_'+reaching]=[sh[i]+reach*d[i] for i in range(3)]
-            k['hand_'+reaching]=d;k['elbow_'+reaching]=[0,0,1]
+            reach=min(.568,max(0.0,n-.17))
+            start=k['wrist_'+reaching]; end=[sh[i]+reach*d[i] for i in range(3)]
+            k['wrist_'+reaching]=[start[i]+bend*(end[i]-start[i]) for i in range(3)]
+            initial=k['hand_'+reaching]
+            k['hand_'+reaching]=[initial[i]+bend*(d[i]-initial[i]) for i in range(3)]
+            k['elbow_'+reaching]=[0,0,1]
             rear='l' if reaching=='r' else 'r';sr=j['shoulder_'+rear]
             # Keep the back arm reaching behind in the horizontal plane;
             # tilting the chest's lateral axis with the forward fold lifts it overhead.
             upright_left=trunk_frame(0,0,twist)[1]
             rd=[(-1.0 if rear=='r' else 1.0)*x for x in upright_left]
-            k['wrist_'+rear]=[sr[i]+.568*rd[i] for i in range(3)];k['hand_'+rear]=rd
+            start=k['wrist_'+rear];end=[sr[i]+.568*rd[i] for i in range(3)]
+            k['wrist_'+rear]=[start[i]+bend*(end[i]-start[i]) for i in range(3)]
+            initial=k['hand_'+rear];k['hand_'+rear]=[initial[i]+bend*(rd[i]-initial[i]) for i in range(3)]
         return k
-    return dict(seconds=8,keys=_dense(k,256),cam_az=34,cam_el=24,props=REPAIR_MAT)
+    return dict(seconds=8.5,keys=_dense(k,256),interpolation='continuous',cam_az=34,cam_el=24,props=REPAIR_MAT)
 
 def roll_over():
     # Start supine, curl from the pelvis through the upper trunk, then lower in
     # reverse order. The contact formula keeps the trunk supported by the mat.
     def pose(s, opened=0):
+        # Let the pelvis/lumbar hinge start the roll, then progressively curl
+        # the upper trunk as the legs pass overhead. On the return this reverses
+        # the order, keeping the shoulder-blade support phase visible.
         q1=s*s*(3-2*s)
-        q2=max(0.0,min(1.0,(s-.08)/.92));q2=q2*q2*(3-2*q2)
-        p1=-90.0-55.0*q1; p2=-90.0-25.0*q2; hp=10.0+40.0*q2
+        x=max(0.0,min(1.0,(s-.14)/.86)); q2=x*x*(3-2*x)
+        p1=-90.0-62.0*q1; p2=-90.0-8.0*q2; hp=10.0+28.0*q2
         u1,_=trunk_frame(p1);u2,_=trunk_frame(p2)
         sp=.24*u1[2]; ch=sp+.26*u2[2]
         pz=.01-min(-.09,sp-.09,ch-.10)
+        # The rendered chest ellipsoid is centered at chest - .11*u2 and has
+        # radii (.115, .175, .17). In this sagittal plane, its world-vertical
+        # support radius is set by the local-X and local-Z axes. Raise only
+        # enough to maintain 1 mm of chest-surface clearance; wrist anchors
+        # stay at their authored floor targets.
+        chest_surface_radius=math.sqrt((.115*u2[0])**2+(.17*u2[2])**2)
+        # 0.1 mm extra margin covers rounded joint/orientation serialization.
+        pz=max(pz,chest_surface_radius+.11*u2[2]-ch+.0011)
         P=[-.16*q1,0.0,pz]
         # Constant leg radius, with feet rotating from vertical to parallel beyond the head.
         ang=math.pi/2*q1
@@ -240,10 +257,23 @@ def roll_over():
             r=math.sqrt(.8695**2-dy**2)
             ank=[hip[0]+r*dx,hip[1]+dy,hip[2]+r*dz]
             ankles.append(ank); feet.append([-math.sin(ang),0,math.cos(ang)])
-        # Arms lie long beside the body with palms down; the upper trunk remains the support.
-        return _pm_floor_arms(_key(P,p1,p2,[ankles[0],ankles[1]],[[-.42,-.19,.035],[-.42,.19,.035]],hp=hp,
-                    knees=[[1,0,0],[1,0,0]],arms=[[0,-1,0],[0,1,0]],hands=[[1,0,0],[1,0,0]],
-                    feetdir=[feet[0],feet[1]]))
+        # Keep palms at fixed mat targets as the pelvis rolls. The shared
+        # helper deliberately follows the shoulders for other Pilates arcs;
+        # this exercise instead uses stable floor support beside the torso.
+        k=_key(P,p1,p2,[ankles[0],ankles[1]],[[.03,-.18,.04],[.03,.18,.04]],hp=hp,
+               knees=[[1,0,0],[1,0,0]],arms=[[0,-1,0],[0,1,0]],hands=[[1,0,0],[1,0,0]],
+               feetdir=[feet[0],feet[1]])
+        # Follow each solved shin, with a small side-specific toe splay. The
+        # offset avoids the nearly collinear heel-frame fallback used by render.
+        j=solve(k,{})
+        left=trunk_frame(p1)[1]
+        for side,sgn in [('r',-1),('l',1)]:
+            shin=[j['ankle_'+side][i]-j['knee_'+side][i] for i in range(3)]
+            length=math.sqrt(sum(x*x for x in shin))
+            pointed=[shin[i]/length+.22*sgn*left[i] for i in range(3)]
+            mag=math.sqrt(sum(x*x for x in pointed))
+            k['foot_'+side]=[x/mag for x in pointed]
+        return k
     keys=[]
     for i in range(97):
         t=i/96

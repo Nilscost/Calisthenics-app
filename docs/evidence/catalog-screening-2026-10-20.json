@@ -1,0 +1,879 @@
+{
+  "schema": 1,
+  "scope": "Technical screening only. No clip is approved for exercise form by this report.",
+  "seconds": 12.01,
+  "total": 533,
+  "technical_status_counts": {
+    "review": 111,
+    "no_flags": 422
+  },
+  "flag_counts": {
+    "high_joint_speed": 99,
+    "large_loop_step": 34
+  },
+  "motion_contract_counts": {
+    "unscoped": 531,
+    "pass": 2
+  },
+  "not_checked": [
+    "reference agreement for remaining movements",
+    "full mesh collisions",
+    "intended contact anchors per exercise",
+    "expert form approval",
+    "phone playback"
+  ],
+  "decoded_frames": 48310,
+  "agent_reports": {
+    "a": {
+      "lane": "a",
+      "inspected_files": [
+        "tools/blender/families/rings.py",
+        "tools/blender/families/pull_row.py",
+        "tools/blender/families/pullup_new.py",
+        "tools/blender/families/levers.py",
+        "tools/blender/families/handstand_balance.py",
+        "tools/blender/families/dip_planche.py",
+        "tools/blender/families/flag_pole.py",
+        "app/src/main/assets/catalog.json"
+      ],
+      "candidates": [
+        {
+          "id": "ring-muscle-up",
+          "complexity": 5,
+          "why_complex": "Multi-phase transition from false-grip hang through pull, elbow turnover and ring support, with wrists and ring props interpolated across 64 dense samples.",
+          "review_questions": [
+            "Do both hands remain attached to the rings throughout the turnover?",
+            "Does the torso travel smoothly from below to above the rings without a discontinuous elbow or shoulder path?",
+            "Does support finish with straight arms and stable rings?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The transition may look mechanically abrupt despite dense timing.",
+              "evidence": "The pose is interpolated between four discrete _mu_pose stages; 64 samples densify the path but do not add independently solved transition poses.",
+              "certainty": "low"
+            }
+          ],
+          "source_file": "tools/blender/families/rings.py"
+        },
+        {
+          "id": "pullup-pullover",
+          "complexity": 5,
+          "why_complex": "The body must roll around the bar from hanging to front support, requiring coordinated trunk rotation, leg clearance and hand contact.",
+          "review_questions": [
+            "Do the hips and legs clear the bar continuously?",
+            "Do the hands stay on the bar as the torso rolls over it?",
+            "Does the finish read as front support on top rather than a teleport or pass-through?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The available source may simplify or omit the full return path.",
+              "evidence": "Catalog instructions promise a slow lowering, while the pullup family source was inspected for related transitions; the exact pullover function was not separately isolated in this review.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/pullup_new.py"
+        },
+        {
+          "id": "dip-russian",
+          "complexity": 5,
+          "why_complex": "A four-second movement transitions from bar support to forearm support, pauses, rolls forward and presses back to support.",
+          "review_questions": [
+            "Do the forearms visibly settle on the bars before the return roll?",
+            "Do hands and elbows maintain plausible bar contact through both transitions?",
+            "Does the body avoid intersecting the bars during the backward roll?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "Contact fidelity through the forearm phase needs close inspection.",
+              "evidence": "The source blends body pitch and elbow targets through top, forearm and press poses; explicit wrist and forearm contact targets are not apparent in the phase tuples.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/dip_planche.py"
+        },
+        {
+          "id": "flag-kick-press",
+          "complexity": 5,
+          "why_complex": "A pole-assisted kick rotates through a large arc with a tucked-to-straight leg change, two-hand pole grip, floor-level start and landing.",
+          "review_questions": [
+            "Do both hands stay on the pole through the kick and return?",
+            "Does the leg tuck happen at a coherent point in the rotation?",
+            "Do the feet begin and finish at floor level without sliding or penetration?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The repeated pose arc may read as a kick up and immediate reverse rather than a controlled kick press.",
+              "evidence": "The angle keys run 0 to 180 degrees and immediately back to 0; after the return, extra landing and hold keys repeat the start pose.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/flag_pole.py"
+        },
+        {
+          "id": "handstand-kick-up",
+          "complexity": 4,
+          "why_complex": "A lunge and split-leg kick-up passes through an intermediate rise to inversion, then reverses toward the start; balance and hand contact are central.",
+          "review_questions": [
+            "Do the hands plant before the hips rise above the shoulders?",
+            "Do the legs pass through a believable split and close near vertical?",
+            "Does the descent return in a controlled way consistent with the instruction?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The source encodes sparse phase poses and a symmetric reverse, which may underrepresent a real kick-up and controlled exit.",
+              "evidence": "Six keys cover start, rise and top and then mirror the rise/start; no distinct step-down or side-bail pose is encoded.",
+              "certainty": "high"
+            }
+          ],
+          "source_file": "tools/blender/families/handstand_balance.py"
+        },
+        {
+          "id": "ring-pushup-rto-archer",
+          "complexity": 4,
+          "why_complex": "Unstable ring support combines asymmetric loading, one arm reaching laterally, alternating sides and ring turnout.",
+          "review_questions": [
+            "Does the unloaded arm straighten laterally while the loaded arm bends, without shoulder collapse?",
+            "Do the rings remain in the hands and stay near their suspension lines?",
+            "Does the return to center precede the turnout at the top?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The archer excursion may move the rings or shoulders beyond plausible support geometry.",
+              "evidence": "The source builds the pose by parameterizing archer reach alongside push depth and turnout, without explicit ring swing simulation.",
+              "certainty": "low"
+            }
+          ],
+          "source_file": "tools/blender/families/rings.py"
+        }
+      ],
+      "limitations": [
+        "This was source and catalog inspection only; no encoded frames or full videos were reviewed.",
+        "The pullover function body was not isolated during this pass, so its source-level concern is less certain.",
+        "No form certification or comparison against reference demonstrations was performed."
+      ],
+      "changed_files": [
+        "work/catalog-screening/luna-a.json"
+      ],
+      "checks_run": [
+        "Read the lane contract and inspected all seven assigned family files.",
+        "Used Python to select actual catalog IDs, names and instructions for the upper-body/inversion subset.",
+        "Cross-checked the shortlisted IDs against catalog entries."
+      ],
+      "unresolved_issues": [
+        "Consider extracting encoded frames for the six candidates if the pilot requires a visual pass.",
+        "Confirm pullup-pullover source details if that candidate remains in the root shortlist."
+      ],
+      "encoded_frame_review": [
+        {
+          "id": "ring-muscle-up",
+          "observations": [
+            "The sheet shows the sequence from a vertical hang through bent-arm/tucked positions and a near-upright support, then reverses through bent arms to a hanging pose in the last sampled frame at 4.46 s.",
+            "Ring straps remain visibly vertical in every sampled frame; in the supposed support phase the figure reads as upright with arms low beside the body, while the hands' contact with the rings is difficult to verify at this scale.",
+            "The final sampled hang resembles the opening pose, consistent with a loop boundary."
+          ],
+          "source_checks": "rings.py defines four _mu_pose stages, dense interpolation and moving ring props; the source accounts for the overall phase reversal, but the still sheet cannot establish continuous contact between samples.",
+          "uncertainty": "Moderate: selected encoded frames only; small hands and rings are hard to resolve, and this does not establish full playback behavior.",
+          "form_approval": false
+        },
+        {
+          "id": "pullup-pullover",
+          "observations": [
+            "Frame 0 is a straight hang; later samples show a bent-arm pull and the torso rotating over the bar to a horizontal, then inverted-looking position.",
+            "By 2.67 s the figure is back in a bent-knee support-like position above the bar, and the 3.38 s frame is upright seated/support-like on top.",
+            "The sampled sequence then returns to a horizontal/inverted-looking shape at 4.04 s and ends at 4.46 s in a bent-arm hang rather than the opening straight hang.",
+            "The bar appears to pass through or obscure the torso near the horizontal frames; at this resolution the exact hand and hip contact cannot be confirmed."
+          ],
+          "source_checks": "Only the assigned pullup_new.py family file was inspected; the exact pullover function was not isolated, so no code-level phase/contact interpretation is claimed.",
+          "uncertainty": "Moderate: the contact sheet samples eight encoded frames and does not show interpolation or complete playback; the apparent end pose mismatch may be due to clip timing/sample selection.",
+          "form_approval": false
+        },
+        {
+          "id": "handstand-press-straddle",
+          "observations": [
+            "The first frame shows a low, deeply folded straddle with hands planted; the sampled sequence lifts the hips and straight legs while the hands remain visually planted.",
+            "The legs draw from a wide straddle toward together and the final frames reach a near-vertical handstand, but the sheet ends in the inverted position rather than showing a lowering phase.",
+            "Across the later frames the torso appears markedly arched, and one foot can appear slightly ahead of the other in perspective; a single side view cannot determine whether this is intended alignment or an artifact."
+          ],
+          "source_checks": "handstand_balance.py creates 49 evenly spaced poses over t=0..1, narrows leg spread from 0.30 to 0.005, sets both hands at fixed wrist targets, and rotates p1 toward 180 degrees. It encodes a press ascent only, matching the endpoint but not the catalog instruction's stated lower the same way.",
+          "uncertainty": "Moderate: observations are from selected contact-sheet frames and one camera angle; no full playback or form validation.",
+          "form_approval": false
+        }
+      ]
+    },
+    "b": {
+      "lane": "b",
+      "inspected_files": [
+        "tools/blender/poses.py",
+        "tools/blender/families/plyo_b.py",
+        "tools/blender/families/warmup_weights.py",
+        "tools/blender/families/conditioning.py",
+        "tools/blender/families/squat_lowerlegs.py"
+      ],
+      "candidates": [
+        {
+          "id": "depth-jump",
+          "complexity": 5,
+          "why_complex": "The movement combines a controlled step from a 30 cm box, a two-foot landing, a quick rebound and a second landing. This has several distinct contacts and a short ground phase.",
+          "review_questions": [
+            "Does the first contact visibly absorb the step before takeoff?",
+            "Does the rebound begin promptly from the landing, with both feet leaving together?",
+            "Does the box remain aligned with the step-off and return path?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The step-off may read as a forward leap because the scripted foot and pelvis positions separate over a short interval.",
+              "evidence": "plyo_b.py depth_jump keys transition from top at x=-.42 to step at x=-.12, then fall at x=.30; first landing is keyed at t=.30.",
+              "certainty": "medium"
+            },
+            {
+              "claim": "The final scripted recovery path may be difficult to interpret as a safe walk-back onto the box.",
+              "evidence": "After the rebound and second landing, _timed_walk keys move around two axes before explicit step_up_r and step_up_l keys return to top.",
+              "certainty": "low"
+            }
+          ],
+          "source_file": "tools/blender/families/plyo_b.py"
+        },
+        {
+          "id": "skater-bound",
+          "complexity": 5,
+          "why_complex": "Repeated lateral bounds alternate single-leg support while the free leg sweeps behind, requiring visible side travel, flight and stable catches.",
+          "review_questions": [
+            "Does the landing alternate to the opposite foot on each bound?",
+            "Does the free leg pass behind the support leg during each catch?",
+            "Are lateral travel and arm counter-swing clear from the selected camera?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The support-side switch may be hard to read because the pelvis returns to x=0 and alternates only the lateral y coordinate.",
+              "evidence": "skater_bound landing keys use y=-.32 then +.32 while x remains 0; the flight keys return both feet near the center line.",
+              "certainty": "medium"
+            },
+            {
+              "claim": "Landing depth changes sharply at the later catch keys and may look like a pose snap.",
+              "evidence": "landing() sets pelvis z=.91 for p<15 and .70 otherwise; transition keys include p=26 at t=.38 and .77.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/plyo_b.py"
+        },
+        {
+          "id": "zigzag-hop",
+          "complexity": 5,
+          "why_complex": "A single-foot sequence crosses laterally between marker lanes while progressing forward, includes repeated airborne contacts, then a walk-back and switch-ready start.",
+          "review_questions": [
+            "Does each landing alternate cleanly across the two marker lanes while moving forward?",
+            "Are the markers visible and do the feet clear them?",
+            "Does the recovery walk-back read separately from the hopping sequence?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "Some later hops may appear nearly continuous without a distinct support/contact phase.",
+              "evidence": "Several transitions alternate single-foot keys and flight keys at 0.12-second intervals; a final single-foot key at .78 is followed by a two-foot key at .80.",
+              "certainty": "medium"
+            },
+            {
+              "claim": "The return path and switch-side intent may be ambiguous in a short loop.",
+              "evidence": "The scripted path walks back from x=1.44 between .82 and .98, then ends in the original right-foot _single pose; catalog asks the user to walk back and switch legs.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/plyo_b.py"
+        },
+        {
+          "id": "squat-pistol",
+          "complexity": 4,
+          "why_complex": "A deep unilateral squat holds the free leg straight in front, combining balance, ankle range, knee tracking and a large center-of-mass shift.",
+          "review_questions": [
+            "Does the free leg stay straight and forward through the full descent?",
+            "Does the support heel stay planted at the bottom?",
+            "Is the bottom position controlled, with a visible return to standing?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The bottom may compromise heel contact or support-leg alignment at the deep range.",
+              "evidence": "poses.py pistol moves pelvis from z=.955 to .36 with p1=38 and p2=48; the support ankle is fixed and the foot direction is specified separately.",
+              "certainty": "medium"
+            },
+            {
+              "claim": "The pose may not convey a complete repetition because the keys hold at the bottom and finish without an explicit standing return.",
+              "evidence": "pistol() keyed sequence ends with the bottom held from t=.48 to .58; its four-second timeline has no later top key.",
+              "certainty": "high"
+            }
+          ],
+          "source_file": "tools/blender/poses.py"
+        },
+        {
+          "id": "dumbbell-single-leg-rdl",
+          "complexity": 4,
+          "why_complex": "A single-leg hip hinge balances the body while the free leg extends behind and two dumbbells remain in the hands, so torso, free leg and loads must counterbalance together.",
+          "review_questions": [
+            "Does the trunk hinge while remaining visually aligned with the reaching leg?",
+            "Do both dumbbells stay in the hands and travel with them?",
+            "Does the support foot remain planted and does the athlete return upright?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The bottom pose may not achieve a level trunk and rear-leg line.",
+              "evidence": "warmup_weights.py sets trunk p=60 and p2=64 while the free-leg ankle relative vector is [-.80,.01,-.35] at the bottom.",
+              "certainty": "medium"
+            },
+            {
+              "claim": "The demonstration could conflict with the catalog's opposite-hand single-dumbbell option because the animation always has two weights.",
+              "evidence": "dumbbell_single_leg_rdl() explicitly creates weights attached to both wrists; the catalog instructions allow opposite-hand weight or one in each hand.",
+              "certainty": "high"
+            }
+          ],
+          "source_file": "tools/blender/families/warmup_weights.py"
+        },
+        {
+          "id": "burpee-pushup",
+          "complexity": 5,
+          "why_complex": "The cycle combines standing, crouch, plank/push-up, feet-in transition and a finishing jump, with multiple whole-body level changes and hand/foot contacts.",
+          "review_questions": [
+            "Do the feet travel back into a stable plank before the push-up?",
+            "Does the body remain aligned through the push-up and return?",
+            "Does the final jump clearly follow standing, rather than blending into the preceding transition?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The push-up may not show a lowering-and-pressing cycle.",
+              "evidence": "conditioning.py inserts the same bottom pose twice at .34 and .40, then jumps directly to top at .48; no distinct high-plank key appears within the push-up branch.",
+              "certainty": "high"
+            },
+            {
+              "claim": "The final jump's foot flight may appear compressed or incomplete.",
+              "evidence": "The finish uses launch at .80, apex at .86 and landing at .92, with no distinct crouch/load key before launch.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/conditioning.py"
+        }
+      ],
+      "limitations": [
+        "Reviewed source instructions and scripted pose/key definitions only; did not inspect rendered videos or encoded frames.",
+        "Potential issues are hypotheses from source code, not measured geometry or confirmed visual defects.",
+        "Only catalog names and instructions were selectively queried for shortlisted IDs.",
+        "No renderer, animation source, catalog, shipped video or other lane output was changed."
+      ],
+      "changed_files": [
+        "work/catalog-screening/luna-b.json"
+      ],
+      "checks_run": [
+        "Read agent-contract.md.",
+        "Confirmed candidate IDs and selected catalog instructions with a targeted Python query.",
+        "Read each candidate's source function and relevant key definitions."
+      ],
+      "unresolved_issues": [
+        "Visual playback and encoded-frame review remain for the screening owner.",
+        "No geometry or prop-contact checks were run."
+      ],
+      "encoded_frame_review": [
+        {
+          "id": "depth-jump",
+          "observations": [
+            "At 0.00 s both feet are on the box; at 1.17 s one foot is on the floor while the other remains near/on the box, depicting a step-off transition.",
+            "At 2.38 s the figure is in a very deep two-foot landing position beside the box; the sampled frames do not show a distinct intermediate landing pause before the later jump.",
+            "At 3.58 s both feet appear airborne. At 4.79 s the figure is back in a bent-knee floor contact; at 6.00 s it is again airborne or transitioning through a high contact pose.",
+            "The 7.17 s frame shows the figure low beside the box and 7.96 s shows both feet back on top. The sampled views show a return to the box, though the intervening route and step sequence are not fully captured."
+          ],
+          "uncertainty": "These are selected encoded frames from the contact sheet, not continuous playback; exact contact timing and intervening transitions remain uncertain. No form approval."
+        },
+        {
+          "id": "burpee-pushup",
+          "observations": [
+            "At 0.88 s the figure is in a hands-down, hips-high transition; 1.79 s and 2.67 s both show an extended plank-like body with bent arms near floor contact.",
+            "At 3.42 s the feet are moving forward beneath the torso while the hands remain on the floor. At 4.50 s the figure is upright.",
+            "At 5.38 s the figure is in a backward-leaning bent-knee pose; by 5.96 s it appears upright again. The sampled frames do not clearly establish a separate airborne apex or a distinct feet-together landing."
+          ],
+          "uncertainty": "The contact sheet sparsely samples the cycle; it cannot establish whether the push-up includes an unseen press phase or resolve the final jump timing. No form approval."
+        },
+        {
+          "id": "squat-pistol",
+          "observations": [
+            "At 0.00 s and 0.58 s the figure balances on one foot with the other leg extended in front and both arms reaching forward.",
+            "At 1.17\u20132.38 s the support knee bends into a deep squat; the forward leg remains extended and its heel is visibly raised, while the support foot appears planted.",
+            "At 3.00 s the figure remains low; at 3.58 s it is rising and at 3.96 s it is near upright. This sampled return differs from the source-level concern that no later standing key was apparent."
+          ],
+          "uncertainty": "The selected frames suggest the return occurs through interpolation but do not show every instant or confirm joint/contact geometry. No form approval."
+        }
+      ]
+    },
+    "c": {
+      "lane": "c",
+      "inspected_files": [
+        "tools/blender/families/pilates_mat.py",
+        "tools/blender/families/hanging_core.py",
+        "tools/blender/families/core.py",
+        "tools/blender/families/core_floor.py",
+        "tools/blender/families/core_supine.py",
+        "tools/blender/families/hips_back.py",
+        "tools/blender/families/hips_bridge.py",
+        "tools/blender/families/stretches_a.py",
+        "tools/blender/families/stretches_b.py",
+        "tools/blender/families/stretches_c.py",
+        "tools/blender/families/army_drill.py",
+        "tools/blender/families/neck_knee_warmup.py",
+        "app/src/main/assets/catalog.json"
+      ],
+      "candidates": [
+        {
+          "id": "pilates-roll-over",
+          "complexity": 5,
+          "why_complex": "The movement rolls the pelvis and trunk overhead, opens the legs, then articulates back to supine while maintaining mat support.",
+          "review_questions": [
+            "Does the pelvis travel overhead with the trunk rather than the legs simply swinging independently?",
+            "Do shoulders and arms remain grounded as support while the hips lift?",
+            "Does the return lower the spine smoothly without a visible snap or floor penetration?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The source approximates spinal articulation with two trunk hinges and may look like a rigid segment rotation.",
+              "evidence": "The comments describe curling through the pelvis and upper trunk; the trajectory uses p1 and p2 hinges, with 97 sampled poses rather than individual vertebrae.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/pilates_mat.py"
+        },
+        {
+          "id": "pilates-open-leg-rocker",
+          "complexity": 5,
+          "why_complex": "A balanced V-shaped leg position rocks the body across the shoulder blades and back to a seated balance, with ankle holds and long legs.",
+          "review_questions": [
+            "Does the body roll over the shoulder blades and return to a stable seated balance?",
+            "Do the hands appear to hold the ankles through the arc without reaching or losing contact?",
+            "Do both legs preserve a plausible V and avoid floor intersection?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The idealized circular leg geometry and pelvis arc may preserve shape while producing a mechanically sliding roll.",
+              "evidence": "The shared _roll function holds each ankle at a fixed .866 m radius with fixed foot width and generates the motion from a single smooth parameter.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/pilates_mat.py"
+        },
+        {
+          "id": "pilates-saw",
+          "complexity": 4,
+          "why_complex": "Alternates a seated spinal twist and forward reach toward the opposite foot while keeping the legs wide and planted.",
+          "review_questions": [
+            "Does the torso twist before folding toward the opposite foot?",
+            "Do the heels remain planted and the hips stay seated as the torso rotates?",
+            "Does the reaching hand approach the little-toe edge without arm or shoulder distortion?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The capped reach may stop short of the toe, or the rear arm may lift unnaturally as the torso folds.",
+              "evidence": "The source caps reaching-wrist travel to arm length and separately derives the rear arm from an upright chest axis while bending.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/pilates_mat.py"
+        },
+        {
+          "id": "hanging-windshield-wiper",
+          "complexity": 5,
+          "why_complex": "From a bar-supported hang, the straight legs raise near the bar and sweep laterally to both sides while the shoulders and grip carry the body.",
+          "review_questions": [
+            "Do both hands stay attached to the bar through the leg raise and side sweeps?",
+            "Does the pelvis and trunk react plausibly to the lateral leg sweep rather than remaining unnaturally fixed?",
+            "Do the legs clear the bar and sweep symmetrically without shortening?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The legs may sweep while the trunk and shoulder line remain too static for a hanging rotation.",
+              "evidence": "_wiper_pose places both ankles on a constant-radius path around a steady hip; _wiper_keys varies elevation and side angle but does not describe trunk rotation or swing.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/hanging_core.py"
+        },
+        {
+          "id": "dragon-flag",
+          "complexity": 5,
+          "why_complex": "The body lowers and rises as a long lever around upper-back support on a bench, requiring a rigid trunk-to-leg line and fixed shoulder contact.",
+          "review_questions": [
+            "Does the upper back remain supported on the bench while the pelvis and legs arc?",
+            "Does the body stay straight from shoulders through hips to ankles during the raise and lower?",
+            "Do the hands brace plausibly against the bench without slipping or intersecting it?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The body may appear to pivot as a rigid plank around a single chest point, with no visible shoulder or bench pressure adjustment.",
+              "evidence": "_dragon_pose fixes the chest point and sets p1 and p2 to the same angle; sampled arc keys change only the body angle while wrist targets remain fixed.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/hanging_core.py"
+        },
+        {
+          "id": "pilates-rolling-like-a-ball",
+          "complexity": 4,
+          "why_complex": "The tucked body rolls backward to the shoulder blades and returns to balance while holding the shins, combining curved trunk shape, rocking and contact.",
+          "review_questions": [
+            "Does the roll stop on the shoulder blades rather than the neck?",
+            "Do the hands maintain contact with the shins and the tucked shape throughout?",
+            "Does the return reach a balanced seated position without bouncing or sliding?"
+          ],
+          "suspected_issues": [
+            {
+              "claim": "The tucked roll may read as a rotating pelvis and torso segment instead of a rounded body rocking over the shoulder blades.",
+              "evidence": "The animation uses the shared _roll parameterization with two trunk hinges and places ankle contacts via a formula; all 97 samples are generated from one scalar arc.",
+              "certainty": "medium"
+            }
+          ],
+          "source_file": "tools/blender/families/pilates_mat.py"
+        }
+      ],
+      "limitations": [
+        "Review was based on source and catalog instructions; no encoded frames or full videos were reviewed.",
+        "No measured geometry, reference-video comparison, device viewing, or form certification was performed."
+      ],
+      "changed_files": [
+        "work/catalog-screening/luna-c.json"
+      ],
+      "checks_run": [
+        "Read the lane contract and inspected all 12 assigned family files.",
+        "Selected names, instructions, and IDs from app/src/main/assets/catalog.json; confirmed it contains 533 variations.",
+        "Cross-checked each candidate ID against the catalog and its source family mapping."
+      ],
+      "unresolved_issues": [
+        "Rendered encoded frames could clarify whether the dense paths maintain convincing floor, bench, ankle, and bar contacts.",
+        "No family source was modified; all suspected limitations remain review questions rather than confirmed playback defects."
+      ],
+      "encoded_frame_review": [
+        {
+          "id": "pilates-roll-over",
+          "image": "work/catalog-screening/frames/pilates-roll-over.jpg",
+          "visible_observations": "Across the sampled 0.00\u20133.96 s frames, the legs pass from vertical through an overhead arc and return. The pelvis lifts, while the head, shoulders and arms remain close to the mat; the upper trunk looks comparatively flat, with the bend concentrated around the pelvis and mid-trunk. Arms and palms appear consistently planted beside the body. The stills do not establish whether the intermediate spinal motion reads smoothly in playback.",
+          "source_check": "Consistent with pilates_mat.py roll_over(): p1 and p2 provide two trunk hinges, arms are assigned floor-level wrist targets, and the path is sampled at 97 points.",
+          "uncertainty": "Selected stills only; no continuous playback or contact/force measurement. The single camera angle limits assessment of depth and exact mat contact.",
+          "form_approval": false
+        },
+        {
+          "id": "hanging-windshield-wiper",
+          "image": "work/catalog-screening/frames/hanging-windshield-wiper.jpg",
+          "visible_observations": "Hands remain at the bar in the sampled frames. The legs raise together and move through a lateral sweep, reaching near-horizontal positions around 4.29\u20134.50 s; the torso and shoulder line remain nearly vertical and visually steady while the legs change direction. At the deepest raised positions, the legs overlap in this view, so independent leg alignment is hard to judge. The stills cannot confirm timing or whether the torso response feels natural in motion.",
+          "source_check": "Consistent with hanging_core.py _wiper_pose/_wiper_keys: the ankles follow a constant-radius path about a steady hip; the key path varies leg elevation and side angle, with no explicit torso-swing parameter.",
+          "uncertainty": "Selected stills only; no continuous playback or measured hand/bar contact. The frontal view can hide depth offsets and leg separation.",
+          "form_approval": false
+        }
+      ]
+    }
+  },
+  "review_set": {
+    "clips": [
+      {
+        "id": "ring-muscle-up",
+        "focus": "Pull, turnover and support on moving rings",
+        "question": "Do the wrists, elbows and rings stay connected naturally through the turnover?",
+        "name": "Ring Muscle-Up",
+        "bytes": 16010,
+        "duration_s": 4.5,
+        "technical_flags": [
+          {
+            "check": "high_joint_speed",
+            "severity": "review",
+            "frame": 104,
+            "joint": "toe_r",
+            "value_m_s": 5.4134
+          },
+          {
+            "check": "large_loop_step",
+            "severity": "review",
+            "joint": "knee_r",
+            "value_m": 0.0958
+          }
+        ],
+        "encoded_frames_sampled": [
+          0,
+          16,
+          32,
+          48,
+          64,
+          81,
+          97,
+          104,
+          107
+        ],
+        "form_status": "not_approved"
+      },
+      {
+        "id": "pullup-pullover",
+        "focus": "Large body rotation around a bar",
+        "question": "Does the body clear the bar and reach support with a believable path and pace?",
+        "name": "Bar Pullover",
+        "bytes": 21929,
+        "duration_s": 4.5,
+        "technical_flags": [
+          {
+            "check": "high_joint_speed",
+            "severity": "review",
+            "frame": 106,
+            "joint": "toe_r",
+            "value_m_s": 32.6408
+          },
+          {
+            "check": "large_loop_step",
+            "severity": "review",
+            "joint": "toe_r",
+            "value_m": 0.3084
+          }
+        ],
+        "encoded_frames_sampled": [
+          0,
+          16,
+          32,
+          48,
+          64,
+          81,
+          97,
+          106,
+          107
+        ],
+        "form_status": "not_approved"
+      },
+      {
+        "id": "handstand-press-straddle",
+        "focus": "Inversion, straddle closure and balance",
+        "question": "Does the press look controlled, and does the return to the start look natural?",
+        "name": "Straddle Press to Handstand",
+        "bytes": 18275,
+        "duration_s": 4.0,
+        "technical_flags": [
+          {
+            "check": "large_loop_step",
+            "severity": "review",
+            "joint": "toe_r",
+            "value_m": 2.005
+          }
+        ],
+        "encoded_frames_sampled": [
+          0,
+          14,
+          28,
+          43,
+          57,
+          59,
+          72,
+          86,
+          95
+        ],
+        "form_status": "not_approved"
+      },
+      {
+        "id": "depth-jump",
+        "focus": "Step-off, landing, rebound and second landing",
+        "question": "Can you clearly distinguish dropping from the box, absorbing the landing and rebounding?",
+        "name": "Depth Jump",
+        "bytes": 40611,
+        "duration_s": 8.0,
+        "technical_flags": [
+          {
+            "check": "high_joint_speed",
+            "severity": "review",
+            "frame": 167,
+            "joint": "toe_l",
+            "value_m_s": 7.7334
+          }
+        ],
+        "encoded_frames_sampled": [
+          0,
+          28,
+          57,
+          86,
+          115,
+          144,
+          153,
+          172,
+          191
+        ],
+        "form_status": "not_approved"
+      },
+      {
+        "id": "burpee-pushup",
+        "focus": "Standing, floor support, push-up and jump",
+        "question": "Are the hand and foot contacts believable through every transition?",
+        "name": "Push-Up Burpee",
+        "bytes": 33156,
+        "duration_s": 6.0,
+        "technical_flags": [
+          {
+            "check": "high_joint_speed",
+            "severity": "review",
+            "frame": 82,
+            "joint": "knee_r",
+            "value_m_s": 19.0021
+          }
+        ],
+        "encoded_frames_sampled": [
+          0,
+          21,
+          43,
+          64,
+          82,
+          86,
+          108,
+          129,
+          143
+        ],
+        "form_status": "not_approved"
+      },
+      {
+        "id": "squat-pistol",
+        "focus": "Deep unilateral squat with a straight free leg",
+        "question": "Do balance, foot contact and the relation between hip, knee and torso look convincing?",
+        "name": "Pistol Squat (per side)",
+        "bytes": 23296,
+        "duration_s": 4.0,
+        "technical_flags": [],
+        "encoded_frames_sampled": [
+          0,
+          14,
+          28,
+          33,
+          43,
+          57,
+          72,
+          86,
+          95
+        ],
+        "form_status": "not_approved"
+      },
+      {
+        "id": "pilates-roll-over",
+        "focus": "Spinal articulation and legs moving overhead",
+        "question": "Does the back roll progressively, or does the torso move like a rigid block?",
+        "name": "Roll-Over",
+        "bytes": 17335,
+        "duration_s": 4.0,
+        "technical_flags": [],
+        "encoded_frames_sampled": [
+          0,
+          14,
+          20,
+          28,
+          43,
+          57,
+          72,
+          86,
+          95
+        ],
+        "form_status": "not_approved"
+      },
+      {
+        "id": "hanging-windshield-wiper",
+        "focus": "Suspended rotation with fixed hand support",
+        "question": "Can you distinguish rotation at the pelvis and trunk while the hands remain fixed?",
+        "name": "Hanging Windshield Wiper",
+        "bytes": 17852,
+        "duration_s": 5.0,
+        "technical_flags": [
+          {
+            "check": "high_joint_speed",
+            "severity": "review",
+            "frame": 103,
+            "joint": "toe_r",
+            "value_m_s": 3.1937
+          }
+        ],
+        "encoded_frames_sampled": [
+          0,
+          18,
+          36,
+          54,
+          72,
+          90,
+          103,
+          108,
+          119
+        ],
+        "form_status": "not_approved"
+      }
+    ],
+    "selection_basis": "Eight demanding movement patterns for owner review of the generation process, not an objective difficulty ranking or form approval"
+  },
+  "browser_qa": {
+    "passed": true,
+    "clips": [
+      {
+        "id": "ring-muscle-up",
+        "dimensions": [
+          480,
+          360,
+          4.5
+        ]
+      },
+      {
+        "id": "pullup-pullover",
+        "dimensions": [
+          480,
+          360,
+          4.5
+        ]
+      },
+      {
+        "id": "handstand-press-straddle",
+        "dimensions": [
+          480,
+          360,
+          4
+        ]
+      },
+      {
+        "id": "depth-jump",
+        "dimensions": [
+          480,
+          360,
+          8
+        ]
+      },
+      {
+        "id": "burpee-pushup",
+        "dimensions": [
+          480,
+          360,
+          6
+        ]
+      },
+      {
+        "id": "squat-pistol",
+        "dimensions": [
+          480,
+          360,
+          4
+        ]
+      },
+      {
+        "id": "pilates-roll-over",
+        "dimensions": [
+          480,
+          360,
+          4
+        ]
+      },
+      {
+        "id": "hanging-windshield-wiper",
+        "dimensions": [
+          480,
+          360,
+          5
+        ]
+      }
+    ],
+    "checks": [
+      "video metadata decode",
+      "actual play/pause time advancement",
+      "frame stepping",
+      "speed selection",
+      "feedback retention",
+      "320/736 responsive layout",
+      "no runtime errors"
+    ]
+  },
+  "python_tests_passed": 77,
+  "installed_video_hashes_unchanged": true,
+  "paid_generation_usd": 0,
+  "device_verified": false,
+  "apk_rebuilt": false
+}

@@ -56,6 +56,7 @@ import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
 import io.github.gonbei774.calisthenicsmemory.ui.components.BigStepper
+import io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb
 import io.github.gonbei774.calisthenicsmemory.ui.history.RoomHistorySource
 import io.github.gonbei774.calisthenicsmemory.ui.screens.DemoClips
 import io.github.gonbei774.calisthenicsmemory.ui.screens.DemoPlayer
@@ -73,7 +74,6 @@ import java.time.LocalDate
  * R7-T03 (D3): rep blocks are logged on their own work screen; only holds are logged on the break that follows.
  */
 fun loggerBlock(st: SessionState): TimelineBlock? {
-    if (st.plan.fixedProgramId != null && st.plan.flow) return null
     val cur = st.currentBlock ?: return null
     if (cur.type != BlockType.STRETCH && cur.type != BlockType.PASSIVE_RECOVERY && cur.type != BlockType.TRANSITION) return null
     val last = st.plan.blocks.take(st.blockIndex).lastOrNull { it.type == BlockType.WORK && it.variationId != null } ?: return null
@@ -81,14 +81,15 @@ fun loggerBlock(st: SessionState): TimelineBlock? {
     val between = st.plan.blocks.subList(st.plan.blocks.indexOf(last) + 1, st.blockIndex)
     if (between.any { it.type == BlockType.WORK }) return null
     val ex = st.executions[last.id]
+    if (st.plan.fixedProgramId != null && st.plan.flow && last.prescriptionTier == null) return null
     if (last.target?.type != TargetType.HOLD_SECONDS) return null
     return last.takeIf { ex == Execution.COMPLETED || ex == Execution.PARTIAL }
 }
 
 /** R7-T03 (D3): the rep work block that is running now carries its own logger (− number +, Too easy). */
 fun repLoggerBlock(st: SessionState): TimelineBlock? =
-    st.currentBlock?.takeIf { !(st.plan.fixedProgramId != null && st.plan.flow) &&
-        it.type == BlockType.WORK && it.variationId != null &&
+    st.currentBlock?.takeIf { it.type == BlockType.WORK && it.variationId != null &&
+            !(st.plan.fixedProgramId != null && st.plan.flow && it.prescriptionTier == null) &&
             (it.target?.type == TargetType.REPS || (st.plan.fixedProgramId != null && !st.plan.flow && it.target?.type == TargetType.HOLD_SECONDS))
     }
 
@@ -106,6 +107,9 @@ fun SessionScreen(modifier: Modifier = Modifier, onExit: () -> Unit) {
     if (st.isTerminal) { EndScreen(st, modifier, onExit); return }
     LiveScreen(st, nowTick, modifier)
 }
+
+private fun timerOnlyFlowBlock(st: SessionState, block: TimelineBlock): Boolean =
+    st.plan.fixedProgramId != null && st.plan.flow && block.type in setOf(BlockType.WORK, BlockType.TRANSITION) && block.prescriptionTier == null
 
 /** Written fallback used while a demonstration is held for teaching review. Kept separate so synthetic holds remain testable after all clips are approved. */
 @Composable
@@ -175,13 +179,20 @@ internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, cat
     val haptic = LocalHapticFeedback.current
     val catalog = remember(catalogOverride) { catalogOverride ?: loadCatalog(ctx) }
     val heldIds = remember(catalogOverride) { catalogOverride?.variations?.filter { it.demonstrationHold }?.map { it.id }?.toSet() }
-    val demonstration = remember(b.variationId, catalog) { b.variationId?.let { catalog.variation(it) } }
-    val clip = remember(b.variationId, catalogOverride) {
-        b.variationId?.let { id -> if (heldIds == null) DemoClips.file(ctx, id) else DemoClips.file(ctx, id, heldIds) }
+    val upcomingBlock = remember(st.plan, st.blockIndex, b) {
+        if (b.type != BlockType.TRANSITION) b else b.takeIf { it.variationId != null }
+            ?: st.plan.blocks.drop(st.blockIndex + 1).firstOrNull { it.type == BlockType.WORK && it.variationId != null }
+    }
+    val demoVariationId = if (b.type == BlockType.TRANSITION) upcomingBlock?.variationId else b.variationId
+    val demonstration = remember(demoVariationId, catalog) { demoVariationId?.let { catalog.variation(it) } }
+    val clip = remember(demoVariationId, catalogOverride) {
+        demoVariationId?.let { id -> if (heldIds == null) DemoClips.file(ctx, id) else DemoClips.file(ctx, id, heldIds) }
     }
     val elapsed = (st.activeElapsedMs / 1000).toInt()
+    val sessionScheme = MaterialTheme.colorScheme
+    val sessionAccent = AppAccentTheme.colors
 
-    Column(modifier.fillMaxSize().background(Color.White)) {
+    Column(modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         // ---- clip area with the transparent header (always the light palette: dark text on the white clip)
         MaterialTheme(colorScheme = appColorScheme(false), typography = AppTypography, shapes = AppShapes) {
             CompositionLocalProvider(LocalAppAccent provides LightAccent) {
@@ -191,6 +202,11 @@ internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, cat
                         demonstration,
                         Modifier.align(Alignment.Center).padding(horizontal = Spacing.l).padding(top = 132.dp),
                     )
+                    else if (demonstration != null) Column(Modifier.align(Alignment.Center).padding(horizontal = Spacing.l).padding(top = 132.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                        ExerciseThumb(demonstration.id, demonstration.name, 180.dp)
+                        Text(demonstration.name, style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
+                        demonstration.instructions.take(2).forEach { Text(it, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center) }
+                    }
                     Column(Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = Spacing.l, vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Row(verticalAlignment = Alignment.Top) {
                             Column(Modifier.weight(1f)) {
@@ -228,13 +244,13 @@ internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, cat
             }
         }
 
-        // ---- the dark bottom sheet (always the dark palette)
-        MaterialTheme(colorScheme = appColorScheme(true), typography = AppTypography, shapes = AppShapes) {
-            CompositionLocalProvider(LocalAppAccent provides DarkAccent) {
+        // ---- controls follow the saved app appearance; the bundled media above keeps its white canvas.
+        MaterialTheme(colorScheme = sessionScheme, typography = AppTypography, shapes = AppShapes) {
+            CompositionLocalProvider(LocalAppAccent provides sessionAccent) {
                 CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) { Box(Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background, RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp))) {
                     Column(Modifier.navigationBarsPadding().padding(horizontal = Spacing.l).padding(top = Spacing.m, bottom = Spacing.m), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                         // R7-T02 (B5): the block caption is readable (titleMedium, full contrast) and a stretch block names its stretch
-                        val caption = stringResource(blockLabel(b)).uppercase() + if (b.type == BlockType.STRETCH) (names[b.variationId]?.let { " · $it" } ?: "") else ""
+                        val caption = (if (b.type == BlockType.TRANSITION) stringResource(R.string.feedback_prepare_upcoming) else stringResource(blockLabel(b))).uppercase() + if (b.type == BlockType.STRETCH) (names[b.variationId]?.let { " · $it" } ?: "") else ""
                         Text(caption, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center, modifier = Modifier.testTag("session_caption"))
                         Text(
                             formatClock(remSec), style = MaterialTheme.typography.displayLarge.copy(fontSize = 60.sp), color = AppAccentTheme.colors.accent, maxLines = 1,
@@ -242,9 +258,10 @@ internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, cat
                         )
                         LinearProgressIndicator(progress = { progress }, Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(3.dp)), color = AppAccentTheme.colors.accent, trackColor = MaterialTheme.colorScheme.surfaceVariant)
                         if (paused) Text(stringResource(R.string.session_paused), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("session_paused"))
-                        val sideText = when (b.side) { Side.LEFT -> stringResource(R.string.side_left); Side.RIGHT -> stringResource(R.string.side_right); else -> "" }
-                        val targetText = b.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it) }.orEmpty()
-                        val sub = listOf(io.github.gonbei774.calisthenicsmemory.ui.train.withLoad(targetText, b.loadGrams), sideText).filter { it.isNotEmpty() }.joinToString(" · ")
+                        val infoBlock = if (b.type == BlockType.TRANSITION) upcomingBlock ?: b else b
+                        val sideText = when (infoBlock.side) { Side.LEFT -> stringResource(R.string.side_left); Side.RIGHT -> stringResource(R.string.side_right); else -> "" }
+                        val targetText = infoBlock.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it) }.orEmpty()
+                        val sub = listOf(io.github.gonbei774.calisthenicsmemory.ui.train.withLoad(targetText, infoBlock.loadGrams), sideText).filter { it.isNotEmpty() }.joinToString(" · ")
                         if (logger != null && logFor != null) RepLogger(logger, logFor, showName = true)
                         else if (logger != null && repWork != null) {
                             // R7-T03: the rep work block: name, target, then the number to log with Too easy beside it
@@ -262,7 +279,7 @@ internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, cat
                                 shape = RoundedCornerShape(Radius.button), contentPadding = PaddingValues(horizontal = 8.dp)) { Text(stringResource(R.string.session_resume), maxLines = 1, softWrap = false, style = MaterialTheme.typography.labelLarge) }
                             else AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, WorkoutSessionService.ACTION_PAUSE) }, Modifier.weight(1f).height(54.dp).testTag("session_pause")) { Text(stringResource(R.string.session_pause)) }
                             // Flow programs advance on their timers and expose no per-item logging or skip controls.
-                            if (st.plan.fixedProgramId != null && st.plan.flow) Unit
+                            if (timerOnlyFlowBlock(st, b)) Unit
                             // DONE in the middle, gold and a little wider: ends the set during work; in any other block (R7-T02, B4) it saves the pending log and moves on.
                             else if (b.type == BlockType.WORK) Button(
                                 onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); if (repWork != null) logger?.push(); sessionCommand(ctx, WorkoutSessionService.ACTION_DONE) }, enabled = st.phase == Phase.RUNNING,
@@ -272,7 +289,7 @@ internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, cat
                                 onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); logger?.push(); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, enabled = st.phase == Phase.RUNNING,
                                 modifier = Modifier.weight(1.3f).height(58.dp).testTag(if (logger != null) "logger_done" else "break_done"), shape = RoundedCornerShape(Radius.button),
                             ) { Text(stringResource(R.string.logger_done).uppercase(), style = MaterialTheme.typography.titleLarge) }
-                            if (st.plan.fixedProgramId == null || !st.plan.flow) AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, Modifier.weight(1f).height(54.dp).testTag("session_skip")) { Text(stringResource(R.string.session_skip)) }
+                            if (!timerOnlyFlowBlock(st, b)) AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, WorkoutSessionService.ACTION_SKIP) }, Modifier.weight(1f).height(54.dp).testTag("session_skip")) { Text(stringResource(R.string.session_skip)) }
                         }
                     }
                 } }
@@ -324,6 +341,8 @@ private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) 
     val done = st.plan.blocks.filter { it.type == BlockType.WORK && st.executions[it.id] == Execution.COMPLETED }
     val completedProgramItems = if (st.plan.fixedProgramId != null) st.plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.filter { st.executions[it.id] == Execution.COMPLETED } else done
     val exercises = completedProgramItems.mapNotNull { it.variationId }.distinct()
+    val editableExercises = st.plan.blocks.filter { it.type == BlockType.WORK && st.executions[it.id] == Execution.COMPLETED &&
+        !(st.plan.fixedProgramId != null && st.plan.flow && it.prescriptionTier == null) }.mapNotNull { it.variationId }.distinct()
     val rounds = if (st.plan.fixedProgramId != null) if (exercises.isEmpty()) 0 else 1 else done.mapNotNull { it.roundIndex }.distinct().size
     val minutes = (st.activeElapsedMs / 60_000L).toInt()
     var events by remember { mutableStateOf<List<String>>(emptyList()) }
@@ -346,9 +365,9 @@ private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) 
             }
         }
         // R8.1-T06 (F7): a Flow workout still logs actual reps, so the editor is there to correct DONE; only a flow program has no per-item results
-        if (exercises.isNotEmpty() && !(st.plan.fixedProgramId != null && st.plan.flow)) {
+        if (editableExercises.isNotEmpty()) {
             AppTextButton(onClick = { editing = !editing }, modifier = Modifier.testTag("end_edit")) { Text(stringResource(R.string.end_edit_logged)) }
-            if (editing) exercises.forEach { vid ->
+            if (editing) editableExercises.forEach { vid ->
                 val blocks = st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid && st.executions[it.id] == Execution.COMPLETED }
                 val target = blocks.firstOrNull()?.target
                 val logs = blocks.mapNotNull { st.logged[it.id] }

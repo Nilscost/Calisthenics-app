@@ -1,0 +1,13 @@
+{
+  "purpose": "Eight demanding movement patterns for owner review of the generation process, not an objective difficulty ranking or form approval",
+  "clips": [
+    {"id":"ring-muscle-up","focus":"Pull, turnover and support on moving rings","question":"Do the wrists, elbows and rings stay connected naturally through the turnover?"},
+    {"id":"pullup-pullover","focus":"Large body rotation around a bar","question":"Does the body clear the bar and reach support with a believable path and pace?"},
+    {"id":"handstand-press-straddle","focus":"Inversion, straddle closure and balance","question":"Does the press look controlled, and does the return to the start look natural?"},
+    {"id":"depth-jump","focus":"Step-off, landing, rebound and second landing","question":"Can you clearly distinguish dropping from the box, absorbing the landing and rebounding?"},
+    {"id":"burpee-pushup","focus":"Standing, floor support, push-up and jump","question":"Are the hand and foot contacts believable through every transition?"},
+    {"id":"squat-pistol","focus":"Deep unilateral squat with a straight free leg","question":"Do balance, foot contact and the relation between hip, knee and torso look convincing?"},
+    {"id":"pilates-roll-over","focus":"Spinal articulation and legs moving overhead","question":"Does the back roll progressively, or does the torso move like a rigid block?"},
+    {"id":"hanging-windshield-wiper","focus":"Suspended rotation with fixed hand support","question":"Can you distinguish rotation at the pelvis and trunk while the hands remain fixed?"}
+  ]
+}

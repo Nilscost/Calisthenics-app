@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-20",
+  "package": "app.calisthenics.personal",
+  "versionName": "0.11.3-r8",
+  "versionCode": 17,
+  "sourceBaseCommit": "847ef65191fde66a5ca11927bd6a73f8c4d8b150",
+  "sourceNote": "Fresh local checkout of the baseline plus the working-source overlay; no release commit or push. All 1416 source/test/build/content/tool/flow files match the workspace byte-for-byte. Final preview changes synced before the final full verify.",
+  "sourceManifest": "docs/evidence/r8.3-source-manifest-2026-10-20.json",
+  "sourceManifestSha256": "bb699ce9f6523d04f1c59d56938e4fb7428a1cf0a71dc6f0ed90abc4bff74ec8",
+  "apk": "/Users/nils/Documents/hermes/Apps/builds/app-debug-R8.3.apk",
+  "bytes": 25154269,
+  "sha256": "cec3959ff4256c6c3cc5d7e7ca945003369a71de164edf8ee1fac1eaca7b281a",
+  "certificateSha256": "8638d15f7e5327d0a4f3197dad470e70b1425dfcb00a6bfc4bbcdc96a63bd940",
+  "certificateMatchesR72": true,
+  "certificateMatchesR82": true,
+  "verifyCommand": "bash scripts/verify.sh",
+  "freshCheckoutVerify": {
+    "exitCode": 0,
+    "log": "docs/evidence/r8.3-fresh-verify-2026-10-20.log"
+  },
+  "tests": {
+    "domain": {
+      "tests": 513,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "data": {
+      "tests": 0,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "tests": 229,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "domainTests": 513,
+  "appTests": 229,
+  "dataTestsNote": "The data unit-test task has no test sources; no connected/device tests were run.",
+  "lint": "passed",
+  "debugApk": "passed",
+  "contentValidation": "passed (structure and rights, not training quality)",
+  "roomSchemaChanged": false,
+  "migrationSqlCheck": "passed; 9 Room statements and 9 migration statements",
+  "uiScreens": {
+    "result": "pending",
+    "reason": "No emulator/Maestro in local container; available Robolectric native binaries lack Linux ARM64. No screenshots reviewed."
+  },
+  "phoneTested": false,
+  "musicCoexistencePhoneVerified": false,
+  "ownerAccepted": false,
+  "published": false,
+  "postVerifyFlowNote": "After the final APK verify, the pending screenshot flow added a capture of the personal target editor. App/build/test/content bytes are unchanged; the flow remains unexecuted and was synced before this final source comparison.",
+  "preflight": {
+    "exitCode": 0,
+    "log": "docs/evidence/r8.3-preflight-2026-10-20.log"
+  },
+  "migrationSqlEvidence": {
+    "exitCode": 0,
+    "log": "docs/evidence/r8.3-migration-check-2026-10-20.log"
+  },
+  "workspaceApk": "/Users/nils/Documents/hermes/Apps/calisthenics/app/build/outputs/apk/debug/app-debug-R8.3.apk"
+}

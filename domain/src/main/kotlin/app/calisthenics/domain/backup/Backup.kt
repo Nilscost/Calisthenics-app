@@ -39,6 +39,9 @@ data class BackupPayload(
     val savedRoutines: List<app.calisthenics.domain.routine.SavedRoutine> = emptyList(),
     /** R8 T07: selected program and per-program flow choices; absent on older backups. */
     val trainSettings: app.calisthenics.domain.planner.TrainSettings? = null,
+    val personalTargets: Map<String, app.calisthenics.domain.model.PersonalLevelTargets> = emptyMap(),
+    /** Current objective draft, encoded by the app adapter; absent in older backups. */
+    val previewDraftJson: String? = null,
 )
 
 @Serializable

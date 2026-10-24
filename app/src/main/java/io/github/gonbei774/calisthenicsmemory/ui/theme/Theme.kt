@@ -23,12 +23,11 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
-// Direction B (doc 17): fixed palette, no dynamic colour. Material roles are mapped so stock components land on the tokens:
-// cards = surface, selected neutral things = surfaceHigh, divider = outlineVariant, captions = outline, gold = primary.
+// Fixed palette, no dynamic colour. Ultramarine is the action accent; gold remains reserved for stars.
 private val DarkFallback = darkColorScheme(
-    primary = Gold, onPrimary = OnGold, primaryContainer = SurfaceHighDark, onPrimaryContainer = TextDark,
-    secondary = Gold, onSecondary = OnGold, secondaryContainer = SurfaceHighDark, onSecondaryContainer = TextDark,
-    tertiary = Gold, onTertiary = OnGold, tertiaryContainer = SurfaceHighDark, onTertiaryContainer = TextDark,
+    primary = AccentOnDark, onPrimary = ACCENT_TEXT_DARK, primaryContainer = SurfaceHighDark, onPrimaryContainer = TextDark,
+    secondary = AccentOnDark, onSecondary = ACCENT_TEXT_DARK, secondaryContainer = SurfaceHighDark, onSecondaryContainer = TextDark,
+    tertiary = AccentOnDark, onTertiary = ACCENT_TEXT_DARK, tertiaryContainer = SurfaceHighDark, onTertiaryContainer = TextDark,
     background = BgDark, onBackground = TextDark, surface = SurfaceDark, onSurface = TextDark,
     surfaceVariant = SurfaceHighDark, onSurfaceVariant = TextSecondaryDark, outline = TextMutedDark, outlineVariant = DividerDark,
     surfaceContainerLowest = BgDark, surfaceContainerLow = SurfaceDark, surfaceContainer = SurfaceDark, surfaceContainerHigh = SurfaceDark, surfaceContainerHighest = SurfaceDark,
@@ -36,35 +35,35 @@ private val DarkFallback = darkColorScheme(
 )
 
 private val LightFallback = lightColorScheme(
-    primary = Gold, onPrimary = OnGold, primaryContainer = SurfaceHighLight, onPrimaryContainer = TextLight,
-    secondary = Gold, onSecondary = OnGold, secondaryContainer = SurfaceHighLight, onSecondaryContainer = TextLight,
-    tertiary = Gold, onTertiary = OnGold, tertiaryContainer = SurfaceHighLight, onTertiaryContainer = TextLight,
+    primary = Accent, onPrimary = ACCENT_TEXT_LIGHT, primaryContainer = SurfaceHighLight, onPrimaryContainer = TextLight,
+    secondary = Accent, onSecondary = ACCENT_TEXT_LIGHT, secondaryContainer = SurfaceHighLight, onSecondaryContainer = TextLight,
+    tertiary = Accent, onTertiary = ACCENT_TEXT_LIGHT, tertiaryContainer = SurfaceHighLight, onTertiaryContainer = TextLight,
     background = BgLight, onBackground = TextLight, surface = SurfaceLight, onSurface = TextLight,
     surfaceVariant = SurfaceHighLight, onSurfaceVariant = TextSecondaryLight, outline = TextMutedLight, outlineVariant = DividerLight,
     surfaceContainerLowest = BgLight, surfaceContainerLow = SurfaceLight, surfaceContainer = SurfaceLight, surfaceContainerHigh = SurfaceLight, surfaceContainerHighest = SurfaceLight,
     error = ErrorLight,
 )
 
-/** Colours that are not part of the Material scheme and must stay the same whatever the dynamic palette is. */
+/** Supporting ultramarine colours used by custom muscle and selection indicators. */
 @Immutable
 data class AppAccent(
-    /** Gold: fills, stars, primary muscles, timers. */
+    /** Ultramarine action accent. */
     val accent: Color,
     /** accentDim: secondary muscles. */
     val accentLight: Color,
     val onAccent: Color,
-    /** Gold as TEXT on the current background (at least 4.5:1). */
+    /** Ultramarine text with sufficient contrast on the current background. */
     val text: Color = accent,
-    /** Gold for thin marks and graphics on the current background. */
+    /** Ultramarine for thin marks and graphics on the current background. */
     val mark: Color = accent,
 )
 
-val DarkAccent = AppAccent(Gold, GoldDimDark, OnGold, text = Gold, mark = Gold)
-val LightAccent = AppAccent(Gold, GoldDimLight, OnGold, text = GoldTextOnLight, mark = GoldMarkOnLight)
+val DarkAccent = AppAccent(AccentOnDark, AccentLight, ACCENT_TEXT_DARK, text = AccentOnDark, mark = AccentOnDark)
+val LightAccent = AppAccent(Accent, AccentLight, ACCENT_TEXT_LIGHT, text = Accent, mark = Accent)
 
 val LocalAppAccent = staticCompositionLocalOf { DarkAccent }
 
-/** Accent for muscles and stars: `AppTheme.accent`. */
+/** Accent for custom action and muscle indicators; achievement stars use the separate Gold token. */
 object AppAccentTheme {
     val colors: AppAccent @Composable @ReadOnlyComposable get() = LocalAppAccent.current
 }

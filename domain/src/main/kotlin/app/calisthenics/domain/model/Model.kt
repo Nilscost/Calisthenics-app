@@ -60,6 +60,8 @@ data class ProgressionRoute(
 
 /** R7-T13 (D10): the cool-down after the workout: stretches matched to the session, or a timed relax block. */
 @Serializable enum class CooldownMode { STRETCHING, TIMED }
+/** How recovery between work sets is handled. Legacy booleans remain on stored contracts for decoding. */
+@Serializable enum class BetweenSetMode { FLOW, REST, STRETCH }
 
 @Serializable enum class BlockType { WORK, STRETCH, PASSIVE_RECOVERY, WARMUP, COOLDOWN, TRANSITION }
 
@@ -259,6 +261,10 @@ data class FixedProgramItem(
     val perSide: Boolean = false,
     val estSeconds: Int? = null,
     val notes: String = "",
+    /** R8.3: when present, prescribe this exercise-specific app level (authored items remain null). */
+    val appLevel: Int? = null,
+    /** R8.3: deliberate level-five extension, separate from the written program prescription. */
+    val levelFiveTarget: Int? = null,
 )
 
 @Serializable
@@ -328,11 +334,20 @@ data class Catalog(
     val optionSets: List<ExerciseOptionSet> = emptyList(),
     /** Explicit route metadata. Empty preserves legacy policy-based behavior. */
     val progressionRoutes: List<ProgressionRoute> = emptyList(),
+    /** Runtime, exercise-keyed prospective target definitions; authored shared policies remain immutable. */
+    val personalTargets: Map<String, PersonalLevelTargets> = emptyMap(),
 ) {
     private val byId: Map<String, ExerciseVariation> by lazy { variations.associateBy { it.id } }
     private val policyById: Map<String, ProgressionPolicy> by lazy { policies.associateBy { it.id } }
     fun variation(id: String): ExerciseVariation? = byId[id]
-    fun policyFor(v: ExerciseVariation): ProgressionPolicy? = v.progressionPolicyId?.let { policyById[it] }
+    fun policyFor(v: ExerciseVariation): ProgressionPolicy? = v.progressionPolicyId?.let { policyById[it] }?.let { policy ->
+        personalTargets[v.id]?.let { override -> policy.copy(variationId = v.id, tiers = policy.tiers.map { tier ->
+            val personalValue = override.values[tier.index - 1]
+            val value = if (tier.target.type == TargetType.REPS) policy.maxRepsPerSet?.let { minOf(personalValue, it) } ?: personalValue else personalValue
+            tier.copy(target = tier.target.copy(value = value, max = tier.target.max?.let { maxOf(value, it) }),
+                workWindowSeconds = maxOf(tier.workWindowSeconds, if (tier.target.type == TargetType.HOLD_SECONDS) value else tier.workWindowSeconds))
+        }) } ?: policy
+    }
     fun policyForVariation(variationId: String): ProgressionPolicy? = variation(variationId)?.let { policyFor(it) }
     fun optionsFor(v: ExerciseVariation): List<ExerciseOption> = v.options + optionSets.filter { set ->
         set.appliesTo.any { it == "*" || it == v.id || it == "family:${v.familyId}" }
@@ -443,6 +458,8 @@ data class Preferences(
     val dismissedSuggestionIds: Set<String> = emptySet(),
     /** D4 (V14): the global "Automatic progression" switch. Off freezes levels and exercises; the owner changes them by hand. Appended last. */
     val autoProgression: Boolean = true,
+    /** Saved app-only gain; never changes system media volume. */
+    val appVolumePercent: Int = 30,
 )
 
 // ---------- plan ----------
@@ -465,7 +482,7 @@ data class TimelineBlock(
     val optionalExtra: Boolean = false,
     /** Kettlebell weight for this work block (null = bodyweight / unknown, e.g. plans saved before 0.3.1). */
     val loadGrams: Int? = null,
-    /** V17 (D3): the number was typed freely in the Detailed edit. A session with a free number does not count towards progression. */
+    /** V17 (D3): a freely typed prescription. Legacy free targets stay excluded; version-1 App-level actual results may demonstrate a level. */
     val freeTarget: Boolean = false,
     /** V19: the pair (Pairs) or the exercise number (Straight sets) this block belongs to; null in a Circuit. */
     val groupIndex: Int? = null,
@@ -475,6 +492,10 @@ data class TimelineBlock(
     val progressionRouteId: String? = null,
     /** Estimated initial level for an untried alternative, distinct from completed achievement tiers. */
     val inferredStartTier: Int? = null,
+    /** Only new deliberate above-level-5 prescriptions receive this eligibility. */
+    val levelFiveEligible: Boolean = false,
+    /** Personal target definition used when this immutable plan was created. */
+    val targetRevision: Int = 0,
 ) {
     init { require(durationSeconds > 0) { "block $id must have positive duration" } }
 }
@@ -509,4 +530,15 @@ data class WorkoutPlan(
     val fixedProgramId: String? = null,
     /** R8 T07: flow programs advance through prescribed items without per-item logging. */
     val flow: Boolean = false,
+    /** R8.3: authoritative between-set choice; null decodes legacy flow/stretchOn fields. */
+    val betweenSetMode: BetweenSetMode? = null,
+    /** R8.3: upcoming-exercise preparation interval, clamped at planning boundaries. */
+    val preparationSeconds: Int = 5,
+    /** Replay boundary: absent in historical plans (0); new plans use explicit demonstrated-level evidence (1). */
+    val progressionEvidenceVersion: Int = 0,
+    /** Immutable effective targets and compound requirements for versioned actual-result replay. */
+    val progressionPolicies: Map<String, ProgressionPolicy> = emptyMap(),
 )
+
+fun effectiveBetweenSetMode(mode: BetweenSetMode?, flow: Boolean, stretchOn: Boolean): BetweenSetMode =
+    mode ?: if (flow) BetweenSetMode.FLOW else if (stretchOn) BetweenSetMode.STRETCH else BetweenSetMode.REST

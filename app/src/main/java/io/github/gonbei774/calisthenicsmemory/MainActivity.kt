@@ -16,6 +16,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import io.github.gonbei774.calisthenicsmemory.data.AppTheme
 import io.github.gonbei774.calisthenicsmemory.data.ThemePreferences
+import io.github.gonbei774.calisthenicsmemory.session.bindSessionScreenPolicy
 import io.github.gonbei774.calisthenicsmemory.ui.nav.AppNav
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 
@@ -30,6 +31,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalComposeUiApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        bindSessionScreenPolicy()
         systemDarkMode.value = isNight(resources.configuration)
         val themePrefs = ThemePreferences(this)
         setContent {

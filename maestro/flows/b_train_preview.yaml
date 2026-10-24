@@ -5,6 +5,11 @@ appId: app.calisthenics.personal
 - runFlow: ../common/dismiss_system_dialogs.yaml
 - extendedWaitUntil: { visible: { id: preview_button }, timeout: 15000 }
 - takeScreenshot: 01-train-${VARIANT}
+# R8.4: the same mode controls are available on Train and both Preview forms.
+- scrollUntilVisible: { element: { id: between_flow }, direction: DOWN, timeout: 8000 }
+- tapOn: { id: between_flow }
+- takeScreenshot: 01a-between-flow-${VARIANT}
+- tapOn: { id: between_stretch }
 # R7-T08 (D1): exercises per round, next to the rounds
 - scrollUntilVisible: { element: { id: exercises_plus }, direction: DOWN, timeout: 8000 }
 - takeScreenshot: 01b-train-exercises-${VARIANT}
@@ -32,6 +37,20 @@ appId: app.calisthenics.personal
 - tapOn: { id: preview_button }
 - extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
 - takeScreenshot: 02-preview-${VARIANT}
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: "between_flow" }
+- tapOn: { id: between_flow }
+- takeScreenshot: 02-preview-flow-${VARIANT}
+- back
+- extendedWaitUntil: { visible: { id: preview_button }, timeout: 10000 }
+- takeScreenshot: 02-train-after-preview-mode-${VARIANT}
+- tapOn: { id: preview_button }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: "between_stretch" }
+- tapOn: { id: between_stretch }
+- takeScreenshot: 02-preview-stretch-${VARIANT}
 - scrollUntilVisible: { element: { id: conditioning_caption }, direction: DOWN, speed: 25, timeout: 30000 }
 - takeScreenshot: 02-preview-included-blocks-${VARIANT}
 - runFlow:
@@ -49,13 +68,13 @@ appId: app.calisthenics.personal
     env: { ID: "preview_format_PAIRS" }
 - takeScreenshot: 02a-preview-format-${VARIANT}
 - tapOn: { id: preview_format_PAIRS }
-# R8.1-T06 (F7): Flow, one toggle in the Preview (no rest between exercises); switched back off right away
+# R8.4: preparation and the synchronized mode are adjustable here.
+- assertNotVisible: { id: preview_flow_switch }
 - runFlow:
     file: ../common/reveal.yaml
-    env: { ID: "preview_flow_switch" }
-- tapOn: { id: preview_flow_switch }
-- takeScreenshot: 02a2-preview-flow-${VARIANT}
-- tapOn: { id: preview_flow_switch }
+    env: { ID: "preparation_seconds_plus" }
+- tapOn: { id: preparation_seconds_plus }
+- takeScreenshot: 02a2-preview-preparation-${VARIANT}
 - runFlow:
     file: ../common/reveal.yaml
     env: { ID: all_sets_header }

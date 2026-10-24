@@ -18,8 +18,8 @@ object CueText {
         val text = when (b.type) {
             BlockType.PASSIVE_RECOVERY -> if (plan.stretchOn) "Recover" else "Rest"
             BlockType.TRANSITION -> nextExercise(plan, i)?.let {
-                "Get ready: ${(names[it.variationId] ?: it.variationId)}${sideLabel(it.side)}"
-            } ?: "Get ready"
+                "Prepare: ${(names[it.variationId] ?: it.variationId)}${sideLabel(it.side)}"
+            } ?: "Prepare"
             BlockType.STRETCH -> "Stretch: " + (name ?: "")
             BlockType.COOLDOWN -> name?.let { "Cool-down: $it" } ?: "Relax"
             else -> name ?: "Go"
@@ -30,6 +30,7 @@ object CueText {
     /** What to announce as "Next": skips the short get-ready block so the user hears the exercise itself. */
     fun nextLabel(plan: WorkoutPlan, blockId: String, names: Map<String, String>): String? {
         val i = plan.blocks.indexOfFirst { it.id == blockId }
+        if (plan.blocks.getOrNull(i)?.type == BlockType.TRANSITION) return null
         val n = plan.blocks.drop(i + 1).firstOrNull { it.type != BlockType.TRANSITION } ?: return null
         return label(plan, n.id, names)
     }

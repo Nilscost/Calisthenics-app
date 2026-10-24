@@ -41,6 +41,12 @@ appId: app.calisthenics.personal
 - extendedWaitUntil: { visible: { id: detail_edit }, timeout: 8000 }
 - tapOn: { id: detail_edit }
 - takeScreenshot: 02b3-detail-edit-${VARIANT}
+# R8.3: capture the five personal targets and Save / Cancel / Reset without changing stored values.
+- scrollUntilVisible: { element: { id: personal_target_5 }, direction: DOWN, timeout: 10000 }
+- takeScreenshot: 02b4-personal-targets-${VARIANT}
+- scrollUntilVisible: { element: { id: personal_targets_cancel }, direction: DOWN, timeout: 10000 }
+- tapOn: { id: personal_targets_cancel }
+- scrollUntilVisible: { element: { id: detail_back }, direction: UP, timeout: 10000 }
 - tapOn: { id: detail_back }
 - tapOn: { id: progress_mode_skill }
 - takeScreenshot: 02c-by-skill-${VARIANT}
@@ -54,6 +60,8 @@ appId: app.calisthenics.personal
       - back
 - tapOn: { id: tab_settings }
 - takeScreenshot: 05-settings-${VARIANT}
+- scrollUntilVisible: { element: { id: set_app_volume }, direction: DOWN, timeout: 10000 }
+- takeScreenshot: 05a-volume-${VARIANT}
 - scrollUntilVisible: { element: { id: set_auto_progress }, direction: DOWN, timeout: 10000 }
 - takeScreenshot: 05b-settings-progression-${VARIANT}
 - scrollUntilVisible: { element: { id: settings_about }, direction: DOWN, timeout: 10000 }

@@ -64,7 +64,7 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
     val ctx = LocalContext.current
     var refresh by remember { mutableIntStateOf(0) }
     val data by rememberTrainData(refresh)
-    val c = catalogOverride ?: data.catalog
+    val c = PersonalTargetStore.effective(ctx, catalogOverride ?: data.catalog)
     val profile = remember { ProfileStore.selected(ctx) }
     val goalId = remember { GoalStore.load(ctx) }
     val goal = Goals.byId(goalId)
@@ -91,7 +91,7 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
     val detail = stack.lastOrNull()?.let { c.variation(it) }
     if (detail != null) {
         androidx.activity.compose.BackHandler { closeDetail() }
-        ExerciseDetail(c, detail, data.progress, profile, TreeTabs.tabForVariation(c, detail.id)?.title.orEmpty(), modifier, onOpen = { openDetail(it) }, onLevelsDone = { n ->
+        ExerciseDetail(c, detail, data.progress, profile, TreeTabs.tabForVariation(c, detail.id)?.title.orEmpty(), modifier, onOpen = { openDetail(it) }, onTargetsChanged = { refresh++ }, onLevelsDone = { n ->
             val levels = LevelStore.load(ctx).toMutableMap()
             if (n == null) levels.remove(detail.id) else levels[detail.id] = storedForLevelsDone(n)
             LevelStore.save(ctx, levels); refresh++
@@ -164,7 +164,7 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
             else {
                 val routeGoalId = if (mode == ProgressMode.SKILL) skill.id else goalId
                 val availableRoutes = remember(c, tab.id, showAllProgressions, routeGoalId, mode, profile) {
-                    c.progressionRoutes.filter { route ->
+                    if (mode == ProgressMode.TYPE && tab.id in setOf("pilates", "conditioning")) emptyList() else c.progressionRoutes.filter { route ->
                         val primaryFamily = route.mainPath.firstNotNullOfOrNull { c.variation(it)?.familyId }
                         val inTab = primaryFamily in tab.familyIds
                         val isGoal = routeGoalId in route.goalIds
@@ -216,14 +216,22 @@ fun ProgressScreen(modifier: Modifier = Modifier, catalogOverride: Catalog? = nu
                 val mastered = remember(nodes) { nodes.filterValues { it.state == TreeNodeState.MASTERED }.keys }
                 if (c.progressionRoutes.isNotEmpty() && activeRoute == null && mode == ProgressMode.TYPE) {
                     // R8.1-T10b: a category without a drawable route (rings without rings, prehab, Pilates) still lists its exercises
-                    val inTabList = remember(c, tab.id) { c.variations.filter { it.familyId in tab.familyIds && it.kind != Kind.STRETCH }.sortedWith(compareBy({ if (tab.id == "warmup") WarmupArea.entries.indexOf(warmupAreaOf(it.familyId)) else 0 }, { it.name })) }
-                    Column(Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).testTag("tab_exercise_list")) {
+                    val inTabList = remember(c, tab.id) { c.variations.filter { it.familyId in tab.familyIds && it.kind != Kind.STRETCH }
+                        .distinctBy { it.id }.sortedWith(compareBy({ if (tab.id == "warmup") WarmupArea.entries.indexOf(warmupAreaOf(it.familyId)) else 0 }, { it.name })) }
+                    val cardList = tab.id == "conditioning" || tab.id == "pilates"
+                    val listModifier = Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()).testTag("tab_exercise_list")
+                    Column(listModifier) {
                         if (inTabList.isEmpty()) Text(stringResource(R.string.progress_no_routes), Modifier.padding(Spacing.l).testTag("route_empty"), color = MaterialTheme.colorScheme.onSurfaceVariant)
                         var lastArea: WarmupArea? = null
                         inTabList.forEach { v ->
                             // R8.2-T02 (G2): the Warm-up category is listed by body area
                             if (tab.id == "warmup") warmupAreaOf(v.familyId)?.let { a -> if (a != lastArea) { lastArea = a; Caption(a.title, Modifier.padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("warmup_area_${a.name}")) } }
-                            Text(v.name, Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable { detailStack = v.id }.padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("tab_exercise_${v.id}"), style = MaterialTheme.typography.bodyLarge)
+                            if (cardList) Card(Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.xs).clickable { detailStack = v.id }.testTag("tab_exercise_${v.id}"), shape = MaterialTheme.shapes.large) {
+                                Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                                    io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(v.id, v.name, 44.dp)
+                                    Text(v.name, Modifier.weight(1f), style = MaterialTheme.typography.titleMedium)
+                                }
+                            } else Text(v.name, Modifier.fillMaxWidth().heightIn(min = 48.dp).clickable { detailStack = v.id }.padding(horizontal = Spacing.l, vertical = Spacing.s).testTag("tab_exercise_${v.id}"), style = MaterialTheme.typography.bodyLarge)
                         }
                     }
                 } else if (c.progressionRoutes.isNotEmpty() && activeRoute == null) {
@@ -327,10 +335,17 @@ private fun LinkLine(label: String, items: List<Pair<String, String>>, tag: Stri
 
 /** Doc 17 §2.7: the exercise detail, a sub-page of Progress. No action buttons here. */
 @Composable
-private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calisthenics.domain.progression.ProgressSnapshot, profile: EquipmentProfile, familyTitle: String, modifier: Modifier, onOpen: (String) -> Unit, onLevelsDone: (Int?) -> Unit, onBack: () -> Unit) {
+private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calisthenics.domain.progression.ProgressSnapshot, profile: EquipmentProfile, familyTitle: String, modifier: Modifier, onOpen: (String) -> Unit, onTargetsChanged: () -> Unit, onLevelsDone: (Int?) -> Unit, onBack: () -> Unit) {
     val ctx = LocalContext.current
     var editing by remember(v.id) { mutableStateOf(false) }
     val policy = c.policyFor(v)
+    val targetType = policy?.tiers?.firstOrNull()?.target?.type
+    val targetUnitLabel = stringResource(if (targetType == TargetType.REPS) R.string.personal_target_reps else R.string.personal_target_seconds)
+    val repCap = policy?.maxRepsPerSet.takeIf { targetType == TargetType.REPS }
+    var targetDraft by remember(v.id, policy) { mutableStateOf(policy?.tiers?.map { it.target.value.toString() } ?: emptyList<String>()) }
+    val parsedTargets = targetDraft.map(String::toIntOrNull)
+    val targetsValid = parsedTargets.size == 5 && parsedTargets.all { it != null && it > 0 } && parsedTargets.filterNotNull().zipWithNext().all { (a, b) -> b >= a } &&
+        (repCap == null || parsedTargets.filterNotNull().all { it <= repCap })
     val tier = progress.tierFor(v.id) ?: 1
     val achieved = progress.variations[v.id]?.achievedTiers ?: emptySet()
     val unlocks = policy?.nextVariationIds.orEmpty().mapNotNull { id -> c.variation(id)?.let { id to it.name } }
@@ -358,6 +373,39 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
             Row(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
                 for (n in 1..5) FilterChip(selected = displayStars(c, progress, v.id) == n, onClick = { onLevelsDone(n) }, label = { Text("$n") }, modifier = Modifier.testTag("detail_set_level_$n"))
                 if (v.id in progress.variations) AppTextButton(onClick = { onLevelsDone(null) }, modifier = Modifier.testTag("detail_set_level_none")) { Text(stringResource(R.string.detail_edit_clear)) }
+            }
+            Caption(stringResource(R.string.personal_targets_title))
+            Text(stringResource(R.string.personal_targets_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            repCap?.let { Text(stringResource(R.string.personal_targets_rep_cap_hint, it), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("personal_targets_rep_cap_hint")) }
+            targetDraft.forEachIndexed { index, value ->
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                    Text(stringResource(R.string.personal_target_level, index + 1), Modifier.width(62.dp), style = MaterialTheme.typography.bodyMedium)
+                    OutlinedTextField(
+                        value = value,
+                        onValueChange = { next -> if (next.isEmpty() || next.all(Char::isDigit)) targetDraft = targetDraft.toMutableList().also { it[index] = next } },
+                        modifier = Modifier.weight(1f).testTag("personal_target_${index + 1}"),
+                        singleLine = true,
+                        label = { Text(targetUnitLabel) },
+                    )
+                }
+            }
+            Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                Button(onClick = {
+                    if (targetsValid) {
+                        PersonalTargetStore.save(ctx, v.id, parsedTargets.filterNotNull())
+                        onTargetsChanged()
+                    }
+                }, enabled = targetsValid, modifier = Modifier.fillMaxWidth().testTag("personal_targets_save")) { Text(stringResource(R.string.personal_targets_save)) }
+                OutlinedButton(onClick = {
+                    targetDraft = policy.tiers.map { it.target.value.toString() }
+                    onTargetsChanged()
+                }, modifier = Modifier.fillMaxWidth().testTag("personal_targets_cancel")) { Text(stringResource(R.string.personal_targets_cancel)) }
+                TextButton(onClick = {
+                    PersonalTargetStore.reset(ctx, c, v.id)
+                    val defaults = c.copy(personalTargets = emptyMap()).policyForVariation(v.id)
+                    targetDraft = defaults?.tiers?.map { it.target.value.toString() } ?: targetDraft
+                    onTargetsChanged()
+                }, modifier = Modifier.fillMaxWidth().testTag("personal_targets_reset")) { Text(stringResource(R.string.personal_targets_reset)) }
             }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(Spacing.m), verticalAlignment = Alignment.CenterVertically) {

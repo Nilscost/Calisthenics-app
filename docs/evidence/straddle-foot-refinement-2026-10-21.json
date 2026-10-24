@@ -1,0 +1,519 @@
+{
+  "scope": "Straddle Press foot-direction and closed-return correction; no new APK, device verification or expert form approval",
+  "media": {
+    "frames_decoded": 192,
+    "duration_seconds": 8,
+    "bytes": 32032,
+    "sha256": "e517c37d3d58af42aca402478545d6743a89c73d50203d83d86946744ff89cff",
+    "selected_visual_frames": [
+      0,
+      24,
+      32,
+      48,
+      60,
+      72,
+      84,
+      96,
+      108,
+      120,
+      144,
+      168,
+      191
+    ],
+    "max_step_frame": 72,
+    "max_pixel_step": 0.9878221450617284,
+    "loop_pixel_step": 0.29824845679012346,
+    "stream": {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "Main",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "mime_codec_string": "avc1.4d4015",
+      "width": 480,
+      "height": 360,
+      "coded_width": 480,
+      "coded_height": 360,
+      "has_b_frames": 2,
+      "pix_fmt": "yuv420p",
+      "level": 21,
+      "chroma_location": "left",
+      "field_order": "progressive",
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "24/1",
+      "avg_frame_rate": "24/1",
+      "time_base": "1/12288",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 98304,
+      "duration": "8.000000",
+      "bit_rate": "28924",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "192",
+      "extradata_size": 40,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler",
+        "encoder": "Lavc61.19.100 libx264"
+      }
+    }
+  },
+  "installed_sha256": "e517c37d3d58af42aca402478545d6743a89c73d50203d83d86946744ff89cff",
+  "thumb_sha256": "95a2d99278fd735e60f7c10061ce456343e6e5e3450da59bda6214b3b6ccb4b5",
+  "tests_passed": 105,
+  "motion_audit": {
+    "exercise": "handstand-press-straddle",
+    "style": "Existing straddle press body path with rotating feet and a controlled closed return; foot-direction screening only",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 8.0,
+        "min": 7.5,
+        "max": null,
+        "ok": true
+      },
+      "l_foot_turn_deg": {
+        "value": 250.00025,
+        "min": 235,
+        "max": 265,
+        "ok": true
+      },
+      "l_foot_angular_speed_deg_s": {
+        "value": 88.88229,
+        "min": null,
+        "max": 100,
+        "ok": true
+      },
+      "l_heel_frame_norm": {
+        "value": 0.31506,
+        "min": 0.25,
+        "max": null,
+        "ok": true
+      },
+      "l_heel_frame_step_cos": {
+        "value": 0.99792,
+        "min": 0.99,
+        "max": null,
+        "ok": true
+      },
+      "l_initial_toe_forward": {
+        "value": 1.0,
+        "min": 0.99,
+        "max": null,
+        "ok": true
+      },
+      "l_top_toe_shin_dot": {
+        "value": 0.93833,
+        "min": 0.9,
+        "max": null,
+        "ok": true
+      },
+      "l_ankle_joint_min_deg": {
+        "value": 45.437,
+        "min": 40,
+        "max": null,
+        "ok": true
+      },
+      "l_ankle_joint_max_deg": {
+        "value": 161.63548,
+        "min": null,
+        "max": 165,
+        "ok": true
+      },
+      "r_foot_turn_deg": {
+        "value": 250.00025,
+        "min": 235,
+        "max": 265,
+        "ok": true
+      },
+      "r_foot_angular_speed_deg_s": {
+        "value": 88.88229,
+        "min": null,
+        "max": 100,
+        "ok": true
+      },
+      "r_heel_frame_norm": {
+        "value": 0.31506,
+        "min": 0.25,
+        "max": null,
+        "ok": true
+      },
+      "r_heel_frame_step_cos": {
+        "value": 0.99792,
+        "min": 0.99,
+        "max": null,
+        "ok": true
+      },
+      "r_initial_toe_forward": {
+        "value": 1.0,
+        "min": 0.99,
+        "max": null,
+        "ok": true
+      },
+      "r_top_toe_shin_dot": {
+        "value": 0.93833,
+        "min": 0.9,
+        "max": null,
+        "ok": true
+      },
+      "r_ankle_joint_min_deg": {
+        "value": 45.437,
+        "min": 40,
+        "max": null,
+        "ok": true
+      },
+      "r_ankle_joint_max_deg": {
+        "value": 161.63548,
+        "min": null,
+        "max": 165,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 0.92848,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "386c81080eb22ecadd6c286a2cd7264fe6a01532d3d272e537aa07e26234ad47",
+    "contract_sha256": "c11038a3e234a77ca37f98fea3a4db41e457ffc4db584b9c624a5a058ca0c792",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  "catalog_motion_summary": {
+    "pass": 5,
+    "fail": 0,
+    "unscoped": 528
+  },
+  "catalog_summary": {
+    "schema": 1,
+    "scope": "Technical screening only. No clip is approved for exercise form by this report.",
+    "seconds": 12.78,
+    "total": 533,
+    "technical_status_counts": {
+      "review": 108,
+      "no_flags": 425
+    },
+    "flag_counts": {
+      "high_joint_speed": 97,
+      "large_loop_step": 31
+    },
+    "motion_contract_counts": {
+      "unscoped": 528,
+      "pass": 5
+    },
+    "not_checked": [
+      "reference agreement for remaining movements",
+      "full mesh collisions",
+      "intended contact anchors per exercise",
+      "expert form approval",
+      "phone playback"
+    ]
+  },
+  "source_isolation": {
+    "changed_trajectories": [
+      "handstand-press-straddle"
+    ],
+    "unchanged_other_trajectories": 532
+  },
+  "unchanged_other_installed_mp4s": 532,
+  "all_192_final_frames_fresh": true,
+  "gallery_qa": {
+    "passed": true,
+    "clips": [
+      {
+        "id": "ring-muscle-up",
+        "dimensions": [
+          480,
+          360,
+          6
+        ]
+      },
+      {
+        "id": "pullup-pullover",
+        "dimensions": [
+          480,
+          360,
+          11
+        ]
+      },
+      {
+        "id": "handstand-press-straddle",
+        "dimensions": [
+          480,
+          360,
+          8
+        ]
+      },
+      {
+        "id": "depth-jump",
+        "dimensions": [
+          480,
+          360,
+          8
+        ]
+      },
+      {
+        "id": "burpee-pushup",
+        "dimensions": [
+          480,
+          360,
+          6
+        ]
+      },
+      {
+        "id": "squat-pistol",
+        "dimensions": [
+          480,
+          360,
+          4
+        ]
+      },
+      {
+        "id": "pilates-roll-over",
+        "dimensions": [
+          480,
+          360,
+          4
+        ]
+      },
+      {
+        "id": "hanging-windshield-wiper",
+        "dimensions": [
+          480,
+          360,
+          5
+        ]
+      }
+    ],
+    "checks": [
+      "video metadata decode",
+      "complete 8-second straddle playback and replay at 2x",
+      "complete 11-second pullover playback and replay at 2x",
+      "actual play/pause time advancement",
+      "frame stepping",
+      "speed selection",
+      "feedback retention",
+      "320/736 responsive layout",
+      "no runtime errors"
+    ]
+  },
+  "bounded_luna_review": {
+    "exercise_id": "handstand-press-straddle",
+    "inspected_files": [
+      "tools/blender/families/handstand_balance.py",
+      "tools/blender/render.py",
+      "app/src/main/assets/catalog.json"
+    ],
+    "source_findings": [
+      {
+        "claim": "The press pose provides a constant world-facing foot direction while the rest of the pose rotates toward inversion.",
+        "evidence": "handstand_press_straddle() changes p1 continuously from p0 toward 180 degrees, but passes foot_l and foot_r as [1,0,0] at every t. The foot inputs do not follow the changing leg/trunk orientation.",
+        "certainty": "high"
+      },
+      {
+        "claim": "The renderer derives heel orientation from a projection that can become unstable as the lower leg and foot direction align.",
+        "evidence": "foot_points() uses fd=(toe-ankle).normalized(), then projects away=(ankle-knee) perpendicular to fd to create n. If that projection approaches zero it falls back to world (0,0,-1). With changing limb orientation and a fixed toe direction, the resulting foot normal can change abruptly or point inconsistently relative to the body.",
+        "certainty": "medium"
+      },
+      {
+        "claim": "The defined path is an ascent only and has an unmatched loop boundary.",
+        "evidence": "The function produces 49 evenly spaced keys from t=0 through t=1 and returns them directly. There is no descent sequence, while catalog instructions explicitly say to lower the same way; looping from the final inverted pose to the initial folded straddle would reset abruptly.",
+        "certainty": "high"
+      }
+    ],
+    "catalog_instructions": [
+      "Stand in a wide straddle with the hands on the floor.",
+      "Lean the shoulders forward and lift the straight legs up to a handstand without jumping.",
+      "Lower the same way."
+    ],
+    "candidate_review_checks": [
+      "At the first folded-straddle pose, check that both feet point consistently with the shins and body rather than facing a fixed world direction.",
+      "Track toe, heel, ankle and knee orientation through the whole press: the feet should rotate with the legs without an abrupt heel-normal flip, toe reversal or sudden foot roll.",
+      "Inspect the near-vertical endpoint and neighboring frames for consistent foot orientation and a balanced leg finish.",
+      "Check that leg spread narrows smoothly while the shoulders and hips rise, with hands planted and no jump or foot kick.",
+      "Include and review a controlled descent through the same path; verify that the end state joins the initial folded straddle smoothly if the animation loops.",
+      "Review from the rendered app camera as well as a side view, since the foot normal is constructed from both toe direction and the ankle-to-knee vector."
+    ],
+    "carryover_owner_note": {
+      "exercise_id": "ring-muscle-up",
+      "check": "Add a wrist/hand realism check: the owner reports the wrist/hand position still looks unnatural.",
+      "status": "unresolved; record for review only, with no approval or requested fix in this task"
+    },
+    "limitations": [
+      "This review is source-based and does not assess a revised render or certify movement form.",
+      "The potential foot-normal instability is a source-derived concern; actual rendered direction changes depend on solved toe and joint geometry and should be checked in candidate frames."
+    ],
+    "changed_files": [
+      "work/straddle-foot-refinement/luna-review.json"
+    ],
+    "checks_run": [
+      "Inspected handstand_press_straddle() pose generation and key span.",
+      "Inspected foot_points() heel/toe construction in the renderer.",
+      "Retrieved actual catalog instructions for handstand-press-straddle.",
+      "Validated JSON syntax.",
+      "Inspected the candidate eight-phase Cycles sheet for foot direction, body alignment, contacts and endpoint pose.",
+      "Inspected final candidate phase-review image.",
+      "Read final geometry log and kept its measurements attributed to root.",
+      "Validated updated report JSON syntax."
+    ],
+    "unresolved_issues": [
+      "No full playback or phone/device preview; temporal behavior and app-size appearance remain unverified.",
+      "No form approval; this is a selected-render review only.",
+      "Ring muscle-up wrist/hand realism remains recorded separately by the owner as unresolved."
+    ],
+    "candidate_phase_review": {
+      "inspected_image": "work/straddle-foot-refinement/phase-review.png",
+      "evidence_type": "Eight selected actual Cycles renders from the full 8-second rise/hold/descent; no full playback was reviewed.",
+      "observations": [
+        "The phase sheet shows a low starting straddle, legs lifting through a wide and then narrowing position, a vertical handstand, and a return through the same broad positions to the initial straddle. The start/end samples look compatible for a loop.",
+        "The feet visibly change orientation as the press progresses; I do not see a sudden direction flip in these eight samples. The ankle and shin directions appear to change smoothly at this sample spacing.",
+        "In the near-vertical samples around 3\u20134 seconds, the feet appear angled sideways relative to the long axis of the legs rather than clearly continuing the body's line. This may be camera projection or foot styling, but the owner's concern about feet remaining consistent with the body is not fully resolved by this sheet.",
+        "The hands stay visibly planted at the sampled floor contacts, and the elbows/shoulders support the rise and return without an obvious jump in the still poses."
+      ],
+      "owner_reported_geometry": "Root reports toe axes rotate 225 degrees with press progress, smooth ankle bend, heel-projection norm at least 0.684, consecutive heel-normal dot at least 0.9983, 151,296 foot vertices over 192 frames with floor gap at least 9.423 mm, and all 2,912,256 body vertices within camera. I did not independently reproduce these measurements.",
+      "remaining_concerns": [
+        "Check whether the sideways-looking feet in vertical poses are intentional foot articulation or still visually inconsistent with the straight leg/body axis; continuous rotation alone does not ensure the final direction looks aligned.",
+        "The selected frames cannot show whether the ascent and descent are temporally smooth between samples or whether the loop join is seamless.",
+        "Foot-to-floor clearance is not directly measurable from this contact sheet; rely on the reported geometry check or inspect close frames if needed."
+      ],
+      "assessment": "The candidate addresses the obvious reset and shows a full rise/hold/descent with no visible abrupt foot flip in the selected phases. Foot orientation in the vertical pose remains a visual review point.",
+      "uncertainty": "Moderate for sampled orientation and sequence; high for motion between frames and exact anatomical alignment.",
+      "form_approval": false,
+      "status": "superseded: pre-install candidate rejected because toes still appeared too bent at the top; retain as historical review only."
+    },
+    "candidate_final_review": {
+      "status": "final candidate sampled review",
+      "inspected_image": "work/straddle-foot-refinement/phase-review-final.png",
+      "inspected_geometry_log": "work/straddle-foot-refinement/geometry-final.log",
+      "evidence_type": "Eight selected actual Cycles phase renders across the full 8-second rise/hold/descent, plus the owner-provided final Blender geometry log; no full playback reviewed.",
+      "observations": [
+        "The final sheet shows the same full rise, vertical hold and reverse descent to the starting straddle. The endpoints appear compatible in the sampled views.",
+        "At the vertical top and nearby phases, the feet now look more pointed and their direction follows the legs more convincingly than in the superseded candidate. I do not see the former pronounced sideways/bent finish in these samples.",
+        "Through the horizontal and vertical phases, ankle/foot direction changes appear continuous at the sampled spacing; no obvious sudden flip is visible.",
+        "Hands remain planted in the sampled poses, and the shoulders and hips follow the press and return without a visible jump in the selected frames."
+      ],
+      "owner_reported_measurements": "Root reports a 250-degree continuous foot turn, top toe/shin dot 0.93833 versus 0.70608 before, heel projection norm at least 0.31506, and consecutive heel-normal dot at least 0.997921. The supplied geometry log reports 151,296 foot vertices across 192 frames with no floor penetration, 2,912,256 body vertices fitting the camera, and source/rendered toe alignment at least 0.999717. I did not independently reproduce these measurements.",
+      "remaining_concerns": [
+        "The top foot direction looks substantially improved, though a single side-oriented phase sheet cannot establish anatomical foot alignment from every viewing angle.",
+        "Still renders cannot establish temporal smoothness between samples, exact contact through the full clip, or seamless looping.",
+        "No phone/app device preview or form approval was performed."
+      ],
+      "assessment": "The final selected phases resolve the prior visible concern about the toes looking too bent at the top; the pointed finish reads more consistent with the straight legs. No material visible issue remains in these samples.",
+      "uncertainty": "Moderate for sampled appearance; high for motion between samples and device presentation.",
+      "form_approval": false
+    }
+  },
+  "articulation_review": [
+    {
+      "exercise": "ring-muscle-up",
+      "status": "needs_human_review",
+      "form_approval": false,
+      "meaning": "Geometry-only measurements; no physiological range-of-motion or loaded-contact approval",
+      "questions": [
+        "Does the wrist bend in a plausible direction relative to the forearm and palm?",
+        "Does the grip permit this wrist position under load through every phase?",
+        "Are hand, wrist, forearm and implement contacts continuous and legible?"
+      ],
+      "wrists": {
+        "l": {
+          "min_bend_deg": 7.689,
+          "max_bend_deg": 115.668,
+          "max_bend_frame": 64,
+          "max_bend_time_s": 2.667,
+          "max_frame_angle_change_deg": 11.504
+        },
+        "r": {
+          "min_bend_deg": 7.689,
+          "max_bend_deg": 115.668,
+          "max_bend_frame": 64,
+          "max_bend_time_s": 2.667,
+          "max_frame_angle_change_deg": 11.504
+        }
+      }
+    },
+    {
+      "exercise": "handstand-press-straddle",
+      "status": "needs_human_review",
+      "form_approval": false,
+      "meaning": "Geometry-only measurements; no physiological range-of-motion or loaded-contact approval",
+      "questions": [
+        "Does the wrist bend in a plausible direction relative to the forearm and palm?",
+        "Does the grip permit this wrist position under load through every phase?",
+        "Are hand, wrist, forearm and implement contacts continuous and legible?"
+      ],
+      "wrists": {
+        "l": {
+          "min_bend_deg": 90.0,
+          "max_bend_deg": 110.067,
+          "max_bend_frame": 0,
+          "max_bend_time_s": 0.0,
+          "max_frame_angle_change_deg": 0.68
+        },
+        "r": {
+          "min_bend_deg": 90.0,
+          "max_bend_deg": 110.067,
+          "max_bend_frame": 0,
+          "max_bend_time_s": 0.0,
+          "max_frame_angle_change_deg": 0.68
+        }
+      }
+    }
+  ],
+  "ring_wrist_concern": "open; measurements and mandatory review questions added, ring asset unchanged",
+  "source_sha256": {
+    "tools/blender/families/handstand_balance.py": "97cea947f05b8446e9552fac29e5bd9e1fa168eeff9712bb03e4099f43ab683d",
+    "tools/blender/motion_quality.py": "429b4c72bc06b4b110b33a674518878e0aaca05f922f69ef73bd01407a284638",
+    "tools/blender/motion_contracts.json": "eaf19e3146b9b0037b2b2366b49e7856f8cc3c9315b2f1ff8de9a62980c7a0e6",
+    "tools/blender/articulation_review.py": "623b0969d679114c373a7f149c5f56894d8a43922cf622fc0457195c453f6d54",
+    "tools/blender/check_straddle_feet.py": "c8b5678102729b1912dbf247d4f80b7cdc61d75da9f1106c14541bd9d90bc381",
+    "tests/test_straddle_feet.py": "4c98f48ead9eafca53f2d42f4f7e6d8be6b48a11a64f5917f62efc7bc8f8c743",
+    "tests/fixtures/motion/handstand-press-straddle-before.json.gz": "7df3bcc6a2130fb1222edf37531eecae22ef92a64eb5673030c5be73aba648aa"
+  },
+  "video_generation_credits_used": 0,
+  "actual_device_verification": false,
+  "form_approval": false
+}

@@ -88,7 +88,151 @@ def _jump_thrust(sprawl=False,pushup=False,clap=False):
 def squat_thrust(): return _jump_thrust()
 def sprawl(): return _jump_thrust(sprawl=True)
 def burpee(): return _jump_thrust(clap=True)
-def burpee_pushup(): return _jump_thrust(pushup=True)
+def _burpee_pushup_cycle():
+    """Full burpee with planted push-up, foot return, loaded jump and landing."""
+    stand, crouch, _air, high = _thrust_stages()
+    def knee_guides(pose):
+        # Give each two-bone leg a pole perpendicular to its hip/ankle chord
+        # in the sagittal plane. This keeps the knee bend plane anatomical as
+        # the feet transfer, instead of using the old mirrored lateral poles.
+        from poses import solve
+        joints = solve(pose, {})
+        for side in ("l", "r"):
+            dx = joints["ankle_"+side][0] - joints["hip_"+side][0]
+            dz = joints["ankle_"+side][2] - joints["hip_"+side][2]
+            pole = [-dz, 0., dx]
+            length = math.sqrt(pole[0]*pole[0] + pole[2]*pole[2])
+            pose["knee_"+side] = [pole[0]/length, 0., pole[2]/length] if length > 1e-8 else [1.,0.,0.]
+        return pose
+    for pose in (stand,crouch):
+        knee_guides(pose)
+    knee_guides(high)
+    lower = _conditioning_stage([-.15,0,.72],40,
+        [[0,-.10,.08],[0,.10,.08]],
+        [[.25,-.23,.75],[.25,.23,.75]],hp=-4)
+    knee_guides(lower)
+    hand_contacts = [[.25,-.23,.035],[.25,.23,.035]]
+    hop_back = _conditioning_stage([-.22,0,.55],86,
+        [[-.42,-.10,.20],[-.42,.10,.20]],hand_contacts,hp=-8)
+    knee_guides(hop_back)
+    hop_back_land = _conditioning_stage([-.22,0,.53],86,
+        [[-.72,-.10,.16],[-.72,.10,.16]],hand_contacts,hp=-8)
+    knee_guides(hop_back_land)
+    plank_transition = _conditioning_stage([-.22,0,.53],85,
+        [[-.78,-.10,.16],[-.78,.10,.16]],hand_contacts,hp=-8)
+    knee_guides(plank_transition)
+    plank_transition_mid = _conditioning_stage([-.22,0,.55],85,
+        [[-.79,-.10,.12],[-.79,.10,.12]],hand_contacts,hp=-8)
+    knee_guides(plank_transition_mid)
+    plank_transition_end = _conditioning_stage([-.22,0,.55],85,
+        [[-.80,-.10,.09],[-.80,.10,.09]],hand_contacts,hp=-8)
+    knee_guides(plank_transition_end)
+    plank_contact_pose = _conditioning_stage([-.10,0,.54],85,
+        [[-.80,-.10,.08],[-.80,.10,.08]],hand_contacts,hp=-8)
+    knee_guides(plank_contact_pose)
+    plank_lower_mid = _conditioning_stage([-.10,0,.49],82,
+        [[-.80,-.10,.08],[-.80,.10,.08]],hand_contacts,hp=-8)
+    knee_guides(plank_lower_mid)
+    plank_lower_end = _conditioning_stage([-.10,0,.44],76,
+        [[-.80,-.10,.08],[-.80,.10,.08]],hand_contacts,hp=-8)
+    knee_guides(plank_lower_end)
+    plank = _pushup_line(20,(0,0,1))
+    bottom = _pushup_line(8,(0,0,1))
+    knee_guides(plank)
+    knee_guides(bottom)
+    # The renderer builds the foot as a capsule from its heel/toe frame.
+    # Keep the toe axis level through the planted push-up: the previous
+    # downward toe pitch drove the rendered toe capsule well below the floor.
+    for pose in (high, plank, bottom):
+        pose["foot_l"] = [1,0,0]
+        pose["foot_r"] = [1,0,0]
+    feet_lift = _conditioning_stage([-.10,0,.54],85,
+        [[-.80,-.10,.28],[-.80,.10,.28]],hand_contacts,hp=-8)
+    knee_guides(feet_lift)
+    feet_lift_transition = _conditioning_stage([.02,0,.42],74,
+        [[-.80,-.10,.11],[-.80,.10,.11]],hand_contacts,hp=-8)
+    knee_guides(feet_lift_transition)
+    feet_lift_departure = _conditioning_stage([.046,0,.39],70,
+        [[-.80,-.10,.085],[-.80,.10,.085]],hand_contacts,hp=-8)
+    knee_guides(feet_lift_departure)
+    feet_lift_mid = _conditioning_stage([-.05,0,.48],80,
+        [[-.80,-.10,.18],[-.80,.10,.18]],hand_contacts,hp=-8)
+    knee_guides(feet_lift_mid)
+    feet_in_hop = _conditioning_stage([-.18,0,.53],90,
+        [[-.34,-.10,.34],[-.34,.10,.34]],hand_contacts,hp=-8)
+    knee_guides(feet_in_hop)
+
+    # Load the legs and swing the arms before takeoff; then show a clear flight,
+    # soft two-foot landing, recovery, and a stand matching the loop start.
+    load = _conditioning_stage([-.10,0,.70],35,
+        [[0,-.10,.08],[0,.10,.08]],
+        [[-.22,-.23,.88],[-.22,.23,.88]],hp=-3)
+    apex = _conditioning_stage([0,0,1.00],0,
+        [[0,-.10,.26],[0,.10,.26]],
+        [[-.05,-.22,1.58],[-.05,.22,1.58]])
+    landing = _conditioning_stage([0,0,.80],8,
+        [[0,-.10,.08],[0,.10,.08]],
+        [[.12,-.22,1.05],[.12,.22,1.05]])
+    recovery = _conditioning_stage([0,0,.91],5,
+        [[0,-.10,.08],[0,.10,.08]],
+        [[.15,-.22,1.16],[.15,.22,1.16]])
+    for pose in (load,apex,landing,recovery):
+        knee_guides(pose)
+
+    # Keep the starting and recovery arms relaxed, with the hands following
+    # the forearms. Floor-loaded palms retain their push-up wrist articulation.
+    from poses import solve
+    for pose in (stand,):
+        pose["wrist_l"] = [0,.23,.90]
+        pose["wrist_r"] = [0,-.23,.90]
+        pose["elbow_l"] = [0,1,0]
+        pose["elbow_r"] = [0,-1,0]
+        joints = solve(pose, {})
+        for side in ("l", "r"):
+            v = [joints["wrist_"+side][i]-joints["elbow_"+side][i] for i in range(3)]
+            n = math.sqrt(sum(x*x for x in v))
+            pose["hand_"+side] = [x/n for x in v]
+
+    # A short, unheld ballistic finish: 0.42 s in the air with about 0.21 m
+    # rise. Dense keys approximate the parabola while allowing a soft impact.
+    launch_z, rise = .95, .21
+    for j, u in enumerate((.0,.25,.50,.75,1.0)):
+        z = launch_z + 4*rise*u*(1-u)
+        jump = _conditioning_stage([0,0,z], 5 + 8*math.sin(math.pi*u),
+            [[0,-.10,.08 + .18*math.sin(math.pi*u)],
+             [0,.10,.08 + .18*math.sin(math.pi*u)]],
+            [[.02,-.22,1.12 + .40*math.sin(math.pi*u)],
+             [.02,.22,1.12 + .40*math.sin(math.pi*u)]],
+            hp=-2 + 8*math.sin(math.pi*u))
+        knee_guides(jump)
+        if j == 0:
+            jump_start = jump
+        elif j == 1:
+            jump_q1 = jump
+        elif j == 2:
+            jump_apex = jump
+        elif j == 3:
+            jump_q3 = jump
+        else:
+            jump_land = jump
+
+    keys = [
+        (0.00,stand),(.045,stand),(.09,lower),(.14,crouch),
+        (.18,hop_back),(.195,hop_back),(.225,hop_back_land),(.24,plank_transition),
+        (.25,plank_transition_mid),(.26,plank_transition_end),(.27,plank_contact_pose),
+        (.28,plank_lower_mid),(.29,plank_lower_end),(.30,plank),
+        (.37,bottom),(.41,bottom),(.48,high),(.49,feet_lift_departure),(.50,feet_lift_transition),
+        (.52,feet_lift_mid),(.54,feet_lift),(.58,feet_lift),(.63,feet_in_hop),(.65,crouch),(.69,lower),
+        (.75,stand),(.775,load),(.80,jump_start),(.81,jump_q1),
+        (.82,jump_apex),(.83,jump_q3),(.84,jump_land),
+        (.90,recovery),(.997,stand)
+    ]
+    return dict(seconds=10.5,keys=keys,interpolation="continuous",
+                motion_profile="burpee-pushup-bilateral-hop-v2",
+                cam_az=30,cam_el=20,props=[])
+
+
+def burpee_pushup(): return _burpee_pushup_cycle()
 
 
 def eight_count_t_pushup():

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="personal_targets_title">Your level targets</string>
+    <string name="personal_targets_hint">Set the number you want to reach at each level. Targets must be positive and stay the same or increase.</string>
+    <string name="personal_targets_rep_cap_hint">This exercise is capped at %1$d reps per set.</string>
+    <string name="personal_target_level">Level %1$d</string>
+    <string name="personal_target_reps">Reps</string>
+    <string name="personal_target_seconds">Seconds</string>
+    <string name="personal_targets_save">Save targets</string>
+    <string name="personal_targets_cancel">Cancel</string>
+    <string name="personal_targets_reset">Reset to app defaults</string>
+    <string name="preview_level_extension">Level 5 · personal target</string>
+    <string name="program_level_authored">Program target</string>
+</resources>

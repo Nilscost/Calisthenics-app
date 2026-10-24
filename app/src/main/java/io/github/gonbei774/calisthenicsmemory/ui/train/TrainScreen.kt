@@ -22,6 +22,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -70,30 +73,64 @@ fun TrainScreen(
 ) {
     val ctx = LocalContext.current
     val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
+    val initialSettings = remember { TrainSettingsStore.load(ctx) }
     val data by rememberTrainData()
     val profiles = remember { ProfileStore.load(ctx) }
-    var settings by remember { mutableStateOf(TrainSettingsStore.load(ctx)) }
+    var settings by remember { mutableStateOf(initialSettings) }
+    val currentKey = draftKey(settings)
+    var draft by remember(currentKey) { mutableStateOf(PreviewDraftStore.get(ctx, currentKey)) }
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(ctx, lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                val refreshed = TrainSettingsStore.load(ctx)
+                settings = refreshed
+                draft = PreviewDraftStore.get(ctx, draftKey(refreshed))
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
     fun change(s: TrainSettings) {
         // R8.1-T05 (F6): the Preview's edits belong to the objective; another objective, routine or program starts clean
-        if (draftKey(s) != draftKey(settings)) PreviewDraftStore.clear(ctx)
+        if (draftKey(s) != draftKey(settings)) {
+            PreviewDraftStore.clear(ctx)
+            TrainSettingsStore.setModeRevision(ctx, draftKey(s), 0L)
+            draft = null
+        }
+        else if (s.exercisesPerRound != settings.exercisesPerRound) {
+            // A new count is a fresh automatic selection, not an extension of
+            // today's manual swaps/additions. Keep the latest global mode.
+            val revision = TrainSettingsStore.modeRevision(ctx, currentKey)
+            val fresh = effectiveTrainSettings(s, draft, revision)
+            draft = PreviewDraft(currentKey, betweenSetMode = fresh.effectiveBetweenSetMode(),
+                modeRevision = maxOf(revision, draft?.modeRevision ?: 0L),
+                preparationSeconds = fresh.preparationSeconds, ruleDefaultVersion = 1)
+            PreviewDraftStore.put(ctx, draft!!)
+            settings = fresh; TrainSettingsStore.save(ctx, fresh)
+            return
+        }
         settings = s; TrainSettingsStore.save(ctx, s)
     }
-    val profile = profiles.firstOrNull { it.id == settings.profileId } ?: profiles.first()
-    val saved = remember(settings.routineId, settings.profileId) { routinesFor(ctx, data.catalog) }
-    val resolved = remember(settings, data, saved) { resolveTrain(ctx, data.routine, settings, data.catalog) }
+    val currentModeRevision = TrainSettingsStore.modeRevision(ctx, currentKey)
+    val currentSettings = effectiveTrainSettings(settings, draft, currentModeRevision)
+    val profile = profiles.firstOrNull { it.id == currentSettings.profileId } ?: profiles.first()
+    val saved = remember(currentSettings.routineId, currentSettings.profileId) { routinesFor(ctx, data.catalog) }
+    val selectedSaved = saved.firstOrNull { it.id == currentSettings.routineId }
+    val resolved = remember(currentSettings, data, saved) { resolveTrain(ctx, data.routine, currentSettings, data.catalog) }
     // R8.1-T05/T08: what was changed in the Preview belongs to the objective and also applies when the workout is started from here
-    val draft = remember(settings.goalId, settings.routineId, settings.fixedProgramId) { PreviewDraftStore.get(ctx, draftKey(settings)) }
-    val programMode = remember(settings, data, saved, draft) { resolveProgramMode(ctx, data.catalog, settings, draft) }
-    val editsNow = draft?.edits ?: resolved.edits
+    val programMode = remember(currentSettings, data, saved, draft) { resolveProgramMode(ctx, data.catalog, currentSettings, draft) }
+    val editsNow = effectivePlanEdits(draft?.edits ?: resolved.edits, currentModeRevision)
     // R7-T08 (D1): the default number of exercises per round (30 minutes at least) unless the person set one
     val eff = remember(resolved, data, profile, editsNow) { withDefaultLength(data.catalog, resolved.routine, data.progress, profile, resolved.settings, edits = editsNow) }
     val result: PlanResult = remember(eff, resolved, data, profile, editsNow, programMode) {
-        if (programMode != null) when (val r = buildProgramPlan(data.catalog, programMode.content, profile, settings.flow, settings.rounds, settings.format)) {
+        if (programMode != null) when (val r = buildProgramPlan(data.catalog, programMode.content, profile, currentSettings.effectiveBetweenSetMode() == app.calisthenics.domain.model.BetweenSetMode.FLOW, currentSettings.rounds, currentSettings.format, betweenSetMode = currentSettings.effectiveBetweenSetMode(), preparationSeconds = currentSettings.preparationSeconds)) {
             is FixedProgramPlanResult.Ready -> PlanResult.Ready(r.plan)
             is FixedProgramPlanResult.Unavailable -> PlanResult.Infeasible(r.items.map { ConstraintFailure("unavailable", ctx.getString(R.string.programs_missing_item, data.catalog.variation(it.exerciseId)?.name ?: it.exerciseId, it.missing)) }, emptyList())
         } else buildTrainPlan(data.catalog, resolved.routine, data.progress, profile, eff, edits = editsNow)
     }
-    val plan = (result as? PlanResult.Ready)?.plan?.let { withRestDurations(it, draft?.rest.orEmpty()) }
+    val restDurations = selectedSaved?.restDurations.orEmpty() + draft?.rest.orEmpty()
+    val plan = (result as? PlanResult.Ready)?.plan?.let { withRestDurations(it, restDurations) }
     val minutes = plan?.plannedDurationSeconds?.let { (it + 30) / 60 }
 
     // Doc 17 §2.1: choices only; START WORKOUT and Workout preview stay at the bottom.
@@ -125,7 +162,7 @@ fun TrainScreen(
 
             // Flow belongs to the objective: a program's start value must not leak into the next workout
             val catalogPrograms = remember(data.catalog, profile) { data.catalog.fixedPrograms.filter { it.listed }.map { p -> ProgramEntry(p.id, p.name, programSummaryText(ctx, data.catalog, p, profile)) } }
-            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, fixedProgramId = null, exercisesPerRound = null, flow = false)) }, routines = saved, routineId = settings.routineId,
+            ObjectivePicker(settings.goalId, { change(settings.copy(goalId = it, focus = null, routineId = null, fixedProgramId = null, exercisesPerRound = null, flow = false, betweenSetMode = null)) }, routines = saved, routineId = settings.routineId,
                 onPickRoutine = { id -> saved.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsFor(it, settings)) } },
                 fixedPrograms = catalogPrograms, programId = settings.fixedProgramId,
                 onPickProgram = { id -> data.catalog.fixedPrograms.firstOrNull { it.id == id }?.let { change(app.calisthenics.domain.routine.settingsForProgram(it, settings)) } })
@@ -183,20 +220,33 @@ fun TrainScreen(
                     }
                 }
             }
+            val selectedMode = currentSettings.effectiveBetweenSetMode()
+            fun chooseBetween(mode: app.calisthenics.domain.model.BetweenSetMode) {
+                // Read at the explicit event boundary: a cached UI callback must never restore
+                // the objective/configuration from an earlier composition.
+                val latestSettings = TrainSettingsStore.load(ctx)
+                val latestKey = draftKey(latestSettings)
+                val latestSaved = routinesFor(ctx, data.catalog).firstOrNull { it.id == latestSettings.routineId }
+                val latestDraft = PreviewDraftStore.get(ctx, latestKey)
+                val latestResolved = resolveTrain(ctx, data.routine, latestSettings, data.catalog)
+                val latestProgram = resolveProgramMode(ctx, data.catalog, latestSettings, latestDraft)
+                val startingDraft = latestDraft ?: PreviewDraft(latestKey, edits = latestResolved.edits,
+                    rest = latestSaved?.restDurations.orEmpty(), program = latestProgram?.content, ruleDefaultVersion = 1)
+                val (updatedSettings, updatedDraft) = updateBetweenSetMode(ctx, latestSettings, startingDraft, mode)
+                settings = updatedSettings
+                draft = updatedDraft
+            }
             val betweenCard: @Composable (Modifier) -> Unit = { m ->
                 Card(m, shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         Caption(stringResource(R.string.train_between_caption))
-                        SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
-                            SegmentedButton(selected = settings.stretchOn, onClick = { change(settings.copy(stretchOn = true)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(0, 2), icon = {}, modifier = Modifier.testTag("between_stretch")) { Text(stringResource(R.string.between_stretch), maxLines = 1) }
-                            SegmentedButton(selected = !settings.stretchOn, onClick = { change(settings.copy(stretchOn = false)) }, colors = appSegmentedColors(), shape = SegmentedButtonDefaults.itemShape(1, 2), icon = {}, modifier = Modifier.testTag("between_rest")) { Text(stringResource(R.string.between_rest), maxLines = 1) }
-                        }
+                        BetweenSetSelector(selectedMode, ::chooseBetween)
                     }
                 }
             }
             // R7-T08 (D1): exercises per round, next to the rounds; the default makes the session at least 30 minutes, a tap overrides it
             val exercisesCard: @Composable (Modifier) -> Unit = { m ->
-                val maxEx = remember(resolved, data, profile) { val r = routineForPlan(data.catalog, resolved.routine, data.progress, profile, resolved.settings.copy(exercisesPerRound = null)); maxExercisesPerRound(data.catalog, r, fillFocusOf(r, resolved.settings), profile, data.progress, resolved.settings.stretchOn) }
+                val maxEx = remember(resolved, data, profile) { val r = routineForPlan(data.catalog, resolved.routine, data.progress, profile, resolved.settings.copy(exercisesPerRound = null)); maxExercisesPerRound(data.catalog, r, fillFocusOf(r, resolved.settings), profile, data.progress, resolved.settings.effectiveBetweenSetMode() == app.calisthenics.domain.model.BetweenSetMode.STRETCH) }
                 val shown = (eff.exercisesPerRound ?: plan?.let { exercisesPerRoundOf(it) } ?: 1).coerceIn(1, maxOf(maxEx, 1))
                 Card(m, shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
@@ -205,7 +255,7 @@ fun TrainScreen(
                     }
                 }
             }
-            if (programMode != null) setsCard(Modifier.fillMaxWidth())   // a program is a list: sets and format only (R8.1-T08)
+            if (programMode != null) { setsCard(Modifier.fillMaxWidth()); betweenCard(Modifier.fillMaxWidth()) }   // program-authored mode is the editable starting choice
             else if (stacked) { setsCard(Modifier.fillMaxWidth()); exercisesCard(Modifier.fillMaxWidth()); betweenCard(Modifier.fillMaxWidth()) }
             else {
                 Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {

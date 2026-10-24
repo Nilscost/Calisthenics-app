@@ -1,0 +1,7 @@
+# Tested with Python 3.12 on macOS arm64; isolated tooling, never Android dependencies.
+mediapipe==1.1.1
+opencv-contrib-python==5.0.0.93
+Pillow==13.0.0
+numpy==2.5.4
+imageio-ffmpeg==0.6.0
+yt-dlp==2026.8.19

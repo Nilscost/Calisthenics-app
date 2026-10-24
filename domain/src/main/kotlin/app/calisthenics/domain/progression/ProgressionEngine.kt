@@ -84,6 +84,13 @@ data class VariationProgress(
     val raiseSuggested: Boolean = false,
     /** R7.2-T06: the "too easy" session was under a Rep range / Custom rule (no levels): the move on is the next exercise. */
     val ruleAbove: Boolean = false,
+    val targetRevision: Int = 0,
+    /** Effective policy from the immutable v1 plan snapshot; absent for historical v0 evidence. */
+    val effectivePolicySnapshot: ProgressionPolicy? = null,
+    /** Highest higher tier established by complete actual results, separate from self-assessment estimates. */
+    val demonstratedTier: Int? = null,
+    /** Personal-target revision under which [demonstratedTier] was established. */
+    val demonstratedTargetRevision: Int? = null,
 ) {
     /** Highest consecutive achieved tier counted from the tier the variation was started at. */
     fun earnedStars(): Int {
@@ -180,9 +187,18 @@ class ProgressionEngine(private val catalog: Catalog) {
     }
 
     /** The qualifying days that count for [p]: its own and the ones of its same-rung exercises since the level was enrolled or last advanced. */
-    private fun pooledDays(p: VariationProgress, vars: Map<String, VariationProgress>, routeId: String?): List<Int> {
+    private fun pooledDays(p: VariationProgress, vars: Map<String, VariationProgress>, routeId: String?, strictLevelMatch: Boolean = false): List<Int> {
         val floor = maxOf(p.enrolledAtDay, (p.lastAutoAdvanceDay ?: Int.MIN_VALUE).let { if (it == Int.MIN_VALUE) it else it + 1 })
-        val others = rungMates(p.variationId, routeId).flatMap { vars[it]?.streakDays.orEmpty() }.filter { it >= floor }
+        val ownPolicy = p.effectivePolicySnapshot ?: policy(p.variationId)
+        val others = rungMates(p.variationId, routeId).flatMap { id ->
+            val other = vars[id]
+            val otherPolicy = other?.effectivePolicySnapshot ?: policy(id)
+            val mine = ownPolicy?.tiers?.firstOrNull { it.index == p.tier }
+            val theirs = otherPolicy?.tiers?.firstOrNull { it.index == p.tier }
+            val compatible = mine != null && theirs != null && mine.target == theirs.target &&
+                mine.minQualifyingBlocks == theirs.minQualifyingBlocks && ownPolicy?.tierProfile == otherPolicy?.tierProfile
+            other?.takeIf { it.targetRevision == p.targetRevision && (!strictLevelMatch || (it.tier == p.tier && compatible)) }?.streakDays.orEmpty()
+        }.filter { it >= floor }
         return (p.streakDays + others).distinct().sorted()
     }
 
@@ -217,32 +233,73 @@ class ProgressionEngine(private val catalog: Catalog) {
             val vid = ev.variationId
             // This is a planned starting estimate, not evidence of completed tiers, including when skipped.
             val inferred = ev.inferredStartTier?.takeIf { it == ev.prescribedTier }
-            var p = ensure(vid, ev.day, tier = ev.prescribedTier ?: 1, baseline = inferred)
+            // Version 1 plans can only establish a higher current tier from explicit demonstrated results.
+            // Keep an inferred starting estimate in baselineTier, but never promote an untracked variation
+            // merely because its first plan selected a higher prescription.
+            val initialTier = if (ev.progressionEvidenceVersion >= 1 && inferred == null) 1 else (ev.prescribedTier ?: 1)
+            var p = ensure(vid, ev.day, tier = initialTier, baseline = inferred)
+            if (p.targetRevision != ev.targetRevision) p = p.copy(targetRevision = ev.targetRevision, streakDays = emptyList(), streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false,
+                demonstratedTier = null, demonstratedTargetRevision = null)
+            if (ev.progressionEvidenceVersion >= 1 && ev.effectivePolicySnapshot != null) {
+                p = p.copy(effectivePolicySnapshot = ev.effectivePolicySnapshot)
+            }
             p = p.copy(lastTrainedDay = maxOf(p.lastTrainedDay ?: ev.day, ev.day))
             val start = p
             raiseActive(active, p.familyId, vid, ev.progressionRouteId, ev.completedWorkBlocks > 0 && !ev.skippedOrPartial)
             val hold = holds[p.familyId]
+            val definition = catalog.personalTargets[vid]
+            val staleDefinition = definition != null && ev.targetRevision != definition.revision &&
+                definition.modifiedAtEpochMs > 0 && ev.recordedAtEpochMs >= definition.modifiedAtEpochMs
             // Kettlebell weight: levels are earned per weight (owner 2026-10-08).
             val load = ev.loadGrams
             val recorded = p.loadGrams
             var lighter = false
+            var heavierTrackReset = false
             if (load != null) when {
                 recorded == null -> p = p.copy(loadGrams = load)
                 load > recorded -> {
+                    heavierTrackReset = true
                     val kept = p.earnedStars()
                     p = p.copy(tier = 1, baselineTier = null, achievedTiers = emptySet(), enrolledAtDay = ev.day,
                         lastAutoAdvanceDay = null, streakDays = emptyList(), streakAssumed = 0, consecutiveBelow = 0,
                         lowerTargetSuggested = false, loadGrams = load,
+                        demonstratedTier = null, demonstratedTargetRevision = null,
                         starsByLoad = p.starsByLoad + (recorded to maxOf(kept, p.starsByLoad[recorded] ?: 0)))
                     events += ProgressEvent(ev.day, vid,
                         "Heavier kettlebell (${formatKg(load)} kg): ${catalog.variation(vid)?.name ?: vid} starts again at tier 1. Your $kept stars at ${formatKg(recorded)} kg are kept.")
                 }
                 load < recorded -> lighter = true
             }
+            val v1 = ev.progressionEvidenceVersion >= 1
+            val unknownWeightOnTrack = v1 && recorded != null && load == null
             if (lighter) {
                 events += ProgressEvent(ev.day, vid,
                     "Done with a lighter kettlebell (${formatKg(load!!)} kg instead of ${formatKg(recorded!!)} kg) — logged, but it does not count towards your next tier.")
-            } else when {
+            } else {
+                val canAdopt = v1 && autoProgression && !unknownWeightOnTrack && !heavierTrackReset &&
+                    !staleDefinition && hold == null && !p.autoPaused && ev.demonstratedQualifying &&
+                    (ev.demonstratedTier ?: p.tier) > p.tier && (ev.demonstratedTier ?: 0) <= 5
+                if (canAdopt) {
+                    val adopted = ev.demonstratedTier!!
+                    p = p.copy(
+                        tier = adopted,
+                        baselineTier = maxOf(p.baselineTier ?: 1, adopted),
+                        enrolledAtDay = ev.day,
+                        streakDays = listOf(ev.day),
+                        streakAssumed = 0,
+                        consecutiveBelow = 0,
+                        lowerTargetSuggested = false,
+                        consecutiveAbove = 0,
+                        raiseSuggested = false,
+                        ruleAbove = false,
+                        demonstratedTier = maxOf(p.demonstratedTier ?: 0, adopted),
+                        demonstratedTargetRevision = ev.targetRevision,
+                    )
+                    events += ProgressEvent(ev.day, vid,
+                        "Met level $adopted targets — it is now your current level. Successful session 1 of 3 toward the next level.")
+                } else when {
+                staleDefinition -> Unit
+                unknownWeightOnTrack -> Unit
                 // V21: Rep range / Custom rule: every set at the top of the range, in a row, moves you on to the next exercise (tier-free).
                 ev.ruleMet != null -> {
                     if (ev.ruleMet && hold == null && !p.autoPaused) {
@@ -251,7 +308,14 @@ class ProgressionEngine(private val catalog: Catalog) {
                         if (autoProgression && days.size >= ev.ruleSessions) p = moveOnByRule(p, ev.day, events, active, vars, ev.progressionRouteId)
                     } else if (!ev.ruleMet) p = p.copy(streakDays = emptyList(), streakAssumed = 0)
                 }
-                ev.qualifying && hold == null && !p.autoPaused && ev.prescribedTier == p.tier -> {
+                (if (v1) {
+                    (ev.qualifying && ev.prescribedTier == p.tier) || (ev.demonstratedQualifying && ev.demonstratedTier != null && ev.demonstratedTier >= p.tier)
+                } else {
+                    ev.qualifying && (ev.prescribedTier == p.tier || (ev.levelFiveEligible && ev.prescribedTier == 5))
+                }) && hold == null && !p.autoPaused && (!v1 || (!heavierTrackReset && !unknownWeightOnTrack)) -> {
+                    // Above-threshold evidence trains level 5, with the normal multi-session gate.
+                    // It cannot reuse a lower-tier streak or create a sixth level.
+                    if (!v1 && autoProgression && ev.levelFiveEligible && ev.prescribedTier == 5 && p.tier < 5) p = p.copy(tier = 5, enrolledAtDay = ev.day, streakDays = emptyList(), streakAssumed = 0)
                     val days = (p.streakDays + ev.day).distinct().sorted()
                     p = p.copy(streakDays = days, streakAssumed = p.streakAssumed + if (ev.confirmedBlocks == 0) 1 else 0,
                         consecutiveBelow = 0, lowerTargetSuggested = false)
@@ -261,10 +325,13 @@ class ProgressionEngine(private val catalog: Catalog) {
                         vars[vid] = p
                         val snapshot = vars.toMap()
                         val mates = rungMates(vid, ev.progressionRouteId).mapNotNull { mate ->
-                            val m = snapshot[mate]?.takeIf { !it.autoPaused && holds[it.familyId] == null } ?: return@mapNotNull null
-                            mate to tryAdvance(m, ev.day, events, active, snapshot, ev.progressionRouteId, pooledDays(m, snapshot, ev.progressionRouteId))
+                            val m = snapshot[mate]?.takeIf { !it.autoPaused && holds[it.familyId] == null && it.targetRevision == p.targetRevision && (!v1 || it.tier == p.tier) && (!ev.levelFiveEligible || it.tier == 5) } ?: return@mapNotNull null
+                            mate to tryAdvance(m, ev.day, events, active, snapshot, ev.progressionRouteId, pooledDays(m, snapshot, ev.progressionRouteId, strictLevelMatch = v1))
                         }
-                        p = tryAdvance(p, ev.day, events, active, snapshot, ev.progressionRouteId, pooledDays(p, snapshot, ev.progressionRouteId))
+                        p = tryAdvance(p, ev.day, events, active, snapshot, ev.progressionRouteId,
+                            pooledDays(p, snapshot, ev.progressionRouteId, strictLevelMatch = v1),
+                            levelFiveCompletion = ev.levelFiveEligible,
+                            demonstratedLevelFive = v1 && ev.demonstratedTier == 5)
                         mates.forEach { (k, v) -> vars[k] = v }
                     }
                 }
@@ -282,9 +349,18 @@ class ProgressionEngine(private val catalog: Catalog) {
                 ev.skippedOrPartial || ev.easierOverride -> Unit   // R8.1-T04 (F4): not qualifying, not a reset
                 else -> Unit
             }
+            }
+            if (v1 && autoProgression && ev.demonstratedQualifying && !staleDefinition && !heavierTrackReset &&
+                !unknownWeightOnTrack && !lighter && hold == null && !p.autoPaused) {
+                val demonstrated = ev.demonstratedTier!!
+                p = p.copy(
+                    demonstratedTier = maxOf(p.demonstratedTier ?: 0, demonstrated),
+                    demonstratedTargetRevision = ev.targetRevision,
+                )
+            }
             // V02 / D7, R7.2-T06 (F7, O1): "too easy" (once is enough) suggests a move on; the tier itself never changes here. What the move is (two levels, or the next exercise) is decided in [suggest].
             val byRule = ev.ruleMet != null
-            val tooEasy = ev.anyAbove && (byRule || ev.prescribedTier == start.tier) && !ev.anyBelow && !ev.discomfort && !ev.skippedOrPartial && !lighter
+            val tooEasy = !staleDefinition && ev.anyAbove && (byRule || ev.prescribedTier == start.tier) && !ev.anyBelow && !ev.discomfort && !ev.skippedOrPartial && !lighter
             val above = if (tooEasy && p.tier == start.tier) p.consecutiveAbove + 1 else 0
             val suggest = above >= ABOVE_SUGGEST_AFTER && !p.raiseSuggested && p.tier == start.tier
             p = p.copy(consecutiveAbove = above, raiseSuggested = if (p.tier != start.tier) false else p.raiseSuggested || suggest, ruleAbove = if (above > 0) byRule else false)
@@ -384,6 +460,8 @@ class ProgressionEngine(private val catalog: Catalog) {
             .mapValues { (_, sessions) -> sessions.map { it.sessionId }.distinct().size }
         val routeCounts = evidence.filter { it.completedWorkBlocks > 0 && it.progressionRouteId != null }
             .groupBy { it.progressionRouteId!! }.mapValues { (_, sessions) -> sessions.map { it.sessionId }.distinct().size }
+        // Keep earned achievements while an edited definition starts a fresh prospective streak.
+        vars.replaceAll { id, value -> if (value.targetRevision != (catalog.personalTargets[id]?.revision ?: 0)) value.copy(streakDays = emptyList(), streakAssumed = 0) else value }
         return ProgressSnapshot(vars.toMap(), active.toMap(), holds.toMap(), events.toList(), counts, routeCounts)
     }
 
@@ -413,8 +491,10 @@ class ProgressionEngine(private val catalog: Catalog) {
         routeId: String? = null,
         /** The qualifying days that count (own and same-rung); default: the exercise's own. */
         days: List<Int> = p0.streakDays,
+        levelFiveCompletion: Boolean = false,
+        demonstratedLevelFive: Boolean = false,
     ): VariationProgress {
-        val pol = policy(p0.variationId) ?: return p0
+        val pol = p0.effectivePolicySnapshot ?: policy(p0.variationId) ?: return p0
         val r = evaluateAdvancement(
             AdvancementInput(
                 policy = seed(pol),
@@ -435,7 +515,12 @@ class ProgressionEngine(private val catalog: Catalog) {
         }
         // Top tier: same pacing gate (evaluated as if a 6th tier existed) then successor move.
         if (p0.tier == 5 && 5 !in p0.achievedTiers && gateWouldPass(pol, p0, day, days)) {
-            val achieved = p0.copy(achievedTiers = p0.achievedTiers + 5, lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
+            val earnedAtTop = when {
+                demonstratedLevelFive -> setOf(5) // lower stars come from baselineTier, not fabricated achievements
+                levelFiveCompletion -> (1..5).toSet() // preserve historical level-five inference
+                else -> setOf(5)
+            }
+            val achieved = p0.copy(achievedTiers = p0.achievedTiers + earnedAtTop, lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
             val successor = if (isRotationAlternative(p0.variationId, routeId)) null else mainSuccessor(p0.variationId, routeId)?.takeIf { prerequisitesMet(it, vars + (p0.variationId to achieved)) }
             val name = catalog.variation(p0.variationId)?.name ?: p0.variationId
             val loaded = catalog.variation(p0.variationId)?.isLoaded() == true

@@ -181,15 +181,24 @@ def flag_kick_press():
         return k
 
     # Densely follow the pole-grip arc so interpolated shoulders stay within arm reach.
-    angles = list(range(0, 181, 10)) + list(range(170, -1, -10))
+    # Keep enough source samples along the kick arc that the continuous
+    # sampler interpolates between nearby IK solutions without stretching a
+    # leg at the fast reversal.
+    angles = list(range(0, 181, 5)) + list(range(175, -1, -5))
     keys = []
+    kick_span = 0.75  # one full kick and return, with no flat apex interval
     for i, p in enumerate(angles):
-        legs = "tuck" if p >= 135 else "straight"
-        keys.append((0.012 * i, kick_pose(p, legs)))
+        # Keep the two legs together and long through the kick. The previous
+        # binary straight-to-tuck switch at 135 degrees changed both ankle
+        # targets at once and created a sharp limb-speed spike.
+        keys.append((kick_span * i / (len(angles) - 1), kick_pose(p, "straight")))
     landing = kick_pose(0)
-    landing["pelvis"] = [landing["pelvis"][0] + 0.06, landing["pelvis"][1], landing["pelvis"][2] - 0.03]
-    keys.extend([(0.46, landing), (0.62, kick_pose(0)), (0.85, kick_pose(0))])
-    return dict(seconds=2.4, keys=keys, cam_az=26, cam_el=12, props=[POLE])
+    # Keep both feet planted while the pelvis absorbs the return. The old
+    # landing stayed at near-lockout with only a 3 cm pelvis drop; a small
+    # forward shift lets the knees flex without losing either pole hand.
+    landing["pelvis"] = [landing["pelvis"][0] + 0.10, landing["pelvis"][1], landing["pelvis"][2] - 0.02]
+    keys.extend([(0.77, landing), (0.87, kick_pose(0)), (0.97, kick_pose(0))])
+    return dict(seconds=3.2, keys=keys, interpolation="continuous", cam_az=26, cam_el=12, props=[POLE])
 
 
 def flag_vertical_chamber_press():

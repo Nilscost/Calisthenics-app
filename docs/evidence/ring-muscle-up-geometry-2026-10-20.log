@@ -1,0 +1,6 @@
+PASS: conservative all-frame arm volume clearance 5.005 mm
+PASS: conservative whole-capsule clearance 1.497 mm; all-frame body vertex clearance 11.338 mm
+PASS: 950400 actual hand vertices, 144 frames, minimum mesh/ring clearance 7.525 mm, projected ring width >= 20.2 px at 480x360
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:49:19)
+
+Blender quit

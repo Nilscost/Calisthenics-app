@@ -1,0 +1,139 @@
+{
+  "exercise": "chinup-full",
+  "status": "requires_visual_review",
+  "candidate_sha256": "1d2216aec8ca4474604fd81ab571b804f36fd4daff55d3f5c2a1e81edbe470fa",
+  "references": [
+    {
+      "video_id": "GBcUcATb8RQ",
+      "url": "https://www.youtube.com/watch?v=GBcUcATb8RQ",
+      "status": "inconclusive",
+      "comparison": {
+        "mean_deg": 22.45,
+        "path_coverage": 0.931,
+        "joints": {
+          "elbow_l": {
+            "mean_deg": 15.23,
+            "p95_deg": 42.88,
+            "coverage": 0.986
+          },
+          "elbow_r": {
+            "mean_deg": 21.58,
+            "p95_deg": 119.92,
+            "coverage": 0.944
+          },
+          "shoulder_l": {
+            "mean_deg": 45.89,
+            "p95_deg": 64.26,
+            "coverage": 0.083
+          },
+          "shoulder_r": {
+            "mean_deg": 57.0,
+            "p95_deg": 82.3,
+            "coverage": 0.083
+          }
+        }
+      },
+      "hand_frame_coverage": 0.591,
+      "comparison_joints": [
+        "elbow_l",
+        "elbow_r",
+        "shoulder_l",
+        "shoulder_r",
+        "knee_l",
+        "knee_r"
+      ],
+      "reference_video_sha256": "08ae4efd0a198c07a8440f7b83217bc0050c5de77ee018cf550fc00e848363cb",
+      "analysis_sha256": "86db03095410f48cd7062fd756f9c9f190132a23cc03a68bf3d0843ad354c9a9",
+      "visual_grip_review": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending"
+    },
+    {
+      "video_id": "_71FpEaq-fQ",
+      "url": "https://www.youtube.com/watch?v=_71FpEaq-fQ",
+      "status": "inconclusive",
+      "comparison": {
+        "mean_deg": 25.53,
+        "path_coverage": 0.944,
+        "joints": {
+          "elbow_l": {
+            "mean_deg": 16.9,
+            "p95_deg": 48.78,
+            "coverage": 0.917
+          },
+          "elbow_r": {
+            "mean_deg": 17.83,
+            "p95_deg": 55.74,
+            "coverage": 0.917
+          },
+          "shoulder_l": {
+            "mean_deg": 16.69,
+            "p95_deg": 74.11,
+            "coverage": 0.778
+          },
+          "shoulder_r": {
+            "mean_deg": 38.93,
+            "p95_deg": 93.71,
+            "coverage": 0.806
+          }
+        }
+      },
+      "hand_frame_coverage": 0.655,
+      "comparison_joints": [
+        "elbow_l",
+        "elbow_r",
+        "shoulder_l",
+        "shoulder_r",
+        "knee_l",
+        "knee_r"
+      ],
+      "reference_video_sha256": "7e693afbd6bd1048415fee9acae00580ae19900723d6d74be6205869c88d23fe",
+      "analysis_sha256": "6f352424042b576487a1b30e007954ce95fc51836e764072fba6084c10689f47",
+      "visual_grip_review": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending"
+    },
+    {
+      "video_id": "bZ6Ysk9jf6E",
+      "url": "https://www.youtube.com/watch?v=bZ6Ysk9jf6E",
+      "status": "inconclusive",
+      "comparison": {
+        "mean_deg": 31.25,
+        "path_coverage": 1.0,
+        "joints": {
+          "elbow_l": {
+            "mean_deg": 26.94,
+            "p95_deg": 60.67,
+            "coverage": 0.347
+          },
+          "elbow_r": {
+            "mean_deg": 28.86,
+            "p95_deg": 65.29,
+            "coverage": 1.0
+          },
+          "shoulder_l": {
+            "mean_deg": 11.08,
+            "p95_deg": 42.2,
+            "coverage": 0.347
+          },
+          "shoulder_r": {
+            "mean_deg": 31.25,
+            "p95_deg": 72.23,
+            "coverage": 1.0
+          }
+        }
+      },
+      "hand_frame_coverage": 0.32,
+      "comparison_joints": [
+        "elbow_l",
+        "elbow_r",
+        "shoulder_l",
+        "shoulder_r"
+      ],
+      "reference_video_sha256": "141556ed168bb86800743b68e7d9fa831b94cfd4eebceaef050c63a0c5878855",
+      "analysis_sha256": "9f27189a396296b5abe96195df1e77bf836e868a22afaf93fb5c3e7e6e953341",
+      "visual_grip_review": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending"
+    }
+  ],
+  "limitations": [
+    "2D camera and occlusion affect angles; no biomechanics certification.",
+    "Hand detection coverage is not grip correctness.",
+    "Review whole reps, floor/bar contacts, thumbs and encoded phone-size output."
+  ]
+}

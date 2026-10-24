@@ -1,0 +1,208 @@
+{
+  "provenance": "Diagnostic draft hand pose with sampled palm intrusion13.009mm. Separate native all-frame scanning also exposed palm/wood penetration during this iteration. This fixture tests physical surfaces, not body-form approval.",
+  "frame": {
+    "pelvis": [
+      -0.0797,
+      0.0,
+      1.73726
+    ],
+    "spine": [
+      -0.06671,
+      0.0,
+      1.9769
+    ],
+    "chest": [
+      -0.05265,
+      0.0,
+      2.23652
+    ],
+    "neck": [
+      -0.05073,
+      0.0,
+      2.3365
+    ],
+    "head": [
+      -0.04883,
+      0.0,
+      2.43549
+    ],
+    "pelvis_up": [
+      0.05409,
+      0.0,
+      0.99854
+    ],
+    "chest_up": [
+      0.05409,
+      0.0,
+      0.99854
+    ],
+    "pelvis_left": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "chest_left": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "hip_l": [
+      -0.08132,
+      0.09,
+      1.7073
+    ],
+    "shoulder_l": [
+      -0.05427,
+      0.18,
+      2.20657
+    ],
+    "knee_l": [
+      -0.06302,
+      0.10012,
+      1.2678
+    ],
+    "ankle_l": [
+      -0.08132,
+      0.11,
+      0.8383
+    ],
+    "toe_l": [
+      0.11868,
+      0.11,
+      0.8383
+    ],
+    "elbow_l": [
+      -0.14468,
+      0.39886,
+      2.02237
+    ],
+    "wrist_l": [
+      0.03121,
+      0.31245,
+      2.2081
+    ],
+    "hand_l": [
+      0.19646,
+      0.34424,
+      2.18396
+    ],
+    "palmn_l": [
+      0.21489,
+      -0.46499,
+      0.85884
+    ],
+    "grip_l": [
+      0.95,
+      0.0,
+      0.0
+    ],
+    "grip_offset_l": [
+      0.028,
+      0.045
+    ],
+    "hip_r": [
+      -0.08132,
+      -0.09,
+      1.7073
+    ],
+    "shoulder_r": [
+      -0.05427,
+      -0.18,
+      2.20657
+    ],
+    "knee_r": [
+      -0.06302,
+      -0.10012,
+      1.2678
+    ],
+    "ankle_r": [
+      -0.08132,
+      -0.11,
+      0.8383
+    ],
+    "toe_r": [
+      0.11868,
+      -0.11,
+      0.8383
+    ],
+    "elbow_r": [
+      -0.14468,
+      -0.39886,
+      2.02237
+    ],
+    "wrist_r": [
+      0.03121,
+      -0.31245,
+      2.2081
+    ],
+    "hand_r": [
+      0.19646,
+      -0.34424,
+      2.18396
+    ],
+    "palmn_r": [
+      0.21489,
+      0.46499,
+      0.85884
+    ],
+    "grip_r": [
+      0.95,
+      0.0,
+      0.0
+    ],
+    "grip_offset_r": [
+      0.028,
+      0.045
+    ],
+    "ring_center_l": [
+      0.15728,
+      0.30944,
+      2.29673
+    ],
+    "ring_plane_l_up": [
+      0.17926,
+      -0.98161,
+      -0.06563
+    ],
+    "ring_radial_l_up": [
+      0.84933,
+      0.12074,
+      0.51386
+    ],
+    "ring_center_r": [
+      0.15728,
+      -0.30944,
+      2.29673
+    ],
+    "ring_plane_r_up": [
+      0.17926,
+      0.98161,
+      -0.06563
+    ],
+    "ring_radial_r_up": [
+      0.84933,
+      -0.12074,
+      0.51386
+    ]
+  },
+  "spec": {
+    "kind": "ring",
+    "joint": "wrist_l",
+    "radius": 0.105,
+    "tube": 0.014,
+    "anchor": [
+      0.14722431864335458,
+      0.26,
+      3.05
+    ],
+    "color": [
+      0.55,
+      0.29,
+      0.1
+    ],
+    "frame_center": "ring_center_l",
+    "frame_normal": "ring_plane_l_up",
+    "frame_radial": "ring_radial_l_up",
+    "articulated_contact": true
+  }
+}

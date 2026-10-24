@@ -4,6 +4,10 @@ package app.calisthenics.domain.feedback
 import app.calisthenics.domain.model.BlockType
 import app.calisthenics.domain.model.TargetType
 import app.calisthenics.domain.model.WorkoutPlan
+import app.calisthenics.domain.model.ProgressionPolicy
+import app.calisthenics.domain.model.RuleKind
+import app.calisthenics.domain.model.Side
+import app.calisthenics.domain.progression.specs
 
 enum class Execution { NOT_STARTED, RUNNING, COMPLETED, SKIPPED, PARTIAL }
 enum class Rating { BELOW, MET, ABOVE, UNRATED }
@@ -103,10 +107,24 @@ data class SessionEvidence(
     val progressionRouteId: String? = null,
     /** Initial estimate from a related main exercise; no completed tiers are transferred. */
     val inferredStartTier: Int? = null,
+    val levelFiveEligible: Boolean = false,
+    val targetRevision: Int = 0,
+    val recordedAtEpochMs: Long = 0L,
+    /** App-level tier fully demonstrated by explicit results in a v1 plan; derived, never persisted. */
+    val demonstratedTier: Int? = null,
+    /** Immutable plan semantics boundary; historical evidence remains version 0. */
+    val progressionEvidenceVersion: Int = 0,
+    /** The policy snapshot carried by a v1 plan, used to replay its original target definition. */
+    val effectivePolicySnapshot: ProgressionPolicy? = null,
 ) {
     /** Spec §5 / ADR C2 exposure definition. */
     val qualifying: Boolean
         get() = prescribedTier != null && completedWorkBlocks >= minQualifyingBlocks && !skippedOrPartial &&
+            !anyBelow && !discomfort && !easierOverride
+
+    /** Strict actual-result qualification, independent of whether the plan mixed prescribed tiers. */
+    val demonstratedQualifying: Boolean
+        get() = demonstratedTier != null && completedWorkBlocks >= minQualifyingBlocks && !skippedOrPartial &&
             !anyBelow && !discomfort && !easierOverride
 }
 
@@ -121,20 +139,92 @@ fun deriveEvidence(
     feedbackDay: Int? = null,
     /** V21: per exercise, did the session meet the plan's rep-range rule? null = App levels. */
     ruleMetOf: (String) -> Boolean? = { null },
+    recordedAtEpochMs: Long = plan.createdAtEpochMs,
+    /** App adapters supply real per-block log/correction provenance; a row minimum cannot invent logs. */
+    loggedBlockIds: Set<String>? = null,
+    /** Effective exercise policy, including personal targets. Null policy means no demonstrated-tier evidence. */
+    effectivePolicyOf: (String) -> ProgressionPolicy? = { null },
 ): List<SessionEvidence> {
     // Flow programs record a completed session but provide no per-exercise result. Do not
     // turn timer completion into assumed strength evidence for any item in the routine.
-    if (plan.fixedProgramId != null && plan.flow) return emptyList()
+    val flowProgram = plan.fixedProgramId != null && plan.flow
     val tierByVariation = plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null }
-        // a free number (Detailed edit) means "does not count towards progression": no prescribed tier, so the session is never qualifying
-        .groupBy { it.variationId!! }.mapValues { (_, bs) -> if (bs.any { it.freeTarget }) null else bs.mapNotNull { it.prescriptionTier }.maxOrNull() }
+        // Free/mixed prescriptions have no ordinary prescribed-tier evidence; version-1 explicit actuals may independently demonstrate a full level.
+        .groupBy { it.variationId!! }.mapValues { (_, bs) -> if (bs.any { it.freeTarget && !it.levelFiveEligible } || bs.map { it.prescriptionTier }.distinct().size != 1) null else bs.firstOrNull()?.prescriptionTier }
     val loadByVariation = plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null }
         .groupBy { it.variationId!! }.mapValues { (_, bs) -> bs.mapNotNull { it.loadGrams }.maxOrNull() }
     val routeByVariation = plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null }
         .groupBy { it.variationId!! }.mapValues { (_, bs) -> bs.mapNotNull { it.progressionRouteId }.firstOrNull() }
-    return outcomes.groupBy { it.variationId }.toSortedMap().map { (vid, os) ->
-        val tier = tierByVariation[vid]
+
+    fun demonstratedTier(vid: String, work: List<app.calisthenics.domain.model.TimelineBlock>, os: List<ResolvedOutcome>, policy: ProgressionPolicy?): Int? {
+        if (plan.progressionEvidenceVersion < 1 || plan.rule.kind != RuleKind.APP_LEVELS) return null
+        policy ?: return null
+        if (work.isEmpty() || loggedBlockIds == null || !work.all { it.id in loggedBlockIds }) return null
+        if (work.map { it.targetRevision }.distinct().size != 1 || work.map { it.loadGrams }.distinct().size > 1) return null
+        if (os.size != work.size || os.any { it.execution != Execution.COMPLETED || it.discomfort || it.rating == Rating.BELOW }) return null
+        val byId = os.associateBy { it.blockId }
+        val explicit = work.associate { block ->
+            val result = byId[block.id] ?: return null
+            val value = when (block.target?.type) {
+                TargetType.REPS -> result.actualReps
+                TargetType.HOLD_SECONDS -> result.actualHoldSeconds
+                null -> null
+            } ?: return null
+            block.id to value
+        }
+        val profileSpecs = policy.tierProfile?.specs()
+        // M is deliberately a maintenance profile, not a five-step strength ladder.
+        if (policy.tierProfile == app.calisthenics.domain.model.TierProfile.M) return null
+        return policy.tiers.sortedByDescending { it.index }.firstOrNull { tier ->
+            val expected = tier.target
+            val spec = profileSpecs?.getOrNull(tier.index - 1)
+            val requiredSets = maxOf(tier.minQualifyingBlocks, spec?.sets ?: 0)
+            val sides = work.map { it.side }.filter { it == Side.LEFT || it == Side.RIGHT }.toSet()
+            val requiresBothSides = policy.tierProfile == app.calisthenics.domain.model.TierProfile.RU || sides.isNotEmpty()
+            val enoughBlocks = if (requiresBothSides) {
+                sides == setOf(Side.LEFT, Side.RIGHT) && setOf(Side.LEFT, Side.RIGHT).all { side ->
+                    work.count { it.side == side } >= requiredSets
+                }
+            } else work.size >= requiredSets
+            val tempoSupported = if (spec?.seconds == null) true else {
+                val prescribed = work.mapNotNull { it.prescriptionTier }.minOrNull()
+                val prescribedSeconds = prescribed?.let { profileSpecs?.getOrNull(it - 1)?.seconds }
+                prescribedSeconds != null && spec.seconds <= prescribedSeconds
+            }
+            enoughBlocks && tempoSupported && work.all { block ->
+                val actualType = when {
+                    block.target?.type == TargetType.REPS -> TargetType.REPS
+                    block.target?.type == TargetType.HOLD_SECONDS -> TargetType.HOLD_SECONDS
+                    else -> null
+                }
+                val requiredValue = expected.shownValue()
+                actualType == expected.type && (explicit[block.id] ?: Int.MIN_VALUE) >= requiredValue
+            }
+        }?.index
+    }
+
+    return outcomes.groupBy { it.variationId }.toSortedMap().mapNotNull { (vid, os) ->
+        val work = plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid }
+        val policySnapshot = plan.progressionPolicies[vid] ?: effectivePolicyOf(vid)
+        val explicitlyLogged = os.isNotEmpty() && work.all { loggedBlockIds == null || it.id in loggedBlockIds } && os.all { o ->
+            when (work.firstOrNull { it.id == o.blockId }?.target?.type) {
+                TargetType.REPS -> o.actualReps != null
+                TargetType.HOLD_SECONDS -> o.actualHoldSeconds != null
+                null -> false
+            }
+        }
+        if (flowProgram && !explicitlyLogged) return@mapNotNull null
+        val tier = tierByVariation[vid].takeUnless { (flowProgram || work.any { it.levelFiveEligible }) && !explicitlyLogged }
+        val demonstrated = demonstratedTier(vid, work, os, policySnapshot)
+        val evidenceTier = demonstrated ?: tier
+        val policyMinBlocks = evidenceTier?.let { t -> policySnapshot?.tiers?.firstOrNull { it.index == t }?.minQualifyingBlocks }
         val disc = os.any { it.discomfort }
+        fun explicitActual(o: ResolvedOutcome): Boolean = plan.progressionEvidenceVersion >= 1 &&
+            loggedBlockIds?.contains(o.blockId) == true && when (work.firstOrNull { it.id == o.blockId }?.target?.type) {
+                TargetType.REPS -> o.actualReps != null
+                TargetType.HOLD_SECONDS -> o.actualHoldSeconds != null
+                null -> false
+            }
         SessionEvidence(
             sessionId = sessionId,
             variationId = vid,
@@ -142,20 +232,26 @@ fun deriveEvidence(
             day = day,
             prescribedTier = tier,
             completedWorkBlocks = os.count { it.execution == Execution.COMPLETED },
-            skippedOrPartial = os.any { it.execution == Execution.SKIPPED || it.execution == Execution.PARTIAL },
+            skippedOrPartial = os.any { it.execution != Execution.COMPLETED } || os.size != work.size,
             anyBelow = os.any { it.rating == Rating.BELOW },
             discomfort = disc,
             discomfortReportedDay = if (disc) maxOf(day, feedbackDay ?: day) else null,
             easierOverride = vid in easierOverrides,
-            assumedBlocks = os.count { it.origin == RatingOrigin.ASSUMED },
-            confirmedBlocks = os.count { it.origin == RatingOrigin.USER_BLOCK || it.origin == RatingOrigin.USER_EXERCISE },
-            minQualifyingBlocks = minQualifyingBlocksOf(vid, tier),
+            assumedBlocks = os.count { it.origin == RatingOrigin.ASSUMED && !explicitActual(it) },
+            confirmedBlocks = os.count { it.origin == RatingOrigin.USER_BLOCK || it.origin == RatingOrigin.USER_EXERCISE || explicitActual(it) },
+            minQualifyingBlocks = policyMinBlocks ?: minQualifyingBlocksOf(vid, evidenceTier),
             loadGrams = loadByVariation[vid],
             anyAbove = os.any { it.rating == Rating.ABOVE },
             ruleMet = ruleMetOf(vid),
             ruleSessions = plan.rule.sessions,
             progressionRouteId = routeByVariation[vid],
+            levelFiveEligible = work.isNotEmpty() && work.all { it.levelFiveEligible } && explicitlyLogged,
+            recordedAtEpochMs = recordedAtEpochMs,
+            targetRevision = work.maxOfOrNull { it.targetRevision } ?: 0,
             inferredStartTier = plan.blocks.firstOrNull { it.type == BlockType.WORK && it.variationId == vid && it.inferredStartTier == tier }?.inferredStartTier?.takeIf { tier != null },
+            demonstratedTier = demonstrated,
+            progressionEvidenceVersion = plan.progressionEvidenceVersion,
+            effectivePolicySnapshot = policySnapshot,
         )
     }
 }

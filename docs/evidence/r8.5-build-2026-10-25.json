@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-25",
+  "package": "app.calisthenics.personal",
+  "versionName": "0.11.5-r8",
+  "versionCode": 19,
+  "apk": "/Users/nils/Documents/hermes/Apps/builds/app-debug-R8.5.apk",
+  "workspaceApk": "/Users/nils/Documents/hermes/Apps/calisthenics/app/build/outputs/apk/debug/app-debug-R8.5.apk",
+  "bytes": 25047506,
+  "sha256": "25578ed1e6377e611e2f5733c1f3fae2ad4053913f102547e911877e375437fe",
+  "certificateSha256": "8638d15f7e5327d0a4f3197dad470e70b1425dfcb00a6bfc4bbcdc96a63bd940",
+  "certificateMatchesR84": true,
+  "tests": {
+    "domain": {
+      "tests": 539,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "app": {
+      "tests": 256,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "verifyCommand": "bash scripts/verify.sh",
+  "verifyLog": "docs/evidence/r8.5-verify-2026-10-25.log",
+  "lint": "passed",
+  "contentValidation": "passed; structure/rights only",
+  "phoneTested": false,
+  "beepAudibilityPhoneVerified": false,
+  "musicContinuityPhoneVerified": false,
+  "manualLockPhoneVerified": false,
+  "upgradeOnPhoneVerified": false,
+  "ownerAccepted": false,
+  "sourceBaseCommit": "847ef65191fde66a5ca11927bd6a73f8c4d8b150",
+  "sourceManifest": "docs/evidence/r8.5-source-manifest-2026-10-25.json",
+  "buildSourceManifest": "docs/evidence/r8.5-build-source-manifest-2026-10-25.json",
+  "buildSourceComparisonMismatches": [],
+  "buildSourceFileCount": 1356,
+  "freshDirectoryVerify": {
+    "exitCode": 0,
+    "log": "docs/evidence/r8.5-fresh-verify-2026-10-25.log"
+  },
+  "packagingNote": "Authoritative package is the fresh-directory verified APK. Existing R8.4 and normal workspace debug output are retained.",
+  "migrationSqlCheck": "passed: 9 Room and 9 migration statements",
+  "uiScreens": {
+    "result": "pending",
+    "reason": "No connected device/emulator; no new screenshot approval."
+  },
+  "pythonTests": {
+    "tests": 236,
+    "failures": 0,
+    "note": "Next-video source tests are separate from app/phone verification."
+  }
+}

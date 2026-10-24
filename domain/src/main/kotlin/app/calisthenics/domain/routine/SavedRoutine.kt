@@ -40,6 +40,11 @@ data class SavedRoutine(
     /** R8.2-T03 (G3): the conditioning finisher the routine was saved with. */
     val conditioningOn: Boolean = false,
     val conditioningMinutes: Int = 6,
+    /** R8.3: authoritative recovery choice; nullable for backward decoding. */
+    val betweenSetMode: BetweenSetMode? = null,
+    val preparationSeconds: Int = 5,
+    /** Numeric passive-rest overlays stay dormant while Flow/Stretch is selected. */
+    val restDurations: Map<String, Int> = emptyMap(),
 )
 
 /** Builds what is saved from the Preview's state. [base] is the routine the plan was made from, [edits] the Preview's changes. */
@@ -47,8 +52,9 @@ fun savedFrom(id: String, name: String, revision: Int, base: Routine, edits: Pla
     val applied = applyEdits(base, edits)
     val slots = applied.slots.map { s -> edits.swaps[s.id]?.let { s.copy(preferredVariationId = it) } ?: s }
     val overlay = edits.copy(swaps = emptyMap(), removed = emptySet(), added = emptyList(), rule = null)
+    val mode = settings.effectiveBetweenSetMode()
     return SavedRoutine(id, name.trim().ifBlank { "My routine" }, revision, applied.copy(id = id, revision = revision, name = name.trim().ifBlank { "My routine" }, slots = slots, rule = rule),
-        overlay, settings.format, rule, settings.stretchOn, settings.rounds, createdAt, now, settings.warmupOn, exercisesPerRound = settings.exercisesPerRound, cooldownOn = settings.cooldownOn, cooldownMode = settings.cooldownMode, cooldownMinutes = settings.cooldownMinutes, flow = settings.flow, conditioningOn = settings.conditioningOn, conditioningMinutes = settings.conditioningMinutes)
+        overlay, settings.format, rule, mode == BetweenSetMode.STRETCH, settings.rounds, createdAt, now, settings.warmupOn, exercisesPerRound = settings.exercisesPerRound, cooldownOn = settings.cooldownOn, cooldownMode = settings.cooldownMode, cooldownMinutes = settings.cooldownMinutes, flow = mode == BetweenSetMode.FLOW, conditioningOn = settings.conditioningOn, conditioningMinutes = settings.conditioningMinutes, betweenSetMode = mode, preparationSeconds = settings.preparationSeconds.coerceIn(1, 30))
 }
 
 /** Everything the planner needs to rebuild the saved workout: the routine, the Train settings and the Preview edits it was saved with. */
@@ -62,7 +68,7 @@ fun resolveSaved(saved: SavedRoutine, today: TrainSettings): ResolvedRoutine = R
 
 /** Choosing a saved routine on Train copies its format, rest type and sets into today's settings (the person can still change them there). */
 fun settingsFor(saved: SavedRoutine, today: TrainSettings): TrainSettings =
-    today.copy(goalId = "general", format = saved.format, stretchOn = saved.stretchOn, rounds = saved.sets, focus = null, routineId = saved.id, fixedProgramId = null, warmupOn = saved.warmupOn, exercisesPerRound = saved.exercisesPerRound, cooldownOn = saved.cooldownOn, cooldownMode = saved.cooldownMode, cooldownMinutes = saved.cooldownMinutes, flow = saved.flow, conditioningOn = saved.conditioningOn, conditioningMinutes = saved.conditioningMinutes)
+    today.copy(goalId = "general", format = saved.format, stretchOn = effectiveBetweenSetMode(saved.betweenSetMode, saved.flow, saved.stretchOn) == BetweenSetMode.STRETCH, rounds = saved.sets, focus = null, routineId = saved.id, fixedProgramId = null, warmupOn = saved.warmupOn, exercisesPerRound = saved.exercisesPerRound, cooldownOn = saved.cooldownOn, cooldownMode = saved.cooldownMode, cooldownMinutes = saved.cooldownMinutes, flow = effectiveBetweenSetMode(saved.betweenSetMode, saved.flow, saved.stretchOn) == BetweenSetMode.FLOW, conditioningOn = saved.conditioningOn, conditioningMinutes = saved.conditioningMinutes, betweenSetMode = effectiveBetweenSetMode(saved.betweenSetMode, saved.flow, saved.stretchOn), preparationSeconds = saved.preparationSeconds.coerceIn(1, 30))
 
 /** D5: "Update this routine" keeps the id and bumps the revision (older plans keep their own snapshot); "Save as new" gets a new id. */
 fun updateSaved(old: SavedRoutine, new: SavedRoutine) = new.copy(id = old.id, revision = old.revision + 1, createdAtEpochMs = old.createdAtEpochMs, routine = new.routine.copy(id = old.id, revision = old.revision + 1))
@@ -79,11 +85,13 @@ fun mergeSaved(local: List<SavedRoutine>, incoming: List<SavedRoutine>): List<Sa
 /** R8.1-T08 (F9): saves an edited program as a new "My routine"; the program in the catalog is untouched. */
 fun savedFromProgram(id: String, name: String, revision: Int, content: app.calisthenics.domain.planner.ProgramContent, settings: TrainSettings, now: Long, createdAt: Long = now): SavedRoutine {
     val title = name.trim().ifBlank { content.name }
-    return SavedRoutine(id, title, revision, Routine(id, revision, title, emptyList()), PlanEdits(), settings.format, ProgressionRule(), false, settings.rounds, createdAt, now,
-        warmupOn = false, exercisesPerRound = null, cooldownOn = false, flow = settings.flow, program = content.copy(name = title))
+    val mode = settings.effectiveBetweenSetMode()
+    return SavedRoutine(id, title, revision, Routine(id, revision, title, emptyList()), PlanEdits(), settings.format, ProgressionRule(), mode == BetweenSetMode.STRETCH, settings.rounds, createdAt, now,
+        warmupOn = false, exercisesPerRound = null, cooldownOn = false, flow = mode == BetweenSetMode.FLOW, program = content.copy(name = title), betweenSetMode = mode, preparationSeconds = settings.preparationSeconds.coerceIn(1, 30))
 }
 
 /** Choosing a program on Train: it loads as the starting point, with its own flow as the start value of the Flow option and one set. */
 fun settingsForProgram(program: app.calisthenics.domain.model.FixedProgram, today: TrainSettings): TrainSettings =
     today.copy(goalId = "general", focus = null, routineId = null, fixedProgramId = program.id, format = WorkoutFormat.CIRCUIT, rounds = 1, stretchOn = false,
-        warmupOn = false, cooldownOn = false, exercisesPerRound = null, flow = program.flow)
+        warmupOn = false, cooldownOn = false, exercisesPerRound = null, flow = program.flow,
+        betweenSetMode = if (program.flow) BetweenSetMode.FLOW else BetweenSetMode.REST)

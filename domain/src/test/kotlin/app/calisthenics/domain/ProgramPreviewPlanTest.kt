@@ -3,6 +3,7 @@ package app.calisthenics.domain
 import app.calisthenics.domain.backup.*
 import app.calisthenics.domain.content.parseCatalog
 import app.calisthenics.domain.equipment.SeedProfiles
+import app.calisthenics.domain.equipment.isAvailable
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.planner.*
 import app.calisthenics.domain.routine.*
@@ -36,9 +37,29 @@ class ProgramPreviewPlanTest {
         assertEquals("${program.items[0].exerciseId}:1", sideless(circuit).first())
         assertEquals(listOf("${program.items[0].exerciseId}:1", "${program.items[0].exerciseId}:2", "${program.items[1].exerciseId}:1"), sideless(straight).take(3))
         assertEquals(2, circuit.rounds); assertEquals(WorkoutFormat.STRAIGHT, straight.format)
-        // Flow keeps the rest between sets of a circuit and drops it between exercises
-        assertEquals(1, circuit.blocks.count { it.type == BlockType.PASSIVE_RECOVERY })
-        assertEquals(exercises * 2 - 1, plan(sets = 2, flow = false).blocks.count { it.type == BlockType.PASSIVE_RECOVERY })   // flow off: rest after every entry but the last
+        // Flow replaces all recovery with one preparation interval between each pair of work blocks.
+        assertEquals(0, circuit.blocks.count { it.type == BlockType.PASSIVE_RECOVERY })
+        assertEquals(circuit.blocks.count { it.type == BlockType.WORK } - 1, circuit.blocks.withIndex().count { (i, b) -> b.type == BlockType.TRANSITION && circuit.blocks.getOrNull(i + 1)?.type == BlockType.WORK })
+        assertEquals(exercises * 2 - 1, plan(sets = 2, flow = false).blocks.count { it.type == BlockType.PASSIVE_RECOVERY })   // Rest: interval after every entry but the last
+    }
+
+    @Test fun fixedProgramStretchModeAvoidsCoolDownOnlyStretchesAndExplainsSafeRestFallback() {
+        val item = program.items.first { source ->
+            c.variation(source.exerciseId)?.compatibleStretchIds.orEmpty().any { id ->
+                c.variation(id)?.let { it.kind == Kind.STRETCH && !it.optIn && isAvailable(it, SeedProfiles.home) } == true
+            }
+        }
+        val compatible = c.variation(item.exerciseId)!!.compatibleStretchIds.mapNotNull(c::variation)
+            .filter { it.kind == Kind.STRETCH && !it.optIn && isAvailable(it, SeedProfiles.home) }
+        val cooldownIds = compatible.map { it.id }.toSet()
+        val restricted = c.copy(variations = c.variations.map { if (it.id in cooldownIds) it.copy(stretchUse = StretchUse.COOL_DOWN) else it })
+        val content = ProgramContent(program.id, program.name, listOf(item, item), restSeconds = 20)
+        val result = buildProgramPlan(restricted, content, SeedProfiles.home, false, sets = 2, betweenSetMode = BetweenSetMode.STRETCH)
+        val plan = (result as FixedProgramPlanResult.Ready).plan
+
+        assertTrue(plan.blocks.filter { it.type == BlockType.PASSIVE_RECOVERY }.isNotEmpty())
+        assertFalse(plan.blocks.any { it.variationId in cooldownIds && it.recoveryForBlockIds.isNotEmpty() })
+        assertTrue(plan.changesExplained.any { it.contains("Some program breaks use passive rest") })
     }
 
     @Test fun editingTheItemsNeverChangesTheCatalogProgram() {
@@ -52,6 +73,25 @@ class ProgramPreviewPlanTest {
         assertEquals(edited.copy(name = "My hips"), saved.program); assertEquals(2, saved.sets); assertFalse(saved.flow); assertEquals(WorkoutFormat.PAIRS, saved.format)
         val back = (importBackup(exportBackup(BackupPayload(Preferences(), emptyList(), emptyList(), emptyList(), emptyList(), emptyList(), savedRoutines = listOf(saved)), "0.11.1", 1L)) as ImportResult.Ok).payload.savedRoutines.single()
         assertEquals(saved, back)
+    }
+
+    @Test fun newProgramItemsUseAppLevelsAndExplicitLevelFiveExtensionsCountAsLevelFive() {
+        val v = c.variation("pushup-standard")!!
+        val base = defaultProgramItem(c, v)
+        assertEquals(2, base.appLevel)
+        val levelTwo = (buildProgramPlan(c, content.copy(items = listOf(base)), SeedProfiles.home, true) as FixedProgramPlanResult.Ready).plan.blocks.single()
+        assertEquals(2, levelTwo.prescriptionTier)
+        assertEquals(c.policyFor(v)!!.tier(2).target, levelTwo.target)
+        assertFalse(levelTwo.freeTarget)
+
+        val personal = c.copy(personalTargets = mapOf(v.id to PersonalLevelTargets(3, listOf(5, 8, 10, 12, 14))))
+        val levelFive = base.copy(appLevel = 5, levelFiveTarget = 15, reps = 15)
+        val extended = (buildProgramPlan(personal, content.copy(items = listOf(levelFive)), SeedProfiles.home, true) as FixedProgramPlanResult.Ready).plan.blocks.single()
+        assertEquals(Target(TargetType.REPS, 15), extended.target)
+        assertEquals(5, extended.prescriptionTier)
+        assertTrue(extended.levelFiveEligible)
+        assertEquals(3, extended.targetRevision)
+        assertFalse(extended.freeTarget)
     }
 
     @Test fun anItemTheEquipmentCannotDoBlocksTheProgramAsAWholeUntilItIsRemoved() {

@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-20",
+  "generation_credit_spend_usd": 0,
+  "python_tests": 51,
+  "phone_verified": false,
+  "library_scope": "two pilot clips; remaining 531 not rerendered",
+  "clips": [
+    {
+      "id": "pullup-full",
+      "frames": 72,
+      "seconds": 3,
+      "width": 480,
+      "height": 360,
+      "bytes": 21711,
+      "sha256": "96ba9555b17b13777f5c1a13c8e9f71ebd0ee6b063b51eb87dcef3c61c8f567f",
+      "installed_equals_reviewed_encode": true,
+      "decoded_contact_sheets_reviewed": 4,
+      "whole_body_joints_clear_of_inset": true,
+      "previous_sha256": "7d0c24ebc2ebfc8a550b99389b8e7ee49a022beaf3939e78ee316ffe4ded5b7b",
+      "render_stamp": {
+        "hand_axes.py": "0bf9fa5ed1696126271dab4838a8095d6e01ed70aaf525d23735db7bc7123e07",
+        "render.py": "353d9060d5aa5a9ed24fa87b630574d03175887997763c7f615d225e66c2efc5"
+      },
+      "codec": "h264",
+      "profile": "Main",
+      "pixel_format": "yuv420p",
+      "audio_streams": 0
+    },
+    {
+      "id": "chinup-full",
+      "frames": 72,
+      "seconds": 3,
+      "width": 480,
+      "height": 360,
+      "bytes": 20683,
+      "sha256": "25cdc2d701a07a4dae14426d24cf9ff58824fba837cc0c809f8b8def3bef3896",
+      "installed_equals_reviewed_encode": true,
+      "decoded_contact_sheets_reviewed": 4,
+      "whole_body_joints_clear_of_inset": true,
+      "previous_sha256": "91b6858f4556aab7a3f63de50eac6eb448e1db5b1ef5c904e36e865bbfa3f5b8",
+      "render_stamp": {
+        "hand_axes.py": "0bf9fa5ed1696126271dab4838a8095d6e01ed70aaf525d23735db7bc7123e07",
+        "render.py": "353d9060d5aa5a9ed24fa87b630574d03175887997763c7f615d225e66c2efc5"
+      },
+      "codec": "h264",
+      "profile": "Main",
+      "pixel_format": "yuv420p",
+      "audio_streams": 0
+    }
+  ],
+  "sampled_hands_checked": 96428,
+  "pose_builders_checked": 533
+}

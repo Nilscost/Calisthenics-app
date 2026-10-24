@@ -31,7 +31,7 @@ class ProgressScreenTest {
     private val ctx: Context get() = ApplicationProvider.getApplicationContext()
 
     @Before fun clean() {
-        for (n in listOf("profiles", "planner_prefs", "goal", "levels", "train"))
+        for (n in listOf("profiles", "planner_prefs", "goal", "levels", "train", "personal_targets"))
             ctx.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit()
     }
 
@@ -180,6 +180,68 @@ class ProgressScreenTest {
         rule.onNodeWithTag("search_result_v-up").assertExists().performClick(); rule.waitForIdle()
         rule.onNodeWithTag("detail_title").assertTextContains("V-UP", substring = true)
         rule.onNodeWithTag("detail_aliases").assertTextContains("Also known as: V-Up (Army), Teaser (Pilates)", substring = true)
+    }
+
+    @Test fun personalTargetsSaveIndependentlyFromManualStarsAndAllowEqualLevels() {
+        show()
+        openFromSearch("pushup-standard")
+        rule.onNodeWithTag("detail_edit").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_set_level_2").performClick(); rule.waitForIdle()
+        val savedLevel = LevelStore.load(ctx)["pushup-standard"]
+        listOf("11", "11", "12", "13", "14").forEachIndexed { i, value ->
+            rule.onNodeWithTag("personal_target_${i + 1}").performTextClearance()
+            rule.onNodeWithTag("personal_target_${i + 1}").performTextInput(value)
+        }
+        rule.onNodeWithTag("personal_targets_save").assertIsEnabled().performClick(); rule.waitForIdle()
+        assertEquals(listOf(11, 11, 12, 13, 14), io.github.gonbei774.calisthenicsmemory.ui.screens.PersonalTargetStore.load(ctx)["pushup-standard"]?.values)
+        assertEquals(savedLevel, LevelStore.load(ctx)["pushup-standard"])
+        rule.onNodeWithTag("detail_level_1").assertTextContains("11", substring = true)
+    }
+
+    @Test fun personalTargetsCancelAndResetToAuthoredValues() {
+        show()
+        openFromSearch("pushup-standard")
+        rule.onNodeWithTag("detail_edit").performClick(); rule.waitForIdle()
+        val authored = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(ctx).policyForVariation("pushup-standard")!!.tiers.sortedBy { it.index }.map { it.target.value }
+        rule.onNodeWithTag("personal_target_1").performTextClearance()
+        rule.onNodeWithTag("personal_target_1").performTextInput("99")
+        rule.onNodeWithTag("personal_targets_cancel").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("personal_target_1").assertTextContains(authored.first().toString())
+        rule.onNodeWithTag("personal_targets_reset").performClick(); rule.waitForIdle()
+        assertEquals(authored, io.github.gonbei774.calisthenicsmemory.ui.screens.PersonalTargetStore.load(ctx)["pushup-standard"]?.values)
+    }
+
+    @Test fun nonPositiveOrDecreasingPersonalTargetsCannotBeSaved() {
+        show()
+        openFromSearch("pushup-standard")
+        rule.onNodeWithTag("detail_edit").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("personal_target_1").performTextClearance()
+        rule.onNodeWithTag("personal_target_1").performTextInput("0")
+        rule.onNodeWithTag("personal_targets_save").assertIsNotEnabled()
+        rule.onNodeWithTag("personal_target_1").performTextClearance()
+        rule.onNodeWithTag("personal_target_1").performTextInput("999")
+        rule.onNodeWithTag("personal_targets_save").assertIsNotEnabled()
+    }
+
+    @Test fun personalRepTargetsRespectTheExerciseSpecificPrescriptionCap() {
+        show()
+        openFromSearch("pushup-pop-up-incline")
+        rule.onNodeWithTag("detail_edit").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("personal_targets_rep_cap_hint").assertExists()
+        rule.onNodeWithTag("personal_target_5").performTextClearance()
+        rule.onNodeWithTag("personal_target_5").performTextInput("4")
+        rule.onNodeWithTag("personal_targets_save").assertIsNotEnabled()
+    }
+
+    @Test fun pilatesAndConditioningUseStaticThumbnailCardsAndOpenTheirDetails() {
+        show()
+        rule.onNodeWithTag("tab_chip_pilates").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("tab_exercise_pilates-roll-up").assertExists().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_title").assertTextContains("ROLL-UP", substring = true)
+        rule.onNodeWithTag("detail_back").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("tab_chip_conditioning").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("tab_exercise_burpee").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_title").assertTextContains("BURPEE", substring = true)
     }
 
     @Test fun newProgressTabsAndRoutineOnlyDrillsAreReachableAsExpected() {

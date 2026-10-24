@@ -39,9 +39,9 @@ class FixedProgramsTest {
             }
             assertEquals(expectedIds, program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.exerciseId } })
             val plan = (buildFixedProgramPlan(catalog, program, SeedProfiles.home, flow = program.flow) as FixedProgramPlanResult.Ready).plan
-            assertEquals(expectedIds, plan.blocks.filter { it.variationId != null }.map { it.variationId })
-            val exerciseBlocks = plan.blocks.filter { it.variationId != null }
-            val expectedSetups = program.items.count { it.perSide && it.seconds != null }
+            assertEquals(expectedIds, plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.variationId })
+            val exerciseBlocks = plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }
+            val expectedSetups = if (program.flow) (exerciseBlocks.count { it.type == BlockType.WORK } - 1).coerceAtLeast(0) + program.items.count { it.perSide && catalog.variation(it.exerciseId)?.kind in setOf(Kind.STRETCH, Kind.MOBILITY) } else program.items.count { it.perSide && it.seconds != null }
             assertEquals(expectedSetups, plan.blocks.count { it.type == BlockType.TRANSITION })
             assertTrue(plan.blocks.filter { it.type == BlockType.TRANSITION }.all { it.durationSeconds == 5 })
             var blockIndex = 0
@@ -68,9 +68,10 @@ class FixedProgramsTest {
         assertTrue(plan.flow)
         assertEquals(program.id, plan.fixedProgramId)
         val expectedIds = program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.exerciseId } }
-        assertEquals(expectedIds, plan.blocks.filter { it.variationId != null }.map { it.variationId })
-        assertEquals(program.items.sumOf { (it.estSeconds ?: it.seconds ?: ((it.reps ?: 1) * 3)) * (if (it.perSide) 2 else 1) + (if (it.perSide && it.seconds != null) 5 else 0) }, plan.plannedDurationSeconds)
-        assertEquals(739, (buildFixedProgramPlan(catalog, byProgram.getValue("pilates-core-10"), SeedProfiles.home, flow = true) as FixedProgramPlanResult.Ready).plan.plannedDurationSeconds)
+        assertEquals(expectedIds, plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.variationId })
+        assertEquals(program.items.sumOf { (it.estSeconds ?: it.seconds ?: ((it.reps ?: 1) * 3)) * (if (it.perSide) 2 else 1) } + plan.blocks.count { it.type == BlockType.TRANSITION } * 5, plan.plannedDurationSeconds)
+        val core = (buildFixedProgramPlan(catalog, byProgram.getValue("pilates-core-10"), SeedProfiles.home, flow = true) as FixedProgramPlanResult.Ready).plan
+        assertEquals(byProgram.getValue("pilates-core-10").items.sumOf { itemSeconds(it) * if (it.perSide) 2 else 1 } + core.blocks.count { it.type == BlockType.TRANSITION } * 5, core.plannedDurationSeconds)
         assertTrue(plan.blocks.filter { it.side != Side.NONE }.map { it.side }.all { it == Side.LEFT || it == Side.RIGHT })
         assertTrue(plan.blocks.none { it.type == BlockType.PASSIVE_RECOVERY || it.prescriptionTier != null })
         assertTrue(plan.blocks.filter { it.type == BlockType.WORK }.all { it.freeTarget })
@@ -95,9 +96,9 @@ class FixedProgramsTest {
         assertFalse(program.flow)
         val plan = (buildFixedProgramPlan(catalog, program, SeedProfiles.home, flow = false) as FixedProgramPlanResult.Ready).plan
         assertFalse(plan.flow)
-        assertEquals(program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.exerciseId } }, plan.blocks.filter { it.variationId != null }.map { it.variationId })
-        assertEquals(listOf(60, 60, 60, 30, 60, 60), plan.blocks.filter { it.variationId != null }.map { it.target!!.value })
-        assertEquals(listOf(Side.NONE, Side.LEFT, Side.RIGHT, Side.NONE, Side.LEFT, Side.RIGHT), plan.blocks.filter { it.variationId != null }.map { it.side })
+        assertEquals(program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.exerciseId } }, plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.variationId })
+        assertEquals(listOf(60, 60, 60, 30, 60, 60), plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.target!!.value })
+        assertEquals(listOf(Side.NONE, Side.LEFT, Side.RIGHT, Side.NONE, Side.LEFT, Side.RIGHT), plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.side })
         assertTrue(plan.blocks.filter { it.type == BlockType.WORK }.all { !it.freeTarget && it.prescriptionTier == null })
     }
 
@@ -133,7 +134,7 @@ class FixedProgramsTest {
         val heldItem = program.items.single { it.exerciseId == heldId }
         assertTrue(heldBlocks.all { it.target?.value == (heldItem.reps ?: heldItem.seconds) })
         assertEquals(program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.reps ?: item.seconds } },
-            plan.blocks.filter { it.variationId != null }.map { it.target!!.value })
+            plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.target!!.value })
     }
 
     // R8.1-T09 (F11): one 30+ minute session each, as the Preview estimates it

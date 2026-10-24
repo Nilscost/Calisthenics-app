@@ -83,14 +83,31 @@ def handstand_wall_walk_up():
     def k(t):
         p=-120-60*t; r=math.radians(p); ux=math.sin(r); uz=math.cos(r)
         az=1.02+.945*t
-        px=.90*ux; pz=az+.90*uz
+        # Step the pelvis back with the ankles so the straight leg chain stays
+        # within reach while the +X toes meet the wall's x=0 near face.
+        px=.90*ux-.20; pz=az+.90*uz
         sx=px+.47*ux; sz=pz+.47*uz
         dz=sz-.035; dx=math.sqrt(max(.565**2-dz**2,.01))
         wx=sx-dx
-        return base_pose(pelvis=[px,0,pz],p1=p,p2=p,hp=0,
-          ankle_l=[0,.09,az],ankle_r=[0,-.09,az],knee_l=[0,1,0],knee_r=[0,-1,0],foot_l=[1,0,0],foot_r=[1,0,0],
+        # As the athlete approaches the initial near-horizontal wall-walk
+        # posture, flex the neck enough to keep the skull clear of the floor.
+        # Fade this articulation out as the torso reaches vertical, where the
+        # head already has ample clearance and should stay aligned with the
+        # inverted trunk.
+        return base_pose(pelvis=[px,0,pz],p1=p,p2=p,hp=40*(1-t),
+          # Wall near face is x=0. With +X-pointing feet, keep the toe
+          # anchors on that face instead of driving the whole foot through it.
+          ankle_l=[-.20,.09,az],ankle_r=[-.20,-.09,az],knee_l=[0,1,0],knee_r=[0,-1,0],foot_l=[1,0,0],foot_r=[1,0,0],
           wrist_l=[wx,.18,.035],wrist_r=[wx,-.18,.035],elbow_l=[0,1,0],elbow_r=[0,-1,0],hand_l=[-1,0,0],hand_r=[-1,0,0],palm_l=[0,0,-1],palm_r=[0,0,-1],grip_l=0,grip_r=0)
-    keys=[(i/48,k(i/48)) for i in range(48)]
+    # Walk up for half the loop, then explicitly walk back down. The previous
+    # one-way key path relied on loop wrapping, teleporting from vertical to
+    # push-up in a single frame.
+    keys=[]
+    for i in range(97):
+        phase=i/96
+        walk=2*phase if phase<=.5 else 2*(1-phase)
+        walk=walk*walk*(3-2*walk)
+        keys.append((phase,k(walk)))
     return dict(seconds=5,keys=keys,cam_az=-30,cam_el=12,props=wall)
 
 
@@ -110,15 +127,25 @@ def handstand_wall_one_foot():
 
 
 def handstand_kick_up():
+    from poses import L, trunk_frame
     mat=MAT
     def k(pel,pitch,ankles,wx=-.20):
+        pelvis=list(pel)
+        up,left=trunk_frame(pitch)
+        def knee_pole(ankle,side):
+            hip=[pelvis[i]+left[i]*(side*L["hip_w"])-.03*up[i] for i in range(3)]
+            # A fixed +X pole becomes parallel to the leg as it sweeps
+            # through horizontal, which flips the solved knee. Keep the pole
+            # in the sagittal plane and perpendicular to the actual leg axis.
+            v=[ankle[i]-hip[i] for i in range(3)]
+            return [v[2],0,-v[0]]
         return base_pose(pelvis=list(pel),p1=pitch,p2=pitch,hp=0,
-          ankle_l=list(ankles[0]),ankle_r=list(ankles[1]),knee_l=[1,0,0],knee_r=[1,0,0],foot_l=[1,0,0],foot_r=[1,0,0],**_arms(wx,.18,.035,(0,1,0)))
+          ankle_l=list(ankles[0]),ankle_r=list(ankles[1]),knee_l=knee_pole(ankles[0],1),knee_r=knee_pole(ankles[1],-1),foot_l=[1,0,0],foot_r=[1,0,0],**_arms(wx,.18,.035,(0,1,0)))
     start=k([-.42,0,.70],130,[[-.86,.08,.08],[-.16,-.08,.08]])
     rise=k([-.34,0,.82],150,[[-.52,.08,.60],[-.18,-.08,1.10]])
     top=k([-.22,0,1.07],180,[[-.22,.095,1.965],[-.22,-.095,1.965]])
-    keys=[(0,start),(.16,start),(.32,rise),(.55,top),(.72,rise),(.92,start)]
-    return dict(seconds=4,keys=keys,cam_az=30,cam_el=16,props=mat)
+    keys=[(0,start),(.02,start),(.16,rise),(.46,top),(.55,top),(.85,rise),(.98,start)]
+    return dict(seconds=8,keys=keys,interpolation="continuous",cam_az=30,cam_el=16,props=mat)
 
 
 def handstand_free():
@@ -171,6 +198,7 @@ def handstand_press_elevated():
 
 
 def handstand_press_straddle():
+    from poses import steady_progress
     wrist_x=-.55
     def k(t):
         p2=180
@@ -185,12 +213,26 @@ def handstand_press_straddle():
         u2=[0,0,-1]
         pelvis=[shoulder[0]-.24*u1[0]-.23*u2[0],0,shoulder[2]-.24*u1[2]-.23*u2[2]]
         ax=pelvis[0]-leg_xz*u1[0]; az=pelvis[2]-leg_xz*u1[2]
+        # Flat in the initial floor contact; rotate with the legs into a
+        # pointed handstand foot. Keep a nonzero shin/toe angle so the heel
+        # frame cannot flip through its collinear fallback.
+        foot_angle=math.radians(-250*t)
+        foot=[math.cos(foot_angle),0,math.sin(foot_angle)]
         return base_pose(pelvis=pelvis,p1=p1,p2=p2,hp=0,
           ankle_l=[ax,.09+spread,az],ankle_r=[ax,-.09-spread,az],
-          knee_l=[0,0,1],knee_r=[0,0,1],foot_l=[1,0,0],foot_r=[1,0,0],
+          knee_l=[0,0,1],knee_r=[0,0,1],foot_l=foot,foot_r=foot,
           wrist_l=[wrist_x,.18,.035],wrist_r=[wrist_x,-.18,.035],elbow_l=[0,1,0],elbow_r=[0,-1,0],hand_l=[1,0,0],hand_r=[1,0,0],palm_l=[0,0,-1],palm_r=[0,0,-1],grip_l=0,grip_r=0)
-    keys=[(i/48,k(i/48)) for i in range(49)]
-    return dict(seconds=4,keys=keys,cam_az=30,cam_el=18,props=[])
+    keys=[]
+    for i in range(193):
+        phase=i/192
+        if phase<.06:progress=0
+        elif phase<.46:progress=steady_progress((phase-.06)/.40)
+        elif phase<.54:progress=1
+        elif phase<.94:progress=1-steady_progress((phase-.54)/.40)
+        else:progress=0
+        keys.append((phase,k(progress)))
+    return dict(seconds=8,keys=keys,interpolation='continuous',
+                cam_az=30,cam_el=18,props=[],motion_profile='straddle-press-foot-frame')
 
 
 def handstand_press_bent_arm():

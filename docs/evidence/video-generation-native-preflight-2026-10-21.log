@@ -1,0 +1,44 @@
+ring-muscle-up 0
+ring-muscle-up 48
+ring-muscle-up 96
+ring-muscle-up 144
+{"id": "ring-muscle-up", "data_sha256": "dc3a0b95add197cb8cf86e285827963e4f220bc484a8df7dba2516ed47ac618b", "minimum_floor_frame": 0, "minimum_floor_part": "foot_l", "frames": 192, "vertices": 2884224, "outside_vertices": 0, "first_outside": null, "minimum_body_z_m": 0.1960408091545105, "minimum_foot_z_m": 0.1960408091545105, "status": "pass"}
+depth-jump 0
+depth-jump 48
+depth-jump 96
+depth-jump 144
+{"id": "depth-jump", "data_sha256": "695b8822a5d4cf925c8fb4b7c0a1b07d00bb79a7f04d44778aa34591364090af", "minimum_floor_frame": 93, "minimum_floor_part": "foot_r", "frames": 163, "vertices": 2472384, "outside_vertices": 0, "first_outside": null, "minimum_body_z_m": 0.004011284559965134, "minimum_foot_z_m": 0.004011284559965134, "status": "pass"}
+burpee-pushup 0
+burpee-pushup 48
+burpee-pushup 96
+burpee-pushup 144
+burpee-pushup 192
+burpee-pushup 240
+{"id": "burpee-pushup", "data_sha256": "43902ca18e86930e3c79b5b5bbd0dbb9ed1e2bdb9b50e5bbeb496c4a9b3b31fd", "minimum_floor_frame": 36, "minimum_floor_part": "wrist_l_ball", "frames": 252, "vertices": 3822336, "outside_vertices": 0, "first_outside": null, "minimum_body_z_m": 0.00299999862909317, "minimum_foot_z_m": 0.004018131643533707, "status": "pass"}
+squat-pistol 0
+squat-pistol 48
+{"id": "squat-pistol", "data_sha256": "38b35035b200183e9bbcfe7c550ce1ab5f394108ef289c2426e26f6da1f40ab4", "minimum_floor_frame": 0, "minimum_floor_part": "foot_l", "frames": 96, "vertices": 1456128, "outside_vertices": 0, "first_outside": null, "minimum_body_z_m": 0.00403720885515213, "minimum_foot_z_m": 0.00403720885515213, "status": "pass"}
+pilates-roll-over 0
+pilates-roll-over 48
+{"id": "pilates-roll-over", "data_sha256": "37a657f71320121af21ad5043feaf846011f9be4307f23d0ddfeefa76a0dc806", "minimum_floor_frame": 11, "minimum_floor_part": "chest", "frames": 96, "vertices": 1456128, "outside_vertices": 0, "first_outside": null, "minimum_body_z_m": 0.0010987147688865662, "minimum_foot_z_m": 0.3486008942127228, "status": "pass"}
+hanging-windshield-wiper 0
+hanging-windshield-wiper 48
+hanging-windshield-wiper 96
+hanging-windshield-wiper 144
+{"id": "hanging-windshield-wiper", "data_sha256": "b5e127289abbcbaa809ec54ed19b1d8bcc09eef674af5de1f76f49c82be0811f", "minimum_floor_frame": 0, "minimum_floor_part": "foot_l", "frames": 156, "vertices": 2366208, "outside_vertices": 0, "first_outside": null, "minimum_body_z_m": 0.11442004889249802, "minimum_foot_z_m": 0.11442004889249802, "status": "pass"}
+pullup-pullover 0
+pullup-pullover 48
+pullup-pullover 96
+pullup-pullover 144
+pullup-pullover 192
+pullup-pullover 240
+{"id": "pullup-pullover", "data_sha256": "eeeb511269432b151ba7b0ea9c18d5f36fdee1881b58600b8bc0779930b1289d", "minimum_floor_frame": 0, "minimum_floor_part": "foot_l", "frames": 264, "vertices": 3965808, "outside_vertices": 0, "first_outside": null, "minimum_body_z_m": 0.2380102127790451, "minimum_foot_z_m": 0.2380102127790451, "status": "pass"}
+handstand-press-straddle 0
+handstand-press-straddle 48
+handstand-press-straddle 96
+handstand-press-straddle 144
+{"id": "handstand-press-straddle", "data_sha256": "386c81080eb22ecadd6c286a2cd7264fe6a01532d3d272e537aa07e26234ad47", "minimum_floor_frame": 0, "minimum_floor_part": "wrist_l_ball", "frames": 192, "vertices": 2912256, "outside_vertices": 0, "first_outside": null, "minimum_body_z_m": 0.00299999862909317, "minimum_foot_z_m": 0.009422548115253448, "status": "pass"}
+PASS: native batch geometry; 21335472 vertices
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:49:19)
+
+Blender quit

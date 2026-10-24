@@ -269,7 +269,7 @@ class SessionScreenTest {
             rule.waitForIdle()
             val title = rule.onNodeWithTag("session_title").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
             assertFalse("block $i shows '$title'", title.contains("rest", ignoreCase = true))
-            if (plan.blocks[i].type == BlockType.TRANSITION) { assertTrue(title.startsWith("Get ready: ")); sawGetReady += title }
+            if (plan.blocks[i].type == BlockType.TRANSITION) { assertTrue(title.startsWith("Prepare: ")); sawGetReady += title }
             rule.onAllNodesWithText("Rest", substring = true, ignoreCase = true).assertCountEquals(0)
         }
         assertTrue("the routine has a position change", sawGetReady.isNotEmpty())
@@ -329,11 +329,19 @@ class SessionScreenTest {
     }
 
     @Test fun aFlowProgramHasNoPerItemEditorOnTheEndScreen() {
-        val program = plan.copy(flow = true, fixedProgramId = "army-pd")
+        val program = plan.copy(flow = true, fixedProgramId = "army-pd", blocks = plan.blocks.map { it.copy(prescriptionTier = null) })
         val s = reduce(newSession("S", program), SessionEvent.Start(0)).state.let { reduce(it, SessionEvent.Tick(10_000_000)).state }
         SessionBus.saved = true
         show(s)
         rule.onNodeWithTag("end_edit").assertDoesNotExist()
+    }
+
+    @Test fun anAppLevelFlowProgramKeepsTheActualResultsEditor() {
+        val program = plan.copy(flow = true, fixedProgramId = "army-pd")
+        val s = reduce(newSession("S", program), SessionEvent.Start(0)).state.let { reduce(it, SessionEvent.Tick(10_000_000)).state }
+        SessionBus.saved = true
+        show(s)
+        rule.onNodeWithTag("end_edit").assertIsDisplayed()
     }
 
     @Test fun theEndScreenEditorHasOneNumberPerRoundAndTooEasyNextToTooHard() {

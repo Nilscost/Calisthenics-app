@@ -19,6 +19,7 @@ import androidx.compose.foundation.selection.toggleable
 import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
+import io.github.gonbei774.calisthenicsmemory.ui.components.Stepper
 import io.github.gonbei774.calisthenicsmemory.ui.components.appSegmentedColors
 import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
 import androidx.compose.foundation.background
@@ -60,7 +61,6 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.MuscleChips
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore
 import io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore
 import io.github.gonbei774.calisthenicsmemory.ui.screens.SavedRoutineStore
-import app.calisthenics.domain.routine.savedFrom
 import app.calisthenics.domain.routine.settingsFor
 import app.calisthenics.domain.routine.updateSaved
 import io.github.gonbei774.calisthenicsmemory.ui.session.startWorkout
@@ -72,11 +72,11 @@ import java.util.UUID
 fun formatClock(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 
 /** The circuit: the work of round 1, one entry per exercise (both sides of a unilateral exercise are one entry). */
-data class CircuitEntry(val slotId: String, val variationId: String, val target: Target?, val perSide: Boolean, val loadGrams: Int? = null, val tier: Int = 1, val free: Boolean = false)
+data class CircuitEntry(val slotId: String, val variationId: String, val target: Target?, val perSide: Boolean, val loadGrams: Int? = null, val tier: Int = 1, val free: Boolean = false, val levelFiveEligible: Boolean = false)
 
 fun circuitOf(plan: WorkoutPlan, round: Int = 1): List<CircuitEntry> =
     plan.blocks.filter { it.type == BlockType.WORK && (it.roundIndex ?: 1) == round && it.slotId != null && it.variationId != null && !it.slotId!!.startsWith("cond") }   // R8.2-T03: the conditioning finisher has its own block
-        .groupBy { it.slotId!! }.values.map { bs -> CircuitEntry(bs.first().slotId!!, bs.first().variationId!!, bs.first().target, bs.size > 1, bs.first().loadGrams, bs.first().prescriptionTier ?: 1, bs.first().freeTarget) }
+        .groupBy { it.slotId!! }.values.map { bs -> CircuitEntry(bs.first().slotId!!, bs.first().variationId!!, bs.first().target, bs.size > 1, bs.first().loadGrams, bs.first().prescriptionTier ?: 1, bs.first().freeTarget, bs.first().levelFiveEligible) }
 
 @Composable
 private fun targetText(t: Target?, perSide: Boolean, loadGrams: Int? = null): String {
@@ -152,9 +152,9 @@ private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name
                 Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(targetText(e.target, e.perSide, e.loadGrams), style = MaterialTheme.typography.headlineMedium, color = if (e.free) AppAccentTheme.colors.text else MaterialTheme.colorScheme.onSurface,
                         modifier = (if (onTypeNumber != null) Modifier.clickable(onClick = onTypeNumber).heightIn(min = Spacing.touch).wrapContentHeight(Alignment.CenterVertically) else Modifier).testTag("exercise_target_${e.slotId}$sfx"))
-                    Text(if (e.free) stringResource(R.string.preview_free_number) else if (chain != null) stringResource(R.string.preview_chain_pos, chain.first + 1, chain.second) else stringResource(R.string.preview_level, e.tier, levels), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("level_${e.slotId}$sfx"))
+                Text(if (e.free) stringResource(R.string.preview_free_number) else if (e.levelFiveEligible) stringResource(R.string.preview_level_extension) else if (chain != null) stringResource(R.string.preview_chain_pos, chain.first + 1, chain.second) else stringResource(R.string.preview_level, e.tier, levels), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("level_${e.slotId}$sfx"))
                 }
-                FilledTonalIconButton(onClick = { onStep(1) }, enabled = if (chain != null) chain.first < chain.second - 1 else e.tier < levels, modifier = Modifier.size(Spacing.touch).testTag("level_plus_${e.slotId}$sfx")) { Icon(Icons.Filled.Add, stringResource(R.string.stepper_increase)) }
+                FilledTonalIconButton(onClick = { onStep(1) }, enabled = if (chain != null) chain.first < chain.second - 1 else e.tier < levels || e.tier == levels, modifier = Modifier.size(Spacing.touch).testTag("level_plus_${e.slotId}$sfx")) { Icon(Icons.Filled.Add, stringResource(R.string.stepper_increase)) }
             }
         }
     }
@@ -224,11 +224,13 @@ internal fun AddButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: () -> Unit, dataOverride: TrainData? = null) {
     val ctx = LocalContext.current
+    val rawSettings = remember { TrainSettingsStore.load(ctx) }
     val loadedData by rememberTrainData()
     val data = dataOverride ?: loadedData
-    val stored = remember { TrainSettingsStore.load(ctx) }
-    val draft = remember { PreviewDraftStore.get(ctx, draftKey(stored)) }
-    val programMode = remember(data.catalog) { resolveProgramMode(ctx, data.catalog, stored, draft) }
+    val currentDraftKey = remember { draftKey(rawSettings) }
+    val draft = remember { PreviewDraftStore.get(ctx, currentDraftKey) }
+    val stored = effectiveTrainSettings(rawSettings, draft, TrainSettingsStore.modeRevision(ctx, currentDraftKey))
+    val programMode = remember(data.catalog, stored, draft) { resolveProgramMode(ctx, data.catalog, stored, draft) }
     if (programMode != null) ProgramPreview(modifier, data, programMode, stored, onBack, onStarted)
     else WorkoutPreview(modifier, data, stored, draft, onBack, onStarted)
 }
@@ -240,6 +242,9 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
     val haptic = LocalHapticFeedback.current
     val resolved = remember(data) { resolveTrain(ctx, data.routine, stored, data.catalog) }   // V18: the usual plan, or the saved routine chosen on Train
     val profile = remember { ProfileStore.selected(ctx) }
+    val selectedSaved = remember(data.catalog, stored.routineId, stored.profileId) {
+        routinesFor(ctx, data.catalog).firstOrNull { it.id == stored.routineId }
+    }
     // R8.1-T05 (F6): the edits made before survive going back to Train and returning; they belong to the objective
     val draftKey = remember { draftKey(stored) }
     // R7-T08 (D1): frozen when the Preview opens, so removing or adding an exercise here does not re-fill the list
@@ -247,13 +252,24 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
     // R8.1-T05 (F5): the set format and the number of sets are chosen here too; they are today's settings, so Train shows the same
     var format by remember { mutableStateOf(openingSettings.format) }
     var sets by remember { mutableStateOf(openingSettings.rounds) }
-    var flow by remember { mutableStateOf(openingSettings.flow) }   // R8.1-T06 (F7)
-    val settings = remember(format, sets, flow) { openingSettings.copy(format = format, rounds = sets, flow = flow) }
+    var betweenMode by remember { mutableStateOf(openingSettings.effectiveBetweenSetMode()) }
+    var modeRevision by remember { mutableLongStateOf(maxOf(TrainSettingsStore.modeRevision(ctx, draftKey), draft?.modeRevision ?: 0L)) }
+    var preparationSeconds by remember { mutableIntStateOf(openingSettings.preparationSeconds.coerceIn(1, 30)) }
+    val settings = remember(format, sets, betweenMode, preparationSeconds) { openingSettings.copy(format = format, rounds = sets, flow = betweenMode == BetweenSetMode.FLOW, stretchOn = betweenMode == BetweenSetMode.STRETCH, betweenSetMode = betweenMode, preparationSeconds = preparationSeconds) }
     // A Room progress refresh may replace TrainData while the Preview is open. Preserve the user's draft edits.
     var routine by remember { mutableStateOf(resolved.routine) }
     var edits by remember { mutableStateOf(draft?.edits ?: resolved.edits) }
-    var restDurations by remember { mutableStateOf(draft?.rest ?: emptyMap<String, Int>()) }
-    LaunchedEffect(edits, restDurations) { PreviewDraftStore.put(ctx, PreviewDraft(draftKey, edits, restDurations)) }
+    var restDurations by remember { mutableStateOf(selectedSaved?.restDurations.orEmpty() + draft?.rest.orEmpty()) }
+    LaunchedEffect(edits, restDurations, preparationSeconds, betweenMode, modeRevision) {
+        val latest = PreviewDraftStore.get(ctx, draftKey) ?: draft ?: PreviewDraft(draftKey)
+        PreviewDraftStore.put(ctx, latest.copy(edits = edits, rest = restDurations, preparationSeconds = preparationSeconds.coerceIn(1, 30), ruleDefaultVersion = 1))
+    }
+    fun chooseBetween(mode: BetweenSetMode) {
+        val latest = PreviewDraftStore.get(ctx, draftKey) ?: draft
+        val (_, updatedDraft) = updateBetweenSetMode(ctx, TrainSettingsStore.load(ctx), latest, mode)
+        modeRevision = updatedDraft.modeRevision
+        betweenMode = mode
+    }
     var saveDialog by remember { mutableStateOf(false) }
     var savedNote by remember { mutableStateOf<String?>(null) }
     val editing = remember { SavedRoutineStore.get(ctx, stored.routineId) }
@@ -261,13 +277,17 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
     var coolAdd by remember { mutableStateOf(false) }   // R7.2-T04: the picker for a stretch added to the cool-down
     var coolSwap by remember { mutableStateOf<Int?>(null) }   // R7-T13: the cool-down stretch being swapped
     var removeSlot by remember { mutableStateOf<String?>(null) }
+    var beforeLastRemoval by remember { mutableStateOf<PlanEdits?>(null) }
     var breakSlot by remember { mutableStateOf<Pair<String, Int?>?>(null) }   // slot and, in the Detailed edit, the one set it is for
     var typeFor by remember { mutableStateOf<Pair<String, Int>?>(null) }      // slot and set of the number being typed
     var addAfter by remember { mutableStateOf<String?>("") }   // "" = closed, null = at the start, else after that slot
     var timelineOpen by remember { mutableStateOf(false) }
-    val result = remember(data, routine, edits, settings) {
-        buildTrainPlan(data.catalog, routine, data.progress, profile, settings, edits = edits, nowEpochMs = System.currentTimeMillis())
+    val planEdits = effectivePlanEdits(edits, modeRevision)
+    val result = remember(data, routine, planEdits, settings, modeRevision) {
+        buildTrainPlan(data.catalog, routine, data.progress, profile, settings, edits = planEdits, nowEpochMs = System.currentTimeMillis())
     }
+    val emptyAfterRemoval = result is PlanResult.Infeasible && edits.removed.isNotEmpty() &&
+        result.reasons.any { it.code == "no-slots" }
     val names = remember(data) { data.catalog.variations.associate { it.id to it.name } }
 
     Scaffold(
@@ -291,9 +311,20 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
         Column(Modifier.padding(pad).verticalScroll(rememberScrollState()).padding(horizontal = Spacing.l, vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             when (val r = result) {
                 is PlanResult.Infeasible -> {
-                    Text(stringResource(R.string.train_infeasible), style = MaterialTheme.typography.titleMedium)
-                    r.reasons.forEach { Text(it.message) }
-                    r.alternatives.forEach { Text(stringResource(R.string.bullet_item, it.description), style = MaterialTheme.typography.bodySmall) }
+                    if (emptyAfterRemoval) {
+                        Text(stringResource(R.string.preview_empty), style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.testTag("preview_empty"))
+                        Text(stringResource(R.string.preview_empty_hint))
+                        AddButton({ addAfter = null }, Modifier.testTag("add_empty"))
+                        beforeLastRemoval?.let { previous ->
+                            AppOutlinedButton(onClick = { edits = previous; beforeLastRemoval = null },
+                                Modifier.testTag("remove_undo")) { Text(stringResource(R.string.preview_undo_remove)) }
+                        }
+                    } else {
+                        Text(stringResource(R.string.train_infeasible), style = MaterialTheme.typography.titleMedium)
+                        r.reasons.forEach { Text(it.message) }
+                        r.alternatives.forEach { Text(stringResource(R.string.bullet_item, it.description), style = MaterialTheme.typography.bodySmall) }
+                    }
                     if (!edits.isEmpty() || restDurations.isNotEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits(); restDurations = emptyMap() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
                 }
                 is PlanResult.Ready -> {
@@ -327,14 +358,13 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                             io.github.gonbei774.calisthenicsmemory.ui.components.Stepper(sets, { sets = it; TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(rounds = it)) }, MIN_TRAIN_ROUNDS..MAX_EXPLICIT_ROUNDS, tag = "preview_rounds")
                         }
                     }
-                    // R8.1-T06 (F7): Flow next to the rest controls: no rest timer between exercises, the rest between sets stays as set
-                    Row(Modifier.fillMaxWidth().heightIn(min = Spacing.touch), verticalAlignment = Alignment.CenterVertically) {
-                        Column(Modifier.weight(1f)) {
-                            Text(stringResource(R.string.preview_flow), style = MaterialTheme.typography.bodyLarge)
-                            Text(stringResource(R.string.preview_flow_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("preview_flow_hint"))
-                        }
-                        val flowLabel = stringResource(R.string.preview_flow)
-                        Switch(checked = flow, onCheckedChange = { flow = it; TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(flow = it)) }, modifier = Modifier.semantics { contentDescription = flowLabel }.testTag("preview_flow_switch"))
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        Text(stringResource(R.string.feedback_preparation_time), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                        Stepper(preparationSeconds, { preparationSeconds = it.coerceIn(1, 30); TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(preparationSeconds = it.coerceIn(1, 30))) }, 1..30, tag = "preparation_seconds", valueText = { "$it s" })
+                    }
+                    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                        Caption(stringResource(R.string.train_between_caption))
+                        BetweenSetSelector(betweenMode, ::chooseBetween)
                     }
                     savedNote?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("routine_saved_note")) }
                     val rule = edits.rule ?: routine.rule
@@ -347,8 +377,24 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                         val idx = options.indexOfFirst { it.id == e.variationId }
                         ExerciseRow(i, e, data.catalog.variation(e.variationId), names[e.variationId] ?: e.variationId, data.catalog.policyForVariation(e.variationId)?.tiers?.size ?: 5,
                             onStep = { d ->
-                                if (rule.isRange) options.getOrNull(idx + d)?.let { o -> edits = edits.copy(swaps = edits.swaps + (e.slotId to o.id), tierOverrides = edits.tierOverrides - e.slotId, freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) }) }
-                                else edits = edits.copy(tierOverrides = edits.tierOverrides + (e.slotId to stepLevel(e.tier, d, data.catalog.policyForVariation(e.variationId)?.tiers?.size ?: 5)), freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) })
+                                if (rule.isRange) options.getOrNull(idx + d)?.let { o -> edits = edits.copy(swaps = edits.swaps + (e.slotId to o.id), tierOverrides = edits.tierOverrides - e.slotId, levelFiveTargets = edits.levelFiveTargets - e.slotId, freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) }) }
+                                else {
+                                    val tiers = data.catalog.policyForVariation(e.variationId)?.tiers.orEmpty().sortedBy { it.index }
+                                    val top = tiers.lastOrNull()?.target
+                                    val increment = if (e.target?.type == TargetType.HOLD_SECONDS) 5 else 1
+                                    val levelFiveBase = top?.value
+                                    val extension = edits.levelFiveTargets[e.slotId]?.takeIf { levelFiveBase != null && it > levelFiveBase }
+                                    val extensionStepDown = d < 0 && e.tier >= 5 && extension != null && levelFiveBase != null
+                                    val nextExtension = extension?.let { if (d < 0) maxOf(levelFiveBase ?: it, it - increment) else it + increment }
+                                    val updatedExtensions = when {
+                                        d > 0 && e.tier >= 5 -> edits.levelFiveTargets + (e.slotId to ((extension ?: e.target?.value ?: levelFiveBase ?: 0) + increment).coerceAtMost(999))
+                                        extensionStepDown && nextExtension != null && nextExtension > levelFiveBase!! -> edits.levelFiveTargets + (e.slotId to nextExtension)
+                                        else -> edits.levelFiveTargets - e.slotId
+                                    }
+                                    val nextTier = if (extensionStepDown) 5 else stepLevel(e.tier, d, tiers.size.coerceAtLeast(5))
+                                    edits = edits.copy(tierOverrides = edits.tierOverrides + (e.slotId to nextTier), levelFiveTargets = updatedExtensions,
+                                        freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) })
+                                }
                             },
                             onSwap = { swapSlot = e.slotId }, onRemove = { removeSlot = e.slotId }, sfx = sfx,
                             onTypeNumber = if (typed) ({ typeFor = e.slotId to st }) else null, badge = badge,
@@ -451,9 +497,10 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
         var name by remember { mutableStateOf(editing?.name ?: "") }
         fun save(asNew: Boolean) {
             val now = System.currentTimeMillis()
-            val rule = edits.rule ?: routine.rule
             val countNow = (result as? PlanResult.Ready)?.plan?.let { exercisesPerRoundOf(it) }   // the saved list already holds the hand edits
-            val fresh = savedFrom(java.util.UUID.randomUUID().toString(), name, 1, routineForPlan(data.catalog, routine, data.progress, profile, settings), edits, settings.copy(exercisesPerRound = countNow ?: settings.exercisesPerRound), rule, now)
+            val fresh = savedCurrentWorkout(java.util.UUID.randomUUID().toString(), name, 1,
+                routineForPlan(data.catalog, routine, data.progress, profile, settings), edits,
+                settings.copy(exercisesPerRound = countNow ?: settings.exercisesPerRound), modeRevision, restDurations, now)
             val toStore = if (!asNew && editing != null) updateSaved(editing, fresh.copy(name = name.trim().ifBlank { editing.name })) else fresh
             SavedRoutineStore.upsert(ctx, toStore)
             TrainSettingsStore.save(ctx, settingsFor(toStore, stored))
@@ -486,7 +533,8 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
             family = swapFamilyOptions(data.catalog, current, profile), others = swapOtherTypes(data.catalog, current, profile), currentId = current, catalog = data.catalog,
             onDismiss = { swapSlot = null },
             onPick = { id, keep ->
-                edits = edits.copy(swaps = edits.swaps + (slot to id), tierOverrides = edits.tierOverrides - slot)
+                edits = edits.copy(swaps = edits.swaps + (slot to id), tierOverrides = edits.tierOverrides - slot, levelFiveTargets = edits.levelFiveTargets - slot,
+                    freeTargets = edits.freeTargets.filterKeys { k -> k != slot && !k.endsWith(":" + slot) })
                 if (keep) { routine = saveSwapsToRoutine(routine, mapOf(slot to id)); RoutineStore.save(ctx, routine); edits = edits.copy(swaps = edits.swaps - slot) }
                 swapSlot = null
             },
@@ -497,7 +545,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
         AlertDialog(
             onDismissRequest = { removeSlot = null },
             title = { Text(stringResource(R.string.preview_remove_title, nm)) }, text = { Text(stringResource(R.string.preview_remove_text)) },
-            confirmButton = { AppTextButton(onClick = { edits = edits.copy(removed = edits.removed + id, added = edits.added.filter { it.slot.id != id }); removeSlot = null }, modifier = Modifier.testTag("remove_confirm")) { Text(stringResource(R.string.preview_remove)) } },
+            confirmButton = { AppTextButton(onClick = { beforeLastRemoval = edits; edits = edits.copy(removed = edits.removed + id, added = edits.added.filter { it.slot.id != id }); removeSlot = null }, modifier = Modifier.testTag("remove_confirm")) { Text(stringResource(R.string.preview_remove)) } },
             dismissButton = { AppTextButton(onClick = { removeSlot = null }) { Text(stringResource(R.string.cancel)) } },
         )
     }
@@ -537,13 +585,15 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
             dismissButton = { AppTextButton(onClick = { edits = edits.copy(freeTargets = edits.freeTargets - "$st:$id"); typeFor = null }, modifier = Modifier.testTag("free_number_clear")) { Text(stringResource(R.string.preview_type_clear)) } },
         )
     }
-    if (addAfter != "" && result is PlanResult.Ready) {
+    if (addAfter != "" && (result is PlanResult.Ready || emptyAfterRemoval)) {
         val after = addAfter
+        val currentPlan = (result as? PlanResult.Ready)?.plan
         AddSheet(
-            exercises = addableExercises(data.catalog, profile, result.plan.blocks.mapNotNull { it.variationId }.toSet()), stretches = stretchChoices(data.catalog, profile),
+            exercises = addableExercises(data.catalog, profile, currentPlan?.blocks.orEmpty().mapNotNull { it.variationId }.toSet()),
+            stretches = if (emptyAfterRemoval) emptyList() else stretchChoices(data.catalog, profile),
             onDismiss = { addAfter = "" },
             onExercise = { v -> edits = edits.copy(added = edits.added + AddedSlot(after, slotFor(v))); addAfter = "" },
-            onStretch = { sId -> val key = after ?: circuitOf(result.plan).firstOrNull()?.slotId; if (key != null) edits = edits.copy(extraStretches = edits.extraStretches + (key to (edits.extraStretches[key].orEmpty() + sId))); addAfter = "" },
+            onStretch = { sId -> val key = after ?: currentPlan?.let { circuitOf(it).firstOrNull()?.slotId }; if (key != null) edits = edits.copy(extraStretches = edits.extraStretches + (key to (edits.extraStretches[key].orEmpty() + sId)), extraStretchModeRevision = modeRevision); addAfter = "" },
         )
     }
 }
@@ -624,7 +674,7 @@ internal fun AddSheet(exercises: List<Pair<app.calisthenics.domain.tree.TreeTab,
             Text(stringResource(R.string.preview_add_title), style = MaterialTheme.typography.titleLarge)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s), modifier = Modifier.testTag("add_categories")) {
                 exercises.forEach { (tab, _) -> FilterChip(selected = category == tab.id, onClick = { category = tab.id }, label = { Text(tab.title) }, modifier = Modifier.testTag("add_cat_${tab.id}")) }
-                FilterChip(selected = category == "stretches", onClick = { category = "stretches" }, label = { Text(stringResource(R.string.preview_add_stretches)) }, modifier = Modifier.testTag("add_cat_stretches"))
+                if (stretches.isNotEmpty()) FilterChip(selected = category == "stretches", onClick = { category = "stretches" }, label = { Text(stringResource(R.string.preview_add_stretches)) }, modifier = Modifier.testTag("add_cat_stretches"))
             }
             if (category.isEmpty()) Text(stringResource(R.string.preview_add_pick_category), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             exercises.firstOrNull { it.first.id == category }?.second?.forEach { o ->

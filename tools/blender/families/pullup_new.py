@@ -245,20 +245,8 @@ def pullup_pullover_jumping():
 
 
 def pullup_pullover():
-    # Pull, tuck, roll fully inverted with hips/legs above the bar, then press to support.
-    def airborne_legs(x,z):
-        return dict(ankle_l=[x,0.10,z],ankle_r=[x,-0.10,z],knee_l=[1,0,0],knee_r=[1,0,0],
-                    foot_l=[1,0,0],foot_r=[1,0,0])
-    hang=_hang(pz=1.205,legs=airborne_legs(.0,.31))
-    def orbit(angle):
-        a=math.radians(angle); x=-.045-.50*math.sin(a); pz=BAR_Z-.50*math.cos(a)
-        ankles=airborne_legs(x-.70*math.sin(a),pz-.70*math.cos(a))
-        h=_hands(z=HANG_Z,palms=(1,0,0),hand=(0,0,1))
-        return _pose(pz,x,0,angle,angle,h,ankles)
-    gathered=orbit(0); a90=orbit(90); a180=orbit(180); a270=orbit(270); a360=orbit(360)
-    support=_pose(2.46,-.045,0,360,360,_hands(grip=.18,x=-.045,z=BAR_Z+.06,palms=(0,0,-1),hand=(1,0,0),elbows=((0,1,0),(0,-1,0))),airborne_legs(.0,1.70))
-    keys=[(0,hang),(.10,hang),(.18,gathered),(.30,a90),(.40,a180),(.48,a270),(.58,a360),(.66,support),(.75,support),(.81,a360),(.87,a270),(.93,a180),(.97,a90),(.985,gathered),(.995,hang)]
-    return dict(seconds=4.5,keys=keys,cam_az=35,cam_el=10,props=[_bar()])
+    from bar_pullover import specification
+    return specification()
 
 
 EXERCISES={

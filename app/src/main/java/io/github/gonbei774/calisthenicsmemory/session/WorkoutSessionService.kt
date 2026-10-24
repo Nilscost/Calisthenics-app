@@ -5,14 +5,15 @@ package io.github.gonbei774.calisthenicsmemory.session
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
-import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.media.SoundPool
 import android.os.IBinder
 import android.os.PowerManager
 import android.os.SystemClock
+import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.speech.tts.UtteranceProgressListener
 import androidx.core.app.NotificationCompat
@@ -25,6 +26,7 @@ import app.calisthenics.domain.session.*
 import io.github.gonbei774.calisthenicsmemory.MainActivity
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.data.*
+import io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import java.util.Locale
@@ -62,12 +64,12 @@ class WorkoutSessionService : Service() {
     private val lock = Any()
     private var wake: PowerManager.WakeLock? = null
     private var sound: SoundPool? = null
-    private var sStart = 0; private var sBeep = 0; private var sDone = 0
+    private var cuePlayer: CuePlaybackPipeline? = null
     private var tts: TextToSpeech? = null
     private var ttsReady = false
-    private var speak = true
-    private var am: AudioManager? = null
-    private var focus: AudioFocusRequest? = null
+    @Volatile private var speak = true
+    @Volatile private var appVolumePercent = 30
+    private var preferencesListener: SharedPreferences.OnSharedPreferenceChangeListener? = null
     private var startedAt = 0L
 
     override fun onBind(i: Intent?): IBinder? = null
@@ -77,7 +79,7 @@ class WorkoutSessionService : Service() {
             ACTION_START -> start(intent)
             ACTION_RECOVER -> recover(intent)
             ACTION_PAUSE -> send(SessionEvent.Pause(now()))
-            ACTION_RESUME -> send(SessionEvent.Resume(now()))
+            ACTION_RESUME -> { refreshAudioPreferences(); send(SessionEvent.Resume(now())) }
             ACTION_SKIP -> send(SessionEvent.Skip(now()))
             ACTION_FINISH -> send(SessionEvent.FinishEarly(now()))
             ACTION_DONE -> send(SessionEvent.EarlyDone(now()))
@@ -98,7 +100,7 @@ class WorkoutSessionService : Service() {
         val c = CheckpointStore.read(this)
         if (c == null) { stopSelf(); return }
         val resume = intent.getBooleanExtra(EXTRA_RESUME, true)
-        speak = true
+        speak = PrefsStore.load(this).audioEnabled
         startedAt = c.startedAtEpochMs
         val rec = reduce(CheckpointCodec.toState(c), SessionEvent.ProcessRecovered).state
         val chosen = reduce(rec, SessionEvent.RecoveryChoice(resume)).state
@@ -120,27 +122,31 @@ class WorkoutSessionService : Service() {
         SessionBus.names = try {
             assets.open("catalog.json").bufferedReader().use { parseCatalog(it.readText()) }.variations.associate { it.id to it.name }
         } catch (_: Exception) { emptyMap() }
-        am = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        val attrs = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build()
-        sound = SoundPool.Builder().setMaxStreams(4).setAudioAttributes(attrs).build()
+        sound = SoundPool.Builder().setMaxStreams(4).setAudioAttributes(cueAudioAttributes()).build()
         val loaded = java.util.concurrent.CountDownLatch(3)
-        sound!!.setOnLoadCompleteListener { _, _, _ -> loaded.countDown() }
-        sStart = sound!!.load(this, R.raw.start_cue, 1); sBeep = sound!!.load(this, R.raw.beep_short, 1); sDone = sound!!.load(this, R.raw.set_complete, 1)
-        if (speak) tts = TextToSpeech(this) { st ->
-            ttsReady = st == TextToSpeech.SUCCESS && tts?.let { it.isLanguageAvailable(Locale.US) >= TextToSpeech.LANG_AVAILABLE } == true
-            if (ttsReady) { tts?.language = Locale.US; tts?.setSpeechRate(0.75f); tts?.setAudioAttributes(attrs)
-                tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                    override fun onStart(id: String?) {}
-                    override fun onDone(id: String?) { releaseFocus() }
-                    @Deprecated("api") override fun onError(id: String?) { releaseFocus() }
-                }) }
+        val pool = sound!!
+        cuePlayer = CuePlaybackPipeline(object : CueAudioSink {
+            override fun load(sample: CueSample): Int = pool.load(this@WorkoutSessionService, when (sample) {
+                CueSample.START -> R.raw.start_cue
+                CueSample.WARNING -> R.raw.beep_short
+                CueSample.FINISHED -> R.raw.set_complete
+            }, 1)
+
+            override fun play(sampleId: Int, leftGain: Float, rightGain: Float): Int = pool.play(sampleId, leftGain, rightGain, 1, 0, 1f)
+        }, ::logAudioDiagnostic)
+        pool.setOnLoadCompleteListener { _, sampleId, status ->
+            cuePlayer?.onLoadComplete(sampleId, status)
+            loaded.countDown()
         }
+        cuePlayer?.loadAll()
+        registerAudioPreferenceListener()
+        refreshAudioPreferences()
         val total = plan.blocks.sumOf { it.durationSeconds } * 1000L
         wake = (getSystemService(Context.POWER_SERVICE) as PowerManager).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "workout:session")
         wake?.acquire(total + 30 * 60_000L)
         exec = Executors.newSingleThreadScheduledExecutor()
         exec!!.execute {
-            loaded.await(5, TimeUnit.SECONDS) // t=0 only after sounds are ready (G1 lesson)
+            if (!loaded.await(5, TimeUnit.SECONDS)) android.util.Log.w("WorkoutAudio", "SoundPool load wait timed out; session timer continues")
             if (restored == null) {
                 startedAt = System.currentTimeMillis()
                 synchronized(lock) { state = newSession(sid, plan) }
@@ -152,7 +158,7 @@ class WorkoutSessionService : Service() {
                 if (restored.isTerminal) finish(restored)
             }
             exec!!.scheduleWithFixedDelay({
-                val mode = am?.mode
+                val mode = (getSystemService(Context.AUDIO_SERVICE) as AudioManager).mode
                 val inCall = mode == AudioManager.MODE_IN_CALL || mode == AudioManager.MODE_IN_COMMUNICATION || mode == AudioManager.MODE_RINGTONE
                 if (inCall && state?.phase == Phase.RUNNING) send(SessionEvent.AudioInterrupted(now()))
                 send(SessionEvent.Tick(now()))
@@ -194,12 +200,12 @@ class WorkoutSessionService : Service() {
     private fun perform(f: SessionEffect, s: SessionState) {
         when (f) {
             is SessionEffect.Cue -> when (f.kind) {
-                CueKind.START, CueKind.ROUND -> { sound?.play(sStart, 1f, 1f, 1, 0, 1f); say(label(f.blockId, s)) }
+                CueKind.START, CueKind.ROUND -> { playCue(f.kind); say(label(f.blockId, s)) }
                 CueKind.PREVIEW_NEXT -> {
                     CueText.nextLabel(s.plan, f.blockId, SessionBus.names)?.let { say("Next: $it") }
                 }
-                CueKind.COUNTDOWN_3, CueKind.COUNTDOWN_2, CueKind.COUNTDOWN_1 -> sound?.play(sBeep, 1f, 1f, 1, 0, 1f)
-                CueKind.FINISHED -> { sound?.play(sDone, 1f, 1f, 1, 0, 1f); say("Workout complete") }
+                CueKind.COUNTDOWN_3, CueKind.COUNTDOWN_2, CueKind.COUNTDOWN_1 -> playCue(f.kind)
+                CueKind.FINISHED -> { playCue(f.kind); say("Workout complete") }
             }
             SessionEffect.AcquireWakeLock -> if (wake?.isHeld == false) wake?.acquire(4 * 3600_000L)
             SessionEffect.ReleaseWakeLock -> {}
@@ -207,17 +213,68 @@ class WorkoutSessionService : Service() {
         }
     }
 
-    private fun say(text: String) {
-        if (!speak || !ttsReady || text.isBlank()) return
-        val a = am ?: return
-        val req = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
-            .setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build())
-            .setOnAudioFocusChangeListener { }.build()
-        focus = req; a.requestAudioFocus(req) // result ignored on purpose: cues play even if focus is refused
-        tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "u${System.nanoTime()}")
+    private fun playCue(kind: CueKind) { cuePlayer?.deliver(kind, appVolumePercent) }
+
+    private fun logAudioDiagnostic(event: CueAudioDiagnostic) {
+        when (event) {
+            is CueAudioDiagnostic.LoadRequested -> android.util.Log.d("WorkoutAudio", "load ${event.sample} sample=${event.sampleId}")
+            is CueAudioDiagnostic.LoadComplete -> android.util.Log.d("WorkoutAudio", "loaded ${event.sample} sample=${event.sampleId}")
+            is CueAudioDiagnostic.LoadFailed -> android.util.Log.e("WorkoutAudio", "load failed ${event.sample} sample=${event.sampleId} status=${event.status}")
+            is CueAudioDiagnostic.PlayRequested -> android.util.Log.d("WorkoutAudio", "play ${event.cue} sample=${event.sample} stream=${event.streamId} gain=${event.gain} availableOutputs=${availableAudioOutputs()}")
+            is CueAudioDiagnostic.PlayFailed -> android.util.Log.e("WorkoutAudio", "play failed ${event.cue} sample=${event.sample} gain=${event.gain}")
+            is CueAudioDiagnostic.NotReady -> android.util.Log.w("WorkoutAudio", "cue skipped; sample unavailable ${event.cue} sample=${event.sample}")
+            is CueAudioDiagnostic.Muted -> android.util.Log.d("WorkoutAudio", "cue muted by saved app gain: ${event.cue}")
+        }
     }
 
-    private fun releaseFocus() { focus?.let { am?.abandonAudioFocusRequest(it) }; focus = null }
+    private fun availableAudioOutputs(): String = runCatching {
+        val manager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        manager.getDevices(AudioManager.GET_DEVICES_OUTPUTS).joinToString(",") { device ->
+            "${device.productName}/type-${device.type}"
+        }.ifBlank { "none" }
+    }.getOrDefault("unavailable")
+
+    private fun registerAudioPreferenceListener() {
+        if (preferencesListener != null) return
+        val prefs = getSharedPreferences("planner_prefs", Context.MODE_PRIVATE)
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == "prefs") refreshAudioPreferences()
+        }
+        preferencesListener = listener
+        prefs.registerOnSharedPreferenceChangeListener(listener)
+    }
+
+    private fun refreshAudioPreferences() {
+        val preferences = PrefsStore.load(this)
+        appVolumePercent = preferences.appVolumePercent.coerceIn(0, 100)
+        speak = preferences.audioEnabled
+        if (!speak) {
+            tts?.shutdown(); tts = null; ttsReady = false
+        } else if (tts == null) {
+            tts = runCatching {
+                TextToSpeech(this) { status ->
+                    ttsReady = status == TextToSpeech.SUCCESS && tts?.let { it.isLanguageAvailable(Locale.US) >= TextToSpeech.LANG_AVAILABLE } == true
+                    if (ttsReady) runCatching {
+                        tts?.language = Locale.US
+                        tts?.setSpeechRate(0.75f)
+                        tts?.setAudioAttributes(AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ASSISTANCE_NAVIGATION_GUIDANCE).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build())
+                        tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                            override fun onStart(id: String?) {}
+                            override fun onDone(id: String?) {}
+                            @Deprecated("api") override fun onError(id: String?) {}
+                        })
+                    }.onFailure { ttsReady = false }
+                }
+            }.getOrNull()
+        }
+    }
+
+    private fun say(text: String) {
+        if (!shouldSpeakCue(speak, ttsReady, text, appVolumePercent)) return
+        val voiceGain = appAudioGain(appVolumePercent)
+        val params = Bundle().apply { putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, voiceGain) }
+        runCatching { tts?.speak(text, TextToSpeech.QUEUE_FLUSH, params, "u${System.nanoTime()}") }
+    }
 
     private fun finish(s: SessionState) {
         if (SessionBus.saved) return
@@ -252,10 +309,11 @@ class WorkoutSessionService : Service() {
     }
 
     private fun releaseAll() {
+        preferencesListener?.let { getSharedPreferences("planner_prefs", Context.MODE_PRIVATE).unregisterOnSharedPreferenceChangeListener(it) }
+        preferencesListener = null
         try { if (wake?.isHeld == true) wake?.release() } catch (_: Exception) {}
-        sound?.release(); sound = null
+        sound?.release(); sound = null; cuePlayer = null
         tts?.shutdown(); tts = null
-        releaseFocus()
     }
 
     override fun onDestroy() { exec?.shutdownNow(); releaseAll(); super.onDestroy() }

@@ -86,6 +86,67 @@ def sample(keys, t):
     return dict(keys[0][1])
 
 
+def sample_continuous(keys, t):
+    """Monotone cubic Hermite sampling: internal keys retain velocity.
+
+    Flat intervals/reversals have zero tangent; harmonic-mean tangents prevent
+    overshoot of the keyed reach limits. Endpoints rest for a seamless loop.
+    """
+    keys = keys if keys[-1][0] == 1 else keys + [(1., keys[0][1])]
+    times = [k[0] for k in keys]
+    index = next((i for i in range(len(keys)-1) if times[i] <= t <= times[i+1]), 0)
+    def component(values):
+        h = [b-a for a,b in zip(times,times[1:])]
+        d = [(b-a)/dt for a,b,dt in zip(values,values[1:],h)]
+        m = [0.]*len(values)
+        for j in range(1,len(values)-1):
+            if d[j-1]*d[j] > 0:
+                w1,w2=2*h[j]+h[j-1],h[j]+2*h[j-1]
+                m[j]=(w1+w2)/(w1/d[j-1]+w2/d[j])
+        i=index;u=(t-times[i])/h[i]
+        return ((2*u**3-3*u*u+1)*values[i]+(u**3-2*u*u+u)*h[i]*m[i]
+                +(-2*u**3+3*u*u)*values[i+1]+(u**3-u*u)*h[i]*m[i+1])
+    result={}
+    for name,value in keys[0][1].items():
+        result[name]=(component([k[name] for _,k in keys]) if isinstance(value,(int,float))
+                      else [component([k[name][j] for _,k in keys]) for j in range(len(value))])
+    return result
+
+
+def steady_progress(t, ramp=.12):
+    """Integrated cosine speed ramps; constant speed over the central 76%.
+
+    Position, velocity and acceleration join continuously at both ramps.
+    """
+    t=max(0.,min(1.,t))
+    if t>1-ramp:
+        return 1-steady_progress(1-t,ramp)
+    if t<ramp:
+        return .5*(t-ramp/math.pi*math.sin(math.pi*t/ramp))/(1-ramp)
+    return (t-.5*ramp)/(1-ramp)
+
+
+def sample_paced_pullup(keys,t):
+    """Keep the authored pose path, replacing its uneven time spacing.
+
+    Invert the monotone height curve separately for ascent/descent. This
+    preserves shoulder/arch articulation without inheriting key-to-key speed.
+    """
+    start,end=(.08,.5) if t<=.5 else (.58,1.)
+    progress=steady_progress((t-start)/(end-start))
+    height_keys=[(k,{'pelvis':v['pelvis']}) for k,v in keys]
+    z0=sample_continuous(height_keys,start)['pelvis'][2]
+    z1=sample_continuous(height_keys,end)['pelvis'][2]
+    target=z0+(z1-z0)*progress
+    lo,hi=start,end
+    for _ in range(36):
+        mid=(lo+hi)/2
+        z=sample_continuous(height_keys,mid)['pelvis'][2]
+        if (z<target)==(z1>z0):lo=mid
+        else:hi=mid
+    return sample_continuous(keys,(lo+hi)/2)
+
+
 def rot(v, axis, deg):
     """Rotate v about a unit axis (Rodrigues)."""
     a = math.radians(deg)
@@ -155,11 +216,16 @@ def solve(k, report):
         # palm normal (direction the palm faces) and finger curl 0..1, for render.py's hands
         J["palmn_" + side] = unit(k.get("palm_" + side, [0, 0, -1]))
         J["grip_" + side] = [k.get("grip_" + side, 0.15), 0.0, 0.0]
-        for feature in ("finger_lift", "foot_arch"):
+        for feature in ("finger_lift", "foot_arch", "grip_offset"):
             name = feature + "_" + side
             if name in k:
                 value = k[name]
                 J[name] = list(value) if isinstance(value, (list, tuple)) else [value, 0.0, 0.0]
+    # Scoped apparatus trajectories are explicit pose channels. Legacy poses
+    # omit them and retain byte-identical body geometry.
+    for name,value in k.items():
+        if name.startswith('ring_center_') or name.startswith('ring_plane_') or name.startswith('ring_radial_'):
+            J[name]=list(value)
     return J
 
 
@@ -236,22 +302,30 @@ DOWN = [0, 0, -1]
 
 
 def pullup():
-    grip = 0.25
-    w = BAR_Z - 0.065  # wrist below and just behind the bar: the palm faces it, fingers wrap over
-    def key(pz, px, p1, p2, legs_fwd):
-        return dict(pelvis=[px, 0, pz], p1=p1, p2=p2, hp=0,
-                    wrist_l=[-0.045, grip, w], wrist_r=[-0.045, -grip, w],
-                    palm_l=[1, 0, 0], palm_r=[1, 0, 0], grip_l=0.95, grip_r=0.95,
-                    elbow_l=[0.35, 1, -0.2], elbow_r=[0.35, -1, -0.2],
-                    hand_l=[0, 0, 1], hand_r=[0, 0, 1],
-                    ankle_l_rel=[legs_fwd, -0.01, -0.84], ankle_r_rel=[legs_fwd, 0.01, -0.84],
-                    knee_l=[1, 0, 0], knee_r=[1, 0, 0],
-                    foot_l=[0.45, 0, -1], foot_r=[0.45, 0, -1])
-    hang = key(BAR_Z - 1.094, -0.04, -3, -6, 0.10)
-    top = key(BAR_Z - 0.56, -0.10, 2, -6, 0.18)
-    keys = [(0.0, hang), (0.12, hang), (0.48, top), (0.58, top), (1.0, hang)]
-    return dict(seconds=3.0, keys=keys, cam_az=35, cam_el=8,
-                props=[dict(kind="bar", z=BAR_Z, half=0.65, r=0.017)])
+    # Controlled mild arch: initiate at the shoulder girdle, pull the upper
+    # chest toward the bar and return without a leg kick.
+    grip = 0.32
+    w = BAR_Z - 0.065
+    def key(pz, px, p1, p2, legs_fwd, scap, hp=8):
+        return dict(pelvis=[px,0,pz],p1=p1,p2=p2,hp=hp,
+                    wrist_l=[-.045,grip,w],wrist_r=[-.045,-grip,w],
+                    palm_l=[1,0,0],palm_r=[1,0,0],grip_l=.95,grip_r=.95,
+                    elbow_l=[.35,1,-.2],elbow_r=[.35,-1,-.2],
+                    hand_l=[0,0,1],hand_r=[0,0,1],
+                    shoulder_offset_l=[0,0,scap],shoulder_offset_r=[0,0,scap],
+                    ankle_l_rel=[legs_fwd,-.01,-.85],ankle_r_rel=[legs_fwd,.01,-.85],
+                    knee_l=[1,0,0],knee_r=[1,0,0],
+                    foot_l=[.45,0,-1],foot_r=[.45,0,-1])
+    hang=key(1.201,-.04,-3,-6,.10,.015,4)
+    active=key(1.235,-.035,-3,-7,.10,-.010,4)
+    mid=key(1.45,0,-5,-14,.12,-.015,8)
+    top=key(1.70,.15,-9,-24,.15,-.020,12)
+    keys=[(0,hang),(.08,hang),(.18,active),(.34,mid),(.5,top),
+          (.58,top),(.76,mid),(.92,active),(1,hang)]
+    return dict(seconds=4,keys=keys,cam_az=25,cam_el=8,
+                props=[dict(kind="bar",z=BAR_Z,half=.65,r=.017)],
+                motion_profile='pullup-controlled-mild-arch',anatomy_detail=True,
+                interpolation='paced-pullup',bar_grip=dict(z=BAR_Z,r=.017))
 
 
 def dense(fn, keyed, steps=48):
@@ -288,21 +362,8 @@ TOP_A, BOT_A, BOT_PHI = -2.25, -16.0, 40.0
 
 
 def pistol():
-    # stands on the left (far) leg; the right (near) leg stays straight and rises forward
-    st_ankle = [0.0, 0.09, 0.08]
-    def key(pz, px, p1, p2, lift):
-        r = math.radians(lift)
-        return dict(pelvis=[px, 0.0, pz], p1=p1, p2=p2, hp=-10,
-                    ankle_l=st_ankle, knee_l=[1, 0.15, 0], foot_l=[1, 0, 0],
-                    ankle_r_rel=[0.862 * math.sin(r), -0.03, -0.862 * math.cos(r)],
-                    knee_r=[0.3, 0, 1], foot_r=[math.cos(r) * 0.6, 0, math.sin(r) + 0.3],
-                    wrist_l_rel=[0.565, 0.04, -0.02], wrist_r_rel=[0.565, -0.04, -0.02],
-                    elbow_l=[0, 0.3, -1], elbow_r=[0, -0.3, -1],
-                    hand_l=[1, 0, 0], hand_r=[1, 0, 0])
-    top = {"pz": 0.955, "px": 0.0, "p1": 2, "p2": 4, "lift": 42}
-    bottom = {"pz": 0.36, "px": -0.27, "p1": 38, "p2": 48, "lift": 78}
-    keyed = [(0.0, top), (0.1, top), (0.48, bottom), (0.58, bottom)]
-    return dict(seconds=4.0, keys=dense(key, keyed, 64), cam_az=22, cam_el=10, props=[])
+    from pistol_refinement import specification
+    return specification()
 
 
 def pigeon():
@@ -350,19 +411,27 @@ def load_families():
 
 def build(ex_id):
     spec = EXERCISES[ex_id]()
+    if ex_id in ("chinup-full", "pullup-full"):
+        spec["keys"] = [(t, {**key, "head_detail": 1}) for t, key in spec["keys"]]
     n = int(round(spec["seconds"] * FPS))
     frames, report = [], {}
     for f in range(n):
-        J = solve(sample(spec["keys"], f / n), report)
+        sampler = {"continuous": sample_continuous, "paced-pullup": sample_paced_pullup}.get(spec.get("interpolation"), sample)
+        J = solve(sampler(spec["keys"], f / n), report)
         frames.append({k: [round(x, 5) for x in v] for k, v in J.items()})
     msgs = [f"{k}: target up to {v:.3f} m out of reach" for k, v in sorted(report.items())]
     data = dict(id=ex_id, fps=FPS, frames=frames, props=spec.get("props", []),
                 cam_az=spec["cam_az"], cam_el=spec["cam_el"],
                 lengths=L)
+    for name in ("motion_profile", "anatomy_detail", "bar_grip", "ring_grip", "grip_detail"):
+        if name in spec:
+            data[name] = spec[name]
     if "camera_focus" in spec:
         data["camera_focus"] = spec["camera_focus"]
     if "camera_padding" in spec:
         data["camera_padding"] = spec["camera_padding"]
+    if ex_id in ("chinup-full", "pullup-full"):
+        data["grip_detail"] = "PALMS TOWARD FACE" if ex_id == "chinup-full" else "PALMS AWAY FROM FACE"
     return data, msgs
 
 

@@ -1,0 +1,4 @@
+<resources>
+    <string name="feedback_app_volume">App volume · %1$d%%</string>
+    <string name="feedback_app_volume_hint">Controls voice and workout sounds</string>
+</resources>

@@ -1,0 +1,72 @@
+# Next video review batch
+
+2026-10-25. Seven new source candidates plus the unchanged, accepted Bar Pullover
+comparison. These are separate from the five videos packaged in R8.5; none of
+these seven candidates is automatically installed in the app.
+
+| Movement | Concrete source correction | Review priority |
+|---|---|---|
+| Flag kick press | Continuous kick/return, no abrupt tuck switch, landing absorption | High: explosive trajectory and pole/hand relationship |
+| Russian dip | Continuous motion through low forearm support into the press | High: distinguish real forearm rest from an ordinary dip |
+| Heel hook | Feet clear the bar before crossing; corrected actual foot/bar contact | High: hookup, load and reverse sequence |
+| Toes to bar | Stable knees, long legs and actual bilateral toe/skin contact | Strict variant, trunk motion and lower |
+| Dragon-flag negative | Stable recovery poles, staged leg extension and bench clearance | Shoulder support, straight lowering and tucked recovery |
+| Wall walk | Toe anchors at the wall, continuous walk-down, head clear of floor | Planted hand steps, wall contact and neck position |
+| Pilates Saw | Blended arm targets replace abrupt switching; fixed heel anchors | Opposite little-toe reach and level rear arm |
+| Bar Pullover | Accepted comparison, unchanged installed encode | Compare naturalness and pace |
+
+The kick-up received a knee-pole/timing correction but remains excluded: the
+catalog's named roll-out/side bail is not modeled. It is not silently relabeled as
+a complete catalog demonstration. The rigid ring hand/body experiment also stays
+excluded while whole-arm/wrist gates fail.
+
+## Verification and defects caught
+
+The source checks scope seven additional movements, bringing the catalog to 17
+engineering contracts; 516 remain unscoped. This is not a form-approval count.
+All 533 trajectories were compared: exactly eight change (the seven candidates
+and held-back kick-up), while 525 are unchanged, including accepted controls.
+The seven-candidate native preflight passes 13,575,360 body vertices with the
+existing 2 mm floor/solid-box tolerance and final 480×360 framing. It also checks
+actual foot skin against the finite Y-axis bar and requires both feet near the
+bar in the intended phase. These checks caught and corrected:
+
+- wall-walk head/floor intersection hidden by a green skeleton screen;
+- a bar-contact proxy using the wrong equipment axis;
+- floating toes and penetrating heel-hook feet hidden by a maximum-width capsule
+  proxy that omitted the rendered foot taper.
+
+No skin radius or existing gate was reduced to conceal these defects. The final
+native report records actual clearances and phase contact. The new explosive
+flag screen uses a documented provisional 6 m/s distal-foot cap while core joints
+stay at 2.5 m/s; existing contracts are unchanged. This preserves the movement
+identity while leaving speed realism for reference/encoded review.
+
+The fixed-source render batch is
+`work/render-batches/2026-10-25-next-seven-final`; its manifest is the authority
+for render completion. Earlier failed/stopped batches are retained as evidence.
+Source, native geometry and sampled-reference checks do not certify the finished
+video: full encode/decode, desktop playback and owner review follow rendering.
+
+## Reference evidence
+
+Three Luna lanes inspected original demonstration excerpts or sampled sheets,
+recording actual intervals, source hashes, variant differences, assistance and
+occlusion. The hanging report includes three toes-to-bar sources (one animation,
+one kipping comparison and one tutorial), three spotted Army heel-hook sources
+and four dragon-flag sources. These must not be counted as matching unassisted
+full cycles. Dip/flag each have three sampled sources; handstand sources distinguish
+wall walking, kick-up, forward-roll and side/cartwheel bail variants.
+No universal 3D pose calibration or full-library form approval is claimed. Saw
+still needs independent filmed comparison; its current evidence is source,
+contact and geometry checks.
+
+- [Handstand source intervals and limits](evidence/next-handstand-reference-review-2026-10-25.md)
+- [Hanging source intervals and limits](evidence/next-hanging-reference-review-2026-10-25.md)
+- [Dip and flag source intervals and limits](evidence/next-dip-flag-reference-review-2026-10-25.md)
+- [Native geometry and actual skin contact](evidence/next-seven-native-geometry-2026-10-25.json)
+- [Trajectory preservation](evidence/next-batch-pose-preservation-2026-10-25.json)
+- [Repeatable generation procedure](39-video-generation-and-review-procedure.md)
+
+No paid video-generation credits were used. Original reference footage remains
+local analysis material and is not included in the app or review-media push.

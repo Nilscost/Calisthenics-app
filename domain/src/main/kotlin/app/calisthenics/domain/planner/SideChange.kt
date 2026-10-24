@@ -16,7 +16,8 @@ fun withSideChangePreparation(blocks: List<TimelineBlock>): List<TimelineBlock> 
         if (needsSideChangePreparation(lastOrNull(), block)) add(TimelineBlock(
             id = "side-ready-${block.id}", type = BlockType.TRANSITION,
             durationSeconds = SIDE_CHANGE_PREPARATION_SECONDS,
-            roundIndex = block.roundIndex, slotId = block.slotId, groupIndex = block.groupIndex,
+            roundIndex = block.roundIndex, slotId = block.slotId, variationId = block.variationId, side = block.side,
+            target = block.target, prescriptionTier = block.prescriptionTier, groupIndex = block.groupIndex, mediaId = block.mediaId,
         ))
         add(block)
     }

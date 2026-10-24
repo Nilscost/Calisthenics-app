@@ -146,7 +146,8 @@ def dip_russian():
                   [blend(press[4][i],top[4][i],u) for i in range(3)])
         pz,pitch,wx,ep,legs=vals
         return _bar_dip(pz,p1=pitch,p2=pitch,wx=wx,wz=1.04,ankle_rel=legs,elbow=ep)
-    return dict(seconds=4,keys=dense(k,[(0,{'t':0}),(1,{'t':1})],64),cam_az=28,cam_el=12,props=bars)
+    return dict(seconds=4,keys=dense(k,[(0,{'t':0}),(1,{'t':1})],64),
+                interpolation='continuous',cam_az=28,cam_el=12,props=bars)
 
 
 def dip_korean():

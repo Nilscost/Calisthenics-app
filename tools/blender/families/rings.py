@@ -194,7 +194,9 @@ def _muscle_up(negative=False):
 
 
 def ring_muscle_up_negative(): return _muscle_up(True)
-def ring_muscle_up(): return _muscle_up(False)
+def ring_muscle_up():
+    from ring_muscleup import specification
+    return specification()
 
 
 EXERCISES={

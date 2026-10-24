@@ -1,0 +1,1594 @@
+{
+  "schema": 1,
+  "purpose": "Engineering screening bounds for scoped authored variants; not clinical or universal exercise limits",
+  "exercises": {
+    "pushup-archer": {
+      "style": "Fixed wide hands, alternating sides, assisting arm stays extended",
+      "references": [
+        "G8BvsXteJ2s",
+        "ZLWko5aP1FM",
+        "x-WosgklhR0"
+      ],
+      "bounds": {
+        "support_elbow_min_deg": 165,
+        "working_elbow_max_deg": 105,
+        "working_elbow_min_deg": 40,
+        "lateral_range_min_m": 0.3,
+        "side_shift_min_m": 0.12,
+        "chest_range_min_m": 0.2,
+        "hand_drift_max_m": 0.003,
+        "toe_drift_max_m": 0.008,
+        "body_line_min_deg": 165
+      }
+    },
+    "pullup-full": {
+      "style": "Controlled mild arch, shoulder initiation, no kip",
+      "references": [
+        "GBcUcATb8RQ",
+        "eGo4IYlbE5g",
+        "Hdc7Mw6BIEE"
+      ],
+      "bounds": {
+        "top_tilt_min_deg": 12,
+        "top_tilt_max_deg": 25,
+        "tilt_change_min_deg": 8,
+        "hip_travel_min_m": 0.12,
+        "hip_travel_max_m": 0.3,
+        "shoulder_action_min_m": 0.025,
+        "shoulder_action_max_m": 0.065,
+        "hang_elbow_min_deg": 165,
+        "top_elbow_min_deg": 30,
+        "top_elbow_max_deg": 100,
+        "rise_min_m": 0.4,
+        "hand_drift_max_m": 0.003,
+        "palm_forward_min": 0.95
+      }
+    },
+    "ring-muscle-up": {
+      "style": "Controlled strict false-grip ring muscle-up: flexed palm-heel grip in hang, close pull and turnover with moving rings, extended-arm support and quiet legs, then controlled return.",
+      "references": [
+        "https://www.youtube.com/watch?v=asnC95pkVjw",
+        "https://www.youtube.com/watch?v=vpPjY4BtJuI",
+        "https://www.youtube.com/watch?v=UB5VE2N_obE",
+        "https://www.crossfit.com/essentials/the-muscle-up-journal-classic"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 0.15,
+        "chest_fore_aft_max_m": 0.28,
+        "pelvis_fore_aft_max_m": 0.14,
+        "chest_forward_speed_max_m_s": 0.7,
+        "chest_speed_max_m_s": 1.0,
+        "leg_tuck_change_max_m": 0.025,
+        "rise_min_m": 1.0,
+        "endpoint_elbow_min_deg": 160,
+        "ring_radius_min_m": 0.09,
+        "wrist_bend_max_deg": 110,
+        "wrist_frame_change_max_deg": 8,
+        "palm_surface_clearance_min_m": 0.0004,
+        "finger_volume_clearance_min_m": 0.0005
+      },
+      "notes": [
+        "False-grip hang requires palmar flexion; support and deviation require separate articulation checks.",
+        "Angles are simplified authored engineering bounds, not calibrated human wrist measurements.",
+        "GMB assisted transition and continuous negative, FitnessFAQs close grip/edited examples, and Rogue mixed strict/kipping phases inform qualitative articulation; no three calibrated complete strict cycles are claimed."
+      ],
+      "metric_bounds": {
+        "valid_timeline": {
+          "min": 1,
+          "max": 1
+        },
+        "two_rings": {
+          "min": 2,
+          "max": 2
+        },
+        "ring_l_dynamic_channels": {
+          "min": 1,
+          "max": 1
+        },
+        "ring_l_frame_data_valid": {
+          "min": 1,
+          "max": 1
+        },
+        "ring_l_center_excursion_m": {
+          "min": 0.025,
+          "max": 0.18
+        },
+        "ring_l_plane_rotation_range_deg": {
+          "min": 8,
+          "max": 50
+        },
+        "ring_l_unit_error": {
+          "min": null,
+          "max": 0.002
+        },
+        "ring_l_orthogonality_error": {
+          "min": null,
+          "max": 0.003
+        },
+        "ring_l_radial_rotation_range_deg": {
+          "min": 15,
+          "max": 100
+        },
+        "ring_l_max_frame_twist_deg": {
+          "min": null,
+          "max": 12
+        },
+        "ring_l_strap_radius_error_m": {
+          "min": null,
+          "max": 5e-05
+        },
+        "ring_l_strap_length_variation_m": {
+          "min": null,
+          "max": 0.002
+        },
+        "wrist_l_grip_contact_error_m": {
+          "min": null,
+          "max": 5e-05
+        },
+        "hand_l_palm_orthogonality_error": {
+          "min": null,
+          "max": 0.02
+        },
+        "wrist_l_bend_deg": {
+          "min": null,
+          "max": 110
+        },
+        "hand_l_axis_rotation_range_deg": {
+          "min": 30,
+          "max": null
+        },
+        "wrist_l_bend_step_deg": {
+          "min": null,
+          "max": 8
+        },
+        "wrist_l_flexion_abs_deg": {
+          "min": null,
+          "max": 110
+        },
+        "wrist_l_deviation_abs_deg": {
+          "min": null,
+          "max": 25
+        },
+        "ring_r_dynamic_channels": {
+          "min": 1,
+          "max": 1
+        },
+        "ring_r_frame_data_valid": {
+          "min": 1,
+          "max": 1
+        },
+        "ring_r_center_excursion_m": {
+          "min": 0.025,
+          "max": 0.18
+        },
+        "ring_r_plane_rotation_range_deg": {
+          "min": 8,
+          "max": 50
+        },
+        "ring_r_unit_error": {
+          "min": null,
+          "max": 0.002
+        },
+        "ring_r_orthogonality_error": {
+          "min": null,
+          "max": 0.003
+        },
+        "ring_r_radial_rotation_range_deg": {
+          "min": 15,
+          "max": 100
+        },
+        "ring_r_max_frame_twist_deg": {
+          "min": null,
+          "max": 12
+        },
+        "ring_r_strap_radius_error_m": {
+          "min": null,
+          "max": 5e-05
+        },
+        "ring_r_strap_length_variation_m": {
+          "min": null,
+          "max": 0.002
+        },
+        "wrist_r_grip_contact_error_m": {
+          "min": null,
+          "max": 5e-05
+        },
+        "hand_r_palm_orthogonality_error": {
+          "min": null,
+          "max": 0.02
+        },
+        "wrist_r_bend_deg": {
+          "min": null,
+          "max": 110
+        },
+        "hand_r_axis_rotation_range_deg": {
+          "min": 30,
+          "max": null
+        },
+        "wrist_r_bend_step_deg": {
+          "min": null,
+          "max": 8
+        },
+        "wrist_r_flexion_abs_deg": {
+          "min": null,
+          "max": 110
+        },
+        "wrist_r_deviation_abs_deg": {
+          "min": null,
+          "max": 25
+        },
+        "hang_sample_count": {
+          "min": 1,
+          "max": null
+        },
+        "hang_wrist_angle_min_deg": {
+          "min": 45,
+          "max": null
+        },
+        "hang_wrist_angle_max_deg": {
+          "min": null,
+          "max": 105
+        },
+        "hang_flexion_abs_min_deg": {
+          "min": 45,
+          "max": null
+        },
+        "hang_flexion_abs_max_deg": {
+          "min": null,
+          "max": 105
+        },
+        "hang_deviation_abs_max_deg": {
+          "min": null,
+          "max": 25
+        },
+        "support_sample_count": {
+          "min": 1,
+          "max": null
+        },
+        "support_wrist_angle_max_deg": {
+          "min": null,
+          "max": 35
+        },
+        "support_deviation_abs_max_deg": {
+          "min": null,
+          "max": 25
+        },
+        "loop_seam_max_m": {
+          "min": null,
+          "max": 0.012
+        },
+        "chest_vertical_excursion_m": {
+          "min": 0.65,
+          "max": null
+        },
+        "false_grip_hang_wrist_over_wood_min_m": {
+          "min": 0.01
+        },
+        "false_grip_hang_palm_normal_z_max": {
+          "max": -0.1
+        }
+      }
+    },
+    "pullup-pullover": {
+      "style": "Controlled full bar pullover and slower reverse, continuous rotation with hands rolling around the bar",
+      "references": [
+        "Local catalog instructions and owner timing feedback; no new numerical reference-video comparison"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 0.17,
+        "duration_min_s": 9,
+        "joint_acceleration_max_m_s2": 8,
+        "angular_speed_max_deg_s": 165,
+        "angular_acceleration_max_deg_s2": 500,
+        "bar_volume_clearance_min_m": 0.001,
+        "interior_rotation_speed_min_deg_s": 15,
+        "descent_ascent_ratio_min": 1.05
+      }
+    },
+    "handstand-press-straddle": {
+      "style": "Existing straddle press body path with rotating feet and a controlled closed return; foot-direction screening only",
+      "references": [
+        "Local catalog and owner foot-direction feedback; no new numerical reference-video comparison"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 0.003,
+        "duration_min_s": 7.5,
+        "foot_turn_min_deg": 235,
+        "foot_turn_max_deg": 265,
+        "foot_angular_speed_max_deg_s": 100,
+        "foot_frame_norm_min": 0.25,
+        "foot_frame_step_cos_min": 0.99,
+        "top_toe_shin_dot_min": 0.9,
+        "ankle_joint_min_deg": 40,
+        "ankle_joint_max_deg": 165
+      }
+    },
+    "pilates-roll-over": {
+      "style": "Progressive pelvis-to-upper-trunk curl over the shoulder blades, slight leg opening overhead, slow reverse roll and fixed floor hand contacts.",
+      "references": [
+        "app/src/main/assets/catalog.json#pilates-roll-over"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 0.005,
+        "max_joint_speed_max_m_s": 2.25,
+        "trunk_curl_min_deg": 45,
+        "pelvis_lift_min_m": 0.18,
+        "leg_opening_min_m": 0.3,
+        "chest_surface_min_m": 0.001,
+        "loop_seam_max_m": 0.04,
+        "heel_frame_condition_min": 0.15,
+        "heel_frame_normal_step_max_deg": 45
+      },
+      "validator": "generation_checks.floor",
+      "metric_bounds": {
+        "valid_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "duration_s": {
+          "min": 3.9,
+          "max": 4.1
+        },
+        "max_joint_speed_m_s": {
+          "min": 0,
+          "max": 2.25
+        },
+        "loop_seam_max_m": {
+          "min": 0,
+          "max": 0.04
+        },
+        "hand_drift_max_m": {
+          "min": 0,
+          "max": 0.005
+        },
+        "trunk_curl_max_deg": {
+          "min": 45,
+          "max": 65
+        },
+        "pelvis_lift_range_m": {
+          "min": 0.18,
+          "max": 0.4
+        },
+        "leg_opening_max_m": {
+          "min": 0.3,
+          "max": 0.42
+        },
+        "floor_surface_min_m": {
+          "min": -0.02,
+          "max": 10
+        },
+        "chest_surface_min_m": {
+          "min": 0.001,
+          "max": null
+        },
+        "heel_frame_condition_min": {
+          "min": 0.15,
+          "max": null
+        },
+        "heel_frame_normal_step_max_deg": {
+          "min": null,
+          "max": 45
+        }
+      }
+    },
+    "hanging-windshield-wiper": {
+      "style": "Fixed bar hand contacts, active shoulders, full-height raise, controlled bilateral lateral sweep with visible torso counter-roll, centered return and lower.",
+      "references": [
+        "app/src/main/assets/catalog.json#hanging-windshield-wiper"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 0.005,
+        "max_joint_speed_max_m_s": 3.5,
+        "torso_counterroll_min_deg": 3.5,
+        "lateral_sweep_min_m": 0.6,
+        "loop_seam_max_m": 0.04,
+        "heel_frame_condition_min": 0.15,
+        "heel_frame_normal_step_max_deg": 45,
+        "duration_min_s": 6.4,
+        "duration_max_s": 6.6
+      },
+      "validator": "generation_checks.floor",
+      "metric_bounds": {
+        "valid_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "duration_s": {
+          "min": 6.4,
+          "max": 6.6
+        },
+        "max_joint_speed_m_s": {
+          "min": 0,
+          "max": 3.5
+        },
+        "loop_seam_max_m": {
+          "min": 0,
+          "max": 0.04
+        },
+        "hand_drift_max_m": {
+          "min": 0,
+          "max": 0.005
+        },
+        "torso_counterroll_max_deg": {
+          "min": 3.5,
+          "max": 18
+        },
+        "lateral_sweep_range_m": {
+          "min": 0.6,
+          "max": 0.85
+        },
+        "both_sweep_sides_m": {
+          "min": 0.2,
+          "max": 0.5
+        },
+        "floor_surface_min_m": {
+          "min": -0.02,
+          "max": 10
+        },
+        "heel_frame_condition_min": {
+          "min": 0.15,
+          "max": null
+        },
+        "heel_frame_normal_step_max_deg": {
+          "min": null,
+          "max": 45
+        }
+      }
+    },
+    "depth-jump": {
+      "style": "Box step-off, bilateral absorption, stronger ballistic rebound, soft second landing, planted turn and sequential step back onto box.",
+      "references": [
+        "https://www.catalystathletics.com/exercise/551/Depth-Jump/",
+        "https://www.youtube.com/watch?v=GeN0S3XCZnM",
+        "https://www.youtube.com/watch?v=AzPJZHOmGEg",
+        "https://www.youtube.com/watch?v=DxzbXy0lC6Y",
+        "app/src/main/assets/catalog.json#depth-jump"
+      ],
+      "bounds": {
+        "duration_s": [
+          7.5,
+          9.0
+        ],
+        "box_drop_flight_s": [
+          0.18,
+          0.55
+        ],
+        "box_drop_freeflight_frames": [
+          3,
+          15
+        ],
+        "first_landing_contact_s": [
+          0.12,
+          0.42
+        ],
+        "first_landing_compression_m": [
+          0.015,
+          0.24
+        ],
+        "rebound_flight_s": [
+          0.38,
+          0.66
+        ],
+        "rebound_pelvis_rise_m": [
+          0.4,
+          0.55
+        ],
+        "rebound_gravity_m_s2": [
+          6.0,
+          13.5
+        ],
+        "rebound_parabola_rmse_m_max": 0.035,
+        "rebound_apex_dwell_frames_max": 2,
+        "arm_takeoff_elbow_min_deg": 145,
+        "arm_takeoff_overhead_reach_m_min": 0.04,
+        "max_wrist_axis_bend_deg": 45,
+        "first_landing_planted_slip_m_max": 0.003,
+        "second_landing_planted_slip_m_max": 0.003,
+        "return_both_feet_to_box_frames_min": 2,
+        "hand_drift_max_m": 2.0,
+        "max_joint_speed_max_m_s": 8.0
+      },
+      "validator": "generation_checks.depth_jump",
+      "metric_bounds": {
+        "exercise_id": {
+          "min": 1,
+          "max": 1
+        },
+        "valid_timeline": {
+          "min": 1,
+          "max": 1
+        },
+        "finite_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "duration_s": {
+          "min": 7.5,
+          "max": 9.0
+        },
+        "box_prop_present": {
+          "min": 1,
+          "max": 1
+        },
+        "initial_both_box_frames": {
+          "min": 3,
+          "max": null
+        },
+        "early_floor_while_box_supported_frames": {
+          "min": 0,
+          "max": 0
+        },
+        "box_drop_flight_duration_s": {
+          "min": 0.18,
+          "max": 0.55
+        },
+        "box_drop_bilateral_air_frames": {
+          "min": 3,
+          "max": 15
+        },
+        "step_departure_pelvis_rise_m": {
+          "min": null,
+          "max": 0.07
+        },
+        "box_drop_gravity_m_s2": {
+          "min": 5.0,
+          "max": 15.0
+        },
+        "box_drop_parabola_rmse_m": {
+          "min": null,
+          "max": 0.065
+        },
+        "first_touch_pairing_frames": {
+          "min": 0,
+          "max": 3
+        },
+        "first_landing_contact_duration_s": {
+          "min": 0.12,
+          "max": 0.42
+        },
+        "first_landing_planted_slip_m": {
+          "min": null,
+          "max": 0.003
+        },
+        "first_landing_compression_m": {
+          "min": 0.015,
+          "max": 0.24
+        },
+        "takeoff_knee_min_deg": {
+          "min": 155.0,
+          "max": null
+        },
+        "takeoff_knee_extension_gain_deg": {
+          "min": 20.0,
+          "max": null
+        },
+        "takeoff_boundary_velocity_delta_m_s": {
+          "min": null,
+          "max": 1.5
+        },
+        "takeoff_boundary_step_delta_m": {
+          "min": null,
+          "max": 0.06
+        },
+        "takeoff_upward_boundary_min_velocity_m_s": {
+          "min": 0.0,
+          "max": null
+        },
+        "rebound_flight_duration_s": {
+          "min": 0.38,
+          "max": 0.66
+        },
+        "rebound_pelvis_rise_m": {
+          "min": 0.4,
+          "max": 0.55
+        },
+        "rebound_gravity_m_s2": {
+          "min": 6.0,
+          "max": 13.5
+        },
+        "rebound_parabola_rmse_m": {
+          "min": null,
+          "max": 0.035
+        },
+        "rebound_rise_time_gravity_m_s2": {
+          "min": 6.0,
+          "max": 13.5
+        },
+        "rebound_apex_dwell_frames": {
+          "min": 0,
+          "max": 2
+        },
+        "rebound_horizontal_range_m": {
+          "min": null,
+          "max": 0.14
+        },
+        "rebound_lateral_range_m": {
+          "min": null,
+          "max": 0.12
+        },
+        "second_landing_contact": {
+          "min": 1,
+          "max": 1
+        },
+        "second_landing_planted_frames": {
+          "min": 2,
+          "max": null
+        },
+        "second_landing_planted_slip_m": {
+          "min": null,
+          "max": 0.003
+        },
+        "arm_start_down_or_backswing_m": {
+          "min": 0.08,
+          "max": null
+        },
+        "arm_takeoff_elbow_min_deg": {
+          "min": 145,
+          "max": null
+        },
+        "arm_takeoff_overhead_reach_m": {
+          "min": 0.04,
+          "max": null
+        },
+        "arm_swing_relative_height_range_m": {
+          "min": 0.22,
+          "max": null
+        },
+        "arm_reach_apex_offset_s": {
+          "min": null,
+          "max": 0.32
+        },
+        "max_wrist_axis_bend_deg": {
+          "min": null,
+          "max": 45.0
+        },
+        "return_both_feet_to_box_frames": {
+          "min": 2,
+          "max": null
+        },
+        "loop_return_joint_gap_m": {
+          "min": null,
+          "max": 0.1
+        },
+        "return_travel_alignment_min": {
+          "min": 0.8,
+          "max": null
+        },
+        "return_planted_sole_slip_m": {
+          "min": null,
+          "max": 0.003
+        },
+        "return_planted_sole_twist_deg": {
+          "min": null,
+          "max": 2.0
+        },
+        "return_reverse_facing_min_x": {
+          "min": null,
+          "max": -0.8
+        }
+      },
+      "notes": [
+        "Rebound rise intentionally revised to 0.40\u20130.55 m for the stronger review variant. This is an authored variant bound, not a calibrated measurement from a reference athlete."
+      ]
+    },
+    "squat-pistol": {
+      "style": "Controlled full-depth unilateral squat with a planted support foot, straight forward free leg, clear bottom hold, and explicit full return to standing.",
+      "references": [
+        "app/src/main/assets/catalog.json#squat-pistol instructions",
+        "tools/blender/poses.py#pistol prior implementation",
+        "work/catalog-screening/luna-b.json#encoded_frame_review squat-pistol selected frames"
+      ],
+      "bounds": {
+        "max_joint_speed_max_m_s": 2.5,
+        "hand_drift_max_m": 0.75,
+        "support_ankle_drift_max_m": 0.003,
+        "support_ankle_height_range_max_m": 0.003,
+        "full_depth_range_m": {
+          "min": 0.52,
+          "max": 0.64
+        },
+        "deepest_pelvis_m": {
+          "min": 0.32,
+          "max": 0.43
+        },
+        "raised_leg_forward_reach_m": {
+          "min": 0.42,
+          "max": 0.9
+        },
+        "raised_leg_knee_angle_deg": {
+          "min": 160.0,
+          "max": 180.0
+        },
+        "raised_foot_clearance_m": {
+          "min": 0.1,
+          "max": 0.3
+        },
+        "cycle_return_error_max_m": 0.08,
+        "loop_seam_joint_gap_max_m": 0.012
+      },
+      "validator": "generation_checks.lower",
+      "notes": [
+        "Authored-variant bounds are not universal physiological limits.",
+        "No quantitative human-reference comparison or form certification is implied."
+      ],
+      "metric_bounds": {
+        "finite_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "known_variant": {
+          "min": 1,
+          "max": 1
+        },
+        "max_joint_speed_m_s": {
+          "min": 0.0,
+          "max": 2.5
+        },
+        "wrist_l_drift_m": {
+          "min": 0.0,
+          "max": 0.75
+        },
+        "wrist_r_drift_m": {
+          "min": 0.0,
+          "max": 0.75
+        },
+        "support_ankle_drift_m": {
+          "min": 0.0,
+          "max": 0.003
+        },
+        "full_depth_range_m": {
+          "min": 0.52,
+          "max": 0.64
+        },
+        "deepest_pelvis_m": {
+          "min": 0.32,
+          "max": 0.43
+        },
+        "raised_leg_forward_reach_m": {
+          "min": 0.42,
+          "max": 0.9
+        },
+        "raised_foot_clearance_m": {
+          "min": 0.1,
+          "max": 0.3
+        },
+        "raised_leg_knee_angle_deg": {
+          "min": 160.0,
+          "max": 180.0
+        },
+        "cycle_return_error_m": {
+          "min": 0.0,
+          "max": 0.08
+        },
+        "loop_seam_joint_gap_m": {
+          "min": 0.0,
+          "max": 0.012
+        },
+        "support_ankle_height_range_m": {
+          "min": 0.0,
+          "max": 0.003
+        }
+      }
+    },
+    "burpee-pushup": {
+      "style": "Strict push-up burpee with sagittal knee flexion, bilateral feet-back and feet-in transfers, planted high-low-high push-up, small ballistic jump and soft landing.",
+      "references": [
+        "app/src/main/assets/catalog.json#burpee-pushup",
+        "https://www.youtube.com/watch?v=AuoDVuBK1uI",
+        "https://www.youtube.com/watch?v=TU8QYVW0gDU",
+        "https://www.youtube.com/watch?v=SxDmxON_pZk"
+      ],
+      "bounds": {
+        "duration_min_s": 8.0,
+        "hand_drift_max_m": 2.0,
+        "plank_contact_drift_max_m": 0.003,
+        "pushup_chest_excursion_min_m": 0.12,
+        "pushup_top_elbow_min_deg": 145,
+        "pushup_bottom_elbow_bend_min_deg": 30,
+        "leg_transfer_min_m": 0.65,
+        "jump_height_min_m": 0.18,
+        "jump_preload_depth_min_m": 0.1,
+        "landing_absorption_min_m": 0.08,
+        "loop_seam_max_m": 0.08,
+        "max_joint_speed_max_m_s": 8.0,
+        "foot_mesh_floor_min_z_m": -0.002
+      },
+      "validator": "generation_checks.conditioning",
+      "metric_bounds": {
+        "valid_timeline": {
+          "min": 1,
+          "max": 1
+        },
+        "finite_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "foot_mesh_floor_min_z_m": {
+          "min": -0.002,
+          "max": null
+        },
+        "duration_s": {
+          "min": 8.0,
+          "max": null
+        },
+        "loop_seam_max_m": {
+          "min": null,
+          "max": 0.08
+        },
+        "max_joint_speed_m_s": {
+          "min": null,
+          "max": 8.0
+        },
+        "pushup_plank_frames": {
+          "min": 12,
+          "max": null
+        },
+        "pushup_chest_excursion_m": {
+          "min": 0.12,
+          "max": null
+        },
+        "pushup_press_rise_m": {
+          "min": 0.12,
+          "max": null
+        },
+        "pushup_top_elbow_deg": {
+          "min": 145,
+          "max": null
+        },
+        "pushup_bottom_elbow_bend_deg": {
+          "min": 30,
+          "max": null
+        },
+        "pushup_phase_order": {
+          "min": 1,
+          "max": 1
+        },
+        "plank_contact_drift_m": {
+          "min": null,
+          "max": 0.003
+        },
+        "leg_transfer_m": {
+          "min": 0.65,
+          "max": null
+        },
+        "jump_height_m": {
+          "min": 0.18,
+          "max": null
+        },
+        "jump_preload_depth_m": {
+          "min": 0.1,
+          "max": null
+        },
+        "landing_contact": {
+          "min": 1,
+          "max": 1
+        },
+        "landing_absorption_m": {
+          "min": 0.08,
+          "max": null
+        },
+        "recovery_to_start_m": {
+          "min": null,
+          "max": 0.08
+        },
+        "exercise_id": {
+          "min": 1,
+          "max": 1
+        },
+        "finite_leg_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "max_knee_lateral_excursion_m": {
+          "min": null,
+          "max": 0.1
+        },
+        "flexed_knee_samples": {
+          "min": 8,
+          "max": null
+        },
+        "minimum_knee_angle_deg": {
+          "min": null,
+          "max": 125
+        },
+        "meaningfully_bent_knee_samples": {
+          "min": 12,
+          "max": null
+        },
+        "forward_sagittal_bend_fraction": {
+          "min": 0.6,
+          "max": null
+        },
+        "flexed_sagittal_branch_flips": {
+          "min": null,
+          "max": 0
+        },
+        "stable_plank_frames": {
+          "min": 12,
+          "max": null
+        },
+        "squat_to_plank_knee_accel_m_s2": {
+          "min": null,
+          "max": 30
+        },
+        "plank_to_squat_knee_accel_m_s2": {
+          "min": null,
+          "max": 30
+        },
+        "peak_lateral_knee_accel_m_s2": {
+          "min": null,
+          "max": 24
+        },
+        "final_jump_flight_duration_s": {
+          "min": 0.3,
+          "max": 0.75
+        },
+        "final_jump_peak_rise_m": {
+          "min": 0.1,
+          "max": 0.35
+        },
+        "final_jump_apex_dwell_s": {
+          "min": null,
+          "max": 0.16
+        },
+        "final_jump_apex_fraction": {
+          "min": 0.25,
+          "max": 0.75
+        },
+        "final_jump_fit_frame_count": {
+          "min": 3,
+          "max": null
+        },
+        "final_jump_gravity_fit_m_s2": {
+          "min": 6.0,
+          "max": 13.5
+        },
+        "final_jump_fit_rmse_m": {
+          "min": null,
+          "max": 0.035
+        },
+        "final_jump_takeoff_knee_min_deg": {
+          "min": 155,
+          "max": null
+        }
+      },
+      "notes": [
+        "Peak Physio is the closest strict push-up reference; CrossFit and Rogue show chest-and-thigh floor-contact variants.",
+        "Filmed phase review is qualitative; authored engineering bounds do not certify human form."
+      ]
+    },
+    "handstand-wall-walk-up": {
+      "style": "Toe-contact wall walk with a continuous walk-down return.",
+      "references": [
+        "app/src/main/assets/catalog.json#handstand-wall-walk-up"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 1.65,
+        "max_joint_speed_max_m_s": 2.5
+      },
+      "validator": "generation_checks.next_handstand",
+      "metric_bounds": {
+        "known_variant": {
+          "min": 1,
+          "max": 1
+        },
+        "valid_timeline": {
+          "min": 1,
+          "max": 1
+        },
+        "finite_world_joints": {
+          "min": 1,
+          "max": 1
+        },
+        "max_joint_speed_m_s": {
+          "min": 0.0,
+          "max": 2.5
+        },
+        "head_ellipsoid_floor_proxy_m": {
+          "min": -0.002,
+          "max": null
+        },
+        "max_toe_wall_anchor_error_m": {
+          "min": 0.0,
+          "max": 0.006
+        },
+        "left_wrist_floor_height_error_m": {
+          "min": 0.0,
+          "max": 0.001
+        },
+        "hand_travel_range_m": {
+          "min": 0.2,
+          "max": 1.8
+        },
+        "walk_up_wrist_progress_m": {
+          "min": 0.08,
+          "max": null
+        },
+        "walk_down_wrist_progress_m": {
+          "min": 0.08,
+          "max": null
+        }
+      },
+      "promotion_status": "review_required",
+      "review_note": "New authored-variant engineering screen; native geometry and encoded/reference form review remain required."
+    },
+    "toes-to-bar": {
+      "style": "Controlled straight-leg toes-to-bar rise and lower.",
+      "references": [
+        "app/src/main/assets/catalog.json#toes-to-bar"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 0.003,
+        "max_joint_speed_max_m_s": 2.5
+      },
+      "validator": "generation_checks.next_hanging",
+      "metric_bounds": {
+        "known_variant": {
+          "min": 1,
+          "max": 1
+        },
+        "valid_timeline": {
+          "min": 1,
+          "max": 1
+        },
+        "valid_fps": {
+          "min": 1,
+          "max": 1
+        },
+        "finite_required_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "duration_s": {
+          "min": 0.0,
+          "max": 15.0
+        },
+        "max_knee_speed_m_s": {
+          "min": 0.0,
+          "max": 4.0
+        },
+        "wrist_l_drift_m": {
+          "min": 0.0,
+          "max": 0.005
+        },
+        "wrist_r_drift_m": {
+          "min": 0.0,
+          "max": 0.005
+        },
+        "bar_prop_present": {
+          "min": 1,
+          "max": 1
+        },
+        "minimum_foot_bar_gap_m": {
+          "min": -0.002,
+          "max": null
+        },
+        "l_top_foot_bar_gap_m": {
+          "min": 0.0,
+          "max": 0.006
+        },
+        "l_bar_contact": {
+          "min": 1,
+          "max": 1
+        },
+        "l_knee_extension_at_contact_deg": {
+          "min": 165.0,
+          "max": 180.0
+        },
+        "r_top_foot_bar_gap_m": {
+          "min": 0.0,
+          "max": 0.006
+        },
+        "r_bar_contact": {
+          "min": 1,
+          "max": 1
+        },
+        "r_knee_extension_at_contact_deg": {
+          "min": 165.0,
+          "max": 180.0
+        },
+        "both_feet_contact_overlap_frames": {
+          "min": 1,
+          "max": null
+        }
+      },
+      "promotion_status": "review_required",
+      "review_note": "New authored-variant engineering screen; native geometry and encoded/reference form review remain required."
+    },
+    "heel-hook": {
+      "style": "Feet-over-bar heel hook, crossed ankles and controlled reverse.",
+      "references": [
+        "app/src/main/assets/catalog.json#heel-hook"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 0.003,
+        "max_joint_speed_max_m_s": 4
+      },
+      "validator": "generation_checks.next_hanging",
+      "metric_bounds": {
+        "known_variant": {
+          "min": 1,
+          "max": 1
+        },
+        "valid_timeline": {
+          "min": 1,
+          "max": 1
+        },
+        "valid_fps": {
+          "min": 1,
+          "max": 1
+        },
+        "finite_required_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "duration_s": {
+          "min": 0.0,
+          "max": 15.0
+        },
+        "max_knee_speed_m_s": {
+          "min": 0.0,
+          "max": 4.0
+        },
+        "wrist_l_drift_m": {
+          "min": 0.0,
+          "max": 0.005
+        },
+        "wrist_r_drift_m": {
+          "min": 0.0,
+          "max": 0.005
+        },
+        "bar_prop_present": {
+          "min": 1,
+          "max": 1
+        },
+        "minimum_foot_bar_gap_m": {
+          "min": -0.002,
+          "max": null
+        },
+        "both_ankles_crossed_above_bar_frames": {
+          "min": 1,
+          "max": null
+        },
+        "l_hook_foot_gap_m": {
+          "min": 0.0,
+          "max": 0.006
+        },
+        "r_hook_foot_gap_m": {
+          "min": 0.0,
+          "max": 0.006
+        }
+      },
+      "promotion_status": "review_required",
+      "review_note": "New authored-variant engineering screen; native geometry and encoded/reference form review remain required."
+    },
+    "dip-russian": {
+      "style": "Continuous support to forearm-rest Russian dip and full return.",
+      "references": [
+        "app/src/main/assets/catalog.json#dip-russian"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 0.2,
+        "max_joint_speed_max_m_s": 2.5
+      },
+      "validator": "generation_checks.next_dip_flag",
+      "metric_bounds": {
+        "exercise_id": {
+          "min": 1,
+          "max": 1
+        },
+        "valid_timeline": {
+          "min": 1,
+          "max": 1
+        },
+        "finite_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "duration_s": {
+          "min": 3.0,
+          "max": 5.0
+        },
+        "loop_seam_max_m": {
+          "min": null,
+          "max": 0.012
+        },
+        "max_speed_pelvis_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_spine_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_chest_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_neck_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_head_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_shoulder_l_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_shoulder_r_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_elbow_l_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_elbow_r_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_wrist_l_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_wrist_r_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_hand_l_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_hand_r_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_hip_l_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_hip_r_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_knee_l_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_knee_r_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_ankle_l_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_ankle_r_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_toe_l_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_toe_r_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_joint_speed_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "forearm_support_samples": {
+          "min": 6,
+          "max": null
+        },
+        "forearm_elbow_bar_axis_distance_max_m": {
+          "min": null,
+          "max": 0.067
+        },
+        "wrist_bar_axis_distance_max_m": {
+          "min": null,
+          "max": 0.045
+        },
+        "supported_elbow_angle_min_deg": {
+          "min": 125.0,
+          "max": null
+        },
+        "starts_in_upper_support": {
+          "min": 1,
+          "max": 1
+        },
+        "reaches_forearm_dip": {
+          "min": 1,
+          "max": 1
+        },
+        "returns_to_upper_support": {
+          "min": 1,
+          "max": 1
+        }
+      },
+      "promotion_status": "review_required",
+      "review_note": "New authored-variant engineering screen; native geometry and encoded/reference form review remain required."
+    },
+    "dragon-flag-negative": {
+      "style": "Straight-body negative with tucked recovery over a bench.",
+      "references": [
+        "app/src/main/assets/catalog.json#dragon-flag-negative"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 0.003,
+        "max_joint_speed_max_m_s": 4
+      },
+      "validator": "generation_checks.next_hanging",
+      "metric_bounds": {
+        "known_variant": {
+          "min": 1,
+          "max": 1
+        },
+        "valid_timeline": {
+          "min": 1,
+          "max": 1
+        },
+        "valid_fps": {
+          "min": 1,
+          "max": 1
+        },
+        "finite_required_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "duration_s": {
+          "min": 0.0,
+          "max": 15.0
+        },
+        "max_knee_speed_m_s": {
+          "min": 0.0,
+          "max": 4.0
+        },
+        "wrist_l_drift_m": {
+          "min": 0.0,
+          "max": 0.005
+        },
+        "wrist_r_drift_m": {
+          "min": 0.0,
+          "max": 0.005
+        },
+        "straight_negative_frames": {
+          "min": 2,
+          "max": null
+        },
+        "negative_trunk_alignment_max_deg": {
+          "min": 0.0,
+          "max": 8.0
+        },
+        "negative_knee_extension_min_deg": {
+          "min": 165.0,
+          "max": 180.0
+        },
+        "recovery_tuck_knee_angle_min_deg": {
+          "min": 0.0,
+          "max": 140.0
+        },
+        "recovery_final_knee_extension_deg": {
+          "min": 165.0,
+          "max": 180.0
+        },
+        "torso_bench_proxy_clearance_m": {
+          "min": 0.005,
+          "max": null
+        }
+      },
+      "promotion_status": "review_required",
+      "review_note": "New authored-variant engineering screen; native geometry and encoded/reference form review remain required."
+    },
+    "flag-kick-press": {
+      "style": "Explosive human-flag kick-through with landing absorption; not a held flag.",
+      "references": [
+        "app/src/main/assets/catalog.json#flag-kick-press"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 0.003,
+        "max_joint_speed_max_m_s": 6
+      },
+      "validator": "generation_checks.next_dip_flag",
+      "metric_bounds": {
+        "exercise_id": {
+          "min": 1,
+          "max": 1
+        },
+        "valid_timeline": {
+          "min": 1,
+          "max": 1
+        },
+        "finite_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "duration_s": {
+          "min": 2.8,
+          "max": 4.0
+        },
+        "loop_seam_max_m": {
+          "min": null,
+          "max": 0.012
+        },
+        "max_speed_pelvis_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_spine_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_chest_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_neck_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_head_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "max_speed_shoulder_l_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_shoulder_r_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_elbow_l_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_elbow_r_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_wrist_l_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_wrist_r_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_hand_l_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_hand_r_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_hip_l_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_hip_r_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_knee_l_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_knee_r_m_s": {
+          "min": null,
+          "max": null
+        },
+        "max_speed_ankle_l_m_s": {
+          "min": null,
+          "max": 6.0
+        },
+        "max_speed_ankle_r_m_s": {
+          "min": null,
+          "max": 6.0
+        },
+        "max_speed_toe_l_m_s": {
+          "min": null,
+          "max": 6.0
+        },
+        "max_speed_toe_r_m_s": {
+          "min": null,
+          "max": 6.0
+        },
+        "max_joint_speed_m_s": {
+          "min": null,
+          "max": 6.0
+        },
+        "kick_hip_peak_z_m": {
+          "min": 1.65,
+          "max": null
+        },
+        "kick_ankle_peak_z_m": {
+          "min": 1.6,
+          "max": null
+        },
+        "kick_apex_samples_within_5mm": {
+          "min": null,
+          "max": 2
+        },
+        "pole_wrist_centerline_distance_max_m": {
+          "min": null,
+          "max": 0.03
+        },
+        "bilateral_landing_samples": {
+          "min": 3,
+          "max": null
+        },
+        "landing_knee_angle_min_deg": {
+          "min": null,
+          "max": 165.0
+        }
+      },
+      "promotion_status": "review_required",
+      "review_note": "New authored-variant engineering screen; native geometry and encoded/reference form review remain required. Provisional 6m/s distal kick cap preserves explosive identity; pelvis/chest/head remain <=2.5m/s. No existing bound is relaxed."
+    },
+    "pilates-saw": {
+      "style": "Bilateral spinal rotation and opposite-foot reach with long planted legs.",
+      "references": [
+        "app/src/main/assets/catalog.json#pilates-saw"
+      ],
+      "bounds": {
+        "hand_drift_max_m": 1.5,
+        "max_joint_speed_max_m_s": 2.5
+      },
+      "validator": "generation_checks.next_pilates",
+      "metric_bounds": {
+        "saw_valid_geometry": {
+          "min": 1,
+          "max": 1
+        },
+        "saw_joint_speed_m_s": {
+          "min": null,
+          "max": 2.5
+        },
+        "saw_seam_m": {
+          "min": null,
+          "max": 0.012
+        },
+        "saw_pelvis_drift_m": {
+          "min": null,
+          "max": 0.04
+        },
+        "saw_fold_range_m": {
+          "min": 0.3,
+          "max": 0.4
+        },
+        "saw_left_rotation": {
+          "min": 0.5,
+          "max": 0.75
+        },
+        "saw_right_rotation": {
+          "min": 0.5,
+          "max": 0.75
+        },
+        "saw_l_heel_drift_m": {
+          "min": null,
+          "max": 0.003
+        },
+        "saw_l_knee_min_deg": {
+          "min": 165,
+          "max": null
+        },
+        "saw_r_heel_drift_m": {
+          "min": null,
+          "max": 0.003
+        },
+        "saw_r_knee_min_deg": {
+          "min": 165,
+          "max": null
+        }
+      },
+      "promotion_status": "review_required",
+      "review_note": "New authored-variant engineering screen; native geometry and encoded/reference form review remain required."
+    }
+  }
+}

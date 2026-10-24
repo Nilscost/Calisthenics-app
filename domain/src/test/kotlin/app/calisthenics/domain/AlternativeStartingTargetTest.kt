@@ -19,8 +19,8 @@ class AlternativeStartingTargetTest {
     private val progress = ProgressionEngine(c).replay(emptyList(), actions).copy(routeWorkoutCounts = mapOf("pushup" to 1))
     private val routine = Routine("test", 1, "Test", listOf(RoutineSlot("push", Pattern.PUSH_HORIZONTAL, Area.UPPER_BODY, main.id, progressionRouteId = "pushup")))
     private val draft = SessionDraft(600, false, emptySet(), false, false, setOf(StrengthFocus.FULL_BODY), SeedProfiles.home.id, rounds = 2)
-    private fun plan(d: SessionDraft = draft, p: ProgressSnapshot = progress, excluded: Set<String> = emptySet()) =
-        (generate(PlanInput("test", 0, 1, c, routine, d, SeedProfiles.home, excludedVariationIds = excluded, progress = p)) as PlanResult.Ready).plan
+    private fun plan(d: SessionDraft = draft, p: ProgressSnapshot = progress, excluded: Set<String> = emptySet(), profile: EquipmentProfile = SeedProfiles.home) =
+        (generate(PlanInput("test", 0, 1, c, routine, d, profile, excludedVariationIds = excluded, progress = p)) as PlanResult.Ready).plan
 
     private fun atTier(variation: ExerciseVariation, tier: Int) = progress.copy(
         variations = mapOf(variation.id to progress.variations.getValue(main.id).copy(
@@ -31,6 +31,66 @@ class AlternativeStartingTargetTest {
         val blocks = plan().blocks.filter { it.type == BlockType.WORK }
         assertTrue(blocks.all { it.variationId == alt.id && it.target!!.value == 8 && it.prescriptionTier == 3 && it.inferredStartTier == 3 })
         assertFalse(progress.variations.containsKey(alt.id)) // preview is read-only
+    }
+
+    @Test fun demonstratedSameRungSourceSuggestsNMinusOneInBothDirections() {
+        val withChair = SeedProfiles.home.copy(items = SeedProfiles.home.items + EquipmentItem("chair", suitability = setOf("stable")))
+        val mainPlan = plan(
+            d = draft.copy(rounds = 3, tierOverrides = mapOf("push" to 4)),
+            p = ProgressionEngine(c).replay(emptyList(), listOf(UserAction.SelfAssessment(0, main.id, 1)))
+                .copy(routeWorkoutCounts = emptyMap()),
+            profile = withChair,
+        )
+        val mainWork = mainPlan.blocks.filter { it.type == BlockType.WORK }
+        val mainOutcomes = resolveFeedback(mainPlan, mainWork.associate { it.id to Execution.COMPLETED },
+            mainWork.associate { it.id to Feedback(actualReps = it.target!!.value) })
+        val mainEvidence = deriveEvidence("demonstrated-main", 1, mainPlan, mainOutcomes,
+            { c.variation(it)!!.familyId }, { _, _ -> 2 }, loggedBlockIds = mainWork.map { it.id }.toSet(),
+            effectivePolicyOf = { c.policyForVariation(it) }).single()
+        val mainProgress = ProgressionEngine(c).replay(listOf(mainEvidence), listOf(UserAction.SelfAssessment(0, main.id, 1)))
+        assertEquals(3, demonstratedRungStartingTier(c, alt, mainProgress, "pushup"))
+        val plannedAlt = plan(p = mainProgress)
+        assertTrue(plannedAlt.blocks.filter { it.type == BlockType.WORK }.all {
+            it.variationId == alt.id && it.prescriptionTier == 3 && it.inferredStartTier == 3
+        })
+        assertFalse(mainProgress.variations.containsKey(alt.id))
+        assertNull(demonstratedRungStartingTier(c, alt.copy(unilateral = true), mainProgress, "pushup"))
+
+        val tooManySets = c.copy(policies = c.policies.map { policy ->
+            if (policy.variationId == alt.id) policy.copy(tiers = policy.tiers.map { tier ->
+                if (tier.index == 3) tier.copy(minQualifyingBlocks = 4) else tier
+            }) else policy
+        })
+        assertNull(demonstratedRungStartingTier(tooManySets, alt, mainProgress, "pushup"))
+
+        // A demonstrated alternate can inform the untried main choice at the same anchor too.
+        val altPolicy = c.policyFor(alt)!!
+        val altPlan = mainPlan.copy(id = "demonstrated-alt", progressionPolicies = mapOf(alt.id to altPolicy), blocks = mainPlan.blocks.map {
+            it.copy(variationId = alt.id, target = altPolicy.tier(4).target, prescriptionTier = 4, progressionRouteId = "pushup")
+        })
+        val altWork = altPlan.blocks.filter { it.type == BlockType.WORK }
+        val altOutcomes = resolveFeedback(altPlan, altWork.associate { it.id to Execution.COMPLETED },
+            altWork.associate { it.id to Feedback(actualReps = it.target!!.value) })
+        val altEvidence = deriveEvidence("demonstrated-alt", 2, altPlan, altOutcomes,
+            { c.variation(it)!!.familyId }, { _, _ -> 2 }, loggedBlockIds = altWork.map { it.id }.toSet(),
+            effectivePolicyOf = { c.policyForVariation(it) }).single()
+        val altProgress = ProgressionEngine(c).replay(listOf(altEvidence), emptyList())
+        assertEquals(3, demonstratedRungStartingTier(c, main, altProgress, "pushup"))
+        assertTrue(altProgress.variations.getValue(alt.id).achievedTiers.isEmpty())
+        val plannedMain = plan(p = altProgress.copy(routeWorkoutCounts = emptyMap()), profile = withChair)
+        assertTrue(plannedMain.blocks.filter { it.type == BlockType.WORK }.all {
+            it.variationId == main.id && it.prescriptionTier == 3 && it.inferredStartTier == 3
+        })
+        assertFalse(altProgress.variations.containsKey(main.id))
+    }
+
+    @Test fun onlyCurrentRevisionDemonstrationsInformUntriedChoicesAndExistingResultsWin() {
+        val changed = c.copy(personalTargets = mapOf(main.id to PersonalLevelTargets(1, listOf(5, 10, 15, 20, 25))))
+        assertNull(demonstratedRungStartingTier(changed, alt, progress.copy(variations = mapOf(main.id to
+            progress.variations.getValue(main.id).copy(demonstratedTier = 4, demonstratedTargetRevision = 0))), "pushup"))
+        val knownAlt = progress.copy(variations = progress.variations + (alt.id to
+            progress.variations.getValue(main.id).copy(variationId = alt.id, tier = 2)))
+        assertNull(demonstratedRungStartingTier(c, alt, knownAlt, "pushup"))
     }
 
     // R8.1-T01 (F1, owner decision 2026-10-17, supersedes the R8 assertion that diamond keeps rotating in once the main step has moved

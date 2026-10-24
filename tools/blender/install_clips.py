@@ -40,7 +40,8 @@ def frame_problem(ex):
         return "missing joints.json or Blender frames directory"
     try:
         with open(j) as f:
-            frames = json.load(f)["frames"]
+            data = json.load(f)
+            frames = data["frames"]
     except (OSError, ValueError, KeyError, TypeError):
         return "invalid joints.json"
     if not isinstance(frames, list) or not frames:
@@ -76,6 +77,31 @@ def frame_problem(ex):
             return f"{name} is not a regular file"
         if os.stat(path).st_mtime_ns <= joints_mtime:
             return f"{name} is not newer than joints.json"
+    if data.get("grip_detail") or data.get("motion_profile"):
+        from render_contract import render_stamp
+        try:
+            with open(os.path.join(WORK, ex, "blender", "render-detail.json")) as f:
+                if json.load(f) != render_stamp():
+                    return "grip renderer has changed; render again"
+        except (OSError, ValueError):
+            return "missing grip render stamp"
+        if data.get("grip_detail"):
+            detail_dir = os.path.join(WORK, ex, "blender", "grip-frames")
+            if not os.path.isdir(detail_dir) or set(os.listdir(detail_dir)) != expected:
+                return "missing or incomplete grip detail frames"
+            for name in sorted(expected):
+                if os.stat(os.path.join(detail_dir, name)).st_mtime_ns <= joints_mtime:
+                    return "grip detail frames are stale"
+    from motion_quality import audit
+    motion = audit(data) if data.get('id') else {'status':'unscoped'}
+    if motion['status'] == 'fail':
+        return 'motion rules failed: ' + str(motion['failures'])
+    if motion['status'] == 'pass':
+        import poses
+        poses.load_families()
+        current, report = poses.build(ex)
+        if report or poses.checks(current) or current != data:
+            return 'motion source has changed; rebuild joints and render again'
     return None
 
 

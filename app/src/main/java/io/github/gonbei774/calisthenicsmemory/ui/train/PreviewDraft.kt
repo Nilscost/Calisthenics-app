@@ -1,11 +1,12 @@
 // R8.1-T05 (F6): what the person changed in the Preview survives going back to Train and returning. The draft belongs to the objective
-// (goal, saved routine or program): it is dropped only when that changes, or when the person resets the Preview.
+// (goal, saved routine or program). A changed exercise count also starts a fresh automatic selection.
 package io.github.gonbei774.calisthenicsmemory.ui.train
 
 import android.content.Context
 import app.calisthenics.domain.planner.PlanEdits
 import app.calisthenics.domain.planner.ProgramContent
 import app.calisthenics.domain.planner.TrainSettings
+import app.calisthenics.domain.model.BetweenSetMode
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -18,6 +19,12 @@ data class PreviewDraft(
     val rest: Map<String, Int> = emptyMap(),
     /** R8.1-T08 (F9): the items of a program being edited in the Preview (the catalog program itself never changes). */
     val program: ProgramContent? = null,
+    val betweenSetMode: BetweenSetMode? = null,
+    val preparationSeconds: Int = 5,
+    /** Revisions explicit Flow/Rest/Stretch edits across Train and Preview. */
+    val modeRevision: Long = 0L,
+    /** 0 means a legacy draft whose rule provenance is unknown; current drafts are stamped 1. */
+    val ruleDefaultVersion: Int = 0,
 )
 
 /** The objective a draft belongs to: a goal or body focus, a saved routine, or a program. */

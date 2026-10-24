@@ -1,0 +1,17 @@
+00:03.906  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/0.png'
+00:05.838  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/32.png'
+00:07.418  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/48.png'
+00:08.902  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/64.png'
+00:10.351  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/80.png'
+00:11.760  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/96.png'
+00:13.289  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/116.png'
+00:14.854  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/138.png'
+00:16.572  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/164.png'
+00:18.234  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/190.png'
+00:20.135  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/224.png'
+00:22.178  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/pullover-refinement/phases/263.png'
+PASS: 3965808 actual body/hand mesh vertices over 264 frames, minimum bar clearance 4.689 mm, hand clearance 4.689 mm, complete app framing
+PASS: conservative whole-finger capsule bar clearance 1.174 mm
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:49:19)
+
+Blender quit

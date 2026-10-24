@@ -1,0 +1,53 @@
+{
+  "media": [
+    {
+      "id": "pullup-full",
+      "decoded_frames": 96,
+      "bytes": 22699,
+      "sha256": "1ce1557f1ec537e7eb6d5155b708749e01ad215c1181062454407b709d8ce741",
+      "duration_seconds": 4.0,
+      "selected_visual_frames": [
+        0,
+        48,
+        95
+      ]
+    },
+    {
+      "id": "chinup-full",
+      "decoded_frames": 72,
+      "bytes": 20820,
+      "sha256": "064be775a82b2125ad03bcc249726727e08eeaed3c93caefbf2c61afc9e210fb",
+      "duration_seconds": 3.0,
+      "selected_visual_frames": [
+        0,
+        36,
+        71
+      ]
+    }
+  ],
+  "assets": {
+    "app/src/main/assets/demos/pullup-full.mp4": {
+      "sha256": "1ce1557f1ec537e7eb6d5155b708749e01ad215c1181062454407b709d8ce741",
+      "bytes": 22699
+    },
+    "app/src/main/assets/thumbs/pullup-full.webp": {
+      "sha256": "aed2423983ee35c32330426c5c5fe39c6f44eb6e082824cd9a60200be2fb0fcb",
+      "bytes": 3422
+    },
+    "app/src/main/assets/demos/chinup-full.mp4": {
+      "sha256": "064be775a82b2125ad03bcc249726727e08eeaed3c93caefbf2c61afc9e210fb",
+      "bytes": 20820
+    },
+    "app/src/main/assets/thumbs/chinup-full.webp": {
+      "sha256": "acf131be276e94f9e080e6f84950198e4ff0987b7d982e56e7444b48201b4021",
+      "bytes": 4160
+    }
+  },
+  "installed_matches_reviewed_encodes": true,
+  "motion_data_byte_identical": true,
+  "archer_unchanged": true,
+  "tests_passed": 72,
+  "apk_rebuilt": false,
+  "actual_device_verified": false,
+  "generation_cost_usd": 0
+}

@@ -27,7 +27,7 @@ class StretchUseTest {
             val own = catalog.variation(id)!!.defaultSeconds!!
             assertTrue("$id has a realistic hold", own in 45..60)
             val p = (buildTrainPlan(catalog, StarterRoutine.routine, none, SeedProfiles.home, TrainSettings(rounds = 2, stretchOn = true), edits = PlanEdits(stretchPicks = mapOf("push" to id))) as PlanResult.Ready).plan
-            val blocks = p.blocks.filter { it.slotId == "push" && it.roundIndex == 1 && it.variationId == id }
+            val blocks = p.blocks.filter { it.type == BlockType.STRETCH && it.slotId == "push" && it.roundIndex == 1 && it.variationId == id }
             assertEquals(if (perSide) 2 else 1, blocks.size)
             assertTrue(blocks.all { it.durationSeconds >= own })
         }

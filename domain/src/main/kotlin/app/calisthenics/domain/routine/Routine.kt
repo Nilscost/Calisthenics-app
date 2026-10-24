@@ -87,6 +87,10 @@ data class SessionDraft(
     val flow: Boolean = false,
     /** R8.2-T03 (G3): warm-up items taken out in the Preview. */
     val warmupRemoved: Set<String> = emptySet(),
+    /** R8.3: authoritative recovery choice; nullable for backward decoding. */
+    val betweenSetMode: app.calisthenics.domain.model.BetweenSetMode? = null,
+    val preparationSeconds: Int = 5,
+    val levelFiveTargets: Map<String, Int> = emptyMap(),
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(
