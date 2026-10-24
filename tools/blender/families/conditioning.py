@@ -216,19 +216,51 @@ def _burpee_pushup_cycle():
         else:
             jump_land = jump
 
+    # Set a readable toe-supported push-up rather than laying both soles flat.
+    # The shallower torso pitches retain arm reach as the heels rise. Bone
+    # lengths and the shared two-bone solver remain unchanged.
+    high = _pushup_line(18, (0,0,1))
+    plank = _pushup_line(18, (0,0,1))
+    bottom = _pushup_line(5.5, (0,0,1))
+    for pose in (high, plank, bottom):
+        pose["pelvis"][2] += .04
+        pose["pelvis"][0] -= .008
+        for side in ("l", "r"):
+            pose["ankle_"+side][2] = .12
+            pose["foot_"+side] = [1,0,-.29]
+        knee_guides(pose)
+    # Leave the toes continuously after the press rather than lowering the
+    # ankles below their planted height, lifting, then holding in mid-air.
+    for pose, z, pitch in ((plank_contact_pose,.12,-.29),
+                           (plank_lower_mid,.12,-.29),
+                           (plank_lower_end,.12,-.29),
+                           (feet_lift_departure,.125,-.29),
+                           (feet_lift_transition,.15,-.30),
+                           (feet_lift_mid,.21,-.35),
+                           (feet_lift,.28,-.35),
+                           (feet_in_hop,.25,-.20)):
+        for side in ("l", "r"):
+            pose["ankle_"+side][2] = z
+            pose["foot_"+side] = [1,0,pitch]
+        knee_guides(pose)
+    # Spread the return over half a second, with an intermediate forefoot
+    # landing and settling crouch. The rise flows into the jump preload.
+    feet_in_land = _conditioning_stage([-.26,0,.50],85,
+        [[-.08,-.13,.12],[-.08,.13,.12]], hand_contacts, hp=-8)
+    knee_guides(feet_in_land)
     keys = [
-        (0.00,stand),(.045,stand),(.09,lower),(.14,crouch),
-        (.18,hop_back),(.195,hop_back),(.225,hop_back_land),(.24,plank_transition),
+        (0.00,stand),(.025,stand),(.09,lower),(.14,crouch),
+        (.18,hop_back),(.215,hop_back_land),(.24,plank_transition),
         (.25,plank_transition_mid),(.26,plank_transition_end),(.27,plank_contact_pose),
         (.28,plank_lower_mid),(.29,plank_lower_end),(.30,plank),
-        (.37,bottom),(.41,bottom),(.48,high),(.49,feet_lift_departure),(.50,feet_lift_transition),
-        (.52,feet_lift_mid),(.54,feet_lift),(.58,feet_lift),(.63,feet_in_hop),(.65,crouch),(.69,lower),
-        (.75,stand),(.775,load),(.80,jump_start),(.81,jump_q1),
-        (.82,jump_apex),(.83,jump_q3),(.84,jump_land),
+        (.39,bottom),(.48,high),(.50,feet_lift_departure),(.52,feet_lift_transition),
+        (.54,feet_lift_mid),(.565,feet_lift),(.61,feet_in_hop),
+        (.645,feet_in_land),(.67,crouch),(.775,load),(.80,jump_start),
+        (.81,jump_q1),(.82,jump_apex),(.83,jump_q3),(.84,jump_land),
         (.90,recovery),(.997,stand)
     ]
     return dict(seconds=10.5,keys=keys,interpolation="continuous",
-                motion_profile="burpee-pushup-bilateral-hop-v2",
+                motion_profile="burpee-pushup-toe-support-fluid-return-v3",
                 cam_az=30,cam_el=20,props=[])
 
 

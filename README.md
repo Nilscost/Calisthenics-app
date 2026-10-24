@@ -53,6 +53,8 @@ Every number in the exercise catalog is marked DRAFT until I have reviewed it (`
 
 ## Engineering
 
+- **Burpee feet and fluidity:** raised-heel toe support and a gradual feet-in landing replace the flat-foot press and abrupt return. 242 Python tests, native body geometry and actual foot-contact checks pass. Revised review candidate only; installed app media is preserved. [Evidence](docs/evidence/burpee-fluidity-2026-10-25.md).
+
 - **Depth Jump return and moving-ring review:** the new Depth Jump has a higher ballistic rebound, planted turn steps and a direct step back onto the box. The Ring Muscle-Up couples hand and hoop motion, but finger proportions/contact remain flagged and block app promotion. 205 Python tests, native geometry and desktop playback/control checks pass; both are review candidates. [Depth evidence](docs/evidence/depth-return-refinement-2026-10-21.md) · [Ring evidence](docs/evidence/ring-articulation-refinement-2026-10-21.md).
 
 - **Push-Up Burpee knees:** sagittal knee bends, bilateral feet transfers and a short jump with extended takeoff replace the knee flare and floating apex in the review candidate. 179 tests, native geometry and desktop playback checks pass. App media stays unchanged pending review. [Evidence](docs/evidence/burpee-refinement-2026-10-21.md).

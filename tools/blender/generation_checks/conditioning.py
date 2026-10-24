@@ -53,12 +53,8 @@ def _foot_capsule_min_z(frame, side, rings=7):
 
 def _plank_indices(frames):
     """Find the planted push-up interval from stable ground contacts."""
-    return [i for i, f in enumerate(frames)
-            if f["wrist_l"][2] <= .04 and f["wrist_r"][2] <= .04
-            and abs(f["ankle_l"][0] + .80) <= .002
-            and abs(f["ankle_r"][0] + .80) <= .002
-            and abs(f["ankle_l"][2] - .08) <= .002
-            and abs(f["ankle_r"][2] - .08) <= .002]
+    from generation_checks.burpee_articulation import _plank_mask
+    return [i for i, planted in enumerate(_plank_mask(frames)) if planted]
 
 
 def audit(data):
@@ -192,5 +188,9 @@ def audit(data):
     articulation = articulation_audit(data)
     metrics.update(articulation["metrics"])
     failures.extend(articulation["failures"])
+    from generation_checks.burpee_feet import audit as feet_audit
+    feet = feet_audit(data)
+    metrics.update(feet["metrics"])
+    failures.extend(feet["failures"])
 
     return {"metrics": metrics, "failures": failures}

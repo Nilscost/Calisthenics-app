@@ -1,0 +1,11 @@
+{
+  "status": "pass",
+  "samples": 112,
+  "min_skin_z_m": 0.004929067566990852,
+  "max_skin_z_m": 0.005910390987992287,
+  "tolerance_m": [
+    -0.002,
+    0.006
+  ],
+  "meaning": "Actual rendered foot mesh during planted press; engineering contact check, not load-bearing or form approval."
+}

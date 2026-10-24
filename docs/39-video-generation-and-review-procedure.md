@@ -134,3 +134,19 @@ Target a concrete observable concern, not a generic aesthetic score. Reuse
 reference extraction and deterministic checks, supervise bounded executor lanes,
 and keep accepted controls in each batch. Complete review, provenance and
 verification before promoting further assets.
+
+## Foot support and fluidity lesson (Burpee follow-up)
+
+Do not flatten the feet simply to avoid floor penetration. Model the intended
+heel/toe direction, preserve segment lengths and solve the body within reach.
+Check the actual rendered skin at the support surface through every planted
+frame. Stable ankle coordinates alone do not establish toe contact.
+
+Inspect flight-to-landing handoffs and repeated keys as well as peak angles.
+The Burpee’s earlier 0.21-second feet-in handoff passed broad pose gates but
+looked abrupt; an intermediate landing and a continuous crouch-to-preload rise
+reduced its ankle speed/acceleration. Freeze the previous source as a negative
+fixture and independently mutate an ankle pop and floating sole so the new
+checks cannot pass simply by weakening the old guards.
+
+[Burpee source, native contact and render evidence](evidence/burpee-fluidity-2026-10-25.md).

@@ -1,5 +1,14 @@
 # Actual project status
 
+## Burpee foot contact and fluidity review (2026-10-25 · no new APK)
+
+The revised review candidate uses raised heels/toe support, a gradual feet-in
+approach and grounded settling crouch, then a continuous rise into jump preload.
+242 Python tests, native body/floor/framing and actual foot-skin contact checks
+pass. The other 532 trajectories and all installed app build inputs are unchanged.
+Owner naturalness/form and phone checks remain open.
+[Evidence](docs/evidence/burpee-fluidity-2026-10-25.md).
+
 ## R8.5 session editing and video candidate (2026-10-25 · 0.11.5-r8, 19)
 
 Changing the exercise count rebuilds the automatic selection without shared-route

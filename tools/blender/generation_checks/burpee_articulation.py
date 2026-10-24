@@ -42,14 +42,20 @@ def _knee_metrics(frame, side):
 
 def _plank_mask(frames):
     """Stable two-hand/two-foot contact identifies the push-up interval."""
-    return [
-        f["wrist_l"][2] <= .04 and f["wrist_r"][2] <= .04
-        and abs(f["ankle_l"][0] + .80) <= .002
-        and abs(f["ankle_r"][0] + .80) <= .002
-        and abs(f["ankle_l"][2] - .08) <= .002
-        and abs(f["ankle_r"][2] - .08) <= .002
-        for f in frames
-    ]
+    def anchors(f, z, wrist_tolerance):
+        return (abs(f["wrist_l"][2]-.035) <= wrist_tolerance
+                and abs(f["wrist_r"][2]-.035) <= wrist_tolerance
+                and all(abs(f["ankle_"+side][0]+.80) <= .002
+                        and abs(f["ankle_"+side][2]-z) <= .002
+                        for side in SIDES))
+    supported = [anchors(f,.12,.0002)
+                 and all(f["toe_"+side][2] < .08 for side in SIDES)
+                 for f in frames]
+    # Recognize the new fixed toe-supported anchor without losing the actual
+    # old flat-foot fixtures that independently guard previous defects.
+    if sum(supported) >= 12:
+        return supported
+    return [anchors(f,.08,.005) for f in frames]
 
 
 def _fit_quadratic(points):
