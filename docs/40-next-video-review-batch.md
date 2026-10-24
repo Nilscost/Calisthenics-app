@@ -18,7 +18,11 @@ these seven candidates is automatically installed in the app.
 The wall-walk candidate still has a high entry and symmetric hand travel; genuine
 alternating planted steps remain a form-promotion blocker. A separate local
 prototype passes five isolated source tests, but its 20.48-second, many-step cycle
-still needs native geometry and visual refinement. It is not integrated or approved.
+fails the subsequent native mesh check: 7,462,656 vertices tested, with a
+22.82 mm foot/floor intersection at frame 6 despite passing joint proxies. Wall
+clearance and framing pass. It remains isolated and requires foot placement and
+visual refinement before integration; no tolerance is relaxed.
+[Prototype native failure](evidence/wall-step-prototype-native-2026-10-25.json).
 
 The kick-up received a knee-pole/timing correction but remains excluded: the
 catalog's named roll-out/side bail is not modeled. It is not silently relabeled as
