@@ -389,7 +389,7 @@
     <string name="onb_summary_done">All steps done · the next exercise starts at level 1</string>
     <string name="onb_summary_line">Step %1$d · %2$s</string>
     <string name="settings_redo_title">Redo the starting questionnaire?</string>
-    <string name="settings_redo_text">Your answers replace your current starting levels. Your workout history stays.</string>
+    <string name="settings_redo_text">Your answers replace your current levels and start them fresh. Your workout history stays visible, but earlier workouts no longer raise the new levels.</string>
     <string name="settings_redo_confirm">Redo</string>
     <string name="muscle_chest">Chest</string>
     <string name="muscle_front_delts">Front shoulders</string>

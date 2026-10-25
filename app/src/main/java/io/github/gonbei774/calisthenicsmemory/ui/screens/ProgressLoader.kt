@@ -19,7 +19,9 @@ object ProgressLoader {
         val zone = ZoneId.systemDefault()
         val evidence = mutableListOf<SessionEvidence>()
         val lastNumbers = mutableMapOf<String, List<Int>>()   // V21: per exercise, the numbers of the last session (unlogged sets count as these)
+        val resetAtMs = LevelStore.resetAtMs(ctx)   // W2: evidence from before the questionnaire was (re)done is history only
         for (s in dao.sessions().sortedBy { it.startedAtEpochMs }) {
+            if (s.startedAtEpochMs < resetAtMs) continue
             if (s.status != "COMPLETED" && s.status != "PARTIAL_FINISHED") continue
             val plan = dao.plan(s.planId)?.let { try { json.decodeFromString(WorkoutPlan.serializer(), it.planJson) } catch (_: Exception) { null } } ?: continue
             val exec = dao.blockResults(s.sessionId).associate { r ->
