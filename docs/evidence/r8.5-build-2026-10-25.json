@@ -55,20 +55,23 @@
   },
   "sourceCommit": "c70a32eb",
   "publication": {
-    "status": "awaiting_explicit_broad_payload_approval",
+    "status": "published",
     "remote": "https://github.com/Nilscost/Calisthenics-app",
     "visibility": "public",
     "branch": "codex/session-reset-video-review",
-    "uploaded": false,
-    "reason": "Automatic approval review rejected a 389-file source push as broader than the explicit videos/procedure authorization.",
+    "commit": "79274a1467753832d8d19251c4963ba32cb79fa4",
+    "uploaded": true,
+    "authorization": "Owner explicitly approved full branch and public destination on 2026-10-25.",
     "mediaOnly": {
-      "status": "awaiting_explicit_public_payload_approval",
+      "status": "published",
       "branch": "codex/video-review-media",
-      "commit": "08db11f0",
+      "commit": "08db11f0c6f0ff5330d7603c912220b756c4e09b",
       "files": 38,
-      "uploaded": false,
-      "reason": "Automatic approval review rejected the public push because the review evidence and destination require explicit approval. No further upload attempted."
-    }
+      "uploaded": true,
+      "authorization": "Owner explicitly approved exact 38-file public push."
+    },
+    "ci": "in_progress_at_publication",
+    "ciUrl": "https://github.com/Nilscost/Calisthenics-app/actions/runs/40162474108"
   },
   "finalWorkingVerify": {
     "exitCode": 0,
