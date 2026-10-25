@@ -35,8 +35,8 @@ const val ALL_TIERS_DONE = 6
 fun storedForLevelsDone(n: Int): Int = if (n >= 5) ALL_TIERS_DONE else 10 + n.coerceAtLeast(1)
 
 /** The self-assessment a stored level stands for. */
-fun selfAssessmentFor(variationId: String, stored: Int): UserAction.SelfAssessment =
-    if (stored in 11..14) UserAction.SelfAssessment(0, variationId, stored - 10 + 1, stored - 10) else UserAction.SelfAssessment(0, variationId, stored)
+fun selfAssessmentFor(variationId: String, stored: Int, day: Int = 0): UserAction.SelfAssessment =
+    if (stored in 11..14) UserAction.SelfAssessment(day, variationId, stored - 10 + 1, stored - 10) else UserAction.SelfAssessment(day, variationId, stored)
 
 /** Explicit user actions that change progression (all optional; silence never clears a hold). */
 sealed interface UserAction {
@@ -261,7 +261,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                 val route = selectedRoute(vid, ev.progressionRouteId)
                 if (!isRotationAlternative(vid, ev.progressionRouteId) && (route == null || vid in route.mainPath)) active[p.familyId] = vid
                 p = p.copy(streakDays = emptyList(), streakAssumed = 0, consecutiveBelow = 0, lowerTargetSuggested = false)
-                events += ProgressEvent(ev.day, vid, "Completed the easier option without discomfort — normal progression resumes from level ${p.tier} of ${catalog.variation(vid)?.name ?: vid}.")
+                events += ProgressEvent(ev.day, vid, "Easier option done without discomfort. You now move up as usual from level ${p.tier} of ${catalog.variation(vid)?.name ?: vid}.")
                 hold = null
             }
             val definition = catalog.personalTargets[vid]
@@ -283,7 +283,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                         demonstratedTier = null, demonstratedTargetRevision = null,
                         starsByLoad = p.starsByLoad + (recorded to maxOf(kept, p.starsByLoad[recorded] ?: 0)))
                     events += ProgressEvent(ev.day, vid,
-                        "Heavier kettlebell (${formatKg(load)} kg): ${catalog.variation(vid)?.name ?: vid} starts again at tier 1. Your $kept stars at ${formatKg(recorded)} kg are kept.")
+                        "Heavier kettlebell (${formatKg(load)} kg): ${catalog.variation(vid)?.name ?: vid} starts again at level 1. Your $kept stars at ${formatKg(recorded)} kg are kept.")
                 }
                 load < recorded -> lighter = true
             }
@@ -291,7 +291,7 @@ class ProgressionEngine(private val catalog: Catalog) {
             val unknownWeightOnTrack = v1 && recorded != null && load == null
             if (lighter) {
                 events += ProgressEvent(ev.day, vid,
-                    "Done with a lighter kettlebell (${formatKg(load!!)} kg instead of ${formatKg(recorded!!)} kg) — logged, but it does not count towards your next tier.")
+                    "Done with a lighter kettlebell (${formatKg(load!!)} kg instead of ${formatKg(recorded!!)} kg) — logged, but it does not count towards your next level.")
             } else {
                 val canAdopt = v1 && autoProgression && !unknownWeightOnTrack && !heavierTrackReset &&
                     !staleDefinition && hold == null && !p.autoPaused && ev.demonstratedQualifying &&
@@ -314,7 +314,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                         reducedTarget = null, reducedTargetTier = null, topTarget = null,
                     )
                     events += ProgressEvent(ev.day, vid,
-                        "Met level $adopted targets — it is now your current level. Successful session 1 of 3 toward the next level.")
+                        "You met the level $adopted targets, so level $adopted is now your level. 1 of 3 good workouts toward the next level.")
                 } else when {
                 staleDefinition -> Unit
                 unknownWeightOnTrack -> Unit
@@ -359,9 +359,9 @@ class ProgressionEngine(private val catalog: Catalog) {
                     p = p.copy(consecutiveBelow = below)
                     if (below >= BELOW_SUGGEST_AFTER && !p.lowerTargetSuggested && p.tier > 1) {
                         p = p.copy(lowerTargetSuggested = true)
-                        events += ProgressEvent(ev.day, vid, "Two sessions in a row below target — a lower target (tier ${p.tier - 1}) is suggested. Nothing changes unless you accept.")
+                        events += ProgressEvent(ev.day, vid, "Below target twice in a row. An easier level (level ${p.tier - 1}) is suggested. Nothing changes unless you accept.")
                     } else {
-                        events += ProgressEvent(ev.day, vid, "Below target — difficulty held at tier ${p.tier}; the qualifying streak restarts.")
+                        events += ProgressEvent(ev.day, vid, "Below target today. You stay at level ${p.tier} and build up again.")
                     }
                 }
                 ev.skippedOrPartial || ev.easierOverride -> Unit   // R8.1-T04 (F4): not qualifying, not a reset
@@ -388,10 +388,10 @@ class ProgressionEngine(private val catalog: Catalog) {
                         val low = ev.shortfallValue
                         if (low < own) {
                             p = p.copy(reducedTarget = low, reducedTargetTier = p.tier, topTarget = if (p.tier == 5 && (p.topTarget ?: 0) > 0) null else p.topTarget)
-                            events += ProgressEvent(ev.day, vid, "Your lowest set was $low — that is the target next time ($low per set), then it builds back up to $own.")
+                            events += ProgressEvent(ev.day, vid, "Your lowest set was $low. That is your target next time ($low per set), then it builds back up to $own.")
                         } else if (p.tier == 5 && p.topTarget != null && low < p.topTarget!!) {
                             p = p.copy(topTarget = low.takeIf { it > own })
-                            events += ProgressEvent(ev.day, vid, "Your lowest set was $low — that is the level 5 target next time.")
+                            events += ProgressEvent(ev.day, vid, "Your lowest set was $low. That is your level 5 target next time.")
                         }
                     }
                     p.reducedTarget != null && p.reducedTargetTier == p.tier && ev.shortfallValue == null && ev.completedWorkBlocks > 0 && !ev.skippedOrPartial && ev.prescribedTier == p.tier -> {
@@ -408,7 +408,7 @@ class ProgressionEngine(private val catalog: Catalog) {
             val above = if (tooEasy && p.tier == start.tier) p.consecutiveAbove + 1 else 0
             val suggest = above >= ABOVE_SUGGEST_AFTER && !p.raiseSuggested && p.tier == start.tier
             p = p.copy(consecutiveAbove = above, raiseSuggested = if (p.tier != start.tier) false else p.raiseSuggested || suggest, ruleAbove = if (above > 0) byRule else false)
-            if (suggest) events += ProgressEvent(ev.day, vid, "Marked too easy — a move on is suggested. Nothing changes unless you accept.")
+            if (suggest) events += ProgressEvent(ev.day, vid, "You marked this too easy. A step up is suggested. Nothing changes unless you accept.")
             vars[vid] = p
         }
         for (ev in evidence.filter { it.discomfort }) {
@@ -428,13 +428,17 @@ class ProgressionEngine(private val catalog: Catalog) {
                 holds[fam] = FamilyHold(fam, reportDay, tier, step.variationId, (before?.steps ?: 0) + 1)
                 val name = catalog.variation(step.variationId)?.name ?: step.variationId
                 events += ProgressEvent(reportDay, ev.variationId,
-                    "Discomfort reported — the next workouts use an easier option ($name, level $tier). Complete it without discomfort and normal progression resumes from there.")
+                    "You reported discomfort. The next workouts use an easier option ($name, level $tier). Once you finish it without discomfort, you move up as usual.")
                 if (step.variationId != ev.variationId) vars[ev.variationId]?.let { vars[ev.variationId] = it.copy(streakDays = emptyList(), streakAssumed = 0) }
             }
         }
         for ((i, a) in actions.withIndex()) items += Item(a.day, 2, "a%06d".format(i)) {
             when (a) {
                 is UserAction.SelfAssessment -> {
+                    // W2: a dated (day > 0) hand edit / questionnaire answer restarts this exercise from its day: earlier evidence neither raises it above the answer nor leaves stale streaks or suggestions.
+                    if (a.day > 0) vars[a.variationId]?.let { old -> vars[a.variationId] = old.copy(achievedTiers = emptySet(), lastAutoAdvanceDay = null, streakDays = emptyList(), streakAssumed = 0,
+                        consecutiveBelow = 0, lowerTargetSuggested = false, consecutiveAbove = 0, raiseSuggested = false, ruleAbove = false, demonstratedTier = null,
+                        demonstratedTargetRevision = null, reducedTarget = null, reducedTargetTier = null, topTarget = null, autoPaused = false) }
                     val top = policy(a.variationId)?.tiers?.maxOfOrNull { it.index } ?: 5
                     if (a.tier > top) {
                         // R7-T04 (B1): above the top step: the top step is achieved too (five stars) and the successor is active at level 1
@@ -463,7 +467,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                     val skipped = if (a.tier > p.tier) (p.tier until a.tier).toSet() else emptySet()
                     vars[a.variationId] = p.copy(tier = a.tier, enrolledAtDay = a.day, streakDays = emptyList(),
                         streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false, ruleAbove = false, achievedTiers = p.achievedTiers + skipped)
-                    events += ProgressEvent(a.day, a.variationId, "You accepted a harder target (tier ${a.tier}).")
+                    events += ProgressEvent(a.day, a.variationId, "You moved up to level ${a.tier}.")
                 }
                 is UserAction.AcceptNextExercise -> {
                     val p = ensure(a.variationId, a.day)
@@ -478,20 +482,20 @@ class ProgressionEngine(private val catalog: Catalog) {
                     vars[a.variationId] = p.copy(tier = a.tier, enrolledAtDay = a.day, streakDays = emptyList(),
                         streakAssumed = 0, consecutiveBelow = 0, lowerTargetSuggested = false)
                     holds[p.familyId]?.let { holds[p.familyId] = it.copy(easierAcceptedTier = a.tier, easierVariationId = a.variationId) }
-                    events += ProgressEvent(a.day, a.variationId, "You accepted an easier target (tier ${a.tier}).")
+                    events += ProgressEvent(a.day, a.variationId, "You moved down to level ${a.tier}.")
                 }
                 is UserAction.ComfortClearance -> {
                     if (holds.remove(a.familyId) != null) {
                         vars.replaceAll { _, v -> if (v.familyId == a.familyId) v.copy(streakDays = emptyList(), streakAssumed = 0, enrolledAtDay = a.day) else v }
                         events += ProgressEvent(a.day, active[a.familyId] ?: a.familyId,
-                            "You confirmed you're comfortable again — automatic progression resumes from new sessions (no immediate jump).")
+                            "You said you're comfortable again. You move up as usual from your next workouts.")
                     }
                 }
                 is UserAction.ReentryChoice -> {
                     val p = ensure(a.variationId, a.day)
                     vars[a.variationId] = p.copy(tier = a.tier, enrolledAtDay = a.day, streakDays = emptyList(),
                         streakAssumed = 0, reentryResolvedDay = a.day)
-                    events += ProgressEvent(a.day, a.variationId, "Welcome back — you chose tier ${a.tier} to re-enter. Earned stars are kept.")
+                    events += ProgressEvent(a.day, a.variationId, "Welcome back. You restart at level ${a.tier}. Your stars are kept.")
                 }
                 is UserAction.ManualOverride -> {
                     val p = ensure(a.variationId, a.day)
@@ -499,8 +503,8 @@ class ProgressionEngine(private val catalog: Catalog) {
                     vars[a.variationId] = p.copy(tier = a.tier, enrolledAtDay = a.day, streakDays = emptyList(),
                         streakAssumed = 0, autoPaused = easier)
                     events += ProgressEvent(a.day, a.variationId,
-                        if (easier) "Manual easier choice (tier ${a.tier}) — automatic increases paused until you return to normal."
-                        else "Manual harder choice (tier ${a.tier}).")
+                        if (easier) "You chose an easier level (level ${a.tier}). Moving up is paused until you go back to normal."
+                        else "You chose a harder level (level ${a.tier}).")
                 }
                 is UserAction.ResumeNormal -> {
                     vars[a.variationId]?.let { vars[a.variationId] = it.copy(autoPaused = false) }
@@ -525,8 +529,8 @@ class ProgressionEngine(private val catalog: Catalog) {
         val next = if (isRotationAlternative(p.variationId, routeId)) null else mainSuccessor(p.variationId, routeId)?.takeIf { catalog.variation(it) != null && prerequisitesMet(it, vars + (p.variationId to done)) }
         if (next == null) {
             events += ProgressEvent(day, p.variationId, if (isRotationAlternative(p.variationId, routeId))
-                "Every set reached the top of the range. Progress on this alternative is kept; the main exercise controls the next main step."
-                else "Every set reached the top of the range - no eligible next exercise is available yet.")
+                "Every set reached the top of the range. Your progress on this alternative is kept. The main exercise decides the next step."
+                else "Every set reached the top of the range - no next exercise is available yet.")
             return done
         }
         active[done.familyId] = next
@@ -562,7 +566,7 @@ class ProgressionEngine(private val catalog: Catalog) {
         if (r is AdvancementResult.Advance) {
             val newTarget = pol.tier(r.toTier).target
             events += ProgressEvent(day, p0.variationId,
-                "Tier ${r.fromTier} achieved after ${r.evidenceDays.size} qualifying sessions over ${r.evidenceDays.last() - r.evidenceDays.first()} days. Next target: $newTarget (tier ${r.toTier}).$assumedNote")
+                "Level ${r.fromTier} done after ${r.evidenceDays.size} good workouts in ${r.evidenceDays.last() - r.evidenceDays.first()} days. Next: level ${r.toTier}, target $newTarget.$assumedNote")
             return p0.copy(tier = r.toTier, enrolledAtDay = day, achievedTiers = p0.achievedTiers + r.fromTier,
                 lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
         }
@@ -581,17 +585,17 @@ class ProgressionEngine(private val catalog: Catalog) {
             val name = catalog.variation(p0.variationId)?.name ?: p0.variationId
             val loaded = catalog.variation(p0.variationId)?.isLoaded() == true
             val at = p0.loadGrams?.let { " at ${formatKg(it)} kg" }.orEmpty()
-            val heavier = if (loaded) " Or keep $name with a heavier kettlebell: set the new weight in your equipment profile and it starts again at tier 1." else ""
+            val heavier = if (loaded) " Or keep $name with a heavier kettlebell: set the new weight in your equipment profile and it starts again at level 1." else ""
             if (successor != null) {
                 active[achieved.familyId] = successor
                 events += ProgressEvent(day, p0.variationId,
-                    "All five tiers earned$at. Moving on to ${catalog.variation(successor)?.name ?: successor} (tier 1)${if (loaded) " with the same kettlebell" else ""}; your five stars here are kept. You can switch back anytime.$heavier$assumedNote")
+                    "All five levels done$at. Moving on to ${catalog.variation(successor)?.name ?: successor} (level 1)${if (loaded) " with the same kettlebell" else ""}; your five stars here are kept. You can switch back anytime.$heavier$assumedNote")
             } else {
                 val blocked = mainSuccessor(p0.variationId, routeId)
                 events += ProgressEvent(day, p0.variationId,
-                    if (blocked != null) "All five tiers earned$at. The harder variation ${catalog.variation(blocked)?.name ?: blocked} isn't available with your equipment/prerequisites yet, so you stay here.$heavier"
-                    else if (loaded) "All five tiers earned$at — this is the top of this progression with this weight. To keep progressing, set a heavier kettlebell in your equipment profile; $name then starts again at tier 1."
-                    else "All five tiers earned — this is the top of this progression.")
+                    if (blocked != null) "All five tiers earned$at. The harder variation ${catalog.variation(blocked)?.name ?: blocked} isn't available with your equipment yet, so you stay here.$heavier"
+                    else if (loaded) "All five levels done$at. This is the top with this weight. To keep progressing, set a heavier kettlebell in your equipment profile; $name then starts again at level 1."
+                    else "All five levels done. This is the top of this exercise.")
             }
             return achieved
         }
@@ -603,7 +607,7 @@ class ProgressionEngine(private val catalog: Catalog) {
             val cap = if (five.type == app.calisthenics.domain.model.TargetType.REPS) pol.maxRepsPerSet else null
             if (raised <= 999 && (cap == null || raised <= cap)) {
                 val unit = if (five.type == app.calisthenics.domain.model.TargetType.HOLD_SECONDS) "s" else " reps"
-                events += ProgressEvent(day, p0.variationId, "Top of this progression: the level 5 target of ${catalog.variation(p0.variationId)?.name ?: p0.variationId} rises to $raised$unit.$assumedNote")
+                events += ProgressEvent(day, p0.variationId, "Top of the ladder: the level 5 target of ${catalog.variation(p0.variationId)?.name ?: p0.variationId} rises to $raised$unit.$assumedNote")
                 return p0.copy(topTarget = raised, lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
             }
         }

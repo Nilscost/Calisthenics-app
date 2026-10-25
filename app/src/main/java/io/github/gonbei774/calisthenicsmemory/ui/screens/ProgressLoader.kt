@@ -76,7 +76,7 @@ object ProgressLoader {
                     else catalog.policyForVariation(vid)
                 })
         }
-        val actions = LevelStore.load(ctx).map { (v, t) -> selfAssessmentFor(v, t) } + SuggestionStore.accepted(ctx)
+        val actions = LevelStore.actions(ctx) + SuggestionStore.accepted(ctx)
         return ProgressionEngine(catalog).replay(evidence, actions, PrefsStore.load(ctx).autoProgression)
     }
 }

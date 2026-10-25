@@ -307,7 +307,7 @@ private class Planner(input: PlanInput) {
                     ?.atVariationId?.let(cat::variation) ?: pref
                 inferredTier = inferredAlternativeTier(cat, anchor, rotated, input.progress, route?.id)
             }
-            if (rotated.id != pref.id) explain += "${rotated.name} is today's alternative to ${pref.name}; each exercise keeps its own progress."
+            if (rotated.id != pref.id) explain += "${rotated.name} is today's variation instead of ${pref.name}. Each exercise keeps its own level."
             pref = rotated
         }
         var v: ExerciseVariation = pref

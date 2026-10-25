@@ -167,3 +167,30 @@ class OwnerProgressionDecisionsTest {
         assertEquals(26, work(plan(s.copy(familyWorkoutCounts = mapOf("pushup" to 2)), tc, "main")).target!!.value)
     }
 }
+
+/** W2: hand edits and questionnaire answers are dated self-assessments: they win from their day on. */
+class DatedLevelEditTest {
+    private val c = Fx.catalog()
+    private val engine = ProgressionEngine(c)
+    private fun ev(day: Int, tier: Int, below: Boolean = false) =
+        SessionEvidence("s$day", "pushup-std", "pushup", day, tier, 2, false, below, false, null, false, 0, 2, 2)
+
+    @Test fun loweringByHandAfterHistoryStaysLoweredAndProgressesNormallyFromThere() {
+        val history = listOf(ev(1, 3), ev(3, 3), ev(5, 3))   // earned level 3, now at 4
+        val start = UserAction.SelfAssessment(0, "pushup-std", 3)
+        assertEquals(4, engine.replay(history, listOf(start)).tierFor("pushup-std"))
+        val lowered = engine.replay(history, listOf(start, UserAction.SelfAssessment(10, "pushup-std", 1)))
+        val p = lowered.variations.getValue("pushup-std")
+        assertEquals(1, p.tier); assertTrue(p.achievedTiers.isEmpty()); assertEquals(0, p.earnedStars() - 0)
+        val later = engine.replay(history + listOf(ev(11, 1), ev(13, 1), ev(15, 1)), listOf(start, UserAction.SelfAssessment(10, "pushup-std", 1)))
+        assertEquals(2, later.tierFor("pushup-std"))
+    }
+
+    @Test fun raisingByHandLeavesNoStaleLowerTargetSuggestion() {
+        val history = listOf(ev(1, 3, below = true), ev(3, 3, below = true))
+        val start = UserAction.SelfAssessment(0, "pushup-std", 3)
+        assertTrue(engine.replay(history, listOf(start)).variations.getValue("pushup-std").lowerTargetSuggested)
+        val raised = engine.replay(history, listOf(start, UserAction.SelfAssessment(10, "pushup-std", 4)))
+        assertEquals(4, raised.tierFor("pushup-std")); assertFalse(raised.variations.getValue("pushup-std").lowerTargetSuggested)
+    }
+}

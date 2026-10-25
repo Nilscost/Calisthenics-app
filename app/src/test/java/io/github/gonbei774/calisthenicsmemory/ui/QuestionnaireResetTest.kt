@@ -41,14 +41,14 @@ class QuestionnaireResetTest {
 
     @Test fun historyBeforeTheResetNoLongerRaisesLevelsButLaterSessionsDo() {
         val catalog = loadCatalog(ctx)
-        LevelStore.save(ctx, mapOf("pushup-standard" to 2))
+        LevelStore.save(ctx, mapOf("pushup-standard" to 2), undated = true)
         // three qualifying level-2 sessions: the old history carried this exercise up
         listOf(0, 3, 6).forEachIndexed { i, d -> addSession(i, d, 2) }
         val before = runBlocking { ProgressLoader.load(ctx, catalog) }
         assertEquals(3, before.tierFor("pushup-standard"))
 
         // the questionnaire is redone with a lower answer (level 1): the new answer wins
-        LevelStore.save(ctx, mapOf("pushup-standard" to 1)); LevelStore.markReset(ctx, ms(10))
+        LevelStore.save(ctx, mapOf("pushup-standard" to 1), today = LocalDate.of(2026, 9, 11).toEpochDay().toInt(), restart = true); LevelStore.markReset(ctx, ms(10))
         val after = runBlocking { ProgressLoader.load(ctx, catalog) }
         assertEquals(1, after.tierFor("pushup-standard"))
         assertTrue(after.variations.getValue("pushup-standard").achievedTiers.isEmpty())
@@ -67,5 +67,14 @@ class QuestionnaireResetTest {
             io.github.gonbei774.calisthenicsmemory.ui.onboarding.OnboardingResult("general", app.calisthenics.domain.equipment.SeedProfiles.home, emptyList(), null, false, 3, true), nowMs = 123_456L)
         assertEquals(123_456L, LevelStore.resetAtMs(ctx))
         assertTrue(SuggestionStore.accepted(ctx).isEmpty())
+    }
+
+    @Test fun handEditedLevelsAreDatedAndUnchangedOnesKeepTheirDay() {
+        LevelStore.save(ctx, mapOf("a" to 2, "b" to 3), today = 100)
+        LevelStore.save(ctx, mapOf("a" to 2, "b" to 1), today = 120)
+        assertEquals(mapOf("a" to 100, "b" to 120), LevelStore.days(ctx))
+        assertEquals(listOf(100, 120), LevelStore.actions(ctx).sortedBy { (it as app.calisthenics.domain.progression.UserAction.SelfAssessment).variationId }.map { it.day })
+        LevelStore.save(ctx, mapOf("a" to 2, "b" to 1), today = 130, restart = true)
+        assertEquals(mapOf("a" to 130, "b" to 130), LevelStore.days(ctx))
     }
 }

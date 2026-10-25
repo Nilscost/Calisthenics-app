@@ -30,10 +30,10 @@ class HistoryStatsTest {
 
     @Test fun levelUpsAreTheStepsForward() {
         fun e(m: String) = ProgressEvent(1, "v", m)
-        assertTrue(isLevelUp(e("Tier 2 achieved after 3 qualifying sessions over 8 days. Next target: 10 reps (tier 3).")))
-        assertTrue(isLevelUp(e("All five tiers earned. Moving on to X (tier 1).")))
+        assertTrue(isLevelUp(e("Level 2 done after 3 good workouts in 8 days. Next: level 3, target 10.")))
+        assertTrue(isLevelUp(e("All five levels done. Moving on to X (level 1).")))
         assertTrue(isLevelUp(e("Every set of Push-up reached the top of the range. Moving on to Y")))
-        assertFalse(isLevelUp(e("Below target — difficulty held at tier 2; the qualifying streak restarts.")))
+        assertFalse(isLevelUp(e("Below target today. You stay at level 2 and build up again.")))
         assertFalse(isLevelUp(e("You accepted a harder target (tier 4).")))   // not counted: the person's choice, not earned
     }
 

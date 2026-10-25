@@ -21,7 +21,7 @@ class ProgressionEngineTest {
         val s = engine.replay(listOf(ev(0), ev(3), ev(7)), listOf(start))
         val p = s.variations.getValue(V)
         assertEquals(3, p.tier); assertEquals(setOf(2), p.achievedTiers)
-        assertTrue(s.events.any { it.message.contains("Tier 2 achieved") })
+        assertTrue(s.events.any { it.message.contains("Level 2 done") })
         assertEquals(1, p.earnedStars().let { if (p.baselineTier == 2) 1 else it }.coerceAtLeast(1))
     }
 

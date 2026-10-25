@@ -24,7 +24,7 @@ data class OnboardingResult(
 
 object OnboardingSave {
     fun save(ctx: Context, catalog: Catalog, r: OnboardingResult, nowMs: Long = System.currentTimeMillis()) {
-        LevelStore.save(ctx, r.levels.associate { it.variationId to it.storedTier }) // overwrites: a redo replaces the old levels
+        LevelStore.save(ctx, r.levels.associate { it.variationId to it.storedTier }, restart = true) // overwrites: a redo replaces the old levels
         // W2 (owner): the new answers win. Sessions before this moment stay in History but no longer raise levels or count toward streaks (see ProgressLoader).
         LevelStore.markReset(ctx, nowMs)
         SuggestionStore.clearAll(ctx)
