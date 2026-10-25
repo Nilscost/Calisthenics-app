@@ -127,10 +127,14 @@ fun TrainScreen(
         if (programMode != null) when (val r = buildProgramPlan(data.catalog, programMode.content, profile, currentSettings.effectiveBetweenSetMode() == app.calisthenics.domain.model.BetweenSetMode.FLOW, currentSettings.rounds, currentSettings.format, betweenSetMode = currentSettings.effectiveBetweenSetMode(), preparationSeconds = currentSettings.preparationSeconds)) {
             is FixedProgramPlanResult.Ready -> PlanResult.Ready(r.plan)
             is FixedProgramPlanResult.Unavailable -> PlanResult.Infeasible(r.items.map { ConstraintFailure("unavailable", ctx.getString(R.string.programs_missing_item, data.catalog.variation(it.exerciseId)?.name ?: it.exerciseId, it.missing)) }, emptyList())
-        } else buildTrainPlan(data.catalog, resolved.routine, data.progress, profile, eff, edits = editsNow)
+        } else buildTrainPlan(data.catalog, resolved.routine, data.progress, profile, eff, edits = editsNow, nowDay = java.time.LocalDate.now().toEpochDay().toInt())
     }
     val restDurations = selectedSaved?.restDurations.orEmpty() + draft?.rest.orEmpty()
     val plan = (result as? PlanResult.Ready)?.plan?.let { withRestDurations(it, restDurations) }
+    val live by SessionBus.state.collectAsState()
+    val running = live?.takeIf { !it.isTerminal } != null   // a workout is running: START would be ignored by the service, so the button opens it
+    // an emptied workout keeps its Preview reachable (add an exercise or undo); START stays off
+    val emptied = plan == null && editsNow.removed.isNotEmpty()
     val minutes = plan?.plannedDurationSeconds?.let { (it + 30) / 60 }
 
     // Doc 17 §2.1: choices only; START WORKOUT and Workout preview stay at the bottom.
@@ -141,10 +145,10 @@ fun TrainScreen(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 Row(Modifier.fillMaxWidth().padding(horizontal = Spacing.l, vertical = Spacing.m), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
                     Button(
-                        onClick = { haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress); plan?.let { startPlan(ctx, it); onStarted() } }, enabled = plan != null,
+                        onClick = { haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress); if (running) onStarted() else plan?.let { startPlan(ctx, it); onStarted() } }, enabled = running || plan != null,
                         modifier = Modifier.weight(2f).heightIn(min = 56.dp).testTag("train_start_button"), shape = androidx.compose.foundation.shape.RoundedCornerShape(Radius.button),
-                    ) { Text(stringResource(R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
-                    AppOutlinedButton(onClick = onPreview, enabled = plan != null, modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("preview_button")) {
+                    ) { Text(stringResource(if (running) R.string.train_open_workout else R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
+                    AppOutlinedButton(onClick = onPreview, enabled = plan != null || emptied, modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("preview_button")) {
                         Text(stringResource(R.string.train_preview_short), textAlign = TextAlign.Center)
                     }
                 }
@@ -247,7 +251,7 @@ fun TrainScreen(
             // R7-T08 (D1): exercises per round, next to the rounds; the default makes the session at least 30 minutes, a tap overrides it
             val exercisesCard: @Composable (Modifier) -> Unit = { m ->
                 val maxEx = remember(resolved, data, profile) { val r = routineForPlan(data.catalog, resolved.routine, data.progress, profile, resolved.settings.copy(exercisesPerRound = null)); maxExercisesPerRound(data.catalog, r, fillFocusOf(r, resolved.settings), profile, data.progress, resolved.settings.effectiveBetweenSetMode() == app.calisthenics.domain.model.BetweenSetMode.STRETCH) }
-                val shown = (eff.exercisesPerRound ?: plan?.let { exercisesPerRoundOf(it) } ?: 1).coerceIn(1, maxOf(maxEx, 1))
+                val shown = (eff.exercisesPerRound ?: plan?.let { exercisesPerRoundOf(it) } ?: 1).coerceAtLeast(1)   // a saved routine may hold more exercises than the pool-based maximum
                 Card(m, shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         Caption(stringResource(R.string.train_exercises_stepper_caption))

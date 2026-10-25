@@ -230,6 +230,7 @@
     <string name="train_infeasible">This workout cannot be built</string>
     <string name="train_running">A workout is running.</string>
     <string name="train_open">Open it</string>
+    <string name="train_open_workout">Open workout</string>
     <string name="train_unfinished">An unfinished workout was found (the app was closed or crashed). Up to a second of work after the last save may be missing.</string>
     <string name="train_continue">Continue it (paused)</string>
     <string name="train_save_end">Save what was done and end</string>
@@ -255,7 +256,7 @@
     <string name="rule_app_levels">App levels</string>
     <string name="rule_rep_range">Rep range</string>
     <string name="rule_custom">Custom</string>
-    <string name="rule_app_levels_hint">Meet a higher level’s targets to make it current. Three successful sessions on distinct days within 14 days earn the next level.</string>
+    <string name="rule_app_levels_hint">Meet a higher level’s targets to make it current. Three successful sessions on distinct days within 14 days earn the next level, or four within 30 days if you train weekly.</string>
     <string name="rule_rep_range_hint">%1$d sets of %2$d–%3$d reps (holds %4$d–%5$d s). When every set reaches the top you move on to the next exercise and start again at the bottom. A set you do not log counts as last time\'s number.</string>
     <string name="rule_custom_hint">%1$d sets of %2$d–%3$d reps; %6$d session(s) in a row with every set at the top move you on.</string>
     <string name="rule_sets">Sets</string>

@@ -38,6 +38,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -129,7 +130,8 @@ private fun movementTag(v: ExerciseVariation?): Int = when (v?.patterns?.firstOr
 private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name: String, levels: Int, onStep: (Int) -> Unit, onSwap: () -> Unit, onRemove: () -> Unit, sfx: String = "", onTypeNumber: (() -> Unit)? = null, badge: Int? = null, chain: Pair<Int, Int>? = null) {
     val removeLabel = stringResource(R.string.preview_remove)
     val largeText = LocalDensity.current.fontScale > 1.2f
-    Card(Modifier.fillMaxWidth().pointerInput(Unit) { detectTapGestures(onLongPress = { onRemove() }) }
+    val removeNow by rememberUpdatedState(onRemove)   // the pointer handler outlives recompositions: always call the current slot's callback
+    Card(Modifier.fillMaxWidth().pointerInput(e.slotId) { detectTapGestures(onLongPress = { removeNow() }) }
         .semantics { onLongClick(label = removeLabel) { onRemove(); true } }.testTag("exercise_${e.slotId}$sfx"), shape = MaterialTheme.shapes.large) {
         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
@@ -282,9 +284,11 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
     var typeFor by remember { mutableStateOf<Pair<String, Int>?>(null) }      // slot and set of the number being typed
     var addAfter by remember { mutableStateOf<String?>("") }   // "" = closed, null = at the start, else after that slot
     var timelineOpen by remember { mutableStateOf(false) }
+    val live by SessionBus.state.collectAsState()
+    val running = live?.takeIf { !it.isTerminal } != null   // a workout is already running: START would be ignored by the service, so the button opens it
     val planEdits = effectivePlanEdits(edits, modeRevision)
     val result = remember(data, routine, planEdits, settings, modeRevision) {
-        buildTrainPlan(data.catalog, routine, data.progress, profile, settings, edits = planEdits, nowEpochMs = System.currentTimeMillis())
+        buildTrainPlan(data.catalog, routine, data.progress, profile, settings, edits = planEdits, nowEpochMs = System.currentTimeMillis(), nowDay = java.time.LocalDate.now().toEpochDay().toInt())
     }
     val emptyAfterRemoval = result is PlanResult.Infeasible && edits.removed.isNotEmpty() &&
         result.reasons.any { it.code == "no-slots" }
@@ -299,11 +303,11 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                 Row(Modifier.fillMaxWidth().padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
                     AppOutlinedButton(onClick = { saveDialog = true }, enabled = result is PlanResult.Ready, modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("save_routine_button")) { Text(stringResource(R.string.routine_save), textAlign = TextAlign.Center) }
                     Button(
-                        onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); startPlan(ctx, withRestDurations((result as PlanResult.Ready).plan, restDurations)); onStarted() },
-                        enabled = result is PlanResult.Ready,
+                        onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); if (!running) startPlan(ctx, withRestDurations((result as PlanResult.Ready).plan, restDurations)); onStarted() },
+                        enabled = running || result is PlanResult.Ready,
                         modifier = Modifier.weight(1.6f).heightIn(min = 56.dp).testTag("start_button"),
                         shape = RoundedCornerShape(Radius.button),
-                    ) { Text(stringResource(R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
+                    ) { Text(stringResource(if (running) R.string.train_open_workout else R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
                 }
             }
         },
@@ -325,7 +329,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                         r.reasons.forEach { Text(it.message) }
                         r.alternatives.forEach { Text(stringResource(R.string.bullet_item, it.description), style = MaterialTheme.typography.bodySmall) }
                     }
-                    if (!edits.isEmpty() || restDurations.isNotEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits(); restDurations = emptyMap() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
+                    if (edits != resolved.edits || restDurations.isNotEmpty()) AppOutlinedButton(onClick = { edits = resolved.edits; restDurations = emptyMap() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
                 }
                 is PlanResult.Ready -> {
                     val p = withRestDurations(r.plan, restDurations)
@@ -456,8 +460,9 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                             ids.forEachIndexed { i, id ->
                                 val secs = cool.filter { it.variationId == id }.sumOf { it.durationSeconds }
                                 val removeThis = { edits = edits.copy(cooldownRemoved = edits.cooldownRemoved + id, cooldownAdded = edits.cooldownAdded - id) }
+                                val removeNow by rememberUpdatedState(removeThis)
                                 // R7.2-T04 (F5): a long press removes the stretch; the visible x does the same
-                                Card(Modifier.fillMaxWidth().pointerInput(id) { detectTapGestures(onLongPress = { removeThis() }) }
+                                Card(Modifier.fillMaxWidth().pointerInput(id) { detectTapGestures(onLongPress = { removeNow() }) }
                                     .semantics { onLongClick(label = removeLabel) { removeThis(); true } }.testTag("cooldown_stretch_$i"), shape = MaterialTheme.shapes.large) {
                                     Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                                         io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(id, names[id] ?: id, 44.dp)
@@ -473,7 +478,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                             AddButton({ coolAdd = true }, Modifier.align(Alignment.End).testTag("cooldown_add"))
                         }
                     }
-                    if (!edits.isEmpty() || restDurations.isNotEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits(); restDurations = emptyMap() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
+                    if (edits != resolved.edits || restDurations.isNotEmpty()) AppOutlinedButton(onClick = { edits = resolved.edits; restDurations = emptyMap() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
                     // R7-T10 (D4): the full timeline is the editor: every set's tiles, each with its set number; a stretch or a typed number can differ per set
                     Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
                         Row(Modifier.fillMaxWidth().clickable { timelineOpen = !timelineOpen }.heightIn(min = Spacing.touch).padding(horizontal = Spacing.m).testTag("timeline_toggle"), verticalAlignment = Alignment.CenterVertically) {
@@ -535,7 +540,12 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
             onPick = { id, keep ->
                 edits = edits.copy(swaps = edits.swaps + (slot to id), tierOverrides = edits.tierOverrides - slot, levelFiveTargets = edits.levelFiveTargets - slot,
                     freeTargets = edits.freeTargets.filterKeys { k -> k != slot && !k.endsWith(":" + slot) })
-                if (keep) { routine = saveSwapsToRoutine(routine, mapOf(slot to id)); RoutineStore.save(ctx, routine); edits = edits.copy(swaps = edits.swaps - slot) }
+                if (keep && stored.routineId == null) { routine = saveSwapsToRoutine(routine, mapOf(slot to id)); RoutineStore.save(ctx, routine); edits = edits.copy(swaps = edits.swaps - slot) }
+                else if (keep && editing != null) {   // a saved routine keeps the swap in its own slots; the usual plan is not touched
+                    routine = saveSwapsToRoutine(routine, mapOf(slot to id))
+                    SavedRoutineStore.upsert(ctx, editing.copy(routine = routine, revision = routine.revision, updatedAtEpochMs = System.currentTimeMillis()))
+                    edits = edits.copy(swaps = edits.swaps - slot)
+                }
                 swapSlot = null
             },
         )
@@ -552,7 +562,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
     coolSwap?.let { idx ->
         val current = (result as? PlanResult.Ready)?.plan?.blocks?.filter { it.type == BlockType.COOLDOWN }?.mapNotNull { it.variationId }?.distinct().orEmpty()
         StretchPickerSheet(title = R.string.preview_pick_cooldown, options = stretchChoices(data.catalog, profile).filter { it.id !in current || it.id == current.getOrNull(idx) }, autoLabel = false, onDismiss = { coolSwap = null }, hint = R.string.preview_pick_cooldown_hint) { pick ->
-            if (pick != null && idx < current.size) edits = edits.copy(cooldownStretches = current.toMutableList().also { it[idx] = pick })
+            if (pick != null && idx < current.size) edits = edits.swapCooldownStretch(current, idx, pick)
             coolSwap = null
         }
     }

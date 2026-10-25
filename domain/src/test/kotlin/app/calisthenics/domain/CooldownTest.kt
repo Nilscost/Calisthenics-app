@@ -51,6 +51,33 @@ class CooldownTest {
         assertEquals(swapped, c)
     }
 
+    // Preview: swapping a hand-added stretch replaces it in place; the swapped-away one does not come back after another removal
+    @Test fun swappingAHandAddedCooldownStretchReplacesItInPlaceAndItStaysGone() {
+        val settings = TrainSettings(rounds = 2, cooldownOn = true)
+        val auto = cool(plan(settings)).mapNotNull { it.variationId }.distinct()
+        val unused = catalog.variations.filter { it.kind == Kind.STRETCH && !it.optIn && it.id !in auto && !it.unilateral }.map { it.id }
+        val added = unused[0]; val pick = unused[1]
+        var edits = PlanEdits(cooldownAdded = listOf(added))
+        val shown = cool(plan(settings, edits)).mapNotNull { it.variationId }.distinct()
+        assertEquals(auto + added, shown)
+        edits = edits.swapCooldownStretch(shown, shown.indexOf(added), pick)
+        assertEquals(auto + pick, cool(plan(settings, edits)).mapNotNull { it.variationId }.distinct())
+        // another removal afterwards: the swapped-away stretch stays gone, the swapped-in one is not doubled
+        val afterRemoval = edits.copy(cooldownRemoved = edits.cooldownRemoved + auto[0])
+        assertEquals(auto.drop(1) + pick, cool(plan(settings, afterRemoval)).mapNotNull { it.variationId }.distinct())
+        assertEquals(1, cool(plan(settings, afterRemoval)).count { it.variationId == pick })
+    }
+
+    @Test fun swappingAnAutomaticCooldownStretchWithAnotherRemovalKeepsTheOriginalGone() {
+        val settings = TrainSettings(rounds = 2, cooldownOn = true)
+        val auto = cool(plan(settings)).mapNotNull { it.variationId }.distinct()
+        val pick = catalog.variations.first { it.kind == Kind.STRETCH && !it.optIn && it.id !in auto }.id
+        val swapped = PlanEdits().swapCooldownStretch(auto, 0, pick)
+        assertEquals(listOf(pick) + auto.drop(1), cool(plan(settings, swapped)).mapNotNull { it.variationId }.distinct())
+        val removed = swapped.copy(cooldownRemoved = swapped.cooldownRemoved + auto[1])
+        assertEquals(listOf(pick) + auto.drop(2), cool(plan(settings, removed)).mapNotNull { it.variationId }.distinct())
+    }
+
     @Test fun manuallyChosenUnilateralCooldownGetsFiveSecondsBeforeTheRightSide() {
         val id = "stretch-calf-wall"
         val v = catalog.variation(id)!!
