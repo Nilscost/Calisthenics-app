@@ -350,6 +350,8 @@
     <string name="end_early">Workout finished early</string>
     <string name="end_summary">%1$d min · %2$s · %3$s</string>
     <string name="end_saved">Saved to your history.</string>
+    <string name="end_saving">Saving…</string>
+    <string name="end_save_failed">Could not save this workout. It is kept on this phone: open Train to continue or save it.</string>
     <string name="end_edit_logged">Edit what I logged</string>
     <string name="end_done">Done</string>
     <plurals name="count_rounds"><item quantity="one">%1$d round</item><item quantity="other">%1$d rounds</item></plurals>
@@ -459,7 +461,7 @@
     <string name="history_prev_week">Previous week</string>
     <string name="history_next_week">Next week</string>
     <string name="history_week_range">%1$s – %2$s</string>
-    <string name="history_week_summary">%1$d workouts · %2$d min of work · %3$d min of stretching</string>
+    <plurals name="history_week_summary"><item quantity="one">%1$d workout · %2$d min of work · %3$d min of stretching</item><item quantity="other">%1$d workouts · %2$d min of work · %3$d min of stretching</item></plurals>
     <string name="history_empty">No finished workouts yet. Missed weeks are never penalised.</string>
     <string name="history_empty_week">No workouts this week.</string>
     <string name="history_session_line">%1$d min · %2$s · %3$s</string>

@@ -3,9 +3,11 @@ package io.github.gonbei774.calisthenicsmemory.ui.session
 
 import android.content.Context
 import android.content.Intent
+import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
 
 fun startWorkout(ctx: Context, planJson: String, sessionId: String, speak: Boolean) {
+    SessionBus.begin() // before the screen changes: no stale end screen, and "Starting…" is legitimate
     val i = Intent(ctx, WorkoutSessionService::class.java).setAction(WorkoutSessionService.ACTION_START)
         .putExtra(WorkoutSessionService.EXTRA_PLAN, planJson).putExtra(WorkoutSessionService.EXTRA_SESSION_ID, sessionId)
         .putExtra(WorkoutSessionService.EXTRA_SPEAK, speak)
@@ -13,6 +15,7 @@ fun startWorkout(ctx: Context, planJson: String, sessionId: String, speak: Boole
 }
 
 fun recoverWorkout(ctx: Context, resume: Boolean) {
+    SessionBus.begin()
     val i = Intent(ctx, WorkoutSessionService::class.java).setAction(WorkoutSessionService.ACTION_RECOVER)
         .putExtra(WorkoutSessionService.EXTRA_RESUME, resume)
     androidx.core.content.ContextCompat.startForegroundService(ctx, i)
