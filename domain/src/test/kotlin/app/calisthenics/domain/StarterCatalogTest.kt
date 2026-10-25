@@ -268,7 +268,7 @@ class StarterCatalogTest {
         assertEquals(catalog.policyForVariation("pullup-full")!!.prerequisiteRule, catalog.policyForVariation("chinup-full")!!.prerequisiteRule)
         assertTrue(next("chinup-full").isEmpty() && "chinup-full" !in next("pullup-full"))
         // the questionnaire's pull ladder has a hold step between the assisted and the full pull-up (placement for people who can hang with the chin over the bar)
-        assertEquals(listOf("row-band", "pullup-band-assisted", "flexed-arm-hang", "pullup-full"), catalog.onboardingFamilies.first { it.id == "pull" }.ladder)
+        assertEquals(listOf("towel-door-row", "row-band", "pullup-band-assisted", "flexed-arm-hang", "pullup-full"), catalog.onboardingFamilies.first { it.id == "pull" }.ladder)
     }
 
     @Test fun l04RowsWithoutALowBar() {

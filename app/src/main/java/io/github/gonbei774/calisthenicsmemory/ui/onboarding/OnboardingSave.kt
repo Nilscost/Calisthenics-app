@@ -3,7 +3,7 @@ package io.github.gonbei774.calisthenicsmemory.ui.onboarding
 
 import android.content.Context
 import app.calisthenics.domain.intake.StartLevel
-import app.calisthenics.domain.intake.routineFromAnswers
+import app.calisthenics.domain.intake.routineFromLevels
 import app.calisthenics.domain.model.Catalog
 import app.calisthenics.domain.model.EquipmentProfile
 import io.github.gonbei774.calisthenicsmemory.ui.screens.*
@@ -30,7 +30,8 @@ object OnboardingSave {
         SuggestionStore.clearAll(ctx)
         ProfileStore.upsert(ctx, r.profile)
         ProfileStore.select(ctx, r.profile.id)
-        RoutineStore.save(ctx, routineFromAnswers(catalog, RoutineStore.load(ctx), r.pull))
+        // every answered family: the usual plan prescribes exactly what was answered
+        RoutineStore.save(ctx, routineFromLevels(catalog, RoutineStore.load(ctx), r.levels))
         val base = TrainSettingsStore.load(ctx).copy(goalId = r.goalId, profileId = r.profile.id, rounds = r.rounds, timed = r.timed, stretchOn = r.stretchOn, routineId = null)
         val preset = app.calisthenics.domain.routine.Presets.byId(r.routineId, catalog, r.profile)
         TrainSettingsStore.save(ctx, if (preset != null) app.calisthenics.domain.routine.settingsFor(preset, base) else base)

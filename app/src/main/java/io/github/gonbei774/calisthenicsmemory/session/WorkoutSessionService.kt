@@ -88,7 +88,7 @@ class WorkoutSessionService : Service() {
                     intent.getBooleanExtra(EXTRA_TOO_HARD, false), intent.getBooleanExtra(EXTRA_PAIN, false),
                     intent.getBooleanExtra(EXTRA_TOO_EASY, false))))
             }
-            else -> if (state == null) stopSelf()
+            else -> if (state == null) { SessionBus.abortStarting(); stopSelf() }
         }
         return START_NOT_STICKY
     }
@@ -98,7 +98,7 @@ class WorkoutSessionService : Service() {
     private fun recover(intent: Intent) {
         if (state != null) return
         val c = CheckpointStore.read(this)
-        if (c == null) { stopSelf(); return }
+        if (c == null) { SessionBus.abortStarting(); stopSelf(); return }
         val resume = intent.getBooleanExtra(EXTRA_RESUME, true)
         speak = PrefsStore.load(this).audioEnabled
         startedAt = c.startedAtEpochMs
@@ -119,6 +119,7 @@ class WorkoutSessionService : Service() {
         createChannel()
         ServiceCompat.startForeground(this, NOTIF, notification("Starting…", false), ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
         SessionBus.clear()
+        SessionBus.startedAtEpochMs = startedAt
         SessionBus.names = try {
             assets.open("catalog.json").bufferedReader().use { parseCatalog(it.readText()) }.variations.associate { it.id to it.name }
         } catch (_: Exception) { emptyMap() }
@@ -149,10 +150,12 @@ class WorkoutSessionService : Service() {
             if (!loaded.await(5, TimeUnit.SECONDS)) android.util.Log.w("WorkoutAudio", "SoundPool load wait timed out; session timer continues")
             if (restored == null) {
                 startedAt = System.currentTimeMillis()
+                SessionBus.startedAtEpochMs = startedAt
                 synchronized(lock) { state = newSession(sid, plan) }
                 send(SessionEvent.Start(now()))
             } else {
                 synchronized(lock) { state = restored }
+                if (restored.isTerminal) SessionBus.endedAtEpochMs = System.currentTimeMillis()
                 SessionBus.publish(restored)
                 updateNotification(restored)
                 if (restored.isTerminal) finish(restored)
@@ -179,6 +182,7 @@ class WorkoutSessionService : Service() {
             val r = reduce(cur, e)
             state = r.state; fx = r.effects; s = r.state
         }
+        if (s.isTerminal && SessionBus.endedAtEpochMs == 0L) SessionBus.endedAtEpochMs = System.currentTimeMillis() // before publish: the end screen counts minutes from it
         SessionBus.publish(s)
         fx.forEach { perform(it, s) }
         checkpoint(s, force = fx.any { it is SessionEffect.Persist })
@@ -209,7 +213,7 @@ class WorkoutSessionService : Service() {
             }
             SessionEffect.AcquireWakeLock -> if (wake?.isHeld == false) wake?.acquire(4 * 3600_000L)
             SessionEffect.ReleaseWakeLock -> {}
-            is SessionEffect.ShowBlock, is SessionEffect.Persist -> {} // checkpoint persistence: not built yet (see notes)
+            is SessionEffect.ShowBlock, is SessionEffect.Persist -> {} // the checkpoint is written by checkpoint() after every event; these effects need no extra work here
         }
     }
 
@@ -277,15 +281,15 @@ class WorkoutSessionService : Service() {
     }
 
     private fun finish(s: SessionState) {
-        if (SessionBus.saved) return
-        SessionBus.saved = true
+        if (SessionBus.saveStatus.value != SaveStatus.NONE) return
+        SessionBus.saving()
         try {
             val db = AppDatabase.getDatabase(this)
             val planJson = json.encodeToString(WorkoutPlan.serializer(), s.plan)
             val blocks = s.plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { b ->
                 val ex = s.executions[b.id] ?: Execution.NOT_STARTED
                 BlockResultEntity(sessionId = s.sessionId, blockId = b.id,
-                    outcome = when (ex) { Execution.COMPLETED -> "MET"; Execution.PARTIAL -> "PARTIAL"; else -> "SKIPPED" },
+                    outcome = app.calisthenics.domain.history.outcomeOf(ex),
                     actualSeconds = ((s.activeMs[b.id] ?: 0L) / 1000L).toInt(), achievedValue = s.logged[b.id]?.reps)
             }
             // What the user logged during the workout becomes the first feedback revision of each exercise, in the same transaction.
@@ -298,10 +302,11 @@ class WorkoutSessionService : Service() {
             runBlocking {
                 db.historyDao().saveFinishedSession(
                     PlanSnapshotEntity(s.plan.id, s.plan.createdAtEpochMs, s.plan.routineId, s.plan.routineRevision, s.plan.catalogVersion, s.plan.profileId, planJson),
-                    WorkoutSessionEntity(s.sessionId, s.plan.id, startedAt, System.currentTimeMillis(), status), blocks, feedback)
+                    WorkoutSessionEntity(s.sessionId, s.plan.id, startedAt, SessionBus.endedAtEpochMs.takeIf { it > 0L } ?: System.currentTimeMillis(), status), blocks, feedback)
             }
             CheckpointStore.clear(this) // only after the session row is safely in Room
-        } catch (e: Exception) { SessionBus.saved = false; android.util.Log.e("WorkoutSession", "save failed", e) }
+            SessionBus.saved = true
+        } catch (e: Exception) { SessionBus.saveFailed(); android.util.Log.e("WorkoutSession", "save failed", e) }
         exec?.shutdown()
         releaseAll()
         ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)

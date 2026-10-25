@@ -29,6 +29,7 @@ class TrainScreenTest {
         for (n in listOf("profiles", "mode", "planner_prefs", "train", "goal", "levels", "onboarding", "saved_routines", "preview_draft"))
             ctx.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit()
         OnboardingStore.setDone(ctx)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.save(ctx, app.calisthenics.domain.equipment.SeedProfiles.all) // full gear: these tests are not about the first-run defaults
     }
 
     private fun minutes(): Int = rule.onNodeWithTag("minutes").fetchSemanticsNode().config
@@ -175,7 +176,8 @@ class TrainScreenTest {
             swaps = mapOf("push" to "pushup-knee"), removed = setOf("core"),
             tierOverrides = mapOf("squat" to 3),
             added = listOf(app.calisthenics.domain.planner.AddedSlot("push",
-                app.calisthenics.domain.planner.slotFor(catalog.variation("pushup-diamond")!!))))
+                app.calisthenics.domain.planner.slotFor(catalog.variation("pushup-diamond")!!))),
+            overrideEpochDay = java.time.LocalDate.now().toEpochDay())
         io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.put(ctx,
             io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraft(key, manual, rest = mapOf("push" to 91)))
         show(); rule.waitForIdle()
@@ -222,11 +224,15 @@ class TrainScreenTest {
         show()
         rule.waitForIdle()
         val at4 = minutes()
-        assertTrue("4 rounds = $at4 min", at4 in 40..50)
+        assertTrue("4 rounds = $at4 min", at4 in 30..45)
+        // the default exercise count follows the rounds so the estimate stays within 30 to 45 minutes (owner decision); more rounds means fewer exercises
+        val ex4 = exercises()
         rule.onNodeWithTag("rounds_plus").performClick(); rule.waitForIdle()
-        assertTrue(minutes() > at4)
+        assertTrue("5 rounds = ${minutes()} min", minutes() in 30..45)
+        assertTrue(exercises() <= ex4)
         rule.onNodeWithTag("rounds_minus").performClick(); rule.onNodeWithTag("rounds_minus").performClick(); rule.waitForIdle()
-        assertTrue(minutes() < at4)
+        assertTrue("3 rounds = ${minutes()} min", minutes() in 30..45)
+        assertTrue(exercises() >= ex4)
     }
 
     private fun exercises(): Int = rule.onNodeWithTag("exercises_value", useUnmergedTree = true).fetchSemanticsNode().config
@@ -365,7 +371,7 @@ class TrainScreenTest {
         val before = minutes()
         rule.onNodeWithTag("conditioning_switch").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("conditioning_switch").assertIsOn()
-        assertTrue(minutes() > before)
+        assertTrue("the finisher is counted in the time, which stays about 45 minutes: ${minutes()}", minutes() in 30..46)
         assertTrue(ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getBoolean("conditioning", false))
         rule.onNodeWithTag("warmup_switch").performClick(); rule.onNodeWithTag("cooldown_switch").performClick(); rule.waitForIdle()
         for (t in listOf("warmup_switch", "conditioning_switch", "cooldown_switch")) rule.onNodeWithTag(t).assertIsOn()
@@ -458,7 +464,7 @@ class TrainScreenTest {
         val before = minutes()
         rule.onNodeWithTag("warmup_switch").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("warmup_switch").assertIsOn()
-        assertTrue(minutes() >= before)   // counted in the time
+        assertTrue("counted in the time, which stays 30 to 45 minutes: ${minutes()}", minutes() in 30..45)
         assertTrue(ctx.getSharedPreferences("train", Context.MODE_PRIVATE).getBoolean("warmup", false))
     }
     @Test fun specialistPoolsAreNotSelectedFromLegacyTrainSettings() {

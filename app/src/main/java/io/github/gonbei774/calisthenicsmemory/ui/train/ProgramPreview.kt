@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -123,6 +124,8 @@ internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMo
     val original = remember { mode.saved?.program ?: mode.base?.let(::programContentOf) }
     val result = remember(content, format, sets, betweenMode, preparationSeconds, profile) { buildProgramPlan(data.catalog, content, profile, betweenMode == BetweenSetMode.FLOW, sets, format, System.currentTimeMillis(), betweenMode, preparationSeconds) }
     val plan = (result as? FixedProgramPlanResult.Ready)?.plan
+    val live by SessionBus.state.collectAsState()
+    val running = live?.takeIf { !it.isTerminal } != null   // a workout is running: START would be ignored, so the button opens it
     val unavailable = (result as? FixedProgramPlanResult.Unavailable)?.items.orEmpty().associateBy { it.exerciseId }
 
     Scaffold(
@@ -134,9 +137,9 @@ internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMo
                 Row(Modifier.fillMaxWidth().padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
                     AppOutlinedButton(onClick = { saveDialog = true }, enabled = plan != null, modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("save_routine_button")) { Text(stringResource(R.string.routine_save), textAlign = TextAlign.Center) }
                     Button(
-                        onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); plan?.let { startPlan(ctx, it); onStarted() } }, enabled = plan != null && content.items.isNotEmpty(),
+                        onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); if (running) onStarted() else plan?.let { startPlan(ctx, it); onStarted() } }, enabled = running || (plan != null && content.items.isNotEmpty()),
                         modifier = Modifier.weight(1.6f).heightIn(min = 56.dp).testTag("start_button"), shape = RoundedCornerShape(Radius.button),
-                    ) { Text(stringResource(R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
+                    ) { Text(stringResource(if (running) R.string.train_open_workout else R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
                 }
             }
         },
@@ -152,6 +155,7 @@ internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMo
             savedNote?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("routine_saved_note")) }
             if (unavailable.isNotEmpty()) Text(stringResource(R.string.programs_unavailable, profile.name), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("program_unavailable"))
 
+            EquipmentNeededRow(app.calisthenics.domain.equipment.planEquipment(data.catalog, plan?.blocks?.mapNotNull { it.variationId } ?: content.items.map { it.exerciseId }, profile))
             Column(Modifier.fillMaxWidth().testTag("format_picker"), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Caption(stringResource(R.string.train_format_caption))
                 SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {

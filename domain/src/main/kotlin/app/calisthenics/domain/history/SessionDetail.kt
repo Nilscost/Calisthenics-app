@@ -1,12 +1,15 @@
 // U12 (§3.8): what the History tab shows for one workout and for a week. Pure; callers pass the zone.
 package app.calisthenics.domain.history
 
+import app.calisthenics.domain.feedback.Execution
 import app.calisthenics.domain.feedback.Rating
 import app.calisthenics.domain.model.BlockType
 import app.calisthenics.domain.model.Side
 import app.calisthenics.domain.model.Target
 import app.calisthenics.domain.model.TargetType
 import app.calisthenics.domain.model.WorkoutPlan
+import app.calisthenics.domain.session.Phase
+import app.calisthenics.domain.session.SessionState
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
@@ -14,6 +17,23 @@ import java.time.ZoneId
 import java.time.temporal.TemporalAdjusters
 
 data class SessionOverview(val sessionId: String, val day: LocalDate, val startedAtEpochMs: Long, val minutes: Int, val rounds: Int, val exercises: Int, val finishedEarly: Boolean, val format: app.calisthenics.domain.model.WorkoutFormat = app.calisthenics.domain.model.WorkoutFormat.CIRCUIT)
+
+/** The outcome stored for a block of a finished session (the one rule for the saved row and the end screen). */
+fun outcomeOf(ex: Execution): String = when (ex) { Execution.COMPLETED -> "MET"; Execution.PARTIAL -> "PARTIAL"; else -> "SKIPPED" }
+
+/**
+ * The record a finished [s] will be saved as, so the end screen can show exactly what History will show ([overviewOf]).
+ * [endedAtEpochMs] null (or [startedAtEpochMs] unknown) falls back to the active seconds, as for an unfinished record.
+ */
+fun recordOfState(s: SessionState, startedAtEpochMs: Long, endedAtEpochMs: Long?): SessionRecord {
+    val blocks = s.plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { b ->
+        BlockRecord(b.id, b.variationId, b.type.name, outcomeOf(s.executions[b.id] ?: Execution.NOT_STARTED),
+            ((s.activeMs[b.id] ?: 0L) / 1000L).toInt(), s.logged[b.id]?.reps)
+    }
+    val known = startedAtEpochMs > 0L && endedAtEpochMs != null && endedAtEpochMs >= startedAtEpochMs
+    return SessionRecord(s.sessionId, s.plan.id, startedAtEpochMs, if (known) endedAtEpochMs else null,
+        if (s.phase == Phase.COMPLETED) "COMPLETED" else "PARTIAL_FINISHED", blocks)
+}
 
 /** Rounds and exercises count only work that was actually done (outcome MET or PARTIAL), never skipped blocks. */
 fun overviewOf(plan: WorkoutPlan?, s: SessionRecord, zone: ZoneId): SessionOverview {

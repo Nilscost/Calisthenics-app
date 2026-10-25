@@ -31,7 +31,7 @@ data class TrainSettings(
     val routineId: String? = null,
     /** V22/V23: the warm-up block before the workout (the routine's own warm-up, else the catalog's). */
     val warmupOn: Boolean = false,
-    /** R7-T08 (D1): exercises per round. null = the default: the routine's own, or (for a body part or skill) the smallest count that makes the session at least 30 minutes. */
+    /** R7-T08 (D1): exercises per round. null = the default: the routine's own, or (for a body part or skill) the count that makes the session 30 to 45 minutes. */
     val exercisesPerRound: Int? = null,
     /** R7-T13 (D10): the cool-down switch and its mode (stretches matched to the session, or a timed relax block) and the timed minutes. */
     val cooldownOn: Boolean = false,
@@ -60,11 +60,15 @@ data class TrainSettings(
 fun trainRoutine(catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, goalId: String, profile: EquipmentProfile? = null): Routine =
     Goals.routineFor(catalog, baseRoutine, goalId, progress, profile)
 
-/** The areas to fill a session from: a skill session is filled with exercises of the areas its own exercises use (front lever: pull and core), else the chosen focus. */
-fun fillFocusOf(routine: Routine, s: TrainSettings): Set<StrengthFocus> {
+/**
+ * The areas to fill a session from: a skill session is filled with exercises of the areas its own exercises use (front lever: pull and core), else the chosen focus.
+ * With the [catalog], the areas of the skill's own chain count too, so a skill whose pull work the equipment rules out is still filled from the areas it needs.
+ */
+fun fillFocusOf(routine: Routine, s: TrainSettings, catalog: Catalog? = null): Set<StrengthFocus> {
     val skill = routine.slots.filter { Goals.isSkillSlot(it.id) }
     if (skill.isEmpty()) return s.effectiveFocus()
-    val areas = skill.map { it.area }.toSet()
+    val chain = Goals.byId(s.goalId)?.let { g -> if (catalog == null) emptySet() else Goals.chain(catalog, g).mapNotNull(catalog::variation).flatMap { it.areas }.toSet() } ?: emptySet()
+    val areas = skill.map { it.area }.toSet() + chain
     return areas.map { when (it) { Area.UPPER_BODY -> StrengthFocus.UPPER_BODY; Area.LOWER_BODY -> StrengthFocus.LOWER_BODY; Area.CORE -> StrengthFocus.CORE } }.toSet()
 }
 
@@ -102,9 +106,12 @@ fun buildTrainPlan(
 }
 
 /**
- * R7-T08 (D1): the default exercises per round for a body part or a skill: the smallest count that makes the session at least 30 minutes
- * at the chosen rounds, format and warm-up (null = not applicable: a saved or ready-made routine, a stretch session, or exercises added or removed by hand,
- * which keep their own list). Never below the routine's own count; the pool of fillers may end before 30 minutes are reached.
+ * The default exercises per round for a body part or a skill, chosen so the planned session lands between 30 and 45 minutes
+ * ([MIN_SESSION_SECONDS], [MAX_SESSION_SECONDS]) at the chosen rounds, format and warm-up: the largest count inside that window.
+ * Counts run from the routine's mandatory exercises (its optional ones may be dropped) up to every filler that exists. When no count lands in the window,
+ * the count closest to it wins (a tie goes to the shorter one); when even the fewest exercises take longer than 45 minutes, that fewest count is used,
+ * and when all counts are shorter than 30 minutes the largest. Null = not applicable: a saved or ready-made routine, a stretch session,
+ * or exercises added or removed by hand, which keep their own list.
  */
 fun defaultExercisesPerRound(
     catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, profile: EquipmentProfile, s: TrainSettings,
@@ -112,19 +119,29 @@ fun defaultExercisesPerRound(
 ): Int? {
     if (s.routineId != null || baseRoutine.stretchSession.isNotEmpty() || edits.removed.isNotEmpty() || edits.added.isNotEmpty()) return null
     val routine = withAdditionalPools(catalog, trainRoutine(catalog, baseRoutine, progress, s.goalId, profile), progress, profile, s.goalId, s.additionalPools)
-    val focus = fillFocusOf(routine, s)
-    val base = slotsForFocus(routine, focus).size
+    val focus = fillFocusOf(routine, s, catalog)
+    val inFocus = slotsForFocus(routine, focus)
+    val base = inFocus.size
+    val fewest = inFocus.count { !it.optional }.coerceAtLeast(1)
     val stretchBetween = s.effectiveBetweenSetMode() == BetweenSetMode.STRETCH
     val top = maxExercisesPerRound(catalog, routine, focus, profile, progress, stretchBetween)
     fun build(n: Int) = planFor(catalog, baseRoutine, progress, profile, s, swaps, 0L, 0, prefs, edits, n)
-    var best = base
-    for (n in base..maxOf(base, top)) {
+    val lengths = mutableListOf<Pair<Int, Int>>()   // count to planned seconds
+    for (n in fewest..maxOf(base, top)) {
         val r = build(n)
-        if (r !is PlanResult.Ready) break   // a filler the planner cannot place: keep the last good count
-        best = n
-        if (r.plan.plannedDurationSeconds >= MIN_SESSION_SECONDS) break
+        if (r !is PlanResult.Ready) break   // a filler the planner cannot place: keep the counts before it
+        lengths += n to r.plan.plannedDurationSeconds
     }
-    return best
+    if (lengths.isEmpty()) return base
+    lengths.filter { it.second in MIN_SESSION_SECONDS..MAX_SESSION_SECONDS }.maxByOrNull { it.first }?.let { return it.first }
+    val shorter = lengths.filter { it.second < MIN_SESSION_SECONDS }.maxByOrNull { it.first }
+    val longer = lengths.filter { it.second > MAX_SESSION_SECONDS }.minByOrNull { it.first }
+    return when {
+        shorter == null -> longer!!.first
+        longer == null -> shorter.first
+        MIN_SESSION_SECONDS - shorter.second <= longer.second - MAX_SESSION_SECONDS -> shorter.first
+        else -> longer.first
+    }
 }
 
 /** [s] with the default exercises per round filled in when the person has not set a number. */
@@ -140,14 +157,14 @@ private fun planFor(
     var withGoal = trainRoutine(catalog, baseRoutine, progress, s.goalId, profile)
     withGoal = withAdditionalPools(catalog, withGoal, progress, profile, s.goalId, s.additionalPools)
     val stretchBetween = s.effectiveBetweenSetMode() == BetweenSetMode.STRETCH
-    if (count != null) withGoal = withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s), count, profile, progress, stretchBetween)
+    if (count != null) withGoal = withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s, catalog), count, profile, progress, stretchBetween)
     val routine = applyEdits(withGoal, edits)
     val mode = s.effectiveBetweenSetMode()
     val draft = SessionDraft.from(prefs.copy(stretchOn = mode == BetweenSetMode.STRETCH, selectedProfileId = profile.id, warmupOn = s.warmupOn), routine)
         .copy(cooldownOn = s.cooldownOn, cooldownMode = s.cooldownMode, cooldownMinutes = edits.cooldownMinutes ?: s.cooldownMinutes, cooldownStretches = edits.cooldownStretches, cooldownRemoved = edits.cooldownRemoved, cooldownAdded = edits.cooldownAdded,
             focus = s.effectiveFocus(), swaps = swaps + edits.swaps, rounds = (if ((edits.rule ?: routine.rule).isRange) (edits.rule ?: routine.rule).sets else s.rounds).coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed, format = s.format,
             tierOverrides = edits.tierOverrides, stretchPicks = edits.stretchPicks, extraStretches = edits.extraStretches,
-            roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, levelFiveTargets = edits.levelFiveTargets, rule = edits.rule ?: routine.rule, flow = mode == BetweenSetMode.FLOW, betweenSetMode = mode, preparationSeconds = s.preparationSeconds.coerceIn(1, 30), warmupRemoved = edits.warmupRemoved)
+            roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, levelFiveTargets = edits.levelFiveTargets, overrideVariations = edits.overrideVariations, rule = edits.rule ?: routine.rule, flow = mode == BetweenSetMode.FLOW, betweenSetMode = mode, preparationSeconds = s.preparationSeconds.coerceIn(1, 30), warmupRemoved = edits.warmupRemoved)
     val generated = withTimedExtras(catalog, generate(PlanInput("draft", nowEpochMs, nowDay, catalog, routine, draft, profile, progress = progress)), progress, profile, s.additionalPools)
     return if (s.conditioningOn) withConditioningFinisher(catalog, generated, progress, profile, edits.conditioningMinutes ?: s.conditioningMinutes, edits.conditioningRemoved) else generated
 }
@@ -155,7 +172,7 @@ private fun planFor(
 /** The routine as the plan uses it before hand edits: the goal's step in front and the exercises per round brought to [TrainSettings.exercisesPerRound]. A saved routine keeps exactly this list. */
 fun routineForPlan(catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, profile: EquipmentProfile, s: TrainSettings): Routine {
     val withGoal = withAdditionalPools(catalog, trainRoutine(catalog, baseRoutine, progress, s.goalId, profile), progress, profile, s.goalId, s.additionalPools)
-    return s.exercisesPerRound?.let { withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s), it, profile, progress, s.effectiveBetweenSetMode() == BetweenSetMode.STRETCH) } ?: withGoal
+    return s.exercisesPerRound?.let { withExerciseCount(catalog, withGoal, fillFocusOf(withGoal, s, catalog), it, profile, progress, s.effectiveBetweenSetMode() == BetweenSetMode.STRETCH) } ?: withGoal
 }
 
 /** Power joins strength work only by deliberate selection; the other extras are timed blocks. */
@@ -212,8 +229,7 @@ private fun withTimedExtras(c: Catalog, result: PlanResult, progress: ProgressSn
     val insert = if (lastWork >= 0) lastWork + 1 else plan.blocks.size
     val blocks = before + plan.blocks.take(insert) + finish + plan.blocks.drop(insert) + after
     return PlanResult.Ready(plan.copy(blocks = blocks, plannedDurationSeconds = blocks.sumOf { it.durationSeconds },
-        usesDraftContent = plan.usesDraftContent || (support + mobility + listOfNotNull(interval)).any { it.reviewState == ReviewState.DRAFT },
-        changesExplained = plan.changesExplained + listOfNotNull(if (before.isNotEmpty()) "Preparation added for today's exercises." else null, if (finish.isNotEmpty()) "Conditioning finisher: three 30-second intervals, with 30-second rests." else null, if (after.isNotEmpty()) "Mobility added after training." else null)))
+        usesDraftContent = plan.usesDraftContent || (support + mobility + listOfNotNull(interval)).any { it.reviewState == ReviewState.DRAFT }))
 }
 
 /** The exercises one round has in [plan]: what the stepper shows. */

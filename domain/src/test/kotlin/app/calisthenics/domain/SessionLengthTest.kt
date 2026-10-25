@@ -77,9 +77,30 @@ class SessionLengthTest {
         assertEquals(2, exercisesPerRoundOf(plan(s)))
     }
 
-    @Test fun theDefaultNeverGoesBelowTheRoutinesOwnCount() {
-        val s = TrainSettings(goalId = "general", rounds = 6)
-        val base = exercisesPerRoundOf(plan(s, effective = false))
-        assertTrue((defaultExercisesPerRound(catalog, StarterRoutine.routine, none, profile, s) ?: 0) >= base)
+    @Test fun theDefaultKeepsTheSessionBetweenThirtyAndFortyFiveMinutesWhenACountCan() {
+        for (rounds in 2..5) {
+            val s = TrainSettings(goalId = "general", rounds = rounds)
+            val p = plan(s)
+            val n = exercisesPerRoundOf(p)
+            val mandatory = StarterRoutine.routine.slots.count { !it.optional }
+            assertTrue("rounds=$rounds: ${p.plannedDurationSeconds / 60} min with $n exercises", p.plannedDurationSeconds in MIN_SESSION_SECONDS..MAX_SESSION_SECONDS || n == mandatory)
+        }
+    }
+
+    @Test fun theDefaultNeverGoesBelowTheMandatoryExercisesEvenWhenTheyAreLongerThanFortyFiveMinutes() {
+        val s = TrainSettings(goalId = "general", rounds = MAX_EXPLICIT_ROUNDS)
+        val mandatory = StarterRoutine.routine.slots.count { !it.optional }
+        val n = defaultExercisesPerRound(catalog, StarterRoutine.routine, none, profile, s)!!
+        assertEquals(mandatory, n)
+        assertTrue(plan(s).plannedDurationSeconds > MAX_SESSION_SECONDS)
+    }
+
+    @Test fun theLargestCountInsideTheWindowWinsAndTheStepperCanGoHigher() {
+        val s = TrainSettings(goalId = "general", rounds = 3)
+        val n = defaultExercisesPerRound(catalog, StarterRoutine.routine, none, profile, s)!!
+        fun minutes(count: Int) = (buildTrainPlan(catalog, StarterRoutine.routine, none, profile, s.copy(exercisesPerRound = count)) as PlanResult.Ready).plan.plannedDurationSeconds
+        assertTrue(minutes(n) in MIN_SESSION_SECONDS..MAX_SESSION_SECONDS)
+        if (n < maxExercisesPerRound(catalog, StarterRoutine.routine, setOf(StrengthFocus.FULL_BODY), profile, none)) assertTrue("one more is over 45 min", minutes(n + 1) > MAX_SESSION_SECONDS)
+        assertEquals(n + 1, exercisesPerRoundOf(plan(s.copy(exercisesPerRound = n + 1))).coerceAtMost(n + 1))   // an explicit count is respected
     }
 }

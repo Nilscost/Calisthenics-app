@@ -33,6 +33,7 @@ class ProgressScreenTest {
     @Before fun clean() {
         for (n in listOf("profiles", "planner_prefs", "goal", "levels", "train", "personal_targets"))
             ctx.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit()
+        io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.save(ctx, app.calisthenics.domain.equipment.SeedProfiles.all) // full gear: these tests are not about the first-run defaults
     }
 
     private fun show(catalogOverride: Catalog? = null) { rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { ProgressScreen(catalogOverride = catalogOverride) } }; rule.waitForIdle() }

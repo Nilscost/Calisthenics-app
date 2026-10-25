@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui
 
 import android.app.Application
+import app.calisthenics.domain.equipment.SeedProfiles as SeedProfilesForTest
 import app.calisthenics.domain.planner.AddedSlot
 import app.calisthenics.domain.planner.slotFor
 import app.calisthenics.domain.planner.PlanEdits
@@ -47,6 +48,7 @@ class PreviewScreenTest {
     @Before fun clean() {
         for (n in listOf("profiles", "mode", "planner_prefs", "train", "goal", "levels", "routine", "personal_targets", "preview_draft", "saved_routines"))
             app.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit()
+        io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.save(app, SeedProfilesForTest.all) // full gear: these tests are not about the first-run defaults
     }
 
     /** R8.4 regression: an older Preview mode must not beat a newer explicit Train choice. */
@@ -405,6 +407,12 @@ class PreviewScreenTest {
         assertEquals(2, saved.revision) // a new revision, never an edit of the old one
     }
 
+    @Test fun previewListsTheEquipmentTheExercisesNeed() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("equipment_needed").assertExists()
+        rule.onNodeWithText("Equipment needed", ignoreCase = true).assertExists()
+    }
+
     @Test fun todayOnlySwapLeavesTheUsualPlanAlone() {
         show(); rule.waitForIdle()
         openSwap("push")
@@ -429,10 +437,16 @@ class PreviewScreenTest {
         rule.onNodeWithTag("timeline_list").assertExists()
     }
 
-    @Test fun warningsAreOneCompactRowThatExpands() {
+    @Test fun notesShowAtMostTwoLinesAndTheRestBehindMore() {
+        // a plan that fits has no notes and no row; without the band the pull is replaced and the plan says so
+        val home = io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.selected(app)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.upsert(app, home.copy(items = home.items.filter { it.equipmentId != "resistance-band" }))
         show(); rule.waitForIdle()
         // R8.1-T08 (F10): was asserting the "unreviewed draft" bubble; the row now only points at the notes, and no draft bubble exists anywhere in the Preview
-        rule.onNodeWithTag("info_row").assertExists().assertTextContains("Check the notes", substring = true)
+        rule.onNodeWithTag("info_row").assertExists()
+        rule.onNodeWithTag("plan_note_0").assertExists()
+        rule.onNodeWithTag("plan_note_2").assertDoesNotExist()   // at most two lines until More is opened
+        rule.onNodeWithText("Check the notes", substring = true).assertDoesNotExist()
         rule.onNodeWithText("unreviewed draft", substring = true).assertDoesNotExist()
     }
 

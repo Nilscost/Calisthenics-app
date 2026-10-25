@@ -38,6 +38,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -91,26 +92,42 @@ private fun targetText(t: Target?, perSide: Boolean, loadGrams: Int? = null): St
 fun withLoad(text: String, loadGrams: Int?): String =
     if (loadGrams == null || text.isEmpty()) text else stringResource(R.string.target_with_load, text, app.calisthenics.domain.load.formatKg(loadGrams))
 
+/** Owner 2026-10-26: what to prepare before the session, from the exercises actually in the plan (and so live as they change). */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+internal fun EquipmentNeededRow(ids: List<String>, modifier: Modifier = Modifier) {
+    Column(modifier.fillMaxWidth().testTag("equipment_needed"), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Caption(stringResource(R.string.preview_equipment_caption))
+        if (ids.isEmpty()) Text(stringResource(R.string.programs_no_equipment), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("equipment_none"))
+        else FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.m), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            ids.forEach { id ->
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.testTag("equipment_$id")) {
+                    io.github.gonbei774.calisthenicsmemory.ui.theme.EquipmentIcons.forId(id)?.let { Icon(it, contentDescription = null, modifier = Modifier.size(20.dp)) }
+                    Text(stringResource(io.github.gonbei774.calisthenicsmemory.ui.screens.equipmentLabelShortPublic(id)), style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        }
+        Text(stringResource(R.string.preview_equipment_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
+    }
+}
+
+/** The plan's notes: the one or two most important as plain lines, the rest behind a compact "More (n)". Nothing when there are none. */
+internal fun planNotesOf(p: WorkoutPlan): List<PlanNote> =
+    p.notes.sortedBy { it.priority }.ifEmpty { (p.warnings.map { PlanNote(it, NoteKind.INFO) } + p.changesExplained.filter { it.isNotBlank() }.map { PlanNote(it, NoteKind.INFO) }) }
+
 @Composable
 private fun InfoRow(p: WorkoutPlan) {
     var open by remember { mutableStateOf(false) }
-    val notes = p.warnings + p.changesExplained.filter { it.isNotBlank() }
-    Card(
-        Modifier.fillMaxWidth().clickable(enabled = notes.isNotEmpty()) { open = !open }.testTag("info_row"),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-    ) {
-        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                Icon(Icons.Filled.Info, contentDescription = null)
-                // R8.1-T08 (F10): no "unreviewed draft" bubble; the row only points at the notes of this plan
-                Text(
-                    stringResource(R.string.preview_note), Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-                if (notes.isNotEmpty()) Text(stringResource(R.string.preview_more_notes, notes.size), style = MaterialTheme.typography.labelLarge)
-            }
-            if (open) notes.forEach { Text(stringResource(R.string.bullet_item, it), style = MaterialTheme.typography.bodySmall) }
-        }
+    val notes = planNotesOf(p)
+    if (notes.isEmpty()) return
+    val shown = notes.take(2); val rest = notes.drop(2)
+    Column(Modifier.fillMaxWidth().testTag("info_row"), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+        (if (open) notes else shown).forEachIndexed { i, n -> Text(n.text, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("plan_note_$i")) }
+        if (rest.isNotEmpty()) Text(
+            stringResource(if (open) R.string.preview_less_notes else R.string.preview_more_notes, rest.size),
+            style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text,
+            modifier = Modifier.clickable { open = !open }.padding(vertical = Spacing.xs).testTag("notes_more"),
+        )
     }
 }
 
@@ -129,7 +146,8 @@ private fun movementTag(v: ExerciseVariation?): Int = when (v?.patterns?.firstOr
 private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name: String, levels: Int, onStep: (Int) -> Unit, onSwap: () -> Unit, onRemove: () -> Unit, sfx: String = "", onTypeNumber: (() -> Unit)? = null, badge: Int? = null, chain: Pair<Int, Int>? = null) {
     val removeLabel = stringResource(R.string.preview_remove)
     val largeText = LocalDensity.current.fontScale > 1.2f
-    Card(Modifier.fillMaxWidth().pointerInput(Unit) { detectTapGestures(onLongPress = { onRemove() }) }
+    val removeNow by rememberUpdatedState(onRemove)   // the pointer handler outlives recompositions: always call the current slot's callback
+    Card(Modifier.fillMaxWidth().pointerInput(e.slotId) { detectTapGestures(onLongPress = { removeNow() }) }
         .semantics { onLongClick(label = removeLabel) { onRemove(); true } }.testTag("exercise_${e.slotId}$sfx"), shape = MaterialTheme.shapes.large) {
         Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
@@ -282,9 +300,11 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
     var typeFor by remember { mutableStateOf<Pair<String, Int>?>(null) }      // slot and set of the number being typed
     var addAfter by remember { mutableStateOf<String?>("") }   // "" = closed, null = at the start, else after that slot
     var timelineOpen by remember { mutableStateOf(false) }
+    val live by SessionBus.state.collectAsState()
+    val running = live?.takeIf { !it.isTerminal } != null   // a workout is already running: START would be ignored by the service, so the button opens it
     val planEdits = effectivePlanEdits(edits, modeRevision)
     val result = remember(data, routine, planEdits, settings, modeRevision) {
-        buildTrainPlan(data.catalog, routine, data.progress, profile, settings, edits = planEdits, nowEpochMs = System.currentTimeMillis())
+        buildTrainPlan(data.catalog, routine, data.progress, profile, settings, edits = planEdits, nowEpochMs = System.currentTimeMillis(), nowDay = java.time.LocalDate.now().toEpochDay().toInt())
     }
     val emptyAfterRemoval = result is PlanResult.Infeasible && edits.removed.isNotEmpty() &&
         result.reasons.any { it.code == "no-slots" }
@@ -299,11 +319,11 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                 Row(Modifier.fillMaxWidth().padding(Spacing.l), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
                     AppOutlinedButton(onClick = { saveDialog = true }, enabled = result is PlanResult.Ready, modifier = Modifier.weight(1f).heightIn(min = 56.dp).testTag("save_routine_button")) { Text(stringResource(R.string.routine_save), textAlign = TextAlign.Center) }
                     Button(
-                        onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); startPlan(ctx, withRestDurations((result as PlanResult.Ready).plan, restDurations)); onStarted() },
-                        enabled = result is PlanResult.Ready,
+                        onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); if (!running) startPlan(ctx, withRestDurations((result as PlanResult.Ready).plan, restDurations)); onStarted() },
+                        enabled = running || result is PlanResult.Ready,
                         modifier = Modifier.weight(1.6f).heightIn(min = 56.dp).testTag("start_button"),
                         shape = RoundedCornerShape(Radius.button),
-                    ) { Text(stringResource(R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
+                    ) { Text(stringResource(if (running) R.string.train_open_workout else R.string.train_start).uppercase(), style = MaterialTheme.typography.titleLarge) }
                 }
             }
         },
@@ -325,7 +345,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                         r.reasons.forEach { Text(it.message) }
                         r.alternatives.forEach { Text(stringResource(R.string.bullet_item, it.description), style = MaterialTheme.typography.bodySmall) }
                     }
-                    if (!edits.isEmpty() || restDurations.isNotEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits(); restDurations = emptyMap() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
+                    if (edits != resolved.edits || restDurations.isNotEmpty()) AppOutlinedButton(onClick = { edits = resolved.edits; restDurations = emptyMap() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
                 }
                 is PlanResult.Ready -> {
                     val p = withRestDurations(r.plan, restDurations)
@@ -342,7 +362,8 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                         stringResource(R.string.preview_header, io.github.gonbei774.calisthenicsmemory.ui.components.countText(R.plurals.count_rounds, p.rounds), (p.plannedDurationSeconds + 30) / 60, stringResource(if (p.timed) R.string.style_timed else R.string.style_reps)),
                         style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"),
                     )
-                    if (p.warnings.isNotEmpty() || p.changesExplained.any { it.isNotBlank() }) InfoRow(p)
+                    EquipmentNeededRow(app.calisthenics.domain.equipment.planEquipment(data.catalog, p.blocks.mapNotNull { it.variationId }, profile))
+                    InfoRow(p)
                     // R8.1-T05 (F5): Straight sets / Pairs / Circuit, and the number of sets, in the Preview
                     Column(Modifier.fillMaxWidth().testTag("format_picker"), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         Caption(stringResource(R.string.train_format_caption))
@@ -393,7 +414,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                                     }
                                     val nextTier = if (extensionStepDown) 5 else stepLevel(e.tier, d, tiers.size.coerceAtLeast(5))
                                     edits = edits.copy(tierOverrides = edits.tierOverrides + (e.slotId to nextTier), levelFiveTargets = updatedExtensions,
-                                        freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) })
+                                        freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) }).stampOverride(e.slotId, e.variationId, java.time.LocalDate.now().toEpochDay())
                                 }
                             },
                             onSwap = { swapSlot = e.slotId }, onRemove = { removeSlot = e.slotId }, sfx = sfx,
@@ -456,8 +477,9 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                             ids.forEachIndexed { i, id ->
                                 val secs = cool.filter { it.variationId == id }.sumOf { it.durationSeconds }
                                 val removeThis = { edits = edits.copy(cooldownRemoved = edits.cooldownRemoved + id, cooldownAdded = edits.cooldownAdded - id) }
+                                val removeNow by rememberUpdatedState(removeThis)
                                 // R7.2-T04 (F5): a long press removes the stretch; the visible x does the same
-                                Card(Modifier.fillMaxWidth().pointerInput(id) { detectTapGestures(onLongPress = { removeThis() }) }
+                                Card(Modifier.fillMaxWidth().pointerInput(id) { detectTapGestures(onLongPress = { removeNow() }) }
                                     .semantics { onLongClick(label = removeLabel) { removeThis(); true } }.testTag("cooldown_stretch_$i"), shape = MaterialTheme.shapes.large) {
                                     Row(Modifier.padding(Spacing.m), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
                                         io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(id, names[id] ?: id, 44.dp)
@@ -473,7 +495,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                             AddButton({ coolAdd = true }, Modifier.align(Alignment.End).testTag("cooldown_add"))
                         }
                     }
-                    if (!edits.isEmpty() || restDurations.isNotEmpty()) AppOutlinedButton(onClick = { edits = PlanEdits(); restDurations = emptyMap() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
+                    if (edits != resolved.edits || restDurations.isNotEmpty()) AppOutlinedButton(onClick = { edits = resolved.edits; restDurations = emptyMap() }, Modifier.testTag("edits_reset")) { Text(stringResource(R.string.preview_reset)) }
                     // R7-T10 (D4): the full timeline is the editor: every set's tiles, each with its set number; a stretch or a typed number can differ per set
                     Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
                         Row(Modifier.fillMaxWidth().clickable { timelineOpen = !timelineOpen }.heightIn(min = Spacing.touch).padding(horizontal = Spacing.m).testTag("timeline_toggle"), verticalAlignment = Alignment.CenterVertically) {
@@ -535,7 +557,12 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
             onPick = { id, keep ->
                 edits = edits.copy(swaps = edits.swaps + (slot to id), tierOverrides = edits.tierOverrides - slot, levelFiveTargets = edits.levelFiveTargets - slot,
                     freeTargets = edits.freeTargets.filterKeys { k -> k != slot && !k.endsWith(":" + slot) })
-                if (keep) { routine = saveSwapsToRoutine(routine, mapOf(slot to id)); RoutineStore.save(ctx, routine); edits = edits.copy(swaps = edits.swaps - slot) }
+                if (keep && stored.routineId == null) { routine = saveSwapsToRoutine(routine, mapOf(slot to id)); RoutineStore.save(ctx, routine); edits = edits.copy(swaps = edits.swaps - slot) }
+                else if (keep && editing != null) {   // a saved routine keeps the swap in its own slots; the usual plan is not touched
+                    routine = saveSwapsToRoutine(routine, mapOf(slot to id))
+                    SavedRoutineStore.upsert(ctx, editing.copy(routine = routine, revision = routine.revision, updatedAtEpochMs = System.currentTimeMillis()))
+                    edits = edits.copy(swaps = edits.swaps - slot)
+                }
                 swapSlot = null
             },
         )
@@ -552,7 +579,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
     coolSwap?.let { idx ->
         val current = (result as? PlanResult.Ready)?.plan?.blocks?.filter { it.type == BlockType.COOLDOWN }?.mapNotNull { it.variationId }?.distinct().orEmpty()
         StretchPickerSheet(title = R.string.preview_pick_cooldown, options = stretchChoices(data.catalog, profile).filter { it.id !in current || it.id == current.getOrNull(idx) }, autoLabel = false, onDismiss = { coolSwap = null }, hint = R.string.preview_pick_cooldown_hint) { pick ->
-            if (pick != null && idx < current.size) edits = edits.copy(cooldownStretches = current.toMutableList().also { it[idx] = pick })
+            if (pick != null && idx < current.size) edits = edits.swapCooldownStretch(current, idx, pick)
             coolSwap = null
         }
     }
@@ -581,7 +608,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                     OutlinedTextField(value = text, onValueChange = { text = it.filter { c -> c.isDigit() }.take(3) }, singleLine = true, keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Number), modifier = Modifier.testTag("free_number_field"))
                 }
             },
-            confirmButton = { AppTextButton(onClick = { text.toIntOrNull()?.takeIf { it > 0 }?.let { n -> edits = edits.copy(freeTargets = edits.freeTargets + ("$st:$id" to n)) }; typeFor = null }, modifier = Modifier.testTag("free_number_ok")) { Text(stringResource(R.string.preview_type_ok)) } },
+            confirmButton = { AppTextButton(onClick = { text.toIntOrNull()?.takeIf { it > 0 }?.let { n -> edits = edits.copy(freeTargets = edits.freeTargets + ("$st:$id" to n)).stampOverride(id, (result as? PlanResult.Ready)?.plan?.let { pl -> circuitOf(pl).firstOrNull { it.slotId == id }?.variationId }, java.time.LocalDate.now().toEpochDay()) }; typeFor = null }, modifier = Modifier.testTag("free_number_ok")) { Text(stringResource(R.string.preview_type_ok)) } },
             dismissButton = { AppTextButton(onClick = { edits = edits.copy(freeTargets = edits.freeTargets - "$st:$id"); typeFor = null }, modifier = Modifier.testTag("free_number_clear")) { Text(stringResource(R.string.preview_type_clear)) } },
         )
     }

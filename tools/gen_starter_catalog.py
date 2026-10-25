@@ -1085,7 +1085,7 @@ edges = [
 onboarding_families = [
     {"id": "pushup", "title": "Push-up", "ladder": ["pushup-incline", "pushup-knee", "pushup-standard", "pushup-feet-elevated"], "anchorVariationId": "pushup-standard"},
     {"id": "squat", "title": "Squat", "ladder": ["squat-air", "split-squat", "split-squat-bulgarian"], "anchorVariationId": "split-squat"},
-    {"id": "pull", "title": "Pull and row", "ladder": ["row-band", "pullup-band-assisted", "flexed-arm-hang", "pullup-full"], "anchorVariationId": "pullup-band-assisted"},
+    {"id": "pull", "title": "Pull and row", "ladder": ["towel-door-row", "row-band", "pullup-band-assisted", "flexed-arm-hang", "pullup-full"], "anchorVariationId": "pullup-band-assisted"},
     {"id": "core", "title": "Core", "ladder": ["plank", "hollow-hold"], "anchorVariationId": "plank"},
     {"id": "hinge", "title": "Hips and back", "ladder": ["glute-bridge", "bridge-single-leg"], "anchorVariationId": "glute-bridge"},
     {"id": "shoulders", "title": "Shoulders", "ladder": ["pike-pushup", "pike-pushup-elevated"], "anchorVariationId": "pike-pushup", "requiresPushupAtLeast": "pushup-standard"},

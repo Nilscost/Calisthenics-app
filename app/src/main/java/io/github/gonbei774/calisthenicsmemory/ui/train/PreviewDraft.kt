@@ -2,6 +2,7 @@
 // (goal, saved routine or program). A changed exercise count also starts a fresh automatic selection.
 package io.github.gonbei774.calisthenicsmemory.ui.train
 
+import app.calisthenics.domain.planner.expireLevelOverrides
 import android.content.Context
 import app.calisthenics.domain.planner.PlanEdits
 import app.calisthenics.domain.planner.ProgramContent
@@ -37,10 +38,13 @@ object PreviewDraftStore {
     /** The draft saved for [key], or null when there is none or it belongs to another objective. */
     fun get(ctx: Context, key: String): PreviewDraft? {
         val d = runCatching { p(ctx).getString("draft", null)?.let { json.decodeFromString(PreviewDraft.serializer(), it) } }.getOrNull()
-        return d?.takeIf { it.key == key }
+        // A manual level or typed number is for the next workout only: older ones are dropped
+        return d?.takeIf { it.key == key }?.let { it.copy(edits = it.edits.expireLevelOverrides(java.time.LocalDate.now().toEpochDay())) }
     }
 
-    fun put(ctx: Context, d: PreviewDraft) {
+    fun put(ctx: Context, d0: PreviewDraft) {
+        // a draft written now is today's: levels it carries (typed by hand, or a saved routine's own) count from today
+        val d = if (d0.edits.hasLevelOverrides() && d0.edits.overrideEpochDay == 0L) d0.copy(edits = d0.edits.copy(overrideEpochDay = java.time.LocalDate.now().toEpochDay())) else d0
         runCatching { p(ctx).edit().putString("draft", json.encodeToString(PreviewDraft.serializer(), d)).apply() }
     }
 
