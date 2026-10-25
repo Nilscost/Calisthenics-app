@@ -1,6 +1,7 @@
 package io.github.gonbei774.calisthenicsmemory.ui
 
 import android.app.Application
+import app.calisthenics.domain.equipment.SeedProfiles as SeedProfilesForTest
 import app.calisthenics.domain.planner.AddedSlot
 import app.calisthenics.domain.planner.slotFor
 import app.calisthenics.domain.planner.PlanEdits
@@ -47,6 +48,7 @@ class PreviewScreenTest {
     @Before fun clean() {
         for (n in listOf("profiles", "mode", "planner_prefs", "train", "goal", "levels", "routine", "personal_targets", "preview_draft", "saved_routines"))
             app.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit()
+        io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.save(app, SeedProfilesForTest.all) // full gear: these tests are not about the first-run defaults
     }
 
     /** R8.4 regression: an older Preview mode must not beat a newer explicit Train choice. */
@@ -403,6 +405,12 @@ class PreviewScreenTest {
         val saved = io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore.load(app)
         assertEquals("pushup-knee", saved.slots.first { it.id == "push" }.preferredVariationId)
         assertEquals(2, saved.revision) // a new revision, never an edit of the old one
+    }
+
+    @Test fun previewListsTheEquipmentTheExercisesNeed() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("equipment_needed").assertExists()
+        rule.onNodeWithText("Equipment needed", ignoreCase = true).assertExists()
     }
 
     @Test fun todayOnlySwapLeavesTheUsualPlanAlone() {

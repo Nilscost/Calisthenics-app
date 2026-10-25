@@ -61,6 +61,7 @@ class OnboardingTest {
     }
 
     @Test fun normalAnswersWalkThroughAllPagesAndStoreTheLevels() {
+        io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.save(ctx, app.calisthenics.domain.equipment.SeedProfiles.all) // full gear: these tests are not about the first-run defaults
         val seen = runThroughWithGuesses("NORMAL")
         assertEquals(listOf("Welcome", "What is your goal?", "What do you have?"), seen.take(3))
         assertTrue(seen.containsAll(listOf("Push-up", "Squat", "Pull and row", "Core", "Hips and back", "Shoulders")))
@@ -126,6 +127,7 @@ class OnboardingTest {
     }
 
     @Test fun withoutAPullUpBarNormalPullIsTheBandRow() {
+        io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.save(ctx, app.calisthenics.domain.equipment.SeedProfiles.all) // full gear: these tests are not about the first-run defaults
         rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { OnboardingScreen(onBack = null, onDone = {}) } }
         next(); next()
         rule.onNodeWithTag("eq_pullup-bar").performScrollTo().performClick() // untick the bar Home had
@@ -147,6 +149,11 @@ class OnboardingTest {
         rule.onNodeWithTag("settings_redo_confirm").performClick(); rule.waitForIdle()
         rule.onNodeWithTag("onb_title").assertTextEquals("Welcome")
         rule.onNodeWithTag("onb_cancel").assertIsDisplayed() // redo can be cancelled
+    }
+
+    @Test fun freshInstallPreTicksOnlyWallAndMat() {
+        val home = io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.load(ctx).first { it.id == "home" }
+        assertEquals(setOf("wall", "mat"), app.calisthenics.domain.equipment.selectionOf(home).map { it.id }.toSet())
     }
 
     @Test fun catalogHasThePullAndShouldersFamiliesForTheQuestionnaire() {
