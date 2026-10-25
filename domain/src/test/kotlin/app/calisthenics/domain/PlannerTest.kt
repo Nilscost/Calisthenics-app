@@ -73,7 +73,7 @@ class PlannerTest {
         val slots = p.blocks.filter { it.type == BlockType.WORK }.mapNotNull { it.slotId }.toSet()
         assertTrue("s-push" in slots && "s-squat" in slots)
         assertTrue(slots.size < 14)
-        assertTrue(p.changesExplained.any { it.contains("optional exercises were left out") })
+        assertTrue(p.changesExplained.any { it.startsWith("Left out to fit the time") })
         assertTrue(p.plannedDurationSeconds <= 600)
     }
 
@@ -109,13 +109,13 @@ class PlannerTest {
         val long = ready(input(10))
         assertTrue(betweenSetUses(long).values.all { it <= MAX_STRETCH_USES })
         assertTrue(long.blocks.any { it.type == BlockType.PASSIVE_RECOVERY })
-        assertTrue(long.changesExplained.any { it.contains("plain rest because each compatible stretch was already used twice") })
+        assertTrue("plain rest is not worth a note", long.notes.none { it.text.contains("plain rest") })
     }
 
     @Test fun `stretch off keeps ordinary recovery and no stretch blocks`() {
         val p = ready(input(30, stretch = false))
         assertTrue(p.blocks.any { it.type == BlockType.PASSIVE_RECOVERY }); assertTrue(p.blocks.none { it.type == BlockType.STRETCH })
-        assertTrue(p.changesExplained.any { it.contains("Stretching is off") })
+        assertTrue("no note for stretching being off", p.notes.none { it.text.contains("Stretching is off") })
     }
 
     @Test fun `recovery windows are never shortened below the reviewed minimum`() {
@@ -145,9 +145,9 @@ class PlannerTest {
         assertTrue(p.blocks.none { it.variationId == "calf-stretch" })
     }
 
-    @Test fun `coverage warning is honest about unstretched areas`() {
-        val p = ready(input(30))
-        assertTrue(p.warnings.any { it.contains("coverage is limited") })
+    @Test fun `the default full body stretch choice gets no coverage note`() {
+        // the default "Full body" is not reported; areas picked on purpose are
+        assertTrue(ready(input(30)).notes.none { it.kind == NoteKind.COVERAGE })
     }
 
     @Test fun `focus core only keeps only core slots`() {
@@ -160,7 +160,7 @@ class PlannerTest {
         assertTrue(p.blocks.none { it.variationId == "row-band" })
         val pullSlot = p.blocks.filter { it.slotId == "s-pull" }
         // either dropped with an explanation, or replaced by something explicitly flagged as NOT a pull
-        assertTrue(pullSlot.isEmpty() || p.warnings.any { it.contains("NOT the same movement") })
+        assertTrue(pullSlot.isEmpty() || p.warnings.any { it.contains("different kind of exercise") })
         assertTrue(p.warnings.isNotEmpty()); assertTrue(p.needsAcceptance)
     }
 
@@ -170,7 +170,8 @@ class PlannerTest {
         val p = ready(input(30, profile = SeedProfiles.travel, cat = withAlt))
         val sub = p.blocks.filter { it.slotId == "s-pull" }
         assertTrue(sub.isNotEmpty()); assertEquals("crunch", sub.first().variationId)
-        assertTrue(p.warnings.any { it.contains("NOT the same movement") }); assertTrue(p.needsAcceptance)
+        assertTrue(p.warnings.any { it.contains("different kind of exercise") && it.contains("rowing exercise") }); assertTrue(p.needsAcceptance)
+        assertEquals(NoteKind.MISSING_MOVEMENT, p.topNotes(1).single().kind)
     }
 
     @Test fun `excluded exercise is not planned`() {
@@ -183,10 +184,10 @@ class PlannerTest {
         assertTrue(p.blocks.any { it.variationId == "pushup-std" }); assertTrue(p.blocks.none { it.variationId == "pushup-knee" })
     }
 
-    @Test fun `unassessed exercises start at tier 1 and say so`() {
+    @Test fun `unassessed exercises start at the first level without a note about it`() {
         val p = ready(input(30))
         assertTrue(p.blocks.filter { it.type == BlockType.WORK }.all { it.prescriptionTier == 1 })
-        assertTrue(p.changesExplained.any { it.contains("no assessed level") })
+        assertTrue(p.notes.none { it.text.contains("assessed") || it.text.contains("tier", ignoreCase = true) })
     }
 
     @Test fun `assessed tier sets the target`() {
@@ -208,7 +209,7 @@ class PlannerTest {
         val prog = ProgressSnapshot(emptyMap(), mapOf("pushup" to "pushup-std"), emptyMap(), emptyList())
         val p = ready(input(30, progress = prog))
         assertTrue(p.blocks.any { it.variationId == "pushup-std" })
-        assertTrue(p.changesExplained.any { it.contains("replaces") })   // E1: the "completed all tiers" claim is only made when tier 5 of the replaced exercise is achieved
+        assertTrue(p.notes.none { it.text.contains("finished every level") })   // E1: the "finished" claim is only made when tier 5 of the replaced exercise is achieved
     }
 
     @Test fun `re-entry after a break needs acceptance`() {

@@ -113,3 +113,20 @@ fun suggestEquipment(
         )
     }.filter { it.id !in dismissed }
 }
+
+/** A short everyday name for an equipment id, for sentences shown to the person. */
+fun equipmentPlainName(id: String): String = when (id) {
+    "pullup-bar" -> "a pull-up bar"; "high-bar" -> "a high bar"; "low-bar" -> "a low bar or sturdy table"; "resistance-band" -> "a resistance band"
+    "kettlebell" -> "a kettlebell"; "weight" -> "dumbbells"; "chair" -> "a stable chair"; "mat" -> "a mat"; "dip-support" -> "dip bars"
+    "barbell" -> "a barbell"; "weighted-vest" -> "a weighted vest"; "foot-anchor" -> "a foot anchor"; "parallettes" -> "parallettes"; "rings" -> "rings"
+    "ab-wheel" -> "an ab wheel"; "step" -> "a step"; "box" -> "a sturdy box"; "bench" -> "a bench"; "pole" -> "a pole"; "sliders" -> "sliders"; "jump-rope" -> "a jump rope"
+    "wall" -> "a wall"; "floor-space" -> "floor space"
+    else -> "extra equipment"
+}
+
+/** What is missing for the easiest way of doing [v], in plain words ("a pull-up bar and a resistance band"). */
+fun missingForPlain(v: ExerciseVariation, profile: EquipmentProfile): String {
+    val best = v.equipmentAlternatives.minByOrNull { set -> set.needs.count { !needSatisfied(it, profile) } + (set.capabilities - profile.capabilities).size } ?: return "equipment you do not have"
+    val parts = (best.needs.filter { !needSatisfied(it, profile) }.map { equipmentPlainName(it.equipmentId) } + (best.capabilities - profile.capabilities).map(::equipmentPlainName)).distinct()
+    return when (parts.size) { 0 -> "equipment you do not have"; 1 -> parts[0]; else -> parts.dropLast(1).joinToString(", ") + " and " + parts.last() }
+}

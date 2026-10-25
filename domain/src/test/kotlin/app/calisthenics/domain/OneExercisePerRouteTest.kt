@@ -71,7 +71,7 @@ class OneExercisePerRouteTest {
         val plan = (buildTrainPlan(c, routine, histories.getValue("none"), SeedProfiles.home, TrainSettings()) as PlanResult.Ready).plan
         val ids = workIds(plan)
         assertEquals(1, ids.count { it.startsWith("pushup-") })
-        assertTrue(plan.changesExplained.any { "already trains its progression" in it })
+        assertTrue(plan.changesExplained.any { "already works the same movement" in it })
     }
 
     @Test fun anAlternateAndItsMainStepNeverShareAWorkout() {

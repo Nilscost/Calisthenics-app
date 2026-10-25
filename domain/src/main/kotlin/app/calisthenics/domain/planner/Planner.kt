@@ -5,6 +5,7 @@ package app.calisthenics.domain.planner
 
 import app.calisthenics.domain.equipment.isAvailable
 import app.calisthenics.domain.equipment.missingFor
+import app.calisthenics.domain.equipment.missingForPlain
 import app.calisthenics.domain.load.formatKg
 import app.calisthenics.domain.load.isLoaded
 import app.calisthenics.domain.load.loadEquipmentId
@@ -56,6 +57,9 @@ sealed interface PlanResult {
     data class Infeasible(val reasons: List<ConstraintFailure>, val alternatives: List<PlanOption>) : PlanResult
 }
 
+/** Floor back work for a pull slot with no pull equipment, best first (owner decision: towel row, prone raises, then back extensions). */
+private val FLOOR_BACK_WORK = listOf("towel-door-row", "prone-y-raise", "prone-t-raise", "prone-w-raise", "prone-i-raise", "prone-l-raise", "superman-hold", "swimmer", "back-extension-floor")
+
 private data class Chosen(val slot: RoutineSlot, val variation: ExerciseVariation, val tier: Tier, val loadGrams: Int? = null, val inferredStartTier: Int? = null)
 
 fun generate(input: PlanInput): PlanResult = Planner(input).run()
@@ -67,9 +71,16 @@ private class Planner(input: PlanInput) {
     })
     val cat = this.input.catalog
     val draft = this.input.draft
+    /** Legacy free-text lists: the discomfort-hold branch still writes to [warn]; they become PAIN / INFO notes at the end. Everything else uses [note]. */
     val explain = mutableListOf<String>()
     val warn = mutableListOf<String>()
+    /** Plain-language notes for the person (see [PlanNote]); the importance comes from the kind. */
+    val notes = mutableListOf<PlanNote>()
     var needsAcceptance = false
+
+    private fun note(kind: NoteKind, text: String) { if (notes.none { it.text == text }) notes += PlanNote(text, kind) }
+    private fun allNotes(): List<PlanNote> = (notes + warn.map { PlanNote(it, NoteKind.PAIN) } + explain.map { PlanNote(it, NoteKind.INFO) })
+        .distinctBy { it.text }.sortedBy { it.priority }
 
     private fun fail(code: String, msg: String, alts: List<PlanOption> = emptyList()) =
         PlanResult.Infeasible(listOf(ConstraintFailure(code, msg)), alts)
@@ -97,7 +108,7 @@ private class Planner(input: PlanInput) {
             val repeats = chosen.firstOrNull { (automaticSlot && sameProgressionForSlots(it, candidate)) ||
                 cat.sharesLogicalRoute(it.variation.id, candidate.variation.id) }
             if (!explicitPick && repeats != null) {
-                explain += "${candidate.variation.name} was left out because this workout already trains its progression (${repeats.variation.name})."
+                note(NoteKind.INFO, "${candidate.variation.name} is left out: ${repeats.variation.name} already works the same movement.")
             } else chosen += candidate
         }
         if (chosen.isEmpty()) return fail("nothing-available",
@@ -116,7 +127,6 @@ private class Planner(input: PlanInput) {
             val keep = mutableListOf<TimelineBlock>(); var used = 0
             for (b in matchedBlocks) { if (used + b.durationSeconds > budget) break; keep += b; used += b.durationSeconds }
             val ids = keep.mapNotNull { it.variationId }.toSet()
-            if (ids.isNotEmpty()) explain += "Warm-up matched to today's exercises: ${ids.joinToString { cat.variation(it)?.name ?: it }}."
             // the template items follow in their own RAMP order while the time allows (a unilateral item has both sides in its blocks)
             val rest = mutableListOf<TimelineBlock>()
             for (group in baseWarm.groupBy { it.variationId }.values) { val sec = group.sumOf { it.durationSeconds }; if (used + sec > budget) continue; rest += group; used += sec }
@@ -140,7 +150,7 @@ private class Planner(input: PlanInput) {
             for (c in chosen) {
                 if (stretchesFor(c.variation).isEmpty()) {
                     return fail("no-stretch-pairing",
-                        "No allowed stretch pairs with ${c.variation.name} for the chosen stretch areas, so its recovery would be passive rest.",
+                        "No stretch fits ${c.variation.name} for the chosen stretch areas.",
                         listOf(PlanOption("change-stretch-focus", "Choose different stretch areas (or Full body)."),
                             PlanOption("swap-exercise", "Swap ${c.variation.name} for another exercise."),
                             PlanOption("stretch-off", "Turn stretching off (ordinary recovery stays).")))
@@ -171,31 +181,26 @@ private class Planner(input: PlanInput) {
             val mandatory = chosen.filter { !it.slot.optional }.ifEmpty { chosen }
             val minTotal = withTransitions(warm + rounds(mandatory, 1) + cool).sumOf { it.durationSeconds }
             return fail("budget-too-small",
-                "Even one round of the required exercises takes ${fmt(minTotal)}, longer than the requested ${fmt(budget)}.",
+                "Even one round takes ${fmt(minTotal)}, longer than the ${fmt(budget)} you asked for.",
                 listOf(PlanOption("increase-duration", "Increase the duration to at least ${(minTotal + 59) / 60} minutes."),
                     PlanOption("narrow-focus", "Choose a narrower strength focus."),
                     PlanOption("warmup-cooldown-off", "Turn warm-up/cooldown off.")))
         }
         val pick = cands.firstOrNull { it.total >= budget - UNDERFILL_TOLERANCE_SECONDS } ?: cands.maxWith(compareBy({ it.total }, { it.slots.size }))
         val dropped = chosen.filter { c -> pick.slots.none { it.slot.id == c.slot.id } }
-        if (dropped.isNotEmpty()) explain += "To fit ${fmt(budget)}, optional exercises were left out: ${dropped.joinToString { it.variation.name }}."
-        if (pick.rounds < MAX_ROUNDS || pick.total < budget) explain += "${pick.rounds} round${if (pick.rounds == 1) "" else "s"} of the circuit fit the time; movement speed and recovery were not changed."
+        if (dropped.isNotEmpty()) note(NoteKind.INFO, "Left out to fit the time: ${dropped.joinToString { it.variation.name }}.")
         val under = budget - pick.total
         if (under > UNDERFILL_TOLERANCE_SECONDS) {
             needsAcceptance = true
-            warn += "This workout takes ${fmt(pick.total)}, ${fmt(under)} less than the ${fmt(budget)} you asked for. No padding was added — accept the real length or change duration, focus or stretching."
+            note(NoteKind.LENGTH, "This workout takes ${fmt(pick.total)}, ${fmt(under)} less than the ${fmt(budget)} you asked for. Start anyway, or change the length.")
         }
         coverageWarning(pick.slots)
-        if (!draft.stretchOn) explain += "Stretching is off: ordinary recovery intervals are kept."
-        if (draft.warmupOn) explain += "Warm-up included in the time budget."
-        if (draft.cooldownOn) explain += "Cooldown included in the time budget."
 
         // 10. invariants (defensive; failing here is a bug, not a user problem)
         val mode = effectiveBetweenSetMode(draft.betweenSetMode, draft.flow, draft.stretchOn)
         val blocks = pick.blocks
         check(blocks.sumOf { it.durationSeconds } <= budget) { "plan exceeds budget" }
-        // R8.1-T07 (F8): with stretching on, plain rest appears only where every compatible stretch had already been used twice
-        if (blocks.any { it.type == BlockType.PASSIVE_RECOVERY } && draft.stretchOn) explain += "Some breaks are plain rest because each compatible stretch was already used twice in this workout."
+        // R8.1-T07 (F8): with stretching on, plain rest appears only where every compatible stretch had already been used twice (no note: nothing for the person to do)
         check(blocks.all { it.type != BlockType.TRANSITION || it.durationSeconds in 1..30 })
 
         val usesDraft = blocks.mapNotNull { it.variationId }.distinct().any { cat.variation(it)?.reviewState == ReviewState.DRAFT }
@@ -206,8 +211,8 @@ private class Planner(input: PlanInput) {
             catalogVersion = cat.catalogVersion, createdAtEpochMs = input.createdAtEpochMs, profileId = input.profile.id,
             requestedDurationSeconds = budget, plannedDurationSeconds = pick.total, focus = draft.focus,
             stretchOn = mode == BetweenSetMode.STRETCH, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed, format = draft.format, rule = draft.rule, flow = mode == BetweenSetMode.FLOW,
-            changesExplained = explain.distinct(), warnings = warn.distinct(), needsAcceptance = needsAcceptance,
-            usesDraftContent = usesDraft, blocks = blocks, betweenSetMode = mode, preparationSeconds = draft.preparationSeconds.coerceIn(1, 30),
+            changesExplained = allNotes().filter { !it.kind.warning }.map { it.text }, warnings = allNotes().filter { it.kind.warning }.map { it.text }, needsAcceptance = needsAcceptance,
+            usesDraftContent = usesDraft, blocks = blocks, betweenSetMode = mode, preparationSeconds = draft.preparationSeconds.coerceIn(1, 30), notes = allNotes(),
         ))
     }
 
@@ -237,7 +242,8 @@ private class Planner(input: PlanInput) {
             id = input.planId, routineId = input.routine.id, routineRevision = input.routine.revision, catalogVersion = cat.catalogVersion,
             createdAtEpochMs = input.createdAtEpochMs, profileId = input.profile.id, requestedDurationSeconds = total, plannedDurationSeconds = total,
             focus = draft.focus, stretchOn = true, goalId = null, rounds = 1, timed = false, format = WorkoutFormat.CIRCUIT, rule = ProgressionRule(),
-            changesExplained = listOf("Stretch session: 10 gentle bumps, then holds of 10, 20 and 30 s for each stretch. Not for before a workout."),
+            changesExplained = listOf("Stretch session: for each stretch, 10 gentle bumps, then holds of 10, 20 and 30 seconds. Not for before a workout."),
+            notes = listOf(PlanNote("Stretch session: for each stretch, 10 gentle bumps, then holds of 10, 20 and 30 seconds. Not for before a workout.", NoteKind.INFO)),
             warnings = emptyList(), needsAcceptance = false, usesDraftContent = blocks.mapNotNull { it.variationId }.distinct().any { cat.variation(it)?.reviewState == ReviewState.DRAFT }, blocks = blocks,
         ))
     }
@@ -257,7 +263,7 @@ private class Planner(input: PlanInput) {
     private fun chooseFor(slot: RoutineSlot): Chosen? {
         val prefId = draft.swaps[slot.id] ?: slot.preferredVariationId
         val prefOrNull = cat.variation(prefId)
-        if (prefOrNull == null) { warn += "${slot.id}: exercise '$prefId' is not in the catalog; slot skipped."; needsAcceptance = true; return null }
+        if (prefOrNull == null) { note(NoteKind.MISSING_MOVEMENT, "One exercise could not be found and was skipped."); needsAcceptance = true; return null }
         var pref: ExerciseVariation = prefOrNull
         // Use persisted family activity only when it belongs to this route/progression group.
         // A legacy family may now contain several independent routes (plank, hollow and L-sit).
@@ -274,12 +280,13 @@ private class Planner(input: PlanInput) {
                 selected.mainPath.getOrNull(selected.mainPath.indexOf(latest) + 1) ?: latest else latest
         }
         // An exercise the user picked (swap) or added is exactly that exercise: no route replacement, no alternative rotation.
-        val explicitPick = draft.swaps[slot.id] != null || slot.id.startsWith("add-")
+        // The same holds for an alternate the person answered at the start (or trains on its own) while the rung's main step has no progress yet.
+        val answeredAlternate = if (draft.swaps[slot.id] != null || slot.id.startsWith("add-")) null else answeredAlternateAtRung(pref, route, active)
+        val explicitPick = draft.swaps[slot.id] != null || slot.id.startsWith("add-") || answeredAlternate != null
         if (active != null && active != pref.id && !explicitPick) {
             // R8.1-T01 (F1): the route position is kept even when its exercise needs equipment that is missing today; the substitution below then stays at or above this rung
             cat.variation(active)?.takeIf { (route?.let { r -> it.id in r.mainPath } ?: (cat.progressionGroupOf(it.id) == group)) && (usable(it) || route != null) }?.let {
-                if (usable(it)) explain += if (5 in input.progress.variations[pref.id]?.achievedTiers.orEmpty()) "${it.name} replaces ${pref.name} because you completed all tiers of ${pref.name}."
-                    else "${it.name} replaces ${pref.name}: it is your current exercise on this progression."
+                if (usable(it) && 5 in input.progress.variations[pref.id]?.achievedTiers.orEmpty()) note(NoteKind.INFO, "You finished every level of ${pref.name}, so today you do ${it.name}.")
                 pref = it
             }
         }
@@ -308,25 +315,27 @@ private class Planner(input: PlanInput) {
         }
         var v: ExerciseVariation = pref
         if (!usable(v)) {
+            val why = if (isAvailable(v, input.profile)) "${v.name} is on your excluded list" else "You don't have ${missingForPlain(v, input.profile)}"
             val sub = substitute(slot, v, route)
             if (sub == null) {
-                warn += "${v.name} was left out: it needs ${missingFor(v, input.profile)} (or is excluded) and no suitable replacement exists. No other exercise was labelled as ${slot.intent.name.lowercase().replace('_', ' ')}."
+                note(NoteKind.EQUIPMENT, "$why, so ${v.name} is left out and nothing similar fits.")
                 needsAcceptance = true
                 return null
             }
-            val (sv, equivalent) = sub
-            if (!equivalent && cat.progressionRoutes.isNotEmpty()) {
-                route = cat.mainRouteFor(sv.id, draft.goalId)
+            val (sv, equivalent, floorBack) = sub
+            if ((!equivalent || floorBack) && cat.progressionRoutes.isNotEmpty()) {
+                route = cat.mainRouteFor(sv.id, draft.goalId)?.takeIf { sv.id in it.mainPath || it.members.any { m -> m.variationId == sv.id } }?.takeIf { it.mainPath.isNotEmpty() }
             }
-            if (equivalent) explain += "${sv.name} replaces ${v.name} (same movement, ${v.equipmentAlternatives.firstOrNull()?.let { "needs ${missingFor(v, input.profile)}" } ?: "unavailable"})."
+            if (floorBack) note(NoteKind.EQUIPMENT, "$why, so ${sv.name} replaces ${v.name}. It works your back and needs no equipment.")
+            else if (equivalent) note(NoteKind.EQUIPMENT, "$why, so ${sv.name} replaces ${v.name}.")
             else {
-                warn += "${sv.name} replaces ${v.name}, but it is NOT the same movement (${slot.intent.name.lowercase().replace('_', ' ')} is missing from this workout). Confirm before starting."
+                note(NoteKind.MISSING_MOVEMENT, "$why, and ${sv.name} is a different kind of exercise: this workout has no ${plainMovement(slot.intent)}. Check it before you start.")
                 needsAcceptance = true
             }
             v = sv
         }
         if (draft.swaps[slot.id] != null && slot.intent !in v.patterns) {
-            warn += "${v.name} is not the same movement as the slot it replaces (${slot.intent.name.lowercase().replace('_', ' ')}). Confirm before starting."
+            note(NoteKind.MISSING_MOVEMENT, "${v.name} is a different kind of exercise from the one it replaces (${plainMovement(slot.intent)}). Check it before you start.")
             needsAcceptance = true
         }
         // Explicitly demonstrated same-rung strength may suggest a conservative first target,
@@ -335,16 +344,15 @@ private class Planner(input: PlanInput) {
             slot.id !in draft.tierOverrides && v.id !in input.progress.variations) {
             inferredTier = demonstratedRungStartingTier(cat, v, input.progress, route?.id) ?: inferredTier
         }
-        val pol = cat.policyFor(v) ?: run { warn += "${v.name} has no progression policy; skipped."; return null }
+        val pol = cat.policyFor(v) ?: run { note(NoteKind.MISSING_MOVEMENT, "${v.name} could not be planned and was skipped."); return null }
         var tierIdx = input.progress.tierFor(v.id)
         if (tierIdx == null) {
             tierIdx = inferredTier ?: 1
-            explain += if (inferredTier != null) "${v.name}: estimated starting target from a same-rung exercise, reduced for the first workout. Your own results will guide this exercise from here."
-                else "${v.name}: no assessed level yet — starting at the easiest target (tier 1)."
+            if (inferredTier != null) note(NoteKind.INFO, "${v.name} starts a bit easier today, based on a similar exercise you do. Your results will adjust it.")
         }
         input.progress.reentryNeeded(v.id, input.nowDay)?.let { lower ->
             tierIdx = lower; needsAcceptance = true
-            warn += "Welcome back — you haven't trained ${v.name} for ${app.calisthenics.domain.progression.REENTRY_DAYS}+ days. Planned at tier $lower; choose your own re-entry level before starting. Earned stars are kept."
+            note(NoteKind.RETURN, "Welcome back. You haven't done ${v.name} for ${app.calisthenics.domain.progression.REENTRY_DAYS} days or more, so today starts at level $lower. Pick another level before you start if you like.")
         }
         // Kettlebell weight (owner 2026-10-08): a heavier bell than the one the level was earned with restarts at tier 1.
         val load = input.profile.loadGramsFor(v)
@@ -352,13 +360,12 @@ private class Planner(input: PlanInput) {
         val loadName = when (v.loadEquipmentId()) { app.calisthenics.domain.load.DUMBBELL_EQUIPMENT_ID -> "dumbbells"; app.calisthenics.domain.load.BARBELL_EQUIPMENT_ID -> "barbell"; app.calisthenics.domain.load.VEST_EQUIPMENT_ID -> "weighted vest"; else -> "kettlebell" }
         if (load != null && recorded != null && load > recorded) {
             tierIdx = 1
-            explain += "${v.name}: heavier $loadName (${formatKg(load)} kg instead of ${formatKg(recorded)} kg) — starting again at tier 1. Your stars at ${formatKg(recorded)} kg are kept."
+            note(NoteKind.LOAD, "${v.name}: your $loadName is heavier now (${formatKg(load)} kg, was ${formatKg(recorded)} kg), so you start again at level 1. Your earlier progress is kept.")
         } else if (load != null && recorded != null && load < recorded) {
-            warn += "${v.name}: your $loadName here is ${formatKg(load)} kg, lighter than the ${formatKg(recorded)} kg you train with — this session is logged but does not count towards your next tier."
+            note(NoteKind.LOAD, "${v.name}: your $loadName is lighter than usual (${formatKg(load)} kg, you train with ${formatKg(recorded)} kg), so this workout will not count toward your next level.")
         }
         draft.tierOverrides[slot.id]?.let { o ->
             val t = o.coerceIn(pol.tiers.minOf { it.index }, pol.tiers.maxOf { it.index })
-            if (t != tierIdx) explain += "${v.name}: level set to $t for today; explicitly logged results that meet its requirements can establish this level."
             tierIdx = t
         }
         return Chosen(slot.copy(progressionRouteId = route?.id), v, pol.tier(tierIdx!!), load,
@@ -381,7 +388,29 @@ private class Planner(input: PlanInput) {
         return floor
     }
 
-    private fun substitute(slot: RoutineSlot, original: ExerciseVariation, route: ProgressionRoute?): Pair<ExerciseVariation, Boolean>? {
+    /**
+     * [pref] is an alternate of the rung the person is on, it has its own progress and the rung's main step has none: it is what they answered at the start
+     * (Easy push = knee push-up, flexed-arm hang, band-assisted pull-up, ...), and the usual plan points the slot at it. That exact exercise and level is
+     * prescribed; progression then moves along the route. Returns [pref] then, else null (also when it cannot be done with today's equipment).
+     */
+    private fun answeredAlternateAtRung(pref: ExerciseVariation, route: ProgressionRoute?, active: String?): ExerciseVariation? {
+        route ?: return null
+        val rung = cat.routeAnchorFor(pref.id, route) ?: return null
+        if (active != null && active != rung) return null   // the route has moved on
+        return pref.takeIf { p -> ownAlternatesAtRung(cat, route, rung, input.progress).any { it.id == p.id } && usable(p) && !p.demonstrationHold && cat.policyFor(p) != null }
+    }
+
+    /** A replacement exercise: [equivalent] = trains the same movement; [floorBack] = floor back work standing in for a pull that needs equipment. */
+    private data class Sub(val variation: ExerciseVariation, val equivalent: Boolean, val floorBack: Boolean = false)
+
+    /**
+     * No pull equipment (bar, band, low bar): a pull slot gets back work that needs none, never a push. A real pulling pattern first (the towel row),
+     * then the prone raises, then the back extensions, in the owner's order. [pool] already holds only what is usable today.
+     */
+    private fun floorBackWork(pool: List<ExerciseVariation>): ExerciseVariation? =
+        FLOOR_BACK_WORK.firstNotNullOfOrNull { id -> pool.firstOrNull { it.id == id && it.equipmentAlternatives.any { set -> set.needs.isEmpty() } } }
+
+    private fun substitute(slot: RoutineSlot, original: ExerciseVariation, route: ProgressionRoute?): Sub? {
         val floor = route?.let { routeFloor(it) } ?: -1
         fun belowFloor(c: ExerciseVariation): Boolean {
             if (route == null || floor < 0) return false
@@ -394,15 +423,17 @@ private class Planner(input: PlanInput) {
             route.members.any { it.variationId == candidate.id && it.role == ProgressionRole.ALTERNATE && it.atVariationId == original.id } &&
                 cat.exerciseGroups.any { it.mainVariationId == original.id && candidate.id in it.alternativeVariationIds }
         }
-        rank(sameRungAlternatives.filter { slot.intent in it.patterns && slot.area in it.areas }).firstOrNull()?.let { return it to true }
+        rank(sameRungAlternatives.filter { slot.intent in it.patterns && slot.area in it.areas }).firstOrNull()?.let { return Sub(it, true) }
         // still the same route: a step or alternate of this progression at or above the rung already shown, never below it
         if (route != null && floor >= 0) {
             rank(pool.filter { c ->
                 slot.intent in c.patterns && slot.area in c.areas &&
                     (c.id in route.mainPath || route.members.any { it.variationId == c.id && it.role == ProgressionRole.ALTERNATE }) && cat.routeAnchorFor(c.id, route) != null
-            }).firstOrNull()?.let { return it to true }
+            }).firstOrNull()?.let { return Sub(it, true) }
         }
-        rank(pool.filter { slot.area in it.areas }).firstOrNull()?.let { return it to false }
+        // a pull with no pull equipment: back work on the floor, labelled as back work and needing no acceptance
+        if (slot.intent == Pattern.PULL_HORIZONTAL || slot.intent == Pattern.PULL_VERTICAL) floorBackWork(pool)?.let { return Sub(it, true, floorBack = true) }
+        rank(pool.filter { slot.area in it.areas }).firstOrNull()?.let { return Sub(it, false) }
         return null
     }
 
@@ -414,10 +445,19 @@ private class Planner(input: PlanInput) {
             ?: cat.mainRouteFor(v.id, draft.goalId)
         val routes = cat.routesFor(v.id).filter { route ->
             val role = route.members.firstOrNull { it.variationId == v.id }?.role
-            val roleOkay = v.id in route.mainPath || (role == ProgressionRole.ALTERNATE && cat.exerciseGroups.any { v.id in it.alternativeVariationIds })
+            // A skill session's own exercises (the goal's prerequisites, e.g. the band-assisted pull-up) and a filler the person answered (the knee push-up) may be alternates of their rung: dropping them left the skill session without its pull.
+            val roleOkay = v.id in route.mainPath || (role == ProgressionRole.ALTERNATE && (app.calisthenics.domain.goals.Goals.isSkillSlot(slotId) || (slotId.startsWith("ext-") && v.id in input.progress.variations) || cat.exerciseGroups.any { v.id in it.alternativeVariationIds }))
             roleOkay && (route.id == selected?.id || (slotId.startsWith("ext-") && route.defaultPool))
         }
         return routes.isNotEmpty()
+    }
+
+    /** The movement of a slot in everyday words, for notes. */
+    private fun plainMovement(p: Pattern): String = when (p) {
+        Pattern.PUSH_HORIZONTAL -> "push-up type exercise"; Pattern.PUSH_VERTICAL -> "overhead push"
+        Pattern.PULL_HORIZONTAL -> "rowing exercise"; Pattern.PULL_VERTICAL -> "pull-up type exercise"
+        Pattern.SQUAT -> "squat"; Pattern.LUNGE -> "lunge"; Pattern.HINGE -> "hip hinge"; Pattern.CALF_RAISE -> "calf raise"
+        else -> "core exercise of that kind"
     }
 
     // ---------- blocks ----------
@@ -576,9 +616,10 @@ private class Planner(input: PlanInput) {
         if (!draft.stretchOn) return
         val used = sl.flatMap { stretchesFor(it.variation) }.flatMap { it.stretchAreas }.filter { it != StretchArea.FULL_BODY }.toSet()
         val wanted = normalizeStretchAreas(draft.stretchAreas)
-        val missing = if (StretchArea.FULL_BODY in wanted) StretchArea.entries.filter { it != StretchArea.FULL_BODY && it !in used }
-        else wanted.filter { it !in used }
-        if (missing.isNotEmpty()) warn += "Stretch coverage is limited: nothing in this session stretches ${missing.joinToString { it.name.lowercase().replace('_', ' ') }}."
+        // "Full body" is the default: only areas the person picked on purpose are reported
+        if (StretchArea.FULL_BODY in wanted) return
+        val missing = wanted.filter { it !in used }
+        if (missing.isNotEmpty()) note(NoteKind.COVERAGE, "No stretch for ${missing.joinToString { it.name.lowercase().replace('_', ' ') }} in this workout.")
     }
 
     private fun fmt(s: Int) = if (s % 60 == 0) "${s / 60} min" else "${s / 60} min ${s % 60} s"

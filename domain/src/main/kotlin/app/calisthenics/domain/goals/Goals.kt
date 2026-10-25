@@ -98,11 +98,18 @@ object Goals {
         return false
     }
 
-    fun unmet(c: Catalog, v: String, p: ProgressSnapshot): List<VariationTier> =
+    /** The prerequisite groups still open for [v]: each group is a set of alternatives, one of which must be met (R8: pull-up needs band-assisted OR negative OR ...). */
+    private fun unmetGroups(c: Catalog, v: String, p: ProgressSnapshot): List<List<VariationTier>> =
         (c.policyForVariation(v)?.prerequisiteRule?.allOf ?: emptyList()).mapNotNull { group ->
             val preds = group.mapNotNull { it.variationTierMet }
-            if (preds.isEmpty() || preds.any { met(it, p) || movedPast(c, it.variationId, p) }) null else preds.first()
+            if (preds.isEmpty() || preds.any { met(it, p) || movedPast(c, it.variationId, p) }) null else preds
         }
+
+    fun unmet(c: Catalog, v: String, p: ProgressSnapshot): List<VariationTier> = unmetGroups(c, v, p).map { it.first() }
+
+    /** Which alternative of an open group to train: the first one the equipment allows (any, when no profile is given). */
+    private fun pickAlternative(c: Catalog, group: List<VariationTier>, profile: EquipmentProfile?): VariationTier =
+        group.firstOrNull { vt -> profile == null || c.variation(vt.variationId)?.let { app.calisthenics.domain.equipment.isAvailable(it, profile) } == true } ?: group.first()
 
     private fun mastered(v: String, p: ProgressSnapshot) = 5 in (p.variations[v]?.achievedTiers ?: emptySet())
 
@@ -127,12 +134,15 @@ object Goals {
         return v
     }
 
-    /** R7-T09 (B11, D2): the exercise to train for [v] at the person's level: itself if started or unlocked, else the first prerequisite that unlocks it (recursively). */
-    private fun trainable(c: Catalog, v: String, p: ProgressSnapshot): String {
+    /**
+     * R7-T09 (B11, D2): the exercise to train for [v] at the person's level: itself if started or unlocked, else the first prerequisite that unlocks it (recursively).
+     * Where a prerequisite can be met in several ways, the way the equipment allows is followed (a bar without a band leads to the negative pull-up and the hang, not to the band pull-up).
+     */
+    private fun trainable(c: Catalog, v: String, p: ProgressSnapshot, profile: EquipmentProfile?): String {
         var cur = v
         repeat(10) {
             if (p.variations.containsKey(cur)) return cur
-            cur = unmet(c, cur, p).firstOrNull()?.variationId ?: return cur
+            cur = unmetGroups(c, cur, p).firstOrNull()?.let { pickAlternative(c, it, profile).variationId } ?: return cur
         }
         return cur
     }
@@ -146,10 +156,10 @@ object Goals {
         val ch = chain(c, g); if (ch.isEmpty()) return emptyList()
         val step = ch[currentMainIndex(c, g, ch, p)]
         val out = LinkedHashSet<String>()
-        val missing = unmet(c, step, p)
+        val missing = unmetGroups(c, step, p)
         if (missing.isEmpty() || p.variations.containsKey(step)) out += step
-        if (missing.isNotEmpty()) missing.forEach { out += trainable(c, it.variationId, p) }
-        g.supports.forEach { out += trainable(c, it, p) }
+        missing.forEach { out += trainable(c, pickAlternative(c, it, profile).variationId, p, profile) }
+        g.supports.forEach { out += trainable(c, it, p, profile) }
         return out.filter { id -> c.variation(id)?.let { !it.demonstrationHold && (it.kind == Kind.REPS || it.kind == Kind.HOLD) && c.policyFor(it) != null && (profile == null || app.calisthenics.domain.equipment.isAvailable(it, profile)) } == true }
     }
 

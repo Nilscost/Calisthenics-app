@@ -57,13 +57,14 @@ class KettlebellLoadTest {
         val blocks = dlBlocks(progressAt(4, 12_000), 16_000)
         assertTrue(blocks.all { it.prescriptionTier == 1 && it.loadGrams == 16_000 })
         val p = (buildTrainPlan(catalog, StarterRoutine.routine, progressAt(4, 12_000), profile(16_000), TrainSettings(), mapOf("hinge" to DL)) as PlanResult.Ready).plan
-        assertTrue(p.changesExplained.any { "heavier kettlebell (16 kg instead of 12 kg)" in it })
+        assertTrue(p.warnings.any { "kettlebell is heavier now (16 kg, was 12 kg)" in it })
+        assertTrue(p.notes.any { it.kind == NoteKind.LOAD })
     }
 
     @Test fun aLighterBellKeepsTheTierButWarnsItWillNotCount() {
         assertTrue(dlBlocks(progressAt(4, 16_000), 12_000).all { it.prescriptionTier == 4 && it.loadGrams == 12_000 })
         val p = (buildTrainPlan(catalog, StarterRoutine.routine, progressAt(4, 16_000), profile(12_000), TrainSettings(), mapOf("hinge" to DL)) as PlanResult.Ready).plan
-        assertTrue(p.warnings.any { "lighter than the 16 kg" in it })
+        assertTrue(p.warnings.any { "lighter than usual (12 kg, you train with 16 kg)" in it })
     }
 
     @Test fun noRecordedWeightYetKeepsTheTier() {
