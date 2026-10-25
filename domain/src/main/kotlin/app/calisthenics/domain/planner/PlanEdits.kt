@@ -46,9 +46,23 @@ data class PlanEdits(
     val levelFiveTargets: Map<String, Int> = emptyMap(),
     /** Mode revision at which these extras were last explicitly edited (old drafts decode as revision 0). */
     val extraStretchModeRevision: Long = 0L,
+    /** slot -> the exercise a manual level / typed number was set on; the override is ignored for any other exercise in that slot (a rotated alternate). Entries without it (saved routines) apply as before. */
+    val overrideVariations: Map<String, String> = emptyMap(),
+    /** The day (epoch day) a manual level / typed number was last set; 0 = none or unknown (an older draft). */
+    val overrideEpochDay: Long = 0L,
 ) {
     fun isEmpty() = this == PlanEdits()
+    fun hasLevelOverrides() = tierOverrides.isNotEmpty() || levelFiveTargets.isNotEmpty() || freeTargets.isNotEmpty()
 }
+
+/** A manual level or typed number is for the next workout only: [expireLevelOverrides] clears them when set on an earlier day (or on an unknown day). */
+fun PlanEdits.expireLevelOverrides(todayEpochDay: Long): PlanEdits =
+    if (!hasLevelOverrides() || overrideEpochDay == todayEpochDay) this
+    else copy(tierOverrides = emptyMap(), levelFiveTargets = emptyMap(), freeTargets = emptyMap(), overrideVariations = emptyMap(), overrideEpochDay = 0L)
+
+/** Records that the manual level / typed number of [slotId] was set on [variationId] today. */
+fun PlanEdits.stampOverride(slotId: String, variationId: String?, todayEpochDay: Long): PlanEdits =
+    copy(overrideVariations = if (variationId != null) overrideVariations + (slotId to variationId) else overrideVariations, overrideEpochDay = todayEpochDay)
 
 /**
  * Swaps the cool-down stretch at [index] of [current] (the stretches the plan shows now, in order) for [pick], in place.

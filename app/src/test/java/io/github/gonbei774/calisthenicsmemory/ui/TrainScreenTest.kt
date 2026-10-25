@@ -176,7 +176,8 @@ class TrainScreenTest {
             swaps = mapOf("push" to "pushup-knee"), removed = setOf("core"),
             tierOverrides = mapOf("squat" to 3),
             added = listOf(app.calisthenics.domain.planner.AddedSlot("push",
-                app.calisthenics.domain.planner.slotFor(catalog.variation("pushup-diamond")!!))))
+                app.calisthenics.domain.planner.slotFor(catalog.variation("pushup-diamond")!!))),
+            overrideEpochDay = java.time.LocalDate.now().toEpochDay())
         io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.put(ctx,
             io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraft(key, manual, rest = mapOf("push" to 91)))
         show(); rule.waitForIdle()

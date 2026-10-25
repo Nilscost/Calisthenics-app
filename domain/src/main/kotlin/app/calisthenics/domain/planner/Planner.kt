@@ -364,12 +364,12 @@ private class Planner(input: PlanInput) {
         } else if (load != null && recorded != null && load < recorded) {
             note(NoteKind.LOAD, "${v.name}: your $loadName is lighter than usual (${formatKg(load)} kg, you train with ${formatKg(recorded)} kg), so this workout will not count toward your next level.")
         }
-        draft.tierOverrides[slot.id]?.let { o ->
+        draft.tierOverrides[slot.id]?.takeIf { draft.overrideVariations[slot.id].let { on -> on == null || on == v.id } }?.let { o ->
             val t = o.coerceIn(pol.tiers.minOf { it.index }, pol.tiers.maxOf { it.index })
             tierIdx = t
         }
         return Chosen(slot.copy(progressionRouteId = route?.id), v, pol.tier(tierIdx!!), load,
-            inferredTier?.takeIf { it == tierIdx && slot.id !in draft.tierOverrides })
+            inferredTier?.takeIf { it == tierIdx && !(slot.id in draft.tierOverrides && draft.overrideVariations[slot.id].let { on -> on == null || on == v.id }) })
     }
 
     /**
@@ -492,8 +492,9 @@ private class Planner(input: PlanInput) {
                 workIds += id
                 val secs = if (draft.timed && !isHold) (if (side == Side.NONE) TIMED_WORK_SECONDS else TIMED_WORK_SECONDS / 2) else t.workWindowSeconds
                 workTotal += secs
-                val free = draft.freeTargets["$r:${c.slot.id}"] ?: draft.freeTargets[c.slot.id]
-                val levelFive = draft.levelFiveTargets["$r:${c.slot.id}"] ?: draft.levelFiveTargets[c.slot.id]
+                val overrideHere = draft.overrideVariations[c.slot.id].let { on -> on == null || on == v.id }
+                val free = if (overrideHere) draft.freeTargets["$r:${c.slot.id}"] ?: draft.freeTargets[c.slot.id] else null
+                val levelFive = if (overrideHere) draft.levelFiveTargets["$r:${c.slot.id}"] ?: draft.levelFiveTargets[c.slot.id] else null
                 val rng = draft.rule
                 val ruleTarget = if (rng.isRange) (if (isHold) Target(t.target.type, rng.holdFrom, rng.holdTo) else Target(t.target.type, c.slot.repFrom ?: rng.from, maxOf(c.slot.repTo ?: rng.to, c.slot.repFrom ?: rng.from))) else null
                 val policy = cat.policyFor(v)!!

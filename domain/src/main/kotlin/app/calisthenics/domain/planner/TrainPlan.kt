@@ -164,7 +164,7 @@ private fun planFor(
         .copy(cooldownOn = s.cooldownOn, cooldownMode = s.cooldownMode, cooldownMinutes = edits.cooldownMinutes ?: s.cooldownMinutes, cooldownStretches = edits.cooldownStretches, cooldownRemoved = edits.cooldownRemoved, cooldownAdded = edits.cooldownAdded,
             focus = s.effectiveFocus(), swaps = swaps + edits.swaps, rounds = (if ((edits.rule ?: routine.rule).isRange) (edits.rule ?: routine.rule).sets else s.rounds).coerceIn(MIN_TRAIN_ROUNDS, MAX_EXPLICIT_ROUNDS), timed = s.timed, format = s.format,
             tierOverrides = edits.tierOverrides, stretchPicks = edits.stretchPicks, extraStretches = edits.extraStretches,
-            roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, levelFiveTargets = edits.levelFiveTargets, rule = edits.rule ?: routine.rule, flow = mode == BetweenSetMode.FLOW, betweenSetMode = mode, preparationSeconds = s.preparationSeconds.coerceIn(1, 30), warmupRemoved = edits.warmupRemoved)
+            roundStretchPicks = edits.roundStretchPicks, freeTargets = edits.freeTargets, levelFiveTargets = edits.levelFiveTargets, overrideVariations = edits.overrideVariations, rule = edits.rule ?: routine.rule, flow = mode == BetweenSetMode.FLOW, betweenSetMode = mode, preparationSeconds = s.preparationSeconds.coerceIn(1, 30), warmupRemoved = edits.warmupRemoved)
     val generated = withTimedExtras(catalog, generate(PlanInput("draft", nowEpochMs, nowDay, catalog, routine, draft, profile, progress = progress)), progress, profile, s.additionalPools)
     return if (s.conditioningOn) withConditioningFinisher(catalog, generated, progress, profile, edits.conditioningMinutes ?: s.conditioningMinutes, edits.conditioningRemoved) else generated
 }

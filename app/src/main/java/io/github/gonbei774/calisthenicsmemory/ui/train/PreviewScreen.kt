@@ -111,26 +111,23 @@ internal fun EquipmentNeededRow(ids: List<String>, modifier: Modifier = Modifier
     }
 }
 
+/** The plan's notes: the one or two most important as plain lines, the rest behind a compact "More (n)". Nothing when there are none. */
+internal fun planNotesOf(p: WorkoutPlan): List<PlanNote> =
+    p.notes.sortedBy { it.priority }.ifEmpty { (p.warnings.map { PlanNote(it, NoteKind.INFO) } + p.changesExplained.filter { it.isNotBlank() }.map { PlanNote(it, NoteKind.INFO) }) }
+
 @Composable
 private fun InfoRow(p: WorkoutPlan) {
     var open by remember { mutableStateOf(false) }
-    val notes = p.warnings + p.changesExplained.filter { it.isNotBlank() }
-    Card(
-        Modifier.fillMaxWidth().clickable(enabled = notes.isNotEmpty()) { open = !open }.testTag("info_row"),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
-    ) {
-        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                Icon(Icons.Filled.Info, contentDescription = null)
-                // R8.1-T08 (F10): no "unreviewed draft" bubble; the row only points at the notes of this plan
-                Text(
-                    stringResource(R.string.preview_note), Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-                if (notes.isNotEmpty()) Text(stringResource(R.string.preview_more_notes, notes.size), style = MaterialTheme.typography.labelLarge)
-            }
-            if (open) notes.forEach { Text(stringResource(R.string.bullet_item, it), style = MaterialTheme.typography.bodySmall) }
-        }
+    val notes = planNotesOf(p)
+    if (notes.isEmpty()) return
+    val shown = notes.take(2); val rest = notes.drop(2)
+    Column(Modifier.fillMaxWidth().testTag("info_row"), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+        (if (open) notes else shown).forEachIndexed { i, n -> Text(n.text, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("plan_note_$i")) }
+        if (rest.isNotEmpty()) Text(
+            stringResource(if (open) R.string.preview_less_notes else R.string.preview_more_notes, rest.size),
+            style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text,
+            modifier = Modifier.clickable { open = !open }.padding(vertical = Spacing.xs).testTag("notes_more"),
+        )
     }
 }
 
@@ -366,7 +363,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                         style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"),
                     )
                     EquipmentNeededRow(app.calisthenics.domain.equipment.planEquipment(data.catalog, p.blocks.mapNotNull { it.variationId }, profile))
-                    if (p.warnings.isNotEmpty() || p.changesExplained.any { it.isNotBlank() }) InfoRow(p)
+                    InfoRow(p)
                     // R8.1-T05 (F5): Straight sets / Pairs / Circuit, and the number of sets, in the Preview
                     Column(Modifier.fillMaxWidth().testTag("format_picker"), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                         Caption(stringResource(R.string.train_format_caption))
@@ -417,7 +414,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                                     }
                                     val nextTier = if (extensionStepDown) 5 else stepLevel(e.tier, d, tiers.size.coerceAtLeast(5))
                                     edits = edits.copy(tierOverrides = edits.tierOverrides + (e.slotId to nextTier), levelFiveTargets = updatedExtensions,
-                                        freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) })
+                                        freeTargets = edits.freeTargets.filterKeys { k -> k != e.slotId && !k.endsWith(":" + e.slotId) }).stampOverride(e.slotId, e.variationId, java.time.LocalDate.now().toEpochDay())
                                 }
                             },
                             onSwap = { swapSlot = e.slotId }, onRemove = { removeSlot = e.slotId }, sfx = sfx,
@@ -611,7 +608,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                     OutlinedTextField(value = text, onValueChange = { text = it.filter { c -> c.isDigit() }.take(3) }, singleLine = true, keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Number), modifier = Modifier.testTag("free_number_field"))
                 }
             },
-            confirmButton = { AppTextButton(onClick = { text.toIntOrNull()?.takeIf { it > 0 }?.let { n -> edits = edits.copy(freeTargets = edits.freeTargets + ("$st:$id" to n)) }; typeFor = null }, modifier = Modifier.testTag("free_number_ok")) { Text(stringResource(R.string.preview_type_ok)) } },
+            confirmButton = { AppTextButton(onClick = { text.toIntOrNull()?.takeIf { it > 0 }?.let { n -> edits = edits.copy(freeTargets = edits.freeTargets + ("$st:$id" to n)).stampOverride(id, (result as? PlanResult.Ready)?.plan?.let { pl -> circuitOf(pl).firstOrNull { it.slotId == id }?.variationId }, java.time.LocalDate.now().toEpochDay()) }; typeFor = null }, modifier = Modifier.testTag("free_number_ok")) { Text(stringResource(R.string.preview_type_ok)) } },
             dismissButton = { AppTextButton(onClick = { edits = edits.copy(freeTargets = edits.freeTargets - "$st:$id"); typeFor = null }, modifier = Modifier.testTag("free_number_clear")) { Text(stringResource(R.string.preview_type_clear)) } },
         )
     }
