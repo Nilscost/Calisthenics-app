@@ -92,6 +92,25 @@ private fun targetText(t: Target?, perSide: Boolean, loadGrams: Int? = null): St
 fun withLoad(text: String, loadGrams: Int?): String =
     if (loadGrams == null || text.isEmpty()) text else stringResource(R.string.target_with_load, text, app.calisthenics.domain.load.formatKg(loadGrams))
 
+/** Owner 2026-10-26: what to prepare before the session, from the exercises actually in the plan (and so live as they change). */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+internal fun EquipmentNeededRow(ids: List<String>, modifier: Modifier = Modifier) {
+    Column(modifier.fillMaxWidth().testTag("equipment_needed"), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Caption(stringResource(R.string.preview_equipment_caption))
+        if (ids.isEmpty()) Text(stringResource(R.string.programs_no_equipment), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("equipment_none"))
+        else FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.m), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            ids.forEach { id ->
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.testTag("equipment_$id")) {
+                    io.github.gonbei774.calisthenicsmemory.ui.theme.EquipmentIcons.forId(id)?.let { Icon(it, contentDescription = null, modifier = Modifier.size(20.dp)) }
+                    Text(stringResource(io.github.gonbei774.calisthenicsmemory.ui.screens.equipmentLabelShortPublic(id)), style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        }
+        Text(stringResource(R.string.preview_equipment_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
+    }
+}
+
 @Composable
 private fun InfoRow(p: WorkoutPlan) {
     var open by remember { mutableStateOf(false) }
@@ -346,6 +365,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                         stringResource(R.string.preview_header, io.github.gonbei774.calisthenicsmemory.ui.components.countText(R.plurals.count_rounds, p.rounds), (p.plannedDurationSeconds + 30) / 60, stringResource(if (p.timed) R.string.style_timed else R.string.style_reps)),
                         style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("preview_header"),
                     )
+                    EquipmentNeededRow(app.calisthenics.domain.equipment.planEquipment(data.catalog, p.blocks.mapNotNull { it.variationId }, profile))
                     if (p.warnings.isNotEmpty() || p.changesExplained.any { it.isNotBlank() }) InfoRow(p)
                     // R8.1-T05 (F5): Straight sets / Pairs / Circuit, and the number of sets, in the Preview
                     Column(Modifier.fillMaxWidth().testTag("format_picker"), verticalArrangement = Arrangement.spacedBy(6.dp)) {

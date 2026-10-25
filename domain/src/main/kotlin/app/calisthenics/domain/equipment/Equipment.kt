@@ -22,6 +22,14 @@ object SeedProfiles {
         ),
         capabilities = setOf("floor-space", "wall"),
     )
+    /** What a fresh install starts with (owner 2026-10-26): only a wall and a mat are pre-ticked; the rest is the user's to tick.
+     *  [home] stays the full seed for tests and fixtures; saved profiles are never touched. */
+    val starterHome = EquipmentProfile(
+        id = "home",
+        name = "Home",
+        items = listOf(EquipmentItem("mat")),
+        capabilities = setOf("floor-space", "wall"),
+    )
     val travel = EquipmentProfile(
         id = "travel",
         name = "Travel",
@@ -29,6 +37,8 @@ object SeedProfiles {
         capabilities = setOf("floor-space", "wall"),
     )
     val all = listOf(home, travel)
+    /** First-run seeds: [starterHome] and [travel]. */
+    val firstRun = listOf(starterHome, travel)
 }
 
 /** Session-only change of what is available today (EQ-02). Never edits the saved profile. */

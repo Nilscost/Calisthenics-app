@@ -20,8 +20,8 @@ object ProfileStore {
         if (!stored.isNullOrEmpty()) return stored.map(::withBandAnchor).also { if (it != stored) save(ctx, it) }
         // First run (or unreadable): seeds. The old loose "high bar" toggle becomes a real item on Home.
         val seeds = if (ModeStore.takeLegacyHighBar(ctx))
-            SeedProfiles.all.map { if (it.id == "home") it.copy(items = it.items + EquipmentItem("high-bar")) else it }
-        else SeedProfiles.all
+            SeedProfiles.firstRun.map { if (it.id == "home") it.copy(items = it.items + EquipmentItem("high-bar")) else it }
+        else SeedProfiles.firstRun
         save(ctx, seeds)
         return seeds
     }

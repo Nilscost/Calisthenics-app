@@ -155,6 +155,7 @@ internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMo
             savedNote?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("routine_saved_note")) }
             if (unavailable.isNotEmpty()) Text(stringResource(R.string.programs_unavailable, profile.name), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("program_unavailable"))
 
+            EquipmentNeededRow(app.calisthenics.domain.equipment.planEquipment(data.catalog, plan?.blocks?.mapNotNull { it.variationId } ?: content.items.map { it.exerciseId }, profile))
             Column(Modifier.fillMaxWidth().testTag("format_picker"), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Caption(stringResource(R.string.train_format_caption))
                 SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {

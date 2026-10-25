@@ -109,6 +109,8 @@
     <string name="programs_item_count">%1$d exercises</string>
     <string name="programs_summary">About %1$d min · %2$s</string>
     <string name="programs_no_equipment">No equipment</string>
+    <string name="preview_equipment_caption">Equipment needed</string>
+    <string name="preview_equipment_hint">What to have ready before you start.</string>
     <string name="programs_details">Details</string>
     <string name="programs_close">Close</string>
     <string name="programs_line">%1$d. %2$s — %3$s</string>

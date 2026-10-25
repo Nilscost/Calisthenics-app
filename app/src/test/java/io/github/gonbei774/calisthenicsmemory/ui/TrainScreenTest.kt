@@ -29,6 +29,7 @@ class TrainScreenTest {
         for (n in listOf("profiles", "mode", "planner_prefs", "train", "goal", "levels", "onboarding", "saved_routines", "preview_draft"))
             ctx.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit()
         OnboardingStore.setDone(ctx)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.save(ctx, app.calisthenics.domain.equipment.SeedProfiles.all) // full gear: these tests are not about the first-run defaults
     }
 
     private fun minutes(): Int = rule.onNodeWithTag("minutes").fetchSemanticsNode().config
