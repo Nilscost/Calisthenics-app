@@ -74,11 +74,16 @@ data class AdvancementInput(
 const val LEVEL_UP_SESSIONS = 3
 /** ... that fall inside any rolling window of this many days (a window holds 14 calendar days, so the first and the last session are at most 13 days apart). */
 const val LEVEL_UP_WINDOW_DAYS = 14
+/** Slower path for once-a-week trainers (owner decision): this many qualifying sessions (distinct days) ... */
+const val LEVEL_UP_SLOW_SESSIONS = 4
+/** ... inside any rolling window of this many days (first and last at most 29 days apart). */
+const val LEVEL_UP_SLOW_WINDOW_DAYS = 30
 
 /**
  * Evaluate advancement under the owner decision of 2026-10-17 (R8.1-T04, F4), which supersedes ADR 0002 §C3 ("3 exposures spanning at
  * least 7 days, one advancement per 7 days, 7 days at the tier"):
  *  - a level rises after [LEVEL_UP_SESSIONS] qualifying sessions (distinct days) inside any rolling [LEVEL_UP_WINDOW_DAYS]-day window;
+ *  - or, additively, [LEVEL_UP_SLOW_SESSIONS] qualifying sessions inside any rolling [LEVEL_UP_SLOW_WINDOW_DAYS]-day window (weekly cadence levels up after about a month);
  *  - sessions before the day the tier was enrolled do not count; a longer gap between sessions never costs anything already earned;
  *  - ABOVE ratings, extra rounds and same-day sessions never accelerate this (each day counts once).
  * [AdvancementInput.lastAutoAdvancementDay] is kept for callers but no longer limits the pace.
@@ -88,7 +93,8 @@ fun evaluateAdvancement(input: AdvancementInput): AdvancementResult {
     val next = p.nextTierIndex(input.currentTier) ?: return AdvancementResult.NoChange
 
     val days = input.exposures.filter { it.variationId == p.variationId && it.day >= input.enrolledAtDay }.map { it.day }.distinct().sorted()
-    val inWindow = (0..days.size - LEVEL_UP_SESSIONS).any { days[it + LEVEL_UP_SESSIONS - 1] - days[it] < LEVEL_UP_WINDOW_DAYS }
+    fun within(n: Int, window: Int) = (0..days.size - n).any { days[it + n - 1] - days[it] < window }
+    val inWindow = within(LEVEL_UP_SESSIONS, LEVEL_UP_WINDOW_DAYS) || within(LEVEL_UP_SLOW_SESSIONS, LEVEL_UP_SLOW_WINDOW_DAYS)
     if (!inWindow) return AdvancementResult.NoChange
     return AdvancementResult.Advance(input.currentTier, next, days)
 }
