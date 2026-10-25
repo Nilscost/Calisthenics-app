@@ -273,10 +273,13 @@ private class Planner(input: PlanInput) {
             if (latest == null) null else if (5 in input.progress.variations.getValue(latest).achievedTiers)
                 selected.mainPath.getOrNull(selected.mainPath.indexOf(latest) + 1) ?: latest else latest
         }
-        if (active != null && active != pref.id && draft.swaps[slot.id] == null) {
+        // An exercise the user picked (swap) or added is exactly that exercise: no route replacement, no alternative rotation.
+        val explicitPick = draft.swaps[slot.id] != null || slot.id.startsWith("add-")
+        if (active != null && active != pref.id && !explicitPick) {
             // R8.1-T01 (F1): the route position is kept even when its exercise needs equipment that is missing today; the substitution below then stays at or above this rung
             cat.variation(active)?.takeIf { (route?.let { r -> it.id in r.mainPath } ?: (cat.progressionGroupOf(it.id) == group)) && (usable(it) || route != null) }?.let {
-                if (usable(it)) explain += "${it.name} replaces ${pref.name} because you completed all tiers of ${pref.name}."
+                if (usable(it)) explain += if (5 in input.progress.variations[pref.id]?.achievedTiers.orEmpty()) "${it.name} replaces ${pref.name} because you completed all tiers of ${pref.name}."
+                    else "${it.name} replaces ${pref.name}: it is your current exercise on this progression."
                 pref = it
             }
         }
@@ -293,7 +296,7 @@ private class Planner(input: PlanInput) {
             pref = easier
         }
         var inferredTier: Int? = null
-        if (hold == null && draft.swaps[slot.id] == null) {
+        if (hold == null && !explicitPick) {
             val rotated = rotatedExercise(cat, pref, input.progress, input.profile, input.excludedVariationIds, route?.id)
             if (rotated.id != pref.id && !draft.rule.isRange && !draft.timed && draft.freeTargets.isEmpty()) {
                 val anchor = route?.members?.firstOrNull { it.variationId == rotated.id && it.role == ProgressionRole.ALTERNATE }

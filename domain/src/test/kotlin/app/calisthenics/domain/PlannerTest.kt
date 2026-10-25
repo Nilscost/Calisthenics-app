@@ -208,7 +208,7 @@ class PlannerTest {
         val prog = ProgressSnapshot(emptyMap(), mapOf("pushup" to "pushup-std"), emptyMap(), emptyList())
         val p = ready(input(30, progress = prog))
         assertTrue(p.blocks.any { it.variationId == "pushup-std" })
-        assertTrue(p.changesExplained.any { it.contains("completed all tiers") })
+        assertTrue(p.changesExplained.any { it.contains("replaces") })   // E1: the "completed all tiers" claim is only made when tier 5 of the replaced exercise is achieved
     }
 
     @Test fun `re-entry after a break needs acceptance`() {
