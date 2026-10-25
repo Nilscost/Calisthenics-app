@@ -196,12 +196,13 @@ class PlannerTest {
         assertEquals(Target(TargetType.REPS, 15), p.blocks.first { it.variationId == "pushup-knee" }.target)
     }
 
-    @Test fun `discomfort hold blocks the slot and never prescribes it harder`() {
+    @Test fun `discomfort hold keeps the slot at its lowest level and never prescribes it harder`() {
         val ev = app.calisthenics.domain.feedback.SessionEvidence("s", "pushup-knee", "pushup", 0, 1, 2, false, false, true, 0, false, 2, 0, 2)
         val prog = ProgressionEngine(catalog).replay(listOf(ev), emptyList())
         val p = ready(input(30, progress = prog, day = 1))
-        assertTrue(p.blocks.none { it.variationId == "pushup-knee" })
-        assertTrue(p.warnings.any { it.contains("discomfort") }); assertTrue(p.needsAcceptance)
+        // W2: discomfort never drops the slot; with nothing easier than level 1 the exercise stays at its lowest level
+        assertEquals(Target(TargetType.REPS, 5), p.blocks.first { it.variationId == "pushup-knee" }.target)
+        assertTrue(p.changesExplained.any { it.contains("discomfort") })
     }
 
     @Test fun `successor replaces the completed variation with an explanation`() {

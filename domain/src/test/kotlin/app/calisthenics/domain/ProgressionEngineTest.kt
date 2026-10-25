@@ -60,7 +60,7 @@ class ProgressionEngineTest {
 
     @Test fun `discomfort pauses the whole family and silence never clears it`() {
         val s = engine.replay(listOf(ev(0), ev(3, discomfort = true), ev(7), ev(10), ev(14)), listOf(start))
-        assertNotNull(s.holdFor("pushup")); assertEquals(2, s.tierFor(V))
+        assertNotNull(s.holdFor("pushup")); assertEquals(1, s.tierFor(V))   // W2: stepped one easier by itself; level-2 sessions neither clear it nor move it
     }
 
     @Test fun `discomfort on a sibling variation holds the family`() {
@@ -72,9 +72,9 @@ class ProgressionEngineTest {
     @Test fun `comfort clearance resumes but never jumps immediately`() {
         val acts = listOf(start, UserAction.ComfortClearance(20, "pushup"))
         val s = engine.replay(listOf(ev(0), ev(3, discomfort = true), ev(7), ev(21)), acts)
-        assertNull(s.holdFor("pushup")); assertEquals(2, s.tierFor(V))
-        val later = engine.replay(listOf(ev(0), ev(3, discomfort = true), ev(21), ev(24), ev(28)), acts)
-        assertEquals(3, later.tierFor(V))
+        assertNull(s.holdFor("pushup")); assertEquals(1, s.tierFor(V))
+        val later = engine.replay(listOf(ev(0), ev(3, discomfort = true), ev(21, tier = 1), ev(24, tier = 1), ev(28, tier = 1)), acts)
+        assertEquals(2, later.tierFor(V))
     }
 
     @Test fun `late discomfort edit is applied from the report day and is deterministic`() {

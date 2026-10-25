@@ -91,6 +91,11 @@ data class VariationProgress(
     val demonstratedTier: Int? = null,
     /** Personal-target revision under which [demonstratedTier] was established. */
     val demonstratedTargetRevision: Int? = null,
+    /** W2: after a session fell short, the per-set target for the next one is the lowest logged value; it builds back up to the level's own target. Applies to level [reducedTargetTier] only. */
+    val reducedTarget: Int? = null,
+    val reducedTargetTier: Int? = null,
+    /** W2: at level 5 of a route with no next exercise, the automatically raised level-5 target (+1 rep / +5 s after each qualifying streak); null = the level's own target. */
+    val topTarget: Int? = null,
 ) {
     /** Highest consecutive achieved tier counted from the tier the variation was started at. */
     fun earnedStars(): Int {
@@ -102,7 +107,8 @@ data class VariationProgress(
     }
 }
 
-data class FamilyHold(val familyId: String, val sinceDay: Int, val easierAcceptedTier: Int?, val easierVariationId: String?)
+/** [easierVariationId] at [easierAcceptedTier] is the easier prescription (W2: chosen automatically after discomfort); [steps] counts how often discomfort stepped it down. */
+data class FamilyHold(val familyId: String, val sinceDay: Int, val easierAcceptedTier: Int?, val easierVariationId: String?, val steps: Int = 0)
 
 data class ProgressEvent(val day: Int, val variationId: String, val message: String)
 
@@ -239,14 +245,25 @@ class ProgressionEngine(private val catalog: Catalog) {
             val initialTier = if (ev.progressionEvidenceVersion >= 1 && inferred == null) 1 else (ev.prescribedTier ?: 1)
             var p = ensure(vid, ev.day, tier = initialTier, baseline = inferred)
             if (p.targetRevision != ev.targetRevision) p = p.copy(targetRevision = ev.targetRevision, streakDays = emptyList(), streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false,
-                demonstratedTier = null, demonstratedTargetRevision = null)
+                demonstratedTier = null, demonstratedTargetRevision = null,
+                reducedTarget = null, reducedTargetTier = null, topTarget = null)
             if (ev.progressionEvidenceVersion >= 1 && ev.effectivePolicySnapshot != null) {
                 p = p.copy(effectivePolicySnapshot = ev.effectivePolicySnapshot)
             }
             p = p.copy(lastTrainedDay = maxOf(p.lastTrainedDay ?: ev.day, ev.day))
             val start = p
             raiseActive(active, p.familyId, vid, ev.progressionRouteId, ev.completedWorkBlocks > 0 && !ev.skippedOrPartial)
-            val hold = holds[p.familyId]
+            var hold = holds[p.familyId]
+            // W2: a clean session on the easier prescription ends the hold; normal progression resumes from that (easier) level, this session being the first one.
+            if (hold != null && ev.variationId == hold.easierVariationId && ev.day > hold.sinceDay && ev.completedWorkBlocks > 0 && !ev.skippedOrPartial && !ev.discomfort &&
+                (ev.prescribedTier == null || hold.easierAcceptedTier == null || ev.prescribedTier <= hold.easierAcceptedTier)) {
+                holds.remove(p.familyId)
+                val route = selectedRoute(vid, ev.progressionRouteId)
+                if (!isRotationAlternative(vid, ev.progressionRouteId) && (route == null || vid in route.mainPath)) active[p.familyId] = vid
+                p = p.copy(streakDays = emptyList(), streakAssumed = 0, consecutiveBelow = 0, lowerTargetSuggested = false)
+                events += ProgressEvent(ev.day, vid, "Completed the easier option without discomfort — normal progression resumes from level ${p.tier} of ${catalog.variation(vid)?.name ?: vid}.")
+                hold = null
+            }
             val definition = catalog.personalTargets[vid]
             val staleDefinition = definition != null && ev.targetRevision != definition.revision &&
                 definition.modifiedAtEpochMs > 0 && ev.recordedAtEpochMs >= definition.modifiedAtEpochMs
@@ -294,6 +311,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                         ruleAbove = false,
                         demonstratedTier = maxOf(p.demonstratedTier ?: 0, adopted),
                         demonstratedTargetRevision = ev.targetRevision,
+                        reducedTarget = null, reducedTargetTier = null, topTarget = null,
                     )
                     events += ProgressEvent(ev.day, vid,
                         "Met level $adopted targets — it is now your current level. Successful session 1 of 3 toward the next level.")
@@ -358,6 +376,32 @@ class ProgressionEngine(private val catalog: Catalog) {
                     demonstratedTargetRevision = ev.targetRevision,
                 )
             }
+            // W2 (owner): when logged sets fell short of the target, the lowest logged value is the target for the next session, then it builds back up (+1 rep / +5 s per clean session) to the level's own target.
+            if (ev.ruleMet == null && !ev.discomfort && !staleDefinition && !lighter && !unknownWeightOnTrack && !heavierTrackReset) {
+                val pol = p.effectivePolicySnapshot ?: policy(vid)
+                val levelTarget = pol?.tiers?.firstOrNull { it.index == p.tier }?.target
+                val own = if (levelTarget != null) app.calisthenics.domain.planner.cappedTarget(levelTarget, pol).value else null
+                val stepUp = if (levelTarget?.type == app.calisthenics.domain.model.TargetType.HOLD_SECONDS) 5 else 1
+                when {
+                    p.tier != start.tier -> p = p.copy(reducedTarget = null, reducedTargetTier = null)
+                    ev.shortfallValue != null && own != null && ev.prescribedTier == p.tier -> {
+                        val low = ev.shortfallValue
+                        if (low < own) {
+                            p = p.copy(reducedTarget = low, reducedTargetTier = p.tier, topTarget = if (p.tier == 5 && (p.topTarget ?: 0) > 0) null else p.topTarget)
+                            events += ProgressEvent(ev.day, vid, "Your lowest set was $low — that is the target next time ($low per set), then it builds back up to $own.")
+                        } else if (p.tier == 5 && p.topTarget != null && low < p.topTarget!!) {
+                            p = p.copy(topTarget = low.takeIf { it > own })
+                            events += ProgressEvent(ev.day, vid, "Your lowest set was $low — that is the level 5 target next time.")
+                        }
+                    }
+                    p.reducedTarget != null && p.reducedTargetTier == p.tier && ev.shortfallValue == null && ev.completedWorkBlocks > 0 && !ev.skippedOrPartial && ev.prescribedTier == p.tier -> {
+                        val next = p.reducedTarget!! + stepUp
+                        val demonstrated = ev.demonstratedQualifying && (ev.demonstratedTier ?: 0) >= p.tier
+                        p = if (own == null || next >= own || demonstrated) p.copy(reducedTarget = null, reducedTargetTier = null, consecutiveBelow = 0, lowerTargetSuggested = false)
+                            else p.copy(reducedTarget = next, consecutiveBelow = 0, lowerTargetSuggested = false)
+                    }
+                }
+            }
             // V02 / D7, R7.2-T06 (F7, O1): "too easy" (once is enough) suggests a move on; the tier itself never changes here. What the move is (two levels, or the next exercise) is decided in [suggest].
             val byRule = ev.ruleMet != null
             val tooEasy = !staleDefinition && ev.anyAbove && (byRule || ev.prescribedTier == start.tier) && !ev.anyBelow && !ev.discomfort && !ev.skippedOrPartial && !lighter
@@ -371,12 +415,21 @@ class ProgressionEngine(private val catalog: Catalog) {
             val reportDay = ev.discomfortReportedDay ?: ev.day
             items += Item(reportDay, 1, "d" + ev.sessionId + ev.variationId) {
                 val fam = family(ev.variationId)
-                if (holds[fam] == null) {
-                    holds[fam] = FamilyHold(fam, reportDay, null, null)
-                    events += ProgressEvent(reportDay, ev.variationId,
-                        "Discomfort reported — automatic progression paused for the whole ${fam} family. An easier option will be offered; it stays paused until you say you're comfortable again.")
-                }
-                vars[ev.variationId]?.let { vars[ev.variationId] = it.copy(streakDays = emptyList(), streakAssumed = 0) }
+                val cur = vars[ev.variationId]
+                // W2 (owner): discomfort automatically steps the prescription one level easier (never harder), without anything to accept.
+                // Repeated discomfort steps down again; a clean session on the easier prescription ends the hold (see the session items).
+                val base = minOf(ev.prescribedTier ?: cur?.tier ?: 1, cur?.tier ?: Int.MAX_VALUE)
+                val step = easierStep(catalog, ev.variationId, base, ev.progressionRouteId)
+                val target = vars[step.variationId] ?: ensure(step.variationId, reportDay, step.tier)
+                val tier = if (step.variationId == ev.variationId) step.tier else minOf(target.tier, step.tier)
+                vars[step.variationId] = target.copy(tier = tier, enrolledAtDay = reportDay, streakDays = emptyList(), streakAssumed = 0, consecutiveBelow = 0,
+                    lowerTargetSuggested = false, consecutiveAbove = 0, raiseSuggested = false, reducedTarget = null, reducedTargetTier = null, topTarget = null)
+                val before = holds[fam]
+                holds[fam] = FamilyHold(fam, reportDay, tier, step.variationId, (before?.steps ?: 0) + 1)
+                val name = catalog.variation(step.variationId)?.name ?: step.variationId
+                events += ProgressEvent(reportDay, ev.variationId,
+                    "Discomfort reported — the next workouts use an easier option ($name, level $tier). Complete it without discomfort and normal progression resumes from there.")
+                if (step.variationId != ev.variationId) vars[ev.variationId]?.let { vars[ev.variationId] = it.copy(streakDays = emptyList(), streakAssumed = 0) }
             }
         }
         for ((i, a) in actions.withIndex()) items += Item(a.day, 2, "a%06d".format(i)) {
@@ -514,7 +567,10 @@ class ProgressionEngine(private val catalog: Catalog) {
                 lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
         }
         // Top tier: same pacing gate (evaluated as if a 6th tier existed) then successor move.
-        if (p0.tier == 5 && 5 !in p0.achievedTiers && gateWouldPass(pol, p0, day, days)) {
+        // W2: back on a rung after an easier step (discomfort) with all five levels already earned: the same gate lets it move on again.
+        val returning = p0.tier == 5 && 5 in p0.achievedTiers && active[p0.familyId] == p0.variationId && !isRotationAlternative(p0.variationId, routeId) &&
+            mainSuccessor(p0.variationId, routeId)?.takeIf { prerequisitesMet(it, vars) } != null
+        if (p0.tier == 5 && (5 !in p0.achievedTiers || returning) && gateWouldPass(pol, p0, day, days)) {
             val earnedAtTop = when {
                 demonstratedLevelFive -> setOf(5) // lower stars come from baselineTier, not fabricated achievements
                 levelFiveCompletion -> (1..5).toSet() // preserve historical level-five inference
@@ -539,7 +595,30 @@ class ProgressionEngine(private val catalog: Catalog) {
             }
             return achieved
         }
+        // W2 (owner): the top of a route (level 5 earned, no next exercise): keep raising the target after each qualifying streak (+1 rep, +5 s for holds); the planner also keeps alternating same-rung variations.
+        if (p0.tier == 5 && 5 in p0.achievedTiers && !routeHasNext(p0.variationId, routeId) && catalog.variation(p0.variationId)?.isLoaded() != true && gateWouldPass(pol, p0, day, days)) {
+            val five = pol.tier(5).target
+            val current = p0.topTarget ?: five.value
+            val raised = current + if (five.type == app.calisthenics.domain.model.TargetType.HOLD_SECONDS) 5 else 1
+            val cap = if (five.type == app.calisthenics.domain.model.TargetType.REPS) pol.maxRepsPerSet else null
+            if (raised <= 999 && (cap == null || raised <= cap)) {
+                val unit = if (five.type == app.calisthenics.domain.model.TargetType.HOLD_SECONDS) "s" else " reps"
+                events += ProgressEvent(day, p0.variationId, "Top of this progression: the level 5 target of ${catalog.variation(p0.variationId)?.name ?: p0.variationId} rises to $raised$unit.$assumedNote")
+                return p0.copy(topTarget = raised, lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
+            }
+        }
         return p0
+    }
+
+    /** W2: does the route of [vid] continue after the rung of [vid]? (No route: does its policy name a successor?) */
+    private fun routeHasNext(vid: String, routeId: String?): Boolean {
+        val route = selectedRoute(vid, routeId)
+        if (route != null) {
+            val anchor = catalog.routeAnchorFor(vid, route) ?: return false
+            val at = route.mainPath.indexOf(anchor)
+            return at >= 0 && at + 1 < route.mainPath.size
+        }
+        return policy(vid)?.progressionSuccessors()?.isNotEmpty() == true
     }
 
     private fun gateWouldPass(pol: ProgressionPolicy, p: VariationProgress, day: Int, days: List<Int> = p.streakDays): Boolean {

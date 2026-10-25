@@ -116,11 +116,15 @@ data class SessionEvidence(
     val progressionEvidenceVersion: Int = 0,
     /** The policy snapshot carried by a v1 plan, used to replay its original target definition. */
     val effectivePolicySnapshot: ProgressionPolicy? = null,
+    /** W2 (owner: lowest set becomes the next target): the lowest number logged when at least one logged set fell short of its block target; null = nothing fell short. */
+    val shortfallValue: Int? = null,
+    /** W2: the session was prescribed less than the level's own (capped) target, i.e. a lowered target after a shortfall: it is done and kept, but it is not a qualifying session for the level. */
+    val reducedPrescription: Boolean = false,
 ) {
     /** Spec §5 / ADR C2 exposure definition. */
     val qualifying: Boolean
         get() = prescribedTier != null && completedWorkBlocks >= minQualifyingBlocks && !skippedOrPartial &&
-            !anyBelow && !discomfort && !easierOverride
+            !anyBelow && !discomfort && !easierOverride && !reducedPrescription
 
     /** Strict actual-result qualification, independent of whether the plan mixed prescribed tiers. */
     val demonstratedQualifying: Boolean
@@ -225,6 +229,20 @@ fun deriveEvidence(
                 TargetType.HOLD_SECONDS -> o.actualHoldSeconds != null
                 null -> false
             }
+        val actualOf = { o: ResolvedOutcome, b: app.calisthenics.domain.model.TimelineBlock? ->
+            when (b?.target?.type) { TargetType.REPS -> o.actualReps; TargetType.HOLD_SECONDS -> o.actualHoldSeconds; null -> null }
+        }
+        val workById = work.associateBy { it.id }
+        val shortfall = if (plan.rule.kind != RuleKind.APP_LEVELS || disc) null else {
+            val logged = os.filter { it.execution == Execution.COMPLETED }.mapNotNull { o ->
+                val b = workById[o.blockId]; val a = actualOf(o, b); if (b?.target != null && a != null) b.target.value to a else null }
+            if (logged.any { (target, actual) -> actual < target }) logged.minOf { it.second }.coerceAtLeast(1) else null
+        }
+        val reduced = plan.rule.kind == RuleKind.APP_LEVELS && policySnapshot != null && work.isNotEmpty() && work.any { b ->
+            val t = b.target; val level = b.prescriptionTier?.let { i -> policySnapshot.tiers.firstOrNull { it.index == i } }
+            !b.freeTarget && !b.levelFiveEligible && t != null && level != null && level.target.type == t.type &&
+                t.value < app.calisthenics.domain.planner.cappedTarget(level.target, policySnapshot).value
+        }
         SessionEvidence(
             sessionId = sessionId,
             variationId = vid,
@@ -252,6 +270,8 @@ fun deriveEvidence(
             demonstratedTier = demonstrated,
             progressionEvidenceVersion = plan.progressionEvidenceVersion,
             effectivePolicySnapshot = policySnapshot,
+            shortfallValue = shortfall,
+            reducedPrescription = reduced,
         )
     }
 }

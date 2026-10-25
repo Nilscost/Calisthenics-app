@@ -33,7 +33,7 @@ class LevelUpWindowTest {
         val act = listOf(UserAction.SelfAssessment(0, "pushup-standard", 3))
         assertEquals(3, engine.replay(listOf(ev(0, "pushup-standard", 3), ev(3, "pushup-standard", 3, tooHard = true), ev(6, "pushup-standard", 3)), act).tierFor("pushup-standard"))
         val pain = engine.replay(listOf(ev(0, "pushup-standard", 3), ev(3, "pushup-standard", 3, pain = true), ev(6, "pushup-standard", 3), ev(9, "pushup-standard", 3)), act)
-        assertNotNull(pain.holdFor("pushup")); assertEquals(3, pain.tierFor("pushup-standard"))
+        assertNotNull(pain.holdFor("pushup")); assertEquals(2, pain.tierFor("pushup-standard"))   // W2: pain steps the level one easier by itself; the level-3 sessions that follow do not count and never clear the hold
     }
 
     @Test fun feetElevatedAndDiamondSessionsCountTogether() {

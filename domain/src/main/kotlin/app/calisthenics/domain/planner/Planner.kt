@@ -285,15 +285,19 @@ private class Planner(input: PlanInput) {
         }
         val family = pref.familyId
         val hold = input.progress.holdFor(family)
+        var holdTier: Int? = null
         if (hold != null) {
             val easier = hold.easierVariationId?.let { cat.variation(it) }
             val inRoute = easier?.let { candidate -> route?.let { r -> candidate.id in r.mainPath || r.members.any { m -> m.variationId == candidate.id && m.role == ProgressionRole.ALTERNATE } } ?: (cat.progressionGroupOf(candidate.id) == cat.progressionGroupOf(pref.id)) } == true
-            if (easier == null || !usable(easier) || !inRoute) {
-                warn += "${pref.name} is paused because of reported discomfort. Choose an easier option, swap, skip it or finish — it will not be prescribed at a harder level."
-                needsAcceptance = true
-                return null
+            if (easier != null && usable(easier) && inRoute) {
+                pref = easier; holdTier = hold.easierAcceptedTier
+            } else {
+                // W2 (owner): discomfort never drops the slot; one step easier on this route, or the same exercise at its lowest level when nothing easier exists.
+                val step = app.calisthenics.domain.progression.easierStep(cat, pref.id, input.progress.tierFor(pref.id) ?: 1, route?.id) { id -> cat.variation(id)?.let(::usable) == true }
+                cat.variation(step.variationId)?.takeIf(::usable)?.let { pref = it }
+                holdTier = if (pref.id == step.variationId) step.tier else 1
             }
-            pref = easier
+            explain += "${pref.name}: an easier option after reported discomfort. Once you complete it without discomfort, normal progression resumes from there."
         }
         var inferredTier: Int? = null
         if (hold == null && !explicitPick) {
@@ -342,7 +346,8 @@ private class Planner(input: PlanInput) {
             explain += if (inferredTier != null) "${v.name}: estimated starting target from a same-rung exercise, reduced for the first workout. Your own results will guide this exercise from here."
                 else "${v.name}: no assessed level yet — starting at the easiest target (tier 1)."
         }
-        input.progress.reentryNeeded(v.id, input.nowDay)?.let { lower ->
+        holdTier?.let { tierIdx = minOf(tierIdx ?: it, it) }
+        input.progress.reentryNeeded(v.id, input.nowDay)?.takeIf { holdTier == null }?.let { lower ->
             tierIdx = lower; needsAcceptance = true
             warn += "Welcome back — you haven't trained ${v.name} for ${app.calisthenics.domain.progression.REENTRY_DAYS}+ days. Planned at tier $lower; choose your own re-entry level before starting. Earned stars are kept."
         }
@@ -453,7 +458,10 @@ private class Planner(input: PlanInput) {
                 val secs = if (draft.timed && !isHold) (if (side == Side.NONE) TIMED_WORK_SECONDS else TIMED_WORK_SECONDS / 2) else t.workWindowSeconds
                 workTotal += secs
                 val free = draft.freeTargets["$r:${c.slot.id}"] ?: draft.freeTargets[c.slot.id]
-                val levelFive = draft.levelFiveTargets["$r:${c.slot.id}"] ?: draft.levelFiveTargets[c.slot.id]
+                val progressed = input.progress.variations[v.id]
+                // W2: the automatically raised level-5 target at the top of a route (a hand-set one in the draft wins) and the lowered target after a session fell short.
+                val levelFive = draft.levelFiveTargets["$r:${c.slot.id}"] ?: draft.levelFiveTargets[c.slot.id] ?: progressed?.topTarget
+                val reduced = progressed?.takeIf { it.reducedTargetTier == t.index }?.reducedTarget
                 val rng = draft.rule
                 val ruleTarget = if (rng.isRange) (if (isHold) Target(t.target.type, rng.holdFrom, rng.holdTo) else Target(t.target.type, c.slot.repFrom ?: rng.from, maxOf(c.slot.repTo ?: rng.to, c.slot.repFrom ?: rng.from))) else null
                 val policy = cat.policyFor(v)!!
@@ -461,7 +469,7 @@ private class Planner(input: PlanInput) {
                 val requested = when {
                     free != null -> Target(t.target.type, free.coerceIn(1, 999))
                     levelFiveEligible -> Target(t.target.type, maxOf(levelFive!!.coerceIn(1, 999), policy.tier(5).target.value))
-                    else -> ruleTarget ?: t.target
+                    else -> ruleTarget ?: reduced?.let { t.target.copy(value = minOf(it, t.target.value)) } ?: t.target
                 }
                 val target = cappedTarget(requested, policy)
                 val dur = if ((free != null || ruleTarget != null || levelFiveEligible) && isHold) maxOf(secs, (target.max ?: target.value) + 3) else secs
