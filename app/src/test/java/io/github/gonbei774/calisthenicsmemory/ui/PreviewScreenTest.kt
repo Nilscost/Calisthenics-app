@@ -430,6 +430,9 @@ class PreviewScreenTest {
     }
 
     @Test fun warningsAreOneCompactRowThatExpands() {
+        // a plan that fits has no notes and no row; without the band the pull is replaced and the plan says so
+        val home = io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.selected(app)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.upsert(app, home.copy(items = home.items.filter { it.equipmentId != "resistance-band" }))
         show(); rule.waitForIdle()
         // R8.1-T08 (F10): was asserting the "unreviewed draft" bubble; the row now only points at the notes, and no draft bubble exists anywhere in the Preview
         rule.onNodeWithTag("info_row").assertExists().assertTextContains("Check the notes", substring = true)

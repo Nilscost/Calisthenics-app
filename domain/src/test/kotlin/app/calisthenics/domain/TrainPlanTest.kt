@@ -102,7 +102,7 @@ class PlanEditsTest {
         val bp = work(base).first { it.slotId == "push" }; val up4 = work(up).first { it.slotId == "push" }
         assertEquals(4, up4.prescriptionTier); assertTrue(up4.target!!.value > bp.target!!.value)
         for (s in listOf("squat", "pull", "core")) assertEquals(work(base).first { it.slotId == s }.target, work(up).first { it.slotId == s }.target)
-        assertTrue(up.changesExplained.any { it.contains("level set to 4") })
+        assertTrue("a level the person set needs no note", up.notes.none { it.text.contains("level set") })
         assertEquals(1, stepLevel(1, -1)); assertEquals(5, stepLevel(5, 1)); assertEquals(3, stepLevel(2, 1))
     }
 
@@ -129,9 +129,9 @@ class PlanEditsTest {
 
     @Test fun swappingToAnotherMovementTypeWarnsAndSameFamilyDoesNot() {
         val other = plan(PlanEdits(swaps = mapOf("push" to "squat-air")))
-        assertTrue(other.warnings.any { it.contains("not the same movement") }); assertTrue(other.needsAcceptance)
+        assertTrue(other.warnings.any { it.contains("different kind of exercise") }); assertTrue(other.needsAcceptance)
         val same = plan(PlanEdits(swaps = mapOf("push" to "pushup-diamond")))
-        assertTrue(same.warnings.none { it.contains("not the same movement") })
+        assertTrue(same.warnings.none { it.contains("different kind of exercise") })
     }
 
     @Test fun theSwapSheetListsTheWholeFamilyAndOtherTypes() {

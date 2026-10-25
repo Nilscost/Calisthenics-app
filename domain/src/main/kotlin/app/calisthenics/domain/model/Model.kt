@@ -500,6 +500,23 @@ data class TimelineBlock(
     init { require(durationSeconds > 0) { "block $id must have positive duration" } }
 }
 
+/**
+ * What a plan note is about. The declaration order is the importance order: the first kinds are what the person must know
+ * before starting (missing equipment, pain, a missing movement), the last ones are background. [warning] kinds are also listed in [WorkoutPlan.warnings].
+ */
+@Serializable
+enum class NoteKind(val warning: Boolean) {
+    EQUIPMENT(true), PAIN(true), MISSING_MOVEMENT(true), RETURN(true), LOAD(true), LENGTH(true), COVERAGE(false), INFO(false);
+    /** 1 = most important. */
+    val priority: Int get() = ordinal + 1
+}
+
+/** A short, plain sentence for the person about today's plan, with its importance ([priority], 1 = most important, from [kind]). */
+@Serializable
+data class PlanNote(val text: String, val kind: NoteKind) {
+    val priority: Int get() = kind.priority
+}
+
 @Serializable
 data class WorkoutPlan(
     val id: String,
@@ -538,6 +555,18 @@ data class WorkoutPlan(
     val progressionEvidenceVersion: Int = 0,
     /** Immutable effective targets and compound requirements for versioned actual-result replay. */
     val progressionPolicies: Map<String, ProgressionPolicy> = emptyMap(),
+    /** Plain-language notes, most important first ([PlanNote.priority]); the UI shows the first one or two ([topNotes]). [warnings] and [changesExplained] carry the same texts for older readers. */
+    val notes: List<PlanNote> = emptyList(),
+) {
+    /** The [limit] most important notes (the UI shows one or two); equal importance keeps the planner's order. */
+    fun topNotes(limit: Int = 2): List<PlanNote> = notes.sortedBy { it.priority }.take(limit)
+}
+
+/** [plan] with one more note; it is also listed in [WorkoutPlan.warnings] (warning kinds) or [WorkoutPlan.changesExplained]. */
+fun WorkoutPlan.withNote(kind: NoteKind, text: String): WorkoutPlan = if (notes.any { it.text == text }) this else copy(
+    notes = (notes + PlanNote(text, kind)).sortedBy { it.priority },
+    warnings = if (kind.warning) warnings + text else warnings,
+    changesExplained = if (kind.warning) changesExplained else changesExplained + text,
 )
 
 fun effectiveBetweenSetMode(mode: BetweenSetMode?, flow: Boolean, stretchOn: Boolean): BetweenSetMode =

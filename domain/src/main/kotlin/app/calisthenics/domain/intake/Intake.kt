@@ -8,6 +8,7 @@ import app.calisthenics.domain.model.OnboardingFamily
 import app.calisthenics.domain.model.Pattern
 import app.calisthenics.domain.model.ProgressionRole
 import app.calisthenics.domain.model.Routine
+import app.calisthenics.domain.model.RoutineSlot
 import app.calisthenics.domain.model.Tier
 import app.calisthenics.domain.progression.ALL_TIERS_DONE
 
@@ -105,17 +106,46 @@ fun shouldAsk(c: Catalog, f: OnboardingFamily, pushup: FamilyAnswer?): Boolean {
     }
 }
 
+/** The slot of the usual plan each onboarding family answers for. */
+private val slotOfFamily = mapOf("pushup" to "push", "squat" to "squat", "pull" to "pull", "core" to "core", "hinge" to "hinge", "shoulders" to "shoulders")
+
+/** The onboarding family an answered exercise belongs to (null = none). */
+fun familyOfAnswer(c: Catalog, variationId: String): OnboardingFamily? =
+    c.onboardingFamilies.firstOrNull { variationId in it.ladder } ?: c.onboardingFamilies.firstOrNull { f -> fullProgression(c, f).any { it.id == variationId } }
+
 /**
- * The usual plan follows the pull answer: a pull-up answer turns the pull slot into a vertical pull
- * (the starter routine only had a band row). Other families already follow the active exercise of their family.
+ * The usual plan prescribes exactly what the person answered: each answered family points its slot at the exercise they named, also when it
+ * is an alternate of a route rung (the knee push-up, the flexed-arm hang, the band-assisted pull-up). A pull-up answer turns the pull slot into a
+ * vertical pull; a shoulders answer adds a shoulders slot. The level of the exercise is the one in [levels] (the planner reads it from progress).
  */
-fun routineFromAnswers(c: Catalog, base: Routine, pull: StartLevel?): Routine {
-    val v = pull?.let { c.variation(it.variationId) } ?: return base
-    val slot = base.slots.firstOrNull { it.id == "pull" } ?: return base
-    val intent = v.patterns.firstOrNull { it == Pattern.PULL_VERTICAL || it == Pattern.PULL_HORIZONTAL } ?: return base
-    if (slot.intent == intent && slot.preferredVariationId == v.id) return base
-    return base.copy(revision = base.revision + 1, slots = base.slots.map { if (it.id == "pull") it.copy(intent = intent, preferredVariationId = v.id) else it })
+fun routineFromLevels(c: Catalog, base: Routine, levels: List<StartLevel>): Routine {
+    var slots = base.slots
+    var changed = false
+    val answeredSlots = mutableSetOf<String>()
+    for (level in levels) {
+        val v = c.variation(level.variationId) ?: continue
+        val slotId = familyOfAnswer(c, v.id)?.let { slotOfFamily[it.id] } ?: continue
+        if (!answeredSlots.add(slotId)) continue
+        val routeId = c.mainRouteFor(v.id)?.id
+        val existing = slots.firstOrNull { it.id == slotId }
+        val intent = existing?.intent?.takeIf { it in v.patterns } ?: v.patterns.firstOrNull { it != Pattern.CONDITIONING } ?: continue
+        val area = existing?.area?.takeIf { it in v.areas } ?: v.areas.firstOrNull() ?: continue
+        if (existing == null) {
+            val after = slots.indexOfFirst { it.id == "push" }.let { if (it >= 0) it + 1 else slots.size }
+            slots = slots.take(after) + RoutineSlot(slotId, intent, area, v.id, optional = true, progressionRouteId = routeId) + slots.drop(after)
+            changed = true
+        } else if (existing.intent != intent || existing.area != area || existing.preferredVariationId != v.id) {
+            slots = slots.map { if (it.id == slotId) it.copy(intent = intent, area = area, preferredVariationId = v.id, progressionRouteId = routeId) else it }
+            changed = true
+        }
+    }
+    // a redone questionnaire without a shoulders answer no longer trains shoulders
+    if ("shoulders" !in answeredSlots && slots.any { it.id == "shoulders" }) { slots = slots.filter { it.id != "shoulders" }; changed = true }
+    return if (changed) base.copy(revision = base.revision + 1, slots = slots) else base
 }
+
+/** The single-answer form (the pull answer) kept for callers that only know the pull level. */
+fun routineFromAnswers(c: Catalog, base: Routine, pull: StartLevel?): Routine = routineFromLevels(c, base, listOfNotNull(pull))
 
 /** Rounds to suggest on the style page: the typical (rounded mean) of what the person said they do, within the planner's limits. */
 fun suggestedRounds(answers: Collection<FamilyAnswer?>, default: Int = app.calisthenics.domain.planner.DEFAULT_TRAIN_ROUNDS): Int {
