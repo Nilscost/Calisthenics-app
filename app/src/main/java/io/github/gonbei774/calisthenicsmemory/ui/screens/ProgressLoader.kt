@@ -14,7 +14,8 @@ import java.time.ZoneId
 object ProgressLoader {
     private val json = Json { ignoreUnknownKeys = true }
 
-    suspend fun load(ctx: Context, catalog: Catalog): ProgressSnapshot {
+    /** [excludeSessionId]: replay as if that session had not happened (the end screen compares the progress before and after a session). */
+    suspend fun load(ctx: Context, catalog: Catalog, excludeSessionId: String? = null): ProgressSnapshot {
         val dao = AppDatabase.getDatabase(ctx).historyDao()
         val zone = ZoneId.systemDefault()
         val evidence = mutableListOf<SessionEvidence>()
@@ -22,6 +23,7 @@ object ProgressLoader {
         val resetAtMs = LevelStore.resetAtMs(ctx)   // W2: evidence from before the questionnaire was (re)done is history only
         for (s in dao.sessions().sortedBy { it.startedAtEpochMs }) {
             if (s.startedAtEpochMs < resetAtMs) continue
+            if (s.sessionId == excludeSessionId) continue
             if (s.status != "COMPLETED" && s.status != "PARTIAL_FINISHED") continue
             val plan = dao.plan(s.planId)?.let { try { json.decodeFromString(WorkoutPlan.serializer(), it.planJson) } catch (_: Exception) { null } } ?: continue
             val exec = dao.blockResults(s.sessionId).associate { r ->

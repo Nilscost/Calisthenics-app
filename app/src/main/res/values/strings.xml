@@ -367,6 +367,27 @@
     <string name="end_save_failed">Could not save this workout. It is kept on this phone: open Train to continue or save it.</string>
     <string name="end_edit_logged">Edit what I logged</string>
     <string name="end_done">Done</string>
+    <!-- End of workout: tiles, unlocked, exercises -->
+    <!-- Tile captions under the number: singular for 1 ("1 MINUTE"). -->
+    <plurals name="end_tile_minutes"><item quantity="one">Minute</item><item quantity="other">Minutes</item></plurals>
+    <plurals name="end_tile_rounds"><item quantity="one">Round</item><item quantity="other">Rounds</item></plurals>
+    <plurals name="end_tile_sets"><item quantity="one">Set</item><item quantity="other">Sets</item></plurals>
+    <plurals name="end_tile_exercises"><item quantity="one">Exercise</item><item quantity="other">Exercises</item></plurals>
+    <string name="end_section_unlocked">Unlocked</string>
+    <string name="end_section_exercises">Your exercises</string>
+    <string name="end_section_also_done">Also done</string>
+    <string name="end_unlock_level">Level %1$d unlocked</string>
+    <string name="end_unlock_mastered">Mastered — all 5 levels</string>
+    <string name="end_unlock_new_exercise">New exercise unlocked</string>
+    <string name="end_mastered">Mastered</string>
+    <string name="end_progress_sessions">%1$d of %2$d good sessions to Level %3$d</string>
+    <string name="end_progress_weekly">%1$d of %2$d weekly sessions to Level %3$d</string>
+    <string name="end_progress_mastery_sessions">%1$d of %2$d good sessions to mastery</string>
+    <string name="end_progress_mastery_weekly">%1$d of %2$d weekly sessions to mastery</string>
+    <string name="end_chip_easier">Easier next time</string>
+    <string name="end_chip_next_reps">Next target: %1$d reps</string>
+    <string name="end_chip_next_seconds">Next target: %1$d s</string>
+    <string name="end_chip_kept">Level kept</string>
     <plurals name="count_rounds"><item quantity="one">%1$d round</item><item quantity="other">%1$d rounds</item></plurals>
     <plurals name="count_sets"><item quantity="one">%1$d set</item><item quantity="other">%1$d sets</item></plurals>
     <plurals name="count_exercises"><item quantity="one">%1$d exercise</item><item quantity="other">%1$d exercises</item></plurals>

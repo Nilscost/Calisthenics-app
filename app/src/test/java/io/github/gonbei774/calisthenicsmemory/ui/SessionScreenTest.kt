@@ -311,7 +311,7 @@ class SessionScreenTest {
         var exited = false
         show(s) { exited = true }
         rule.onNodeWithTag("end_title").assertTextEquals("Workout complete")
-        rule.onNodeWithTag("end_summary").assertTextContains("2 rounds", substring = true)
+        rule.onNodeWithTag("end_tile_rounds").assertTextContains("2", substring = true) // three tiles with History's numbers
         rule.onNodeWithTag("end_edit").assertIsDisplayed()
         rule.onNodeWithText("How did it go?", substring = true).assertDoesNotExist() // the long form only opens on demand
         rule.onNodeWithTag("end_done").performClick()

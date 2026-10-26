@@ -522,6 +522,12 @@ class ProgressionEngine(private val catalog: Catalog) {
         return ProgressSnapshot(vars.toMap(), active.toMap(), holds.toMap(), events.toList(), counts, routeCounts)
     }
 
+    /** The qualifying days that count towards the next level of [variationId] in [snapshot]: its own and the ones of its same-rung exercises since the level began. */
+    fun qualifyingDays(snapshot: ProgressSnapshot, variationId: String, routeId: String? = null): List<Int> {
+        val p = snapshot.variations[variationId] ?: return emptyList()
+        return pooledDays(p, snapshot.variations, routeId, strictLevelMatch = true)
+    }
+
     /** The rule was met: this exercise counts as passed (all five stars) and the routine continues with the next exercise at its bottom. */
     private fun moveOnByRule(p: VariationProgress, day: Int, events: MutableList<ProgressEvent>, active: MutableMap<String, String>, vars: MutableMap<String, VariationProgress>, routeId: String? = null): VariationProgress {
         val done = p.copy(achievedTiers = (1..5).toSet(), streakDays = emptyList(), streakAssumed = 0, lastAutoAdvanceDay = day)
