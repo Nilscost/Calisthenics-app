@@ -64,7 +64,9 @@ fun summarizeSessionProgress(catalog: Catalog, before: ProgressSnapshot, after: 
         val fam = a.familyId
         val tierBefore = b?.tier ?: 1
         val masteredNow = 5 in a.achievedTiers && (b == null || 5 !in b.achievedTiers)
-        val masteredAlready = 5 in a.achievedTiers
+        val starsAfter = displayStars(catalog, after, vid)
+        // an exercise already moved past (a harder one of its route was started) shows all five stars, like the Progress tab: no level or dots then
+        val masteredAlready = 5 in a.achievedTiers || starsAfter >= 5
         val leveledUp = !masteredNow && a.tier > tierBefore && (b != null || a.demonstratedTier != null)
         val hold = after.holds[fam]
         val easier = hold != null && hold.steps > (before.holds[fam]?.steps ?: 0)
@@ -74,7 +76,7 @@ fun summarizeSessionProgress(catalog: Catalog, before: ProgressSnapshot, after: 
         val kept = !easier && !leveledUp && !masteredNow && a.tier == tierBefore && a.consecutiveBelow > (b?.consecutiveBelow ?: 0)
         ExerciseProgress(
             variationId = vid, hasProgression = true, tier = a.tier.coerceIn(1, 5),
-            stars = displayStars(catalog, after, vid), starsBefore = displayStars(catalog, before, vid),
+            stars = starsAfter, starsBefore = displayStars(catalog, before, vid),
             leveledUpTo = if (leveledUp) a.tier else null, mastered = masteredNow, masteredAlready = masteredAlready,
             progress = dots, easierNextTime = easier,
             nextTarget = if (newlyReduced && !easier) a.reducedTarget else null,
