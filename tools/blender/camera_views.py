@@ -13,6 +13,10 @@ CAMERA_OVERRIDES = {
     # Saw: view from the feet end so both rotation sides and the level arm line read symmetrically.
     "pilates-saw": (90, 26),
     "ring-muscle-up": (12, 8),
+    # Side-oblique, slightly from below: heels/shins over the bar and the body below.
+    "heel-hook": (25, -6),
+    # Near-frontal, slightly from below: the left/right leg sweep reads against the torso.
+    "hanging-windshield-wiper": (82, -8),
 }
 
 
