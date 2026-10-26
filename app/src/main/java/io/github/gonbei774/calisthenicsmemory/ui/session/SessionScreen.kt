@@ -267,7 +267,7 @@ internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, cat
                         if (paused) Text(stringResource(R.string.session_paused), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("session_paused"))
                         val infoBlock = if (b.type == BlockType.TRANSITION) upcomingBlock ?: b else b
                         val sideText = when (infoBlock.side) { Side.LEFT -> stringResource(R.string.side_left); Side.RIGHT -> stringResource(R.string.side_right); else -> "" }
-                        val targetText = infoBlock.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it) }.orEmpty()
+                        val targetText = infoBlock.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it, infoBlock.alternating) }.orEmpty()
                         val sub = listOf(io.github.gonbei774.calisthenicsmemory.ui.train.withLoad(targetText, infoBlock.loadGrams), sideText).filter { it.isNotEmpty() }.joinToString(" · ")
                         if (logger != null && logFor != null) RepLogger(logger, logFor, showName = true)
                         else if (logger != null && repWork != null) {
@@ -333,71 +333,11 @@ private fun RepLogger(l: LoggerState, work: TimelineBlock, showName: Boolean) {
     val setNo = work.roundIndex
     Column(Modifier.fillMaxWidth().testTag("logger"), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
         if (showName) Text(if (setNo != null) stringResource(R.string.logger_name_set, name, setNo) else name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, maxLines = 1, modifier = Modifier.testTag("logger_name"))
-        Text(stringResource(if (l.hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
+        Text(stringResource(if (l.hold) (if (work.alternating) R.string.logger_seconds_held_per_side else R.string.logger_seconds_held) else (if (work.alternating) R.string.logger_reps_done_per_side else R.string.logger_reps_done)), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
             BigStepper(l.reps, { l.reps = it; l.typed = true; l.push() }, 0..999, Modifier.weight(1f), step = if (l.hold && (l.target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "logger", suffix = stringResource(if (l.hold) R.string.unit_suffix_s else R.string.unit_suffix_x))
             // R7-T03 (D3, B9): the same "Too easy" as on the end screen, so two of them in a row count towards moving on
             FilterChip(selected = l.tooEasy, onClick = { l.tooEasy = !l.tooEasy; l.push() }, label = { Text(stringResource(R.string.logger_too_easy)) }, modifier = Modifier.testTag("logger_too_easy"))
         }
-    }
-}
-
-@Composable
-private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) {
-    val ctx = LocalContext.current
-    val saveStatus by SessionBus.saveStatus.collectAsState()
-    val saved = saveStatus == SaveStatus.SAVED
-    // The numbers are History's own (overviewOf over the record the service saves), so the two screens cannot disagree.
-    val overview = remember(st, saveStatus) { overviewOf(st.plan, recordOfState(st, SessionBus.startedAtEpochMs, SessionBus.endedAtEpochMs.takeIf { it > 0L }), ZoneId.systemDefault()) }
-    val editableExercises = st.plan.blocks.filter { it.type == BlockType.WORK && st.executions[it.id] == Execution.COMPLETED &&
-        !(st.plan.fixedProgramId != null && st.plan.flow && it.prescriptionTier == null) }.mapNotNull { it.variationId }.distinct()
-    var events by remember { mutableStateOf<List<String>>(emptyList()) }
-    var editing by remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
-    // New level-ups appear once the session row is in Room; the progress is replayed from history, never stored.
-    LaunchedEffect(Unit) {
-        val deadline = System.currentTimeMillis() + 5000
-        while (SessionBus.saveStatus.value == SaveStatus.NONE || SessionBus.saveStatus.value == SaveStatus.SAVING) { if (System.currentTimeMillis() >= deadline) break; delay(100) }
-        if (!SessionBus.saved) return@LaunchedEffect
-        val today = LocalDate.now().toEpochDay().toInt()
-        events = try { ProgressLoader.load(ctx, loadCatalog(ctx)).events.filter { it.day == today }.map { it.message } } catch (_: Throwable) { emptyList() }
-    }
-    Column(modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
-        Text(stringResource(if (st.phase == Phase.COMPLETED) R.string.end_complete else R.string.end_early), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("end_title"))
-        Card(Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
-            Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                Text(stringResource(R.string.end_summary, overview.minutes, io.github.gonbei774.calisthenicsmemory.ui.components.countText(R.plurals.count_rounds, overview.rounds), io.github.gonbei774.calisthenicsmemory.ui.components.countText(R.plurals.count_exercises, overview.exercises)), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("end_summary"))
-                if (saved && events.isNotEmpty()) events.forEach { Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("end_event")) }
-                else when (saveStatus) {
-                    SaveStatus.SAVED -> Text(stringResource(R.string.end_saved), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("end_save_status"))
-                    SaveStatus.FAILED -> Text(stringResource(R.string.end_save_failed), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("end_save_status"))
-                    else -> Text(stringResource(R.string.end_saving), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("end_save_status"))
-                }
-            }
-        }
-        // R8.1-T06 (F7): a Flow workout still logs actual reps, so the editor is there to correct DONE; only a flow program has no per-item results
-        if (saveStatus != SaveStatus.FAILED && editableExercises.isNotEmpty()) {
-            AppTextButton(onClick = { editing = !editing }, modifier = Modifier.testTag("end_edit")) { Text(stringResource(R.string.end_edit_logged)) }
-            if (editing) editableExercises.forEach { vid ->
-                val blocks = st.plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid && st.executions[it.id] == Execution.COMPLETED }
-                val target = blocks.firstOrNull()?.target
-                val logs = blocks.mapNotNull { st.logged[it.id] }
-                Card(Modifier.fillMaxWidth().testTag("end_fix_$vid"), shape = MaterialTheme.shapes.large) {
-                    Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                        Text(SessionBus.names[vid] ?: vid, style = MaterialTheme.typography.titleMedium)
-                        // V04b (R21): one number per round, plus Too hard / Too easy / Pain for the exercise.
-                        RoundEditor(target, blocks.map { EditorRound(it.id, it.roundIndex ?: 1, it.side, st.logged[it.id]?.reps) }, sets = st.plan.format != app.calisthenics.domain.model.WorkoutFormat.CIRCUIT,
-                            tooHard0 = logs.any { it.tooHard }, tooEasy0 = logs.any { it.tooEasy }, pain0 = logs.any { it.discomfort }, tag = "end_$vid") { list ->
-                            scope.launch {
-                                val deadline = System.currentTimeMillis() + 5000
-                                while (SessionBus.saveStatus.value.let { it == SaveStatus.NONE || it == SaveStatus.SAVING } && System.currentTimeMillis() < deadline) delay(100) // the session row must exist first
-                                if (SessionBus.saved) RoomHistorySource(ctx).reviseRounds(st.sessionId, vid, list) // a failed save has no session to correct
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        Button(onClick = { SessionBus.clear(); onExit() }, Modifier.fillMaxWidth().height(56.dp).testTag("end_done"), shape = RoundedCornerShape(Radius.button)) { Text(stringResource(R.string.end_done)) }
     }
 }

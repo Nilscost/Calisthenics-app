@@ -369,8 +369,8 @@ ex("pushup-feet-elevated", "Feet-Elevated Push-Up", "pushup", "PUSH_HORIZONTAL",
 ex("pushup-diamond", "Diamond Push-Up", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
    ["Plank position, hands together under the chest, thumbs and index fingers forming a diamond.", "Lower the chest to the hands, elbows close to the body.", "Press to full lockout."],
    reps_tiers([4, 6, 8, 10, 12], stretch="stretch-chest-door"), [S_CC, S_YG], UP, rank=40, nxt=["pushup-archer"], prereq={"allOf": [[vt("pushup-standard", 4)]]})
-ex("pushup-archer", "Archer Push-Up (per side)", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
-   ["Wide hand position, hands turned slightly out.", "Lower toward one hand while the other arm stays straight.", "Press back up, alternate sides. Count each side."],
+ex("pushup-archer", "Archer Push-Up", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
+   ["Wide hand position, hands turned slightly out.", "Lower toward one hand while the other arm stays straight.", "Press back up and alternate sides. The number shown counts each side."],
    reps_tiers([3, 4, 6, 8, 10], stretch="stretch-chest-door"), [S_CC, S_OG], UP, rank=50, nxt=["pushup-one-arm-negative"], prereq={"allOf": [[vt("pushup-diamond", 3)], [vt("pushup-feet-elevated", 3)]]})
 ex("pushup-one-arm-negative", "One-Arm Push-Up Negative (per side)", "pushup", "PUSH_HORIZONTAL", U, "REPS", "floor",
    ["Feet wide, one hand under the chest, other hand behind the back.", "Lower slowly for about 4 seconds to just above the floor.", "Reset with both hands; repeat, then switch sides."],

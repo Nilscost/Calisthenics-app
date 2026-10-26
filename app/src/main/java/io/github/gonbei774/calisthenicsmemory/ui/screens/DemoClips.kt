@@ -64,6 +64,11 @@ object DemoClips {
     }
 }
 
+/** Demo clips are silent: never take audio focus, so external music (Spotify etc.) keeps playing across exercise changes. Must run before setVideoPath. */
+internal fun VideoView.configureSilentDemo() {
+    setAudioFocusRequest(android.media.AudioManager.AUDIOFOCUS_NONE)
+}
+
 /**
  * Plays [file] in a loop. K1 (v2 plan): the VideoView used to be created once and never reloaded, so the clip stayed on the
  * first file when the block changed. The view is now keyed on the path (a new file = a new view) and `update` reloads
@@ -76,13 +81,14 @@ fun DemoPlayer(file: File, controls: Boolean = true, onLoad: (String) -> Unit = 
     key(path) {
         AndroidView(modifier = (if (fit) Modifier.heightIn(max = 260.dp).aspectRatio(16f / 10f) else Modifier.fillMaxWidth().heightIn(min = minHeight, max = 260.dp).aspectRatio(16f / 10f)).semantics { contentDescription = description }, factory = { c ->
             VideoView(c).apply {
+                configureSilentDemo()
                 tag = path
                 setVideoPath(path); onLoad(path)
                 if (controls) setMediaController(MediaController(c).also { it.setAnchorView(this) })
                 setOnPreparedListener { it.isLooping = true; it.setVolume(0f, 0f); start() }
             }
         }, update = { v ->
-            if (v.tag != path) { v.tag = path; v.setVideoPath(path); onLoad(path); v.start() }
+            if (v.tag != path) { v.tag = path; v.configureSilentDemo(); v.setVideoPath(path); onLoad(path); v.start() }
         })
     }
 }

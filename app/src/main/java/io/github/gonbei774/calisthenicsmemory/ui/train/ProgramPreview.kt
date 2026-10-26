@@ -209,7 +209,7 @@ internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMo
                         val appLevel = programItemLevel(item, data.catalog)
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                             Column(Modifier.weight(1f)) {
-                                Text(if (item.perSide) stringResource(R.string.programs_per_side) else "", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(programSideText(v, item, value), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 if (levelFiveTarget != null) Text(stringResource(R.string.preview_level_extension), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("program_level_$i"))
                                 else if (explicitAppLevel != null) Text(stringResource(R.string.preview_level, explicitAppLevel, 5), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("program_level_$i"))
                                 else if (appLevel != null) Text(stringResource(R.string.preview_level, appLevel, 5), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("program_level_$i"))
@@ -285,4 +285,14 @@ internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMo
             dismissButton = { AppTextButton(onClick = { saveDialog = false }) { Text(stringResource(R.string.cancel)) } },
         )
     }
+}
+
+/** Under a program item's stepper: what its number means. SPLIT = two blocks, Left then Right; ALTERNATING = one block, shown as the total with the per-side number; never a lone "per side". */
+@Composable
+internal fun programSideText(v: app.calisthenics.domain.model.ExerciseVariation?, item: app.calisthenics.domain.model.FixedProgramItem, value: Int): String = when {
+    v == null -> ""
+    v.sideMode == app.calisthenics.domain.model.SideMode.SPLIT -> stringResource(R.string.programs_split_each)
+    v.sideMode == app.calisthenics.domain.model.SideMode.ALTERNATING ->
+        if (item.reps == null) stringResource(R.string.programs_alt_seconds, value * 2, value) else stringResource(R.string.programs_alt_reps, value * 2, value)
+    else -> ""
 }

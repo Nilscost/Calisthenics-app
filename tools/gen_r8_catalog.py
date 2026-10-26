@@ -34,6 +34,34 @@ CLIP_META = ROOT / "app/src/main/assets/clip_meta.json"
 REVIEW_REPORT = ROOT / "work/r8-import-review.json"
 ROUTE_REPORT = ROOT / "docs/29-progression-routes.json"
 
+# Owner 2026-10-26: how each exercise treats the two sides. unilateral=true in the contract means SPLIT (two work blocks,
+# Left then Right). The ids below work both sides inside ONE continuous set (ALTERNATING): their tier and program numbers
+# count each side, and every screen shows the total with the per-side number in parentheses ("12 reps (6 per side)").
+ALTERNATING_IDS = (
+    "pushup-archer", "ring-pushup-rto-archer", "pushup-single-leg",
+    "pilates-single-leg-stretch", "pilates-scissors", "bicycle-crunch",
+    "pilates-corkscrew", "pilates-saw", "pilates-double-leg-kick", "pilates-spine-twist",
+)
+
+
+def _apply_side_modes(result: dict[str, Any]) -> None:
+    by_id = {v["id"]: v for v in result["variations"]}
+    for variation_id in ALTERNATING_IDS:
+        variation = by_id[variation_id]
+        if variation["unilateral"]:
+            raise ValueError(f"{variation_id}: ALTERNATING cannot also be unilateral (SPLIT)")
+        variation["sides"] = "ALTERNATING"
+        variation["name"] = variation["name"].replace(" (per side)", "")
+    # A fixed-program item carries a per-side number exactly when its exercise is SPLIT or ALTERNATING.
+    for program in result["fixedPrograms"]:
+        for item in program["items"]:
+            variation = by_id[item["exerciseId"]]
+            sided = variation["unilateral"] or variation.get("sides") == "ALTERNATING"
+            if bool(item.get("perSide", False)) != sided:
+                raise ValueError(f"{program['id']}/{item['exerciseId']}: perSide={item.get('perSide', False)} but the exercise is "
+                                 f"{'sided' if sided else 'not sided'}")
+
+
 # Cleared in R8-T14: all 25 previously held demonstrations were re-rendered and
 # accepted (docs/evidence/clips-r8/repair-final-acceptance-2026-10-17.md).
 DEMONSTRATION_HOLD: set[str] = set()
@@ -771,6 +799,7 @@ def import_contract(base: dict[str, Any], contract: dict[str, Any]) -> tuple[dic
     # A few id aliases are already in the contract list; apply them before
     # writing the catalog so users can search/display those names immediately.
     result["fixedPrograms"] = [_routine(routine) for routine in contract.get("routines", [])]
+    _apply_side_modes(result)
     result["exerciseGroups"] = json.loads(json.dumps(REVIEWED_ROTATION_GROUPS))
     result["optionSets"] = contract.get("options", [])
     routes, primary_routes = _reviewed_routes(result)

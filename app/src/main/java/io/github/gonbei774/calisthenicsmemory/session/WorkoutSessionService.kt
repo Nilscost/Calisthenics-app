@@ -204,7 +204,7 @@ class WorkoutSessionService : Service() {
     private fun perform(f: SessionEffect, s: SessionState) {
         when (f) {
             is SessionEffect.Cue -> when (f.kind) {
-                CueKind.START, CueKind.ROUND -> { playCue(f.kind); say(label(f.blockId, s)) }
+                CueKind.START, CueKind.ROUND -> { playCue(f.kind); say(CueText.spoken(s.plan, f.blockId, SessionBus.names)) }
                 CueKind.PREVIEW_NEXT -> {
                     CueText.nextLabel(s.plan, f.blockId, SessionBus.names)?.let { say("Next: $it") }
                 }

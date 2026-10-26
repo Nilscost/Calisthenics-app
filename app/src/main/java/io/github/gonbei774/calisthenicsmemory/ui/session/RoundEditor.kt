@@ -29,7 +29,7 @@ data class EditorRound(val blockId: String, val round: Int, val side: Side, val 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RoundEditor(
-    target: Target?, rounds: List<EditorRound>, sets: Boolean = false, tooHard0: Boolean, tooEasy0: Boolean, pain0: Boolean, tag: String,
+    target: Target?, rounds: List<EditorRound>, sets: Boolean = false, tooHard0: Boolean, tooEasy0: Boolean, pain0: Boolean, tag: String, alternating: Boolean = false,
     onChange: (List<RoundCorrection>) -> Unit,
 ) {
     val hold = target?.type == TargetType.HOLD_SECONDS
@@ -57,7 +57,7 @@ fun RoundEditor(
                 Stepper(values[i], { values[i] = it; typed[i] = true; push() }, 0..999, step = if (hold && (target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "${tag}_round${i + 1}", suffix = stringResource(if (hold) R.string.unit_suffix_s else R.string.unit_suffix_x))
             }
         }
-        Text(stringResource(if (hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(stringResource(if (hold) (if (alternating) R.string.logger_seconds_held_per_side else R.string.logger_seconds_held) else (if (alternating) R.string.logger_reps_done_per_side else R.string.logger_reps_done)), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
             FilterChip(selected = tooHard, onClick = { tooHard = !tooHard; if (tooHard) tooEasy = false; push() }, label = { Text(stringResource(R.string.logger_too_hard)) }, modifier = Modifier.testTag("${tag}_too_hard"))
             FilterChip(selected = tooEasy, onClick = { tooEasy = !tooEasy; if (tooEasy) tooHard = false; push() }, label = { Text(stringResource(R.string.logger_too_easy)) }, modifier = Modifier.testTag("${tag}_too_easy"))

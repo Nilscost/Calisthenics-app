@@ -118,6 +118,17 @@ data class Target(val type: TargetType, val value: Int, /** V21: the top of a re
     fun shownValue(): Int = max ?: value
 }
 
+/**
+ * How an exercise treats the two sides of the body. NONE: both sides at once or no sides (the target is the total).
+ * SPLIT: two consecutive work blocks, Left then Right, each showing its own target (== [ExerciseVariation.unilateral]).
+ * ALTERNATING: one block that works both sides within one continuous set; the stored target counts reps (or seconds) PER SIDE,
+ * and every screen shows the total with the per-side number in parentheses ("12 reps (6 per side)").
+ */
+@Serializable enum class SideMode { NONE, SPLIT, ALTERNATING }
+
+/** The total of an alternating target: both sides, i.e. twice the per-side number (a range doubles both ends). */
+fun Target.alternatingTotal(): Target = Target(type, value * 2, max?.let { it * 2 })
+
 /** O2: how progress is judged for a routine. App levels = today's five-target tiers; Rep range = sets x from-to (a session where every set reaches the top moves you on); Custom = the same, with everything editable. */
 /** L01: the shared tier vocabulary. R reps, RU reps per side, C core reps, H30 holds to 30 s, H60 accumulated holds to one minute, N negatives, E endurance (calves, tibialis), M McGill maintenance. */
 @Serializable enum class TierProfile { R, RU, C, H30, H60, N, E, M }
@@ -241,7 +252,12 @@ data class ExerciseVariation(
     val progressionGroup: String? = null,
     /** A hold is present for demonstration/reference, not evidence of an acceptable exercise clip. */
     val demonstrationHold: Boolean = false,
-)
+    /** Explicit side mode; null = derived (unilateral = SPLIT, otherwise NONE). Appended last; old catalogs decode. ALTERNATING requires unilateral = false. */
+    val sides: SideMode? = null,
+) {
+    val sideMode: SideMode get() = sides ?: if (unilateral) SideMode.SPLIT else SideMode.NONE
+    val alternating: Boolean get() = sideMode == SideMode.ALTERNATING
+}
 
 @Serializable
 data class ExerciseOption(val optionType: String, val values: List<String>, val source: String = "")
@@ -496,6 +512,8 @@ data class TimelineBlock(
     val levelFiveEligible: Boolean = false,
     /** Personal target definition used when this immutable plan was created. */
     val targetRevision: Int = 0,
+    /** The exercise works both sides within this one block: [target] is per side and screens show the total with the per-side number. Absent in older plans. */
+    val alternating: Boolean = false,
 ) {
     init { require(durationSeconds > 0) { "block $id must have positive duration" } }
 }

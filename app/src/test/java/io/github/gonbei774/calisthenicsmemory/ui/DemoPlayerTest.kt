@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.junit4.createComposeRule
 import io.github.gonbei774.calisthenicsmemory.ui.screens.DemoPlayer
+import io.github.gonbei774.calisthenicsmemory.ui.screens.configureSilentDemo
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -43,5 +44,15 @@ class DemoPlayerTest {
         rule.setContent { tick; DemoPlayer(a, controls = false, onLoad = { loaded += it }) }
         rule.waitForIdle(); tick++; rule.waitForIdle()
         assertEquals(1, loaded.size)
+    }
+
+    /** Spotify bug: VideoView takes AUDIOFOCUS_GAIN by default, pausing external music on every exercise change. */
+    @Test fun demoVideoViewNeverRequestsAudioFocus() {
+        val ctx = androidx.test.core.app.ApplicationProvider.getApplicationContext<android.content.Context>()
+        val v = android.widget.VideoView(ctx)
+        val f = android.widget.VideoView::class.java.getDeclaredField("mAudioFocusType").apply { isAccessible = true }
+        assertEquals(android.media.AudioManager.AUDIOFOCUS_GAIN, f.getInt(v))
+        v.configureSilentDemo()
+        assertEquals(android.media.AudioManager.AUDIOFOCUS_NONE, f.getInt(v))
     }
 }

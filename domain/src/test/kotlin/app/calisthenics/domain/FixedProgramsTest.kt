@@ -24,6 +24,9 @@ import java.io.File
 class FixedProgramsTest {
     private val catalog = parseCatalog(File(System.getProperty("repo.root") ?: ".", "content/starter/catalog.json").readText())
     private val byProgram = catalog.fixedPrograms.associateBy { it.id }
+    /** Owner 2026-10-26: an item is two blocks (Left, Right) only when its exercise is SPLIT; an ALTERNATING one is a single block lasting twice the per-side estimate. */
+    private fun blocksOf(exerciseId: String, perSide: Boolean) = if (perSide && catalog.variation(exerciseId)!!.sideMode == SideMode.SPLIT) 2 else 1
+    private fun durationFactor(exerciseId: String, perSide: Boolean) = if (perSide && catalog.variation(exerciseId)!!.sideMode == SideMode.ALTERNATING) 2 else 1
 
     // R8.1-T09 (F11): was "exactlyEight...": the eight drills stay as unlisted building blocks and two merged sessions (Army PRT, Pilates mat) are listed
     @Test fun theEightDrillsAndTheTwoMergedSessionsKeepContractOrderAndPrescriptions() {
@@ -35,13 +38,13 @@ class FixedProgramsTest {
             val program = byProgram.getValue(id)
             val expectedItems = source.getValue("items").jsonArray.map { it.jsonObject }
             val expectedIds = expectedItems.flatMap { item ->
-                List(if (item["perSide"]?.jsonPrimitive?.content?.toBoolean() == true) 2 else 1) { item.getValue("exerciseId").jsonPrimitive.content }
+                List(blocksOf(item.getValue("exerciseId").jsonPrimitive.content, item["perSide"]?.jsonPrimitive?.content?.toBoolean() == true)) { item.getValue("exerciseId").jsonPrimitive.content }
             }
-            assertEquals(expectedIds, program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.exerciseId } })
+            assertEquals(expectedIds, program.items.flatMap { item -> List(blocksOf(item.exerciseId, item.perSide)) { item.exerciseId } })
             val plan = (buildFixedProgramPlan(catalog, program, SeedProfiles.home, flow = program.flow) as FixedProgramPlanResult.Ready).plan
             assertEquals(expectedIds, plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.variationId })
             val exerciseBlocks = plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }
-            val expectedSetups = if (program.flow) (exerciseBlocks.count { it.type == BlockType.WORK } - 1).coerceAtLeast(0) + program.items.count { it.perSide && catalog.variation(it.exerciseId)?.kind in setOf(Kind.STRETCH, Kind.MOBILITY) } else program.items.count { it.perSide && it.seconds != null }
+            val expectedSetups = if (program.flow) (exerciseBlocks.count { it.type == BlockType.WORK } - 1).coerceAtLeast(0) + program.items.count { blocksOf(it.exerciseId, it.perSide) == 2 && catalog.variation(it.exerciseId)?.kind in setOf(Kind.STRETCH, Kind.MOBILITY) } else program.items.count { blocksOf(it.exerciseId, it.perSide) == 2 && it.seconds != null }
             assertEquals(expectedSetups, plan.blocks.count { it.type == BlockType.TRANSITION })
             assertTrue(plan.blocks.filter { it.type == BlockType.TRANSITION }.all { it.durationSeconds == 5 })
             var blockIndex = 0
@@ -50,12 +53,13 @@ class FixedProgramsTest {
                 val seconds = expected["seconds"]?.jsonPrimitive?.intOrNull
                 val estimated = expected["estSeconds"]?.jsonPrimitive?.intOrNull
                 val perSide = expected["perSide"]?.jsonPrimitive?.content?.toBoolean() ?: false
-                val count = if (perSide) 2 else 1
+                val exerciseId = expected.getValue("exerciseId").jsonPrimitive.content
+                val count = blocksOf(exerciseId, perSide)
                 val blocks = exerciseBlocks.subList(blockIndex, blockIndex + count)
-                assertEquals(List(count) { estimated ?: seconds ?: ((reps ?: 1) * 3) }, blocks.map { it.durationSeconds })
+                assertEquals(List(count) { (estimated ?: seconds ?: ((reps ?: 1) * 3)) * durationFactor(exerciseId, perSide) }, blocks.map { it.durationSeconds })
                 assertEquals(List(count) { reps ?: seconds }, blocks.map { it.target!!.value })
                 assertEquals(if (reps != null) List(count) { TargetType.REPS } else List(count) { TargetType.HOLD_SECONDS }, blocks.map { it.target!!.type })
-                assertEquals(if (perSide) listOf(Side.LEFT, Side.RIGHT) else listOf(Side.NONE), blocks.map { it.side })
+                assertEquals(if (count == 2) listOf(Side.LEFT, Side.RIGHT) else listOf(Side.NONE), blocks.map { it.side })
                 blockIndex += count
             }
         }
@@ -67,7 +71,7 @@ class FixedProgramsTest {
         val plan = result.plan
         assertTrue(plan.flow)
         assertEquals(program.id, plan.fixedProgramId)
-        val expectedIds = program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.exerciseId } }
+        val expectedIds = program.items.flatMap { item -> List(blocksOf(item.exerciseId, item.perSide)) { item.exerciseId } }
         assertEquals(expectedIds, plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.variationId })
         assertEquals(program.items.sumOf { (it.estSeconds ?: it.seconds ?: ((it.reps ?: 1) * 3)) * (if (it.perSide) 2 else 1) } + plan.blocks.count { it.type == BlockType.TRANSITION } * 5, plan.plannedDurationSeconds)
         val core = (buildFixedProgramPlan(catalog, byProgram.getValue("pilates-core-10"), SeedProfiles.home, flow = true) as FixedProgramPlanResult.Ready).plan
@@ -96,9 +100,9 @@ class FixedProgramsTest {
         assertFalse(program.flow)
         val plan = (buildFixedProgramPlan(catalog, program, SeedProfiles.home, flow = false) as FixedProgramPlanResult.Ready).plan
         assertFalse(plan.flow)
-        assertEquals(program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.exerciseId } }, plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.variationId })
-        assertEquals(listOf(60, 60, 60, 30, 60, 60), plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.target!!.value })
-        assertEquals(listOf(Side.NONE, Side.LEFT, Side.RIGHT, Side.NONE, Side.LEFT, Side.RIGHT), plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.side })
+        assertEquals(program.items.flatMap { item -> List(blocksOf(item.exerciseId, item.perSide)) { item.exerciseId } }, plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.variationId })
+        assertEquals(listOf(60, 60, 60, 15, 15, 60, 60), plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.target!!.value })
+        assertEquals(listOf(Side.NONE, Side.LEFT, Side.RIGHT, Side.LEFT, Side.RIGHT, Side.LEFT, Side.RIGHT), plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.side })
         assertTrue(plan.blocks.filter { it.type == BlockType.WORK }.all { !it.freeTarget && it.prescriptionTier == null })
     }
 
@@ -133,7 +137,7 @@ class FixedProgramsTest {
         assertTrue(heldBlocks.all { it.note?.contains("written instructions") == true })
         val heldItem = program.items.single { it.exerciseId == heldId }
         assertTrue(heldBlocks.all { it.target?.value == (heldItem.reps ?: heldItem.seconds) })
-        assertEquals(program.items.flatMap { item -> List(if (item.perSide) 2 else 1) { item.reps ?: item.seconds } },
+        assertEquals(program.items.flatMap { item -> List(blocksOf(item.exerciseId, item.perSide)) { item.reps ?: item.seconds } },
             plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { it.target!!.value })
     }
 
