@@ -48,7 +48,7 @@ fun overviewOf(plan: WorkoutPlan?, s: SessionRecord, zone: ZoneId): SessionOverv
 
 data class RoundEntry(val round: Int, val side: Side, val blockId: String, val outcome: String, /** null = not typed (assumed as planned) */ val reps: Int?)
 
-data class ExerciseDetail(val variationId: String, val target: Target?, val rounds: List<RoundEntry>) {
+data class ExerciseDetail(val variationId: String, val target: Target?, val rounds: List<RoundEntry>, /** One block worked both sides: the numbers are per side. */ val alternating: Boolean = false) {
     /** The lowest typed round: what the progression evidence uses. */
     val lowest: Int? get() = rounds.mapNotNull { it.reps }.minOrNull()
     val isHold: Boolean get() = target?.type == TargetType.HOLD_SECONDS
@@ -60,7 +60,7 @@ fun exerciseDetails(plan: WorkoutPlan, blocks: List<BlockRecord>): List<Exercise
     return plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null && results[it.id]?.outcome.let { o -> o == "MET" || o == "PARTIAL" } }
         .groupBy { it.variationId!! }
         .map { (vid, bs) ->
-            ExerciseDetail(vid, bs.first().target, bs.map { b -> RoundEntry(b.roundIndex ?: 1, b.side, b.id, results.getValue(b.id).outcome, results.getValue(b.id).achievedValue) })
+            ExerciseDetail(vid, bs.first().target, bs.map { b -> RoundEntry(b.roundIndex ?: 1, b.side, b.id, results.getValue(b.id).outcome, results.getValue(b.id).achievedValue) }, bs.first().alternating)
         }
 }
 

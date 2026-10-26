@@ -28,7 +28,7 @@ fun itemSeconds(item: FixedProgramItem): Int = (item.estSeconds ?: item.seconds 
 fun defaultProgramItem(catalog: Catalog, v: ExerciseVariation): FixedProgramItem {
     val policy = catalog.policyFor(v)
     val tier = policy?.tiers?.firstOrNull { it.index == 2 } ?: policy?.tiers?.firstOrNull()
-    val unilateral = v.unilateral
+    val unilateral = v.sideMode != SideMode.NONE   // SPLIT items are two blocks, ALTERNATING items one block shown as a total; both are "per side" numbers
     return when {
         v.kind == Kind.STRETCH || v.kind == Kind.MOBILITY -> FixedProgramItem(v.id, seconds = v.defaultSeconds ?: 30, perSide = unilateral, estSeconds = v.defaultSeconds ?: 30)
         tier != null && tier.target.type == TargetType.HOLD_SECONDS -> FixedProgramItem(v.id, seconds = tier.target.value, perSide = unilateral, estSeconds = tier.target.value, appLevel = tier.index)
@@ -84,11 +84,14 @@ fun buildProgramPlan(
             else -> error("${content.programId}/${item.exerciseId} has no prescription")
         }
         val target = policy?.let { cappedTarget(requestedTarget, it) } ?: requestedTarget
-        val duration = if (appTier == null) itemSeconds(item) else when (target.type) {
+        val baseDuration = if (appTier == null) itemSeconds(item) else when (target.type) {
             TargetType.HOLD_SECONDS -> maxOf(itemSeconds(item), target.shownValue())
             TargetType.REPS -> maxOf(itemSeconds(item), target.shownValue() * 3)
         }
-        val sides = if (item.perSide) listOf(Side.LEFT, Side.RIGHT) else listOf(Side.NONE)
+        // The variation decides (never a lone "per side" on an unsplit block): SPLIT = Left then Right blocks; ALTERNATING = one block for both sides, so it lasts twice the per-side estimate.
+        val sides = if (exercise.sideMode == SideMode.SPLIT) listOf(Side.LEFT, Side.RIGHT) else listOf(Side.NONE)
+        val alternating = exercise.alternating
+        val duration = if (alternating) baseDuration * 2 else baseDuration
         return sides.mapIndexed { sideIndex, side ->
             TimelineBlock(
                 id = "fixed-${content.programId}-$index-$sideIndex-${item.exerciseId}" + if (n > 1) "-r$set" else "",
@@ -100,6 +103,7 @@ fun buildProgramPlan(
                 variationId = item.exerciseId,
                 side = side,
                 target = target,
+                alternating = alternating,
                 // Programs follow their written volume, never the app-level progression ladder.
                 prescriptionTier = appTier?.index ?: if (extensionEligible) 5 else null,
                 mediaId = exercise.mediaId.takeUnless { exercise.demonstrationHold },

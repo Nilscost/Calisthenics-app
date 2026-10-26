@@ -242,7 +242,7 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
                         RoundEditor(
                             d.target, rounds.map { EditorRound(it.blockId, it.round, it.side, it.value, it.corrected) }, sets = s.plan.format != app.calisthenics.domain.model.WorkoutFormat.CIRCUIT,
                             tooHard0 = rounds.any { it.rating == Rating.BELOW && !(it.value.let { v -> v != null && tv != null && v < tv }) },
-                            tooEasy0 = rounds.any { it.rating == Rating.ABOVE }, pain0 = rounds.any { it.discomfort }, tag = "fix_${d.variationId}",
+                            tooEasy0 = rounds.any { it.rating == Rating.ABOVE }, pain0 = rounds.any { it.discomfort }, tag = "fix_${d.variationId}", alternating = d.alternating,
                         ) { list ->
                             corrected = true
                             scope.launch { src.reviseRounds(sessionId, d.variationId, list) }

@@ -73,17 +73,18 @@ import java.util.UUID
 fun formatClock(sec: Int) = "%d:%02d".format(sec / 60, sec % 60)
 
 /** The circuit: the work of round 1, one entry per exercise (both sides of a unilateral exercise are one entry). */
-data class CircuitEntry(val slotId: String, val variationId: String, val target: Target?, val perSide: Boolean, val loadGrams: Int? = null, val tier: Int = 1, val free: Boolean = false, val levelFiveEligible: Boolean = false)
+data class CircuitEntry(val slotId: String, val variationId: String, val target: Target?, val perSide: Boolean, val alternating: Boolean = false, val loadGrams: Int? = null, val tier: Int = 1, val free: Boolean = false, val levelFiveEligible: Boolean = false)
 
 fun circuitOf(plan: WorkoutPlan, round: Int = 1): List<CircuitEntry> =
     plan.blocks.filter { it.type == BlockType.WORK && (it.roundIndex ?: 1) == round && it.slotId != null && it.variationId != null && !it.slotId!!.startsWith("cond") }   // R8.2-T03: the conditioning finisher has its own block
-        .groupBy { it.slotId!! }.values.map { bs -> CircuitEntry(bs.first().slotId!!, bs.first().variationId!!, bs.first().target, bs.size > 1, bs.first().loadGrams, bs.first().prescriptionTier ?: 1, bs.first().freeTarget, bs.first().levelFiveEligible) }
+        .groupBy { it.slotId!! }.values.map { bs -> CircuitEntry(bs.first().slotId!!, bs.first().variationId!!, bs.first().target, bs.size > 1, bs.first().alternating, bs.first().loadGrams, bs.first().prescriptionTier ?: 1, bs.first().freeTarget, bs.first().levelFiveEligible) }
 
 @Composable
-private fun targetText(t: Target?, perSide: Boolean, loadGrams: Int? = null): String {
+internal fun targetText(t: Target?, perSide: Boolean, loadGrams: Int? = null, alternating: Boolean = false): String {
     t ?: return ""
-    val base = io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(t)
-    val sided = if (perSide) stringResource(R.string.target_per_side, base) else base
+    // SPLIT = two blocks, Left then Right, each with this number; ALTERNATING = one block showing the total with the per-side number.
+    val base = io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(t, alternating)
+    val sided = if (perSide) stringResource(R.string.target_split, base) else base
     return withLoad(sided, loadGrams)
 }
 
@@ -168,7 +169,7 @@ private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
                 FilledTonalIconButton(onClick = { onStep(-1) }, enabled = if (chain != null) chain.first > 0 else e.tier > 1, modifier = Modifier.size(Spacing.touch).testTag("level_minus_${e.slotId}$sfx")) { Icon(io.github.gonbei774.calisthenicsmemory.ui.theme.AppIcons.Remove, stringResource(R.string.stepper_decrease)) }
                 Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(targetText(e.target, e.perSide, e.loadGrams), style = MaterialTheme.typography.headlineMedium, color = if (e.free) AppAccentTheme.colors.text else MaterialTheme.colorScheme.onSurface,
+                    Text(targetText(e.target, e.perSide, e.loadGrams, e.alternating), style = MaterialTheme.typography.headlineMedium, color = if (e.free) AppAccentTheme.colors.text else MaterialTheme.colorScheme.onSurface,
                         modifier = (if (onTypeNumber != null) Modifier.clickable(onClick = onTypeNumber).heightIn(min = Spacing.touch).wrapContentHeight(Alignment.CenterVertically) else Modifier).testTag("exercise_target_${e.slotId}$sfx"))
                 Text(if (e.free) stringResource(R.string.preview_free_number) else if (e.levelFiveEligible) stringResource(R.string.preview_level_extension) else if (chain != null) stringResource(R.string.preview_chain_pos, chain.first + 1, chain.second) else stringResource(R.string.preview_level, e.tier, levels), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("level_${e.slotId}$sfx"))
                 }

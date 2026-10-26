@@ -7696,7 +7696,7 @@
     "LOWER_BODY"
    ],
    "kind": "REPS",
-   "unilateral": false,
+   "unilateral": true,
    "position": "standing",
    "equipment": [
     {}
@@ -7704,7 +7704,7 @@
    "instructions": [
     "Stand tall with the hands on the hips.",
     "Step one foot back and lower until the back knee is just above the floor.",
-    "Push back to standing and alternate legs."
+    "Push back to standing. Finish all the reps on one leg, then switch legs."
    ],
    "formCues": [
     "Long step back",
@@ -22959,7 +22959,7 @@
   },
   {
    "id": "ring-pushup-rto-archer",
-   "name": "Archer Ring Push-Up, Rings Turned Out (per side)",
+   "name": "Archer Ring Push-Up, Rings Turned Out",
    "familyId": "ring-pushup",
    "insertAfter": "ring-pushup-rto",
    "difficultyRank": 50,
@@ -22985,7 +22985,7 @@
    "instructions": [
     "From a ring push-up, lower toward one ring while the other arm straightens out to the side.",
     "Press back to the middle and turn out at the top.",
-    "Alternate sides or finish one side first."
+    "Alternate sides every rep; the number shown counts each side."
    ],
    "formCues": [
     "Assist arm straight",
@@ -24356,10 +24356,10 @@
     },
     {
      "exerciseId": "lunge-reverse",
-     "reps": 10,
-     "perSide": false,
-     "notes": "Rear Lunge; slow; alternate legs.",
-     "estSeconds": 48
+     "reps": 5,
+     "perSide": true,
+     "notes": "Rear Lunge; slow; one leg at a time (the written 10 alternating reps become 5 on each leg).",
+     "estSeconds": 24
     },
     {
      "exerciseId": "high-jumper",
@@ -24431,9 +24431,9 @@
     },
     {
      "exerciseId": "bridge-single-leg",
-     "seconds": 30,
-     "perSide": false,
-     "notes": "Back Bridge: hips up with one knee straight, switch legs every 5 s, 6 x 5 s (alternating-hold option)."
+     "seconds": 15,
+     "perSide": true,
+     "notes": "Back Bridge: hips up with one knee straight; 15 s on each leg (the written 30 s with legs switched, now one leg at a time)."
     },
     {
      "exerciseId": "quadraplex",
@@ -24789,9 +24789,9 @@
     },
     {
      "exerciseId": "bridge-single-leg",
-     "seconds": 30,
-     "perSide": false,
-     "notes": "Back Bridge: hips up with one knee straight, switch legs every 5 s, 6 x 5 s (alternating-hold option)."
+     "seconds": 15,
+     "perSide": true,
+     "notes": "Back Bridge: hips up with one knee straight; 15 s on each leg (the written 30 s with legs switched, now one leg at a time)."
     },
     {
      "exerciseId": "quadraplex",
@@ -24907,10 +24907,10 @@
     },
     {
      "exerciseId": "lunge-reverse",
-     "reps": 10,
-     "perSide": false,
-     "notes": "Rear Lunge; slow; alternate legs.",
-     "estSeconds": 48
+     "reps": 5,
+     "perSide": true,
+     "notes": "Rear Lunge; slow; one leg at a time (the written 10 alternating reps become 5 on each leg).",
+     "estSeconds": 24
     },
     {
      "exerciseId": "high-jumper",

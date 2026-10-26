@@ -117,6 +117,9 @@
     <string name="programs_reps">%1$d reps</string>
     <string name="programs_seconds">%1$d seconds</string>
     <string name="programs_per_side">per side</string>
+    <string name="programs_split_each">left, then right</string>
+    <string name="programs_alt_reps">%1$d reps in all (%2$d per side)</string>
+    <string name="programs_alt_seconds">%1$d s in all (%2$d s per side)</string>
     <string name="programs_flow">Flow mode · auto-advance</string>
     <string name="programs_unavailable">Unavailable with %1$s equipment</string>
     <string name="programs_missing_item">• %1$s: %2$s</string>
@@ -300,7 +303,11 @@
     <string name="target_reps_range">%1$d–%2$d reps</string>
     <string name="target_seconds_range">%1$d–%2$d s</string>
     <string name="bullet_item">• %1$s</string>
-    <string name="target_per_side">%1$s per side</string>
+    <!-- Owner 2026-10-26: one block for both sides shows the total first ("12 reps (6 per side)"); two blocks (Left then Right) say so on the row -->
+    <string name="target_total_per_side">%1$s (%2$s per side)</string>
+    <string name="target_split">%1$s · left, then right</string>
+    <string name="logger_reps_done_per_side">Reps per side you did</string>
+    <string name="logger_seconds_held_per_side">Seconds held per side</string>
     <string name="target_with_load">%1$s · %2$s kg</string>
     <string name="sheet_load_now">Kettlebell: %1$s kg. Levels count per weight; a heavier bell in your profile starts this exercise again at level 1.</string>
     <string name="sheet_load_earlier">Earlier at %1$s kg: %2$d of 5 stars</string>

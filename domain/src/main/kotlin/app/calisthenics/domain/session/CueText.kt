@@ -5,6 +5,9 @@ package app.calisthenics.domain.session
 
 import app.calisthenics.domain.model.BlockType
 import app.calisthenics.domain.model.Side
+import app.calisthenics.domain.model.Target
+import app.calisthenics.domain.model.TargetType
+import app.calisthenics.domain.model.alternatingTotal
 import app.calisthenics.domain.model.TimelineBlock
 import app.calisthenics.domain.model.WorkoutPlan
 
@@ -25,6 +28,27 @@ object CueText {
             else -> name ?: "Go"
         }.trim()
         return if (b.type == BlockType.TRANSITION) text else "$text${sideLabel(b.side)}".trim()
+    }
+
+    /**
+     * What is spoken after the title of a block that works both sides in one set: "12 reps, 6 per side" (holds: "40 seconds, 20 seconds per side").
+     * Null for every other block (single-sided blocks announce their side in the title; the rest say nothing extra).
+     */
+    fun alternatingPhrase(b: TimelineBlock): String? {
+        val t = b.target?.takeIf { b.alternating && b.type == BlockType.WORK } ?: return null
+        return "${amount(t.alternatingTotal())}, ${if (t.type == TargetType.REPS) t.shownValue().toString() else amount(t)} per side"
+    }
+
+    /** The spoken title plus, for an alternating block, its total and per-side numbers. */
+    fun spoken(plan: WorkoutPlan, blockId: String, names: Map<String, String>): String {
+        val title = label(plan, blockId, names)
+        val phrase = plan.blocks.firstOrNull { it.id == blockId }?.let(::alternatingPhrase)
+        return if (phrase == null) title else "$title. $phrase"
+    }
+
+    private fun amount(t: Target): String {
+        val n = t.shownValue()
+        return if (t.type == TargetType.REPS) "$n reps" else "$n seconds"
     }
 
     /** What to announce as "Next": skips the short get-ready block so the user hears the exercise itself. */
