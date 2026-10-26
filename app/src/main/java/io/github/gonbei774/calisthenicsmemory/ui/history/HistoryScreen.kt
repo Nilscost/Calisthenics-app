@@ -105,7 +105,7 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
             val shown = selected?.let { s -> inWeek.filter { it.day == s } } ?: inWeek
             if (inWeek.isNotEmpty()) {
                 val week = weeklySummaries(list.filter { it.record.sessionId in finished }.map { it.record }, zone).firstOrNull { it.weekStart == weekStart }
-                if (week != null) Text(stringResource(R.string.history_week_summary, week.sessions, week.workSeconds / 60, week.stretchSeconds / 60), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("week_summary"))
+                if (week != null) Text(androidx.compose.ui.res.pluralStringResource(R.plurals.history_week_summary, week.sessions, week.sessions, week.workSeconds / 60, week.stretchSeconds / 60), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("week_summary"))
             }
             if (shown.isEmpty()) Text(stringResource(if (overviews.isEmpty()) R.string.history_empty else R.string.history_empty_week), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("history_empty"))
             shown.forEach { o ->

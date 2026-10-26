@@ -318,6 +318,42 @@ class SessionScreenTest {
         assertTrue(exited)
     }
 
+    @Test fun aRestoredSessionRouteWithNoLiveSessionGoesBackInsteadOfStartingForever() {
+        var exited = false
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = { exited = true }) } }
+        rule.waitForIdle()
+        assertTrue(exited)
+    }
+
+    @Test fun startingStaysOnTheStartingScreenUntilTheFirstPublish() {
+        SessionBus.begin()
+        var exited = false
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = { exited = true }) } }
+        rule.waitForIdle()
+        assertFalse(exited)
+        rule.onNodeWithText(app.getString(R.string.session_starting)).assertExists()
+    }
+
+    @Test fun beginDropsAFinishedSessionButNeverALiveOne() {
+        val live = stateAt(1)
+        SessionBus.publish(live); SessionBus.begin()
+        assertSame(live, SessionBus.state.value)
+        val done = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
+        SessionBus.publish(done); SessionBus.saved = true; SessionBus.begin()
+        assertNull(SessionBus.state.value); assertFalse(SessionBus.saved)
+        assertTrue(SessionBus.starting.value)
+    }
+
+    @Test fun theEndScreenSaysSavingThenSavedAndNeverSavedAfterAFailure() {
+        val s = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
+        SessionBus.saving()
+        show(s)
+        rule.onNodeWithTag("end_save_status").assertTextEquals(app.getString(R.string.end_saving))
+        SessionBus.saveFailed(); rule.waitForIdle()
+        rule.onNodeWithTag("end_save_status").assertTextEquals(app.getString(R.string.end_save_failed))
+        rule.onNodeWithTag("end_edit").assertDoesNotExist() // no corrections for a session that is not in history
+    }
+
     // R8.1-T06 (F7): a Flow workout still logs actual reps, so its end screen keeps the editor; only a flow program has no per-item results
     @Test fun aFlowWorkoutKeepsTheEndScreenEditorButAFlowProgramDoesNot() {
         val flowPlan = plan.copy(flow = true)

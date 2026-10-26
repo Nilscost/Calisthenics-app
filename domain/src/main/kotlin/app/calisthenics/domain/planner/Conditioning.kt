@@ -63,6 +63,5 @@ fun withConditioningFinisher(c: Catalog, result: PlanResult, progress: ProgressS
     var insert = at
     while (insert < plan.blocks.size && plan.blocks[insert].type in setOf(BlockType.STRETCH, BlockType.PASSIVE_RECOVERY, BlockType.TRANSITION) && plan.blocks[insert].roundIndex != null) insert++
     val blocks = plan.blocks.take(insert) + extra + plan.blocks.drop(insert)
-    return PlanResult.Ready(plan.copy(blocks = blocks, plannedDurationSeconds = blocks.sumOf { it.durationSeconds }, requestedDurationSeconds = maxOf(plan.requestedDurationSeconds, blocks.sumOf { it.durationSeconds }),
-        changesExplained = plan.changesExplained + "Conditioning finisher: ${extra.count { it.type == BlockType.WORK }} intervals of $CONDITIONING_INTERVAL_SECONDS s with no rest between exercises, about ${(extra.sumOf { it.durationSeconds } + 30) / 60} min."))
+    return PlanResult.Ready(plan.copy(blocks = blocks, plannedDurationSeconds = blocks.sumOf { it.durationSeconds }, requestedDurationSeconds = maxOf(plan.requestedDurationSeconds, blocks.sumOf { it.durationSeconds })))
 }

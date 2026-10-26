@@ -109,6 +109,8 @@
     <string name="programs_item_count">%1$d exercises</string>
     <string name="programs_summary">About %1$d min · %2$s</string>
     <string name="programs_no_equipment">No equipment</string>
+    <string name="preview_equipment_caption">Equipment needed</string>
+    <string name="preview_equipment_hint">What to have ready before you start.</string>
     <string name="programs_details">Details</string>
     <string name="programs_close">Close</string>
     <string name="programs_line">%1$d. %2$s — %3$s</string>
@@ -230,6 +232,7 @@
     <string name="train_infeasible">This workout cannot be built</string>
     <string name="train_running">A workout is running.</string>
     <string name="train_open">Open it</string>
+    <string name="train_open_workout">Open workout</string>
     <string name="train_unfinished">An unfinished workout was found (the app was closed or crashed). Up to a second of work after the last save may be missing.</string>
     <string name="train_continue">Continue it (paused)</string>
     <string name="train_save_end">Save what was done and end</string>
@@ -255,7 +258,7 @@
     <string name="rule_app_levels">App levels</string>
     <string name="rule_rep_range">Rep range</string>
     <string name="rule_custom">Custom</string>
-    <string name="rule_app_levels_hint">Meet a higher level’s targets to make it current. Three successful sessions on distinct days within 14 days earn the next level.</string>
+    <string name="rule_app_levels_hint">Meet a higher level’s targets to make it current. Three successful sessions on distinct days within 14 days earn the next level, or four within 30 days if you train weekly.</string>
     <string name="rule_rep_range_hint">%1$d sets of %2$d–%3$d reps (holds %4$d–%5$d s). When every set reaches the top you move on to the next exercise and start again at the bottom. A set you do not log counts as last time\'s number.</string>
     <string name="rule_custom_hint">%1$d sets of %2$d–%3$d reps; %6$d session(s) in a row with every set at the top move you on.</string>
     <string name="rule_sets">Sets</string>
@@ -301,8 +304,8 @@
     <string name="target_with_load">%1$s · %2$s kg</string>
     <string name="sheet_load_now">Kettlebell: %1$s kg. Levels count per weight; a heavier bell in your profile starts this exercise again at level 1.</string>
     <string name="sheet_load_earlier">Earlier at %1$s kg: %2$d of 5 stars</string>
-    <string name="preview_note">Check the notes before you start.</string>
-    <string name="preview_more_notes">%1$d notes</string>
+    <string name="preview_more_notes">More (%1$d)</string>
+    <string name="preview_less_notes">Less</string>
     <string name="preview_swap">Swap %1$s</string>
     <string name="preview_timeline">Full timeline (%1$d blocks)</string>
     <string name="preview_swap_title">Swap this exercise</string>
@@ -349,6 +352,8 @@
     <string name="end_early">Workout finished early</string>
     <string name="end_summary">%1$d min · %2$s · %3$s</string>
     <string name="end_saved">Saved to your history.</string>
+    <string name="end_saving">Saving…</string>
+    <string name="end_save_failed">Could not save this workout. It is kept on this phone: open Train to continue or save it.</string>
     <string name="end_edit_logged">Edit what I logged</string>
     <string name="end_done">Done</string>
     <plurals name="count_rounds"><item quantity="one">%1$d round</item><item quantity="other">%1$d rounds</item></plurals>
@@ -389,7 +394,7 @@
     <string name="onb_summary_done">All steps done · the next exercise starts at level 1</string>
     <string name="onb_summary_line">Step %1$d · %2$s</string>
     <string name="settings_redo_title">Redo the starting questionnaire?</string>
-    <string name="settings_redo_text">Your answers replace your current starting levels. Your workout history stays.</string>
+    <string name="settings_redo_text">Your answers replace your current levels and start them fresh. Your workout history stays visible, but earlier workouts no longer raise the new levels.</string>
     <string name="settings_redo_confirm">Redo</string>
     <string name="muscle_chest">Chest</string>
     <string name="muscle_front_delts">Front shoulders</string>
@@ -458,7 +463,7 @@
     <string name="history_prev_week">Previous week</string>
     <string name="history_next_week">Next week</string>
     <string name="history_week_range">%1$s – %2$s</string>
-    <string name="history_week_summary">%1$d workouts · %2$d min of work · %3$d min of stretching</string>
+    <plurals name="history_week_summary"><item quantity="one">%1$d workout · %2$d min of work · %3$d min of stretching</item><item quantity="other">%1$d workouts · %2$d min of work · %3$d min of stretching</item></plurals>
     <string name="history_empty">No finished workouts yet. Missed weeks are never penalised.</string>
     <string name="history_empty_week">No workouts this week.</string>
     <string name="history_session_line">%1$d min · %2$s · %3$s</string>

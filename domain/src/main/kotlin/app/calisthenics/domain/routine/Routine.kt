@@ -91,6 +91,8 @@ data class SessionDraft(
     val betweenSetMode: app.calisthenics.domain.model.BetweenSetMode? = null,
     val preparationSeconds: Int = 5,
     val levelFiveTargets: Map<String, Int> = emptyMap(),
+    /** slot -> the exercise a manual level was set on; the override is ignored for another exercise in that slot. */
+    val overrideVariations: Map<String, String> = emptyMap(),
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(

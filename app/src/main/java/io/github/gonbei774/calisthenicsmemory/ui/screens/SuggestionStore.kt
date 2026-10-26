@@ -16,6 +16,8 @@ object SuggestionStore {
     private fun rawNext(ctx: Context): List<String> = p(ctx).getString("acceptedNext", "").orEmpty().split(';').filter { it.isNotBlank() }
     /** R7-T05: "from|to|day" per accepted next exercise. */
     fun acceptNext(ctx: Context, variationId: String, toVariationId: String, day: Int) { p(ctx).edit().putString("acceptedNext", (rawNext(ctx) + "$variationId|$toVariationId|$day").joinToString(";")).commit() }
+    /** W2: the questionnaire was redone: raises accepted and suggestions closed before it belong to the old levels. */
+    fun clearAll(ctx: Context) { p(ctx).edit().clear().commit() }
     fun accepted(ctx: Context): List<UserAction> = rawAccepted(ctx).mapNotNull { r ->
         val f = r.split('|'); if (f.size != 3) null else runCatching { UserAction.AcceptHarder(f[2].toInt(), f[0], f[1].toInt()) }.getOrNull()
     } + rawNext(ctx).mapNotNull { r ->

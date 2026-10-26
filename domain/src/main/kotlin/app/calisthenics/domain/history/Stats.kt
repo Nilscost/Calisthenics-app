@@ -18,7 +18,7 @@ data class HistoryTiles(val sessionsThisWeek: Int, val levelUpsThisMonth: Int, v
 
 /** A progress event that is a step forward: a level earned, all five levels done, or a routine's rule met. */
 fun isLevelUp(e: ProgressEvent): Boolean =
-    (e.message.startsWith("Tier ") && " achieved after " in e.message) || e.message.startsWith("All five tiers earned") || e.message.startsWith("Every set of ")
+    (e.message.startsWith("Level ") && " done after " in e.message) || e.message.startsWith("All five levels done") || e.message.startsWith("Every set of ")
 
 private fun day(ms: Long, zone: ZoneId) = Instant.ofEpochMilli(ms).atZone(zone).toLocalDate()
 

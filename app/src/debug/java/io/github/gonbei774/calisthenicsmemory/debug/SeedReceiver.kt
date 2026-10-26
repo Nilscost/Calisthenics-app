@@ -41,7 +41,7 @@ class SeedReceiver : BroadcastReceiver() {
                 val added = runBlocking { BackupApply.restore(app, shifted) }
                 val levels = Json.decodeFromString(MapSerializer(String.serializer(), Int.serializer()),
                     app.assets.open("seed/levels.json").use { it.readBytes().decodeToString() })
-                LevelStore.save(app, levels)
+                LevelStore.save(app, levels, undated = true)
                 OnboardingStore.setDone(app)
                 Log.i("SeedReceiver", "seeded: $added sessions, ${levels.size} levels")
                 code = 1

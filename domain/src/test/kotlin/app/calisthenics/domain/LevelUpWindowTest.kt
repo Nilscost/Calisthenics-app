@@ -33,7 +33,7 @@ class LevelUpWindowTest {
         val act = listOf(UserAction.SelfAssessment(0, "pushup-standard", 3))
         assertEquals(3, engine.replay(listOf(ev(0, "pushup-standard", 3), ev(3, "pushup-standard", 3, tooHard = true), ev(6, "pushup-standard", 3)), act).tierFor("pushup-standard"))
         val pain = engine.replay(listOf(ev(0, "pushup-standard", 3), ev(3, "pushup-standard", 3, pain = true), ev(6, "pushup-standard", 3), ev(9, "pushup-standard", 3)), act)
-        assertNotNull(pain.holdFor("pushup")); assertEquals(3, pain.tierFor("pushup-standard"))
+        assertNotNull(pain.holdFor("pushup")); assertEquals(2, pain.tierFor("pushup-standard"))   // W2: pain steps the level one easier by itself; the level-3 sessions that follow do not count and never clear the hold
     }
 
     @Test fun feetElevatedAndDiamondSessionsCountTogether() {
@@ -54,5 +54,35 @@ class LevelUpWindowTest {
         val act = listOf(UserAction.SelfAssessment(0, "pushup-standard", 1))
         val s = engine.replay(emptyList(), act + UserAction.AcceptHarder(1, "pushup-standard", 3))
         assertEquals(3, s.tierFor("pushup-standard")); assertTrue(setOf(1, 2).all { it in s.variations.getValue("pushup-standard").achievedTiers })
+    }
+
+    // Owner decision: once-a-week training levels up after about a month (4 sessions inside 30 days).
+    @Test fun weeklyCadenceAdvancesAtTheFourthSession() {
+        val act = listOf(UserAction.SelfAssessment(0, "pushup-standard", 3))
+        val three = engine.replay(listOf(ev(0, "pushup-standard", 3), ev(7, "pushup-standard", 3), ev(14, "pushup-standard", 3)), act)
+        assertEquals(3, three.tierFor("pushup-standard"))
+        val four = engine.replay(listOf(ev(0, "pushup-standard", 3), ev(7, "pushup-standard", 3), ev(14, "pushup-standard", 3), ev(21, "pushup-standard", 3)), act)
+        assertEquals(4, four.tierFor("pushup-standard")); assertTrue(3 in four.variations.getValue("pushup-standard").achievedTiers)
+    }
+
+    @Test fun fourSessionsSpreadOver35DaysDoNotAdvance() {
+        val act = listOf(UserAction.SelfAssessment(0, "pushup-standard", 3))
+        val s = engine.replay(listOf(0, 12, 24, 35).map { ev(it, "pushup-standard", 3) }, act)
+        assertEquals(3, s.tierFor("pushup-standard"))
+        // 0, 10, 20, 29 span exactly 30 calendar days: still inside
+        assertEquals(4, engine.replay(listOf(0, 10, 20, 29).map { ev(it, "pushup-standard", 3) }, act).tierFor("pushup-standard"))
+    }
+
+    @Test fun fastPathStillWorksAndSlowPathDoesNotDoubleAdvance() {
+        val act = listOf(UserAction.SelfAssessment(0, "pushup-standard", 3))
+        // 3 in 10 days advance once; the 4th session (day 21) alone must not advance again
+        val s = engine.replay(listOf(0, 5, 10, 21).map { ev(it, "pushup-standard", 3) }, act)
+        assertEquals(4, s.tierFor("pushup-standard"))
+        // the used days are cleared: the next level needs its own qualifying sessions (3 weekly ones are not enough, the 4th is)
+        fun at4(vararg d: Int) = d.map { ev(it, "pushup-standard", 4) }
+        val three = engine.replay(listOf(0, 5, 10).map { ev(it, "pushup-standard", 3) } + at4(17, 24, 31), act)
+        assertEquals(4, three.tierFor("pushup-standard"))
+        val four = engine.replay(listOf(0, 5, 10).map { ev(it, "pushup-standard", 3) } + at4(17, 24, 31, 38), act)
+        assertEquals(5, four.tierFor("pushup-standard"))
     }
 }
