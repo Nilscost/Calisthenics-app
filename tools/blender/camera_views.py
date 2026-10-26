@@ -8,6 +8,10 @@ CAMERA_OVERRIDES = {
     "handstand-press-wall-negative": (90, 18),
     "handstand-press-straddle": (75, 16),
     "flag-support-press": (-25, 12),
+    # Archer: lower 3/4 view keeps feet, head and the extended arm inside the frame at normal scale.
+    "pushup-archer": (50, 20),
+    # Saw: view from the feet end so both rotation sides and the level arm line read symmetrically.
+    "pilates-saw": (90, 26),
 }
 
 

@@ -92,6 +92,9 @@ def pushup_archer():
     from motion_constraints import bisect_target, planted_ankle
     from poses import norm, sub, sample, trunk_frame
     half_width, wrist_x, ankle_x = 0.47, 0.0, -1.1
+    # Ankle height: the rendered forefoot hangs ~3 cm below the toe joint, so lift the
+    # planted feet 3.1 cm to keep the sole on, not in, the floor (native geometry gate).
+    az=0.08+0.031
     reach = 0.568  # 2 mm short of arm length: straight, without IK clamping.
 
     def key(a, yaw):
@@ -101,11 +104,11 @@ def pushup_archer():
                  wrist_r=[wrist_x, -half_width, .035],
                  hand_l=[.7,.7,0], hand_r=[.7,-.7,0], head_detail=1)
         k['pelvis'] = [ankle_x + math.cos(ar)*math.cos(yr)*.898,
-                       math.cos(ar)*math.sin(yr)*.898, .08 + math.sin(ar)*.898]
+                       math.cos(ar)*math.sin(yr)*.898, az + math.sin(ar)*.898]
         for side, sign in (('l',1),('r',-1)):
             # Feet pivot a few mm at the ankles; the toe tips stay planted.
-            ankle=[ankle_x-math.sin(yr)*sign*.08, math.cos(yr)*sign*.08, .08]
-            toe=[ankle_x+.18,sign*.08,.02]
+            ankle=[ankle_x-math.sin(yr)*sign*.08, math.cos(yr)*sign*.08, az]
+            toe=[ankle_x+.18,sign*.08,az-.06]
             # Hip positions follow the same rotated rigid plank as the torso.
             up,left=trunk_frame(90-a,yaw,0)
             hip=add(add(k['pelvis'],mul(left,sign*.09)),mul(up,-.03))
@@ -116,7 +119,7 @@ def pushup_archer():
 
     def support_distance(a, yaw):
         up,left=trunk_frame(90-a,yaw,0)
-        pelvis=add([ankle_x,0,.08],mul(up,.898))
+        pelvis=add([ankle_x,0,az],mul(up,.898))
         shoulder=add(add(pelvis,mul(up,.47)),mul(left,.18))
         return norm(sub(shoulder,[wrist_x,half_width,.035]))
 
