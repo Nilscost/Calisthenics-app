@@ -7,6 +7,10 @@ CAMERA_OVERRIDES = {
     "hspu-wall-deficit": (90, 15),
     "handstand-press-wall-negative": (90, 18),
     "flag-support-press": (-25, 12),
+    # Side-oblique, slightly from below: heels/shins over the bar and the body below.
+    "heel-hook": (25, -6),
+    # Near-frontal, slightly from below: the left/right leg sweep reads against the torso.
+    "hanging-windshield-wiper": (82, -8),
 }
 
 

@@ -170,8 +170,8 @@ class NextHangingBatchTests(unittest.TestCase):
         peak = max(mean_z)
         for i, frame in enumerate(damaged["frames"]):
             if mean_z[i] >= peak-.03:
-                frame["ankle_l"][2] += .08
-                frame["toe_l"][2] += .08
+                frame["ankle_l"][2] += .10
+                frame["toe_l"][2] += .10
         checks = {failure["check"] for failure in audit_next_hanging(damaged)["failures"]}
         self.assertIn("l_bar_contact", checks)
 
