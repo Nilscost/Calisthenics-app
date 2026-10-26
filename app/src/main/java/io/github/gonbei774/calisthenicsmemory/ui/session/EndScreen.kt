@@ -59,7 +59,8 @@ internal suspend fun loadEndProgress(ctx: android.content.Context, st: app.calis
 @Composable
 internal fun EndScreen(
     st: app.calisthenics.domain.session.SessionState, modifier: Modifier, onExit: () -> Unit,
-    loadProgress: suspend () -> EndProgress? = { null },
+    /** Replaces the history replay (tests); null = load from history, off the main thread. */
+    loadProgress: (suspend () -> EndProgress?)? = null,
 ) {
     val ctx = LocalContext.current
     val saveStatus by SessionBus.saveStatus.collectAsState()
@@ -76,7 +77,7 @@ internal fun EndScreen(
         val deadline = System.currentTimeMillis() + 5000
         while (SessionBus.saveStatus.value == SaveStatus.NONE || SessionBus.saveStatus.value == SaveStatus.SAVING) { if (System.currentTimeMillis() >= deadline) break; delay(100) }
         if (!SessionBus.saved) return@LaunchedEffect
-        progress = try { loadProgress() ?: loadEndProgress(ctx, st) } catch (_: Throwable) { progress }
+        progress = try { (loadProgress ?: { kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { loadEndProgress(ctx, st) } }).invoke() } catch (_: Throwable) { progress }
     }
     Column(modifier.fillMaxSize().statusBarsPadding().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
         Text(stringResource(if (st.phase == app.calisthenics.domain.session.Phase.COMPLETED) R.string.end_complete else R.string.end_early), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("end_title"))
