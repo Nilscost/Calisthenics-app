@@ -6,6 +6,7 @@ CAMERA_OVERRIDES = {
     "headstand-wall": (-90, 18),
     "hspu-wall-deficit": (90, 15),
     "handstand-press-wall-negative": (90, 18),
+    "handstand-press-straddle": (75, 16),
     "flag-support-press": (-25, 12),
 }
 

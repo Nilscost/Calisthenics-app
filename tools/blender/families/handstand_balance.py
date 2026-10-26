@@ -79,36 +79,78 @@ def handstand_wall_plank():
 
 
 def handstand_wall_walk_up():
+    """Plank at the wall base, feet climb, then three alternating planted hand
+    steps per side bring the hands in to a near-vertical toe-anchored handstand.
+
+    The body is one straight line (ankle-to-shoulder 1.37 m). Feet stay on the
+    wall face (toe x = 0) and climb first; the shoulders then travel in while
+    the hands alternate: each hand is planted (zero slide, floor height) except
+    during its own short swing, and its planted spot is chosen so the arm never
+    needs more than its reach over the whole planted period.
+    """
+    from poses import steady_progress
     wall=[dict(kind="box",center=[.025,0,1.2],size=[.05,1.6,2.4])]
-    def k(t):
-        p=-120-60*t; r=math.radians(p); ux=math.sin(r); uz=math.cos(r)
-        az=1.02+.945*t
-        # Step the pelvis back with the ankles so the straight leg chain stays
-        # within reach while the +X toes meet the wall's x=0 near face.
-        px=.90*ux-.20; pz=az+.90*uz
-        sx=px+.47*ux; sz=pz+.47*uz
-        dz=sz-.035; dx=math.sqrt(max(.565**2-dz**2,.01))
-        wx=sx-dx
-        # As the athlete approaches the initial near-horizontal wall-walk
-        # posture, flex the neck enough to keep the skull clear of the floor.
-        # Fade this articulation out as the torso reaches vertical, where the
-        # head already has ample clearance and should stay aligned with the
-        # inverted trunk.
-        return base_pose(pelvis=[px,0,pz],p1=p,p2=p,hp=40*(1-t),
-          # Wall near face is x=0. With +X-pointing feet, keep the toe
-          # anchors on that face instead of driving the whole foot through it.
+    LEN=1.37; U_A=.20; EVENTS=6; U0=.21; U1=.96; SWING=.96; MARGIN=.03; LIFT=.07
+    def smooth(x):
+        x=max(0.,min(1.,x)); return x*x*(3-2*x)
+    def geom(u):
+        if u<=U_A:
+            az=.082+(1.0-.082)*smooth(u/U_A); sz=.45
+            sx=-.2-math.sqrt(LEN*LEN-(az-sz)**2); return az,sx,sz
+        b=steady_progress((u-U_A)/(1-U_A),.18)
+        sz=.45+.145*b**1.5
+        sx0=-.2-math.sqrt(LEN*LEN-(1.0-.45)**2)
+        sx=sx0+(-.2-sx0)*b
+        return sz+math.sqrt(max(LEN*LEN-(sx+.2)**2,0)),sx,sz
+    def window(u):
+        sx,sz=geom(u)[1:]
+        return sx,math.sqrt(max(.565**2-(sz-.035)**2,0))
+    sp=(U1-U0)/EVENTS
+    events=[(U0+e*sp+sp*(1-SWING)/2,U0+e*sp+sp*(1+SWING)/2) for e in range(EVENTS)]
+    def stances(hand):
+        mine=[e for e in range(EVENTS) if e%2==hand]
+        periods=[]; prev=0.
+        for e in mine:
+            periods.append((prev,events[e][0])); prev=events[e][1]
+        periods.append((prev,1.))
+        out=[]
+        for a,b in periods:
+            lo,hi=-9.,9.
+            for i in range(61):
+                sx,d=window(a+(b-a)*i/60); lo=max(lo,sx-d+MARGIN); hi=min(hi,sx+d-MARGIN)
+            out.append(lo+min(.01,(hi-lo)/2))  # straightest arm that never overreaches
+        out[-1]=max(lo,min(hi,-.2))
+        return mine,out
+    plan=[stances(0),stances(1)]
+    def hand(u,side):
+        mine,xs=plan[side]
+        for k,e in enumerate(mine):
+            a,b=events[e]
+            if u<a: return xs[k],0.
+            if u<=b:
+                f=(u-a)/(b-a); g=smooth((f-.12)/.76)  # lift first, travel while clear, then plant
+                return xs[k]+(xs[k+1]-xs[k])*g,LIFT*math.sin(math.pi*f)**2
+        return xs[-1],0.
+    def k(u):
+        az,sx,sz=geom(u)
+        ux=(sx+.2)/LEN; uz=(sz-az)/LEN
+        p=-math.degrees(math.acos(max(-1,min(1,uz))))
+        px=-.2+.9*ux; pz=az+.9*uz
+        (xl,zl),(xr,zr)=hand(u,0),hand(u,1)
+        return base_pose(pelvis=[px,0,pz],p1=p,p2=p,hp=0,
           ankle_l=[-.20,.09,az],ankle_r=[-.20,-.09,az],knee_l=[0,1,0],knee_r=[0,-1,0],foot_l=[1,0,0],foot_r=[1,0,0],
-          wrist_l=[wx,.18,.035],wrist_r=[wx,-.18,.035],elbow_l=[0,1,0],elbow_r=[0,-1,0],hand_l=[-1,0,0],hand_r=[-1,0,0],palm_l=[0,0,-1],palm_r=[0,0,-1],grip_l=0,grip_r=0)
-    # Walk up for half the loop, then explicitly walk back down. The previous
-    # one-way key path relied on loop wrapping, teleporting from vertical to
-    # push-up in a single frame.
+          wrist_l=[xl,.18,.035+zl],wrist_r=[xr,-.18,.035+zr],elbow_l=[0,1,0],elbow_r=[0,-1,0],hand_l=[-1,0,0],hand_r=[-1,0,0],palm_l=[0,0,-1],palm_r=[0,0,-1],grip_l=0,grip_r=0)
     keys=[]
-    for i in range(97):
-        phase=i/96
-        walk=2*phase if phase<=.5 else 2*(1-phase)
-        walk=walk*walk*(3-2*walk)
-        keys.append((phase,k(walk)))
-    return dict(seconds=5,keys=keys,cam_az=-30,cam_el=12,props=wall)
+    n=216
+    for i in range(n+1):
+        phase=i/n
+        if phase<.02: u=0.
+        elif phase<.48: u=(phase-.02)/.46
+        elif phase<.52: u=1.
+        elif phase<.98: u=1-(phase-.52)/.46
+        else: u=0.
+        keys.append((phase,k(u)))
+    return dict(seconds=9,keys=keys,interpolation='continuous',cam_az=-30,cam_el=12,props=wall)
 
 
 def handstand_toe_pulls():
@@ -202,10 +244,10 @@ def handstand_press_straddle():
     wrist_x=-.55
     def k(t):
         p2=180
-        spread=.30*(1-t)+.005*t
+        spread=.45*(1-t)+.005*t
         leg_xz=math.sqrt(.899*.899-spread*spread)
         dz=.53+.035*t; reach=.565
-        p0=math.degrees(math.acos(max(-1,min(1,(.565-.08+.23)/(math.sqrt(.899*.899-.30*.30)+.24)))))
+        p0=math.degrees(math.acos(max(-1,min(1,(.565-.08+.23)/(math.sqrt(.899*.899-.45*.45)+.24)))))
         p1=p0+(180-p0)*t
         dx=math.sqrt(max(reach*reach-dz*dz,0))
         shoulder=[wrist_x+dx,0,.035+dz]
