@@ -1,5 +1,27 @@
 # Actual project status
 
+## Clip fixes installed (2026-10-26 · no new APK)
+
+Eleven demonstrations were fixed at source, rendered in one isolated batch and installed.
+
+- **The seven doc-40 candidates:**
+  - Flag kick press, installed as rendered.
+  - Toes to bar, now with the legs together.
+  - Heel hook, with a readable hook-up.
+  - Dragon-flag negative, with a tucked recovery.
+  - Wall walk, with alternating planted hand steps.
+  - Pilates Saw, with level arms and no slide.
+  - Russian dip, kept as installed.
+- **Five installed clips:**
+  - Archer push-up, reframed with the feet raised above the floor.
+  - Straddle press, with a wider straddle and a front-oblique view.
+  - Windshield wiper, with a readable sweep.
+  - Pistol squat, with the free leg held up and full extension.
+  - Ring muscle-up, with a camera view that keeps the straps off the torso.
+
+All eleven passed native geometry and the install gates. 594 domain and 265 app tests pass. Owner real-speed form review and phone checks remain open.
+[Evidence](docs/evidence/clip-fixes-2026-10-26.md).
+
 ## Burpee foot contact and fluidity review (2026-10-25 · no new APK)
 
 The revised review candidate uses raised heels/toe support, a gradual feet-in
