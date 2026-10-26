@@ -4,6 +4,7 @@ package io.github.gonbei774.calisthenicsmemory.ui.screens
 import io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton
 import io.github.gonbei774.calisthenicsmemory.ui.components.AppOutlinedButton
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -128,6 +129,16 @@ fun ProfileEditScreen(modifier: Modifier = Modifier, profileId: String?, onDone:
     var picked by remember { mutableStateOf(existing?.let { selectionOf(it).map { s -> s.id } } ?: listOf("mat")) }
     var weights by remember { mutableStateOf<Map<String, Int>>(existing?.let { selectionOf(it).filter { s -> s.massGrams != null }.associate { s -> s.id to s.massGrams!! } } ?: emptyMap()) }
     var confirmDelete by remember { mutableStateOf(false) }
+    var confirmLeave by remember { mutableStateOf(false) }
+    val initialName = existing?.name ?: ""
+    val initialPicked = existing?.let { selectionOf(it).map { s -> s.id } } ?: listOf("mat")
+    val initialWeights = existing?.let { selectionOf(it).filter { s -> s.massGrams != null }.associate { s -> s.id to s.massGrams!! } } ?: emptyMap()
+    // Unsaved edits: name, ticked equipment, or the weights of ticked items.
+    val dirty = name != initialName || picked.toSet() != initialPicked.toSet() ||
+        picked.any { weights[it] != initialWeights[it] }
+    fun back() { if (dirty) confirmLeave = true else onDone() }
+    // Innermost enabled handler wins over AppNav's route-level one.
+    BackHandler(enabled = dirty) { confirmLeave = true }
     val problem = ProfileOps.nameProblem(name, profiles, existing?.id)
     var showProblem by remember { mutableStateOf(false) }
 
@@ -143,7 +154,7 @@ fun ProfileEditScreen(modifier: Modifier = Modifier, profileId: String?, onDone:
     Scaffold(modifier = modifier, topBar = {
         TopAppBar(
             title = { Text(stringResource(if (existing == null) R.string.profile_new else R.string.profile_edit)) },
-            navigationIcon = { IconButton(onClick = onDone) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) } },
+            navigationIcon = { IconButton(onClick = { back() }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) } },
             actions = { AppTextButton(onClick = { save() }, modifier = Modifier.testTag("profile_save")) { Text(stringResource(R.string.save)) } },
         )
     }) { pad ->
@@ -165,6 +176,15 @@ fun ProfileEditScreen(modifier: Modifier = Modifier, profileId: String?, onDone:
                 }
             }
         }
+    }
+    if (confirmLeave) {
+        AlertDialog(
+            onDismissRequest = { confirmLeave = false },
+            title = { Text(if (existing == null) stringResource(R.string.profile_unsaved_new) else stringResource(R.string.profile_unsaved_title, existing.name)) },
+            text = { Text(stringResource(R.string.profile_unsaved_text)) },
+            confirmButton = { AppTextButton(onClick = { confirmLeave = false; save() }, modifier = Modifier.testTag("profile_leave_save")) { Text(stringResource(R.string.save)) } },
+            dismissButton = { AppTextButton(onClick = { confirmLeave = false; onDone() }, modifier = Modifier.testTag("profile_leave_discard")) { Text(stringResource(R.string.profile_discard)) } },
+        )
     }
     if (confirmDelete && existing != null) {
         AlertDialog(

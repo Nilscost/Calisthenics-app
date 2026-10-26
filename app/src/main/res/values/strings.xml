@@ -31,6 +31,10 @@
     <string name="profile_equipment">Equipment you have</string>
     <string name="profile_no_equipment">No equipment</string>
     <string name="profile_delete">Delete profile</string>
+    <string name="profile_unsaved_title">Save changes to \"%1$s\"?</string>
+    <string name="profile_unsaved_new">Save this new profile?</string>
+    <string name="profile_unsaved_text">You have unsaved changes to this profile.</string>
+    <string name="profile_discard">Discard</string>
     <string name="profile_delete_title">Delete \"%1$s\"?</string>
     <string name="profile_delete_text">Your workout history is not affected. You can always add the profile again.</string>
     <string name="settings_profiles">Equipment profiles</string>
