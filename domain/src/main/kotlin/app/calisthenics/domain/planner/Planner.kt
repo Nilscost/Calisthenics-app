@@ -495,7 +495,7 @@ private class Planner(input: PlanInput) {
             for (side in sides) {
                 val id = "r$r-${c.slot.id}-work" + if (side == Side.NONE) "" else "-${side.name.first()}"
                 workIds += id
-                val secs = if (draft.timed && !isHold) (if (side == Side.NONE) TIMED_WORK_SECONDS else TIMED_WORK_SECONDS / 2) else t.workWindowSeconds
+                val secs = if (draft.timed && !isHold) (if (side == Side.NONE) TIMED_WORK_SECONDS else TIMED_WORK_SECONDS / 2) else t.workWindowSeconds * (if (v.alternating) 2 else 1)   // one block for both sides: twice the window
                 workTotal += secs
                 val overrideHere = draft.overrideVariations[c.slot.id].let { on -> on == null || on == v.id }
                 val free = if (overrideHere) draft.freeTargets["$r:${c.slot.id}"] ?: draft.freeTargets[c.slot.id] else null
@@ -517,7 +517,7 @@ private class Planner(input: PlanInput) {
                 out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, if (levelFiveEligible) 5 else t.index,
                     mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams, freeTarget = free != null, groupIndex = group,
                     progressionRouteId = c.slot.progressionRouteId, inferredStartTier = c.inferredStartTier.takeIf { free == null && ruleTarget == null && !levelFiveEligible },
-                    levelFiveEligible = levelFiveEligible, targetRevision = cat.personalTargets[v.id]?.revision ?: 0)
+                    levelFiveEligible = levelFiveEligible, targetRevision = cat.personalTargets[v.id]?.revision ?: 0, alternating = v.alternating)
             }
             val isLast = pos == order.lastIndex
             fun extras() {

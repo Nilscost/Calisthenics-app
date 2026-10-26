@@ -267,7 +267,7 @@ internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, cat
                         if (paused) Text(stringResource(R.string.session_paused), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("session_paused"))
                         val infoBlock = if (b.type == BlockType.TRANSITION) upcomingBlock ?: b else b
                         val sideText = when (infoBlock.side) { Side.LEFT -> stringResource(R.string.side_left); Side.RIGHT -> stringResource(R.string.side_right); else -> "" }
-                        val targetText = infoBlock.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it) }.orEmpty()
+                        val targetText = infoBlock.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it, infoBlock.alternating) }.orEmpty()
                         val sub = listOf(io.github.gonbei774.calisthenicsmemory.ui.train.withLoad(targetText, infoBlock.loadGrams), sideText).filter { it.isNotEmpty() }.joinToString(" · ")
                         if (logger != null && logFor != null) RepLogger(logger, logFor, showName = true)
                         else if (logger != null && repWork != null) {
@@ -333,7 +333,7 @@ private fun RepLogger(l: LoggerState, work: TimelineBlock, showName: Boolean) {
     val setNo = work.roundIndex
     Column(Modifier.fillMaxWidth().testTag("logger"), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
         if (showName) Text(if (setNo != null) stringResource(R.string.logger_name_set, name, setNo) else name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, maxLines = 1, modifier = Modifier.testTag("logger_name"))
-        Text(stringResource(if (l.hold) R.string.logger_seconds_held else R.string.logger_reps_done), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
+        Text(stringResource(if (l.hold) (if (work.alternating) R.string.logger_seconds_held_per_side else R.string.logger_seconds_held) else (if (work.alternating) R.string.logger_reps_done_per_side else R.string.logger_reps_done)), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
             BigStepper(l.reps, { l.reps = it; l.typed = true; l.push() }, 0..999, Modifier.weight(1f), step = if (l.hold && (l.target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "logger", suffix = stringResource(if (l.hold) R.string.unit_suffix_s else R.string.unit_suffix_x))
             // R7-T03 (D3, B9): the same "Too easy" as on the end screen, so two of them in a row count towards moving on
@@ -387,7 +387,7 @@ private fun EndScreen(st: SessionState, modifier: Modifier, onExit: () -> Unit) 
                         Text(SessionBus.names[vid] ?: vid, style = MaterialTheme.typography.titleMedium)
                         // V04b (R21): one number per round, plus Too hard / Too easy / Pain for the exercise.
                         RoundEditor(target, blocks.map { EditorRound(it.id, it.roundIndex ?: 1, it.side, st.logged[it.id]?.reps) }, sets = st.plan.format != app.calisthenics.domain.model.WorkoutFormat.CIRCUIT,
-                            tooHard0 = logs.any { it.tooHard }, tooEasy0 = logs.any { it.tooEasy }, pain0 = logs.any { it.discomfort }, tag = "end_$vid") { list ->
+                            tooHard0 = logs.any { it.tooHard }, tooEasy0 = logs.any { it.tooEasy }, pain0 = logs.any { it.discomfort }, tag = "end_$vid", alternating = blocks.firstOrNull()?.alternating == true) { list ->
                             scope.launch {
                                 val deadline = System.currentTimeMillis() + 5000
                                 while (SessionBus.saveStatus.value.let { it == SaveStatus.NONE || it == SaveStatus.SAVING } && System.currentTimeMillis() < deadline) delay(100) // the session row must exist first
