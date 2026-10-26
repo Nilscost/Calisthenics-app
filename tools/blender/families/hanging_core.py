@@ -120,25 +120,25 @@ def heel_hook():
     hang=_hang_pose()
     # Raise the hips enough to pass the feet over the bar, then cross the
     # ankles while both feet are still above the bar plane.
-    raised=_hang_pose(1.55,.20,-40,-44,([.025,.08,2.33],[.025,-.08,2.33]),
-                  ((1,0,-1),(1,0,-1)),feet=((-.5,0,.8),(-.5,0,.8)),
+    raised=_hang_pose(1.55,.20,-40,-44,([.01,.08,2.348],[.01,-.08,2.348]),
+                  ((1,0,-1),(1,0,-1)),feet=((.5,0,.8),(.5,0,.8)),
                   hands=_hands(y=.24,z=WRIST_Z,x=-.045,elbows=((1,1,0),(1,-1,0))))
-    up=_hang_pose(1.55,.20,-40,-44,([.03,-.08,2.33],[.03,.08,2.33]),
-                  ((1,0,-1),(1,0,-1)),feet=((-.5,0,.8),(-.5,0,.8)),
+    up=_hang_pose(1.55,.20,-40,-44,([.01,-.08,2.348],[.01,.08,2.348]),
+                  ((1,0,-1),(1,0,-1)),feet=((.5,0,.8),(.5,0,.8)),
                   hands=_hands(y=.24,z=WRIST_Z,x=-.045,elbows=((1,1,0),(1,-1,0))))
     # A bent-knee tuck keeps the leg away from its fully straight branch point
     # while the feet travel from the hang up and over the bar.
     tuck=_hang_pose(1.40,.08,-22,-26,([.34,.09,1.25],[.34,-.09,1.25]),
-                  ((1,0,0),(1,0,0)),feet=((-.5,0,.8),(-.5,0,.8)),
+                  ((1,0,0),(1,0,0)),feet=((.5,0,.8),(.5,0,.8)),
                   hands=_hands(y=.24,z=WRIST_Z,x=-.045,elbows=((1,1,0),(1,-1,0))))
     # The feet lift clear above the bar before dropping onto it (and leave it
     # the same way), so they never pass through the bar on the way in or out.
-    clear=_hang_pose(1.62,.20,-40,-44,([.14,.08,2.45],[.14,-.08,2.45]),
-                  ((1,0,-1),(1,0,-1)),feet=((-.5,0,.8),(-.5,0,.8)),
+    clear=_hang_pose(1.62,.20,-40,-44,([.12,.08,2.46],[.12,-.08,2.46]),
+                  ((1,0,-1),(1,0,-1)),feet=((.5,0,.8),(.5,0,.8)),
                   hands=_hands(y=.24,z=WRIST_Z,x=-.045,elbows=((1,1,0),(1,-1,0))))
     # While the ankles trade sides they ride a hair higher on the bar.
-    mid=_hang_pose(1.55,.20,-40,-44,([.032,.0,2.345],[.032,.0,2.345]),
-                  ((1,0,-1),(1,0,-1)),feet=((-.5,0,.8),(-.5,0,.8)),
+    mid=_hang_pose(1.55,.20,-40,-44,([.012,.0,2.352],[.012,.0,2.352]),
+                  ((1,0,-1),(1,0,-1)),feet=((.5,0,.8),(.5,0,.8)),
                   hands=_hands(y=.24,z=WRIST_Z,x=-.045,elbows=((1,1,0),(1,-1,0))))
     mid["knee_l"]=[1,0,0]
     mid["knee_r"]=[1,0,0]
