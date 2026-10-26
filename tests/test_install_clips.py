@@ -18,7 +18,7 @@ class InstallClipsTests(unittest.TestCase):
         fixture=Path(__file__).parent/'fixtures/motion/pushup-archer-before.json.gz'
         with gzip.open(fixture) as f:data=json.load(f)
         with tempfile.TemporaryDirectory() as root:
-            work,source,joints=self.make_frames(root,ex='pushup-archer',count=len(data['frames']))
+            work,source,joints=self.make_frames(root,ex='pushup-archer',count=len(data['frames']),with_camera=True)
             joints.write_text(json.dumps(data));fresh=joints.stat().st_mtime_ns+2_000_000_000
             for frame in source.iterdir():os.utime(frame,ns=(fresh,fresh))
             with mock.patch.object(install_clips,'WORK',str(work)):
@@ -30,7 +30,7 @@ class InstallClipsTests(unittest.TestCase):
         poses.load_families();data=poses.build('pushup-archer')[0]
         data['anatomy_detail']=False
         with tempfile.TemporaryDirectory() as root:
-            work,source,joints=self.make_frames(root,ex='pushup-archer',count=len(data['frames']))
+            work,source,joints=self.make_frames(root,ex='pushup-archer',count=len(data['frames']),with_camera=True)
             joints.write_text(json.dumps(data));fresh=joints.stat().st_mtime_ns+2_000_000_000
             for frame in source.iterdir():os.utime(frame,ns=(fresh,fresh))
             (source.parent/'render-detail.json').write_text(json.dumps(render_stamp()))
@@ -56,10 +56,13 @@ class InstallClipsTests(unittest.TestCase):
                 stamp.write_text('{}')
                 self.assertIn('renderer has changed',install_clips.frame_problem('test-exercise'))
 
-    def make_frames(self, root, ex="test-exercise", count=2):
+    def make_frames(self, root, ex="test-exercise", count=2, with_camera=False):
         work = Path(root)
         source = work / ex / "blender" / "frames"
         source.mkdir(parents=True)
+        if with_camera and install_clips.camera_stamp(ex):
+            # A real render of an exercise with a reviewed camera view writes this stamp.
+            (work / ex / "blender" / "render-camera.json").write_text(json.dumps(install_clips.camera_stamp(ex)))
         joints = work / ex / "joints.json"
         joints.write_text(json.dumps({"frames": [{} for _ in range(count)]}))
         joints_ns = joints.stat().st_mtime_ns

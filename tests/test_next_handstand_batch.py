@@ -61,8 +61,8 @@ class NextHandstandBatchTests(unittest.TestCase):
         self.assertLessEqual(max_loop_speed(self.wall["frames"], self.wall["fps"]), 2.5)
         self.assertLessEqual(max_loop_speed(self.kick["frames"], self.kick["fps"]), 2.5)
 
-    def test_accepted_straddle_press_pose_output_is_unchanged(self):
-        expected_digest = "386c81080eb22ecadd6c286a2cd7264fe6a01532d3d272e537aa07e26234ad47"
+    def test_wide_straddle_press_pose_output_is_pinned(self):
+        expected_digest = "525eb3e7da36062aab42cb81d9b2134342700b07a0b71b77193b986e402314e0"
         data, warnings = poses.build("handstand-press-straddle")
         digest = hashlib.sha256(json.dumps(data, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
         self.assertEqual([], warnings)
@@ -72,10 +72,26 @@ class NextHandstandBatchTests(unittest.TestCase):
         errors = [toe_wall_error(frame) for frame in self.wall["frames"]]
         self.assertLess(max(errors), .006)
         wrists = [frame["wrist_l"] for frame in self.wall["frames"]]
-        self.assertLess(max(abs(w[2] - .035) for w in wrists), .001)
         self.assertLess(wrists[0][0], wrists[len(wrists)//2][0])
         self.assertGreater(wrists[len(wrists)//2][0], wrists[int(.75 * len(wrists))][0])
-        self.assertLess(max_loop_step(self.wall["frames"], "wrist_l"), .06)
+        # Hand swings are real steps now (<= the 2.5 m/s gate); the loop seam must not pop.
+        self.assertLess(max_loop_step(self.wall["frames"], "wrist_l"), 2.5 / self.wall["fps"])
+        seam = math.dist(self.wall["frames"][-1]["wrist_l"], self.wall["frames"][0]["wrist_l"])
+        self.assertLess(seam, .002)
+
+    def test_wall_walk_hands_alternate_planted_steps_without_sliding(self):
+        frames = self.wall["frames"]
+        up = {side: [f[side][2] > .036 for f in frames] for side in ("wrist_l", "wrist_r")}
+        self.assertEqual(0, sum(1 for l, r in zip(up["wrist_l"], up["wrist_r"]) if l and r))
+        for side in ("wrist_l", "wrist_r"):
+            self.assertGreaterEqual(sum(1 for i, v in enumerate(up[side]) if v and not up[side][i - 1]), 6)
+            for a, b in zip(frames, frames[1:] + frames[:1]):
+                if a[side][2] <= .036 and b[side][2] <= .036:
+                    self.assertLess(math.hypot(b[side][0] - a[side][0], b[side][1] - a[side][1]), .001)
+            self.assertGreaterEqual(min(f[side][2] for f in frames), .034)
+        self.assertLess(min(f["ankle_l"][2] for f in frames), .09)  # starts as a floor plank
+        self.assertGreaterEqual(len(frames) / self.wall["fps"], 6)
+        self.assertLessEqual(len(frames) / self.wall["fps"], 9)
 
     def test_wall_walk_head_ellipsoid_clears_floor_and_rejects_frozen_baseline(self):
         current = audit_next_handstand(self.wall)

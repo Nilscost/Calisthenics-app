@@ -103,9 +103,9 @@ def toes_to_bar():
     # preserving a long, nearly straight leg line at contact.
     top=_hang_pose(1.45,-.57,50,55,([-.074,.022,2.126],[-.074,-.022,2.126]),
                    ((1,0,0),(1,0,0)),feet=((.4,0,1),(.4,0,1)))
-    keys=[(0,hang),(.12,hang),(.24,_hang_pose(1.27,-.16,15,18,([.12,.10,.88],[.12,-.10,.88]),
-                   ((1,0,-.3),(1,0,-.3)))),(.36,_hang_pose(1.39,-.40,35,40,([.02,.10,1.55],[.02,-.10,1.55]),
-                   ((1,0,0),(1,0,0)),feet=((.4,0,1),(.4,0,1)))),(.50,top),(.62,top),(.88,hang),(.98,hang)]
+    keys=[(0,hang),(.10,hang),(.22,_hang_pose(1.27,-.16,15,18,([.12,.10,.88],[.12,-.10,.88]),
+                   ((1,0,-.3),(1,0,-.3)))),(.35,_hang_pose(1.39,-.40,35,40,([.02,.10,1.55],[.02,-.10,1.55]),
+                   ((1,0,0),(1,0,0)),feet=((.4,0,1),(.4,0,1)))),(.48,top),(.58,top),(.92,hang),(.99,hang)]
     # Keep the knee poles on a stable lateral plane. The old forward pole
     # became singular as the ankles passed the hips and flipped the knees
     # across the body during the controlled lower.
@@ -113,27 +113,48 @@ def toes_to_bar():
         pose["knee_l"]=[0,1,0]
         pose["knee_r"]=[0,-1,0]
     from strict_toes import with_straight_legs
-    return with_straight_legs(dict(seconds=5.6,keys=keys,cam_az=35,cam_el=15,props=[_bar()]))
+    return with_straight_legs(dict(seconds=4.6,keys=keys,cam_az=35,cam_el=15,props=[_bar()]))
 
 
 def heel_hook():
     hang=_hang_pose()
     # Raise the hips enough to pass the feet over the bar, then cross the
     # ankles while both feet are still above the bar plane.
-    raised=_hang_pose(1.60,-.02,8,14,([.04715,.08,2.35],[.04715,-.08,2.35]),
-                  ((1,0,-1),(1,0,-1)),feet=((0,0,1),(0,0,1)),
+    raised=_hang_pose(1.55,.20,-40,-44,([.01,.08,2.348],[.01,-.08,2.348]),
+                  ((1,0,-1),(1,0,-1)),feet=((.5,0,.8),(.5,0,.8)),
                   hands=_hands(y=.24,z=WRIST_Z,x=-.045,elbows=((1,1,0),(1,-1,0))))
-    up=_hang_pose(1.60,-.02,8,14,([.04715,-.08,2.35],[.04715,.08,2.35]),
-                  ((1,0,-1),(1,0,-1)),feet=((0,0,1),(0,0,1)),
+    up=_hang_pose(1.55,.20,-40,-44,([.01,-.08,2.348],[.01,.08,2.348]),
+                  ((1,0,-1),(1,0,-1)),feet=((.5,0,.8),(.5,0,.8)),
                   hands=_hands(y=.24,z=WRIST_Z,x=-.045,elbows=((1,1,0),(1,-1,0))))
-    keys=[(0,hang),(.12,hang),(.34,raised),(.42,raised),(.52,up),(.60,up),
-          (.70,raised),(.88,hang),(.98,hang)]
+    # A bent-knee tuck keeps the leg away from its fully straight branch point
+    # while the feet travel from the hang up and over the bar.
+    tuck=_hang_pose(1.40,.08,-22,-26,([.34,.09,1.25],[.34,-.09,1.25]),
+                  ((1,0,0),(1,0,0)),feet=((.5,0,.8),(.5,0,.8)),
+                  hands=_hands(y=.24,z=WRIST_Z,x=-.045,elbows=((1,1,0),(1,-1,0))))
+    # The feet lift clear above the bar before dropping onto it (and leave it
+    # the same way), so they never pass through the bar on the way in or out.
+    clear=_hang_pose(1.62,.20,-40,-44,([.12,.08,2.46],[.12,-.08,2.46]),
+                  ((1,0,-1),(1,0,-1)),feet=((.5,0,.8),(.5,0,.8)),
+                  hands=_hands(y=.24,z=WRIST_Z,x=-.045,elbows=((1,1,0),(1,-1,0))))
+    # While the ankles trade sides they ride a hair higher on the bar.
+    mid=_hang_pose(1.55,.20,-40,-44,([.012,.0,2.352],[.012,.0,2.352]),
+                  ((1,0,-1),(1,0,-1)),feet=((.5,0,.8),(.5,0,.8)),
+                  hands=_hands(y=.24,z=WRIST_Z,x=-.045,elbows=((1,1,0),(1,-1,0))))
+    mid["knee_l"]=[1,0,0]
+    mid["knee_r"]=[1,0,0]
+    keys=[(0,hang),(.10,hang),(.24,tuck),(.34,clear),(.40,raised),(.47,raised),(.505,mid),(.54,up),(.61,up),
+          (.645,mid),(.68,raised),(.71,clear),(.83,tuck),(.94,hang),(.99,hang)]
     for _, pose in keys:
-        # This inward-facing lateral pole keeps both knees from popping across
-        # the trunk as the ankles reverse their order.
-        pose["knee_l"]=[0,-1,0]
-        pose["knee_r"]=[0,1,0]
-    return dict(seconds=4.8,keys=keys,
+        if pose is mid:
+            continue
+        # Forward-and-lateral poles keep the bent knees in front of the bar and
+        # away from the straight-leg branch point.
+        pose["knee_l"]=[1,-1,0]
+        pose["knee_r"]=[1,1,0]
+    # Crossed ankles: each knee follows its leg to the opposite side.
+    up["knee_l"]=[1,1,0]
+    up["knee_r"]=[1,-1,0]
+    return dict(seconds=5.8,keys=keys,
                 cam_az=35,cam_el=14,props=[_bar()])
 
 
@@ -225,7 +246,7 @@ def _wiper_full_pose(elevation, side_angle):
 
 def _wiper_full_keys():
     """Complete raise, bilateral sweep, centered return and lower cycle."""
-    top_elevation, side_limit = 71, 43
+    top_elevation, side_limit = 65, 50
     keys = [(0, _wiper_full_pose(-90, 0)), (.12, _wiper_full_pose(-90, 0))]
 
     def path(t0, t1, e0, b0, e1, b1):
@@ -236,7 +257,7 @@ def _wiper_full_keys():
             e = e0+(e1-e0)*q
             b = b0+(b1-b0)*q
             if abs(b) > 0:
-                e = top_elevation-17*abs(b)/side_limit
+                e = top_elevation-13*abs(b)/side_limit
             t = t0+(t1-t0)*q
             keys.append((t, _wiper_full_pose(e, b)))
 
@@ -321,10 +342,12 @@ def _flag_keys(lengths=(.866,.866), bottom_angle=260, seconds=4.0, negative=Fals
     def pose(angle, legs):
         p=_dragon_pose(angle,legs)
         if negative:
-            # A side-facing pole avoids the solver's knee branch singularity
-            # at the tuck-and-roll transition.
-            p["knee_l"]=[0,1,0]
-            p["knee_r"]=[0,-1,0]
+            # Knees fold toward the belly (the body-front direction, always
+            # perpendicular to the hip-to-ankle axis, so never singular) and
+            # stay together: a clean tuck rather than a splayed diamond.
+            belly=[math.cos(math.radians(angle)),0,-math.sin(math.radians(angle))]
+            p["knee_l"]=list(belly)
+            p["knee_r"]=list(belly)
             lift=_negative_bench_lift(p)
             p["pelvis"][2]+=lift
             p["ankle_l"][2]+=lift

@@ -6,6 +6,9 @@ no solved joints or anatomical segment lengths are rewritten.
 import math
 
 REST_RADIUS_M = 0.867
+# Each ankle stays this far inside its hip laterally for the whole cycle, so the
+# legs travel together as parallel straight legs (no straddle or crossing).
+LATERAL_ADDUCTION_M = 0.065
 
 
 def _unit(v):
@@ -43,7 +46,7 @@ def with_straight_legs(source):
     n = int(round(source["seconds"] * poses.FPS))
     keyed = []
     endpoint_dirs = {}
-    top_t = 0.56
+    top_t = 0.53
     for side in ("l", "r"):
         for label, time in (("down", 0.0), ("top", top_t)):
             pose = poses.sample(source["keys"], time)
@@ -58,20 +61,27 @@ def with_straight_legs(source):
         solved = poses.solve(pose, {})
         for side in ("l", "r"):
             hip = solved["hip_" + side]
-            if t <= .12:
+            if t <= .10:
                 q = 0.0
-            elif t < .50:
-                q = _smoothstep((t - .12) / (.50 - .12))
-            elif t <= .62:
+            elif t < .48:
+                q = _smoothstep((t - .10) / (.48 - .10))
+            elif t <= .58:
                 q = 1.0
-            elif t < .88:
-                q = 1.0 - _smoothstep((t - .62) / (.88 - .62))
+            elif t < .92:
+                q = 1.0 - _smoothstep((t - .58) / (.92 - .58))
             else:
                 q = 0.0
             # Raise/lower the straight leg along the shorter spherical arc,
             # with a settled hang and a stable top-contact hold.
             direction = _slerp(endpoint_dirs[("down", side)], endpoint_dirs[("top", side)], q)
-            pose["ankle_" + side] = [hip[i] + REST_RADIUS_M * direction[i] for i in range(3)]
+            # Keep only the sagittal (x,z) travel from the arc; hold the lateral
+            # offset constant so the two legs never swing apart or cross.
+            dy = -LATERAL_ADDUCTION_M if side == "l" else LATERAL_ADDUCTION_M
+            sag = math.hypot(direction[0], direction[2])
+            planar = math.sqrt(REST_RADIUS_M ** 2 - dy ** 2)
+            pose["ankle_" + side] = [hip[0] + planar * direction[0] / sag, hip[1] + dy,
+                                     hip[2] + planar * direction[2] / sag]
+            direction = _unit([pose["ankle_" + side][i] - hip[i] for i in range(3)])
             # Stable sagittal perpendicular; the existing two_bone solver
             # projects it against the hip-to-target vector as usual.
             pole = [direction[2], 0.0, -direction[0]]

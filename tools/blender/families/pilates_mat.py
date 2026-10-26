@@ -173,14 +173,15 @@ def corkscrew():
 
 def saw():
     def k(t):
-        # Each half-cycle sits tall, rotates the chest, reaches over the opposite
-        # foot, then stacks and untwists before repeating to the other side.
+        # Each half-cycle: sit tall with the arms level in a T, rotate the whole
+        # arm line with the chest, fold and reach the front hand past the opposite
+        # little toe, sit up (the hand lifts off first, then returns), then untwist.
         u=(2*t)%1.0; side=1.0 if t<.5 else -1.0
         def ease(x):
             x=max(0.0,min(1.0,x)); return x*x*(3-2*x)
-        turn=ease((u-.12)/.18)*(1.0-ease((u-.79)/.13))
-        bend=ease((u-.30)/.20)*(1.0-ease((u-.62)/.22))
-        twist=side*38.0*turn
+        turn=ease((u-.03)/.17)*(1.0-ease((u-.79)/.16))
+        bend=ease((u-.19)/.31)*(1.0-ease((u-.52)/.29))
+        twist=side*40.0*turn
         k=_key([.03*math.sin(math.radians(60.0*bend)),0,.11],60.0*bend,80.0*bend,
                [[.846,-.30,.08],[.846,.30,.08]],yaw=0,
                thoracic_twist=twist,head_turn=side*12.0*turn,
@@ -193,36 +194,40 @@ def saw():
             dx=math.sqrt(.8695**2-dy**2-.015**2)
             k['ankle_'+name]=[dx,sgn*.30,.08]
         j=solve(k,{})
-        chest_left=j['chest_left']
+        # Both arms stay level (shoulder height) and in one line through the
+        # shoulders, following the chest rotation: the rear arm reaches behind,
+        # the front arm across. The line is taken from the upright twisted chest;
+        # the pitched chest's own lateral axis would tilt the arms up or down.
+        upright_left=trunk_frame(0,0,twist)[1]
+        arm=.568
         for name,sgn in [('r',-1),('l',1)]:
-            d=[sgn*x for x in chest_left];sh=j['shoulder_'+name]
-            k['wrist_'+name]=[sh[i]+.568*d[i] for i in range(3)]
+            d=[sgn*x for x in upright_left];sh=j['shoulder_'+name]
+            k['wrist_'+name]=[sh[i]+arm*d[i] for i in range(3)]
             k['hand_'+name]=d;k['elbow_'+name]=[0,0,1]
-        # The hand on the opposite side reaches toward the little-toe edge;
-        # cap the wrist to arm length instead of hiding unreachable IK.
-        if bend>0 and turn>0:
+        if bend>0:
             reaching='r' if side>0 else 'l'
             opposite='l' if reaching=='r' else 'r'
             sh=j['shoulder_'+reaching];ank=k['ankle_'+opposite]
-            target=[ank[0]+.22,ank[1]+(.045 if opposite=='l' else -.045),ank[2]]
+            # Little-toe edge of the opposite foot, a little beyond the toes.
+            target=[ank[0]+.24,ank[1]+(.05 if opposite=='l' else -.05),ank[2]+.01]
             v=[target[i]-sh[i] for i in range(3)];n=math.sqrt(sum(x*x for x in v))
             d=[x/n for x in v] if n else [1,0,0]
-            reach=min(.568,max(0.0,n-.17))
+            reach=min(arm,max(0.0,n-.17))
             start=k['wrist_'+reaching]; end=[sh[i]+reach*d[i] for i in range(3)]
-            k['wrist_'+reaching]=[start[i]+bend*(end[i]-start[i]) for i in range(3)]
+            # Lift before travelling: the height follows bend**1.6 (it leaves the
+            # leg first on the way up and lands last on the way down), the
+            # horizontal travel follows bend**.75, so the hand never drags along the leg.
+            wz=bend**1.6; wxy=bend**.75
+            w=[start[0]+(end[0]-start[0])*wxy,start[1]+(end[1]-start[1])*wxy,start[2]+(end[2]-start[2])*wz]
+            off=[w[i]-sh[i] for i in range(3)];m=math.sqrt(sum(x*x for x in off))
+            if m>arm: w=[sh[i]+off[i]*arm/m for i in range(3)]
+            k['wrist_'+reaching]=w
             initial=k['hand_'+reaching]
-            k['hand_'+reaching]=[initial[i]+bend*(d[i]-initial[i]) for i in range(3)]
+            hd=[initial[i]+wxy*(d[i]-initial[i]) for i in range(3)];hn=math.sqrt(sum(x*x for x in hd))
+            k['hand_'+reaching]=[x/hn for x in hd]
             k['elbow_'+reaching]=[0,0,1]
-            rear='l' if reaching=='r' else 'r';sr=j['shoulder_'+rear]
-            # Keep the back arm reaching behind in the horizontal plane;
-            # tilting the chest's lateral axis with the forward fold lifts it overhead.
-            upright_left=trunk_frame(0,0,twist)[1]
-            rd=[(-1.0 if rear=='r' else 1.0)*x for x in upright_left]
-            start=k['wrist_'+rear];end=[sr[i]+.568*rd[i] for i in range(3)]
-            k['wrist_'+rear]=[start[i]+bend*(end[i]-start[i]) for i in range(3)]
-            initial=k['hand_'+rear];k['hand_'+rear]=[initial[i]+bend*(rd[i]-initial[i]) for i in range(3)]
         return k
-    return dict(seconds=8.5,keys=_dense(k,256),interpolation='continuous',cam_az=34,cam_el=24,props=REPAIR_MAT)
+    return dict(seconds=5.6,keys=_dense(k,240),interpolation='continuous',cam_az=34,cam_el=24,props=REPAIR_MAT)
 
 def roll_over():
     # Start supine, curl from the pelvis through the upper trunk, then lower in

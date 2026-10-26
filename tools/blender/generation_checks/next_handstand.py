@@ -98,8 +98,26 @@ def audit(data):
         _metric(metrics, failures, "head_ellipsoid_floor_proxy_m", head_floor, -.002, None)
         toe_error = max(abs(frame[side][0]) for frame in frames for side in ("toe_l", "toe_r"))
         _metric(metrics, failures, "max_toe_wall_anchor_error_m", toe_error, 0.0, .006)
-        wrist_z = max(abs(frame["wrist_l"][2] - .035) for frame in frames)
-        _metric(metrics, failures, "left_wrist_floor_height_error_m", wrist_z, 0.0, .001)
+        # Alternating planted steps: wrists sit on the floor (z = .035) except
+        # during their own swing; planted wrists do not slide; the two hands
+        # never swing together; each hand makes several separate steps.
+        floor = .035
+        _metric(metrics, failures, "wrist_below_floor_contact_m",
+                max(floor - frame[side][2] for frame in frames for side in ("wrist_l", "wrist_r")),
+                -1.0, .001)
+        lifted = {side: [frame[side][2] > floor + .001 for frame in frames]
+                  for side in ("wrist_l", "wrist_r")}
+        slide = 0.0
+        for side in ("wrist_l", "wrist_r"):
+            for a, b in zip(frames, frames[1:] + frames[:1]):
+                if a[side][2] <= floor + .001 and b[side][2] <= floor + .001:
+                    slide = max(slide, math.hypot(b[side][0] - a[side][0], b[side][1] - a[side][1]))
+        _metric(metrics, failures, "planted_wrist_slide_m_per_frame", slide, 0.0, .001)
+        both_up = sum(1 for l, r in zip(lifted["wrist_l"], lifted["wrist_r"]) if l and r)
+        _metric(metrics, failures, "frames_with_both_hands_lifted", both_up, 0, 0)
+        for side in ("wrist_l", "wrist_r"):
+            steps = sum(1 for i, v in enumerate(lifted[side]) if v and not lifted[side][i - 1])
+            _metric(metrics, failures, side + "_step_count", steps, 6, 20)
         wrist_x = [frame["wrist_l"][0] for frame in frames]
         travel = max(wrist_x) - min(wrist_x)
         _metric(metrics, failures, "hand_travel_range_m", travel, .20, 1.80)

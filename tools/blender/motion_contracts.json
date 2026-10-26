@@ -982,7 +982,7 @@
       ]
     },
     "handstand-wall-walk-up": {
-      "style": "Toe-contact wall walk with a continuous walk-down return.",
+      "style": "Toe-contact wall walk: plank at the wall base, feet climb, alternating planted hand steps, continuous walk-down return.",
       "references": [
         "app/src/main/assets/catalog.json#handstand-wall-walk-up"
       ],
@@ -1016,9 +1016,25 @@
           "min": 0.0,
           "max": 0.006
         },
-        "left_wrist_floor_height_error_m": {
+        "wrist_below_floor_contact_m": {
+          "min": -1.0,
+          "max": 0.001
+        },
+        "planted_wrist_slide_m_per_frame": {
           "min": 0.0,
           "max": 0.001
+        },
+        "frames_with_both_hands_lifted": {
+          "min": 0,
+          "max": 0
+        },
+        "wrist_l_step_count": {
+          "min": 6,
+          "max": 20
+        },
+        "wrist_r_step_count": {
+          "min": 6,
+          "max": 20
         },
         "hand_travel_range_m": {
           "min": 0.2,

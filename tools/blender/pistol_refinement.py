@@ -22,8 +22,10 @@ def specification():
                     elbow_l=[0, 0.3, -1], elbow_r=[0, -0.3, -1],
                     hand_l=[1, 0, 0], hand_r=[1, 0, 0])
 
-    top = {"pz": 0.955, "px": 0.0, "p1": 2, "p2": 4, "lift": 42}
-    bottom = {"pz": 0.36, "px": -0.27, "p1": 38, "p2": 48, "lift": 78}
+    # pz 0.98 puts the hip exactly one straight leg length above the planted ankle
+    # (knee ~179 deg); the free leg stays forward and off the floor in every phase.
+    top = {"pz": 0.98, "px": 0.0, "p1": 2, "p2": 4, "lift": 55}
+    bottom = {"pz": 0.36, "px": -0.27, "p1": 38, "p2": 48, "lift": 86}
     # Same full-depth target as the prior movement, now with an explicit rise
     # and a quiet top phase to make the cycle and loop seam legible.
     keyed = [(0.00, top), (0.08, top), (0.48, bottom), (0.54, bottom),
