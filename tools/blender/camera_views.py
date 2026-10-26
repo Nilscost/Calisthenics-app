@@ -12,6 +12,7 @@ CAMERA_OVERRIDES = {
     "pushup-archer": (50, 20),
     # Saw: view from the feet end so both rotation sides and the level arm line read symmetrically.
     "pilates-saw": (90, 26),
+    "ring-muscle-up": (12, 8),
 }
 
 
