@@ -1,8 +1,12 @@
 from pathlib import Path
-import sqlite3, sys, hashlib
+import sqlite3, sys, hashlib, xml.etree.ElementTree as ET
 before, after = (Path(p) for p in sys.argv[1:])
 def snapshot(root):
-    prefs = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (root / 'shared_prefs').glob('*.xml')}
+    def pref_value(element):
+        children = tuple(sorted(pref_value(child) for child in element))
+        return (element.tag, tuple(sorted(element.attrib.items())), element.text or "", children)
+    prefs = {p.name: tuple(sorted(pref_value(e) for e in ET.parse(p).getroot()))
+             for p in (root / 'shared_prefs').glob('*.xml')}
     db = sqlite3.connect(f'file:{root / "databases/bodyweight_trainer_database"}?mode=ro', uri=True)
     tables = [row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name != 'android_metadata' ORDER BY name")]
     rows = {}
@@ -17,6 +21,6 @@ print('Preferences:', len(oldprefs), 'files identical:', oldprefs == newprefs)
 print('Database:', len(oldrows), 'tables identical:', oldrows == newrows)
 print('Seeded workout sessions:', oldrows.get('workout_sessions', (0,))[0])
 if oldprefs != newprefs or oldrows != newrows or oldrows.get('workout_sessions', (0,))[0] < 1:
-    print('Changed preference files:', sorted(set(oldprefs) | set(newprefs)) if oldprefs != newprefs else [])
+    print('Changed preference files:', [k for k in sorted(set(oldprefs) | set(newprefs)) if oldprefs.get(k) != newprefs.get(k)])
     print('Changed tables:', [k for k in sorted(set(oldrows) | set(newrows)) if oldrows.get(k) != newrows.get(k)])
     sys.exit(1)

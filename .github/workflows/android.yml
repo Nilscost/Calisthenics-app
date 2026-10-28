@@ -13,7 +13,7 @@ jobs:
         with: { distribution: temurin, java-version: '21', cache: gradle }
       # GitHub's Ubuntu runners ship the Android SDK (ANDROID_HOME); only add what this build pins.
       - run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
-      - run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "platforms;android-37" "build-tools;36.0.0"'
+      - run: '"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "platforms;android-37.0" "build-tools;36.0.0"'
       - run: python3 tools/preflight.py
       - run: python3 tools/check_migration_sql.py
       - run: bash scripts/verify.sh   # tests + lint + APK + content validation; fails on any error

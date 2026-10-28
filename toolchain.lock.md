@@ -13,7 +13,7 @@ reason in the PR/task notes. Phase 0 of the multiplatform port updates Kotlin an
 | JVM toolchain / target | 17 | each `build.gradle.kts` |
 | compileSdk | app 37; data 35 | module `build.gradle.kts` files |
 | minSdk / targetSdk | 26 / 35 | `app` + `data` `build.gradle.kts` |
-| Android SDK platforms | android-35, android-37 | local SDK (CI: same) |
+| Android SDK platforms | android-35, android-37.0 | local SDK (CI: same) |
 | Android SDK build-tools | 36.0.0 | local SDK |
 | Platform tools (adb) | current as of build | local SDK |
 | Python (content tooling) | 3.14.x (3.10+ required) | `tools/validate_content.py` |

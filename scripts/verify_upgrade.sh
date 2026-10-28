@@ -17,6 +17,8 @@ trap 'rm -rf "$work"' EXIT
 adb install -r "$old_apk"
 adb shell pm clear "$pkg"
 adb shell am broadcast -n "$pkg/io.github.gonbei774.calisthenicsmemory.debug.SeedReceiver" -a "$pkg.debug.SEED" -f 0x20 | grep -q 'result=1'
+adb shell monkey -p "$pkg" 1 > /dev/null 2>&1
+sleep 5
 adb shell am force-stop "$pkg"
 mkdir "$work/before" "$work/after"
 adb exec-out run-as "$pkg" tar -cf - databases shared_prefs > "$work/before.tar"
