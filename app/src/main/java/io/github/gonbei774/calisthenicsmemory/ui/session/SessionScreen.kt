@@ -170,6 +170,7 @@ private fun blockLabel(b: TimelineBlock): Int = when (b.type) {
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
+@android.annotation.SuppressLint("LocalContextGetResourceValueCall")
 internal fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, catalogOverride: Catalog? = null) {
     val ctx = LocalContext.current
     val b = st.currentBlock ?: return

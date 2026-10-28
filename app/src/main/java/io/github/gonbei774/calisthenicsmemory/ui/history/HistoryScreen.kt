@@ -53,6 +53,7 @@ private val dateFmt: DateTimeFormatter = DateTimeFormatter.ofLocalizedDate(Forma
 @Composable
 fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, today: LocalDate = LocalDate.now(), onOpenExercise: (String) -> Unit = {}, onOpen: (String) -> Unit) {
     val ctx = LocalContext.current
+    val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
     val src = source ?: remember { RoomHistorySource(ctx) }
     val zone = remember { ZoneId.systemDefault() }
     var all by remember { mutableStateOf<List<StoredSession>?>(null) }
@@ -95,7 +96,7 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
                             .clickable(enabled = on) { selected = if (sel) null else d }.padding(vertical = Spacing.s).semantics(mergeDescendants = true) { contentDescription = dayDesc }.testTag("day_$d"),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Text(d.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()), style = MaterialTheme.typography.labelSmall)
+                        Text(d.dayOfWeek.getDisplayName(TextStyle.SHORT, locale), style = MaterialTheme.typography.labelSmall)
                         Text(d.dayOfMonth.toString(), style = MaterialTheme.typography.titleMedium)
                         Box(Modifier.size(8.dp).clip(CircleShape).background(if (on) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface).testTag(if (on) "dot_$d" else "nodot_$d"))
                     }

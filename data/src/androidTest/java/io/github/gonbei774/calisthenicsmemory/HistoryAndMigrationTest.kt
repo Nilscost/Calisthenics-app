@@ -47,6 +47,30 @@ class HistoryAndMigrationTest {
         migrated.query("SELECT COUNT(*) FROM plan_snapshots").use { it.moveToFirst(); assertEquals(0, it.getInt(0)) }
     }
 
+    // Created from the committed Room 2.6.1 version-24 schema, then opened by
+    // the upgraded runtime without running a migration or deleting legacy tables.
+    @Test fun existingVersion24DatabaseOpensAndKeepsHistoryAndLegacyRows() = runBlocking {
+        val name = "existing24"
+        ctx.deleteDatabase(name)
+        helper.createDatabase(name, 24).apply {
+            execSQL("INSERT INTO exercises (name, type, `group`, sortOrder, displayOrder, laterality, targetSets, targetValue, isFavorite, restInterval, repDuration, distanceTrackingEnabled, weightTrackingEnabled, assistanceTrackingEnabled, description) VALUES ('Push-up','Dynamic',NULL,0,0,'Bilateral',3,10,0,60,NULL,0,0,0,'')")
+            execSQL("INSERT INTO plan_snapshots (planId, createdAtEpochMs, routineId, routineRevision, catalogVersion, profileId, planJson) VALUES ('p1', 1, 'r', 1, 1, 'home', '{}')")
+            execSQL("INSERT INTO workout_sessions (sessionId, planId, startedAtEpochMs, endedAtEpochMs, status) VALUES ('s1', 'p1', 1, 2, 'COMPLETED')")
+            close()
+        }
+        val reopened = Room.databaseBuilder(ctx, AppDatabase::class.java, name).allowMainThreadQueries().build()
+        try {
+            assertEquals("s1", reopened.historyDao().sessions().single().sessionId)
+            reopened.openHelper.readableDatabase.query("SELECT COUNT(*) FROM exercises").use {
+                assertTrue(it.moveToFirst())
+                assertEquals(1, it.getInt(0))
+            }
+        } finally {
+            reopened.close()
+            ctx.deleteDatabase(name)
+        }
+    }
+
     @Test fun planSnapshotIsNeverOverwritten() = runBlocking {
         val dao = mem().historyDao()
         dao.insertPlan(plan("p1"))

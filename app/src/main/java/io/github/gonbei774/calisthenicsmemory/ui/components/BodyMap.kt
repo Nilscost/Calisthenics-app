@@ -80,6 +80,7 @@ fun musclesDescription(primary: List<Muscle>, secondary: List<Muscle>, name: (Mu
     ).joinToString("; ")
 
 @Composable
+@android.annotation.SuppressLint("LocalContextGetResourceValueCall")
 fun BodyMap(primary: List<Muscle>, secondary: List<Muscle> = emptyList(), modifier: Modifier = Modifier, showNamesOnTap: Boolean = true, tag: String = "body_map", viewWidth: androidx.compose.ui.unit.Dp = 60.dp) {
     // doc 17 tokens: primary muscles gold (#E9C046), secondary "accentDim" (#8A7A3E on dark, #D8C88A on light)
     val gold = AppAccentTheme.colors.accent

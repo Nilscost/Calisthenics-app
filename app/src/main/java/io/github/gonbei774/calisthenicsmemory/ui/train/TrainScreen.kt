@@ -65,6 +65,7 @@ private fun focusLabel(f: StrengthFocus) = when (f) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@android.annotation.SuppressLint("LocalContextGetResourceValueCall")
 fun TrainScreen(
     modifier: Modifier = Modifier,
     onPreview: () -> Unit,

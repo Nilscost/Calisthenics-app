@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@android.annotation.SuppressLint("LocalContextGetResourceValueCall")
 fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()

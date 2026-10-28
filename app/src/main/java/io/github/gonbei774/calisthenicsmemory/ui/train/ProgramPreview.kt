@@ -96,6 +96,7 @@ private fun stepProgramItem(item: FixedProgramItem, delta: Int, catalog: Catalog
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
+@android.annotation.SuppressLint("LocalContextGetResourceValueCall")
 internal fun ProgramPreview(modifier: Modifier, data: TrainData, mode: ProgramMode, stored: TrainSettings, onBack: () -> Unit, onStarted: () -> Unit) {
     val ctx = LocalContext.current
     val haptic = LocalHapticFeedback.current

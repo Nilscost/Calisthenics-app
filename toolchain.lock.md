@@ -1,19 +1,20 @@
 # Toolchain lock (T03 — docs/archive/02-coding-specification.md §6)
 
 Pinned toolchain for the Calisthenics fork. Bump deliberately; record the
-reason in the PR/task notes.
+reason in the PR/task notes. Phase 0 of the multiplatform port updates Kotlin and Compose; AGP and Gradle were updated to support the current Kotlin compiler. See `docs/evidence/kmp-port.md`.
 
 | Component | Version | Pinned in |
 |---|---|---|
-| Gradle wrapper | 8.13 | `gradle/wrapper/gradle-wrapper.properties` |
-| AGP (com.android.application / library) | 8.13.0 | `gradle/libs.versions.toml` (`agp`) |
-| Kotlin (android / jvm / compose / serialization plugins) | 2.0.21 | `gradle/libs.versions.toml` (`kotlin`) |
-| KSP | 2.0.21-1.0.28 | root `build.gradle.kts` |
+| Gradle wrapper | 9.3.1 | `gradle/wrapper/gradle-wrapper.properties` |
+| AGP (com.android.application / library) | 9.1.1 | `gradle/libs.versions.toml` (`agp`) |
+| Kotlin (android / jvm / compose / serialization plugins) | 2.4.21 | `gradle/libs.versions.toml` (`kotlin`) |
+| Compose Multiplatform / Material 3 | 1.12.2 / 1.9.0 | root and `app/build.gradle.kts` |
+| KSP | 2.3.12 | root `build.gradle.kts` |
 | JVM toolchain / target | 17 | each `build.gradle.kts` |
-| compileSdk | 35 | `app` + `data` `build.gradle.kts` |
+| compileSdk | app 37; data 35 | module `build.gradle.kts` files |
 | minSdk / targetSdk | 26 / 35 | `app` + `data` `build.gradle.kts` |
-| Android SDK platform | android-35 | local SDK (CI: same) |
-| Android SDK build-tools | 35.0.0 | local SDK |
+| Android SDK platforms | android-35, android-37 | local SDK (CI: same) |
+| Android SDK build-tools | 36.0.0 | local SDK |
 | Platform tools (adb) | current as of build | local SDK |
 | Python (content tooling) | 3.14.x (3.10+ required) | `tools/validate_content.py` |
 | ffmpeg (sample media only, NOT app dependency) | local install | `tools/make_sample_media.sh` |

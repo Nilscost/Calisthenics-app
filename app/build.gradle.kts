@@ -3,8 +3,8 @@ import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.compose.multiplatform)
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.mikepenz.aboutlibraries.plugin")
@@ -19,7 +19,7 @@ aboutLibraries {
 
 android {
     namespace = "io.github.gonbei774.calisthenicsmemory"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         // Spec §1: namespace/application ID proposal app.calisthenics.personal;
@@ -86,9 +86,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
 
     buildFeatures {
         compose = true
@@ -110,14 +107,13 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
 
-    // Compose BOM
-    implementation(platform("androidx.compose:compose-bom:2024.10.01"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    // Compose Multiplatform selects Jetpack Compose artifacts on Android.
+    implementation("org.jetbrains.compose.ui:ui:1.12.2")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.12.1")
+    implementation("org.jetbrains.compose.material3:material3:1.9.0")
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.12.1")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.12.1")
 
     // Activity Compose
     implementation("androidx.activity:activity-compose:1.9.3")
@@ -127,9 +123,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
 
     // Room Database
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-runtime:2.8.5")
+    implementation("androidx.room:room-ktx:2.8.5")
+    ksp("androidx.room:room-compiler:2.8.5")
 
     // Core KTX
     implementation("androidx.core:core-ktx:1.15.0")
@@ -146,11 +142,11 @@ dependencies {
     // Testing
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation("androidx.room:room-testing:2.6.1")
+    testImplementation("androidx.room:room-testing:2.8.5")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     // U01: Compose UI tests on the JVM (Robolectric; android-all 14 / SDK 34 is the cached one, see @Config in the tests)
     testImplementation("org.robolectric:robolectric:4.13")
-    testImplementation("androidx.compose.ui:ui-test-junit4")
+    testImplementation("androidx.compose.ui:ui-test-junit4:1.12.1")
     testImplementation("org.conscrypt:conscrypt-openjdk-uber:2.7.0") // 2.5.2 (Robolectric default) has no linux-aarch64 native
     testImplementation("androidx.test:core:1.6.1")
     testImplementation("androidx.test.espresso:espresso-core:3.6.1") // pins the cached version ui-test would otherwise ask 3.5.0 for
@@ -158,8 +154,13 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
-    androidTestImplementation("androidx.room:room-testing:2.6.1")
+    androidTestImplementation("androidx.room:room-testing:2.8.5")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.10.01"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")   
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.12.1")
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
 }

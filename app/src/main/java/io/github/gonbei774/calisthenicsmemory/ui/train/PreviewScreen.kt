@@ -256,6 +256,7 @@ fun PreviewScreen(modifier: Modifier = Modifier, onBack: () -> Unit, onStarted: 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@android.annotation.SuppressLint("LocalContextGetResourceValueCall")
 private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSettings, draft: PreviewDraft?, onBack: () -> Unit, onStarted: () -> Unit) {
     val ctx = LocalContext.current
     val haptic = LocalHapticFeedback.current
