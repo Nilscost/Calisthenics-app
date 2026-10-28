@@ -16,3 +16,19 @@ A signed install-over check on the `persona` emulator (temporary `-read-only` ov
 
 
 The new Compose lint checks flag existing Context resource reads in six functions, including asynchronous callbacks; narrowly scoped suppressions preserve existing behavior until the UI port. History weekday formatting now observes the current configuration locale.
+
+## Resume checkpoint — 2026-10-28
+
+Execution was interrupted by the account usage limit for both the Sol coordinator and Terra executor. Phase 0 is **not approved or tagged**; Phases 1–5 have not started.
+
+- Branch `codex/kmp-port`, latest commit `9e07c954` (preceded by `3abc8eb4`). Preserve the uncommitted `scripts/ui_shots.sh` device-selection/attempt-log changes and `docs/evidence/kmp-phase0-verify.log`.
+- Clean local verification passed: 616 domain, 290 app and 10 connected database tests, lint and APK. Signed upgrade comparison passed with equal startup time, all 16 database tables and six settings files preserved.
+- Sol reported CI verification run `40635884401` successful. UI run `40635897471` still requires inspection: https://github.com/Nilscost/Calisthenics-app/actions/runs/40635897471.
+- Initial local UI results under `/tmp/kmp-phase0-shots` are contaminated by overlapping Maestro runs and ambiguous emulator selection; do not use them as the gate. The speculative scroll-helper change was reverted. The harness now explicitly supplies Maestro's device when `ANDROID_SERIAL` is set and retains attempt-specific logs.
+- A subsequent baseline-only log `/tmp/kmp-baseline-clean.log` records onboarding light passing. This is not a full UI gate. Inspect current processes and output before restarting; run baseline and upgraded APK sequentially on one disposable emulator, without editing a shell script while it is running.
+- Next: complete all three Maestro variants, review representative baseline/upgraded screenshots and all required screenshot evidence, then submit Sol's gate package for the root review explicitly requested by the owner. Only after approval commit the evidence and tag `kmp-phase-0`, then begin Phase 1.
+- The owner selected the latest posted APK as baseline and has authorized continuation through Phase 5. No new baseline approval or phone test is needed.
+
+CI verification on `9e07c954` passed: https://github.com/Nilscost/Calisthenics-app/actions/runs/40635884401. The full screenshot run https://github.com/Nilscost/Calisthenics-app/actions/runs/40635897471 passed its connected job but failed `b_train_preview` in light and `c_session` in all variants. Preview's narrow `all_sets_header` was not found while scrolling at speed 85; the test helper now scrolls at 40 while still requiring full visibility. Session's old loop checked an enabled Done button, but CI screenshots showed a preparation/stretch block without a rep logger. The flow now seeks and explicitly asserts the rep logger and work Done button before exercising the logger. Both changes require a fresh full screenshot run.
+
+Overlapping local Maestro attempts are excluded from gate evidence: the original non-PTY script continued after an attempted interruption, and two emulators were attached. The screenshot harness now passes `ANDROID_SERIAL` to Maestro when set and keeps each attempt log. A separate single-device light onboarding run on the original APK passed; its welcome and ready screenshots visually match the upgraded APK's corresponding screenshots, apart from the system clock (`/tmp/kmp-baseline-clean/a_onboarding/` and `/tmp/kmp-phase0-shots/a_onboarding/`). Other screens await comparison.

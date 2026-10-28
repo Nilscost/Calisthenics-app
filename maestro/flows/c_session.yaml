@@ -9,12 +9,15 @@ appId: app.calisthenics.personal
 - tapOn: { id: start_button }
 - extendedWaitUntil: { visible: { id: session_title }, timeout: 15000 }
 - takeScreenshot: 01-first-block-${VARIANT}
-# Skip ahead until a work block offers Done (warm-up / get-ready blocks come first).
+# Skip warm-up, preparation and stretches until a rep work block has its logger.
 - repeat:
-    while: { notVisible: { id: session_done, enabled: true } }
-    times: 6
+    while: { notVisible: { id: logger_plus } }
+    times: 30
     commands:
       - tapOn: { id: session_skip }
+      - waitForAnimationToEnd: { timeout: 1000 }
+- assertVisible: { id: logger_plus }
+- assertVisible: { id: session_done, enabled: true }
 - takeScreenshot: 02-work-block-${VARIANT}
 # R7-T03 (D3): a rep exercise is logged on its own work screen (- number +, Too easy), DONE saves the number and ends the set.
 - tapOn: { id: logger_plus }
@@ -30,10 +33,13 @@ appId: app.calisthenics.personal
 - tapOn: { id: break_done }
 - extendedWaitUntil: { visible: { id: session_title }, timeout: 10000 }
 - repeat:
-    while: { notVisible: { id: session_done, enabled: true } }
-    times: 6
+    while: { notVisible: { id: logger_plus } }
+    times: 30
     commands:
       - tapOn: { id: session_skip }
+      - waitForAnimationToEnd: { timeout: 1000 }
+- assertVisible: { id: logger_plus }
+- assertVisible: { id: session_done, enabled: true }
 - takeScreenshot: 05-next-work-block-${VARIANT}
 - tapOn: { id: session_pause }
 - takeScreenshot: 06-paused-${VARIANT}

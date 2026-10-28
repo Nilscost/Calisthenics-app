@@ -1,0 +1,283 @@
+> Task :app:clean
+> Task :data:clean
+> Task :domain:clean
+> Task :domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :domain:processResources NO-SOURCE
+> Task :domain:processTestResources NO-SOURCE
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResources
+> Task :data:packageDebugResources
+> Task :data:processDebugNavigationResources
+> Task :data:parseDebugLocalResources
+> Task :data:preDebugUnitTestBuild UP-TO-DATE
+> Task :data:javaPreCompileDebug
+> Task :data:preDebugAndroidTestBuild UP-TO-DATE
+> Task :data:javaPreCompileDebugUnitTest
+> Task :data:generateDebugAndroidTestResources
+> Task :data:packageDebugAndroidTestResources
+> Task :data:processDebugAndroidTestNavigationResources
+> Task :data:generateDebugAndroidTestAssets UP-TO-DATE
+> Task :data:generateDebugRFile
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:javaPreCompileDebugAndroidTest
+> Task :data:parseDebugAndroidTestLocalResources
+> Task :data:mergeDebugAssets
+> Task :data:generateDebugUnitTestStubRFile
+> Task :data:generateDebugAndroidTestRFile
+> Task :data:mergeDebugAndroidTestAssets
+> Task :data:compressDebugAndroidTestAssets
+> Task :data:desugarDebugAndroidTestFileDependencies
+> Task :data:mapDebugAndroidTestSourceSetPaths
+> Task :data:writeDebugAarMetadata
+> Task :data:compileDebugAndroidTestNavigationResources
+> Task :data:checkDebugAndroidTestAarMetadata
+> Task :data:mapDebugSourceSetPaths
+> Task :data:compileDebugLibraryResources
+> Task :data:extractDeepLinksDebug
+> Task :data:processDebugManifest
+> Task :data:checkDebugAndroidTestDuplicateClasses
+> Task :data:mergeDebugAndroidTestResources
+> Task :data:processDebugAndroidTestManifest
+> Task :data:processDebugAndroidTestResources
+> Task :data:mergeDebugJniLibFolders
+> Task :data:mergeDebugNativeLibs NO-SOURCE
+> Task :data:copyDebugJniLibsProjectOnly
+> Task :data:mergeDebugAndroidTestJniLibFolders
+> Task :data:mergeDebugAndroidTestNativeLibs NO-SOURCE
+> Task :data:stripDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :data:validateSigningDebugAndroidTest
+> Task :data:writeDebugAndroidTestSigningConfigVersions
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugBuildConfig
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:processDebugNavigationResources
+> Task :app:javaPreCompileDebug
+> Task :app:mapDebugSourceSetPaths
+> Task :app:checkDebugAarMetadata
+> Task :app:compileDebugNavigationResources
+> Task :app:parseDebugLocalResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:generateDebugRFile
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest
+
+> Task :data:kspDebugKotlin
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+
+> Task :app:mergeDebugResources
+> Task :app:mergeDebugAssets
+> Task :app:processDebugUnitTestManifest
+> Task :data:stripDebugDebugSymbols NO-SOURCE
+> Task :data:checkDebugAarMetadata
+> Task :data:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :data:prepareDebugArtProfile UP-TO-DATE
+> Task :data:copyDebugJniLibsProjectAndLocalJars
+> Task :data:prepareLintJarForPublish UP-TO-DATE
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :data:writeDebugLintModelMetadata
+> Task :app:extractProguardFiles
+> Task :data:extractProguardFiles
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:processDebugManifestForPackage
+> Task :data:mergeExtDexDebugAndroidTest
+> Task :app:checkDebugDuplicateClasses
+> Task :app:compressDebugAssets
+> Task :app:processDebugResources
+> Task :app:packageDebugUnitTestForUnitTest
+> Task :app:generateDebugUnitTestConfig
+> Task :data:extractDebugAnnotations
+
+> Task :data:compileDebugKotlin
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:74:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:126:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:147:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:160:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:195:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:221:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:275:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:290:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:299:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:347:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:371:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt:383:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+
+> Task :data:compileDebugJavaWithJavac NO-SOURCE
+> Task :data:bundleLibRuntimeToJarDebug
+> Task :data:processDebugJavaRes
+> Task :data:bundleLibCompileToJarDebug
+> Task :data:kspDebugUnitTestKotlin NO-SOURCE
+> Task :data:compileDebugUnitTestKotlin NO-SOURCE
+> Task :data:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:processDebugUnitTestJavaRes NO-SOURCE
+> Task :data:testDebugUnitTest NO-SOURCE
+> Task :data:kspDebugAndroidTestKotlin
+> Task :data:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :data:mergeDebugConsumerProguardFiles
+> Task :data:createFullJarDebug
+> Task :data:mergeDebugJavaResource
+> Task :data:generateDebugLintModel
+> Task :data:syncDebugLibJars
+> Task :data:bundleLibRuntimeToDirDebug
+> Task :data:bundleDebugLocalLintAar
+> Task :data:generateDebugAndroidTestLintModel
+> Task :data:generateDebugUnitTestLintModel
+> Task :data:lintAnalyzeDebugUnitTest
+> Task :data:mergeLibDexDebugAndroidTest
+
+> Task :domain:compileKotlin
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/feedback/Feedback.kt:195:71 Unnecessary safe call on a non-null receiver of type 'List<TierSpec>'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/planner/Planner.kt:357:49 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/planner/Planner.kt:512:79 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/planner/ProgramPlan.kt:80:48 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Tier'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/planner/ProgramPlan.kt:80:90 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/planner/ProgramPlan.kt:80:118 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Tier'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/progression/ProgressionEngine.kt:205:84 Unnecessary safe call on a non-null receiver of type 'ProgressionPolicy'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/progression/ProgressionEngine.kt:205:112 Unnecessary safe call on a non-null receiver of type 'ProgressionPolicy'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/progression/ProgressionEngine.kt:392:91 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/progression/ProgressionEngine.kt:398:51 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/progression/Rule.kt:20:60 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/session/SessionProgressSummary.kt:116:62 Unnecessary safe call on a non-null receiver of type 'PrerequisiteRule'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/main/kotlin/app/calisthenics/domain/session/SessionReducer.kt:225:46 Unnecessary safe call on a non-null receiver of type 'Target'.
+
+> Task :domain:compileJava NO-SOURCE
+> Task :domain:classes UP-TO-DATE
+> Task :data:compileDebugAndroidTestKotlin
+> Task :domain:jar
+> Task :data:compileDebugAndroidTestJavaWithJavac NO-SOURCE
+> Task :data:lintAnalyzeDebugAndroidTest
+> Task :data:dexBuilderDebugAndroidTest
+> Task :data:processDebugAndroidTestJavaRes
+> Task :data:mergeDebugAndroidTestGlobalSynthetics
+> Task :data:mergeProjectDexDebugAndroidTest
+> Task :app:kspDebugKotlin UP-TO-DATE
+> Task :app:mergeDebugNativeLibs
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so. Run with --info option to learn more.
+
+> Task :data:mergeDebugAndroidTestJavaResource
+> Task :data:packageDebugAndroidTest
+> Task :data:createDebugAndroidTestApkListingFileRedirect
+> Task :app:mergeExtDexDebug
+
+> Task :domain:compileTestKotlin
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/AlternativeStartingTargetTest.kt:182:123 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Target'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/CooldownTest.kt:30:123 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/FirstWorkoutAnswersTest.kt:80:64 Cast is redundant.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/PresetsTest.kt:57:133 Unnecessary safe call on a non-null receiver of type 'Target'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/PresetsTest.kt:58:134 Unnecessary safe call on a non-null receiver of type 'Target'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/PresetsTest.kt:59:120 Unnecessary safe call on a non-null receiver of type 'Target'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/ProfileEditTest.kt:91:19 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/ProgressionRuleTest.kt:87:87 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Target'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/ProgressionRuleTest.kt:89:68 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Target'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/SavedRoutineTest.kt:52:19 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/SeedFixtureTest.kt:68:26 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/SessionProgressSummaryTest.kt:36:71 Unnecessary non-null assertion (!!) on a non-null receiver of type 'LevelProgress'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/SideModeTest.kt:131:21 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/SkillTreeTest.kt:199:82 Unnecessary non-null assertion (!!) on a non-null receiver of type 'PrerequisiteRule'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/SkillTreeTest.kt:200:79 Unnecessary non-null assertion (!!) on a non-null receiver of type 'PrerequisiteRule'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/StretchSessionTest.kt:38:121 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+
+> Task :data:lintAnalyzeDebug
+
+> Task :app:compileDebugKotlin
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/components/Objective.kt:73:48 'typealias MenuAnchorType = ExposedDropdownMenuAnchorType' is deprecated. Renamed to ExposedDropdownMenuAnchorType.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/components/StarRow.kt:44:53 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/history/HistoryScreen.kt:86:158 'val Icons.Filled.KeyboardArrowLeft: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.KeyboardArrowLeft.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/history/HistoryScreen.kt:88:199 'val Icons.Filled.KeyboardArrowRight: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.KeyboardArrowRight.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/session/RoundEditor.kt:57:115 Unnecessary safe call on a non-null receiver of type 'Target'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/theme/Theme.kt:89:13 Wrapping the left-hand side of assignments in parentheses, labels or annotations is not allowed. This will become an error in a future release. See https://youtrack.jetbrains.com/issue/KT-70507.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/theme/Theme.kt:89:13 Annotations on block-level expressions are parsed differently depending on the presence of a new line. Add a new line after the annotations to annotate the entire expression.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/train/PreviewScreen.kt:414:116 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/train/TrainData.kt:193:16 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/train/TrainScreen.kt:191:60 'typealias MenuAnchorType = ExposedDropdownMenuAnchorType' is deprecated. Renamed to ExposedDropdownMenuAnchorType.
+
+> Task :data:connectedDebugAndroidTest
+
+Starting 10 tests on persona(AVD) - 14
+Finished 10 tests on persona(AVD) - 14
+
+> Task :domain:compileTestJava NO-SOURCE
+> Task :domain:testClasses UP-TO-DATE
+> Task :domain:test
+> Task :app:compileDebugJavaWithJavac
+> Task :app:processDebugJavaRes
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:generateDebugLintReportModel
+> Task :app:kspDebugUnitTestKotlin UP-TO-DATE
+> Task :app:generateDebugAndroidTestLintModel
+> Task :app:generateDebugUnitTestLintModel
+> Task :app:lintAnalyzeDebugAndroidTest
+> Task :app:dexBuilderDebug
+> Task :app:mergeLibDexDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugGlobalSynthetics
+> Task :app:mergeDebugJavaResource
+
+> Task :app:compileDebugUnitTestKotlin
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ClipAssetsTest.kt:10:29 Java type mismatch: inferred type is 'String?', but 'String' was expected.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/BodyMapTest.kt:20:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/DemoPlayerTest.kt:22:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/DesignSystemTest.kt:35:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/EndScreenTest.kt:35:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/EndToEndFlowTest.kt:25:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/EquipmentIconsTest.kt:25:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/HistorySettingsTest.kt:43:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/NavShellTest.kt:23:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/NavShellTest.kt:65:37 Java type mismatch: inferred type is 'String?', but 'String' was expected.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/OnboardingTest.kt:26:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PolishTest.kt:92:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PolishTest.kt:176:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PreviewScreenTest.kt:45:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PreviewScreenTest.kt:89:20 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PreviewScreenTest.kt:247:39 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PreviewScreenTest.kt:461:20 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PreviewScreenTest.kt:484:20 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/ProfileStoreTest.kt:31:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/ProfileStoreTest.kt:102:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/ProgramPreviewTest.kt:36:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/ProgressScreenTest.kt:30:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/SessionScreenTest.kt:52:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/SessionScreenTest.kt:481:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/SideDisplayTest.kt:25:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/ThumbTest.kt:22:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/TrainScreenTest.kt:25:26 'fun createComposeRule(effectContext: CoroutineContext = ...): ComposeContentTestRule' is deprecated. Use `androidx.compose.ui.test.junit4.v2.createComposeRule` instead. The v2 APIs use StandardTestDispatcher instead of UnconfinedTestDispatcher, which aligns with standard coroutine behavior by queuing tasks rather than executing them immediately. Tests relying on immediate execution may require explicit synchronization. Please refer to the migration guide for more details.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/TrainScreenTest.kt:76:20 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/TrainScreenTest.kt:117:20 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/TrainScreenTest.kt:139:26 Redundant creation of Json format. Creating instances for each use can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/TrainScreenTest.kt:196:20 Redundant creation of Json format. Creating instances for each use can be slow.
+
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:lintAnalyzeDebugUnitTest
+> Task :app:lintAnalyzeDebug
+> Task :app:testDebugUnitTest
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+> Task :app:lintReportDebug
+Wrote HTML report to file:///Users/nils/Documents/hermes/Apps/calisthenics/app/build/reports/lint-results-debug.html
+
+> Task :app:lintDebug
+
+[Incubating] Problems report is available at: file:///Users/nils/Documents/hermes/Apps/calisthenics/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 1m 30s
+138 actionable tasks: 132 executed, 6 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.3.1/userguide/configuration_cache_enabling.html

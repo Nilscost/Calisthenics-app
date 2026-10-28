@@ -7,6 +7,9 @@
 set -uo pipefail
 APK="$1"; OUT="$2"; ROOT=$(pwd); PKG=app.calisthenics.personal
 export MAESTRO_CLI_NO_ANALYTICS=1
+# Keep Maestro on the same device as adb when ANDROID_SERIAL is set.
+maestro_device=()
+[ -z "${ANDROID_SERIAL:-}" ] || maestro_device=(--device "$ANDROID_SERIAL")
 # FLOWS (default: all) is a glob over maestro/flows names, e.g. FLOWS=j_warmup, for debugging a single flow.
 # VARIANTS (default: all three) lets CI run one variant per job; the results file is then results-<variant>.txt.
 VARIANTS="${VARIANTS:-light dark font13}"
@@ -45,7 +48,7 @@ for variant in $VARIANTS; do
       tmp=$(mktemp -d)
       # The hook runs before every attempt (fresh state / seed / theme of the variant).
       bash "$hook" "$variant" > "$OUT/$name/hook-$variant.txt" 2>&1 || echo "HOOKFAIL $name $variant" >> "$RES"
-      if (cd "$tmp" && maestro test --no-ansi --test-output-dir "$tmp" -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant.txt" 2>&1; then
+      if (cd "$tmp" && maestro ${maestro_device[@]+"${maestro_device[@]}"} test --no-ansi --test-output-dir "$tmp" -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant-attempt-$try.txt" 2>&1; then
         ok=1; else ok=0; fi
       [ $ok = 1 ] && break
       [ $try = 1 ] && { echo "RETRY $name $variant" >> "$RES"; adb shell am force-stop $PKG; adb shell input keyevent KEYCODE_HOME; sleep 15; rm -rf "$tmp"; }
