@@ -15,6 +15,8 @@ maestro_device=()
 VARIANTS="${VARIANTS:-light dark font13}"
 RES="$OUT/results.txt"; [ "$VARIANTS" = "light dark font13" ] || RES="$OUT/results-${VARIANTS// /_}.txt"
 mkdir -p "$OUT"; : > "$RES"
+OUT=$(cd "$OUT" && pwd)
+RES="$OUT/$(basename "$RES")"
 adb wait-for-device
 until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 ]; do sleep 2; done
 adb shell settings put global hide_error_dialogs 1   # no "isn't responding" dialogs over the app
@@ -47,11 +49,19 @@ for variant in $VARIANTS; do
     for try in 1 2; do
       tmp=$(mktemp -d)
       # The hook runs before every attempt (fresh state / seed / theme of the variant).
-      bash "$hook" "$variant" > "$OUT/$name/hook-$variant.txt" 2>&1 || { echo "HOOKFAIL $name $variant" >> "$RES"; fail=1; }
-      if (cd "$tmp" && maestro ${maestro_device[@]+"${maestro_device[@]}"} test --no-ansi --test-output-dir "$tmp" -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant-attempt-$try.txt" 2>&1; then
-        ok=1; else ok=0; fi
+      if bash "$hook" "$variant" > "$OUT/$name/hook-$variant-attempt-$try.txt" 2>&1; then
+        if (cd "$tmp" && maestro ${maestro_device[@]+"${maestro_device[@]}"} test --no-ansi --test-output-dir "$tmp" --debug-output="$OUT/$name/debug-$variant-attempt-$try" --flatten-debug-output -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant-attempt-$try.txt" 2>&1; then
+          ok=1; else ok=0; fi
+      else
+        echo "HOOKFAIL $name $variant" >> "$RES"; fail=1; ok=0
+        adb exec-out screencap -p > "$OUT/$name/hook-failure-$variant-attempt-$try.png" || true
+      fi
       [ $ok = 1 ] && break
-      [ $try = 1 ] && { echo "RETRY $name $variant" >> "$RES"; adb shell am force-stop $PKG; adb shell input keyevent KEYCODE_HOME; sleep 15; rm -rf "$tmp"; }
+      if [ $try = 1 ]; then
+        mkdir -p "$OUT/$name/failed-$variant-attempt-$try"
+        find "$tmp" -name '*.png' -not -path '*/.maestro/*' -not -name 'screenshot-*' -exec cp {} "$OUT/$name/failed-$variant-attempt-$try/" \;
+        echo "RETRY $name $variant" >> "$RES"; adb shell am force-stop $PKG; adb shell input keyevent KEYCODE_HOME; sleep 15; rm -rf "$tmp"
+      fi
     done
     find "$tmp" -name '*.png' -not -path '*/.maestro/*' -not -name 'screenshot-*' -exec cp {} "$OUT/$name/" \;
     rm -rf "$tmp"
