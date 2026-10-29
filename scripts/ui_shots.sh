@@ -47,7 +47,7 @@ for variant in $VARIANTS; do
     for try in 1 2; do
       tmp=$(mktemp -d)
       # The hook runs before every attempt (fresh state / seed / theme of the variant).
-      bash "$hook" "$variant" > "$OUT/$name/hook-$variant.txt" 2>&1 || echo "HOOKFAIL $name $variant" >> "$RES"
+      bash "$hook" "$variant" > "$OUT/$name/hook-$variant.txt" 2>&1 || { echo "HOOKFAIL $name $variant" >> "$RES"; fail=1; }
       if (cd "$tmp" && maestro ${maestro_device[@]+"${maestro_device[@]}"} test --no-ansi --test-output-dir "$tmp" -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant-attempt-$try.txt" 2>&1; then
         ok=1; else ok=0; fi
       [ $ok = 1 ] && break

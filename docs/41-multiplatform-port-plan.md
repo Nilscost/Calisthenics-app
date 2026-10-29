@@ -1,6 +1,6 @@
 # 41 · Multiplatform port plan (Android + web now, iPhone later)
 
-Status: plan, not started · Written 2026-10-28 · Executor: Codex · Owner phone test only at the end.
+Status: Phase 0 verification in progress · Written 2026-10-28 · Executor: Codex · Owner phone test only at the end.
 
 ## Goal
 

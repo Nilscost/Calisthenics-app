@@ -99,6 +99,8 @@ appId: app.calisthenics.personal
 - runFlow:
     file: ../common/reveal.yaml
     env: { ID: "add_after_.*" }
+- scrollUntilVisible: { element: { id: "add_after_.*", index: 0 }, direction: DOWN, visibilityPercentage: 100, centerElement: true, timeout: 12000 }
+- waitForAnimationToEnd
 - tapOn: { id: "add_after_.*", index: 0 }
 - extendedWaitUntil: { visible: "Add to the workout", timeout: 5000 }
 - takeScreenshot: 02c-add-sheet-${VARIANT}
@@ -148,6 +150,11 @@ appId: app.calisthenics.personal
       - swipe:
           from: { id: swap_sheet_body, point: "50%, 80%" }
           direction: UP
+# Visibility alone can include a row clipped by the sheet's bottom edge.
+- swipe:
+    from: { id: swap_sheet_body, point: "50%, 80%" }
+    direction: UP
+- waitForAnimationToEnd
 - tapOn: { id: swap_other_types }
 - extendedWaitUntil: { visible: "Same family.*", timeout: 5000 }
 - takeScreenshot: 05b-swap-other-types-${VARIANT}

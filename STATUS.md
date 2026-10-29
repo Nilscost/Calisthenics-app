@@ -1,5 +1,11 @@
 # Actual project status
 
+## iPhone and web port resumed (2026-10-29)
+
+Work continues on `codex/kmp-port` under [the multiplatform plan](docs/41-multiplatform-port-plan.md), with Terra executors and coordinator review. Phase 0's toolchain upgrade, 616 domain tests, 290 app tests, 10 connected database tests and seeded install-over comparison passed. The latest full screenshot run passed dark, enlarged text and connected tests, but failed light Train/Preview after missed sheet-opening taps. The flow corrections and a setup-hook failure fix are being verified; Phase 0 is not approved or tagged, and Phases 1–5 remain pending. The iPhone deliverable is an installable web app; native iOS remains optional Phase 6. No new release APK or web URL is ready for owner testing.
+
+[Execution evidence](docs/evidence/kmp-port.md) · [Latest screenshot review](docs/evidence/ui/KMP-phase0-latest-review.md).
+
 ## Clip fixes installed (2026-10-26 · no new APK)
 
 Eleven demonstrations were fixed at source, rendered in one isolated batch and installed.

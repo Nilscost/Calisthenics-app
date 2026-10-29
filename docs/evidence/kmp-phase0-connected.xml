@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="10" failures="0" errors="0" skipped="0" time="1.124" timestamp="2026-10-28T05:02:32" hostname="localhost">
+  <testsuite name="io.github.gonbei774.calisthenicsmemory.data.HistoryAndMigrationTest" tests="10" failures="0" errors="0" skipped="0" time="0.214" timestamp="2026-10-28T05:02:32" hostname="localhost">
+    <properties>
+      <property name="device" value="persona(AVD) - 14" />
+      <property name="flavor" value="" />
+      <property name="project" value=":data" />
+    </properties>
+    <testcase name="duplicateSessionIdIsRejected" classname="io.github.gonbei774.calisthenicsmemory.data.HistoryAndMigrationTest" time="0.008" />
+    <testcase name="editingFeedbackAddsRevisionAndKeepsOriginal" classname="io.github.gonbei774.calisthenicsmemory.data.HistoryAndMigrationTest" time="0.001" />
+    <testcase name="feedbackLoggedDuringTheWorkoutIsSavedWithTheSession" classname="io.github.gonbei774.calisthenicsmemory.data.HistoryAndMigrationTest" time="0.001" />
+    <testcase name="failedSaveLeavesPriorRecordsIntact" classname="io.github.gonbei774.calisthenicsmemory.data.HistoryAndMigrationTest" time="0.031" />
+    <testcase name="migration21to22KeepsExistingRowsAndAddsHistoryTables" classname="io.github.gonbei774.calisthenicsmemory.data.HistoryAndMigrationTest" time="0.055" />
+    <testcase name="plansReferencedBySessionsCannotBeDeleted" classname="io.github.gonbei774.calisthenicsmemory.data.HistoryAndMigrationTest" time="0.03" />
+    <testcase name="planSnapshotIsNeverOverwritten" classname="io.github.gonbei774.calisthenicsmemory.data.HistoryAndMigrationTest" time="0.0" />
+    <testcase name="roundCorrectionsAreNewRevisionsKeyedToTheBlockAndTheOriginalStays" classname="io.github.gonbei774.calisthenicsmemory.data.HistoryAndMigrationTest" time="0.001" />
+    <testcase name="migration23to24AddsTheRoundColumnsAndKeepsEveryRow" classname="io.github.gonbei774.calisthenicsmemory.data.HistoryAndMigrationTest" time="0.058" />
+    <testcase name="existingVersion24DatabaseOpensAndKeepsHistoryAndLegacyRows" classname="io.github.gonbei774.calisthenicsmemory.data.HistoryAndMigrationTest" time="0.029" />
+  </testsuite>
+</testsuites>
