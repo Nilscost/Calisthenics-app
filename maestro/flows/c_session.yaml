@@ -24,13 +24,24 @@ appId: app.calisthenics.personal
 - tapOn: { id: logger_too_easy }
 - takeScreenshot: 03-work-logger-${VARIANT}
 - tapOn: { id: session_done }
-- extendedWaitUntil: { visible: { id: break_done }, timeout: 10000 }
+- waitForAnimationToEnd: { timeout: 1000 }
+# Per-side exercises can have another work block before the stretch.
+- repeat:
+    while: { notVisible: { id: break_done } }
+    times: 10
+    commands:
+      - tapOn: { id: session_skip }
+      - waitForAnimationToEnd: { timeout: 1000 }
+- assertVisible: { id: break_done }
 # R7-T02 (B4, B5): the break has a readable caption with the stretch name; DONE moves on to the next block.
 - takeScreenshot: 04-stretch-block-${VARIANT}
 - tapOn: { id: break_done }
 - extendedWaitUntil: { visible: { id: session_caption }, timeout: 10000 }
 - takeScreenshot: 04b-stretch-caption-${VARIANT}
-- tapOn: { id: break_done }
+- runFlow:
+    when: { visible: { id: break_done } }
+    commands:
+      - tapOn: { id: break_done }
 - extendedWaitUntil: { visible: { id: session_title }, timeout: 10000 }
 - repeat:
     while: { notVisible: { id: logger_plus } }
@@ -54,4 +65,5 @@ appId: app.calisthenics.personal
 - tapOn: { id: end_edit }
 - scrollUntilVisible: { element: { id: "end_fix_.*" }, direction: DOWN, timeout: 8000 }
 - takeScreenshot: 09-end-editor-${VARIANT}
+- scrollUntilVisible: { element: { id: end_done }, direction: DOWN, speed: 40, timeout: 30000 }
 - tapOn: { id: end_done }
