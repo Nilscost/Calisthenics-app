@@ -42,16 +42,26 @@ for variant in $VARIANTS; do
   for flow in maestro/flows/${FLOWS:-*}.yaml; do
     name=$(basename "$flow" .yaml)
     mkdir -p "$OUT/$name"
+    # An output directory may be reused; old captures must never satisfy this run.
+    find "$OUT/$name" -maxdepth 1 -type f -name "*-$variant.png" -delete
     # Optional hook before a flow (maestro/hooks/<flow>.pre.sh), e.g. the debug seed for e_seeded.
     hook="maestro/hooks/$name.pre.sh"; [ -f "$hook" ] || hook="maestro/hooks/default.pre.sh"
     # Maestro only writes screenshots inside its own output folder: run it there with relative names, then collect them.
     # One retry: the emulator occasionally shows a blank or frozen screen after a configuration change.
     for try in 1 2; do
       tmp=$(mktemp -d)
+      debug="$OUT/$name/debug-$variant-attempt-$try"
+      rm -rf "$debug"
+      rm -rf "$OUT/$name/failed-$variant-attempt-$try"
+      rm -f "$OUT/$name/hook-failure-$variant-attempt-$try.png" "$OUT/$name/log-$variant-attempt-$try.txt" "$OUT/$name/hook-$variant-attempt-$try.txt"
+      shots="$debug/$name/takeScreenshot"
       # The hook runs before every attempt (fresh state / seed / theme of the variant).
       if bash "$hook" "$variant" > "$OUT/$name/hook-$variant-attempt-$try.txt" 2>&1; then
-        if (cd "$tmp" && maestro ${maestro_device[@]+"${maestro_device[@]}"} test --no-ansi --test-output-dir "$tmp" --debug-output="$OUT/$name/debug-$variant-attempt-$try" --flatten-debug-output -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant-attempt-$try.txt" 2>&1; then
+        if (cd "$tmp" && maestro ${maestro_device[@]+"${maestro_device[@]}"} test --no-ansi --test-output-dir "$tmp" --debug-output="$debug" --flatten-debug-output -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant-attempt-$try.txt" 2>&1; then
           ok=1; else ok=0; fi
+        if [ "$ok" = 1 ] && { [ ! -d "$shots" ] || ! find "$shots" -maxdepth 1 -name '*.png' -type f -print -quit | grep -q .; }; then
+          echo "NOSHOTS $name $variant attempt $try" >> "$RES"; ok=0
+        fi
       else
         echo "HOOKFAIL $name $variant" >> "$RES"; fail=1; ok=0
         adb exec-out screencap -p > "$OUT/$name/hook-failure-$variant-attempt-$try.png" || true
@@ -59,11 +69,11 @@ for variant in $VARIANTS; do
       [ $ok = 1 ] && break
       if [ $try = 1 ]; then
         mkdir -p "$OUT/$name/failed-$variant-attempt-$try"
-        find "$tmp" -name '*.png' -not -path '*/.maestro/*' -not -name 'screenshot-*' -exec cp {} "$OUT/$name/failed-$variant-attempt-$try/" \;
+        [ ! -d "$shots" ] || find "$shots" -maxdepth 1 -name '*.png' -type f -exec cp {} "$OUT/$name/failed-$variant-attempt-$try/" \;
         echo "RETRY $name $variant" >> "$RES"; adb shell am force-stop $PKG; adb shell input keyevent KEYCODE_HOME; sleep 15; rm -rf "$tmp"
       fi
     done
-    find "$tmp" -name '*.png' -not -path '*/.maestro/*' -not -name 'screenshot-*' -exec cp {} "$OUT/$name/" \;
+    [ ! -d "$shots" ] || find "$shots" -maxdepth 1 -name '*.png' -type f -exec cp {} "$OUT/$name/" \;
     rm -rf "$tmp"
     if [ $ok = 1 ]; then
       echo "PASS $name $variant" >> "$RES"
