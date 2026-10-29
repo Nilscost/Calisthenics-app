@@ -11,6 +11,9 @@ reason in the PR/task notes. Phase 0 of the multiplatform port updates Kotlin an
 | Compose Multiplatform / Material 3 | 1.12.2 / 1.9.0 | root and `app/build.gradle.kts` |
 | KSP | 2.3.12 | root `build.gradle.kts` |
 | JVM toolchain / target | 17 | each `build.gradle.kts` |
+| Node.js (domain Wasm tests) | 26.8.1 | provisioned locally; `.github/workflows/android.yml` |
+| kotlinx-datetime / KotlinCrypto SHA2 | 0.8.0 / 0.8.0 | `domain/build.gradle.kts` |
+| Wasm timezone database | `@js-joda/timezone` 2.23.0 | `domain/build.gradle.kts` (last compatible with datetime's js-joda/core 3.2.0) |
 | compileSdk | app 37; data 35 | module `build.gradle.kts` files |
 | minSdk / targetSdk | 26 / 35 | `app` + `data` `build.gradle.kts` |
 | Android SDK platforms | android-35, android-37.0 | local SDK (CI: same) |

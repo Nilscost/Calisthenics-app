@@ -1,0 +1,20 @@
+package app.calisthenics.domain
+
+// JUnit 4 uses message-first overloads; preserve those calls in common tests.
+internal fun fail(message: String? = null): Nothing = kotlin.test.fail(message)
+internal fun assertTrue(value: Boolean) = kotlin.test.assertTrue(value)
+internal fun assertTrue(message: String, value: Boolean) = kotlin.test.assertTrue(value, message)
+internal fun assertFalse(value: Boolean) = kotlin.test.assertFalse(value)
+internal fun assertFalse(message: String, value: Boolean) = kotlin.test.assertFalse(value, message)
+internal fun <T> assertEquals(expected: T, actual: T) = kotlin.test.assertEquals(expected, actual)
+internal fun <T> assertEquals(message: String, expected: T, actual: T) = kotlin.test.assertEquals(expected, actual, message)
+internal fun assertEquals(expected: Long, actual: Long) = kotlin.test.assertEquals(expected, actual)
+internal fun assertEquals(message: String, expected: Long, actual: Long) = kotlin.test.assertEquals(expected, actual, message)
+internal fun <T> assertNotEquals(expected: T, actual: T) = kotlin.test.assertNotEquals(expected, actual)
+internal fun <T> assertNotEquals(message: String, expected: T, actual: T) = kotlin.test.assertNotEquals(expected, actual, message)
+internal fun assertNull(actual: Any?) = kotlin.test.assertNull(actual)
+internal fun assertNull(message: String, actual: Any?) = kotlin.test.assertNull(actual, message)
+internal fun assertNotNull(actual: Any?) = kotlin.test.assertNotNull(actual)
+internal fun assertNotNull(message: String, actual: Any?) = kotlin.test.assertNotNull(actual, message)
+internal fun assertSame(expected: Any?, actual: Any?) = kotlin.test.assertSame(expected, actual)
+internal fun assertSame(message: String, expected: Any?, actual: Any?) = kotlin.test.assertSame(expected, actual, message)

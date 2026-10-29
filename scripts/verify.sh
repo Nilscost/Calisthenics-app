@@ -13,8 +13,9 @@ step() { printf '\n==> %s\n' "$1"; }
 step "Gradle wrapper and pinned runtime"
 ./gradlew --version --console=plain
 
-step "Domain, data and app unit tests"
-./gradlew :domain:test :data:testDebugUnitTest :app:testDebugUnitTest --console=plain
+step "Domain JVM and WebAssembly, data and app unit tests"
+./gradlew :domain:jvmTest :domain:wasmJsNodeTest :data:testDebugUnitTest :app:testDebugUnitTest --console=plain
+python3 tools/check_kmp_test_parity.py
 
 step "App lint and debug APK build"
 ./gradlew :app:lintDebug :app:assembleDebug --console=plain

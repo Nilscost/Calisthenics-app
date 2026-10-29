@@ -40,6 +40,9 @@ import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
 import io.github.gonbei774.calisthenicsmemory.ui.components.countText
 import io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toKotlinLocalDate
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -55,10 +58,10 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
     val ctx = LocalContext.current
     val locale = androidx.compose.ui.platform.LocalConfiguration.current.locales[0]
     val src = source ?: remember { RoomHistorySource(ctx) }
-    val zone = remember { ZoneId.systemDefault() }
+    val zone = remember { TimeZone.of(ZoneId.systemDefault().id) }
     var all by remember { mutableStateOf<List<StoredSession>?>(null) }
     LaunchedEffect(Unit) { all = try { src.sessions() } catch (_: Throwable) { emptyList() } }
-    var weekStart by remember { mutableStateOf(weekStartOf(today)) }
+    var weekStart by remember { mutableStateOf(weekStartOf(today.toKotlinLocalDate()).toJavaLocalDate()) }
     var selected by remember { mutableStateOf<LocalDate?>(null) }
 
     val catalog = remember { runCatching { loadCatalog(ctx) }.getOrNull() }
@@ -72,11 +75,11 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
             if (list == null) { Text(stringResource(R.string.history_loading)); return@Column }
             val finished = finishedSessions(list.map { it.record }).map { it.sessionId }.toSet()
             val overviews = list.filter { it.record.sessionId in finished }.map { overviewOf(it.plan, it.record, zone) }
-            val days = weekDays(weekStart)
-            val trained = overviews.map { it.day }.toSet()
+            val days = weekDays(weekStart.toKotlinLocalDate()).map { it.toJavaLocalDate() }
+            val trained = overviews.map { it.day.toJavaLocalDate() }.toSet()
             // doc 17 §2.5: summary tiles
             val levelUpDays = progress?.events?.filter { isLevelUp(it) }?.map { LocalDate.ofEpochDay(it.day.toLong()) }.orEmpty()
-            val tiles = remember(list, levelUpDays, today) { historyTiles(list.map { it.record }, levelUpDays, today, zone) }
+            val tiles = remember(list, levelUpDays, today) { historyTiles(list.map { it.record }, levelUpDays.map { it.toKotlinLocalDate() }, today.toKotlinLocalDate(), zone) }
             Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
                 StatTile(tiles.sessionsThisWeek.toString(), R.string.history_tile_sessions, "tile_sessions", Modifier.weight(1f).fillMaxHeight())
                 StatTile(tiles.levelUpsThisMonth.toString(), R.string.history_tile_levelups, "tile_levelups", Modifier.weight(1f).fillMaxHeight())
@@ -85,7 +88,7 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { weekStart = weekStart.minusWeeks(1); selected = null }, modifier = Modifier.testTag("week_prev")) { Icon(Icons.Filled.KeyboardArrowLeft, stringResource(R.string.history_prev_week)) }
                 Text(stringResource(R.string.history_week_range, dateFmt.format(days.first()), dateFmt.format(days.last())), Modifier.weight(1f).testTag("week_label"), textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
-                IconButton(onClick = { weekStart = weekStart.plusWeeks(1); selected = null }, enabled = weekStart < weekStartOf(today), modifier = Modifier.testTag("week_next")) { Icon(Icons.Filled.KeyboardArrowRight, stringResource(R.string.history_next_week)) }
+                IconButton(onClick = { weekStart = weekStart.plusWeeks(1); selected = null }, enabled = weekStart < weekStartOf(today.toKotlinLocalDate()).toJavaLocalDate(), modifier = Modifier.testTag("week_next")) { Icon(Icons.Filled.KeyboardArrowRight, stringResource(R.string.history_next_week)) }
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                 days.forEach { d ->
@@ -102,17 +105,17 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
                     }
                 }
             }
-            val inWeek = overviews.filter { it.day in days }.sortedByDescending { it.startedAtEpochMs }
-            val shown = selected?.let { s -> inWeek.filter { it.day == s } } ?: inWeek
+            val inWeek = overviews.filter { it.day.toJavaLocalDate() in days }.sortedByDescending { it.startedAtEpochMs }
+            val shown = selected?.let { s -> inWeek.filter { it.day.toJavaLocalDate() == s } } ?: inWeek
             if (inWeek.isNotEmpty()) {
-                val week = weeklySummaries(list.filter { it.record.sessionId in finished }.map { it.record }, zone).firstOrNull { it.weekStart == weekStart }
+                val week = weeklySummaries(list.filter { it.record.sessionId in finished }.map { it.record }, zone).firstOrNull { it.weekStart.toJavaLocalDate() == weekStart }
                 if (week != null) Text(androidx.compose.ui.res.pluralStringResource(R.plurals.history_week_summary, week.sessions, week.sessions, week.workSeconds / 60, week.stretchSeconds / 60), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("week_summary"))
             }
             if (shown.isEmpty()) Text(stringResource(if (overviews.isEmpty()) R.string.history_empty else R.string.history_empty_week), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("history_empty"))
             shown.forEach { o ->
                 Card(Modifier.fillMaxWidth().clickable { onOpen(o.sessionId) }.testTag("session_${o.sessionId}"), shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                        Text(dateFmt.format(o.day), style = MaterialTheme.typography.titleMedium)
+                        Text(dateFmt.format(o.day.toJavaLocalDate()), style = MaterialTheme.typography.titleMedium)
                         Text(stringResource(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.string.history_session_line else R.string.history_session_line_sets, o.minutes, countText(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.plurals.count_rounds else R.plurals.count_sets, o.rounds), countText(R.plurals.count_exercises, o.exercises)), style = MaterialTheme.typography.bodyLarge)
                         if (o.finishedEarly) Text(stringResource(R.string.history_finished_early), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text)
                     }
@@ -138,7 +141,7 @@ fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, 
                             }
                             if (open) {
                                 val gate = tier?.let { t -> catalog.policyFor(v)?.tiers?.firstOrNull { it.index == t }?.target?.value }
-                                LowestSetChart(pts.takeLast(12).map { it.lowest }, pts.takeLast(12).map { it.day }, gate, Modifier.fillMaxWidth().height(160.dp).testTag("chart_$vid"))
+                                LowestSetChart(pts.takeLast(12).map { it.lowest }, pts.takeLast(12).map { it.day.toJavaLocalDate() }, gate, Modifier.fillMaxWidth().height(160.dp).testTag("chart_$vid"))
                                 if (pts.size < 2) Text(stringResource(R.string.history_chart_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("chart_hint_$vid"))
                                 io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton(onClick = { onOpenExercise(vid) }, modifier = Modifier.testTag("open_exercise_$vid")) { Text(stringResource(R.string.history_open_exercise)) }
                                 if (gate != null) Text(stringResource(R.string.history_chart_gate, gate, unit), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -222,8 +225,8 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
         Column(Modifier.padding(pad).fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
             val s = stored
             if (s == null) { Text(stringResource(if (loaded) R.string.history_not_found else R.string.history_loading)); return@Column }
-            val o = overviewOf(s.plan, s.record, ZoneId.systemDefault())
-            Text(dateFmt.format(o.day), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("detail_title"))
+            val o = overviewOf(s.plan, s.record, TimeZone.of(ZoneId.systemDefault().id))
+            Text(dateFmt.format(o.day.toJavaLocalDate()), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("detail_title"))
             Text(stringResource(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.string.history_session_line else R.string.history_session_line_sets, o.minutes, countText(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) R.plurals.count_rounds else R.plurals.count_sets, o.rounds), countText(R.plurals.count_exercises, o.exercises)), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("detail_summary"))
             if (s.plan == null) Text(stringResource(R.string.history_no_plan), style = MaterialTheme.typography.bodyMedium)
             val details = s.plan?.let { exerciseDetails(it, s.record.blocks) }.orEmpty()

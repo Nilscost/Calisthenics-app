@@ -42,6 +42,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.ZoneId
+import kotlinx.datetime.TimeZone
 
 /** The comparison with the names it mentions (so the cards need no catalog). */
 internal data class EndProgress(val summary: SessionProgressSummary, val names: Map<String, String>)
@@ -65,7 +66,7 @@ internal fun EndScreen(
     val ctx = LocalContext.current
     val saveStatus by SessionBus.saveStatus.collectAsState()
     // The numbers are History's own (overviewOf over the record the service saves), so the two screens cannot disagree.
-    val overview = remember(st, saveStatus) { overviewOf(st.plan, recordOfState(st, SessionBus.startedAtEpochMs, SessionBus.endedAtEpochMs.takeIf { it > 0L }), ZoneId.systemDefault()) }
+    val overview = remember(st, saveStatus) { overviewOf(st.plan, recordOfState(st, SessionBus.startedAtEpochMs, SessionBus.endedAtEpochMs.takeIf { it > 0L }), TimeZone.of(ZoneId.systemDefault().id)) }
     val editableExercises = st.plan.blocks.filter { it.type == BlockType.WORK && st.executions[it.id] == Execution.COMPLETED &&
         !(st.plan.fixedProgramId != null && st.plan.flow && it.prescriptionTier == null) }.mapNotNull { it.variationId }.distinct()
     var progress by remember { mutableStateOf<EndProgress?>(null) }

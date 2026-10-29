@@ -11,9 +11,17 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.jvm) apply false
+    id("org.jetbrains.kotlin.multiplatform") version "2.4.21" apply false
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.compose.multiplatform) apply false
     id("com.google.devtools.ksp") version "2.3.12" apply false
     id("org.jetbrains.kotlin.plugin.serialization") version "2.4.21" apply false
     id("com.mikepenz.aboutlibraries.plugin") version "11.2.3" apply false
+}
+
+// Use the provisioned Node runtime; this preserves settings-level repository enforcement.
+allprojects {
+    plugins.withType<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsPlugin> {
+        extensions.getByType<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsEnvSpec>().download.set(false)
+    }
 }
