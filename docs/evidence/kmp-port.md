@@ -6,7 +6,7 @@ The owner selected the latest APK posted on 2026-10-27: `Apps/builds/app-debug-2
 
 The branch starts at `173ddcea`, whose tree is identical to `da410c39`; the APK was written immediately after that commit and all 1,070 packaged asset paths match this tree byte for byte. There is no explicit build manifest tying the APK to the commit, so this attribution is corroborated rather than proven. This owner-selected baseline supersedes the plan's older `main` base.
 
-## Phase 0 — in progress
+## Phase 0 — approved 2026-10-29
 
 Toolchain selection: Kotlin 2.4.21, Compose Multiplatform 1.12.2, stable Material 3 1.9.0, KSP 2.3.12, AGP 9.1.1 and Gradle 9.3.1, Java 17. AGP 9.1 includes the R8 version required by Kotlin 2.4; the standalone R8 9.1.29 POM was unavailable in Google Maven. The Android Kotlin compiler is explicitly aligned with the Kotlin plugins. Compose requires app compileSdk 37; targetSdk 35 and minSdk 26 are unchanged. CI provisions platforms `android-35` and `android-37.0` and build-tools 36 while retaining its existing checks. Room 2.8.5 was brought forward from Phase 2 because Room 2.6.1 cannot process KSP2 Unit signatures; compiler-only upgrade failed due to a missing runtime type. The committed version-24 schema did not change. See [KSP issue 2177](https://github.com/google/ksp/issues/2177). Sources: [Kotlin compatibility](https://kotlinlang.org/docs/multiplatform/multiplatform-compatibility-guide.html), [Compose compatibility](https://kotlinlang.org/docs/multiplatform/compose-compatibility-and-versioning.html), [Android Kotlin support](https://developer.android.com/build/kotlin-support), [AGP 9.1](https://developer.android.com/build/releases/agp-9-1-0-release-notes), [AGP built-in Kotlin](https://developer.android.com/build/releases/agp-9-0-0-release-notes#runtime-dependency-on-kotlin-gradle-plugin), [KSP releases](https://github.com/google/ksp/releases).
 
@@ -17,7 +17,7 @@ A signed install-over check on the `persona` emulator (temporary `-read-only` ov
 
 The new Compose lint checks flag existing Context resource reads in six functions, including asynchronous callbacks; narrowly scoped suppressions preserve existing behavior until the UI port. History weekday formatting now observes the current configuration locale.
 
-## Phase 0 screenshot regression — in progress
+## Phase 0 screenshot regression — completed
 
 CI verification passed on [642388b4](https://github.com/Nilscost/Calisthenics-app/actions/runs/40706335331). Earlier [ui-screens run 40635897471](https://github.com/Nilscost/Calisthenics-app/actions/runs/40635897471) passed connected tests but failed Preview in light and Session in all variants. The Preview header was missed while scrolling at speed 85; the helper now uses 40 with full visibility. The Session flow now waits for and asserts the actual rep logger, instead of assuming an enabled Done button marks a rep exercise. [Run 40706388554](https://github.com/Nilscost/Calisthenics-app/actions/runs/40706388554) passed connected and font 1.3 but failed Session in light and dark. A dark failure screenshot showed the opposite-side Split Squat work block after the first side, rather than the assumed immediate stretch. The flow now advances through any intervening work/preparation to an explicitly asserted break, then checks the next rep logger, end editor and Done. The local full run also exposed an off-screen end button and a progress-tree scroll overshoot; the flows now reveal the end button and settle bounded tree swipes in both directions. Focused light-mode Session and Progress flows passed. Full three-variant [run 40812205504](https://github.com/Nilscost/Calisthenics-app/actions/runs/40812205504) completed with the results recorded below.
 
@@ -31,4 +31,10 @@ The [latest visual review](ui/KMP-phase0-latest-review.md) covers all 125 availa
 
 An isolated project outside the repository passed one timezone/SHA-256 probe on JVM and Wasm/Node with Kotlin 2.4.21, kotlinx-datetime 0.8.0, KotlinCrypto SHA2 0.8.0 and `@js-joda/timezone` 2.25.0. This is Phase 1 preparation only, not a domain port or phase gate. The original JVM test manifest contains 616 unique tests across 81 suites.
 
-Phase 0 remains untagged pending the complete screenshot gate and coordinator review; later phases have not started. The seeded upgrade comparison covers six preference files, not every named store; the Phase 2 preservation gate remains required.
+### Phase 0 acceptance
+
+[Full regression 40862677497](https://github.com/Nilscost/Calisthenics-app/actions/runs/40862677497), source commit `fc6885d0`, passed connected tests and all three screenshot variants. The preserved `ui/kmp-phase0-final/results-*.txt` files contain 51 PASS results, zero FAIL/HOOKFAIL results and six retries (Train/Preview and Warm-up in each variant). The harness's existing single retry was used; this is not a claim that every first attempt passed. [Verification 40862600874](https://github.com/Nilscost/Calisthenics-app/actions/runs/40862600874) also passed.
+
+The final [visual review](ui/KMP-phase0-latest-review.md) includes the passing run's changed-flow screenshots in all variants and all light screenshots. Root spot-checked final Preview sheets in light, dark and font 1.3 and dark Session/end states. No blocking defect was found; enlarged-text wrapping and screenshot timing limitations remain recorded. Application, data, domain, content and media inputs are unchanged between the earlier reviewed APK source and `fc6885d0`; the final correction commit changes test flows, harness and evidence only.
+
+Coordinator approves Phase 0 based on the clean build/unit/lint results, 10 connected database tests, seeded signed install-over comparison, full passing screenshot gate and visual review. Tag `kmp-phase-0` records this boundary. The seeded upgrade comparison covers six preference files, not every named store; the Phase 2 preservation gate remains required. No owner phone testing is claimed.
