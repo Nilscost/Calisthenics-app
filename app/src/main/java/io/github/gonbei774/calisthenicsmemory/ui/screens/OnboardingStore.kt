@@ -1,10 +1,13 @@
-// First-run flag. Existing installs that already saved levels count as done so they never see the questionnaire again.
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import android.content.Context
+import app.calisthenics.data.settings.AndroidSettingsProvider
+import app.calisthenics.data.settings.OnboardingStore as Shared
+import app.calisthenics.domain.model.*
+import app.calisthenics.domain.routine.SavedRoutine
 
 object OnboardingStore {
-    private fun p(ctx: Context) = ctx.getSharedPreferences("onboarding", Context.MODE_PRIVATE)
-    fun done(ctx: Context): Boolean = p(ctx).getBoolean("done", false) || LevelStore.load(ctx).isNotEmpty()
-    fun setDone(ctx: Context, v: Boolean = true) { p(ctx).edit().putBoolean("done", v).apply() }
+ private fun provider(ctx: Context) = AndroidSettingsProvider(ctx)
+ fun done(ctx: Context) = Shared.done(provider(ctx))
+ fun setDone(ctx: Context, v: Boolean = true) = Shared.setDone(provider(ctx), v)
 }

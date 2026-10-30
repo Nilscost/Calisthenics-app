@@ -1,0 +1,73 @@
+> Task :domain:kmpPartiallyResolvedDependenciesChecker
+> Task :domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :domain:compileKotlinJvm UP-TO-DATE
+> Task :domain:compileJvmMainJava NO-SOURCE
+> Task :domain:jvmProcessResources NO-SOURCE
+> Task :domain:processJvmMainResources SKIPPED
+> Task :domain:jvmMainClasses UP-TO-DATE
+> Task :domain:jvmJar UP-TO-DATE
+> Task :data:androidJar UP-TO-DATE
+> Task :data:kmpPartiallyResolvedDependenciesChecker
+> Task :data:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :data:androidPreBuild UP-TO-DATE
+> Task :data:preAndroidMainBuild UP-TO-DATE
+> Task :data:generateAndroidMainEmptyResourceFiles UP-TO-DATE
+> Task :data:packageAndroidMainResources UP-TO-DATE
+> Task :data:parseAndroidMainLocalResources UP-TO-DATE
+> Task :data:generateAndroidMainRFile UP-TO-DATE
+> Task :data:kspAndroidMain UP-TO-DATE
+> Task :data:compileAndroidMain UP-TO-DATE
+> Task :data:bundleAndroidMainClassesToCompileJar UP-TO-DATE
+> Task :data:preAndroidDeviceTestBuild UP-TO-DATE
+> Task :data:generateAndroidDeviceTestResources
+> Task :data:packageAndroidDeviceTestResources
+> Task :data:processAndroidDeviceTestNavigationResources
+> Task :data:copyRoomSchemasToAndroidTestAssetsAndroidDeviceTest
+> Task :data:generateAndroidDeviceTestAssets UP-TO-DATE
+> Task :data:generateAndroidMainAssets UP-TO-DATE
+> Task :data:parseAndroidDeviceTestLocalResources
+> Task :data:mergeAndroidMainAssets UP-TO-DATE
+> Task :data:generateAndroidDeviceTestRFile
+> Task :data:mergeAndroidDeviceTestAssets
+> Task :data:kspAndroidDeviceTest
+> Task :data:copyRoomSchemas NO-SOURCE
+> Task :data:processAndroidDeviceTestJavaRes NO-SOURCE
+> Task :data:compressAndroidDeviceTestAssets
+> Task :data:processAndroidMainJavaRes UP-TO-DATE
+> Task :data:desugarAndroidDeviceTestFileDependencies
+> Task :data:bundleLibRuntimeToDirAndroidMain UP-TO-DATE
+> Task :data:writeAndroidMainAarMetadata UP-TO-DATE
+> Task :data:checkAndroidDeviceTestDuplicateClasses
+> Task :data:checkAndroidDeviceTestAarMetadata
+> Task :data:mergeAndroidDeviceTestJavaResource
+> Task :data:compileAndroidDeviceTest
+> Task :data:mapAndroidDeviceTestSourceSetPaths
+> Task :data:compileAndroidDeviceTestNavigationResources
+> Task :data:mapAndroidMainSourceSetPaths UP-TO-DATE
+> Task :data:compileAndroidMainLibraryResources UP-TO-DATE
+> Task :data:mergeLibDexAndroidDeviceTest
+> Task :data:processAndroidMainManifest UP-TO-DATE
+> Task :data:mergeAndroidDeviceTestResources
+> Task :data:processAndroidDeviceTestManifest
+> Task :data:mergeAndroidMainJniLibFolders UP-TO-DATE
+> Task :data:mergeAndroidMainNativeLibs NO-SOURCE
+> Task :data:copyAndroidMainJniLibsProjectOnly UP-TO-DATE
+> Task :data:mergeAndroidDeviceTestJniLibFolders
+> Task :data:mergeAndroidDeviceTestNativeLibs NO-SOURCE
+> Task :data:stripAndroidDeviceTestDebugSymbols NO-SOURCE
+> Task :data:validateSigningAndroidDeviceTest
+> Task :data:writeAndroidDeviceTestSigningConfigVersions
+> Task :data:processAndroidDeviceTestResources
+> Task :data:dexBuilderAndroidDeviceTest
+> Task :data:mergeProjectDexAndroidDeviceTest
+> Task :data:mergeExtDexAndroidDeviceTest
+> Task :data:packageAndroidDeviceTest
+> Task :data:createAndroidDeviceTestApkListingFileRedirect
+Starting 23 tests on persona(AVD) - 14
+Finished 23 tests on persona(AVD) - 14
+> Task :data:connectedAndroidDeviceTest
+> Task :data:connectedDebugAndroidTest
+
+BUILD SUCCESSFUL in 7s
+50 actionable tasks: 31 executed, 19 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.3.1/userguide/configuration_cache_enabling.html

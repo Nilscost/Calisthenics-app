@@ -284,25 +284,25 @@ class WorkoutSessionService : Service() {
         if (SessionBus.saveStatus.value != SaveStatus.NONE) return
         SessionBus.saving()
         try {
-            val db = AppDatabase.getDatabase(this)
+            val repository = app.calisthenics.data.history.RoomHistoryRepository(AppDatabase.getDatabase(this).historyDao())
             val planJson = json.encodeToString(WorkoutPlan.serializer(), s.plan)
             val blocks = s.plan.blocks.filter { it.type == BlockType.WORK || it.type == BlockType.STRETCH }.map { b ->
                 val ex = s.executions[b.id] ?: Execution.NOT_STARTED
-                BlockResultEntity(sessionId = s.sessionId, blockId = b.id,
+                app.calisthenics.data.history.BlockRow(sessionId = s.sessionId, blockId = b.id,
                     outcome = app.calisthenics.domain.history.outcomeOf(ex),
                     actualSeconds = ((s.activeMs[b.id] ?: 0L) / 1000L).toInt(), achievedValue = s.logged[b.id]?.reps)
             }
             // What the user logged during the workout becomes the first feedback revision of each exercise, in the same transaction.
             val now = System.currentTimeMillis()
             val feedback = rowLogsFrom(s.plan, s.logged).map { r ->
-                FeedbackRevisionEntity(sessionId = s.sessionId, variationId = r.variationId, revision = 1, rating = r.rating.name,
+                app.calisthenics.data.history.FeedbackRow(sessionId = s.sessionId, variationId = r.variationId, revision = 1, rating = r.rating.name,
                     discomfort = r.discomfort, assumedMet = false, createdAtEpochMs = now, actualReps = r.actualReps)
             }
             val status = if (s.phase == Phase.COMPLETED) "COMPLETED" else "PARTIAL_FINISHED"
             runBlocking {
-                db.historyDao().saveFinishedSession(
-                    PlanSnapshotEntity(s.plan.id, s.plan.createdAtEpochMs, s.plan.routineId, s.plan.routineRevision, s.plan.catalogVersion, s.plan.profileId, planJson),
-                    WorkoutSessionEntity(s.sessionId, s.plan.id, startedAt, SessionBus.endedAtEpochMs.takeIf { it > 0L } ?: System.currentTimeMillis(), status), blocks, feedback)
+                repository.saveFinishedSession(
+                    app.calisthenics.data.history.PlanRecord(s.plan.id, s.plan.createdAtEpochMs, s.plan.routineId, s.plan.routineRevision, s.plan.catalogVersion, s.plan.profileId, planJson),
+                    app.calisthenics.data.history.SessionRow(s.sessionId, s.plan.id, startedAt, SessionBus.endedAtEpochMs.takeIf { it > 0L } ?: System.currentTimeMillis(), status), blocks, feedback)
             }
             CheckpointStore.clear(this) // only after the session row is safely in Room
             SessionBus.saved = true

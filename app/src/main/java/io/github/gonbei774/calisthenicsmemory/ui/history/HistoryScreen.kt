@@ -233,9 +233,10 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
             val achieved = s.record.blocks.filter { it.outcome == "MET" || it.outcome == "PARTIAL" }.associate { it.blockId to it.achievedValue }
             if (details.isNotEmpty()) Text(stringResource(R.string.history_correct), style = MaterialTheme.typography.labelLarge)
             details.forEach { d ->
+                val plan = s.plan ?: return@forEach
                 val name = catalog?.variation(d.variationId)?.name ?: d.variationId
                 // V04b (R22): every round has its own number; a correction is saved as new revisions, the history stays append-only.
-                val rounds = effectiveRounds(s.plan!!, d.variationId, achieved, s.rows)
+                val rounds = effectiveRounds(plan, d.variationId, achieved, s.rows)
                 val tv = d.target?.value
                 Card(Modifier.fillMaxWidth().testTag("detail_${d.variationId}"), shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
@@ -244,7 +245,7 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
                             Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f).heightIn(min = 48.dp).wrapContentHeight(Alignment.CenterVertically).clickable { onOpenExercise(d.variationId) }.testTag("open_exercise_${d.variationId}"))
                         }
                         RoundEditor(
-                            d.target, rounds.map { EditorRound(it.blockId, it.round, it.side, it.value, it.corrected) }, sets = s.plan.format != app.calisthenics.domain.model.WorkoutFormat.CIRCUIT,
+                            d.target, rounds.map { EditorRound(it.blockId, it.round, it.side, it.value, it.corrected) }, sets = plan.format != app.calisthenics.domain.model.WorkoutFormat.CIRCUIT,
                             tooHard0 = rounds.any { it.rating == Rating.BELOW && !(it.value.let { v -> v != null && tv != null && v < tv }) },
                             tooEasy0 = rounds.any { it.rating == Rating.ABOVE }, pain0 = rounds.any { it.discomfort }, tag = "fix_${d.variationId}", alternating = d.alternating,
                         ) { list ->

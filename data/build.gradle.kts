@@ -1,76 +1,68 @@
-// :data — Android Room library (T03). Holds AppDatabase, entities, DAOs
-// (moved verbatim from upstream CalisthenicsMemory @ 045b8577, GPL-3.0).
-// Spec §1: Room entities/DAOs, migrations, repositories, backup adapters.
+// Common repositories/settings; Android retains the existing Room database and schema.
 plugins {
-    alias(libs.plugins.android.library)
+    kotlin("multiplatform")
+    id("com.android.kotlin.multiplatform.library")
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("androidx.room")
 }
 
-// Room's schema verifier (runs during KSP: kspDebugKotlin) loads sqlite-jdbc
-// natively. The default org.xerial:sqlite-jdbc does not ship a working
-// Linux/aarch64 native; 3.45.3.0 does. configureEach (not .all) so the force
-// reaches KSP-created configurations.
+// Keep the schema verifier's previously validated native SQLite runtime.
 configurations.configureEach {
-    resolutionStrategy {
-        force("org.xerial:sqlite-jdbc:3.45.3.0")
-    }
+    resolutionStrategy { force("org.xerial:sqlite-jdbc:3.45.3.0") }
 }
 
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-}
-
-android {
-    namespace = "io.github.gonbei774.calisthenicsmemory.data"
-    compileSdk = 35
-    defaultConfig {
-        minSdk = 26
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-    sourceSets {
-        // Exported schema JSON is committed and read by MigrationTestHelper.
-        getByName("androidTest").assets.srcDir("$projectDir/schemas")
-    }
-}
-
-dependencies {
-    // Room (same versions as upstream :app)
-    api("androidx.room:room-runtime:2.8.5")
-    api("androidx.room:room-ktx:2.8.5")
-    ksp("androidx.room:room-compiler:2.8.5")
-
-    // Coroutines Flow is part of the DAO surface.
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    // SavedWorkoutState / ProgramExecutionModels use kotlinx.serialization.
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-    implementation("androidx.core:core-ktx:1.15.0")
-
-    // Instrumented tests (DataLayerInstrumentedTest: on-device Room round-trip of
-    // the current v21 schema). The upstream-inherited MigrationTest was removed —
-    // it targeted Room v10 via MigrationTestHelper against schema JSON that does
-    // not exist (exportSchema = false), so it could never pass on-device.
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test:core:1.5.0")
-    androidTestImplementation("androidx.test:runner:1.6.1") // the test APK needs the runner class explicitly (CI connected job)
-    androidTestImplementation("androidx.room:room-testing:2.8.5")
-    androidTestImplementation("androidx.sqlite:sqlite-framework:2.4.0")
-}
-
-// NOTE (T03): a JVM Robolectric Room smoke test was attempted for :data but
-// removed — Robolectric's native SQLite runtime is not built for Linux/aarch64,
-// so it cannot run in this ARM64 sandbox (host limitation, not a code defect).
-// Room correctness is covered on-device by the instrumented MigrationTest (G5)
-// and by :domain's pure-JVM progression tests, which run anywhere.
-
+@OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
 kotlin {
-    compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    android {
+        namespace = "io.github.gonbei774.calisthenicsmemory.data"
+        compileSdk = 35
+        minSdk = 26
+        compilerOptions { jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17) }
+        withHostTestBuilder {}.configure {}
+        withDeviceTestBuilder { sourceSetTreeName = "test" }.configure {
+            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
+        androidResources { enable = true }
+    }
+    wasmJs { nodejs() }
+    sourceSets {
+        commonMain.dependencies {
+            api(project(":domain"))
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+            api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+            implementation("com.russhwolf:multiplatform-settings:1.3.0")
+        }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
+        }
+        androidMain.dependencies {
+            api("androidx.room:room-runtime:2.8.5")
+            api("androidx.room:room-ktx:2.8.5")
+            implementation("androidx.core:core-ktx:1.15.0")
+        }
+        named("androidDeviceTest") { dependencies {
+            implementation("androidx.test.ext:junit:1.2.1")
+            implementation("androidx.test:core:1.5.0")
+            implementation("androidx.test:runner:1.6.1")
+            implementation("androidx.room:room-testing:2.8.5")
+            implementation("androidx.sqlite:sqlite-framework:2.4.0")
+        } }
     }
 }
+
+dependencies { add("kspAndroid", "androidx.room:room-compiler:2.8.5") }
+room { schemaDirectory("$projectDir/schemas") }
+
+extensions.configure<com.android.build.api.variant.KotlinMultiplatformAndroidComponentsExtension> {
+    onVariants { variant ->
+        variant.deviceTests.values.forEach { test ->
+            test.sources.assets?.addStaticSourceDirectory("schemas")
+        }
+    }
+}
+
+// Preserve existing CI/local command entry points; these execute the new test tasks.
+tasks.register("testDebugUnitTest") { dependsOn("testAndroidHostTest") }
+tasks.register("connectedDebugAndroidTest") { dependsOn("connectedAndroidDeviceTest") }

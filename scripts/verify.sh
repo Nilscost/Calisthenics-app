@@ -14,8 +14,9 @@ step "Gradle wrapper and pinned runtime"
 ./gradlew --version --console=plain
 
 step "Domain JVM and WebAssembly, data and app unit tests"
-./gradlew :domain:jvmTest :domain:wasmJsNodeTest :data:testDebugUnitTest :app:testDebugUnitTest --console=plain
+./gradlew :domain:jvmTest :domain:wasmJsNodeTest :data:testDebugUnitTest :data:wasmJsNodeTest :app:testDebugUnitTest --console=plain
 python3 tools/check_kmp_test_parity.py
+python3 tools/check_app_test_preservation.py
 
 step "App lint and debug APK build"
 ./gradlew :app:lintDebug :app:assembleDebug --console=plain

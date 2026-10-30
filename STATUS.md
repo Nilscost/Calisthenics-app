@@ -2,7 +2,7 @@
 
 ## iPhone and web port resumed (2026-10-30)
 
-Work continues on `codex/kmp-port` under [the multiplatform plan](docs/41-multiplatform-port-plan.md), with Terra executors and coordinator review. Phases 0 and 1 are approved. All 616 original domain tests run on JVM and WebAssembly; 619 common tests, one additional JVM fixture test and all 290 app tests pass. Build/lint, connected database tests and signed install-over pass. Phase 1's final screenshot gate passed all 51 flows with one permitted retry; visual limitations are documented. Phase 2 storage work is next; Phases 3–5 remain pending. The iPhone deliverable is an installable web app; native iOS remains optional Phase 6. No new release APK or web URL is ready for owner testing.
+Work continues on `codex/kmp-port` under [the multiplatform plan](docs/41-multiplatform-port-plan.md), with Terra executors and coordinator review. Phases 0 and 1 are approved. All 616 original domain tests run on JVM and WebAssembly; 619 common tests, one additional JVM fixture test and all 290 app tests pass. Build/lint, connected database tests and signed install-over pass. Phase 1's final screenshot gate passed all 51 flows with one permitted retry; visual limitations are documented. Phase 2 storage interfaces and platform adapters are implemented; host and Chromium/WebKit storage contracts pass. Signed upgrade, device and full screenshot gates remain in progress; Phases 3–5 remain pending. The iPhone deliverable is an installable web app; native iOS remains optional Phase 6. No new release APK or web URL is ready for owner testing.
 
 [Execution evidence](docs/evidence/kmp-port.md) · [Latest screenshot review](docs/evidence/ui/KMP-phase1-review.md).
 

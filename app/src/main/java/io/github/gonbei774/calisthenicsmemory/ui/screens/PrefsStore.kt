@@ -1,20 +1,13 @@
-// Remembers ONLY the settings spec §3 says to remember (rememberOnStart), as JSON in app-private storage.
 package io.github.gonbei774.calisthenicsmemory.ui.screens
 
 import android.content.Context
-import app.calisthenics.domain.model.Preferences
-import kotlinx.serialization.json.Json
+import app.calisthenics.data.settings.AndroidSettingsProvider
+import app.calisthenics.data.settings.PrefsStore as Shared
+import app.calisthenics.domain.model.*
+import app.calisthenics.domain.routine.SavedRoutine
 
 object PrefsStore {
-    private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
-    fun load(ctx: Context): Preferences = try {
-        ctx.getSharedPreferences("planner_prefs", Context.MODE_PRIVATE).getString("prefs", null)
-            ?.let { json.decodeFromString(Preferences.serializer(), it).withClampedVolume() } ?: Preferences()
-    } catch (_: Exception) { Preferences() } // unreadable -> defaults, never crash
-    fun save(ctx: Context, p: Preferences) {
-        ctx.getSharedPreferences("planner_prefs", Context.MODE_PRIVATE).edit()
-            .putString("prefs", json.encodeToString(Preferences.serializer(), p.withClampedVolume())).apply()
-    }
-
-    private fun Preferences.withClampedVolume() = copy(appVolumePercent = appVolumePercent.coerceIn(0, 100))
+ private fun provider(ctx: Context) = AndroidSettingsProvider(ctx)
+ fun load(ctx: Context) = Shared.load(provider(ctx))
+ fun save(ctx: Context, p: Preferences) = Shared.save(provider(ctx), p)
 }

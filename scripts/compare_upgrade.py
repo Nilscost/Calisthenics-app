@@ -20,7 +20,7 @@ oldprefs, oldrows = snapshot(before); newprefs, newrows = snapshot(after)
 print('Preferences:', len(oldprefs), 'files identical:', oldprefs == newprefs)
 print('Database:', len(oldrows), 'tables identical:', oldrows == newrows)
 print('Seeded workout sessions:', oldrows.get('workout_sessions', (0,))[0])
-if oldprefs != newprefs or oldrows != newrows or oldrows.get('workout_sessions', (0,))[0] < 1:
+if oldprefs != newprefs or oldrows != newrows or oldrows.get('workout_sessions', (0,))[0] < 9:
     print('Changed preference files:', [k for k in sorted(set(oldprefs) | set(newprefs)) if oldprefs.get(k) != newprefs.get(k)])
     print('Changed tables:', [k for k in sorted(set(oldrows) | set(newrows)) if oldrows.get(k) != newrows.get(k)])
     sys.exit(1)

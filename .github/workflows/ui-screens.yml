@@ -102,5 +102,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: connected-reports-${{ github.sha }}
-          path: data/build/reports/androidTests
+          path: |
+            data/build/reports/androidTests
+            data/build/reports/androidDeviceTests
           if-no-files-found: warn

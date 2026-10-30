@@ -3,6 +3,8 @@ package io.github.gonbei774.calisthenicsmemory.ui
 import app.calisthenics.domain.backup.*
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.planner.*
+import app.calisthenics.domain.planner.PreviewDraft
+import app.calisthenics.domain.planner.draftKey
 import io.github.gonbei774.calisthenicsmemory.ui.screens.PreviewDraftBackupCodec
 import io.github.gonbei774.calisthenicsmemory.ui.train.*
 import org.junit.Assert.*
