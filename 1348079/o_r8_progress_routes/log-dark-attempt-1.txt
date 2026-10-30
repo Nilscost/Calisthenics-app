@@ -1,0 +1,60 @@
+Running on test
+ > Flow o_r8_progress_routes
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: bottom_bar is visible... COMPLETED
+Tap on id: tab_progress... COMPLETED
+Tap on id: progress_mode_type... COMPLETED
+Assert that id: all_progressions is visible... COMPLETED
+Run flow when "Default progressions" is visible...
+Run flow when "Default progressions" is visible... SKIPPED
+Take screenshot 01-default-progression-pool-${VARIANT}... COMPLETED
+Tap on id: all_progressions... COMPLETED
+Repeat while id: route_chip_pushup is not visible (up to 8 times)...
+Repeat while id: route_chip_pushup is not visible (up to 8 times)... SKIPPED
+Repeat while id: route_chip_pushup is not visible (up to 8 times)...
+Repeat while id: route_chip_pushup is not visible (up to 8 times)... SKIPPED
+Assert that id: route_chip_pushup is visible... COMPLETED
+Tap on id: route_chip_pushup... COMPLETED
+Repeat while id: tree_node_pushup-feet-elevated is not visible (up to 12 times)...
+  Swiping in UP direction on id: tree_rows at 50%, 75%... COMPLETED
+  Wait for animation to end within 1000 ms... COMPLETED
+Repeat while id: tree_node_pushup-feet-elevated is not visible (up to 12 times)... COMPLETED
+Repeat while id: tree_node_pushup-feet-elevated is not visible (up to 12 times)...
+  Swiping in DOWN direction on id: tree_rows at 50%, 25%... COMPLETED
+  Wait for animation to end within 1000 ms... COMPLETED
+Repeat while id: tree_node_pushup-feet-elevated is not visible (up to 12 times)... COMPLETED
+Assert that id: tree_node_pushup-feet-elevated is visible... COMPLETED
+Take screenshot 02-push-up-main-spine-${VARIANT}... COMPLETED
+Assert that id: tree_node_pushup-diamond is visible... COMPLETED
+Tap on id: tree_node_pushup-feet-elevated... COMPLETED
+Take screenshot 03-push-up-other-ways-${VARIANT}... COMPLETED
+Run flow when "Default progressions" is visible...
+  Tap on id: all_progressions... COMPLETED
+Run flow when "Default progressions" is visible... COMPLETED
+Tap on id: tab_chip_shoulders... COMPLETED
+Assert that id: route_chip_.* is visible... COMPLETED
+Take screenshot 04-category-handstand-${VARIANT}... COMPLETED
+Repeat while id: tab_chip_pilates is not visible (up to 12 times)...
+  Swiping in LEFT direction on id: progress_type_tabs at 85%, 50%... COMPLETED
+Repeat while id: tab_chip_pilates is not visible (up to 12 times)... COMPLETED
+Tap on id: tab_chip_pilates... COMPLETED
+Assert that id: tab_exercise_.* is visible... COMPLETED
+Take screenshot 05-category-pilates-${VARIANT}... COMPLETED
+Repeat while id: tab_chip_squat is not visible (up to 12 times)...
+  Swiping in RIGHT direction on id: progress_type_tabs at 15%, 50%... COMPLETED
+Repeat while id: tab_chip_squat is not visible (up to 12 times)... COMPLETED
+Tap on id: tab_chip_squat... COMPLETED
+Repeat while id: route_chip_jump is not visible (up to 8 times)...
+Repeat while id: route_chip_jump is not visible (up to 8 times)... SKIPPED
+Assert that id: route_chip_jump is visible... COMPLETED
+Take screenshot 06-category-squat-${VARIANT}... COMPLETED
+Repeat while id: tab_chip_warmup is not visible (up to 12 times)...
+  Swiping in LEFT direction on id: progress_type_tabs at 85%, 50%... COMPLETED
+Repeat while id: tab_chip_warmup is not visible (up to 12 times)... COMPLETED
+Tap on id: tab_chip_warmup... COMPLETED
+Assert that id: warmup_area_SHOULDER is visible... COMPLETED
+Take screenshot 07-category-warmup-${VARIANT}... COMPLETED

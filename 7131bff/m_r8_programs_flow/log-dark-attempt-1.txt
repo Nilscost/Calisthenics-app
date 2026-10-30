@@ -1,0 +1,52 @@
+Running on test
+ > Flow m_r8_programs_flow
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Run flow when id: session_pause is visible...
+Run flow when id: session_pause is visible... SKIPPED
+Run flow when id: end_done is visible...
+Run flow when id: end_done is visible... SKIPPED
+Assert that id: bottom_bar is visible... COMPLETED
+Tap on id: tab_train... COMPLETED
+Scrolling DOWN until id: objective_type_ROUTINE is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Tap on id: objective_type_ROUTINE... COMPLETED
+Tap on id: goal_field... COMPLETED
+Assert that "PROGRAMS" is visible... COMPLETED
+Assert that "MY ROUTINES" is visible... COMPLETED
+Take screenshot 01-programs-dropdown-${VARIANT}... COMPLETED
+Tap on "Army PRT session"... COMPLETED
+Scrolling DOWN until id: preview_button is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Take screenshot 01b-program-selected-${VARIANT}... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: program_title is visible... COMPLETED
+Assert that id: program_item_0 is visible... COMPLETED
+Take screenshot 02-program-preview-${VARIANT}... COMPLETED
+Scrolling DOWN until id: between_stretch is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Tap on id: between_stretch... COMPLETED
+Take screenshot 02a-program-stretch-${VARIANT}... COMPLETED
+Tap on id: between_flow... COMPLETED
+Take screenshot 02a2-program-flow-${VARIANT}... COMPLETED
+Scrolling DOWN until id: preparation_seconds_plus is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Take screenshot 02b-program-preview-controls-${VARIANT}... COMPLETED
+Scrolling DOWN until id: start_button is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Tap on id: start_button... COMPLETED
+Assert that id: session_pause is visible... COMPLETED
+Assert that id: session_time is visible... COMPLETED
+Assert that id: logger is not visible... COMPLETED
+Assert that id: logger_plus is not visible... COMPLETED
+Assert that id: logger_too_easy is not visible... COMPLETED
+Assert that id: session_done is not visible... COMPLETED
+Assert that id: session_skip is not visible... COMPLETED
+Take screenshot 03-flow-session-${VARIANT}... COMPLETED
+Tap on id: session_more... COMPLETED
+Tap on "End workout"... COMPLETED
+Tap on id: session_end_confirm... COMPLETED
+Assert that id: end_done is visible... COMPLETED
+Take screenshot 04-flow-end-screen-${VARIANT}... COMPLETED
+Tap on id: end_done... COMPLETED
+Assert that id: bottom_bar is visible... COMPLETED
+Scrolling UP until id: objective_type_BODY_PART is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Tap on id: objective_type_BODY_PART... COMPLETED

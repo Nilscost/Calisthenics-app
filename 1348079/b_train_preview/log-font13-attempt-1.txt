@@ -1,0 +1,281 @@
+Running on test
+ > Flow b_train_preview
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Take screenshot 01-train-${VARIANT}... COMPLETED
+Scrolling DOWN until id: between_flow is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Tap on id: between_flow... COMPLETED
+Take screenshot 01a-between-flow-${VARIANT}... COMPLETED
+Tap on id: between_stretch... COMPLETED
+Scrolling DOWN until id: exercises_plus is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Take screenshot 01b-train-exercises-${VARIANT}... COMPLETED
+Tap on id: exercises_plus... COMPLETED
+Scrolling DOWN until id: cooldown_switch is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering enabled... COMPLETED
+Run flow when id: cooldown_mode_STRETCHING is not visible...
+  Tap on id: cooldown_switch... COMPLETED
+Run flow when id: cooldown_mode_STRETCHING is not visible... COMPLETED
+Assert that id: cooldown_mode_STRETCHING is visible... COMPLETED
+Take screenshot 01c-train-cooldown-${VARIANT}... COMPLETED
+Scrolling UP until id: warmup_switch is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering enabled... COMPLETED
+Run flow when id: warmup_switch is not visible...
+  Tap on id: warmup_switch... COMPLETED
+Run flow when id: warmup_switch is not visible... COMPLETED
+Run flow when id: conditioning_switch is not visible...
+  Tap on id: conditioning_switch... COMPLETED
+Run flow when id: conditioning_switch is not visible... COMPLETED
+Take screenshot 01d-train-include-${VARIANT}... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Take screenshot 02-preview-${VARIANT}... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: between_flow is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: between_flow is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: between_flow... COMPLETED
+Take screenshot 02-preview-flow-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Take screenshot 02-train-after-preview-mode-${VARIANT}... COMPLETED
+Tap on id: preview_button... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: between_stretch is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: between_stretch is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: between_stretch... COMPLETED
+Take screenshot 02-preview-stretch-${VARIANT}... COMPLETED
+Scrolling DOWN until id: conditioning_caption is visible with speed 25, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Take screenshot 02-preview-included-blocks-${VARIANT}... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: preview_format_PAIRS is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_format_PAIRS is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... WARNED
+  Run flow when id: all_sets_header is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+    Scrolling DOWN until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: all_sets_header is not visible... COMPLETED
+Run ../common/reveal.yaml... COMPLETED
+Assert that id: all_sets_header is visible... COMPLETED
+Assert that id: set_tab_2 is not visible... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: preview_format_PAIRS is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_format_PAIRS is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Take screenshot 02a-preview-format-${VARIANT}... COMPLETED
+Tap on id: preview_format_PAIRS... COMPLETED
+Assert that id: preview_flow_switch is not visible... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preparation_seconds_plus is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preparation_seconds_plus is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: preparation_seconds_plus... COMPLETED
+Take screenshot 02a2-preview-preparation-${VARIANT}... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... WARNED
+  Run flow when id: all_sets_header is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+    Scrolling DOWN until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: all_sets_header is not visible... COMPLETED
+Run ../common/reveal.yaml... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... WARNED
+  Run flow when id: level_plus_.* is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+    Scrolling DOWN until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: level_plus_.* is not visible... COMPLETED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: level_plus_.*, Index: 0... COMPLETED
+Take screenshot 02b-preview-level-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_format_PAIRS is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: preview_format_PAIRS is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Assert that id: preview_format_PAIRS is visible... COMPLETED
+Take screenshot 02b2-preview-back-again-${VARIANT}... COMPLETED
+Tap on id: preview_format_CIRCUIT... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... WARNED
+  Run flow when id: all_sets_header is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+    Scrolling DOWN until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: all_sets_header is not visible... COMPLETED
+Run ../common/reveal.yaml... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... WARNED
+  Run flow when id: add_after_.* is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+    Scrolling DOWN until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: add_after_.* is not visible... COMPLETED
+Run ../common/reveal.yaml... COMPLETED
+Scrolling DOWN until id: add_after_.*, Index: 0 is visible with speed 40, visibility percentage 100%, timeout 12000 ms, with centering enabled... COMPLETED
+Wait for animation to end... COMPLETED
+Tap on id: add_after_.*, Index: 0... COMPLETED
+Assert that "Add to the workout" is visible... COMPLETED
+Take screenshot 02c-add-sheet-${VARIANT}... COMPLETED
+Tap on "Push"... COMPLETED
+Take screenshot 02c2-add-sheet-push-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: rule_REP_RANGE is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: rule_REP_RANGE is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: rule_REP_RANGE... COMPLETED
+Take screenshot 02e-rule-rep-range-${VARIANT}... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: rule_APP_LEVELS is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: rule_APP_LEVELS is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: rule_APP_LEVELS... COMPLETED
+Scrolling DOWN until id: cooldown_caption is visible with speed 20, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Take screenshot 02f-preview-cooldown-${VARIANT}... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: cooldown_remove_0 is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: cooldown_remove_0 is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: cooldown_remove_0... COMPLETED
+Take screenshot 02g-cooldown-removed-${VARIANT}... COMPLETED
+Scrolling DOWN until id: cooldown_add is visible with speed 40, visibility percentage 100%, timeout 12000 ms, with centering enabled... COMPLETED
+Tap on id: cooldown_add... COMPLETED
+Assert that "Cool-down stretch" is visible... COMPLETED
+Take screenshot 02h-cooldown-add-sheet-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Scrolling DOWN until id: timeline_toggle is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Take screenshot 03-preview-bottom-${VARIANT}... COMPLETED
+Tap on id: timeline_toggle... COMPLETED
+Scrolling DOWN until id: round_badge_.*_s2 is visible with speed 70, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+Take screenshot 04-timeline-${VARIANT}... COMPLETED
+Scrolling UP until id: swap_.*, Index: 0 is visible with speed 40, visibility percentage 100%, timeout 30000 ms, with centering enabled... COMPLETED
+Wait for animation to end within 1000 ms... COMPLETED
+Tap on id: swap_.*, Index: 0... COMPLETED
+Assert that "Swap this exercise" is visible... COMPLETED
+Take screenshot 05-swap-sheet-${VARIANT}... COMPLETED
+Repeat while id: swap_other_types is not visible (up to 24 times)...
+  Swiping in UP direction on id: swap_sheet_body at 50%, 80%... COMPLETED
+Repeat while id: swap_other_types is not visible (up to 24 times)... COMPLETED
+Swiping in UP direction on id: swap_sheet_body at 50%, 80%... COMPLETED
+Wait for animation to end... COMPLETED
+Tap on id: swap_other_types... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: swap_same_family_caption is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: swap_same_family_caption is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Assert that "Same family.*" is visible... COMPLETED
+Take screenshot 05b-swap-other-types-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Press back... COMPLETED
+2026-10-29T19:26:27.498282589Z Thread-5 ERROR Attempted to append to non-started appender File
+2026-10-29T19:26:27.499617927Z Thread-5 ERROR Unable to write to stream /home/runner/work/_temp/shots/b_train_preview/debug-font13-attempt-1/maestro.log for appender File
+org.apache.logging.log4j.core.appender.AppenderLoggingException: Error writing to stream /home/runner/work/_temp/shots/b_train_preview/debug-font13-attempt-1/maestro.log
+	at org.apache.logging.log4j.core.appender.OutputStreamManager.writeToDestination(OutputStreamManager.java:265)
+	at org.apache.logging.log4j.core.appender.FileManager.writeToDestination(FileManager.java:335)
+	at org.apache.logging.log4j.core.appender.OutputStreamManager.flushBuffer(OutputStreamManager.java:296)
+	at org.apache.logging.log4j.core.appender.OutputStreamManager.flush(OutputStreamManager.java:307)
+	at org.apache.logging.log4j.core.appender.AbstractOutputStreamAppender.directEncodeEvent(AbstractOutputStreamAppender.java:229)
+	at org.apache.logging.log4j.core.appender.AbstractOutputStreamAppender.tryAppend(AbstractOutputStreamAppender.java:220)
+	at org.apache.logging.log4j.core.appender.AbstractOutputStreamAppender.append(AbstractOutputStreamAppender.java:211)
+	at org.apache.logging.log4j.core.config.AppenderControl.tryCallAppender(AppenderControl.java:160)
+	at org.apache.logging.log4j.core.config.AppenderControl.callAppender0(AppenderControl.java:133)
+	at org.apache.logging.log4j.core.config.AppenderControl.callAppenderPreventRecursion(AppenderControl.java:124)
+	at org.apache.logging.log4j.core.config.AppenderControl.callAppender(AppenderControl.java:88)
+	at org.apache.logging.log4j.core.config.LoggerConfig.callAppenders(LoggerConfig.java:711)
+	at org.apache.logging.log4j.core.config.LoggerConfig.processLogEvent(LoggerConfig.java:669)
+	at org.apache.logging.log4j.core.config.LoggerConfig.log(LoggerConfig.java:645)
+	at org.apache.logging.log4j.core.config.LoggerConfig.logParent(LoggerConfig.java:702)
+	at org.apache.logging.log4j.core.config.LoggerConfig.processLogEvent(LoggerConfig.java:671)
+	at org.apache.logging.log4j.core.config.LoggerConfig.log(LoggerConfig.java:645)
+	at org.apache.logging.log4j.core.config.LoggerConfig.log(LoggerConfig.java:589)
+	at org.apache.logging.log4j.core.config.DefaultReliabilityStrategy.log(DefaultReliabilityStrategy.java:73)
+	at org.apache.logging.log4j.core.Logger.log(Logger.java:187)
+	at org.apache.logging.log4j.spi.AbstractLogger.tryLogMessage(AbstractLogger.java:2970)
+	at org.apache.logging.log4j.spi.AbstractLogger.logMessageTrackRecursion(AbstractLogger.java:2922)
+	at org.apache.logging.log4j.spi.AbstractLogger.logMessageSafely(AbstractLogger.java:2904)
+	at org.apache.logging.log4j.spi.AbstractLogger.logMessage(AbstractLogger.java:2653)
+	at org.apache.logging.log4j.spi.AbstractLogger.logIfEnabled(AbstractLogger.java:2393)
+	at org.apache.logging.slf4j.Log4jLogger.info(Log4jLogger.java:173)
+	at maestro.drivers.AndroidDriver.close(AndroidDriver.kt:180)
+	at maestro.Maestro.close(Maestro.kt:602)
+	at maestro.cli.session.MaestroSessionManager$MaestroSession.close(MaestroSessionManager.kt:471)
+	at maestro.cli.session.MaestroSessionManager.newSession$lambda$2(MaestroSessionManager.kt:129)
+	at kotlin.concurrent.ThreadsKt$thread$thread$1.run(Thread.kt:30)
+Caused by: java.io.IOException: Stream Closed
+	at java.base/java.io.FileOutputStream.writeBytes(Native Method)
+	at java.base/java.io.FileOutputStream.write(FileOutputStream.java:367)
+	at org.apache.logging.log4j.core.appender.OutputStreamManager.writeToDestination(OutputStreamManager.java:263)
+	... 30 more
+
+2026-10-29T19:26:27.500236103Z Thread-5 ERROR An exception occurred processing Appender File
+org.apache.logging.log4j.core.appender.AppenderLoggingException: Error writing to stream /home/runner/work/_temp/shots/b_train_preview/debug-font13-attempt-1/maestro.log
+	at org.apache.logging.log4j.core.appender.OutputStreamManager.writeToDestination(OutputStreamManager.java:265)
+	at org.apache.logging.log4j.core.appender.FileManager.writeToDestination(FileManager.java:335)
+	at org.apache.logging.log4j.core.appender.OutputStreamManager.flushBuffer(OutputStreamManager.java:296)
+	at org.apache.logging.log4j.core.appender.OutputStreamManager.flush(OutputStreamManager.java:307)
+	at org.apache.logging.log4j.core.appender.AbstractOutputStreamAppender.directEncodeEvent(AbstractOutputStreamAppender.java:229)
+	at org.apache.logging.log4j.core.appender.AbstractOutputStreamAppender.tryAppend(AbstractOutputStreamAppender.java:220)
+	at org.apache.logging.log4j.core.appender.AbstractOutputStreamAppender.append(AbstractOutputStreamAppender.java:211)
+	at org.apache.logging.log4j.core.config.AppenderControl.tryCallAppender(AppenderControl.java:160)
+	at org.apache.logging.log4j.core.config.AppenderControl.callAppender0(AppenderControl.java:133)
+	at org.apache.logging.log4j.core.config.AppenderControl.callAppenderPreventRecursion(AppenderControl.java:124)
+	at org.apache.logging.log4j.core.config.AppenderControl.callAppender(AppenderControl.java:88)
+	at org.apache.logging.log4j.core.config.LoggerConfig.callAppenders(LoggerConfig.java:711)
+	at org.apache.logging.log4j.core.config.LoggerConfig.processLogEvent(LoggerConfig.java:669)
+	at org.apache.logging.log4j.core.config.LoggerConfig.log(LoggerConfig.java:645)
+	at org.apache.logging.log4j.core.config.LoggerConfig.logParent(LoggerConfig.java:702)
+	at org.apache.logging.log4j.core.config.LoggerConfig.processLogEvent(LoggerConfig.java:671)
+	at org.apache.logging.log4j.core.config.LoggerConfig.log(LoggerConfig.java:645)
+	at org.apache.logging.log4j.core.config.LoggerConfig.log(LoggerConfig.java:589)
+	at org.apache.logging.log4j.core.config.DefaultReliabilityStrategy.log(DefaultReliabilityStrategy.java:73)
+	at org.apache.logging.log4j.core.Logger.log(Logger.java:187)
+	at org.apache.logging.log4j.spi.AbstractLogger.tryLogMessage(AbstractLogger.java:2970)
+	at org.apache.logging.log4j.spi.AbstractLogger.logMessageTrackRecursion(AbstractLogger.java:2922)
+	at org.apache.logging.log4j.spi.AbstractLogger.logMessageSafely(AbstractLogger.java:2904)
+	at org.apache.logging.log4j.spi.AbstractLogger.logMessage(AbstractLogger.java:2653)
+	at org.apache.logging.log4j.spi.AbstractLogger.logIfEnabled(AbstractLogger.java:2393)
+	at org.apache.logging.slf4j.Log4jLogger.info(Log4jLogger.java:173)
+	at maestro.drivers.AndroidDriver.close(AndroidDriver.kt:180)
+	at maestro.Maestro.close(Maestro.kt:602)
+	at maestro.cli.session.MaestroSessionManager$MaestroSession.close(MaestroSessionManager.kt:471)
+	at maestro.cli.session.MaestroSessionManager.newSession$lambda$2(MaestroSessionManager.kt:129)
+	at kotlin.concurrent.ThreadsKt$thread$thread$1.run(Thread.kt:30)
+Caused by: java.io.IOException: Stream Closed
+	at java.base/java.io.FileOutputStream.writeBytes(Native Method)
+	at java.base/java.io.FileOutputStream.write(FileOutputStream.java:367)
+	at org.apache.logging.log4j.core.appender.OutputStreamManager.writeToDestination(OutputStreamManager.java:263)
+	... 30 more
+

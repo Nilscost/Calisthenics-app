@@ -1,0 +1,106 @@
+Running on test
+ > Flow e_seeded
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: bottom_bar is visible... COMPLETED
+Tap on id: tab_history... COMPLETED
+Assert that id: session_.* is visible... COMPLETED
+Take screenshot 01-history-list-${VARIANT}... COMPLETED
+Scrolling DOWN until id: progression_.* is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Take screenshot 01b-history-progressions-${VARIANT}... COMPLETED
+Tap on (Optional) id: progression_.*, Index: 0... COMPLETED
+Take screenshot 01c-history-chart-${VARIANT}... COMPLETED
+Scrolling UP until id: history_title is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Tap on id: session_.*, Index: 0... COMPLETED
+Assert that id: detail_title is visible... COMPLETED
+Take screenshot 02-history-detail-${VARIANT}... COMPLETED
+Scrolling DOWN until id: fix_.*_too_easy, Index: 3 is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... WARNED
+
+
+ Warning: No visible element found: id: fix_.*_too_easy, Index: 3
+Take screenshot 03-history-detail-lower-${VARIANT}... COMPLETED
+Press back... COMPLETED
+Tap on id: tab_progress... COMPLETED
+Assert that id: tree_area is visible... COMPLETED
+Take screenshot 04-progress-push-${VARIANT}... COMPLETED
+Repeat while id: suggestion_card is visible (up to 6 times)...
+Repeat while id: suggestion_card is visible (up to 6 times)... SKIPPED
+Tap on id: tab_chip_pull... COMPLETED
+Take screenshot 04b-progress-pull-${VARIANT}... COMPLETED
+Repeat while id: tab_chip_squat is not visible (up to 4 times)...
+Repeat while id: tab_chip_squat is not visible (up to 4 times)... SKIPPED
+Tap on id: tab_chip_squat... COMPLETED
+Take screenshot 05-progress-squat-${VARIANT}... COMPLETED
+Repeat while id: tab_chip_hips is not visible (up to 4 times)...
+Repeat while id: tab_chip_hips is not visible (up to 4 times)... SKIPPED
+Tap on id: tab_chip_hips... COMPLETED
+Take screenshot 06-progress-hips-${VARIANT}... COMPLETED
+Tap on id: progress_search... COMPLETED
+Input text Kettlebell Deadlift... COMPLETED
+Hide Keyboard... COMPLETED
+Assert that id: search_result_kettlebell-deadlift is visible... COMPLETED
+Take screenshot 07-kettlebell-search-${VARIANT}... COMPLETED
+Tap on id: search_result_kettlebell-deadlift... COMPLETED
+Assert that id: exercise_detail is visible... COMPLETED
+Take screenshot 07b-kettlebell-detail-${VARIANT}... COMPLETED
+Scrolling DOWN until id: weight_step_.* is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Take screenshot 07c-kettlebell-weights-${VARIANT}... COMPLETED
+Tap on id: detail_back... COMPLETED
+Tap on id: progress_search... COMPLETED
+Erase 100 characters... COMPLETED
+Hide Keyboard... COMPLETED
+Repeat while id: tab_chip_core is not visible (up to 5 times)...
+  Swiping in LEFT direction on id: progress_type_tabs at 90%, 50%... COMPLETED
+Repeat while id: tab_chip_core is not visible (up to 5 times)... COMPLETED
+Tap on id: tab_chip_core... COMPLETED
+Take screenshot 07d-progress-core-${VARIANT}... COMPLETED
+Repeat while id: tab_chip_squat is not visible (up to 6 times)...
+Repeat while id: tab_chip_squat is not visible (up to 6 times)... SKIPPED
+Tap on id: tab_chip_squat... COMPLETED
+Take screenshot 07e-progress-squat-weighted-${VARIANT}... COMPLETED
+Repeat while id: tab_chip_push is not visible (up to 6 times)...
+  Swiping in RIGHT direction on id: progress_type_tabs at 10%, 50%... COMPLETED
+Repeat while id: tab_chip_push is not visible (up to 6 times)... COMPLETED
+Tap on id: tab_chip_push... COMPLETED
+Run flow when "All progressions" is visible...
+  Tap on id: all_progressions... COMPLETED
+Run flow when "All progressions" is visible... COMPLETED
+Repeat while id: route_chip_planche is not visible (up to 8 times)...
+  Swiping in LEFT direction on id: progress_route_tabs at 90%, 50%... COMPLETED
+Repeat while id: route_chip_planche is not visible (up to 8 times)... COMPLETED
+Repeat while id: route_chip_planche is not visible (up to 8 times)...
+Repeat while id: route_chip_planche is not visible (up to 8 times)... SKIPPED
+Tap on id: route_chip_planche... COMPLETED
+Repeat while id: tree_node_planche-lean is not visible (up to 8 times)...
+Repeat while id: tree_node_planche-lean is not visible (up to 8 times)... SKIPPED
+Take screenshot 07f-progress-push-planche-note-${VARIANT}... COMPLETED
+Assert that id: tree_node_planche-lean is visible... COMPLETED
+Tap on id: tree_node_planche-lean... COMPLETED
+Tap on id: panel_open_detail... COMPLETED
+Assert that id: detail_edit is visible... COMPLETED
+Tap on id: detail_edit... COMPLETED
+Take screenshot 07g-detail-edit-${VARIANT}... COMPLETED
+Tap on id: detail_back... COMPLETED
+Repeat while id: tab_chip_row is not visible (up to 6 times)...
+Repeat while id: tab_chip_row is not visible (up to 6 times)... SKIPPED
+Tap on id: tab_chip_row... COMPLETED
+Take screenshot 07f-progress-row-${VARIANT}... COMPLETED
+Repeat while id: tab_chip_calves is not visible (up to 8 times)...
+  Swiping in LEFT direction on id: progress_type_tabs at 90%, 50%... COMPLETED
+Repeat while id: tab_chip_calves is not visible (up to 8 times)... COMPLETED
+Tap on id: tab_chip_calves... COMPLETED
+Take screenshot 07g-progress-lower-legs-${VARIANT}... COMPLETED
+Repeat while id: tab_chip_stretches is not visible (up to 5 times)...
+  Swiping in LEFT direction on id: progress_type_tabs at 90%, 50%... COMPLETED
+Repeat while id: tab_chip_stretches is not visible (up to 5 times)... COMPLETED
+Tap on id: tab_chip_stretches... COMPLETED
+Assert that id: stretch_stretch-calf-wall is visible... COMPLETED
+Take screenshot 08-stretch-list-${VARIANT}... COMPLETED
+Scrolling DOWN until id: stretch_stretch-thoracic is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Take screenshot 09-stretch-list-bottom-${VARIANT}... COMPLETED
+Tap on id: stretch_stretch-thoracic... COMPLETED
+Assert that "Thoracic Rotation.*" is visible... COMPLETED
+Take screenshot 10-stretch-sheet-${VARIANT}... COMPLETED
