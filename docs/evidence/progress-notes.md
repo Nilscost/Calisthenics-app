@@ -1053,3 +1053,10 @@ Verification: fresh-checkout working-source overlay, 539 domain + 252 app tests 
 NOT done: actual phone audibility/music/Bluetooth, untouched timeout/manual locking, device upgrade/recovery, screenshot review and owner acceptance. No device/emulator/Maestro was available. No commit/push/CI publication. Content DRAFT.
 
 Choices: immutable effective policy snapshots prevent retrospective reclassification; unknown version-0 ordinary draft rules reset once while unrelated edits survive; saved rules stay exact. Conservative same-rung N−1 inference follows the owner’s in-session clarification, applies to compatible untried choices, and transfers no achievements. The new Activity lifecycle test uses the production binding on a plain Activity to avoid navigation/recomposer contamination. Save configuration is checked through the production resolver and persistence; dialog appearance remains a visual/device check.
+
+
+## KMP Phases 0–1 — 2026-10-29–30
+
+Phase 0 upgraded the Android toolchain, preserved the Room v24 schema and passed 616 domain, 290 app and 10 connected database tests, signed install-over and all 51 screenshot flows. The accepted screenshot run used six permitted retries. Phase 1 moved domain logic/tests to common code, retained all 616 original identities on JVM and Wasm, pinned backup hashes, and passed 619 common tests plus one JVM disk check, the app/build/lint/content gates and install-over. Final CI on `1348079d` passed all 51 flows with one permitted retry; visual review scores are at least 3/5. Evidence and exact run URLs: [kmp-port.md](kmp-port.md), [Phase 1 visual review](ui/KMP-phase1-review.md).
+
+Choices: Room 2.8.5 was brought into Phase 0 for KSP2 compatibility; common crypto and explicit date conversions preserve the existing wire/locale boundaries. Node/npm are provisioned and locked; test parity detects omissions. Harness repairs preserve failed setup diagnostics and require fresh named screenshots. No owner phone test, native iOS build or web release is claimed. Phases 2–5 remain required.
