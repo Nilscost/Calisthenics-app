@@ -36,23 +36,23 @@ import java.util.concurrent.TimeUnit
 
 class WorkoutSessionService : Service() {
     companion object {
-        const val ACTION_START = "wss.START"
-        const val ACTION_PAUSE = "wss.PAUSE"
-        const val ACTION_RESUME = "wss.RESUME"
-        const val ACTION_SKIP = "wss.SKIP"
-        const val ACTION_FINISH = "wss.FINISH"
-        const val ACTION_DONE = "wss.DONE"
-        const val ACTION_LOG = "wss.LOG"
-        const val EXTRA_BLOCK_ID = "block_id"
-        const val EXTRA_REPS = "reps"      // -1 = not typed
-        const val EXTRA_TOO_HARD = "too_hard"
-        const val EXTRA_PAIN = "pain"
-        const val EXTRA_TOO_EASY = "too_easy"
-        const val ACTION_RECOVER = "wss.RECOVER"
-        const val EXTRA_RESUME = "resume"
-        const val EXTRA_PLAN = "plan_json"
-        const val EXTRA_SESSION_ID = "session_id"
-        const val EXTRA_SPEAK = "speak"
+        const val ACTION_START = SessionServiceContract.ACTION_START
+        const val ACTION_PAUSE = SessionServiceContract.ACTION_PAUSE
+        const val ACTION_RESUME = SessionServiceContract.ACTION_RESUME
+        const val ACTION_SKIP = SessionServiceContract.ACTION_SKIP
+        const val ACTION_FINISH = SessionServiceContract.ACTION_FINISH
+        const val ACTION_DONE = SessionServiceContract.ACTION_DONE
+        const val ACTION_LOG = SessionServiceContract.ACTION_LOG
+        const val EXTRA_BLOCK_ID = SessionServiceContract.EXTRA_BLOCK_ID
+        const val EXTRA_REPS = SessionServiceContract.EXTRA_REPS
+        const val EXTRA_TOO_HARD = SessionServiceContract.EXTRA_TOO_HARD
+        const val EXTRA_PAIN = SessionServiceContract.EXTRA_PAIN
+        const val EXTRA_TOO_EASY = SessionServiceContract.EXTRA_TOO_EASY
+        const val ACTION_RECOVER = SessionServiceContract.ACTION_RECOVER
+        const val EXTRA_RESUME = SessionServiceContract.EXTRA_RESUME
+        const val EXTRA_PLAN = SessionServiceContract.EXTRA_PLAN
+        const val EXTRA_SESSION_ID = SessionServiceContract.EXTRA_SESSION_ID
+        const val EXTRA_SPEAK = SessionServiceContract.EXTRA_SPEAK
         private const val CHANNEL = "workout_session"
         private const val NOTIF = 201
         private const val TICK_MS = 200L
