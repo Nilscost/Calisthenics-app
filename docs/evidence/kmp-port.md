@@ -151,3 +151,7 @@ The fixture now selects the specific first-round squat slot, whose tab has equip
 **Gates:** `scripts/verify.sh` exit 0 (app 290 tests, 0 failures; domain/data counts unchanged, parity checkers pass).
 
 **CI on `4c7b2978`:** [verify 41353700136](https://github.com/Nilscost/Calisthenics-app/actions/runs/41353700136) passed, including the new `web-smoke` job (WebKit and Chromium; screenshots uploaded as artifact `web-smoke-<sha>`) and browser-storage. [ui-screens 41353722799](https://github.com/Nilscost/Calisthenics-app/actions/runs/41353722799) passed (connected, light, dark, font 1.3; run needed for the `strings.xml` quote fix). No owner phone test is claimed.
+
+### Phase 3 acceptance — 2026-11-02
+
+Coordinator reviewed 3a–3c: CI verify and ui-screens passed on each code commit (latest verify [41353700136](https://github.com/Nilscost/Calisthenics-app/actions/runs/41353700136) incl. `web-smoke`, ui-screens [41353722799](https://github.com/Nilscost/Calisthenics-app/actions/runs/41353722799)). Coordinator opened Phase 3b light End/Progress/History against Phase 3a (unchanged) and the WebKit Train and Round preview captures (fonts, colours, icons, strings correct). The `\'` escape defect introduced in 3b was fixed in 3c. Known gaps carried into Phase 4: web session runner, clips, thumbnails, cues, back handler, backup files; smoke test drives the canvas by coordinates. Tag `kmp-phase-3`. No owner phone test is claimed.
