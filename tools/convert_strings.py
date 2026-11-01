@@ -6,8 +6,8 @@ Reads every app/src/main/res/values/*.xml that declares <string> or <plurals>
 shared/src/commonMain/composeResources/values/strings.xml with the same names,
 in source order.
 
-Text is copied verbatim: Compose Multiplatform uses the Android escape rules
-(\\' \\" \\n \\\\ \\uXXXX, &amp; &lt;) and the same %1$s / %1$d placeholders; Android's %% is converted to a plain % because Compose resources do not collapse it
+Text is copied verbatim except quotes: Compose Multiplatform uses the Android escape rules
+(\\n \\\\ \\uXXXX, &amp; &lt;) and the same %1$s / %1$d placeholders; Android's %% is converted to a plain % because Compose resources do not collapse it
 placeholders, so no rewriting is needed. Duplicate names, unsupported elements
 (string-array, items other than one/other plurals) and a non-matching output
 all fail loudly.
@@ -30,7 +30,8 @@ QUANTITIES = {"zero", "one", "two", "few", "many", "other"}
 def text_of(el):
     if len(el):
         raise SystemExit(f"{el.get('name')}: nested markup is not supported")
-    return el.text or ""
+    # Compose resources do not unescape \' and \" (the web build showed "don\'t"); plain quotes are valid in XML text.
+    return (el.text or "").replace("\\'", "'").replace('\\"', '"')
 
 
 def convert():
