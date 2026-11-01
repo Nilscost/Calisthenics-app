@@ -3,8 +3,8 @@ package io.github.gonbei774.calisthenicsmemory.ui.components
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
+import io.github.gonbei774.calisthenicsmemory.ui.icons.Icons
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.animation.core.Animatable

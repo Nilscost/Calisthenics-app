@@ -13,11 +13,11 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Star
+import io.github.gonbei774.calisthenicsmemory.ui.icons.Icons
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.DateRange
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.PlayArrow
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.Settings
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem

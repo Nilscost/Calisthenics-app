@@ -1,19 +1,9 @@
 package io.github.gonbei774.calisthenicsmemory.ui.theme
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
-import android.os.Build
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -21,7 +11,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 
 // Fixed palette, no dynamic colour. Ultramarine is the action accent; gold remains reserved for stars.
 private val DarkFallback = darkColorScheme(
@@ -76,21 +65,15 @@ fun CalisthenicsMemoryTheme(
     dynamicColor: Boolean = false, // doc 17: dynamic colour is off; the parameter stays so old callers compile
     content: @Composable () -> Unit,
 ) {
-    val ctx = LocalContext.current
-    val dynamic: ColorScheme? = null // never used: the palette is fixed (doc 17)
     val accent = if (darkTheme) DarkAccent else LightAccent
-    val scheme = appColorScheme(darkTheme, dynamic)
+    val scheme = appColorScheme(darkTheme)
     // V01 (V00 defect): the status bar follows the app theme (it stayed grey in dark mode). Icons are dark on a light bar.
-    val view = LocalView.current
-    if (!view.isInEditMode) SideEffect {
-        var c: Context = view.context
-        while (c is ContextWrapper && c !is Activity) c = c.baseContext
-        (c as? Activity)?.window?.let { w ->
-            @Suppress("DEPRECATION") w.statusBarColor = scheme.background.toArgb()
-            WindowCompat.getInsetsController(w, view).isAppearanceLightStatusBars = !darkTheme
-        }
-    }
+    PlatformThemeEffect(darkTheme, scheme.background)
     CompositionLocalProvider(LocalAppAccent provides accent) {
         MaterialTheme(colorScheme = scheme, typography = AppTypography, shapes = AppShapes, content = content)
     }
 }
+
+/** Platform chrome that follows the theme (Android: status bar colour and icon contrast; web: nothing yet). */
+@Composable
+internal expect fun PlatformThemeEffect(darkTheme: Boolean, background: Color)

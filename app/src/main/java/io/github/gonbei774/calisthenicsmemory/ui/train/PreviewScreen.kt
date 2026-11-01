@@ -8,7 +8,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.onLongClick
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.material.icons.filled.Add
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.Add
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -30,12 +30,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.Refresh
+import io.github.gonbei774.calisthenicsmemory.ui.icons.Icons
+import io.github.gonbei774.calisthenicsmemory.ui.icons.automirrored.filled.ArrowBack
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.Close
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.Info
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.KeyboardArrowDown
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import io.github.gonbei774.calisthenicsmemory.session.SessionBus
@@ -56,7 +56,7 @@ import app.calisthenics.domain.routine.saveSwapsToRoutine
 import app.calisthenics.domain.session.CueText
 import app.calisthenics.domain.tree.TreeTabs
 import androidx.compose.foundation.relocation.bringIntoViewRequester
-import androidx.compose.material.icons.filled.KeyboardArrowUp
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.KeyboardArrowUp
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.ui.components.MuscleChips
 import io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore

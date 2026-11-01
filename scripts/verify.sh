@@ -14,12 +14,15 @@ step "Gradle wrapper and pinned runtime"
 ./gradlew --version --console=plain
 
 step "Domain JVM and WebAssembly, data and app unit tests"
-./gradlew :domain:jvmTest :domain:wasmJsNodeTest :data:testDebugUnitTest :data:wasmJsNodeTest :app:testDebugUnitTest --console=plain
+./gradlew :domain:jvmTest :domain:wasmJsNodeTest :data:testDebugUnitTest :data:wasmJsNodeTest :app:testDebugUnitTest :shared:compileKotlinWasmJs --console=plain
 python3 tools/check_kmp_test_parity.py
 python3 tools/check_app_test_preservation.py
 
 step "App lint and debug APK build"
 ./gradlew :app:lintDebug :app:assembleDebug --console=plain
+
+step "Shared strings are in sync with Android strings"
+python3 tools/convert_strings.py --check
 
 step "Starter content structure and rights validation"
 python3 tools/validate_content.py content/starter

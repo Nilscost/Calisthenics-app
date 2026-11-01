@@ -22,4 +22,4 @@ dependencyResolutionManagement {
 // T03 (ADR 0001): fork CalisthenicsMemory @ 045b8577 as :app base;
 // :domain = pure JVM domain (no Android imports), :data = Room library.
 rootProject.name = "calisthenics"
-include(":domain", ":data", ":app")
+include(":domain", ":data", ":shared", ":app")

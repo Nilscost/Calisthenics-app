@@ -106,12 +106,12 @@ dependencies {
     // :domain (pure JVM) and :data (Room) modules — T03 (ADR 0001 path mapping).
     implementation(project(":domain"))
     implementation(project(":data"))
+    implementation(project(":shared"))
 
     // Compose Multiplatform selects Jetpack Compose artifacts on Android.
     implementation("org.jetbrains.compose.ui:ui:1.12.2")
     implementation("androidx.compose.ui:ui-tooling-preview:1.12.1")
     implementation("org.jetbrains.compose.material3:material3:1.9.0")
-    implementation("androidx.compose.material:material-icons-extended:1.7.8")
     debugImplementation("androidx.compose.ui:ui-tooling:1.12.1")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.12.1")
 
