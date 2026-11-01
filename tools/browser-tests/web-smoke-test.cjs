@@ -6,8 +6,9 @@
 // empty divs), so the walk clicks fixed CSS-pixel positions of this fixed viewport and verifies each step from
 // screenshot pixels (ultramarine buttons, grey disabled button, background colour, screen changed and settled).
 //
-// Starting a real workout needs Phase 4's web session runner (the shared UI sends the commands to a stub), so the walk
-// stops at the preview; Phase 4 extends it.
+// Phase 4a: the walk then starts a real workout (shared SessionRunner in the page): session screen, running timer, Web Audio
+// start cue, Done, End workout (confirm), end screen, Done, History shows it, survives a reload; and a mid-workout reload
+// offers recovery (Continue -> session -> end -> History shows a second workout).
 //
 // Env: WEB_DIST (default web/build/dist/wasmJs/productionExecutable), WEB_SMOKE_OUT (screenshot dir, default
 // $TMPDIR/web-smoke), WEB_SMOKE_ENGINES (comma list, default "webkit,chromium").
@@ -151,10 +152,86 @@ async function run(engine, browserType, base) {
     img = await settle(null);
     await shot('train-after-reload');
 
+    // ---- Phase 4a: a real workout in the page --------------------------------------------------------------------------
+    const WHITE = [255, 255, 255];
+    const waitPx = async (pred, what, ms = 20000) => {
+      const end = Date.now() + ms;
+      for (;;) {
+        const im = await pixels();
+        if (pred(im)) return im;
+        expect(Date.now() < end, `timeout waiting for ${what}`);
+        await sleep(250);
+      }
+    };
+    const tap = async (x, y) => { await page.mouse.click(x, y); await sleep(350); };
+    const goTab = async x => { await tap(x, 806); await sleep(1200); return pixels(); };  // 40 Train, 243 History
+    const audio = () => page.evaluate(() => { const a = globalThis.__calAudio; return a && { state: a.ctx && a.ctx.state, beeps: a.beeps, spoken: a.spoken.length }; });
+    const sessionShowing = im => near(px(im, 150, 803), BLUE, 30) && !near(px(im, 40, 725), BLUE, 10); // DONE button, no Train button
+    const endWorkout = async () => {
+      await tap(350, 32); await shot('session-menu');                      // overflow menu -> End workout
+      await tap(315, 88); await sleep(500); await shot('end-confirm');     // confirm dialog
+      await tap(278, 478);                                                 // End workout
+      const im = await waitPx(i => near(px(i, 80, 410), BLUE, 30) && near(px(i, 200, 650), PAPER, 6), 'end screen');
+      await sleep(1500);                                                   // "Saved to your history."
+      return im;
+    };
+    const openHistory = async () => { await goTab(243); return settle(null); };
+
+    // History is empty before the first workout (no card under the week strip)
+    await goTab(243);
+    img = await settle(null); await shot('history-empty');
+    expect(!near(px(img, 300, 420), WHITE, 3), 'History should be empty before the first workout');
+    await goTab(40);
     img = await click(313, 725);                                          // Workout preview
     expect(near(px(img, 175, 800), BLUE), 'Preview: Start workout button missing');
     expect(near(px(img, 30, 213), BLUE), 'Preview: "Circuit" format segment not selected');
     await shot('preview');
+    // Start workout (from the preview opened above) -> session screen, timer running, cue audio unlocked and played
+    await tap(175, 800);
+    img = await waitPx(sessionShowing, 'session screen after Start workout');
+    await sleep(1000); await shot('session-work');
+    const t1 = await pixels(); await sleep(2200); const t2 = await pixels();
+    expect(!same(t1, t2), 'session timer did not advance');
+    const au = await audio();
+    expect(au && au.state === 'running' && au.beeps >= 1, `Web Audio start cue not played: ${JSON.stringify(au)}`);
+
+    // Done on the first block: the screen moves on to the next block (stretch)
+    const before = await pixels();
+    await tap(194, 803); await sleep(1200);
+    const after = await pixels(); await shot('session-after-done');
+    const headerChanged = (() => { for (let y = 60; y < 160; y++) for (let x = 10; x < 380; x++) if (px(before, x, y).some((v, i) => Math.abs(v - px(after, x, y)[i]) > 30)) return true; return false; })();
+    expect(headerChanged, 'Done did not advance to the next block');
+
+    // End workout (confirm) -> end screen -> Done -> Train -> History shows the workout; it survives a reload
+    img = await endWorkout(); await shot('end-screen');
+    await tap(195, 410); await sleep(1200);
+    img = await settle(null);
+    expect(near(px(img, 40, 725), BLUE), 'Done on the end screen did not return to Train');
+    img = await openHistory(); await shot('history-after-workout');
+    expect(near(px(img, 300, 420), WHITE, 3), 'History does not show the finished workout');
+    await page.reload();
+    await page.waitForSelector('canvas', { timeout: 60000 });
+    await waitPx(i => near(px(i, 40, 725), BLUE), 'Train after reload');
+    img = await openHistory(); await shot('history-after-reload');
+    expect(near(px(img, 300, 420), WHITE, 3), 'History lost the workout after reload');
+
+    // Mid-workout reload -> recovery offered -> Continue -> session screen; ending it saves a second workout
+    await goTab(40);
+    await tap(313, 725); await sleep(800);
+    await tap(175, 800);
+    await waitPx(sessionShowing, 'second session screen');
+    await sleep(1000); await tap(194, 803); await sleep(1500);               // finish one block so the checkpoint is not at the start
+    await page.reload();
+    await page.waitForSelector('canvas', { timeout: 60000 });
+    img = await waitPx(i => near(px(i, 117, 172), BLUE, 30), 'recovery card with "Continue it"');
+    await settle(null); await shot('recovery-offered');
+    await tap(117, 172);
+    await waitPx(i => !near(px(i, 40, 725), BLUE, 10) && !near(px(i, 117, 172), BLUE, 30), 'session screen after Continue');
+    await sleep(1000); await shot('recovered-session');
+    img = await endWorkout(); await shot('end-screen-recovered');
+    await tap(195, 410); await sleep(1200);
+    img = await openHistory(); await shot('history-two-workouts');
+    expect(near(px(img, 300, 490), WHITE, 3), 'History does not show the second (recovered) workout');
   } catch (e) {
     await shot('failure').catch(() => {});
     if (errors.length) e.message += `\nconsole/page errors so far:\n${errors.join('\n')}`;

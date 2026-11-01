@@ -5,6 +5,7 @@ import app.calisthenics.data.history.HistoryRepository
 import app.calisthenics.data.history.IndexedDbHistoryRepository
 import app.calisthenics.data.settings.SettingsProvider
 import app.calisthenics.data.settings.WebSettingsProvider
+import app.calisthenics.domain.session.SleepAwareClock
 
 actual abstract class PlatformContext private constructor() {
     /** The one web context. */
@@ -34,7 +35,14 @@ actual fun PlatformContext.appVersionName(): String = "web"
 @JsFun("() => performance.now()")
 private external fun performanceNow(): Double
 
-actual fun elapsedRealtimeMs(): Long = performanceNow().toLong()
+@JsFun("() => Date.now()")
+private external fun dateNow(): Double
+
+// performance.now() pauses while a phone sleeps; the wall clock does not. SleepAwareClock adds the slept time, so timers
+// built on stored end times are right when the page comes back (Phase 4a).
+private val monotonicClock = SleepAwareClock(::performanceNow, ::dateNow)
+
+actual fun elapsedRealtimeMs(): Long = monotonicClock.nowMs()
 
 /** Compile-only for Phase 3b; Phase 4 may map this to browser history. */
 @Composable

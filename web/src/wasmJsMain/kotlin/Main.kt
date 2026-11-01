@@ -11,6 +11,7 @@ import app.calisthenics.data.settings.AppTheme
 import app.calisthenics.data.settings.ThemeStore
 import io.github.gonbei774.calisthenicsmemory.platform.PlatformContext
 import io.github.gonbei774.calisthenicsmemory.platform.settingsProvider
+import io.github.gonbei774.calisthenicsmemory.session.webInstallAudioUnlock
 import io.github.gonbei774.calisthenicsmemory.ui.nav.AppNav
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import kotlinx.coroutines.await
@@ -28,6 +29,7 @@ private external fun prefersDark(): Boolean
 suspend fun start() {
     PlatformContext.catalogJson = fetchText("data/catalog.json").await<JsString>().toString()
     PlatformContext.privacyMarkdown = fetchText("data/privacy.md").await<JsString>().toString()
+    webInstallAudioUnlock() // first tap anywhere unlocks Web Audio and speech (iOS Safari rule)
     val store = ThemeStore(PlatformContext.settingsProvider())
     ComposeViewport {
         var theme by remember { mutableStateOf(store.getTheme()) }
