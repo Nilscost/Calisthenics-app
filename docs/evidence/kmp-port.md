@@ -111,3 +111,5 @@ The fixture now selects the specific first-round squat slot, whose tab has equip
 - `CatalogSource` interface (`suspend fun readCatalogJson(): ByteArray`) in `commonMain/…/catalog/`. Catalog, thumbs and clips stay in `app/src/main/assets`.
 
 **Commands** (Java 17, shared debug key via `ORG_GRADLE_PROJECT_calisthenics.debugKeystore`): `bash scripts/verify.sh` exit 0 (now also runs `:shared:compileKotlinWasmJs` and the strings check). Test counts: 620 domain JVM, 619 domain Wasm, 10 data host + 10 data Wasm, 290 app; zero failures or skips; both preservation checkers pass.
+
+**CI on `87a8835c`:** [verify 41324655446](https://github.com/Nilscost/Calisthenics-app/actions/runs/41324655446) passed (including browser-storage). [ui-screens 41325029888](https://github.com/Nilscost/Calisthenics-app/actions/runs/41325029888) (workflow_dispatch on the branch; it does not run on push) passed connected tests and light, dark and font 1.3. Light Train, Settings and Session (work logger) screenshots opened: Barlow Condensed titles/timers, IBM Plex Sans body and the ultramarine/off-white palette look unchanged. No owner phone test is claimed.
