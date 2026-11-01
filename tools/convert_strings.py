@@ -7,7 +7,7 @@ shared/src/commonMain/composeResources/values/strings.xml with the same names,
 in source order.
 
 Text is copied verbatim: Compose Multiplatform uses the Android escape rules
-(\\' \\" \\n \\\\ \\uXXXX, &amp; &lt;) and the same %1$s / %1$d / %% format
+(\\' \\" \\n \\\\ \\uXXXX, &amp; &lt;) and the same %1$s / %1$d placeholders; Android's %% is converted to a plain % because Compose resources do not collapse it
 placeholders, so no rewriting is needed. Duplicate names, unsupported elements
 (string-array, items other than one/other plurals) and a non-matching output
 all fail loudly.
@@ -45,7 +45,7 @@ def convert():
                 if name in names:
                     raise SystemExit(f"duplicate resource name: {name}")
                 names.add(name)
-                lines.append(f'    <string name="{name}">{escape(text_of(el))}</string>')
+                lines.append(f'    <string name="{name}">{escape(text_of(el).replace("%%", "%"))}</string>')
             elif el.tag == "plurals":
                 if name in names:
                     raise SystemExit(f"duplicate resource name: {name}")
@@ -55,7 +55,7 @@ def convert():
                     q = item.get("quantity")
                     if item.tag != "item" or q not in QUANTITIES:
                         raise SystemExit(f"{name}: unsupported plural item")
-                    items.append(f'        <item quantity="{q}">{escape(text_of(item))}</item>')
+                    items.append(f'        <item quantity="{q}">{escape(text_of(item).replace("%%", "%"))}</item>')
                 lines.append(f'    <plurals name="{name}">\n' + "\n".join(items) + "\n    </plurals>")
             else:
                 raise SystemExit(f"{fname}: unsupported element <{el.tag}> ({name})")

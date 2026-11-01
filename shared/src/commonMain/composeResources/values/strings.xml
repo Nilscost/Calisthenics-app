@@ -573,7 +573,7 @@
     <string name="preview_empty">No exercises selected</string>
     <string name="preview_empty_hint">Add an exercise to continue.</string>
     <string name="preview_undo_remove">Undo removal</string>
-    <string name="feedback_app_volume">App volume · %1$d%%</string>
+    <string name="feedback_app_volume">App volume · %1$d%</string>
     <string name="feedback_app_volume_hint">Controls voice and workout sounds</string>
     <string name="feedback_between_flow">Flow</string>
     <string name="feedback_preparation_time">Preparation time</string>
