@@ -1,5 +1,28 @@
 # Actual project status
 
+## KMP port ready for the owner phone test (2026-11-02)
+
+The app is now one Kotlin Multiplatform codebase: the same domain, data and Compose UI code runs as the Android app and as a web app that iPhone friends install from Safari ("Add to Home Screen"). Android behaviour is unchanged (same screens, same data, signed install-over passes). The web app runs full workouts with demo clips, thumbnails, beeps and voice, backup export/import and browser Back, and works offline after one visit (service worker, clips cached on first use). No owner phone test has been done yet; results below are empty.
+
+- **Android APK to sideload (debug-signed, installs over the current app):** `/Users/nils/Documents/hermes/Apps/builds/app-debug-R9-kmp.apk` (outside git).
+- **Web app (not announced; do not share before the phone test):** https://nilscost.github.io/Calisthenics-app/ (GitHub Pages, deployed from `codex/kmp-port`).
+- Evidence: [KMP execution log](docs/evidence/kmp-port.md) (Phase 5 section) · [plan](docs/41-multiplatform-port-plan.md).
+
+### Final owner phone test (results empty)
+
+**Android (Galaxy S21), installed over the current app, not a fresh install:**
+- [ ] 1. All existing history, routines, levels and settings are still there. Result:
+- [ ] 2. A full workout: clips play, rest timer + beeps + voice, screen off and on mid-rest, Done. Result:
+- [ ] 3. End screen, Progress tree, exercise detail, backup export. Result:
+
+**iPhone (Safari, iOS 18.2+), ideally on a friend's phone:**
+- [ ] 1. Open the URL, Add to Home Screen, open from the icon. Result:
+- [ ] 2. Onboarding, then a full workout as above, including locking the phone during rest. Result:
+- [ ] 3. Close the app fully, reopen: history kept. Airplane mode: app and seen clips still work. Result:
+- [ ] 4. Backup export, then import it on another browser/phone. Result:
+
+Findings go to `docs/user-feedback.md`; fixes are a follow-up batch. After a pass, the owner shares the link with friends.
+
 ## iPhone and web port resumed (2026-10-30)
 
 Work continues on `codex/kmp-port` under [the multiplatform plan](docs/41-multiplatform-port-plan.md), with Terra executors and coordinator review. Phases 0 and 1 are approved. All 616 original domain tests run on JVM and WebAssembly; 619 common tests, one additional JVM fixture test and all 290 app tests pass. Build/lint, connected database tests and signed install-over pass. Phase 1's final screenshot gate passed all 51 flows with one permitted retry; visual limitations are documented. Phase 2 storage interfaces and platform adapters are implemented; host and Chromium/WebKit storage contracts pass. Signed upgrade, device and full screenshot gates remain in progress; Phases 3–5 remain pending. The iPhone deliverable is an installable web app; native iOS remains optional Phase 6. No new release APK or web URL is ready for owner testing.

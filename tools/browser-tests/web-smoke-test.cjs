@@ -15,7 +15,11 @@
 // trip: change a setting, Export (download), wipe all browser storage, redo onboarding, Check + Restore the downloaded file,
 // and see History and the setting come back.
 //
-// Env: WEB_DIST (default web/build/dist/wasmJs/productionExecutable), WEB_SMOKE_OUT (screenshot dir, default
+// Phase 5: at the end the context goes offline and the page is reloaded: the service worker must serve the app and History
+// must still show the saved workouts. With WEB_SMOKE_URL the run targets a deployed site (e.g. GitHub Pages) instead of the
+// local dist folder.
+//
+// Env: WEB_SMOKE_URL (deployed base URL; skips the local server), WEB_DIST (default web/build/dist/wasmJs/productionExecutable), WEB_SMOKE_OUT (screenshot dir, default
 // $TMPDIR/web-smoke), WEB_SMOKE_ENGINES (comma list, default "webkit,chromium").
 const { chromium, webkit } = require(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const { PNG } = require('pngjs');
@@ -28,27 +32,8 @@ const dist = process.env.WEB_DIST || path.join(__dirname, '../../web/build/dist/
 const outDir = process.env.WEB_SMOKE_OUT || path.join(os.tmpdir(), 'web-smoke');
 const engines = (process.env.WEB_SMOKE_ENGINES || 'webkit,chromium').split(',');
 
-// Console policy: every console error and page error fails the run, except exactly these two known upstream messages
-// (docs/evidence/kmp-port.md, "Phase 3a" toolchain decision and docs/evidence/kmp-preparation.md). Both are emitted by
-// the app bundle itself (calisthenics-web.js), so the source is matched too. Nothing is patched.
-const ALLOWED_CONSOLE_ERRORS = [
-  {
-    // (a) Compose Multiplatform resources 1.12.2 on Kotlin 2.4.21 read wasm memory through the deprecated
-    //     `wasmExports.memory`. Fixed upstream in Compose Multiplatform 1.13.0-beta01.
-    id: 'cmp-resources-wasm-memory',
-    engines: ['webkit', 'chromium'],
-    text: s => s.startsWith('Accessing `memory` via `wasmExports` is deprecated. Use `kotlin.wasm.unsafe.wasmMemory`'),
-    source: url => url.endsWith('/calisthenics-web.js'),
-  },
-  {
-    // (b) Skiko 0.150.2 queries the unmasked WebGL renderer without enabling WEBGL_debug_renderer_info; WebKit logs
-    //     INVALID_ENUM. Not fixed in any Skiko release through 0.156.1.
-    id: 'skiko-webkit-invalid-enum',
-    engines: ['webkit'],
-    text: s => s === 'WebGL: INVALID_ENUM: getParameter: invalid parameter name, WEBGL_debug_renderer_info not enabled',
-    source: url => url.endsWith('/calisthenics-web.js'),
-  },
-];
+// Console policy (every console/page error fails except the exact allow-list): see console-policy.cjs
+const { ALLOWED_CONSOLE_ERRORS } = require('./console-policy.cjs');
 
 const BLUE = [48, 58, 242];   // ultramarine accent #303AF2
 const PAPER = [247, 245, 240]; // background #F7F5F0
@@ -58,6 +43,7 @@ const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.wasm': 'applica
 
 function serve() {
   const server = http.createServer((req, res) => {
+    if (server.down) { req.socket.destroy(); return; }
     const rel = decodeURIComponent(new URL(req.url, 'http://x').pathname);
     let file = path.join(dist, rel.endsWith('/') ? rel + 'index.html' : rel);
     if (!file.startsWith(dist) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) { res.writeHead(404); res.end('not found'); return; }
@@ -82,7 +68,7 @@ function serve() {
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const near = (px, rgb, tol = 40) => px.every((v, i) => Math.abs(v - rgb[i]) <= tol);
 
-async function run(engine, browserType, base) {
+async function run(engine, browserType, base, server, notes) {
   const dir = path.join(outDir, engine);
   fs.mkdirSync(dir, { recursive: true });
   const browser = await browserType.launch({ headless: true });
@@ -355,6 +341,31 @@ async function run(engine, browserType, base) {
     img = await openSettings();
     expect(region(img, ...ROUNDS) === roundsBefore, 'the rounds setting was not restored');
     await shot('settings-restored');
+
+    // ---- Phase 5: offline reload (service worker) ----------------------------------------------------------------------
+    await page.evaluate(() => navigator.serviceWorker.ready.then(() => 0));
+    expect(await page.evaluate(() => !!navigator.serviceWorker.controller), 'no service worker controls the page');
+    // Offline = the local server is shut down (Playwright's WebKit setOffline fails the navigation before the service worker
+    // sees it). Against a live URL the server cannot be stopped: Chromium uses setOffline; WebKit checks the caches only.
+    const cachesNow = await page.evaluate(async () => (await caches.keys()).sort());
+    expect(cachesNow.some(n => n.startsWith('cal-shell-')) && cachesNow.some(n => n.startsWith('cal-media-')), `service worker caches missing: ${cachesNow}`);
+    if (!server && engine === 'webkit') notes.push('webkit: live URL, offline reload not run (caches verified)');
+    else {
+      if (server) server.down = true; else await context.setOffline(true);
+      await page.reload();
+      await page.waitForSelector('canvas', { timeout: 60000 });
+      const offlineEnd = Date.now() + 30000;
+      for (;;) {
+        img = await pixels();
+        if (near(px(img, 40, 725), BLUE)) break;
+        expect(Date.now() < offlineEnd, 'offline reload: the Train screen did not appear');
+        await sleep(300);
+      }
+      await settle(null); await shot('offline-train');
+      img = await openHistory(); await shot('offline-history');
+      expect(near(px(img, 300, 420), WHITE, 3) && near(px(img, 300, 490), WHITE, 3), 'offline: History does not show the two workouts');
+      if (server) server.down = false; else await context.setOffline(false);
+    }
   } catch (e) {
     await shot('failure').catch(() => {});
     if (errors.length) e.message += `\nconsole/page errors so far:\n${errors.join('\n')}`;
@@ -367,17 +378,19 @@ async function run(engine, browserType, base) {
 }
 
 (async () => {
-  expectDist();
-  const server = await serve();
-  const base = `http://127.0.0.1:${server.address().port}/`;
-  const results = [];
+  if (!process.env.WEB_SMOKE_URL) expectDist();
+  const live = process.env.WEB_SMOKE_URL;
+  const server = live ? null : await serve();
+  const base = live ? (live.endsWith('/') ? live : live + '/') : `http://127.0.0.1:${server.address().port}/`;
+  const results = [], notes = [];
   let failed = false;
   for (const name of engines) {
-    try { results.push(await run(name, name === 'webkit' ? webkit : chromium, base)); }
+    try { results.push(await run(name, name === 'webkit' ? webkit : chromium, base, server, notes)); }
     catch (e) { failed = true; console.error(e.message || e); results.push({ engine: name, error: String(e.message || e) }); }
   }
-  server.close();
+  if (server) { server.closeAllConnections(); server.close(); }
   fs.mkdirSync(outDir, { recursive: true });
+  if (notes.length) results.push({ notes });
   fs.writeFileSync(path.join(outDir, 'results.json'), JSON.stringify(results, null, 2) + '\n');
   console.log(JSON.stringify(results, null, 2));
   process.exitCode = failed ? 1 : 0;

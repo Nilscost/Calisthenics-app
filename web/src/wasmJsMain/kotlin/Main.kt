@@ -1,4 +1,9 @@
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -28,6 +33,18 @@ private external fun fetchText(url: String): Promise<JsString>
 @JsFun("() => window.matchMedia('(prefers-color-scheme: dark)').matches")
 private external fun prefersDark(): Boolean
 
+// iPhone notch / home bar in standalone mode (viewport-fit=cover): the CSS safe-area insets as "top,right,bottom,left" in px
+@JsFun("""() => {
+  const p = document.createElement('div');
+  p.style.cssText = 'position:fixed;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
+  document.body.appendChild(p);
+  const c = getComputedStyle(p);
+  const v = [c.paddingTop, c.paddingRight, c.paddingBottom, c.paddingLeft].map(x => parseFloat(x) || 0).join(',');
+  p.remove();
+  return v;
+}""")
+private external fun safeAreaInsets(): String
+
 @JsFun("() => { try { if (navigator.vibrate) navigator.vibrate(10); } catch (e) {} }")
 private external fun vibrateTick()
 
@@ -53,7 +70,9 @@ suspend fun start() {
         }
         CompositionLocalProvider(LocalHapticFeedback provides WebHaptics) {
             CalisthenicsMemoryTheme(darkTheme = dark) {
-                Box(Modifier.fillMaxSize()) {
+                val insets = remember { safeAreaInsets().split(',').map { it.toFloatOrNull() ?: 0f } }
+                Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
+                    .padding(PaddingValues(insets[3].dp, insets[0].dp, insets[1].dp, insets[2].dp))) {
                     AppNav(theme) { theme = it; store.setTheme(it) }
                 }
             }

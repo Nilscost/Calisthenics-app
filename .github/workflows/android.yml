@@ -63,8 +63,12 @@ jobs:
       - run: npx --prefix tools/browser-tests playwright install --with-deps chromium webkit
       - name: Web build smoke test (WebKit and Chromium, 390x844)
         run: WEB_SMOKE_OUT="$RUNNER_TEMP/web-smoke" node tools/browser-tests/web-smoke-test.cjs
+      - name: PWA test (manifest, icons, offline clip with ranges, two-build update)
+        run: WEB_PWA_OUT="$RUNNER_TEMP/web-pwa" node tools/browser-tests/web-pwa-test.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: web-smoke-${{ github.sha }}
-          path: ${{ runner.temp }}/web-smoke
+          path: |
+            ${{ runner.temp }}/web-smoke
+            ${{ runner.temp }}/web-pwa
