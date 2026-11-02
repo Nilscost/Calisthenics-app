@@ -47,7 +47,7 @@ self.addEventListener('fetch', event => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
-  if (MEDIA_RE.test(url.pathname)) { event.respondWith(media(req, url)); return; }
+  if (MEDIA_RE.test(url.pathname)) { event.respondWith(media(event, req, url)); return; }
   event.respondWith(shell(req));
 });
 
@@ -59,14 +59,14 @@ async function shell(req) {
   return fetch(req);
 }
 
-async function media(req, url) {
+async function media(event, req, url) {
   const cache = await caches.open(MEDIA_CACHE);
   const key = new Request(url.origin + url.pathname);
   let full = await cache.match(key);
   if (!full) {
     const net = await fetch(key); // the whole file (a clip is ~18 KB), never a partial range, so the cache holds complete files
     if (!net.ok || net.status !== 200) return net;
-    await cache.put(key, net.clone());
+    event.waitUntil(cache.put(key, net.clone())); // answer now, store in the background
     full = net;
   }
   const range = req.headers.get('range');

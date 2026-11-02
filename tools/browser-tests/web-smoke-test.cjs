@@ -328,9 +328,15 @@ async function run(engine, browserType, base, server, notes) {
     expect(region(img, ...ROUNDS) !== roundsBefore, 'the rounds setting was not reset by the wipe');
     await scrollSettingsDown();
     await click(195, 510);                                                 // Backup and restore
-    const chooser = page.waitForEvent('filechooser', { timeout: 15000 });
-    await page.mouse.click(103, 244);                                      // Check a backup file
-    await (await chooser).setFiles(backupFile);
+    // Check a backup file. A click right after the screen change can be lost on a loaded CI runner, so it is retried.
+    let fileChooser = null;
+    for (let attempt = 1; attempt <= 3 && !fileChooser; attempt++) {
+      const chooser = page.waitForEvent('filechooser', { timeout: 8000 });
+      await page.mouse.click(103, 244);
+      try { fileChooser = await chooser; } catch (e) { await sleep(500); }
+    }
+    expect(fileChooser, 'no file chooser after 3 clicks on "Check a backup file"');
+    await fileChooser.setFiles(backupFile);
     await sleep(1500); img = await settle(null); await shot('backup-checked');
     const restoreY = blueRowY(img, 40, 280, 700);
     expect(restoreY > 0, 'no Restore button after checking the backup file');
