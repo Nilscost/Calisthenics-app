@@ -246,7 +246,10 @@ async function run(engine, browserType, base) {
     const samples = [c1.t];
     for (let k = 0; k < 6; k++) { await sleep(250); const c = await clipInfo(); samples.push(c.t); }
     const c2 = await clipInfo();
-    expect(new Set(samples.map(t => t.toFixed(2))).size >= 4, `demo clip time does not advance: ${JSON.stringify(samples)}`);
+    // Playwright's Linux WebKit (CI) decodes the clip (videoWidth, readyState 4, not paused) but its media clock stays at 0
+    // without an audio device, so advancing time is required in Chromium everywhere and in WebKit on macOS only.
+    const mustAdvance = engine === 'chromium' || process.platform === 'darwin';
+    expect(!mustAdvance || new Set(samples.map(t => t.toFixed(2))).size >= 4, `demo clip time does not advance: ${JSON.stringify(samples)}`);
     expect(c2.muted && c2.loop && c2.inline && c2.pe === 'none', `clip flags: ${JSON.stringify(c2)}`);
     expect(c2.w === 480 && c2.rect[2] > 200 && c2.rect[1] > 100 && c2.rect[1] + c2.rect[3] < 520, `clip overlay position: ${JSON.stringify(c2)}`);
     await shot('session-clip');
