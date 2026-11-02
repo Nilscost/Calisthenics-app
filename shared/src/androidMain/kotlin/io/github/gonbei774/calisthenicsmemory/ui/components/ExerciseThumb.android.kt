@@ -12,3 +12,6 @@ actual fun loadThumb(ctx: android.content.Context, id: String): ImageBitmap? =
     cache[id] ?: run {
         runCatching { ctx.assets.open("thumbs/$id.webp").use { BitmapFactory.decodeStream(it) }?.asImageBitmap() }.getOrNull()?.also { cache[id] = it }
     }
+
+/** Already decoded synchronously by [loadThumb]; nothing more to wait for. */
+actual suspend fun awaitThumb(ctx: android.content.Context, id: String): ImageBitmap? = null

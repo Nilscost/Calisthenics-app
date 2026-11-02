@@ -27,10 +27,14 @@ kotlin {
     }
 }
 
+// Everything below is copied from its single source (nothing is committed twice): Android assets for the catalog,
+// privacy text, exercise thumbnails and demo clips; THIRD_PARTY_NOTICES.md for the licence screen.
 val copyWebAssets = tasks.register<Copy>("copyWebAssets") {
-    from(rootProject.layout.projectDirectory.dir("app/src/main/assets")) {
-        include("catalog.json", "catalog_meta.json", "privacy.md")
-    }
+    val assets = rootProject.layout.projectDirectory.dir("app/src/main/assets")
+    from(assets) { include("catalog.json", "catalog_meta.json", "privacy.md") }
+    from(assets.dir("thumbs")) { into("thumbs") }
+    from(assets.dir("demos")) { into("demos") }
+    from(rootProject.layout.projectDirectory.file("THIRD_PARTY_NOTICES.md")) { rename { "licenses.md" } }
     into(layout.buildDirectory.dir("generated/webAssets/data"))
 }
 tasks.matching { it.name == "wasmJsProcessResources" }.configureEach { dependsOn(copyWebAssets) }

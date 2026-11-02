@@ -8,7 +8,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,13 +26,21 @@ import io.github.gonbei774.calisthenicsmemory.platform.currentPlatformContext
 /** Decoded thumbnails are small (about 128 px); the platform caches them for the process. Null = no picture. */
 expect fun loadThumb(ctx: PlatformContext, id: String): ImageBitmap?
 
+/**
+ * Loads a thumbnail that [loadThumb] could not return synchronously (web: fetched and decoded on first use, then served
+ * by [loadThumb]). Android decodes synchronously, so its actual simply returns null.
+ */
+expect suspend fun awaitThumb(ctx: PlatformContext, id: String): ImageBitmap?
+
 /** The picture of exercise [id] on a rounded surface tile; the first letter of [name] if there is no picture. Decorative: the name sits next to it. */
 @Composable
 fun ExerciseThumb(id: String, name: String, size: Dp = 52.dp, modifier: Modifier = Modifier) {
     val ctx = currentPlatformContext()
-    val bmp = remember(id) { loadThumb(ctx, id) }
+    var bmp by remember(id) { mutableStateOf(loadThumb(ctx, id)) }
+    if (bmp == null) LaunchedEffect(id) { bmp = awaitThumb(ctx, id) }
     Box(modifier.size(size).clip(RoundedCornerShape(12.dp)).testTag("thumb_$id"), contentAlignment = Alignment.Center) {
-        if (bmp != null) Image(bmp, contentDescription = null, modifier = Modifier.size(size))
+        val shown = bmp
+        if (shown != null) Image(shown, contentDescription = null, modifier = Modifier.size(size))
         else Text(name.take(1), style = MaterialTheme.typography.titleMedium)
     }
 }

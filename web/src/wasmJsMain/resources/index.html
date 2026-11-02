@@ -7,7 +7,9 @@
     <title>Calisthenics</title>
     <link rel="icon" href="data:,">
     <style>
-        html, body { margin: 0; height: 100%; background: #F7F5F0; overflow: hidden; }
+        html, body { margin: 0; height: 100%; overflow: hidden; }
+        /* body stays transparent: the demo clips (<video>, z-index -1) show through holes in the canvas */
+        html { background: #F7F5F0; }
     </style>
     <script type="application/javascript" src="calisthenics-web.js"></script>
 </head>

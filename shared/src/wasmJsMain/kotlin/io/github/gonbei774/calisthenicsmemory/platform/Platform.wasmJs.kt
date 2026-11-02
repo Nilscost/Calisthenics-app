@@ -13,6 +13,8 @@ actual abstract class PlatformContext private constructor() {
         /** Set by the web entry point (Phase 3c/4) before the first screen reads the catalog. */
         var catalogJson: String? = null
         var privacyMarkdown: String? = null
+        /** THIRD_PARTY_NOTICES.md (copied into the build as data/licenses.md); shown by the licence screen. */
+        var licensesMarkdown: String? = null
         internal val settings by lazy { WebSettingsProvider() }
         internal val history by lazy { IndexedDbHistoryRepository() }
     }
@@ -43,7 +45,3 @@ private external fun dateNow(): Double
 private val monotonicClock = SleepAwareClock(::performanceNow, ::dateNow)
 
 actual fun elapsedRealtimeMs(): Long = monotonicClock.nowMs()
-
-/** Compile-only for Phase 3b; Phase 4 may map this to browser history. */
-@Composable
-actual fun PlatformBackHandler(enabled: Boolean, onBack: () -> Unit) = Unit
