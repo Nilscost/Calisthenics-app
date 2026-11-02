@@ -222,3 +222,19 @@ Tag `kmp-phase-4`. No owner phone test is claimed.
 **Known issue.** The web-smoke job is intermittently flaky on CI runners under load (earlier Phase 4 run: Chromium `filechooser` timeout; Phase 5 first run: WebKit `waiting for end screen`, screenshot showed the dialog mid fade-out, i.e. a slow software-rendered frame, not a logic failure). Re-runs pass.
 
 **CI.** On `13877e77`: [verify 41386026007](https://github.com/Nilscost/Calisthenics-app/actions/runs/41386026007) passed (incl. `web-smoke` with the PWA test, `browser-storage`); [pages 41386026006](https://github.com/Nilscost/Calisthenics-app/actions/runs/41386026006) deployed. [ui-screens 41382901294](https://github.com/Nilscost/Calisthenics-app/actions/runs/41382901294) passed (connected, light, dark, font 1.3) on `e719ab4e`, which already contained the seed change (later commits touch only the service worker, the smoke test and docs). Verify on `e719ab4e` failed twice in `web-smoke` (WebKit `request failed` on a clip fetch; Chromium file chooser timeout): the SW now answers media before writing the cache and the test retries a lost click; the verify run after that passed. Live smoke test against the Pages URL repeated after the final deploy: both engines pass. No owner phone test is claimed.
+
+### Phase 5 acceptance — 2026-11-02
+
+The coordinator checked the following on `13877e77`:
+- verify [41386026007](https://github.com/Nilscost/Calisthenics-app/actions/runs/41386026007) passed, including web-smoke and the PWA tests.
+- pages [41386026006](https://github.com/Nilscost/Calisthenics-app/actions/runs/41386026006) passed.
+- ui-screens [41382901294](https://github.com/Nilscost/Calisthenics-app/actions/runs/41382901294) passed on `e719ab4e`, which already contains the seed fix.
+- The live URL, the manifest and `sw.js` return 200.
+- In the built-in browser at phone size, the live site opens on onboarding.
+- The APK is present in `Apps/builds/`.
+- The STATUS.md checklist is empty, ready for the owner.
+
+Tag `kmp-phase-5`. Phases 0–5 are complete; only the owner phone test remains. Open risks for that test:
+- safe-area padding in standalone mode;
+- the iOS file chooser and audio;
+- occasional web-smoke flakiness in CI.
