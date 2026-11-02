@@ -1,6 +1,6 @@
 # 41 · Multiplatform port plan (Android + web now, iPhone later)
 
-Status: Phases 0–3 approved; Phase 4 in progress · Written 2026-10-28 · Executor: Codex (Phases 0–2), Claude Sonnet/Haiku (Phase 3 on) · Owner phone test only at the end.
+Status: Phases 0–4 approved; Phase 5 in progress · Written 2026-10-28 · Executor: Codex (Phases 0–2), Claude Sonnet/Haiku (Phase 3 on) · Owner phone test only at the end.
 
 ## Goal
 
