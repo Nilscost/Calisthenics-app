@@ -1,5 +1,25 @@
 # Actual project status
 
+## Release 9.1 · 0.12.1-r9 (code 20) · 2026-11-05
+
+Version 9.1 includes the KMP port (below) plus fixes for the owner's 8.2 reports ([details](docs/user-feedback.md)).
+
+- **Train count vs Preview:** Train now shows the number of exercises the workout actually holds. Two causes were fixed:
+  - Exercises added by hand in the Preview are kept in the saved draft.
+  - The planner silently dropped an exercise it was asked for, and now fills that spot.
+- **Preview:** a new "Exercises per round" stepper, sharing the setting with Train.
+- **Level progress:** a session done on the same day as a hand-set level now counts as a good session. Past sessions are re-evaluated automatically.
+- **Level picker:** a live line under the chips shows which levels count as done and which level is current. Chip N means levels 1–N are done.
+- **Exercise history:** the exercise detail page in Progress lists that exercise's past sessions, newest first.
+
+The APK to sideload is `/Users/nils/Documents/hermes/Apps/builds/app-debug-R9.1.apk`, replacing `app-debug-R9-kmp.apk`. The web app (same unannounced URL) is redeployed with 9.1.
+
+Extra phone checks for 9.1, on top of the checklist below:
+- [ ] Train count equals the number of exercises in the Preview, including after adding one by hand. Result:
+- [ ] The Preview "Exercises per round" stepper changes the round and Train follows. Result:
+- [ ] Raise the archer push-up level by hand, train the same day at that level, and check the end screen shows 1 of 3 good sessions. Result:
+- [ ] Progress → archer push-up shows its history. Result:
+
 ## KMP port ready for the owner phone test (2026-11-02)
 
 The app is now one Kotlin Multiplatform codebase: the same domain, data and Compose UI code runs as the Android app and as a web app that iPhone friends install from Safari ("Add to Home Screen"). Android behaviour is unchanged (same screens, same data, signed install-over passes). The web app runs full workouts with demo clips, thumbnails, beeps and voice, backup export/import and browser Back, and works offline after one visit (service worker, clips cached on first use). No owner phone test has been done yet; results below are empty.
