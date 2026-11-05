@@ -68,6 +68,13 @@ appId: app.calisthenics.personal
     env: { ID: "preview_format_PAIRS" }
 - takeScreenshot: 02a-preview-format-${VARIANT}
 - tapOn: { id: preview_format_PAIRS }
+# R8.2 (train-count): the exercises per round are chosen here too, the same number as on Train
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: "preview_exercises_plus" }
+- takeScreenshot: 02a1-preview-exercises-${VARIANT}
+- tapOn: { id: preview_exercises_plus }
+- takeScreenshot: 02a1b-preview-exercises-plus-${VARIANT}
 # R8.4: preparation and the synchronized mode are adjustable here.
 - assertNotVisible: { id: preview_flow_switch }
 - runFlow:

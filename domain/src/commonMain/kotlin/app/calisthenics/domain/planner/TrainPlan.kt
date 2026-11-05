@@ -130,7 +130,8 @@ fun defaultExercisesPerRound(
     for (n in fewest..maxOf(base, top)) {
         val r = build(n)
         if (r !is PlanResult.Ready) break   // a filler the planner cannot place: keep the counts before it
-        lengths += n to r.plan.plannedDurationSeconds
+        val held = exercisesPerRoundOf(r.plan)   // what the plan really holds: the planner may leave a requested slot out
+        if (lengths.none { it.first == held }) lengths += held to r.plan.plannedDurationSeconds
     }
     if (lengths.isEmpty()) return base
     lengths.filter { it.second in MIN_SESSION_SECONDS..MAX_SESSION_SECONDS }.maxByOrNull { it.first }?.let { return it.first }
@@ -144,13 +145,49 @@ fun defaultExercisesPerRound(
     }
 }
 
+/** The most exercises per round the plan can really hold: the stepper's top (a filler the planner leaves out does not count). */
+fun reachableExercisesPerRound(catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, profile: EquipmentProfile, s: TrainSettings): Int {
+    val r = routineForPlan(catalog, baseRoutine, progress, profile, s.copy(exercisesPerRound = null))
+    val top = maxExercisesPerRound(catalog, r, fillFocusOf(r, s, catalog), profile, progress, s.effectiveBetweenSetMode() == BetweenSetMode.STRETCH)
+    val plan = (planFor(catalog, baseRoutine, progress, profile, s, emptyMap(), 0L, 0, Preferences(), PlanEdits(), top) as? PlanResult.Ready)?.plan
+    return plan?.let { exercisesPerRoundOf(it) }?.coerceIn(1, top) ?: top
+}
+
 /** [s] with the default exercises per round filled in when the person has not set a number. */
 fun withDefaultLength(
     catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, profile: EquipmentProfile, s: TrainSettings,
     swaps: Map<String, String> = emptyMap(), prefs: Preferences = Preferences(), edits: PlanEdits = PlanEdits(),
 ): TrainSettings = if (s.exercisesPerRound != null) s else s.copy(exercisesPerRound = defaultExercisesPerRound(catalog, baseRoutine, progress, profile, s, swaps, prefs, edits))
 
+/**
+ * R8.2 follow-up (train-count): the planner silently leaves out a requested slot (a movement the person already works through another route,
+ * an exercise the equipment rules out and nothing replaces) so "7 exercises per round" could build a plan of 6. The number on Train must be
+ * the number of exercises the workout has, so while the plan holds fewer than [count] the next filler is requested too, until the count is met
+ * or the routine has no further filler to offer.
+ */
 private fun planFor(
+    catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, profile: EquipmentProfile, s: TrainSettings,
+    swaps: Map<String, String>, nowEpochMs: Long, nowDay: Int, prefs: Preferences, edits: PlanEdits, count: Int?,
+): PlanResult {
+    if (count == null) return planOnce(catalog, baseRoutine, progress, profile, s, swaps, nowEpochMs, nowDay, prefs, edits, null)
+    var asked: Int = count
+    var result = planOnce(catalog, baseRoutine, progress, profile, s, swaps, nowEpochMs, nowDay, prefs, edits, asked)
+    if (edits.removed.isNotEmpty() || edits.added.isNotEmpty()) return result   // exercises taken out or added by hand stay as the person left them
+    var previousSlots = -1
+    while (result is PlanResult.Ready && exercisesPerRoundOf(result.plan) < count && asked < MAX_EXERCISES_PER_ROUND) {
+        val routine = routineForPlan(catalog, baseRoutine, progress, profile, s.copy(exercisesPerRound = asked))
+        val slots = slotsForFocus(routine, fillFocusOf(routine, s, catalog)).size
+        if (slots == previousSlots) break   // no filler left: the plan keeps what the routine can offer
+        previousSlots = slots
+        asked += 1
+        val next = planOnce(catalog, baseRoutine, progress, profile, s, swaps, nowEpochMs, nowDay, prefs, edits, asked)
+        if (next !is PlanResult.Ready) break
+        result = next
+    }
+    return result
+}
+
+private fun planOnce(
     catalog: Catalog, baseRoutine: Routine, progress: ProgressSnapshot, profile: EquipmentProfile, s: TrainSettings,
     swaps: Map<String, String>, nowEpochMs: Long, nowDay: Int, prefs: Preferences, edits: PlanEdits, count: Int?,
 ): PlanResult {
