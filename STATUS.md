@@ -8,7 +8,8 @@ Version 9.1 includes the KMP port (below) plus fixes for the owner's 8.2 reports
   - Exercises added by hand in the Preview are kept in the saved draft.
   - The planner silently dropped an exercise it was asked for, and now fills that spot.
 - **Preview:** a new "Exercises per round" stepper, sharing the setting with Train.
-- **Level progress:** a session done on the same day as a hand-set level now counts as a good session. Past sessions are re-evaluated automatically.
+- **Level progress, cause 1 (the owner's case):** a level raised with the Preview + now counts. Completing every set at the planned reps and pressing Done makes that level current with "1 of 3". Before, it counted only with typed reps. Owner decision, 2026-11-05.
+- **Level progress, cause 2:** a session done on the same day as a level set on the exercise detail page now counts. Past sessions are re-evaluated automatically for both causes.
 - **Level picker:** a live line under the chips shows which levels count as done and which level is current. Chip N means levels 1–N are done.
 - **Exercise history:** the exercise detail page in Progress lists that exercise's past sessions, newest first.
 
@@ -17,7 +18,7 @@ The APK to sideload is `/Users/nils/Documents/hermes/Apps/builds/app-debug-R9.1.
 Extra phone checks for 9.1, on top of the checklist below:
 - [ ] Train count equals the number of exercises in the Preview, including after adding one by hand. Result:
 - [ ] The Preview "Exercises per round" stepper changes the round and Train follows. Result:
-- [ ] Raise the archer push-up level by hand, train the same day at that level, and check the end screen shows 1 of 3 good sessions. Result:
+- [ ] Raise the archer push-up level with the Preview +, do the planned reps, press Done, and check the end screen shows the new level with 1 of 3. Result:
 - [ ] Progress → archer push-up shows its history. Result:
 
 ## KMP port ready for the owner phone test (2026-11-02)
