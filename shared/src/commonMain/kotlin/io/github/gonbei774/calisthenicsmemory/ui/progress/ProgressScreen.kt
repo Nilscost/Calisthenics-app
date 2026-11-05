@@ -376,6 +376,17 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
                 for (n in 1..5) FilterChip(selected = displayStars(c, progress, v.id) == n, onClick = { onLevelsDone(n) }, label = { Text("$n") }, modifier = Modifier.testTag("detail_set_level_$n"))
                 if (v.id in progress.variations) AppTextButton(onClick = { onLevelsDone(null) }, modifier = Modifier.testTag("detail_set_level_none")) { Text(stringResource(Res.string.detail_edit_clear)) }
             }
+            // live line: the chip value is the levels done, so the level being worked on is one above it
+            val picked = displayStars(c, progress, v.id)
+            Text(
+                when {
+                    picked >= 5 -> stringResource(Res.string.detail_edit_current_all)
+                    picked <= 0 -> stringResource(Res.string.detail_edit_current_none)
+                    else -> stringResource(Res.string.detail_edit_current, picked, picked + 1)
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.testTag("level_edit_current"),
+            )
             Caption(stringResource(Res.string.personal_targets_title))
             Text(stringResource(Res.string.personal_targets_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             repCap?.let { Text(stringResource(Res.string.personal_targets_rep_cap_hint, it), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("personal_targets_rep_cap_hint")) }
