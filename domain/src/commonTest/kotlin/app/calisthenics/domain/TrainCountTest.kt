@@ -49,4 +49,18 @@ class TrainCountTest {
         assertTrue(p.blocks.none { it.slotId == slot })
         assertTrue(exercisesPerRoundOf(p) < exercisesPerRoundOf(base))
     }
+
+    // The owner's case (Train 6, Preview 7): an exercise added by hand in the Preview stays in the saved draft, so the workout holds one more
+    // than the count that was set; Train now shows what the workout holds instead of the setting.
+    @Test fun aHandAddedExerciseIsPartOfTheCountTheWorkoutHolds() {
+        val s = TrainSettings(goalId = "general", rounds = 2, exercisesPerRound = 6)
+        val base = plan(s)
+        assertEquals(6, exercisesPerRoundOf(base))
+        val used = base.blocks.mapNotNull { it.variationId }.toSet()
+        val grown = catalog.variations.filter { it.id !in used && (it.kind == Kind.REPS || it.kind == Kind.HOLD) && !it.routineOnly && it.patterns.isNotEmpty() }.firstNotNullOfOrNull { v ->
+            val p = (buildTrainPlan(catalog, StarterRoutine.routine, none, SeedProfiles.home, s, edits = PlanEdits(added = listOf(AddedSlot(null, slotFor(v))))) as? PlanResult.Ready)?.plan
+            p?.takeIf { exercisesPerRoundOf(it) == 7 }
+        }
+        assertEquals(7, exercisesPerRoundOf(grown!!))   // 6 set, 7 in the list: what Train must show
+    }
 }
