@@ -63,3 +63,14 @@ Applying the final scope corrections also to flexibility: new contract stretches
 ## Final feedback audit · 2026-10-16
 
 Extended the five-second same-exercise left-to-right setup to stretch-only sessions and unilateral cool-down holds, preserving the full hold durations. Preview rest and exercise edits now survive the asynchronous history refresh. At larger system text sizes, exercise names use the card width so long labels stay readable. Pop-up sheet controls now expose their existing identifiers to the emulator checks.
+
+
+## Archer push-up level 3 not counted; exercise history in Progress · 2026-11-05
+
+Owner report (release 8.2): the archer push-up was raised to level 3 by hand, the level-3 reps were done, and the session was not counted as one of the 3 good sessions. Also: tapping an exercise in Progress should show its history below.
+
+**Finding.** A hand edit of a level is dated to its day and, by design, restarts that exercise from that day (older sessions cannot undo it). The progression replay ran the sessions of a day before the actions of the same day, so a session done on the day of the edit (raise the level, then train) was replayed first and the edit then wiped its streak: the end screen showed no good session. Sessions on later days were counted correctly. Nothing is specific to the archer push-up (the side display change is unrelated).
+
+**Fix.** A dated level edit is now applied before the sessions of its own day (`ProgressionEngine.replay`); other actions (accept harder/easier, overrides) still follow the sessions of their day. Progress is recomputed from history on every load, so past sessions are re-evaluated automatically: a session logged on the same day as a level edit now counts; sessions on days before the edit still do not. No stored data changes.
+
+**History.** The exercise detail page (reached from the Progress tab) has a History section under the levels: the past sessions of that exercise, newest first, with date, level, the logged sets (reps or seconds; per side for alternating exercises) and a "Good session" marker; a small caption when there are none. Read through the shared history repository (Android and web). Tests: `ManualLevelSameDayTest`, `HistoryStatsTest`; the Maestro `e_seeded` flow opens a seeded exercise and screenshots it.

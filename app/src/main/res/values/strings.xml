@@ -464,6 +464,13 @@
     <string name="panel_open_detail">Open exercise detail</string>
     <string name="detail_breadcrumb">Progress › %1$s · step %2$d of %3$d</string>
     <string name="detail_levels">Levels</string>
+    <string name="detail_history">History</string>
+    <string name="detail_history_empty">No sessions of this exercise yet.</string>
+    <string name="exercise_history_level">Level %1$d</string>
+    <string name="exercise_history_reps">%1$s reps</string>
+    <string name="exercise_history_secs">%1$s s</string>
+    <string name="exercise_history_per_side">%1$s per side</string>
+    <string name="exercise_history_good">Good session</string>
     <string name="detail_done">done</string>
     <string name="detail_now">now</string>
     <string name="detail_next">next</string>

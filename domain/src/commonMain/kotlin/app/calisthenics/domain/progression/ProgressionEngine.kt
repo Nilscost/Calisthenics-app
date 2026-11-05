@@ -432,7 +432,9 @@ class ProgressionEngine(private val catalog: Catalog) {
                 if (step.variationId != ev.variationId) vars[ev.variationId]?.let { vars[ev.variationId] = it.copy(streakDays = emptyList(), streakAssumed = 0) }
             }
         }
-        for ((i, a) in actions.withIndex()) items += Item(a.day, 2, "a" + i.toString().padStart(6, '0')) {
+        // A dated hand edit of a level (SelfAssessment) is applied BEFORE the sessions of its own day: the person raises the level and then trains, so that day's
+        // session is the first good session at the new level (it used to run first and the edit's restart wiped it). Every other action still follows the sessions of its day.
+        for ((i, a) in actions.withIndex()) items += Item(a.day, if (a is UserAction.SelfAssessment && a.day > 0) -1 else 2, "a" + i.toString().padStart(6, '0')) {
             when (a) {
                 is UserAction.SelfAssessment -> {
                     // W2: a dated (day > 0) hand edit / questionnaire answer restarts this exercise from its day: earlier evidence neither raises it above the answer nor leaves stale streaks or suggestions.

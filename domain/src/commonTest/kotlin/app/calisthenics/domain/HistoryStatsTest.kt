@@ -79,6 +79,19 @@ class HistoryStatsTest {
         assertEquals(30, effectiveSetSeries(listOf(SessionWithPlan(allPlanned, plan)), zone).getValue("dip-support-hold").single().lowest)
     }
 
+    @Test fun exerciseHistoryIsNewestFirstWithValuesAndTheGoodSessionMarker() {
+        val plan = planOf(blk("1", "pushup-archer", 1, reps(8)), blk("2", "pushup-archer", 2, reps(8)))
+        val good = session("g", LocalDate(2026, 10, 9), "COMPLETED", work("1", "pushup-archer", 30, 8), work("2", "pushup-archer", 30, 9))
+        val short = session("s", LocalDate(2026, 10, 2), "COMPLETED", work("1", "pushup-archer", 30, 8), work("2", "pushup-archer", 30, 6))
+        val other = session("o", LocalDate(2026, 10, 5), "COMPLETED", work("1", "squat-air", 30, 8))
+        val running = session("r", LocalDate(2026, 10, 10), "RUNNING", work("1", "pushup-archer", 30, 8))
+        val h = exerciseHistory(listOf(SessionWithPlan(short, plan), SessionWithPlan(good, plan), SessionWithPlan(other, plan), SessionWithPlan(running, plan)), "pushup-archer", zone)
+        assertEquals(listOf("g", "s"), h.map { it.sessionId })
+        assertEquals(listOf(8, 9), h[0].values); assertEquals(3, h[0].level); assertTrue(h[0].good)
+        assertEquals(listOf(8, 6), h[1].values); assertFalse(h[1].good)
+        assertTrue(exerciseHistory(emptyList(), "pushup-archer", zone).isEmpty())
+    }
+
     @Test fun withoutAPlanTheLoggedNumbersAreUsed() {
         val s = session("a", LocalDate(2026, 10, 2), "COMPLETED", work("1", "pushup-standard", 30, 7), work("2", "pushup-standard", 30, null))
         assertEquals(7, effectiveSetSeries(listOf(SessionWithPlan(s, null)), zone).getValue("pushup-standard").single().lowest)

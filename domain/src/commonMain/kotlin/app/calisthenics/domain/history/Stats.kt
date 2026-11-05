@@ -17,7 +17,7 @@ data class HistoryTiles(val sessionsThisWeek: Int, val levelUpsThisMonth: Int, v
 fun isLevelUp(e: ProgressEvent): Boolean =
     (e.message.startsWith("Level ") && " done after " in e.message) || e.message.startsWith("All five levels done") || e.message.startsWith("Every set of ")
 
-private fun day(ms: Long, zone: TimeZone) = Instant.fromEpochMilliseconds(ms).toLocalDateTime(zone).date
+internal fun day(ms: Long, zone: TimeZone) = Instant.fromEpochMilliseconds(ms).toLocalDateTime(zone).date
 
 fun historyTiles(sessions: List<SessionRecord>, levelUpDays: List<LocalDate>, today: LocalDate, zone: TimeZone): HistoryTiles {
     val done = sessions.filter { it.status == "COMPLETED" || it.status == "PARTIAL_FINISHED" }

@@ -430,6 +430,7 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
                 }
             }
         }
+        ExerciseHistorySection(v.id)
         if (v.isLoaded()) WeightTrack(v, progress, profile)
         if (unlocks.isNotEmpty()) { Caption(stringResource(Res.string.detail_unlocks)); LinkLine("", unlocks, "detail_unlocks", "detail_unlock_", MaterialTheme.colorScheme.onSurface, onOpen) }
         if (needs.isNotEmpty() || !isAvailable(v, profile)) {
