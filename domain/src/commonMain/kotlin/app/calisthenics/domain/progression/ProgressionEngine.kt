@@ -293,11 +293,17 @@ class ProgressionEngine(private val catalog: Catalog) {
                 events += ProgressEvent(ev.day, vid,
                     "Done with a lighter kettlebell (${formatKg(load!!)} kg instead of ${formatKg(recorded!!)} kg) — logged, but it does not count towards your next level.")
             } else {
+                // A level the person chose by hand (the Preview level stepper) and then did as shown, without typing a number (the logger starts at the level's own target and DONE
+                // sends nothing): it is a completed, not-below-target session at that level, so it counts like a typed result at the target. The planner never prescribes a level above the
+                // current one by itself, except an inferred starting estimate, which stays no evidence (owner 2026-11-05, archer push-up).
+                val chosenTier = ev.prescribedTier?.takeIf {
+                    !ev.demonstratedQualifying && ev.demonstratedTier == null && ev.qualifying && ev.inferredStartTier == null && ev.ruleMet == null && it > p.tier && it <= 5
+                }
+                val adoptedTier = if (ev.demonstratedQualifying && (ev.demonstratedTier ?: p.tier) > p.tier && (ev.demonstratedTier ?: 0) <= 5) ev.demonstratedTier else chosenTier
                 val canAdopt = v1 && autoProgression && !unknownWeightOnTrack && !heavierTrackReset &&
-                    !staleDefinition && hold == null && !p.autoPaused && ev.demonstratedQualifying &&
-                    (ev.demonstratedTier ?: p.tier) > p.tier && (ev.demonstratedTier ?: 0) <= 5
+                    !staleDefinition && hold == null && !p.autoPaused && adoptedTier != null
                 if (canAdopt) {
-                    val adopted = ev.demonstratedTier!!
+                    val adopted = adoptedTier!!
                     p = p.copy(
                         tier = adopted,
                         baselineTier = maxOf(p.baselineTier ?: 1, adopted),

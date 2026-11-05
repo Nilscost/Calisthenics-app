@@ -62,13 +62,14 @@ class DemonstratedProgressionTest {
         assertEquals(4, third.tier)
     }
 
+    /** Owner 2026-11-05: a level chosen by hand and completed as shown (DONE without typing: the logger starts at the level's own number) counts, as if its number were typed. A skipped set does not (name kept: verify.sh tracks it). */
     @Test fun selectedLevelWithoutConfirmedFullResultsDoesNotAdopt() {
         val p = plan(3)
         val work = p.blocks.filter { it.type == BlockType.WORK }
         val unconfirmed = resolveFeedback(p, work.associate { it.id to Execution.COMPLETED })
         val noLogs = deriveEvidence("no-logs", 1, p, unconfirmed, { "pushup" }, { _, _ -> 2 },
             effectivePolicyOf = { policy }).single()
-        assertEquals(1, replay(noLogs).tier)
+        assertEquals(3, replay(noLogs).tier)
 
         val partial = evidence(p, 2, List(3) { policy.tier(3).target.value }, setOf("w3"))
         assertEquals(1, replay(partial).tier)
