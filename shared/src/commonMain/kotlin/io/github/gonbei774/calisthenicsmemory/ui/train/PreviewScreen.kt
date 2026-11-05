@@ -279,7 +279,9 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
     var betweenMode by remember { mutableStateOf(openingSettings.effectiveBetweenSetMode()) }
     var modeRevision by remember { mutableLongStateOf(maxOf(TrainSettingsStore.modeRevision(ctx, draftKey), draft?.modeRevision ?: 0L)) }
     var preparationSeconds by remember { mutableIntStateOf(openingSettings.preparationSeconds.coerceIn(1, 30)) }
-    val settings = remember(format, sets, betweenMode, preparationSeconds) { openingSettings.copy(format = format, rounds = sets, flow = betweenMode == BetweenSetMode.FLOW, stretchOn = betweenMode == BetweenSetMode.STRETCH, betweenSetMode = betweenMode, preparationSeconds = preparationSeconds) }
+    // R8.2 (train-count): the exercises per round are chosen here too; the same setting and draft as Train, so both show the same number
+    var exerciseCount by remember { mutableStateOf(openingSettings.exercisesPerRound) }
+    val settings = remember(format, sets, betweenMode, preparationSeconds, exerciseCount) { openingSettings.copy(format = format, rounds = sets, exercisesPerRound = exerciseCount, flow = betweenMode == BetweenSetMode.FLOW, stretchOn = betweenMode == BetweenSetMode.STRETCH, betweenSetMode = betweenMode, preparationSeconds = preparationSeconds) }
     // A Room progress refresh may replace TrainData while the Preview is open. Preserve the user's draft edits.
     var routine by remember { mutableStateOf(resolved.routine) }
     var edits by remember { mutableStateOf(draft?.edits ?: resolved.edits) }
@@ -293,6 +295,14 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
         val (_, updatedDraft) = updateBetweenSetMode(ctx, TrainSettingsStore.load(ctx), latest, mode)
         modeRevision = updatedDraft.modeRevision
         betweenMode = mode
+    }
+    // A new count is a fresh automatic selection, as on Train: the hand edits of the old list do not carry over
+    fun chooseCount(n: Int) {
+        exerciseCount = n
+        edits = PlanEdits()
+        restDurations = emptyMap()
+        TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(exercisesPerRound = n))
+        PreviewDraftStore.put(ctx, PreviewDraft(draftKey, betweenSetMode = betweenMode, modeRevision = modeRevision, preparationSeconds = preparationSeconds.coerceIn(1, 30), ruleDefaultVersion = 1))
     }
     var saveDialog by remember { mutableStateOf(false) }
     var savedNote by remember { mutableStateOf<String?>(null) }
@@ -384,6 +394,12 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                             Text(stringResource(if (format == WorkoutFormat.CIRCUIT) Res.string.train_rounds_caption else Res.string.train_sets_caption), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
                             io.github.gonbei774.calisthenicsmemory.ui.components.Stepper(sets, { sets = it; TrainSettingsStore.save(ctx, TrainSettingsStore.load(ctx).copy(rounds = it)) }, MIN_TRAIN_ROUNDS..MAX_EXPLICIT_ROUNDS, tag = "preview_rounds")
                         }
+                    }
+                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                        val maxEx = remember(data, routine, profile, settings.goalId, settings.additionalPools, settings.focus, betweenMode) { reachableExercisesPerRound(data.catalog, routine, data.progress, profile, settings) }
+                        val shownCount = exercisesPerRoundOf(p).coerceAtLeast(1)   // what the list holds, hand edits included
+                        Text(stringResource(Res.string.train_exercises_stepper_caption), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)
+                        io.github.gonbei774.calisthenicsmemory.ui.components.Stepper(shownCount, { chooseCount(it) }, 1..maxOf(maxEx, shownCount), tag = "preview_exercises")
                     }
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                         Text(stringResource(Res.string.feedback_preparation_time), Modifier.weight(1f), style = MaterialTheme.typography.bodyMedium)

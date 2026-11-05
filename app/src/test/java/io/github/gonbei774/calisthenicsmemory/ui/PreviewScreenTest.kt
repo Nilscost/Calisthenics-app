@@ -241,7 +241,8 @@ class PreviewScreenTest {
             else TrainScreen(onPreview = { preview = true }, onStarted = {}, onEditProfile = {})
         } }
         rule.waitForIdle()
-        repeat(2) { rule.onNodeWithTag("exercises_plus").performScrollTo().performClick(); rule.waitForIdle() }
+        // Train shows what the list holds (6 plus the hand-added one = 7), so one tap asks for 8
+        rule.onNodeWithTag("exercises_plus").performScrollTo().performClick(); rule.waitForIdle()
         assertEquals(8, TrainSettingsStore.load(app).exercisesPerRound)
         rule.onNodeWithTag("train_start_button").performClick(); rule.waitForIdle()
         fun nextPlan(): WorkoutPlan = Json { ignoreUnknownKeys = true }.decodeFromString(
@@ -307,6 +308,19 @@ class PreviewScreenTest {
         rule.onNodeWithTag("preview_rounds_plus").performScrollTo().performClick(); rule.waitForIdle()
         assertEquals(5, app.getSharedPreferences("train", Context.MODE_PRIVATE).getInt("rounds", 0))
         rule.onNodeWithTag("preview_header").assertTextContains("5 rounds", substring = true)
+    }
+
+    // R8.2 (train-count): the exercises per round are chosen in the Preview too; same setting as Train, the list holds exactly that many
+    @Test fun theExercisesPerRoundAreChosenInThePreviewAndStayInSyncWithTheSetting() {
+        show(); rule.waitForIdle()
+        fun shown() = rule.onNodeWithTag("preview_exercises_value").performScrollTo().fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.Text].joinToString("").trim().toInt()
+        val before = shown()
+        rule.onNodeWithTag("preview_exercises_plus").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(before + 1, shown())
+        assertEquals(before + 1, app.getSharedPreferences("train", Context.MODE_PRIVATE).getInt("exercises", 0))
+        rule.onNodeWithTag("preview_exercises_minus").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(before, shown())
+        assertEquals(before, app.getSharedPreferences("train", Context.MODE_PRIVATE).getInt("exercises", 0))
     }
 
     // R8.3: Flow is chosen on Train; Preview exposes the shared preparation duration only.

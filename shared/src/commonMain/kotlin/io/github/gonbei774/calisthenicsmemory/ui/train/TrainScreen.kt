@@ -253,8 +253,8 @@ fun TrainScreen(
             }
             // R7-T08 (D1): exercises per round, next to the rounds; the default makes the session at least 30 minutes, a tap overrides it
             val exercisesCard: @Composable (Modifier) -> Unit = { m ->
-                val maxEx = remember(resolved, data, profile) { val r = routineForPlan(data.catalog, resolved.routine, data.progress, profile, resolved.settings.copy(exercisesPerRound = null)); maxExercisesPerRound(data.catalog, r, fillFocusOf(r, resolved.settings, data.catalog), profile, data.progress, resolved.settings.effectiveBetweenSetMode() == app.calisthenics.domain.model.BetweenSetMode.STRETCH) }
-                val shown = (eff.exercisesPerRound ?: plan?.let { exercisesPerRoundOf(it) } ?: 1).coerceAtLeast(1)   // a saved routine may hold more exercises than the pool-based maximum
+                val maxEx = remember(resolved, data, profile) { reachableExercisesPerRound(data.catalog, resolved.routine, data.progress, profile, resolved.settings) }
+                val shown = (plan?.let { exercisesPerRoundOf(it) } ?: eff.exercisesPerRound ?: 1).coerceAtLeast(1)   // what the workout holds, so Train and the Preview always show the same number
                 Card(m, shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.m).fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         Caption(stringResource(Res.string.train_exercises_stepper_caption))
