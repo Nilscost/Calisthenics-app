@@ -61,7 +61,7 @@ class ProgressionRouteTest {
         val route = c.mainRouteFor("pushup-standard", "one-arm-pushup")!!
         assertEquals("pushup", route.id)
         assertEquals("pushup-feet-elevated", c.nextMain("pushup-standard", "one-arm-pushup"))
-        assertEquals("pushup-one-arm-elevated", c.nextMain("pushup-uneven", "one-arm-pushup"))
+        assertEquals("pushup-half-one-arm", c.nextMain("pushup-uneven", "one-arm-pushup"))
         assertEquals("pushup-feet-elevated", c.previousMain("pushup-uneven", "one-arm-pushup"))
         assertTrue(c.progressionRoutes.any { it.defaultPool && it.mainPath.contains("pushup-standard") })
         assertTrue(validateCatalog(c).errors.toString(), validateCatalog(c).ok)
@@ -80,6 +80,6 @@ class ProgressionRouteTest {
         val uneven = mainPathOptions(c, "pushup-uneven", SeedProfiles.travel, "one-arm-pushup")
         val u = uneven.indexOfFirst { it.id == "pushup-uneven" }
         assertEquals("pushup-feet-elevated", uneven[u - 1].id)
-        assertEquals("pushup-one-arm-elevated", uneven[u + 1].id)
+        assertEquals("pushup-half-one-arm", uneven[u + 1].id)
     }
 }

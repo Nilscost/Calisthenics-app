@@ -111,10 +111,20 @@ private fun newExercises(catalog: Catalog, before: ProgressSnapshot, after: Prog
     for (v in catalog.variations) {
         if (out.size >= MAX_NEW_EXERCISES) break
         if (v.id in out || !ok(v.id)) continue
+        // the next main step of an exercise the person is still training is not news: it is announced when the route moves on to it
+        if (isNextStepOfExerciseStillInTraining(catalog, after, v.id, v.familyId)) continue
         val pol = catalog.policyForVariation(v.id) ?: continue
         if (Goals.unmet(catalog, v.id, before).isEmpty() || Goals.unmet(catalog, v.id, after).isNotEmpty()) continue
         val by = done.firstOrNull { d -> pol.prerequisiteRule?.allOf.orEmpty().any { g -> g.any { it.variationTierMet?.variationId == d } } }
         out[v.id] = NewExercise(v.id, by)
     }
     return out.values.take(MAX_NEW_EXERCISES)
+}
+
+/** True when [vid] is a `nextVariationIds` entry of the variation the person currently trains in its family and has not mastered yet. */
+private fun isNextStepOfExerciseStillInTraining(catalog: Catalog, after: ProgressSnapshot, vid: String, familyId: String): Boolean {
+    val activeId = after.activeInFamily[familyId] ?: return false
+    if (activeId == vid) return false
+    if (5 in (after.variations[activeId]?.achievedTiers ?: emptySet())) return false
+    return vid in (catalog.policyForVariation(activeId)?.nextVariationIds.orEmpty())
 }

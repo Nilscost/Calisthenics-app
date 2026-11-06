@@ -105,4 +105,27 @@ class SessionProgressSummaryTest {
         assertNull(e.leveledUpTo); assertFalse(e.mastered); assertTrue(e.hasProgression)
     }
 
+    // 9.2: the next main step of the exercise the person still trains is not announced as "new"; the route moving on to it is
+    private val split = "split-squat"
+    private val bulgarian = "split-squat-bulgarian"
+    private fun squatEv(day: Int, tier: Int) =
+        SessionEvidence("s$day$split", split, c.variation(split)!!.familyId, day, tier, 3, false, false, false, null, false, 3, 0, 2, progressionRouteId = "squat")
+
+    @Test fun reachingSplitSquatTierThreeDoesNotAnnounceTheBulgarianSplitSquat() {
+        val s = summary(split, 3, listOf(0, 5, 10)) { squatEv(it, 3) }
+        assertTrue(s.newExercises.none { it.variationId == bulgarian })
+    }
+
+    @Test fun movingOnAfterSplitSquatMasteryAnnouncesTheBulgarianSplitSquat() {
+        val s = summary(split, 5, listOf(0, 5, 10)) { squatEv(it, 5) }
+        assertTrue(s.exercises.single().mastered)
+        val next = s.newExercises.firstOrNull { it.variationId == bulgarian }
+        assertEquals(split, next?.unlockedBy)
+    }
+
+    @Test fun unrelatedPrerequisitesMetThisSessionAreStillAnnounced() {
+        val s = summary(split, 5, listOf(0, 5, 10)) { squatEv(it, 5) }
+        assertTrue(s.newExercises.isNotEmpty())
+    }
+
 }

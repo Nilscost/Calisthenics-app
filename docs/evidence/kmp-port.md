@@ -254,3 +254,18 @@ The two intermittent WebKit failures in `web-smoke` (runs 42007885134, 420391311
   - container: 6 of 6 passes with the unchanged app;
   - macOS: WebKit and Chromium passed 5 runs in a row, and the PWA test passed;
   - CI: see the PR.
+
+### 9.2 T1: progression rules — 2026-11-06
+
+- **Half one-arm push-up is a main step.** In `tools/progression_routes.py` the `pushup` main path is now `... pushup-feet-elevated pushup-archer pushup-half-one-arm pushup-one-arm-elevated ...` and the `ALTERNATE` entry at `pushup-archer` is removed. `python3 tools/gen_r8_catalog.py` (which wraps `gen_starter_catalog.py`) regenerated `app/src/main/assets/catalog.json` (identical to `content/starter/catalog.json`) and `docs/29-progression-routes.json`. A clean run before the edit produced no diff, so the whole diff comes from this change. Policy changes: archer `nextVariationIds`/`mainSuccessorId` is `pushup-half-one-arm`; half one-arm requires archer at tier 3 (the route gate, as for every main step); `pushup-one-arm-elevated` now requires half one-arm at tier 3 instead of archer. No Kotlin code lists routes or alternates by id.
+- **Existing users:** progress is rebuilt from history, so archer progress and levels are unchanged. Half one-arm is only planned once the route moves on from the archer.
+- **End screen (`SessionProgressSummary.newExercises()`):** a variation is not announced as new when it is a `nextVariationIds` entry of the variation the person currently trains in that family and has not mastered. It is announced when the route moves on (first loop) and unrelated newly met prerequisites (e.g. plank shoulder taps) are still announced.
+- **Tests:** `HalfOneArmRouteTest` (archer at level 3 never plans the half one-arm via `buildTrainPlan`/`StarterRoutine`, counts 0..7, 3/4/6 rounds), `SessionProgressSummaryTest` (split squat tier 3: no Bulgarian split squat; mastery: announced with `unlockedBy = split-squat`; unrelated prerequisites still announced), `StarterCatalogTest` and `ProgressionRouteTest` updated (new path, gates, uneven's next main step).
+- **Commands:** `ANDROID_HOME=/opt/homebrew/share/android-commandlinetools JAVA_HOME=/opt/homebrew/opt/openjdk@17 ./gradlew --offline :domain:jvmTest :domain:wasmJsNodeTest :data:testDebugUnitTest :app:testDebugUnitTest --continue` : BUILD SUCCESSFUL.
+- **ALTERNATE audit (listed, not changed).** Alternates clearly harder than the main step at their rung (by `difficultyRank` and targets):
+  - `plank-shoulder-tap` (anchor `plank-long-lever`, rank 25 vs next main `body-saw` 24; owner item 6, targets handled in T3);
+  - `ring-l-sit` (anchor `l-sit-floor`, rank 40 vs next main `l-sit-straddle` 34);
+  - `pushup-one-arm-straight-body` (anchor `pushup-one-arm`, the goal itself, rank 75 vs 70, tier 1 is 8 reps);
+  - `flag-clutch-horizontal-split` (anchor `flag-clutch-horizontal-tuck`, rank 35 vs 30);
+  - `seated-knee-raise` (rank 12 vs next main `lying-bent-knee-raise` 10) and `calf-raise-step-bent-knee` (22 vs next main `calf-raise-single` 20) cross the next rung by rank only, targets are the same as the anchor's.
+  Same-rung or slightly above the anchor but below the next main step (e.g. `pushup-diamond`, `pullup-typewriter`, `squat-pistol-elevated`, `dragon-flag-adv-tuck`, `inverted-row-wide`) were not flagged.
