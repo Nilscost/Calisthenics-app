@@ -1,5 +1,24 @@
 # Actual project status
 
+## Release 9.2 · 0.12.2-r9 (code 21) · 2026-11-06
+
+Fixes for the owner's 9.1 feedback ([plan](docs/42-feedback-2026-11-06.md), [details](docs/user-feedback.md)).
+
+- **Half One-Arm Push-Up** is now the step after the Archer Push-Up, no longer an alternative that rotates in beside it. It is planned only after the archer push-up is mastered.
+- **"New exercise unlocked"** no longer announces the next step of an exercise you are still training (Bulgarian split squat while on split squat level 4). It appears when you actually move on. Unrelated exercises (shoulder taps after the plank) are still announced.
+- **End screen:** one card per exercise. A level reached or mastery shows on that exercise's own card (gold border, stars pop in).
+- **Stars:** the level you are working on is a dark star with a gold outline, on the end screen, Progress and the exercise page. "Level 4 of 5" shows 3 gold stars plus the outlined 4th.
+- **Training screen:** "Too easy" is removed; it stays on the end screen next to "Too hard".
+- **Targets:** Calf Raise 20/25/30/35/40 (was 15–25); Plank Shoulder Taps 10/12/14/16/20 total taps (was 6–16). Single-leg calf raises keep 15–25.
+
+The APK to sideload is `/Users/nils/Documents/hermes/Apps/builds/app-debug-R9.2.apk`. The web app (same unannounced URL) is redeployed with 9.2.
+
+Extra phone checks for 9.2:
+- [ ] The Workout preview never shows the half one-arm push-up while you are on the archer push-up. Result:
+- [ ] No "Too easy" during training; it is on the end screen. Result:
+- [ ] End screen: one card per exercise; the outlined star matches "Level N of 5". Result:
+- [ ] Calf raise and shoulder taps feel right at the new targets. Result:
+
 ## Release 9.1 · 0.12.1-r9 (code 20) · 2026-11-05
 
 Version 9.1 includes the KMP port (below) plus fixes for the owner's 8.2 reports ([details](docs/user-feedback.md)).

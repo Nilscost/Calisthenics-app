@@ -221,7 +221,7 @@ class SessionScreenTest {
     }
 
     // Name kept from the baseline (config/app-test-baseline.txt); 9.2 T3 removed Too easy from the logger too, so it is asserted absent.
-    @Test fun noRatingChipsDuringTheWorkoutExceptTooEasy() {
+    @Test fun noRatingChipsDuringTheWorkout() {
         // doc 17 §2.3: Too hard / Pain stay on the end screen; 9.2 T3: Too easy is no longer in the logger either
         show(stateAt(0))
         for (t in listOf("logger_too_hard", "logger_pain", "logger_too_easy")) rule.onNodeWithTag(t).assertDoesNotExist()
