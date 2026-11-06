@@ -82,11 +82,51 @@ async function run(engine, browserType, base, server, notes) {
     (hit ? allowed : errors).push(hit ? { id: hit.id } : `${text} (${url})`);
   });
   page.on('pageerror', e => errors.push(`pageerror: ${e.message}`));
-  page.on('requestfailed', r => errors.push(`request failed: ${r.url()}`));
+  let shotName = 'start';   // the last screenshot taken, so a failure can be placed in the walk
+  // A failed request is an error, with one exception: a demo clip request that the browser cancelled because the app
+  // released that clip (DemoClips.wasmJs.kt: removeAttribute('src') + load(), when a block ends or the screen changes) or
+  // because the test reloaded the page, after the request had started. Linux WebKit still has the clip's request open at
+  // that moment and reports it as "Load request cancelled". The clip itself must have played (checked in the walk).
+  const CANCELLED = /^(Load request cancelled|net::ERR_ABORTED)$/;
+  const clipReleases = [], reloads = [], failedRequests = [], benignAborts = [];
+  await page.exposeBinding('__calClipReleased', (_, url, t) => { clipReleases.push({ url, t }); });
+  await page.addInitScript(() => {
+    const load = HTMLMediaElement.prototype.load;
+    HTMLMediaElement.prototype.load = function () {
+      if (this.dataset && this.dataset.calClip && !this.hasAttribute('src')) window.__calClipReleased(new URL(this.dataset.calClip, document.baseURI).href, Date.now());
+      return load.call(this);
+    };
+  });
+  // Playwright's Linux WebKit shows a WebGL canvas one frame late: what the app draws in frame N reaches the screen only
+  // when frame N+1 is drawn. Compose draws only on change, so its last frame before going idle (the end screen's cards,
+  // a label that just loaded, the end of a dialog fade) never appears and every pixel check after it times out.
+  // preserveDrawingBuffer makes WebKit show each frame as it is drawn; the test reads the screen, the app is unchanged.
+  // (Checked by drawing on the app's own context: red, then green in the next frame -> the screen showed red only then.)
+  if (engine === 'webkit') await page.addInitScript(() => {
+    const getContext = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (type, attrs, ...rest) {
+      if (/^webgl/.test(type)) attrs = { ...attrs, preserveDrawingBuffer: true };
+      return getContext.call(this, type, attrs, ...rest);
+    };
+  });
+  const reload = async () => { reloads.push(Date.now()); await page.reload(); };
+  page.on('requestfailed', r => failedRequests.push({ r, errorText: (r.failure() && r.failure().errorText) || '', after: shotName, seen: Date.now() }));
+  const classifyFailedRequests = () => {
+    for (const { r, errorText, after, seen } of failedRequests.splice(0)) {
+      const desc = `${r.url()} (${r.resourceType()}, ${errorText}, after ${after})`;
+      const started = r.timing().startTime > 0 ? r.timing().startTime : seen;
+      const isClip = /\/data\/demos\/[^/]+\.mp4$/.test(new URL(r.url()).pathname);
+      const why = !isClip || !CANCELLED.test(errorText) ? null
+        : clipReleases.some(c => c.url === r.url() && c.t >= started - 5) ? 'clip released'
+        : reloads.some(t => t >= started - 5) ? 'page reloaded' : null;
+      if (why) benignAborts.push(`${desc}: ${why}`); else errors.push(`request failed: ${desc}`);
+    }
+  };
   page.on('response', r => { if (r.status() >= 400) errors.push(`HTTP ${r.status()}: ${r.url()}`); });
 
   let step = 0;
   const shot = async name => {
+    shotName = name;
     const buf = await page.screenshot({ path: path.join(dir, `${String(++step).padStart(2, '0')}-${name}.png`) });
     return buf;
   };
@@ -143,7 +183,7 @@ async function run(engine, browserType, base, server, notes) {
     expect(near(px(img, 40, 725), BLUE), 'Train: Start workout button missing');
     await shot('train');
 
-    await page.reload();
+    await reload();
     await page.waitForSelector('canvas', { timeout: 60000 });
     const back = Date.now() + 30000;
     for (;;) {
@@ -256,7 +296,7 @@ async function run(engine, browserType, base, server, notes) {
     expect(near(px(img, 40, 725), BLUE), 'Done on the end screen did not return to Train');
     img = await openHistory(); await shot('history-after-workout');
     expect(near(px(img, 300, 420), WHITE, 3), 'History does not show the finished workout');
-    await page.reload();
+    await reload();
     await page.waitForSelector('canvas', { timeout: 60000 });
     await waitPx(i => near(px(i, 40, 725), BLUE), 'Train after reload');
     img = await openHistory(); await shot('history-after-reload');
@@ -268,7 +308,7 @@ async function run(engine, browserType, base, server, notes) {
     await tap(175, 800);
     await waitPx(sessionShowing, 'second session screen');
     await sleep(1000); await tap(194, 803); await sleep(1500);               // finish one block so the checkpoint is not at the start
-    await page.reload();
+    await reload();
     await page.waitForSelector('canvas', { timeout: 60000 });
     img = await waitPx(i => near(px(i, 117, 172), BLUE, 30), 'recovery card with "Continue it"');
     await settle(null); await shot('recovery-offered');
@@ -314,7 +354,7 @@ async function run(engine, browserType, base, server, notes) {
       const dbs = await indexedDB.databases();
       await Promise.all(dbs.map(d => new Promise(r => { const q = indexedDB.deleteDatabase(d.name); q.onsuccess = q.onerror = q.onblocked = () => r(); })));
     });
-    await page.reload();
+    await reload();
     await page.waitForSelector('canvas', { timeout: 60000 });
     img = await waitPx(i => near(px(i, 305, 800), BLUE) && near(px(i, 5, 400), PAPER, 3), 'onboarding after the wipe');
     await shot('wiped-onboarding');
@@ -358,7 +398,7 @@ async function run(engine, browserType, base, server, notes) {
     if (!server && engine === 'webkit') notes.push('webkit: live URL, offline reload not run (caches verified)');
     else {
       if (server) server.down = true; else await context.setOffline(true);
-      await page.reload();
+      await reload();
       await page.waitForSelector('canvas', { timeout: 60000 });
       const offlineEnd = Date.now() + 30000;
       for (;;) {
@@ -374,13 +414,23 @@ async function run(engine, browserType, base, server, notes) {
     }
   } catch (e) {
     await shot('failure').catch(() => {});
+    // is the page still producing frames (Compose draws on requestAnimationFrame), and which clips are in the DOM?
+    const state = await Promise.race([sleep(5000).then(() => 'page did not answer within 5 s'), page.evaluate(() => new Promise(res => {
+      let frames = 0; const t0 = performance.now();
+      const tick = () => { frames++; if (performance.now() - t0 < 1000) requestAnimationFrame(tick); else res(JSON.stringify({ framesPerSecond: frames,
+        clips: [...document.querySelectorAll('video')].map(v => ({ clip: v.dataset.calClip, ready: v.readyState, net: v.networkState, paused: v.paused, t: v.currentTime })) })); };
+      requestAnimationFrame(tick);
+    })).catch(err => `state unavailable: ${err.message}`)]);
+    e.message += `\npage state at failure: ${state}`;
+    classifyFailedRequests();
     if (errors.length) e.message += `\nconsole/page errors so far:\n${errors.join('\n')}`;
     throw e;
   } finally {
+    classifyFailedRequests();
     await context.close(); await browser.close();
   }
   if (errors.length) throw new Error(`${engine} console/page errors:\n${errors.join('\n')}`);
-  return { engine, steps: step, allowedConsoleErrors: allowed.map(a => a.id) };
+  return { engine, steps: step, allowedConsoleErrors: allowed.map(a => a.id), benignAborts };
 }
 
 (async () => {
