@@ -130,8 +130,8 @@ data class Target(val type: TargetType, val value: Int, /** V21: the top of a re
 fun Target.alternatingTotal(): Target = Target(type, value * 2, max?.let { it * 2 })
 
 /** O2: how progress is judged for a routine. App levels = today's five-target tiers; Rep range = sets x from-to (a session where every set reaches the top moves you on); Custom = the same, with everything editable. */
-/** L01: the shared tier vocabulary. R reps, RU reps per side, C core reps, H30 holds to 30 s, H60 accumulated holds to one minute, N negatives, E endurance (calves, tibialis), M McGill maintenance. */
-@Serializable enum class TierProfile { R, RU, C, H30, H60, N, E, M }
+/** L01: the shared tier vocabulary. R reps, RU reps per side, C core reps, H30 holds to 30 s, H60 accumulated holds to one minute, N negatives, E endurance (tibialis, single-leg calves), E40 endurance 20-40 (two-leg calf raise), M McGill maintenance. */
+@Serializable enum class TierProfile { R, RU, C, H30, H60, N, E, E40, M }
 
 @Serializable enum class RuleKind { APP_LEVELS, REP_RANGE, CUSTOM }
 

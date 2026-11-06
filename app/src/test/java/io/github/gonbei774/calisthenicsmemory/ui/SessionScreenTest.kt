@@ -201,13 +201,14 @@ class SessionScreenTest {
         assertEquals(target + 1, intents[0].getIntExtra(WorkoutSessionService.EXTRA_REPS, -2))
     }
 
-    // R7-T03 (D3, B9): "Too easy" next to the stepper feeds the same tooEasy flag as the end screen
+    // Name kept from the baseline; 9.2 T3: there is no Too easy chip in the logger, so a logged set never sends tooEasy
     @Test fun tooEasyNextToTheStepperIsSentWithTheLog() {
         show(stateAt(0))
-        rule.onNodeWithTag("logger_too_easy").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("logger_too_easy").assertDoesNotExist()
+        rule.onNodeWithTag("logger_plus").performClick(); rule.waitForIdle()
         val intent = lastIntent()
         assertEquals(WorkoutSessionService.ACTION_LOG, intent.action)
-        assertTrue(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_EASY, false))
+        assertFalse(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_EASY, true))
         assertFalse(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_HARD, true))
     }
 
@@ -219,11 +220,12 @@ class SessionScreenTest {
         rule.onNodeWithTag("logger").assertDoesNotExist() // a hold is not logged while it runs
     }
 
+    // Name kept from the baseline (config/app-test-baseline.txt); 9.2 T3 removed Too easy from the logger too, so it is asserted absent.
     @Test fun noRatingChipsDuringTheWorkoutExceptTooEasy() {
-        // doc 17 §2.3: Too hard / Pain stay on the end screen; R7-T03: Too easy is next to the stepper
+        // doc 17 §2.3: Too hard / Pain stay on the end screen; 9.2 T3: Too easy is no longer in the logger either
         show(stateAt(0))
-        for (t in listOf("logger_too_hard", "logger_pain")) rule.onNodeWithTag(t).assertDoesNotExist()
-        rule.onNodeWithTag("logger_minus").assertExists(); rule.onNodeWithTag("logger_plus").assertExists(); rule.onNodeWithTag("logger_too_easy").assertExists(); rule.onNodeWithTag("session_done").assertExists()
+        for (t in listOf("logger_too_hard", "logger_pain", "logger_too_easy")) rule.onNodeWithTag(t).assertDoesNotExist()
+        rule.onNodeWithTag("logger_minus").assertExists(); rule.onNodeWithTag("logger_plus").assertExists(); rule.onNodeWithTag("session_done").assertExists()
     }
 
     @Test fun theBottomRowIsPauseDoneSkipWithDoneInTheMiddle() {

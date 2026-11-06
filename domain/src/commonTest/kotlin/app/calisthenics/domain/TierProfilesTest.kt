@@ -17,6 +17,7 @@ class TierProfilesTest {
         assertTrue(TierProfile.H60.specs().all { it.sets * it.value == 60 })                      // one accumulated minute at every tier
         assertEquals(listOf(3, 4, 5, 5, 5), values(TierProfile.N)); assertEquals(listOf(3, 5, 5, 8, 10), TierProfile.N.specs().map { it.seconds })
         assertEquals(listOf(15, 18, 20, 22, 25), values(TierProfile.E))
+        assertEquals(listOf(20, 25, 30, 35, 40), values(TierProfile.E40))
         assertTrue(TierProfile.entries.all { it.specs().size == 5 })
         assertEquals(4, TierProfile.R.gateTier); assertEquals(4, TierProfile.RU.gateTier); assertEquals(5, TierProfile.C.gateTier); assertEquals(5, TierProfile.H30.gateTier); assertNull(TierProfile.M.gateTier)
         assertTrue(TierProfile.H30.isHold && TierProfile.H60.isHold && !TierProfile.R.isHold)

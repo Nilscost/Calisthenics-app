@@ -18,6 +18,7 @@ fun TierProfile.specs(): List<TierSpec> = when (this) {
     TierProfile.H60 -> listOf(TierSpec(6, 10), TierSpec(4, 15), TierSpec(3, 20), TierSpec(2, 30), TierSpec(1, 60))   // accumulate one minute
     TierProfile.N -> listOf(TierSpec(3, 3, 3), TierSpec(3, 4, 5), TierSpec(3, 5, 5), TierSpec(3, 5, 8), TierSpec(3, 5, 10))
     TierProfile.E -> reps(15, 18, 20, 22, 25)
+    TierProfile.E40 -> reps(20, 25, 30, 35, 40)
     TierProfile.M -> List(5) { TierSpec(1, 10) }   // McGill: 5-3-1 reps of 8-10 s holds, maintenance only: no progression
 }
 

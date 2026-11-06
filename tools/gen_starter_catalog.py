@@ -55,7 +55,7 @@ PROFILE_SPECS = {
     "R": [(3, 5), (3, 6), (3, 7), (3, 8), (3, 10)], "RU": [(3, 5), (3, 6), (3, 7), (3, 8), (3, 10)],
     "C": [(3, 8), (3, 9), (3, 10), (3, 11), (3, 12)], "H30": [(3, 10), (3, 15), (3, 20), (3, 25), (3, 30)],
     "H60": [(6, 10), (4, 15), (3, 20), (2, 30), (1, 60)], "N": [(3, 3, 3), (3, 4, 5), (3, 5, 5), (3, 5, 8), (3, 5, 10)],
-    "E": [(3, 15), (3, 18), (3, 20), (3, 22), (3, 25)], "M": [(1, 10)] * 5,
+    "E": [(3, 15), (3, 18), (3, 20), (3, 22), (3, 25)], "E40": [(3, 20), (3, 25), (3, 30), (3, 35), (3, 40)], "M": [(1, 10)] * 5,
 }
 HOLD_PROFILES = {"H30", "H60", "M"}
 def profile_tiers(code, rec=60, stretch=None):
@@ -766,7 +766,7 @@ strength("plank-shoulder-tap", "Plank Shoulder Taps", "plank-tap", ["CORE_ANTI_E
          ["Start in a high plank, hands under the shoulders, feet a little wider than hip width.", "Lift one hand and tap the opposite shoulder without letting the hips rock.",
           "Put it back and tap with the other hand. One tap on each side counts as two reps."],
          ["Hips stay level", "Feet wider for balance", "Slow taps"],
-         reps_tiers([6, 8, 10, 12, 16]), RR, CORE_ST, rank=25, prereq={"allOf": [[vt("plank", 2)]]})
+         reps_tiers([10, 12, 14, 16, 20]), RR, CORE_ST, rank=25, prereq={"allOf": [[vt("plank", 2)]]})
 strength("walking-lunge", "Walking Lunge", "lunge", ["LUNGE"], ["LOWER_BODY"], "REPS", "standing",
          ["Step forward into a lunge until both knees are bent at about a right angle.", "Push through the front foot and bring the back foot forward into the next step.", "Keep the chest up; each step counts as one rep."],
          ["Chest up", "Front knee over the foot", "Controlled steps"],
@@ -879,9 +879,10 @@ strength("weighted-squat", "Weighted Squat", "vest-squat", ["SQUAT"], ["LOWER_BO
 # =============================================================================================================
 CALF_ST = ["stretch-calf-wall", "stretch-hamstring", "stretch-hip-flexor"]
 E_NOTE = "Endurance reps 15 to 25: 2-4 sets of 15-25 is sourced for the tibialis raise; the steps between are DRAFT."
+E40_NOTE = "Endurance reps 20 to 40 for the two-leg calf raise (owner feedback 2026-11-06, was 15 to 25): the steps between are DRAFT."
 strength("calf-raise", "Calf Raise", "calf", ["CALF_RAISE"], ["LOWER_BODY"], "REPS", "standing",
          ["Stand tall on the balls of both feet (a step edge is fine, a wall or chair for balance).", "Rise as high as you can, pause for a moment at the top, then lower slowly past level if you are on a step.", "Keep the knees straight and the movement smooth."],
-         ["Rise tall", "Pause at the top", "Slow lowering"], reps_tiers([15, 18, 20, 22, 25]), [S_RR], CALF_ST, rank=10, nxt=["calf-raise-single"], tier_profile="E", tier_note=E_NOTE,
+         ["Rise tall", "Pause at the top", "Slow lowering"], reps_tiers([20, 25, 30, 35, 40]), [S_RR], CALF_ST, rank=10, nxt=["calf-raise-single"], tier_profile="E40", tier_note=E40_NOTE,
          cautions=(CAUTION_STRENGTH, "Stop on pain in the Achilles tendon or the calf; build up slowly."))
 strength("calf-raise-single", "Single-Leg Calf Raise (per side)", "calf", ["CALF_RAISE"], ["LOWER_BODY"], "REPS", "standing",
          ["Stand on one foot (hold a wall or chair lightly for balance) and rise onto the ball of the foot.", "Pause at the top, lower slowly, finish a side, then switch.", "Keep the knee straight."],

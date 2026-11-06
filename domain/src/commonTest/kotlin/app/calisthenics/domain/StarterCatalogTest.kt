@@ -403,10 +403,12 @@ class StarterCatalogTest {
         assertRoutePath("calf", listOf("calf-raise", "calf-raise-step", "calf-raise-single", "calf-raise-step-single", "calf-raise-single-loaded"))
         assertRouteMember("library", "tibialis-raise", ProgressionRole.LIBRARY)
         assertRouteMember("library", "tibialis-raise-single", ProgressionRole.LIBRARY)
-        for (id in listOf("calf-raise", "calf-raise-single", "calf-raise-single-loaded", "tibialis-raise", "tibialis-raise-single")) {
+        for (id in listOf("calf-raise-single", "calf-raise-single-loaded", "tibialis-raise", "tibialis-raise-single")) {
             val p = catalog.policyForVariation(id)!!
             assertEquals(id, app.calisthenics.domain.model.TierProfile.E, p.tierProfile); assertEquals(id, listOf(15, 18, 20, 22, 25), p.tiers.map { it.target.value })
         }
+        val calfRaise = catalog.policyForVariation("calf-raise")!!
+        assertEquals(app.calisthenics.domain.model.TierProfile.E40, calfRaise.tierProfile); assertEquals(listOf(20, 25, 30, 35, 40), calfRaise.tiers.map { it.target.value })
         val loaded = catalog.variation("calf-raise-single-loaded")!!
         assertEquals("weight", loaded.loadEquipmentId()); assertTrue(loaded.isLoaded())
         assertEquals(setOf("wall"), catalog.variation("tibialis-raise")!!.equipmentAlternatives.flatMap { it.capabilities }.toSet())
