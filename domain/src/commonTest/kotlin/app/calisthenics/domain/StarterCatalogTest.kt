@@ -237,7 +237,7 @@ class StarterCatalogTest {
     }
 
     @Test fun l02PushUpChainFollowsTheLoadCurve() {   // Ebben 2011: wall < high incline < knee / low incline < full < diamond / 30 cm decline < archer < one-arm
-        assertRoutePath("pushup", listOf("pushup-wall", "pushup-incline-high", "pushup-incline", "pushup-standard", "pushup-feet-elevated", "pushup-archer", "pushup-one-arm-elevated", "pushup-one-arm-negative", "pushup-one-arm"))
+        assertRoutePath("pushup", listOf("pushup-wall", "pushup-incline-high", "pushup-incline", "pushup-standard", "pushup-feet-elevated", "pushup-archer", "pushup-half-one-arm", "pushup-one-arm-elevated", "pushup-one-arm-negative", "pushup-one-arm"))
         assertRouteMember("pushup", "pushup-knee", ProgressionRole.ALTERNATE, "pushup-incline")
         assertRouteMember("pushup", "pushup-diamond", ProgressionRole.ALTERNATE, "pushup-feet-elevated")
         assertContractExtensions("pushup-standard", listOf("pushup-diamond", "pushup-feet-elevated"))
@@ -246,6 +246,12 @@ class StarterCatalogTest {
         assertContractExtensions("pushup-diamond", listOf("pushup-archer"))
         val archerPrerequisites = catalog.policyForVariation("pushup-archer")!!.prerequisiteRule.allOf.flatten().mapNotNull { it.variationTierMet?.variationId }.toSet()
         assertEquals(setOf("pushup-feet-elevated"), archerPrerequisites)
+        // 9.2: the half one-arm push-up is a main step after the archer, not an alternate beside it
+        assertRouteGate("pushup-half-one-arm", "pushup-archer", 3)
+        assertRouteGate("pushup-one-arm-elevated", "pushup-half-one-arm", 3)
+        assertEquals(listOf("pushup-half-one-arm"), catalog.policyForVariation("pushup-archer")!!.nextVariationIds)
+        assertEquals(listOf("pushup-one-arm-elevated"), catalog.policyForVariation("pushup-half-one-arm")!!.nextVariationIds)
+        assertEquals(ProgressionRole.MAIN, catalog.routeById("pushup")!!.members.first { it.variationId == "pushup-half-one-arm" }.role)
         val rank = { id: String -> catalog.variation(id)!!.difficultyRank }
         assertTrue(rank("pushup-wall") < rank("pushup-incline-high") && rank("pushup-incline-high") < rank("pushup-incline") && rank("pushup-standard") < rank("pushup-diamond"))
     }
