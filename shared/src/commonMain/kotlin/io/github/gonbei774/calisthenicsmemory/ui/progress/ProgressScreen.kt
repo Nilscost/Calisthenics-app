@@ -350,6 +350,8 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
         (repCap == null || parsedTargets.filterNotNull().all { it <= repCap })
     val tier = progress.tierFor(v.id) ?: 1
     val achieved = progress.variations[v.id]?.achievedTiers ?: emptySet()
+    // moved past (a harder exercise after it is started): the stars show all five, so every level reads done and none is "now"
+    val passed = displayStars(c, progress, v.id) >= 5
     val unlocks = policy?.nextVariationIds.orEmpty().mapNotNull { id -> c.variation(id)?.let { id to it.name } }
     val needs = Goals.unmet(c, v.id, progress).map { it.variationId to stringResource(Res.string.sheet_step_name, c.variation(it.variationId)?.name ?: it.variationId, it.tier) }
     val dark = MaterialTheme.colorScheme.background.luminance() < 0.5f
@@ -432,12 +434,13 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
         if (policy != null) {
             Caption(stringResource(Res.string.detail_levels))
             policy.tiers.forEach { t ->
-                val state = when { t.index in achieved || t.index < tier -> Res.string.detail_done; t.index == tier -> Res.string.detail_now; else -> Res.string.detail_next }
+                val now = !passed && t.index == tier
+                val state = when { passed || t.index in achieved || t.index < tier -> Res.string.detail_done; now -> Res.string.detail_now; else -> Res.string.detail_next }
                 val value = if (t.target.type == TargetType.REPS) stringResource(Res.string.target_reps, t.target.value) else stringResource(Res.string.target_seconds, t.target.value)
                 Row(Modifier.fillMaxWidth().heightIn(min = 40.dp).semantics(mergeDescendants = true) {}.testTag("detail_level_${t.index}"), verticalAlignment = Alignment.CenterVertically) {
-                    Text("${t.index}", style = MaterialTheme.typography.titleLarge, modifier = Modifier.width(32.dp), color = if (t.index == tier) AppAccentTheme.colors.text else MaterialTheme.colorScheme.onSurface)
+                    Text("${t.index}", style = MaterialTheme.typography.titleLarge, modifier = Modifier.width(32.dp), color = if (now) AppAccentTheme.colors.text else MaterialTheme.colorScheme.onSurface)
                     Text(value, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-                    Text(stringResource(state).uppercase(), style = MaterialTheme.typography.labelLarge, color = if (t.index == tier) AppAccentTheme.colors.text else MaterialTheme.colorScheme.outline)
+                    Text(stringResource(state).uppercase(), style = MaterialTheme.typography.labelLarge, color = if (now) AppAccentTheme.colors.text else MaterialTheme.colorScheme.outline)
                 }
             }
         }

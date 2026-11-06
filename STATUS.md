@@ -8,6 +8,7 @@ Fixes for the owner's 9.1 feedback ([plan](docs/42-feedback-2026-11-06.md), [det
 - **"New exercise unlocked"** no longer announces the next step of an exercise you are still training (Bulgarian split squat while on split squat level 4). It appears when you actually move on. Unrelated exercises (shoulder taps after the plank) are still announced.
 - **End screen:** one card per exercise. A level reached or mastery shows on that exercise's own card (gold border, stars pop in).
 - **Stars:** the level you are working on is a dark star with a gold outline, on the end screen, Progress and the exercise page. "Level 4 of 5" shows 3 gold stars plus the outlined 4th.
+- **Exercise page of an exercise you moved past:** it showed 5 stars but marked Level 1 as "NOW". Its levels now all read "DONE", matching the stars.
 - **Training screen:** "Too easy" is removed; it stays on the end screen next to "Too hard".
 - **Targets:** Calf Raise 20/25/30/35/40 (was 15–25); Plank Shoulder Taps 10/12/14/16/20 total taps (was 6–16). Single-leg calf raises keep 15–25.
 

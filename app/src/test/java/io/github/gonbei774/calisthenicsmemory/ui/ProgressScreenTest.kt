@@ -100,6 +100,20 @@ class ProgressScreenTest {
         rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
     }
 
+    // 9.2: an exercise you moved past shows five stars, so its level list reads all done, with no "now"
+    @Test fun anExerciseMovedPastListsEveryLevelAsDone() {
+        show()
+        rule.onNodeWithTag("tab_chip_core").performScrollTo().performClick(); rule.waitForIdle()
+        chooseRouteContaining("v-up")
+        openDetailOf("v-up")
+        rule.onNodeWithTag("detail_edit").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("detail_set_level_3").performClick(); rule.waitForIdle()
+        rule.waitUntil(5_000) { runCatching { rule.onNodeWithTag("detail_level_4").assertTextContains("NOW", substring = true, ignoreCase = true) }.isSuccess }
+        rule.onNodeWithTag("detail_back").performClick(); rule.waitForIdle()
+        openDetailOf("leg-raise-lying")
+        (1..5).forEach { rule.onNodeWithTag("detail_level_$it").performScrollTo().assertTextContains("DONE", substring = true, ignoreCase = true) }
+    }
+
     // R7-T11 (D5): Edit mode sets the level by hand; V-up at level 3 shows 3 stars
     @Test fun editModeSetsTheLevelByHandAndTheStarsFollow() {
         show()
