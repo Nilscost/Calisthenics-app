@@ -238,3 +238,19 @@ Tag `kmp-phase-5`. Phases 0–5 are complete; only the owner phone test remains.
 - safe-area padding in standalone mode;
 - the iOS file chooser and audio;
 - occasional web-smoke flakiness in CI.
+
+### Web smoke flake fix — 2026-11-06
+
+The two intermittent WebKit failures in `web-smoke` (runs 42007885134, 42039131194: `request failed` for `pushup-standard.mp4`; run 42047696791: `onboarding Next button did not appear`) had test-environment causes, not app bugs. Both only showed up on Linux; macOS WebKit never reproduced them. They reproduced locally in the `mcr.microsoft.com/playwright:v1.62.1-noble` container, 3 of 4 runs.
+- **Clip request.** Linux WebKit reports the app's own clip release (`DemoClips.wasmJs.kt`: `removeAttribute('src')` + `load()` on Done) as "Load request cancelled". A cancelled demo-clip request now counts as benign only if the app released that clip URL or the test reloaded the page after the request started. These are listed as `benignAborts` in the results; any other failed request still fails the run.
+- **Missing pixels.** Playwright's Linux WebKit shows a WebGL canvas one frame late. This was shown by drawing on the app's own context: red, then green in the next frame, and the screen showed red only once green was drawn. Compose draws only on change, so its last frame before going idle never reached the screen: the end screen's cards, a label that had just loaded, the end of a dialog fade (the "dialog mid fade-out" of the Phase 5 known issue). The test now creates WebGL contexts with `preserveDrawingBuffer` in WebKit only; the app is unchanged.
+- **Ruled out along the way:**
+  - the service worker deleting Compose's cache (the blank label also happened without a service worker);
+  - lost coroutine dispatches (all `postMessage` dispatches were delivered);
+  - the WebGL context being lost;
+  - resource load errors (the label's string loaded, and the write and the draw both happened).
+- **Not changed:** the console allow-list, and no retries were added.
+- **Results:**
+  - container: 6 of 6 passes with the unchanged app;
+  - macOS: WebKit and Chromium passed 5 runs in a row, and the PWA test passed;
+  - CI: see the PR.
