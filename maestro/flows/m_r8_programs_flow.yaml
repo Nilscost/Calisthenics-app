@@ -45,7 +45,6 @@ appId: app.calisthenics.personal
 - assertVisible: { id: session_time }
 - assertNotVisible: { id: logger }
 - assertNotVisible: { id: logger_plus }
-- assertNotVisible: { id: logger_too_easy }
 - assertNotVisible: { id: session_done }
 - assertNotVisible: { id: session_skip }
 - takeScreenshot: 03-flow-session-${VARIANT}

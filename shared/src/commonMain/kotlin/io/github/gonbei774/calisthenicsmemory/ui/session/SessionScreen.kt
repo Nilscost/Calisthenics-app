@@ -336,8 +336,6 @@ private fun RepLogger(l: LoggerState, work: TimelineBlock, showName: Boolean) {
         Text(stringResource(if (l.hold) (if (work.alternating) Res.string.logger_seconds_held_per_side else Res.string.logger_seconds_held) else (if (work.alternating) Res.string.logger_reps_done_per_side else Res.string.logger_reps_done)), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
             BigStepper(l.reps, { l.reps = it; l.typed = true; l.push() }, 0..999, Modifier.weight(1f), step = if (l.hold && (l.target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "logger", suffix = stringResource(if (l.hold) Res.string.unit_suffix_s else Res.string.unit_suffix_x))
-            // R7-T03 (D3, B9): the same "Too easy" as on the end screen, so two of them in a row count towards moving on
-            FilterChip(selected = l.tooEasy, onClick = { l.tooEasy = !l.tooEasy; l.push() }, label = { Text(stringResource(Res.string.logger_too_easy)) }, modifier = Modifier.testTag("logger_too_easy"))
         }
     }
 }
