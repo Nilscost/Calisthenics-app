@@ -1,0 +1,677 @@
+--------- beginning of kernel
+11-05 14:30:17.743 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.747 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.751 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.755 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.759 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.763 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.767 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.771 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.775 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.780 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.784 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.788 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.792 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.796 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.800 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.804 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+11-05 14:30:17.808 W/logd    (    0): Skipping entries from slow reader, pid 457, fd 14, from LogBuffer::Prune()
+--------- beginning of system
+11-05 14:30:17.722 I/ActivityManager(  521): Force stopping app.calisthenics.personal appid=10192 user=0: from pid 13404
+11-05 14:30:17.723 I/ActivityManager(  521): Killing 13198:app.calisthenics.personal/u0a192 (adj 905): stop app.calisthenics.personal due to from pid 13404
+11-05 14:30:17.723 D/DisplayManagerService(  521): Drop pending events for gone uid 10192
+--------- beginning of main
+11-05 14:30:17.728 D/CarrierSvcBindHelper( 1057): onHandleForceStop: [app.calisthenics.personal]
+11-05 14:30:17.728 D/CarrierSvcBindHelper( 1057): No carrier app for: 0
+11-05 14:30:17.740 V/ActivityManager(  521): Got obituary of 13198:app.calisthenics.personal
+11-05 14:30:17.741 I/Zygote  (  339): Process 13198 exited due to signal 9 (Killed)
+11-05 14:30:17.776 D/CompatibilityChangeReporter(  521): Compat change id reported: 244637991; UID 10217; state: ENABLED
+11-05 14:30:17.777 D/CompatibilityChangeReporter(  521): Compat change id reported: 265464455; UID 10192; state: DISABLED
+11-05 14:30:17.777 D/CompatibilityChangeReporter(  521): Compat change id reported: 265452344; UID 10192; state: DISABLED
+11-05 14:30:17.777 D/CompatibilityChangeReporter(  521): Compat change id reported: 266124927; UID 10192; state: DISABLED
+11-05 14:30:17.777 D/CompatibilityChangeReporter(  521): Compat change id reported: 265451093; UID 10192; state: DISABLED
+11-05 14:30:17.777 D/CompatibilityChangeReporter(  521): Compat change id reported: 265456536; UID 10192; state: DISABLED
+11-05 14:30:17.777 D/CompatibilityChangeReporter(  521): Compat change id reported: 255940284; UID 10192; state: DISABLED
+11-05 14:30:17.777 D/CompatibilityChangeReporter(  521): Compat change id reported: 236283604; UID 10192; state: DISABLED
+11-05 14:30:17.777 D/CompatibilityChangeReporter(  521): Compat change id reported: 263959004; UID 10192; state: DISABLED
+11-05 14:30:17.778 D/CompatibilityChangeReporter(  521): Compat change id reported: 264304459; UID 10192; state: DISABLED
+11-05 14:30:17.778 D/CompatibilityChangeReporter(  521): Compat change id reported: 264301586; UID 10192; state: DISABLED
+11-05 14:30:17.778 D/CompatibilityChangeReporter(  521): Compat change id reported: 254631730; UID 10192; state: DISABLED
+11-05 14:30:17.779 D/CompatibilityChangeReporter(  521): Compat change id reported: 273509367; UID 10192; state: DISABLED
+11-05 14:30:17.780 D/CompatibilityChangeReporter(  521): Compat change id reported: 263259275; UID 10192; state: DISABLED
+11-05 14:30:17.780 D/CompatibilityChangeReporter(  521): Compat change id reported: 174042980; UID 10192; state: DISABLED
+11-05 14:30:17.780 D/CompatibilityChangeReporter(  521): Compat change id reported: 174042936; UID 10192; state: DISABLED
+11-05 14:30:17.780 D/CompatibilityChangeReporter(  521): Compat change id reported: 181136395; UID 10192; state: DISABLED
+11-05 14:30:17.780 D/CompatibilityChangeReporter(  521): Compat change id reported: 194480991; UID 10192; state: ENABLED
+11-05 14:30:17.782 D/CompatibilityChangeReporter(  521): Compat change id reported: 184838306; UID 10192; state: DISABLED
+11-05 14:30:17.783 D/CompatibilityChangeReporter(  521): Compat change id reported: 185004937; UID 10192; state: DISABLED
+11-05 14:30:17.783 D/CompatibilityChangeReporter(  521): Compat change id reported: 197654537; UID 10192; state: ENABLED
+11-05 14:30:17.784 V/SplashScreenExceptionList(  521): SplashScreen checking exception for package app.calisthenics.personal (target sdk:35) -> false
+11-05 14:30:17.784 D/CompatibilityChangeReporter(  521): Compat change id reported: 205907456; UID 10192; state: ENABLED
+11-05 14:30:17.785 D/SplashScreenView(  842): Build android.window.SplashScreenView{20b7c8c V.E...... ......ID 0,0-0,0}
+11-05 14:30:17.785 D/SplashScreenView(  842): Icon: view: null drawable: null size: 0
+11-05 14:30:17.785 D/SplashScreenView(  842): Branding: view: android.view.View{f1edfd5 G.ED..... ......I. 0,0-0,0 #10204ef android:id/splashscreen_branding_view} drawable: null size w: 0 h: 0
+11-05 14:30:17.787 D/CompatibilityChangeReporter(  521): Compat change id reported: 194833441; UID 10192; state: ENABLED
+11-05 14:30:17.787 I/ActivityTaskManager(  521): START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 pkg=app.calisthenics.personal cmp=app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity} with LAUNCH_MULTIPLE from uid 10217 (BAL_ALLOW_PERMISSION) result code=0
+11-05 14:30:17.788 D/CompatibilityChangeReporter(  521): Compat change id reported: 135634846; UID 10192; state: DISABLED
+11-05 14:30:17.788 D/CompatibilityChangeReporter(  521): Compat change id reported: 143937733; UID 10192; state: ENABLED
+11-05 14:30:17.789 V/WindowManagerShell(  842): Transition requested: android.os.BinderProxy@c1663ea TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=20 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 pkg=app.calisthenics.personal cmp=app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity } baseActivity=ComponentInfo{app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity} topActivity=ComponentInfo{app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity} origActivity=null realActivity=ComponentInfo{app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity} numActivities=1 lastActiveTime=2231576 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@8f606db} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 128 - 0, 0) topActivityInfo=ActivityInfo{f39d578 io.github.gonbei774.calisthenicsmemory.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+11-05 14:30:17.819 I/BpBinder(  401): onLastStrongRef automatically unlinking death recipients: 
+11-05 14:30:17.833 D/CompatibilityChangeReporter(  521): Compat change id reported: 168419799; UID 10192; state: DISABLED
+11-05 14:30:17.840 D/CompatibilityChangeReporter(  521): Compat change id reported: 273564678; UID 10192; state: DISABLED
+11-05 14:30:17.868 D/Zygote  (  339): Forked child process 13413
+11-05 14:30:17.933 W/ActivityManager(  521): Slow operation: 145ms so far, now at startProcess: returned from zygote!
+11-05 14:30:17.934 W/ActivityManager(  521): Slow operation: 146ms so far, now at startProcess: done updating battery stats
+11-05 14:30:17.934 W/ActivityManager(  521): Slow operation: 146ms so far, now at startProcess: building log message
+11-05 14:30:17.934 I/ActivityManager(  521): Start proc 13413:app.calisthenics.personal/u0a192 for next-top-activity {app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity}
+11-05 14:30:17.934 W/ActivityManager(  521): Slow operation: 146ms so far, now at startProcess: starting to update pids map
+11-05 14:30:17.934 W/ActivityManager(  521): Slow operation: 147ms so far, now at startProcess: done updating pids map
+11-05 14:30:17.953 I/GsaVoiceInteractionSrv( 1672): Handling ACTION_STOP_HOTWORD
+11-05 14:30:17.953 E/HwDetectorWithState( 1672): a: 3
+11-05 14:30:17.982 D/EGL_emulation( 3708): app_time_stats: avg=4901.81ms min=39.08ms max=23498.23ms count=5
+11-05 14:30:17.995 I/henics.personal(13413): Late-enabling -Xcheck:jni
+11-05 14:30:18.036 I/henics.personal(13413): Using CollectorTypeCC GC.
+11-05 14:30:18.037 W/henics.personal(13413): Unexpected CPU variant for x86: x86_64.
+11-05 14:30:18.037 W/henics.personal(13413): Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+11-05 14:30:18.069 V/WindowManager(  521): Sent Transition #32 createdAt=11-05 14:30:17.780 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=20 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 pkg=app.calisthenics.personal cmp=app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity } baseActivity=ComponentInfo{app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity} topActivity=ComponentInfo{app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity} origActivity=null realActivity=ComponentInfo{app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity} numActivities=1 lastActiveTime=2231576 supportsMultiWindow=true resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{108f66d Task{c574c66 #20 type=standard A=10192:app.calisthenics.personal}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 128 - 0, 0) topActivityInfo=ActivityInfo{13452a2 io.github.gonbei774.calisthenicsmemory.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+11-05 14:30:18.069 V/WindowManager(  521):     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+11-05 14:30:18.070 V/WindowManager(  521):     info={id=32 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{108f66d Task{c574c66 #20 type=standard A=10192:app.calisthenics.personal}}} m=OPEN f=NONE leash=Surface(name=Task=20)/@0xa9d0831 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{RemoteToken{77a1940 Task{71647df #1 type=home}}} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x8654deb sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+11-05 14:30:18.080 I/adbd    (  426): jdwp connection from 13413
+11-05 14:30:18.082 I/AppsFilter(  521): interaction: PackageSetting{ba8f6ee app.calisthenics.personal/10192} -> PackageSetting{c41d78f dev.mobile.maestro/10217} BLOCKED
+11-05 14:30:18.085 W/system_server(  521): Long monitor contention with owner android.anim (542) at android.window.TaskSnapshot com.android.server.wm.SnapshotCache.getSnapshot(java.lang.Integer)(SnapshotCache.java:53) waiters=1 in android.content.pm.ParceledListSlice com.android.server.wm.ActivityTaskManagerService.getRecentTasks(int, int, int) for 104ms
+11-05 14:30:18.086 W/Looper  (  842): Slow dispatch took 107ms wmshell.main h=android.os.Handler c=com.android.wm.shell.common.ShellExecutor$$ExternalSyntheticLambda1@b425ccb m=0
+11-05 14:30:18.086 W/Looper  (  842): Slow delivery took 94ms wmshell.main h=android.os.Handler c=com.android.wm.shell.pip.phone.PipController$$ExternalSyntheticLambda1@48e7437 m=0
+11-05 14:30:18.086 V/WindowManagerShell(  842): onTransitionReady android.os.BinderProxy@c1663ea: {id=32 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@3898ca8} m=OPEN f=NONE leash=Surface(name=Task=20)/@0x7fc8c89 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@c5c43c1} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x44fc48e sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+11-05 14:30:18.086 V/WindowManagerShell(  842): Playing animation for (#32)android.os.BinderProxy@c1663ea@0
+11-05 14:30:18.086 V/WindowManagerShell(  842):  try handler com.android.wm.shell.transition.DefaultMixedHandler@755900b
+11-05 14:30:18.087 V/WindowManagerShell(  842):  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@4d3dee8
+11-05 14:30:18.087 V/WindowManagerShell(  842):  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@b90c901
+11-05 14:30:18.087 V/WindowManagerShell(  842):  try handler com.android.wm.shell.recents.RecentsTransitionHandler@1aa13a6
+11-05 14:30:18.087 V/ShellRecents(  842): RecentsTransitionHandler.startAnimation: no controller found
+11-05 14:30:18.087 V/WindowManagerShell(  842):  try handler com.android.wm.shell.pip.PipTransition@fcb21e7
+11-05 14:30:18.087 V/WindowManagerShell(  842):  try handler com.android.wm.shell.splitscreen.StageCoordinator@d7c0194
+11-05 14:30:18.087 V/WindowManagerShell(  842):  try handler com.android.wm.shell.transition.RemoteTransitionHandler@2bff43d
+11-05 14:30:18.087 V/WindowManagerShell(  842): Transition doesn't have explicit remote, search filters for match for {id=32 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@3898ca8} m=OPEN f=NONE leash=Surface(name=Task=20)/@0x7fc8c89 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@c5c43c1} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x44fc48e sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+11-05 14:30:18.087 V/WindowManagerShell(  842):  Checking filter Pair{{types=[] flags=0x0] notFlags=0x0 checks=[{atype=dream independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=ANY topActivity=null},{atype=home independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@54d331, appThread = android.app.IApplicationThread$Stub$Proxy@55d0a16, debugName = LauncherToDream }}
+11-05 14:30:18.087 V/WindowManagerShell(  842):  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity}},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@4b42f97, appThread = android.app.IApplicationThread$Stub$Proxy@d027584, debugName = QuickstepLaunchHome }}
+11-05 14:30:18.087 V/WindowManagerShell(  842):  Delegate animation for #32 to null
+11-05 14:30:18.087 V/WindowManagerShell(  842):  try handler com.android.wm.shell.transition.DefaultTransitionHandler@b75f17e
+11-05 14:30:18.087 V/WindowManagerShell(  842): start default transition animation, info = {id=32 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@3898ca8} m=OPEN f=NONE leash=Surface(name=Task=20)/@0x7fc8c89 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@c5c43c1} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x44fc48e sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+11-05 14:30:18.087 V/WindowManagerShell(  842): loadAnimation: anim=android.view.animation.AnimationSet@897faa7 animAttr=0x13 type=OPEN isEntrance=false
+11-05 14:30:18.088 V/WindowManagerShell(  842): loadAnimation: anim=android.view.animation.AnimationSet@fbf9a43 animAttr=0x12 type=OPEN isEntrance=true
+11-05 14:30:18.108 V/WindowManagerShell(  842):  animated by com.android.wm.shell.transition.DefaultTransitionHandler@b75f17e
+11-05 14:30:18.126 W/Looper  (  842): Drained
+11-05 14:30:18.126 V/WindowManagerShell(  842): Transition animation finished (aborted=false), notifying core (#32)android.os.BinderProxy@c1663ea@0
+11-05 14:30:18.133 V/WindowManager(  521): Finish Transition #32: created at 11-05 14:30:17.780 collect-started=0.019ms request-sent=4.43ms started=9.01ms ready=196.482ms sent=287.362ms finished=352.67ms
+11-05 14:30:18.135 V/WindowManagerShell(  842): Track 0 became idle
+11-05 14:30:18.135 V/WindowManagerShell(  842): All active transition animations finished
+11-05 14:30:18.136 D/EGL_emulation(  842): app_time_stats: avg=18106.60ms min=18106.60ms max=18106.60ms count=1
+11-05 14:30:18.172 D/CompatibilityChangeReporter(13413): Compat change id reported: 171979766; UID 10192; state: ENABLED
+11-05 14:30:18.172 D/CompatibilityChangeReporter(13413): Compat change id reported: 242716250; UID 10192; state: ENABLED
+11-05 14:30:18.295 D/CompatibilityChangeReporter(  521): Compat change id reported: 170503758; UID 10192; state: ENABLED
+11-05 14:30:18.319 D/ApplicationLoaders(13413): Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+11-05 14:30:18.319 D/ApplicationLoaders(13413): Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+11-05 14:30:18.319 W/ziparchive(13413): Unable to open '/data/app/~~dJG8TW7PMm8hV_2fQxWp3w==/app.calisthenics.personal-swFYqFRK9kZshXIsVVNIPA==/base.dm': No such file or directory
+11-05 14:30:18.319 W/ziparchive(13413): Unable to open '/data/app/~~dJG8TW7PMm8hV_2fQxWp3w==/app.calisthenics.personal-swFYqFRK9kZshXIsVVNIPA==/base.dm': No such file or directory
+11-05 14:30:18.354 D/EGL_emulation(  842): app_time_stats: avg=36884.44ms min=36884.44ms max=36884.44ms count=1
+11-05 14:30:18.368 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:18.374 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:18.375 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:18.375 W/UiDevice(13320): Active window root not found.
+11-05 14:30:18.435 W/AccessibilityManagerService(  521):  wait for adding window timeout: 197
+11-05 14:30:18.449 D/Maestro (13320): View hierarchy received in 81 ms
+11-05 14:30:18.553 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:18.554 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:18.555 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:18.555 W/UiDevice(13320): Active window root not found.
+11-05 14:30:18.582 D/Maestro (13320): View hierarchy received in 29 ms
+11-05 14:30:18.661 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:18.662 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:18.662 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:18.662 W/UiDevice(13320): Active window root not found.
+11-05 14:30:18.707 D/Maestro (13320): View hierarchy received in 45 ms
+11-05 14:30:18.716 D/nativeloader(13413): Configuring clns-6 for other apk /data/app/~~dJG8TW7PMm8hV_2fQxWp3w==/app.calisthenics.personal-swFYqFRK9kZshXIsVVNIPA==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~dJG8TW7PMm8hV_2fQxWp3w==/app.calisthenics.personal-swFYqFRK9kZshXIsVVNIPA==/lib/x86_64:/data/app/~~dJG8TW7PMm8hV_2fQxWp3w==/app.calisthenics.personal-swFYqFRK9kZshXIsVVNIPA==/base.apk!/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/app.calisthenics.personal
+11-05 14:30:18.724 V/GraphicsEnvironment(13413): Currently set values for:
+11-05 14:30:18.725 V/GraphicsEnvironment(13413):   angle_gl_driver_selection_pkgs=[]
+11-05 14:30:18.725 V/GraphicsEnvironment(13413):   angle_gl_driver_selection_values=[]
+11-05 14:30:18.725 V/GraphicsEnvironment(13413): ANGLE GameManagerService for app.calisthenics.personal: false
+11-05 14:30:18.725 V/GraphicsEnvironment(13413): app.calisthenics.personal is not listed in per-application setting
+11-05 14:30:18.725 V/GraphicsEnvironment(13413): Neither updatable production driver nor prerelease driver is supported.
+11-05 14:30:18.741 I/ActivityManager(  521): Flag disabled. Ignoring finishAttachApplication from uid: 10192. pid: 13413
+11-05 14:30:18.748 D/libEGL  (13413): loaded /vendor/lib64/egl/libEGL_emulation.so
+11-05 14:30:18.749 D/libEGL  (13413): loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+11-05 14:30:18.753 D/libEGL  (13413): loaded /vendor/lib64/egl/libGLESv2_emulation.so
+11-05 14:30:18.782 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:18.783 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:18.783 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:18.784 W/UiDevice(13320): Active window root not found.
+11-05 14:30:18.807 D/Maestro (13320): View hierarchy received in 25 ms
+11-05 14:30:18.817 D/CompatibilityChangeReporter(13413): Compat change id reported: 237531167; UID 10192; state: DISABLED
+11-05 14:30:18.818 W/OpenGLRenderer(13413): Unknown dataspace 0
+11-05 14:30:18.825 D/CoreBackPreview(  521): Window{42ed723 u0 app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@f0dc27f, mPriority=-1, mIsAnimationCallback=false}
+11-05 14:30:18.912 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:18.913 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:18.913 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:18.914 W/UiDevice(13320): Active window root not found.
+11-05 14:30:18.943 I/AidlLazyServiceRegistrar(13100): Process has 0 (of 1 available) client(s) in use after notification artd has clients: 0
+11-05 14:30:18.943 I/AidlLazyServiceRegistrar(13100): Trying to shut down the service. No clients in use for any service in process.
+11-05 14:30:19.463 I/servicemanager(    0): Notifying artd they don't (previously: do) have clients when we now have no record of a client
+11-05 14:30:19.466 I/servicemanager(    0): Unregistering artd
+11-05 14:30:19.467 I/BpBinder(    0): onLastStrongRef automatically unlinking death recipients:
+11-05 14:30:19.471 I/init    (    0): Service 'artd' (pid 13100) exited with status 0 oneshot service took 26.143000 seconds in background
+11-05 14:30:18.946 I/AidlLazyServiceRegistrar(13100): Unregistered all clients and exiting
+11-05 14:30:19.473 I/init    (    0): Sending signal 9 to service 'artd' (pid 13100) process group...
+11-05 14:30:19.475 I/libprocessgroup(    0): Successfully killed process cgroup uid 1082 pid 13100 in 0ms
+11-05 14:30:18.957 D/Maestro (13320): View hierarchy received in 45 ms
+11-05 14:30:18.969 D/CompatibilityChangeReporter(13413): Compat change id reported: 193247900; UID 10192; state: ENABLED
+11-05 14:30:19.034 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:19.035 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.036 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.037 W/UiDevice(13320): Active window root not found.
+11-05 14:30:19.086 D/Maestro (13320): View hierarchy received in 52 ms
+11-05 14:30:19.194 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:19.195 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.195 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.196 W/UiDevice(13320): Active window root not found.
+11-05 14:30:19.217 D/Maestro (13320): View hierarchy received in 23 ms
+11-05 14:30:19.287 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:19.288 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.288 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.289 W/UiDevice(13320): Active window root not found.
+11-05 14:30:19.304 D/Maestro (13320): View hierarchy received in 17 ms
+11-05 14:30:19.332 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:19.333 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.333 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.334 W/UiDevice(13320): Active window root not found.
+11-05 14:30:19.357 D/Maestro (13320): View hierarchy received in 25 ms
+11-05 14:30:19.460 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:19.461 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.461 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.461 W/UiDevice(13320): Active window root not found.
+11-05 14:30:19.477 D/Maestro (13320): View hierarchy received in 17 ms
+11-05 14:30:19.501 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:19.501 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.502 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.502 W/UiDevice(13320): Active window root not found.
+11-05 14:30:19.533 D/Maestro (13320): View hierarchy received in 32 ms
+11-05 14:30:19.559 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:19.560 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.560 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.561 W/UiDevice(13320): Active window root not found.
+11-05 14:30:19.599 D/Maestro (13320): View hierarchy received in 40 ms
+11-05 14:30:19.665 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:19.665 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.666 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.666 W/UiDevice(13320): Active window root not found.
+11-05 14:30:19.705 D/Maestro (13320): View hierarchy received in 40 ms
+11-05 14:30:19.774 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:19.775 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.776 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.777 W/UiDevice(13320): Active window root not found.
+11-05 14:30:19.831 D/Maestro (13320): View hierarchy received in 57 ms
+11-05 14:30:19.937 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:19.938 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.938 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:19.939 W/UiDevice(13320): Active window root not found.
+11-05 14:30:19.971 D/Maestro (13320): View hierarchy received in 34 ms
+11-05 14:30:20.584 W/healthd (    0): battery l=100 v=5000 t=25.0 h=2 st=2 c=900000 fc=3000000 cc=10 chg=a
+11-05 14:30:20.072 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:20.073 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.073 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.074 W/UiDevice(13320): Active window root not found.
+11-05 14:30:20.101 D/Maestro (13320): View hierarchy received in 29 ms
+11-05 14:30:20.173 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:20.174 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.175 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.175 W/UiDevice(13320): Active window root not found.
+11-05 14:30:20.211 D/Maestro (13320): View hierarchy received in 38 ms
+11-05 14:30:20.285 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:20.286 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.287 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.288 W/UiDevice(13320): Active window root not found.
+11-05 14:30:20.328 D/Maestro (13320): View hierarchy received in 43 ms
+11-05 14:30:20.425 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:20.426 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.426 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.427 W/UiDevice(13320): Active window root not found.
+11-05 14:30:20.465 D/Maestro (13320): View hierarchy received in 40 ms
+11-05 14:30:20.531 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:20.532 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.532 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.533 W/UiDevice(13320): Active window root not found.
+11-05 14:30:20.551 D/Maestro (13320): View hierarchy received in 20 ms
+11-05 14:30:20.656 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:20.657 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.658 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.658 W/UiDevice(13320): Active window root not found.
+11-05 14:30:20.685 D/Maestro (13320): View hierarchy received in 29 ms
+11-05 14:30:20.786 E/TaskPersister(  521): File error accessing recents directory (directory doesn't exist?).
+11-05 14:30:20.789 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:20.790 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.790 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.791 W/UiDevice(13320): Active window root not found.
+11-05 14:30:20.806 D/Maestro (13320): View hierarchy received in 17 ms
+11-05 14:30:20.867 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:20.868 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.868 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.869 W/UiDevice(13320): Active window root not found.
+11-05 14:30:20.882 D/Maestro (13320): View hierarchy received in 15 ms
+11-05 14:30:20.905 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:20.906 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.906 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:20.907 W/UiDevice(13320): Active window root not found.
+11-05 14:30:20.933 D/Maestro (13320): View hierarchy received in 28 ms
+11-05 14:30:21.038 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:21.039 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.039 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.040 W/UiDevice(13320): Active window root not found.
+11-05 14:30:21.066 D/Maestro (13320): View hierarchy received in 28 ms
+11-05 14:30:21.173 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:21.174 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.174 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.175 W/UiDevice(13320): Active window root not found.
+11-05 14:30:21.193 D/Maestro (13320): View hierarchy received in 20 ms
+11-05 14:30:21.213 I/henics.personal(13413): Compiler allocated 4495KB to compile app.calisthenics.domain.planner.PlanResult app.calisthenics.domain.planner.Planner.run()
+11-05 14:30:21.258 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:21.259 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.260 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.260 W/UiDevice(13320): Active window root not found.
+11-05 14:30:21.275 D/Maestro (13320): View hierarchy received in 17 ms
+11-05 14:30:21.375 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:21.376 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.377 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.377 W/UiDevice(13320): Active window root not found.
+11-05 14:30:21.394 D/Maestro (13320): View hierarchy received in 19 ms
+11-05 14:30:21.457 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:21.458 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.459 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.459 W/UiDevice(13320): Active window root not found.
+11-05 14:30:21.480 D/Maestro (13320): View hierarchy received in 23 ms
+11-05 14:30:21.544 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:21.545 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.546 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.546 W/UiDevice(13320): Active window root not found.
+11-05 14:30:21.560 D/Maestro (13320): View hierarchy received in 16 ms
+11-05 14:30:21.630 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:21.631 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.631 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.632 W/UiDevice(13320): Active window root not found.
+11-05 14:30:21.667 D/Maestro (13320): View hierarchy received in 37 ms
+11-05 14:30:21.733 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:21.734 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.734 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.735 W/UiDevice(13320): Active window root not found.
+11-05 14:30:21.749 D/Maestro (13320): View hierarchy received in 16 ms
+11-05 14:30:21.775 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:21.776 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.777 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.777 W/UiDevice(13320): Active window root not found.
+11-05 14:30:21.797 D/Maestro (13320): View hierarchy received in 22 ms
+11-05 14:30:21.887 D/CompatibilityChangeReporter(13413): Compat change id reported: 289878283; UID 10192; state: ENABLED
+11-05 14:30:21.943 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:21.944 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.944 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:21.944 W/UiDevice(13320): Active window root not found.
+11-05 14:30:21.969 D/Maestro (13320): View hierarchy received in 26 ms
+11-05 14:30:22.022 W/OpenGLRenderer(13413): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+11-05 14:30:22.064 I/hwservicemanager(  139): getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+11-05 14:30:22.064 I/Gralloc4(13413): mapper 4.x is not supported
+11-05 14:30:22.584 I/servicemanager(    0): Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest.
+11-05 14:30:22.102 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:22.102 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:22.103 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:22.455 I/netd    (  335): tetherGetStats() -> {[]} <0.40ms>
+11-05 14:30:22.457 I/netd    (  335): bandwidthSetGlobalAlert(2097152) <0.11ms>
+11-05 14:30:22.605 W/AccessibilityManagerService(  521):  wait for adding window timeout: 198
+11-05 14:30:22.931 E/A       ( 1708): disposing SearchServiceClient after timeout []
+11-05 14:30:23.022 W/henics.personal(13413): Accessing hidden method Landroid/os/SystemProperties;->addChangeCallback(Ljava/lang/Runnable;)V (unsupported, reflection, allowed)
+11-05 14:30:23.024 W/ziparchive(  521): Unable to open '/data/app/~~dJG8TW7PMm8hV_2fQxWp3w==/app.calisthenics.personal-swFYqFRK9kZshXIsVVNIPA==/base.dm': No such file or directory
+11-05 14:30:23.026 I/ActivityTaskManager(  521): Displayed app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.MainActivity for user 0: +5s247ms
+11-05 14:30:23.049 I/OpenGLRenderer(13413): Davey! duration=4267ms; Flags=1, FrameTimelineVsyncId=212792, IntendedVsync=2232548814941, Vsync=2232615481605, InputEventId=0, HandleInputStart=2232616289090, AnimationStart=2232616291993, PerformTraversalsStart=2232616362729, DrawStart=2235898368351, FrameDeadline=2232565481607, FrameInterval=2232616251143, FrameStartTime=16666666, SyncQueued=2235933236760, SyncStart=2235933513519, IssueDrawCommandsStart=2235933833487, SwapBuffers=2236694566632, FrameCompleted=2236816479379, DequeueBufferDuration=5400, QueueBufferDuration=319717, GpuCompleted=2236816479379, SwapBuffersCompleted=2236806733255, DisplayPresentTime=0, CommandSubmissionCompleted=2236694566632, 
+11-05 14:30:23.077 W/InputManager-JNI(  521): Input channel object '57bc8f2 Splash Screen app.calisthenics.personal (client)' was disposed without first being removed with the input manager!
+11-05 14:30:23.082 D/EGL_emulation(  842): app_time_stats: avg=2472.89ms min=158.23ms max=4787.55ms count=2
+11-05 14:30:23.088 D/OneSearchSuggestProvider( 3708): Shut down the binder channel
+11-05 14:30:23.088 I/IPCThreadState( 3708): oneway function results for code 2 on binder at 0x72a1980f1c20 will be dropped but finished with status UNKNOWN_TRANSACTION
+11-05 14:30:23.089 I/ImeTracker( 3708): com.google.android.apps.nexuslauncher:3ddac555: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+11-05 14:30:23.096 I/ImeTracker(  521): com.google.android.apps.nexuslauncher:3ddac555: onCancelled at PHASE_SERVER_SHOULD_HIDE
+11-05 14:30:23.105 D/BtGatt.ScanManager( 1033): uid 10131 isForeground true scanMode -1
+11-05 14:30:23.105 D/BtGatt.ScanManager( 1033): uid 10131 isForeground true scanMode -1
+11-05 14:30:23.224 I/Choreographer(13413): Skipped 260 frames!  The application may be doing too much work on its main thread.
+11-05 14:30:23.233 D/EGL_emulation(  842): app_time_stats: avg=4878.72ms min=4878.72ms max=4878.72ms count=1
+11-05 14:30:23.343 I/FontLog ( 5504): Received query Noto Color Emoji Compat, URI content://com.google.android.gms.fonts [CONTEXT service_id=132 ]
+11-05 14:30:23.344 I/FontLog ( 5504): Query [emojicompat-emoji-font] resolved to {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false} [CONTEXT service_id=132 ]
+11-05 14:30:23.345 I/FontLog ( 5504): Fetch {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false} end status Status{statusCode=SUCCESS, resolution=null} [CONTEXT service_id=132 ]
+11-05 14:30:23.347 D/BtGatt.ScanManager( 1033): uid 10131 isForeground true scanMode -1
+11-05 14:30:23.348 D/BtGatt.ScanManager( 1033): uid 10131 isForeground true scanMode -1
+11-05 14:30:23.353 I/FontLog ( 5504): Pulling font file for id = 20, cache size = 5 [CONTEXT service_id=132 ]
+11-05 14:30:23.355 I/OpenGLRenderer(13413): Davey! duration=4422ms; Flags=0, FrameTimelineVsyncId=212815, IntendedVsync=2232682148269, Vsync=2237015481429, InputEventId=0, HandleInputStart=2237017533699, AnimationStart=2237017537900, PerformTraversalsStart=2237046310352, DrawStart=2237046556688, FrameDeadline=2236848814769, FrameInterval=2237016513935, FrameStartTime=16666666, SyncQueued=2237054053913, SyncStart=2237054253701, IssueDrawCommandsStart=2237054313219, SwapBuffers=2237056587412, FrameCompleted=2237104425207, DequeueBufferDuration=3160, QueueBufferDuration=238215, GpuCompleted=2237104328801, SwapBuffersCompleted=2237104425207, DisplayPresentTime=35192962023424, CommandSubmissionCompleted=2237056587412, 
+11-05 14:30:23.359 I/FontLog ( 5504): Pulling font file for id = 20, cache size = 5 [CONTEXT service_id=132 ]
+11-05 14:30:23.366 D/CompatibilityChangeReporter(  521): Compat change id reported: 214016041; UID 10192; state: ENABLED
+11-05 14:30:23.366 I/ImeTracker(  521): app.calisthenics.personal:10747171: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+11-05 14:30:23.366 I/ImeTracker(  521): app.calisthenics.personal:10747171: onCancelled at PHASE_SERVER_SHOULD_HIDE
+11-05 14:30:23.370 I/GoogleInputMethodService( 1552): GoogleInputMethodService.onFinishInput():3227 
+11-05 14:30:23.370 I/GoogleInputMethodService( 1552): GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 0, unlocked = true
+11-05 14:30:23.371 I/GoogleInputMethodService( 1552): GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=app.calisthenics.personal fieldId=0 fieldName=null extras=null}, false)
+11-05 14:30:23.371 I/GoogleInputMethodService( 1552): GoogleInputMethodService.shouldHideHeaderOnInitialState():4008 ShouldHideHeaderOnInitialState = false
+11-05 14:30:23.372 I/GoogleInputMethodService( 1552): GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 2, unlocked = true
+11-05 14:30:23.890 I/henics.personal(13413): Compiler allocated 5222KB to compile java.util.List app.calisthenics.domain.feedback.FeedbackKt.deriveEvidence(java.lang.String, int, app.calisthenics.domain.model.WorkoutPlan, java.util.List, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, java.util.Set, java.lang.Integer, kotlin.jvm.functions.Function1, long, java.util.Set, kotlin.jvm.functions.Function1)
+11-05 14:30:23.923 I/henics.personal(13413): Compiler allocated 4822KB to compile kotlin.Unit app.calisthenics.domain.progression.ProgressionEngine.replay$lambda$1(app.calisthenics.domain.feedback.SessionEvidence, app.calisthenics.domain.progression.ProgressionEngine, java.util.Map, java.util.Map, java.util.List, boolean, java.util.Map)
+11-05 14:30:24.374 D/EGL_emulation(13413): app_time_stats: avg=453.05ms min=131.56ms max=929.92ms count=3
+11-05 14:30:24.387 D/StatusBarIconController(  842): ignoring old pipeline callbacks, because the new mobile icons are enabled
+11-05 14:30:24.655 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:24.669 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8885; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(615, 2137 - 741, 2263); boundsInWindow: Rect(615, 2137 - 741, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:24.677 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:24.685 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:24.702 D/Maestro (13320): View hierarchy received in 2600 ms
+11-05 14:30:24.737 D/ProfileInstaller(13413): Installing profile for app.calisthenics.personal
+11-05 14:30:24.801 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:24.802 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:24.803 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:24.982 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:24.995 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8885; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(615, 2137 - 741, 2263); boundsInWindow: Rect(615, 2137 - 741, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:25.005 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:25.011 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:25.024 D/Maestro (13320): View hierarchy received in 223 ms
+11-05 14:30:25.084 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:25.085 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:25.085 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:25.224 W/ProcessStats(  521): Tracking association SourceState{37aeee4 com.google.android.gms.persistent/10131 BTop #19614} whose proc state 2 is better than process ProcessState{b03038c com.google.android.gms/10131 pkg=com.google.android.gms} proc state 14 (1175 skipped)
+11-05 14:30:25.246 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:25.255 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8885; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(615, 2137 - 741, 2263); boundsInWindow: Rect(615, 2137 - 741, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:25.264 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:25.269 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:25.283 D/Maestro (13320): View hierarchy received in 199 ms
+11-05 14:30:25.344 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:25.345 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:25.346 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:25.484 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:25.498 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8885; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(615, 2137 - 741, 2263); boundsInWindow: Rect(615, 2137 - 741, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:25.508 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:25.514 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:25.543 D/Maestro (13320): View hierarchy received in 199 ms
+11-05 14:30:25.621 I/keystore2(  158): system/security/keystore2/src/watchdog.rs:319 - Watchdog thread idle -> terminating. Have a great day.
+11-05 14:30:25.647 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:25.647 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:25.648 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:25.816 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:25.825 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8885; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(615, 2137 - 741, 2263); boundsInWindow: Rect(615, 2137 - 741, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:25.835 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:25.840 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:25.853 D/Maestro (13320): View hierarchy received in 206 ms
+11-05 14:30:25.947 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:25.949 D/UiDevice(13320): Waiting 500ms for window update of package app.calisthenics.personal.
+11-05 14:30:26.452 W/UiDevice(13320): Timed out waiting 500ms on window update.
+11-05 14:30:26.452 W/UiDevice(13320): java.util.concurrent.TimeoutException: Expected event not received within: 500 ms among: []
+11-05 14:30:26.452 W/UiDevice(13320): 	at android.app.UiAutomation.executeAndWaitForEvent(UiAutomation.java:1071)
+11-05 14:30:26.452 W/UiDevice(13320): 	at androidx.test.uiautomator.UiDevice.waitForWindowUpdate(UiDevice.java:1253)
+11-05 14:30:26.452 W/UiDevice(13320): 	at dev.mobile.maestro.Service.isWindowUpdating(MaestroDriverService.kt:359)
+11-05 14:30:26.452 W/UiDevice(13320): 	at maestro_android.MaestroDriverGrpc$MethodHandlers.invoke(MaestroDriverGrpc.java:965)
+11-05 14:30:26.452 W/UiDevice(13320): 	at io.grpc.stub.ServerCalls$UnaryServerCallHandler$UnaryServerCallListener.onHalfClose(ServerCalls.java:182)
+11-05 14:30:26.452 W/UiDevice(13320): 	at io.grpc.internal.ServerCallImpl$ServerStreamListenerImpl.halfClosed(ServerCallImpl.java:355)
+11-05 14:30:26.452 W/UiDevice(13320): 	at io.grpc.internal.ServerImpl$JumpToApplicationThreadServerStreamListener$1HalfClosed.runInContext(ServerImpl.java:867)
+11-05 14:30:26.452 W/UiDevice(13320): 	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+11-05 14:30:26.452 W/UiDevice(13320): 	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+11-05 14:30:26.452 W/UiDevice(13320): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-05 14:30:26.452 W/UiDevice(13320): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-05 14:30:26.452 W/UiDevice(13320): 	at java.lang.Thread.run(Thread.java:1012)
+11-05 14:30:26.512 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:26.514 D/UiDevice(13320): Waiting 500ms for window update of package app.calisthenics.personal.
+11-05 14:30:27.015 W/UiDevice(13320): Timed out waiting 500ms on window update.
+11-05 14:30:27.015 W/UiDevice(13320): java.util.concurrent.TimeoutException: Expected event not received within: 500 ms among: []
+11-05 14:30:27.015 W/UiDevice(13320): 	at android.app.UiAutomation.executeAndWaitForEvent(UiAutomation.java:1071)
+11-05 14:30:27.015 W/UiDevice(13320): 	at androidx.test.uiautomator.UiDevice.waitForWindowUpdate(UiDevice.java:1253)
+11-05 14:30:27.015 W/UiDevice(13320): 	at dev.mobile.maestro.Service.isWindowUpdating(MaestroDriverService.kt:359)
+11-05 14:30:27.015 W/UiDevice(13320): 	at maestro_android.MaestroDriverGrpc$MethodHandlers.invoke(MaestroDriverGrpc.java:965)
+11-05 14:30:27.015 W/UiDevice(13320): 	at io.grpc.stub.ServerCalls$UnaryServerCallHandler$UnaryServerCallListener.onHalfClose(ServerCalls.java:182)
+11-05 14:30:27.015 W/UiDevice(13320): 	at io.grpc.internal.ServerCallImpl$ServerStreamListenerImpl.halfClosed(ServerCallImpl.java:355)
+11-05 14:30:27.015 W/UiDevice(13320): 	at io.grpc.internal.ServerImpl$JumpToApplicationThreadServerStreamListener$1HalfClosed.runInContext(ServerImpl.java:867)
+11-05 14:30:27.015 W/UiDevice(13320): 	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+11-05 14:30:27.015 W/UiDevice(13320): 	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+11-05 14:30:27.015 W/UiDevice(13320): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-05 14:30:27.015 W/UiDevice(13320): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-05 14:30:27.015 W/UiDevice(13320): 	at java.lang.Thread.run(Thread.java:1012)
+11-05 14:30:27.084 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:27.085 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:27.085 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:27.207 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:27.215 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8885; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(615, 2137 - 741, 2263); boundsInWindow: Rect(615, 2137 - 741, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:27.223 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:27.228 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:27.240 D/Maestro (13320): View hierarchy received in 156 ms
+11-05 14:30:27.327 D/TaplEvents( 3708): TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=678.0, y[0]=2232.0, toolType[0]=TOOL_TYPE_FINGER, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=2241084, downTime=2241084, deviceId=-1, source=0x1002, displayId=0, eventId=-197082190 }
+11-05 14:30:27.432 D/TaplEvents( 3708): TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=678.0, y[0]=2232.0, toolType[0]=TOOL_TYPE_FINGER, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=2241220, downTime=2241084, deviceId=-1, source=0x1002, displayId=0, eventId=-859120245 }
+11-05 14:30:27.457 D/EGL_emulation(13413): app_time_stats: avg=1027.65ms min=41.36ms max=2920.60ms count=3
+11-05 14:30:27.464 D/audioserver(  398): FGS Logger Transaction failed
+11-05 14:30:27.464 D/audioserver(  398): -129
+11-05 14:30:27.466 D/AudioFlinger(  398): mixer(0x7efa97008930) throttle end: throttle time(34)
+11-05 14:30:27.503 D/AudioFlinger(  398): mixer(0x7efa97008930) throttle end: throttle time(11)
+11-05 14:30:27.526 D/AudioFlinger(  398): mixer(0x7efa97008930) throttle end: throttle time(11)
+11-05 14:30:27.625 D/audioserver(  398): FGS Logger Transaction failed
+11-05 14:30:27.625 D/audioserver(  398): -129
+11-05 14:30:28.150 I/logd    (    0): start watching /data/system/packages.list ...
+11-05 14:30:28.153 I/logd    (    0): ReadPackageList, total packages: 202
+11-05 14:30:27.970 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:27.970 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:27.971 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:28.358 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8657; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(64, 2137 - 190, 2263); boundsInWindow: Rect(64, 2137 - 190, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:28.360 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:28.414 I/henics.personal(13413): Compiler allocated 5222KB to compile java.util.List app.calisthenics.domain.feedback.FeedbackKt.deriveEvidence(java.lang.String, int, app.calisthenics.domain.model.WorkoutPlan, java.util.List, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, java.util.Set, java.lang.Integer, kotlin.jvm.functions.Function1, long, java.util.Set, kotlin.jvm.functions.Function1)
+11-05 14:30:28.431 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:28.469 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:28.508 D/Maestro (13320): View hierarchy received in 538 ms
+11-05 14:30:28.576 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:28.577 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:28.578 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:28.607 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8657; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(64, 2137 - 190, 2263); boundsInWindow: Rect(64, 2137 - 190, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:28.620 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:28.636 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:28.653 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:28.685 D/Maestro (13320): View hierarchy received in 109 ms
+11-05 14:30:28.756 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:28.757 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:28.758 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:28.785 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8657; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(64, 2137 - 190, 2263); boundsInWindow: Rect(64, 2137 - 190, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:28.794 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:29.117 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:29.242 D/EGL_emulation(13413): app_time_stats: avg=355.87ms min=41.09ms max=927.90ms count=5
+11-05 14:30:29.256 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:29.340 D/Maestro (13320): View hierarchy received in 584 ms
+11-05 14:30:29.407 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:29.408 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:29.408 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:29.479 D/BtGatt.ScanManager( 1033): uid 10131 isForeground true scanMode -1
+11-05 14:30:29.479 D/BtGatt.ScanManager( 1033): uid 10131 isForeground true scanMode -1
+11-05 14:30:29.514 I/henics.personal(13413): Compiler allocated 4822KB to compile kotlin.Unit app.calisthenics.domain.progression.ProgressionEngine.replay$lambda$1(app.calisthenics.domain.feedback.SessionEvidence, app.calisthenics.domain.progression.ProgressionEngine, java.util.Map, java.util.Map, java.util.List, boolean, java.util.Map)
+11-05 14:30:29.575 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@aae9; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(211, 2167 - 553, 2198); boundsInWindow: Rect(211, 2167 - 553, 2198); packageName: app.calisthenics.personal; className: android.widget.TextView; text: Level 3 of 5 · best 12; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null]; isTextSelectable: false
+11-05 14:30:29.582 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8657; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(64, 2137 - 190, 2263); boundsInWindow: Rect(64, 2137 - 190, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:29.591 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:29.604 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:29.607 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:29.617 D/Maestro (13320): View hierarchy received in 210 ms
+11-05 14:30:29.699 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:29.700 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:29.701 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:29.792 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@aae9; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(211, 2167 - 553, 2198); boundsInWindow: Rect(211, 2167 - 553, 2198); packageName: app.calisthenics.personal; className: android.widget.TextView; text: Level 3 of 5 · best 12; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null]; isTextSelectable: false
+11-05 14:30:29.798 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8657; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(64, 2137 - 190, 2263); boundsInWindow: Rect(64, 2137 - 190, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:29.806 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:29.818 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:29.821 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:29.831 D/Maestro (13320): View hierarchy received in 132 ms
+11-05 14:30:29.933 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:29.934 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:29.934 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:30.034 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@aae9; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(211, 2167 - 553, 2198); boundsInWindow: Rect(211, 2167 - 553, 2198); packageName: app.calisthenics.personal; className: android.widget.TextView; text: Level 3 of 5 · best 12; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null]; isTextSelectable: false
+11-05 14:30:30.043 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8657; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(64, 2137 - 190, 2263); boundsInWindow: Rect(64, 2137 - 190, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:30.048 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:30.064 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:30.068 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:30.081 D/Maestro (13320): View hierarchy received in 148 ms
+11-05 14:30:30.144 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:30.146 D/UiDevice(13320): Waiting 500ms for window update of package app.calisthenics.personal.
+11-05 14:30:30.527 D/android.hardware.audio@7.1-impl.ranchu(  341): threadLoop: entering standby, frames: 38292160
+11-05 14:30:30.648 W/UiDevice(13320): Timed out waiting 500ms on window update.
+11-05 14:30:30.648 W/UiDevice(13320): java.util.concurrent.TimeoutException: Expected event not received within: 500 ms among: []
+11-05 14:30:30.648 W/UiDevice(13320): 	at android.app.UiAutomation.executeAndWaitForEvent(UiAutomation.java:1071)
+11-05 14:30:30.648 W/UiDevice(13320): 	at androidx.test.uiautomator.UiDevice.waitForWindowUpdate(UiDevice.java:1253)
+11-05 14:30:30.648 W/UiDevice(13320): 	at dev.mobile.maestro.Service.isWindowUpdating(MaestroDriverService.kt:359)
+11-05 14:30:30.648 W/UiDevice(13320): 	at maestro_android.MaestroDriverGrpc$MethodHandlers.invoke(MaestroDriverGrpc.java:965)
+11-05 14:30:30.648 W/UiDevice(13320): 	at io.grpc.stub.ServerCalls$UnaryServerCallHandler$UnaryServerCallListener.onHalfClose(ServerCalls.java:182)
+11-05 14:30:30.648 W/UiDevice(13320): 	at io.grpc.internal.ServerCallImpl$ServerStreamListenerImpl.halfClosed(ServerCallImpl.java:355)
+11-05 14:30:30.648 W/UiDevice(13320): 	at io.grpc.internal.ServerImpl$JumpToApplicationThreadServerStreamListener$1HalfClosed.runInContext(ServerImpl.java:867)
+11-05 14:30:30.648 W/UiDevice(13320): 	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+11-05 14:30:30.648 W/UiDevice(13320): 	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+11-05 14:30:30.648 W/UiDevice(13320): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-05 14:30:30.648 W/UiDevice(13320): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-05 14:30:30.648 W/UiDevice(13320): 	at java.lang.Thread.run(Thread.java:1012)
+11-05 14:30:30.751 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:30.752 D/UiDevice(13320): Waiting 500ms for window update of package app.calisthenics.personal.
+11-05 14:30:31.254 W/UiDevice(13320): Timed out waiting 500ms on window update.
+11-05 14:30:31.254 W/UiDevice(13320): java.util.concurrent.TimeoutException: Expected event not received within: 500 ms among: []
+11-05 14:30:31.254 W/UiDevice(13320): 	at android.app.UiAutomation.executeAndWaitForEvent(UiAutomation.java:1071)
+11-05 14:30:31.254 W/UiDevice(13320): 	at androidx.test.uiautomator.UiDevice.waitForWindowUpdate(UiDevice.java:1253)
+11-05 14:30:31.254 W/UiDevice(13320): 	at dev.mobile.maestro.Service.isWindowUpdating(MaestroDriverService.kt:359)
+11-05 14:30:31.254 W/UiDevice(13320): 	at maestro_android.MaestroDriverGrpc$MethodHandlers.invoke(MaestroDriverGrpc.java:965)
+11-05 14:30:31.254 W/UiDevice(13320): 	at io.grpc.stub.ServerCalls$UnaryServerCallHandler$UnaryServerCallListener.onHalfClose(ServerCalls.java:182)
+11-05 14:30:31.254 W/UiDevice(13320): 	at io.grpc.internal.ServerCallImpl$ServerStreamListenerImpl.halfClosed(ServerCallImpl.java:355)
+11-05 14:30:31.254 W/UiDevice(13320): 	at io.grpc.internal.ServerImpl$JumpToApplicationThreadServerStreamListener$1HalfClosed.runInContext(ServerImpl.java:867)
+11-05 14:30:31.254 W/UiDevice(13320): 	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+11-05 14:30:31.254 W/UiDevice(13320): 	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:133)
+11-05 14:30:31.254 W/UiDevice(13320): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-05 14:30:31.254 W/UiDevice(13320): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-05 14:30:31.254 W/UiDevice(13320): 	at java.lang.Thread.run(Thread.java:1012)
+11-05 14:30:31.360 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:31.361 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:31.362 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:31.439 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@aae9; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(211, 2167 - 553, 2198); boundsInWindow: Rect(211, 2167 - 553, 2198); packageName: app.calisthenics.personal; className: android.widget.TextView; text: Level 3 of 5 · best 12; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SET_SELECTION - null]; isTextSelectable: false
+11-05 14:30:31.445 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8657; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(64, 2137 - 190, 2263); boundsInWindow: Rect(64, 2137 - 190, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:31.453 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:31.467 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:31.470 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:31.481 D/Maestro (13320): View hierarchy received in 121 ms
+11-05 14:30:31.596 D/TaplEvents( 3708): TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_DOWN, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1738.0, toolType[0]=TOOL_TYPE_FINGER, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=2245370, downTime=2245370, deviceId=-1, source=0x1002, displayId=0, eventId=-46901564 }
+11-05 14:30:31.628 D/EGL_emulation(13413): app_time_stats: avg=1192.80ms min=51.96ms max=2333.65ms count=2
+11-05 14:30:31.709 D/TaplEvents( 3708): TIS / TouchInteractionService.onInputEvent: MotionEvent { action=ACTION_UP, actionButton=0, id[0]=0, x[0]=540.0, y[0]=1738.0, toolType[0]=TOOL_TYPE_FINGER, buttonState=0, classification=NONE, metaState=0, flags=0x0, edgeFlags=0x0, pointerCount=1, historySize=0, eventTime=2245499, downTime=2245370, deviceId=-1, source=0x1002, displayId=0, eventId=-148773994 }
+11-05 14:30:31.713 D/audioserver(  398): FGS Logger Transaction failed
+11-05 14:30:31.713 D/audioserver(  398): -129
+11-05 14:30:31.778 D/CompatibilityChangeReporter(13413): Compat change id reported: 170233598; UID 10192; state: ENABLED
+11-05 14:30:31.874 D/audioserver(  398): FGS Logger Transaction failed
+11-05 14:30:31.874 D/audioserver(  398): -129
+11-05 14:30:31.879 I/AlarmManager( 5504): setExactAndAllowWhileIdle [name: GCM_HB_ALARM type: 2 triggerAtMillis: 2305670]
+11-05 14:30:31.895 I/AlarmManager( 5504): setExactAndAllowWhileIdle [name: GCM_HB_ALARM type: 2 triggerAtMillis: 2865687]
+11-05 14:30:31.902 I/NetworkScheduler.Stats( 5504): Task com.google.android.gms/com.google.android.gms.checkin.EventLogService started execution. cause:2 exec_start_elapsed_seconds: 2245 [CONTEXT service_id=218 ]
+11-05 14:30:31.904 I/Checkin ( 5519): [EventLogChimeraService] Opted in for usage reporting: false
+11-05 14:30:31.904 I/Checkin ( 5519): [EventLogChimeraService] Aggregate from 1793886920614 (log), 0 (data)
+11-05 14:30:32.428 I/logd    (    0): logdr: UID=10131 GID=10131 PID=5519 n tail=0 logMask=4 pid=0 start=0ns deadline=0ns
+11-05 14:30:31.919 I/NetworkScheduler.Stats( 5504): Task com.google.android.gms/com.google.android.gms.security.snet.SnetNormalTaskService started execution. cause:2 exec_start_elapsed_seconds: 2245 [CONTEXT service_id=218 ]
+11-05 14:30:31.937 I/DropBoxManagerService(  521): add tag=event_data isTagEnabled=true flags=0x2
+11-05 14:30:31.958 D/ActivityManager(  521): sync unfroze 8156 com.google.process.gservices for 7
+11-05 14:30:31.969 I/NetworkScheduler.Stats( 5504): Task com.google.android.gms/com.google.android.gms.security.snet.SnetNormalTaskService finished executing. cause:2 result: 1 elapsed_millis: 56 uptime_millis: 56 exec_start_elapsed_seconds: 2245 [CONTEXT service_id=218 ]
+11-05 14:30:31.986 I/NetworkScheduler.Stats( 5504): Task com.google.android.gms/com.google.android.gms.checkin.EventLogService finished executing. cause:2 result: 1 elapsed_millis: 90 uptime_millis: 90 exec_start_elapsed_seconds: 2245 [CONTEXT service_id=218 ]
+11-05 14:30:32.001 V/NFC     ( 5504): this device does not have NFC support
+11-05 14:30:32.001 W/TapAndPay( 5504): NfcAdapter is null while obtaining CardEmulation instance. [CONTEXT service_id=79 ]
+11-05 14:30:32.001 W/TapAndPay( 5504): java.lang.NullPointerException: NfcAdapter is null
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at android.nfc.cardemulation.CardEmulation.getInstance(CardEmulation.java:152)
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at cdoy.<init>(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at com.google.android.gms.tapandpay.hce.task.TapAndPayAidRegistrationTaskOperation.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):5)
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at com.google.android.gms.tapandpay.gcmtask.TapAndPayGcmTaskChimeraService.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at avzs.call(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at acjn.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-05 14:30:32.001 W/TapAndPay( 5504): 	at java.lang.Thread.run(Thread.java:1012)
+11-05 14:30:32.007 I/NetworkScheduler.Stats( 5504): Task com.google.android.gms/com.google.android.gms.tapandpay.gcmtask.TapAndPayGcmTaskService started execution. cause:5 exec_start_elapsed_seconds: 2245 [CONTEXT service_id=218 ]
+11-05 14:30:32.008 I/NetworkScheduler.Stats( 5504): Task com.google.android.gms/com.google.android.gms.tapandpay.gcmtask.TapAndPayGcmTaskService finished executing. cause:5 result: 3 elapsed_millis: 12 uptime_millis: 12 exec_start_elapsed_seconds: 2245 [CONTEXT service_id=218 ]
+11-05 14:30:32.026 I/NetworkScheduler.Stats( 5504): Task com.google.android.gms/com.google.android.gms.auth.account.be.legacy.AuthCronService started execution. cause:5 exec_start_elapsed_seconds: 2245 [CONTEXT service_id=218 ]
+11-05 14:30:32.062 D/ActivityManager(  521): sync unfroze 3024 com.google.android.gms.unstable for 6
+11-05 14:30:32.071 I/PhenotypeProcessReaper( 3024): Memory state is: 125
+11-05 14:30:32.242 I/resolv  (  335): GetAddrInfoHandler::run: {100 786532 100 983140 10131 0}
+11-05 14:30:32.243 D/TrafficStats( 3024): tagSocket(122) with statsTag=0x1809, statsUid=-1
+11-05 14:30:32.248 W/libc    ( 3024): Access denied finding property "persist.adb.tls_server.enable"
+11-05 14:30:32.248 W/libc    ( 3024): Access denied finding property "service.adb.tls.port"
+11-05 14:30:32.246 W/binder:3024_D( 3024): type=1400 audit(0.0:113): avc:  denied  { read } for  name="u:object_r:system_adbd_prop:s0" dev="tmpfs" ino=292 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:system_adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-05 14:30:32.246 W/binder:3024_D( 3024): type=1400 audit(0.0:114): avc:  denied  { read } for  name="u:object_r:adbd_prop:s0" dev="tmpfs" ino=60 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-05 14:30:32.306 W/GmsUrlRequestImpl( 5504): Content-Type header is overwritten.
+11-05 14:30:32.312 I/resolv  (  335): GetAddrInfoHandler::run: {100 786532 100 983140 10131 0}
+11-05 14:30:32.313 I/resolv  (  335): res_nmkquery: (QUERY, IN, AAAA)
+11-05 14:30:32.314 I/resolv  (  335): res_nmkquery: (QUERY, IN, A)
+11-05 14:30:32.321 I/resolv  (  335): res_nsend: used send_dg 264 terrno: 0
+11-05 14:30:32.321 I/resolv  (  335): doQuery: rcode=0, ancount=8, return value=264
+11-05 14:30:32.331 I/resolv  (  335): res_nsend: used send_dg 168 terrno: 0
+11-05 14:30:32.333 I/resolv  (  335): doQuery: rcode=0, ancount=8, return value=168
+11-05 14:30:32.336 D/TrafficStats( 5504): tagSocket(203) with statsTag=0x401, statsUid=10131
+11-05 14:30:32.378 W/GLSUser ( 5504): [AppCertManager] Exception while requesting key: 
+11-05 14:30:32.378 W/GLSUser ( 5504): java.util.concurrent.ExecutionException: avvw: Parse Proto Exception.
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at dlnv.s(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at dlnv.get(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at oub.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):78)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at otz.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at otu.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at otx.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at lzq.call(:com.google.android.gms@231818047@23.18.18 (190800-535401451):14)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at acjn.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at java.lang.Thread.run(Thread.java:1012)
+11-05 14:30:32.378 W/GLSUser ( 5504): Caused by: avvw: Parse Proto Exception.
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at avwn.f(:com.google.android.gms@231818047@23.18.18 (190800-535401451):5)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at avxk.onSucceeded(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at jf.onSucceeded(:com.google.android.gms.dynamite_cronetdynamite@231818047@23.18.18 (190800-0):0)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at ie.run(:com.google.android.gms.dynamite_cronetdynamite@231818047@23.18.18 (190800-0):4)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	... 6 more
+11-05 14:30:32.378 W/GLSUser ( 5504): Caused by: dzfz: Protocol message contained an invalid tag (zero).
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at dzdb.k(:com.google.android.gms@231818047@23.18.18 (190800-535401451):13)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at dzha.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):47)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at dzha.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):45)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at dzfd.A(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at dzex.f(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at dzcx.d(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at dzcx.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at dzcx.n(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at avwn.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	at avwn.f(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-05 14:30:32.378 W/GLSUser ( 5504): 	... 9 more
+11-05 14:30:32.385 I/NetworkScheduler.Stats( 5504): Task com.google.android.gms/com.google.android.gms.auth.account.be.legacy.AuthCronService finished executing. cause:5 result: 3 elapsed_millis: 369 uptime_millis: 369 exec_start_elapsed_seconds: 2245 [CONTEXT service_id=218 ]
+11-05 14:30:32.601 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:32.602 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:32.602 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:32.603 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:32.647 D/StatusBarIconController(  842): ignoring old pipeline callback because the new wifi icon is enabled
+11-05 14:30:32.690 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8657; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(64, 2137 - 190, 2263); boundsInWindow: Rect(64, 2137 - 190, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:32.693 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:32.706 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:32.711 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:32.721 D/Maestro (13320): View hierarchy received in 119 ms
+11-05 14:30:32.786 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:32.787 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:32.788 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:32.868 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8657; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(64, 2137 - 190, 2263); boundsInWindow: Rect(64, 2137 - 190, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:32.876 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:32.890 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:32.892 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:32.903 D/Maestro (13320): View hierarchy received in 117 ms
+11-05 14:30:33.010 D/Maestro (13320): Requesting view hierarchy
+11-05 14:30:33.011 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:33.011 W/QueryController(13320): Could not detect idle state.
+11-05 14:30:33.090 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8657; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(64, 2137 - 190, 2263); boundsInWindow: Rect(64, 2137 - 190, 2263); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:33.091 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@876e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(340, 2137 - 466, 2253); boundsInWindow: Rect(340, 2137 - 466, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:33.101 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@899c; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(890, 2137 - 1016, 2253); boundsInWindow: Rect(890, 2137 - 1016, 2253); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null]; isTextSelectable: false
+11-05 14:30:33.108 I/Maestro (13320): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8b8c; boundsInParent: Rect(0, 0 - 1080, 128); boundsInScreen: Rect(0, 0 - 1080, 128); boundsInWindow: Rect(0, 0 - 1080, 128); packageName: app.calisthenics.personal; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: android:id/statusBarBackground; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+11-05 14:30:33.120 D/Maestro (13320): View hierarchy received in 110 ms
+11-05 14:30:33.501 D/ActivityManager(  521): freezing 8012 com.android.keychain
+11-05 14:30:33.918 D/WindowManager(  521): captureDisplay
+11-05 14:30:34.453 I/servicemanager(    0): Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest.
+11-05 14:30:33.938 I/hwservicemanager(  139): getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+11-05 14:30:33.939 I/Gralloc4(13274): mapper 4.x is not supported
+11-05 14:30:33.971 D/libEGL  (13274): loaded /vendor/lib64/egl/libEGL_emulation.so
+11-05 14:30:33.972 D/libEGL  (13274): loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+11-05 14:30:33.974 D/libEGL  (13274): loaded /vendor/lib64/egl/libGLESv2_emulation.so
+11-05 14:30:33.996 W/OpenGLRenderer(13274): Failed to initialize 101010-2 format, error = EGL_SUCCESS
+11-05 14:30:34.397 D/StatusBarIconController(  842): ignoring old pipeline callbacks, because the new mobile icons are enabled
+11-05 14:30:34.765 D/android.hardware.audio@7.1-impl.ranchu(  341): threadLoop: entering standby, frames: 38441216
+11-05 14:30:35.299 I/logd    (    0): logdr: UID=2000 GID=2000 PID=13488 n tail=0 logMask=99 pid=0 start=0ns deadline=0ns

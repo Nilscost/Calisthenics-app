@@ -1,0 +1,34 @@
+Running on test
+ > Flow j_warmup
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: train_start_button is visible... COMPLETED
+Tap on id: objective_type_ROUTINE... COMPLETED
+Scrolling DOWN until id: warmup_switch is visible with speed 40, visibility percentage 100%, timeout 10000 ms, with centering disabled... COMPLETED
+Take screenshot 01-train-recommended-warmup-${VARIANT}... COMPLETED
+Tap on id: train_start_button... COMPLETED
+Assert that id: session_note is visible... COMPLETED
+Take screenshot 02-warmup-raise-${VARIANT}... COMPLETED
+Tap on id: session_skip... COMPLETED
+Assert that id: session_note is visible... COMPLETED
+Take screenshot 03-warmup-activate-${VARIANT}... COMPLETED
+Repeat while "\d+ s", id: session_target is not visible (up to 150 times)...
+  Tap on id: session_skip... COMPLETED
+Repeat while "\d+ s", id: session_target is not visible (up to 150 times)... COMPLETED
+Take screenshot 04-dip-hold-block-${VARIANT}... COMPLETED
+Assert that id: logger is visible... COMPLETED
+Take screenshot 05-dip-hold-logger-${VARIANT}... COMPLETED
+Tap on id: session_more... COMPLETED
+Tap on "End workout"... COMPLETED
+Tap on "End workout"... COMPLETED
+Assert that id: end_title is visible... COMPLETED
+Tap on id: end_edit... COMPLETED
+Scrolling DOWN until id: end_fix_.* is visible with speed 40, visibility percentage 100%, timeout 8000 ms, with centering disabled... COMPLETED
+Take screenshot 06-end-editor-dip-hold-${VARIANT}... COMPLETED
+Scrolling DOWN until id: end_done is visible with speed 40, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Tap on id: end_done... COMPLETED
+Assert that id: objective_type_BODY_PART is visible... COMPLETED
+Tap on id: objective_type_BODY_PART... COMPLETED

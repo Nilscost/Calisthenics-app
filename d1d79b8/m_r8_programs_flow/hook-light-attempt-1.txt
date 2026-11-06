@@ -1,0 +1,2 @@
+Broadcasting: Intent { act=app.calisthenics.personal.debug.THEME flg=0x400020 cmp=app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.debug.ThemeReceiver (has extras) }
+Broadcast completed: result=1
