@@ -111,7 +111,7 @@ class EndScreenTest {
         rule.onNodeWithTag("end_progress_$a").assertTextContains("3 of 4 weekly sessions to Level 4")
     }
 
-    @Test fun unlockedSectionShowsLevelUpsMasteryAndNewExercises() {
+    @Test fun levelUpsAndMasteryFoldIntoTheExerciseCardAndNewExercisesStayUnlocked() {
         SessionBus.saved = true
         val a = vids[0]; val b = vids[1]; val n = catalog.variations.first { it.id !in vids }.id
         show(finished(), progressWith(
@@ -119,12 +119,22 @@ class EndScreenTest {
             ExerciseProgress(b, true, tier = 5, stars = 5, starsBefore = 4, mastered = true, masteredAlready = true),
             newExercises = listOf(NewExercise(n, b))))
         rule.onNodeWithTag("end_unlocked_caption").assertExists()
-        inside("end_unlock_$a", "Level 4 unlocked")
-        inside("end_unlock_$b", "Mastered")
+        rule.onNodeWithTag("end_unlock_$a").assertTextContains("Level 4 unlocked")
+        inside("end_card_$a", "Level 4 unlocked")   // one card per exercise: the level-up lives on the exercise's own card
+        rule.onNodeWithTag("end_unlock_$b").assertTextContains("Mastered", substring = true)
         inside("end_unlock_$n", SessionBus.names.getValue(n))
         inside("end_unlock_$n", "New exercise unlocked", ignoreCase = true)
         inside("end_card_$b", "Mastered")
         rule.onNodeWithTag("end_progress_$b").assertDoesNotExist()
+    }
+
+    @Test fun aLevelUpAloneHasNoUnlockedSection() {
+        SessionBus.saved = true
+        val a = vids[0]
+        show(finished(), progressWith(ExerciseProgress(a, true, tier = 4, stars = 3, starsBefore = 2, leveledUpTo = 4, progress = LevelProgress(0, 3, false, 5))))
+        rule.onNodeWithTag("end_unlocked_caption").assertDoesNotExist()
+        rule.onNodeWithTag("end_card_$a").assert(hasAnyDescendant(hasContentDescription("3 of 5 stars", substring = true)))
+        inside("end_card_$a", "Level 4 unlocked")
     }
 
     @Test fun chipsSayEasierNextTimeTheNextTargetAndLevelKept() {

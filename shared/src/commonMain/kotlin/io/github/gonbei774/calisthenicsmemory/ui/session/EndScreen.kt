@@ -145,12 +145,9 @@ fun EndProgressCards(p: EndProgress) {
     val s = p.summary
     fun name(id: String) = p.names[id] ?: SessionBus.names[id] ?: id
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
-        if (s.hasUnlocks) {
+        // a level-up or mastery is folded into that exercise's own card below; only new exercises are announced here
+        if (s.newExercises.isNotEmpty()) {
             Caption(stringResource(Res.string.end_section_unlocked), Modifier.testTag("end_unlocked_caption"))
-            (s.levelUps + s.mastered).forEach { e ->
-                UnlockCard(e.variationId, name(e.variationId), e.stars, e.starsBefore,
-                    if (e.mastered) stringResource(Res.string.end_unlock_mastered) else stringResource(Res.string.end_unlock_level, e.leveledUpTo ?: e.tier))
-            }
             s.newExercises.forEach { n -> NewExerciseCard(n.variationId, name(n.variationId)) }
         }
         val leveled = s.exercises.filter { it.hasProgression }
@@ -179,22 +176,6 @@ fun EndProgressCards(p: EndProgress) {
 @Composable
 private fun goldBorder() = BorderStroke(1.5.dp, if (MaterialTheme.colorScheme.surface.luminance() > 0.5f) GoldMarkOnLight else Gold)
 
-/** A level reached or an exercise mastered: the stars pop in, the newly lit ones first. */
-@Composable
-private fun UnlockCard(vid: String, name: String, stars: Int, starsBefore: Int, title: String) {
-    Card(Modifier.fillMaxWidth().testTag("end_unlock_$vid"), shape = MaterialTheme.shapes.large, border = goldBorder()) {
-        Row(Modifier.padding(Spacing.l), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-            ExerciseThumb(vid, name, size = 56.dp)
-            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                Text(title, style = MaterialTheme.typography.titleLarge)
-                Text(name, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Spacer(Modifier.height(Spacing.xs))
-                StarRow(stars, size = 24.dp, popFrom = starsBefore.coerceAtMost(stars))
-            }
-        }
-    }
-}
-
 @Composable
 private fun NewExerciseCard(vid: String, name: String) {
     Card(Modifier.fillMaxWidth().testTag("end_unlock_$vid"), shape = MaterialTheme.shapes.large, border = BorderStroke(1.5.dp, AppAccentTheme.colors.mark)) {
@@ -211,13 +192,18 @@ private fun NewExerciseCard(vid: String, name: String) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ExerciseCard(e: ExerciseProgress, name: String) {
-    Card(Modifier.fillMaxWidth().testTag("end_card_${e.variationId}"), shape = MaterialTheme.shapes.large) {
+    val unlocked = e.mastered || e.leveledUpTo != null
+    Card(Modifier.fillMaxWidth().testTag("end_card_${e.variationId}"), shape = MaterialTheme.shapes.large, border = if (unlocked) goldBorder() else null) {
         Row(Modifier.padding(Spacing.l), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
-            ExerciseThumb(e.variationId, name, size = 52.dp)
+            ExerciseThumb(e.variationId, name, size = if (unlocked) 56.dp else 52.dp)
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                Text(name, style = MaterialTheme.typography.titleMedium)
+                if (unlocked) Text(
+                    if (e.mastered) stringResource(Res.string.end_unlock_mastered) else stringResource(Res.string.end_unlock_level, e.leveledUpTo ?: e.tier),
+                    Modifier.testTag("end_unlock_${e.variationId}"), style = MaterialTheme.typography.titleLarge)
+                Text(name, style = if (unlocked) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.titleMedium,
+                    color = if (unlocked) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface)
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                    StarRow(e.stars, size = 18.dp)
+                    StarRow(e.stars, size = if (unlocked) 24.dp else 18.dp, popFrom = if (unlocked) e.starsBefore.coerceAtMost(e.stars) else null, current = !e.masteredAlready && !e.mastered)
                     Text(if (e.masteredAlready) stringResource(Res.string.end_mastered) else stringResource(Res.string.history_level_of, e.tier),
                         style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }

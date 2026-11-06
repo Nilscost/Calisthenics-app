@@ -365,7 +365,7 @@ private fun ExerciseDetail(c: Catalog, v: ExerciseVariation, progress: app.calis
             modifier = Modifier.testTag("detail_aliases"),
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
-            StarRow(displayStars(c, progress, v.id), size = 22.dp)
+            displayStars(c, progress, v.id).let { StarRow(it, size = 22.dp, current = it < 5) }
             Spacer(Modifier.weight(1f))
             if (policy != null) AppTextButton(onClick = { editing = !editing }, modifier = Modifier.testTag("detail_edit")) { Text(stringResource(if (editing) Res.string.detail_edit_done else Res.string.detail_edit)) }
         }
@@ -481,7 +481,7 @@ private fun WeightTrack(v: ExerciseVariation, progress: app.calisthenics.domain.
         Row(Modifier.fillMaxWidth().heightIn(min = 40.dp).semantics(mergeDescendants = true) {}.testTag("weight_step_${st.grams}"), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
             Text(stringResource(Res.string.weight_kg, kg), Modifier.width(72.dp), style = MaterialTheme.typography.titleMedium,
                 color = if (st.state == WeightState.NOW) AppAccentTheme.colors.text else MaterialTheme.colorScheme.onSurface)
-            if (st.state != WeightState.LOCKED) StarRow(st.stars, size = 16.dp)
+            if (st.state != WeightState.LOCKED) StarRow(st.stars, size = 16.dp, current = st.state == WeightState.NOW && st.stars < 5)
             Text(label.uppercase(), Modifier.weight(1f), style = MaterialTheme.typography.labelLarge, textAlign = androidx.compose.ui.text.style.TextAlign.End,
                 color = if (st.state == WeightState.NOW) AppAccentTheme.colors.text else MaterialTheme.colorScheme.outline)
         }
@@ -524,7 +524,7 @@ private fun NodeSheet(c: Catalog, v: ExerciseVariation, progress: app.calistheni
             Text(v.name, style = MaterialTheme.typography.titleLarge, modifier = Modifier.testTag("sheet_title"))
             if (strength) {
                 Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                    StarRow(stars(progress, v.id), size = 20.dp)
+                    StarRow(stars(progress, v.id), size = 20.dp, current = stars(progress, v.id) < 5)
                     Text(stateLabel(nodeState(c, v.id, progress, profile, emptySet())), style = MaterialTheme.typography.labelLarge)
                 }
                 MusclesRow(v)

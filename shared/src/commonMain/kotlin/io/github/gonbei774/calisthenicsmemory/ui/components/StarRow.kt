@@ -30,10 +30,11 @@ import io.github.gonbei774.calisthenicsmemory.shared.resources.*
 
 /**
  * Up to [total] stars; filled ones stay yellow independently of the action accent.
+ * [current]: the star for the level being worked on (index [filled], when below [total]) is drawn dark with a gold outline; pass it only while the exercise is not mastered. The accessible description is unchanged.
  * [popFrom]: the filled stars from this index on (the newly earned ones) pop in once, one after the other, with a soft halo (end of workout).
  */
 @Composable
-fun StarRow(filled: Int, modifier: Modifier = Modifier, total: Int = 5, size: Dp = 16.dp, popFrom: Int? = null) {
+fun StarRow(filled: Int, modifier: Modifier = Modifier, total: Int = 5, size: Dp = 16.dp, popFrom: Int? = null, current: Boolean = false) {
     val description = pluralStringResource(Res.plurals.stars_of, filled, filled, total)
     Row(modifier.semantics { contentDescription = description }) {
         repeat(total) { i ->
@@ -48,6 +49,12 @@ fun StarRow(filled: Int, modifier: Modifier = Modifier, total: Int = 5, size: Dp
                 Box(Modifier.size(size).scale(scale.value).then(if (pop) Modifier.background(io.github.gonbei774.calisthenicsmemory.ui.theme.Gold.copy(alpha = 0.22f), CircleShape) else Modifier)) {
                     Icon(Icons.Filled.Star, contentDescription = null, modifier = Modifier.size(size), tint = if (MaterialTheme.colorScheme.surface.luminance() > 0.5f) io.github.gonbei774.calisthenicsmemory.ui.theme.GoldTextOnLight else io.github.gonbei774.calisthenicsmemory.ui.theme.Gold)
                     Icon(Icons.Filled.Star, contentDescription = null, modifier = Modifier.size(size * 0.86f).align(Alignment.Center), tint = io.github.gonbei774.calisthenicsmemory.ui.theme.Gold)
+                }
+            } else if (current && i == filled) {
+                val light = MaterialTheme.colorScheme.surface.luminance() > 0.5f
+                Box(Modifier.size(size)) {
+                    Icon(Icons.Filled.Star, contentDescription = null, modifier = Modifier.size(size), tint = if (light) io.github.gonbei774.calisthenicsmemory.ui.theme.GoldMarkOnLight else io.github.gonbei774.calisthenicsmemory.ui.theme.Gold)
+                    Icon(Icons.Filled.Star, contentDescription = null, modifier = Modifier.size(size * 0.7f).align(Alignment.Center), tint = if (light) MaterialTheme.colorScheme.onSurface else androidx.compose.ui.graphics.Color(0xFF0B0B0E))
                 }
             } else {
                 Icon(Icons.Filled.Star, contentDescription = null, modifier = Modifier.size(size), tint = MaterialTheme.colorScheme.outline)

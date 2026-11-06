@@ -145,7 +145,7 @@ private fun TreeNode(n: NodeUi, selected: Boolean, onNeed: (String) -> Unit, onC
             }
         }
         Text(n.name, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center, maxLines = 2, modifier = Modifier.padding(horizontal = 2.dp))
-        StarRow(n.stars, size = 13.dp)
+        StarRow(n.stars, size = 13.dp, current = n.state == TreeNodeState.CURRENT && n.stars < 5)
         if (n.alternate) Text(stringResource(Res.string.node_other_way), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("tree_alt_${n.id}"))
         n.needs?.let { (id, name) -> Text(stringResource(Res.string.node_needs_note, name), style = MaterialTheme.typography.labelSmall, color = AppAccentTheme.colors.text, textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline, maxLines = 1,
             modifier = Modifier.heightIn(min = 24.dp).clickable(role = Role.Button) { onNeed(id) }.testTag("tree_need_${n.id}")) }

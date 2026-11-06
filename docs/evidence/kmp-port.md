@@ -254,3 +254,11 @@ The two intermittent WebKit failures in `web-smoke` (runs 42007885134, 420391311
   - container: 6 of 6 passes with the unchanged app;
   - macOS: WebKit and Chromium passed 5 runs in a row, and the PWA test passed;
   - CI: see the PR.
+
+## 9.2 T2 - end screen and stars
+
+- End screen: a level-up or mastery is now folded into that exercise's own card (`end_card_<id>`): gold border, popping stars, "Level N unlocked" / "Mastered" title (tagged `end_unlock_<id>`, now on the title text of the merged card), plus the usual progress dots and chips. The separate `UnlockCard` is gone. New-exercise cards stay in "Unlocked"; the caption (`end_unlocked_caption`) shows only when there are new exercises.
+- `StarRow(current = true)`: the star at index `filled` (the level being worked on) is drawn dark (onSurface in light, near-black in dark) with a gold outline (GoldMarkOnLight / Gold). Content description unchanged ("N of 5 stars").
+- `current` call sites: end card (not mastered), Progress exercise detail (stars < 5), node sheet (stars < 5), skill-tree node (state CURRENT, stars < 5), weight track row (state NOW, stars < 5). Not used: onboarding ladder (levels done only).
+- No Maestro flow or web smoke test referenced `end_unlock_*`; no flow changes needed. `EndScreenTest` updated, plus a new test for a level-up without new exercises.
+- Verified: `:app:testDebugUnitTest :shared:compileKotlinWasmJs :app:assembleDebug` (offline) pass. `:shared:allTests` fails before the tests run on the wasmJs compose-ui-test config check (pre-existing, unrelated). Screenshots not reviewed.
