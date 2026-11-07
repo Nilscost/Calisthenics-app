@@ -1,0 +1,137 @@
+Picked up JAVA_TOOL_OPTIONS: -Dorg.sqlite.tmpdir=/root/sqlitetmp -Djava.io.tmpdir=/root/sqlitetmp -Dorg.sqlite.lib.path=/root/toolchain/sqlite -Dorg.sqlite.lib.name=libsqlitejdbc.so
+> Task :domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :domain:compileKotlin
+> Task :domain:compileJava NO-SOURCE
+> Task :domain:processResources NO-SOURCE
+> Task :domain:classes UP-TO-DATE
+> Task :domain:jar
+
+> Task :domain:compileTestKotlin
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/ProfileEditTest.kt:91:19 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/SavedRoutineTest.kt:52:19 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/domain/src/test/kotlin/app/calisthenics/domain/SeedFixtureTest.kt:68:26 Redundant creation of Json format. Creating instances for each usage can be slow.
+
+> Task :domain:compileTestJava NO-SOURCE
+> Task :domain:processTestResources NO-SOURCE
+> Task :domain:testClasses UP-TO-DATE
+
+> Task :domain:test
+Picked up JAVA_TOOL_OPTIONS: -Dorg.sqlite.tmpdir=/root/sqlitetmp -Djava.io.tmpdir=/root/sqlitetmp -Dorg.sqlite.lib.path=/root/toolchain/sqlite -Dorg.sqlite.lib.name=libsqlitejdbc.so
+
+> Task :data:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :data:preBuild UP-TO-DATE
+> Task :data:preDebugBuild UP-TO-DATE
+> Task :data:generateDebugResValues UP-TO-DATE
+> Task :data:generateDebugResources UP-TO-DATE
+> Task :data:packageDebugResources UP-TO-DATE
+> Task :data:processDebugNavigationResources UP-TO-DATE
+> Task :data:parseDebugLocalResources UP-TO-DATE
+> Task :data:generateDebugRFile UP-TO-DATE
+> Task :data:kspDebugKotlin UP-TO-DATE
+> Task :data:compileDebugKotlin UP-TO-DATE
+> Task :data:javaPreCompileDebug UP-TO-DATE
+> Task :data:compileDebugJavaWithJavac UP-TO-DATE
+> Task :data:bundleLibRuntimeToJarDebug
+> Task :data:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :data:preDebugUnitTestBuild UP-TO-DATE
+> Task :data:generateDebugUnitTestStubRFile
+> Task :data:kspDebugUnitTestKotlin NO-SOURCE
+> Task :data:compileDebugUnitTestKotlin NO-SOURCE
+> Task :data:javaPreCompileDebugUnitTest
+> Task :data:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :data:processDebugJavaRes UP-TO-DATE
+> Task :data:processDebugUnitTestJavaRes NO-SOURCE
+> Task :data:testDebugUnitTest NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugBuildConfig UP-TO-DATE
+> Task :data:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:processDebugNavigationResources
+> Task :app:compileDebugNavigationResources UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:collectDependencies UP-TO-DATE
+> Task :app:prepareLibraryDefinitionsDebug UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+> Task :app:parseDebugLocalResources
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :data:extractDeepLinksDebug UP-TO-DATE
+> Task :data:processDebugManifest UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :data:compileDebugLibraryResources UP-TO-DATE
+> Task :app:processDebugResources
+> Task :app:kspDebugKotlin
+
+> Task :app:compileDebugKotlin
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/history/HistoryScreen.kt:85:158 'val Icons.Filled.KeyboardArrowLeft: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.KeyboardArrowLeft.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/history/HistoryScreen.kt:87:199 'val Icons.Filled.KeyboardArrowRight: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.KeyboardArrowRight.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/train/TrainData.kt:89:16 Redundant creation of Json format. Creating instances for each usage can be slow.
+
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:kspDebugUnitTestKotlin
+
+> Task :app:compileDebugUnitTestKotlin
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ClipAssetsTest.kt:10:29 Java type mismatch: inferred type is 'kotlin.String?', but 'kotlin.String' was expected.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PreviewScreenTest.kt:233:20 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PreviewScreenTest.kt:256:20 Redundant creation of Json format. Creating instances for each usage can be slow.
+
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :data:mergeDebugShaders UP-TO-DATE
+> Task :data:compileDebugShaders NO-SOURCE
+> Task :data:generateDebugAssets UP-TO-DATE
+> Task :data:mergeDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:packageDebugUnitTestForUnitTest
+> Task :app:processDebugUnitTestManifest
+> Task :app:generateDebugUnitTestConfig
+> Task :app:processDebugJavaRes
+> Task :app:processDebugUnitTestJavaRes UP-TO-DATE
+
+> Task :app:testDebugUnitTest
+Picked up JAVA_TOOL_OPTIONS: -Dorg.sqlite.tmpdir=/root/sqlitetmp -Djava.io.tmpdir=/root/sqlitetmp -Dorg.sqlite.lib.path=/root/toolchain/sqlite -Dorg.sqlite.lib.name=libsqlitejdbc.so
+
+ContrastTest > primaryAndSecondaryMuscleColoursDifferOnBothThemes FAILED
+    java.lang.AssertionError at PolishTest.kt:79
+
+DesignSystemTest > lightAndDarkThemesCompose FAILED
+    java.lang.AssertionError at DesignSystemTest.kt:53
+
+DesignSystemTest > paletteIsTheFixedDirectionBPaletteAndDiffersByTheme FAILED
+    java.lang.AssertionError at DesignSystemTest.kt:38
+
+ProgressScreenTest > pilatesAndConditioningUseStaticThumbnailCardsAndOpenTheirDetails FAILED
+    java.lang.AssertionError at ProgressScreenTest.kt:240
+
+SessionScreenTest > aFlowProgramHasNoPerItemEditorOnTheEndScreen FAILED
+    java.lang.AssertionError at SessionScreenTest.kt:336
+
+224 tests completed, 5 failed
+
+> Task :app:testDebugUnitTest FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:testDebugUnitTest'.
+> There were failing tests. See the report at: file:///Users/nils/Documents/hermes/Apps/calisthenics/app/build/reports/tests/testDebugUnitTest/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 1m 21s
+60 actionable tasks: 26 executed, 34 up-to-date

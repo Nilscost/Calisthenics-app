@@ -3,9 +3,11 @@ package io.github.gonbei774.calisthenicsmemory.ui
 import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
@@ -91,5 +93,59 @@ class ProfileStoreTest {
         rule.onNodeWithText("You already have a profile with this name.").assertIsDisplayed()
         assertFalse(done)
         assertEquals(2, ProfileStore.load(ctx).size)
+    }
+}
+
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [34])
+class ProfileLeaveDialogTest {
+    @get:Rule val rule = createComposeRule()
+    private val ctx: Context get() = ApplicationProvider.getApplicationContext()
+    private var done = false
+    private var dispatcher: androidx.activity.OnBackPressedDispatcher? = null
+
+    @Before fun clean() {
+        for (n in listOf("profiles", "mode", "planner_prefs")) ctx.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit()
+        done = false
+        rule.setContent {
+            dispatcher = androidx.activity.compose.LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+            CalisthenicsMemoryTheme(darkTheme = false) { ProfileEditScreen(profileId = "home", onDone = { done = true }) }
+        }
+    }
+
+    private fun back() = rule.onNodeWithContentDescription("Back").performClick()
+
+    @Test fun unchangedGoesBackWithoutDialog() {
+        back(); rule.waitForIdle()
+        assertTrue(done)
+    }
+
+    @Test fun changeShowsDialogAndDismissStays() {
+        rule.onNodeWithTag("profile_name").performTextInput("x")
+        back(); rule.waitForIdle()
+        rule.onNodeWithText("Discard").assertIsDisplayed()
+        assertFalse(done)
+    }
+
+    @Test fun savePersistsAndReturns() {
+        rule.onNodeWithTag("profile_name").performTextInput("x")
+        back(); rule.onNodeWithTag("profile_leave_save").performClick(); rule.waitForIdle()
+        assertTrue(done)
+        assertTrue(ProfileStore.load(ctx).any { it.id == "home" && it.name.contains("x") })
+    }
+
+    @Test fun discardReturnsWithoutPersisting() {
+        val before = ProfileStore.load(ctx)
+        rule.onNodeWithTag("eq_kettlebell").performScrollTo().performClick()
+        back(); rule.onNodeWithTag("profile_leave_discard").performClick(); rule.waitForIdle()
+        assertTrue(done)
+        assertEquals(before, ProfileStore.load(ctx))
+    }
+
+    @Test fun systemBackShowsDialogOnlyWhenDirty() {
+        rule.onNodeWithTag("profile_name").performTextInput("x")
+        rule.waitForIdle(); rule.runOnUiThread { dispatcher!!.onBackPressed() }; rule.waitForIdle()
+        rule.onNodeWithTag("profile_leave_discard").assertIsDisplayed()
+        assertFalse(done)
     }
 }

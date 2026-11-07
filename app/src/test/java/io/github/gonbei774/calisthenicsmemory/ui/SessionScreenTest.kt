@@ -201,13 +201,14 @@ class SessionScreenTest {
         assertEquals(target + 1, intents[0].getIntExtra(WorkoutSessionService.EXTRA_REPS, -2))
     }
 
-    // R7-T03 (D3, B9): "Too easy" next to the stepper feeds the same tooEasy flag as the end screen
+    // Name kept from the baseline; 9.2 T3: there is no Too easy chip in the logger, so a logged set never sends tooEasy
     @Test fun tooEasyNextToTheStepperIsSentWithTheLog() {
         show(stateAt(0))
-        rule.onNodeWithTag("logger_too_easy").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("logger_too_easy").assertDoesNotExist()
+        rule.onNodeWithTag("logger_plus").performClick(); rule.waitForIdle()
         val intent = lastIntent()
         assertEquals(WorkoutSessionService.ACTION_LOG, intent.action)
-        assertTrue(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_EASY, false))
+        assertFalse(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_EASY, true))
         assertFalse(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_HARD, true))
     }
 
@@ -219,11 +220,12 @@ class SessionScreenTest {
         rule.onNodeWithTag("logger").assertDoesNotExist() // a hold is not logged while it runs
     }
 
-    @Test fun noRatingChipsDuringTheWorkoutExceptTooEasy() {
-        // doc 17 §2.3: Too hard / Pain stay on the end screen; R7-T03: Too easy is next to the stepper
+    // Name kept from the baseline (config/app-test-baseline.txt); 9.2 T3 removed Too easy from the logger too, so it is asserted absent.
+    @Test fun noRatingChipsDuringTheWorkout() {
+        // doc 17 §2.3: Too hard / Pain stay on the end screen; 9.2 T3: Too easy is no longer in the logger either
         show(stateAt(0))
-        for (t in listOf("logger_too_hard", "logger_pain")) rule.onNodeWithTag(t).assertDoesNotExist()
-        rule.onNodeWithTag("logger_minus").assertExists(); rule.onNodeWithTag("logger_plus").assertExists(); rule.onNodeWithTag("logger_too_easy").assertExists(); rule.onNodeWithTag("session_done").assertExists()
+        for (t in listOf("logger_too_hard", "logger_pain", "logger_too_easy")) rule.onNodeWithTag(t).assertDoesNotExist()
+        rule.onNodeWithTag("logger_minus").assertExists(); rule.onNodeWithTag("logger_plus").assertExists(); rule.onNodeWithTag("session_done").assertExists()
     }
 
     @Test fun theBottomRowIsPauseDoneSkipWithDoneInTheMiddle() {
@@ -269,7 +271,7 @@ class SessionScreenTest {
             rule.waitForIdle()
             val title = rule.onNodeWithTag("session_title").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
             assertFalse("block $i shows '$title'", title.contains("rest", ignoreCase = true))
-            if (plan.blocks[i].type == BlockType.TRANSITION) { assertTrue(title.startsWith("Get ready: ")); sawGetReady += title }
+            if (plan.blocks[i].type == BlockType.TRANSITION) { assertTrue(title.startsWith("Prepare: ")); sawGetReady += title }
             rule.onAllNodesWithText("Rest", substring = true, ignoreCase = true).assertCountEquals(0)
         }
         assertTrue("the routine has a position change", sawGetReady.isNotEmpty())
@@ -311,11 +313,47 @@ class SessionScreenTest {
         var exited = false
         show(s) { exited = true }
         rule.onNodeWithTag("end_title").assertTextEquals("Workout complete")
-        rule.onNodeWithTag("end_summary").assertTextContains("2 rounds", substring = true)
+        rule.onNodeWithTag("end_tile_rounds").assertTextContains("2", substring = true) // three tiles with History's numbers
         rule.onNodeWithTag("end_edit").assertIsDisplayed()
         rule.onNodeWithText("How did it go?", substring = true).assertDoesNotExist() // the long form only opens on demand
         rule.onNodeWithTag("end_done").performClick()
         assertTrue(exited)
+    }
+
+    @Test fun aRestoredSessionRouteWithNoLiveSessionGoesBackInsteadOfStartingForever() {
+        var exited = false
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = { exited = true }) } }
+        rule.waitForIdle()
+        assertTrue(exited)
+    }
+
+    @Test fun startingStaysOnTheStartingScreenUntilTheFirstPublish() {
+        SessionBus.begin()
+        var exited = false
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = { exited = true }) } }
+        rule.waitForIdle()
+        assertFalse(exited)
+        rule.onNodeWithText(app.getString(R.string.session_starting)).assertExists()
+    }
+
+    @Test fun beginDropsAFinishedSessionButNeverALiveOne() {
+        val live = stateAt(1)
+        SessionBus.publish(live); SessionBus.begin()
+        assertSame(live, SessionBus.state.value)
+        val done = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
+        SessionBus.publish(done); SessionBus.saved = true; SessionBus.begin()
+        assertNull(SessionBus.state.value); assertFalse(SessionBus.saved)
+        assertTrue(SessionBus.starting.value)
+    }
+
+    @Test fun theEndScreenSaysSavingThenSavedAndNeverSavedAfterAFailure() {
+        val s = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
+        SessionBus.saving()
+        show(s)
+        rule.onNodeWithTag("end_save_status").assertTextEquals(app.getString(R.string.end_saving))
+        SessionBus.saveFailed(); rule.waitForIdle()
+        rule.onNodeWithTag("end_save_status").assertTextEquals(app.getString(R.string.end_save_failed))
+        rule.onNodeWithTag("end_edit").assertDoesNotExist() // no corrections for a session that is not in history
     }
 
     // R8.1-T06 (F7): a Flow workout still logs actual reps, so its end screen keeps the editor; only a flow program has no per-item results
@@ -329,11 +367,19 @@ class SessionScreenTest {
     }
 
     @Test fun aFlowProgramHasNoPerItemEditorOnTheEndScreen() {
-        val program = plan.copy(flow = true, fixedProgramId = "army-pd")
+        val program = plan.copy(flow = true, fixedProgramId = "army-pd", blocks = plan.blocks.map { it.copy(prescriptionTier = null) })
         val s = reduce(newSession("S", program), SessionEvent.Start(0)).state.let { reduce(it, SessionEvent.Tick(10_000_000)).state }
         SessionBus.saved = true
         show(s)
         rule.onNodeWithTag("end_edit").assertDoesNotExist()
+    }
+
+    @Test fun anAppLevelFlowProgramKeepsTheActualResultsEditor() {
+        val program = plan.copy(flow = true, fixedProgramId = "army-pd")
+        val s = reduce(newSession("S", program), SessionEvent.Start(0)).state.let { reduce(it, SessionEvent.Tick(10_000_000)).state }
+        SessionBus.saved = true
+        show(s)
+        rule.onNodeWithTag("end_edit").assertIsDisplayed()
     }
 
     @Test fun theEndScreenEditorHasOneNumberPerRoundAndTooEasyNextToTooHard() {

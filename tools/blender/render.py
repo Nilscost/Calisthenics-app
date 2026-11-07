@@ -19,13 +19,14 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from camera_views import camera_stamp
+from hand_axes import axes
 
 import bpy
 import bmesh
 from mathutils import Matrix, Quaternion, Vector
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-WORK = os.path.join(ROOT, "work", "clips-bakeoff")
+WORK = os.environ.get("CALISTHENICS_RENDER_WORK", os.path.join(ROOT, "work", "clips-bakeoff"))
 RES = (640, 480)  # the app shows 480x360; 640x480 keeps edges clean and halves render time
 
 FIGURE = (0.60, 0.61, 0.64)
@@ -108,6 +109,22 @@ def ellipsoid(name, rx, ry, rz, mat):
     return ob
 
 
+def torus(name, radius, tube, mat):
+    verts=[];faces=[];major=64;minor=16
+    for i in range(major):
+        a=2*math.pi*i/major
+        for j in range(minor):
+            b=2*math.pi*j/minor;r=radius+tube*math.cos(b)
+            verts.append((r*math.cos(a),r*math.sin(a),tube*math.sin(b)))
+    for i in range(major):
+        for j in range(minor):
+            faces.append((i*minor+j,((i+1)%major)*minor+j,((i+1)%major)*minor+(j+1)%minor,i*minor+(j+1)%minor))
+    mesh=bpy.data.meshes.new(name);mesh.from_pydata(verts,[],faces);mesh.update()
+    ob=link(bpy.data.objects.new(name,mesh));ob.rotation_mode='QUATERNION';mesh.materials.append(mat)
+    for polygon in mesh.polygons:polygon.use_smooth=True
+    return ob
+
+
 def box(name, center, size, mat):
     bm = bmesh.new()
     bmesh.ops.create_cube(bm, size=1.0)
@@ -178,21 +195,22 @@ PALM_LEN = 0.085
 def hand_frame(fr, side):
     """Unit axes of a hand: u along the palm (wrist -> knuckles), n palm normal, s across."""
     wr, tip = Vector(fr["wrist_" + side]), Vector(fr["hand_" + side])
-    u = (tip - wr).normalized()
-    n = Vector(fr["palmn_" + side])
-    n = (n - u * n.dot(u))
-    n = n.normalized() if n.length > 1e-6 else Vector((0, 0, -1))
-    s = u.cross(n).normalized()
-    # make s point towards the body midline (thumb side)
-    inward = Vector((0, -1 if side == "l" else 1, 0))
-    if s.dot(inward) < 0:
-        s = -s
+    u, n, s = (Vector(v) for v in axes(wr, tip, fr["palmn_" + side], side))
     return wr, u, n, s
 
 
-def hand_segments(fr, side):
+def hand_segments(fr, side, bar_grip=None, ring_grip=None):
     """Palm centre/axes and finger + thumb segments (a, b) for one hand."""
     wr, u, n, s = hand_frame(fr, side)
+    if ring_grip:
+        from ring_geometry import hand_segments as ring_segments
+        spec=next(p for p in ring_grip if p['joint']=='wrist_'+side)
+        segs=[(Vector(a),Vector(b)) for a,b in ring_segments(fr,side,spec)]
+        return wr + u * (PALM_LEN * .55) + n * .004, u, n, s, segs
+    if bar_grip:
+        from bar_grip import wrapped_segments
+        segs = [(Vector(a), Vector(b)) for a,b in wrapped_segments(fr, side, bar_grip)]
+        return wr + u * (PALM_LEN * .55) + n * .004, u, n, s, segs
     g = max(0.0, min(1.0, fr["grip_" + side][0]))
     a = math.radians(85) * g
     lifts = fr.get("finger_lift_" + side, [0, 0, 0, 0, 0])
@@ -201,7 +219,7 @@ def hand_segments(fr, side):
     segs = []
     for index, (off, l1, l2) in enumerate(FINGERS):
         lifted = a - math.radians(lifts[index])
-        base = wr + u * PALM_LEN - s * off
+        base = wr + u * PALM_LEN + s * off
         d1 = u * math.cos(lifted) + n * math.sin(lifted)
         e1 = base + d1 * l1
         distal = 2 * a - math.radians(lifts[index])
@@ -216,8 +234,14 @@ def hand_segments(fr, side):
 
 
 class Figure:
-    def __init__(self, f0):
-        skin, joint = material("figure", FIGURE), material("joint", JOINT)
+    def __init__(self, f0, detailed=False, bar_grip=None, ring_grip=None):
+        self.ring_grip = ring_grip
+        self.dynamic_finger_shapes = {}
+        self.bar_grip = bar_grip
+        self.detailed = detailed
+        skin, joint = material("figure", (.42,.46,.50) if detailed else FIGURE), material("joint", JOINT)
+        palm_mat = material("palm_surface", (0.12, 0.38, 0.52))
+        nail_mat = material("hand_back", (0.83, 0.86, 0.88))
         self.parts = {}
         for name, (a, b, r1, r2) in LIMBS.items():
             length = (Vector(f0[b]) - Vector(f0[a])).length
@@ -232,20 +256,28 @@ class Figure:
                     self.parts[name] = capsule(name, (b - a).length, r1, r2, skin)
             else:
                 self.parts["foot_" + side] = capsule("foot_" + side, (t - h).length, 0.036, 0.026, skin)
-            _, _, _, _, segs = hand_segments(f0, side)
+            _, _, _, _, segs = hand_segments(f0, side, self.bar_grip, self.ring_grip)
             self.parts["palm_" + side] = ellipsoid("palm_" + side, 0.042, 0.016, 0.052, skin)
+            self.parts["palm_pad_" + side] = ellipsoid("palm_pad_" + side, 0.034, 0.004, 0.037, palm_mat)
+            self.parts["hand_back_" + side] = ellipsoid("hand_back_" + side, 0.028, 0.004, 0.032, nail_mat)
             for i, (a, b) in enumerate(segs):
-                r = 0.0105 if i == len(segs) - 1 else 0.0088
+                r = 0.0105 if i >= len(segs) - (2 if self.bar_grip or self.ring_grip else 1) else 0.0088
                 self.parts[f"fing_{side}_{i}"] = capsule(f"fing_{side}_{i}", (b - a).length, r, r * 0.92, skin, seg=12, rings=4)
+                if self.ring_grip and any(p.get("frame_center") for p in self.ring_grip):
+                    ob = self.parts[f"fing_{side}_{i}"]
+                    self.dynamic_finger_shapes[ob.name] = ((b-a).length, [v.co.z for v in ob.data.vertices])
             for j, r in (("knee", 0.056), ("elbow", 0.044), ("ankle", 0.040), ("wrist", 0.032)):
-                self.parts[f"{j}_{side}_ball"] = ellipsoid(f"{j}_{side}_ball", r, r, r, joint)
-        self.parts["pelvis"] = ellipsoid("pelvis", 0.105, 0.165, 0.11, skin)
-        self.parts["belly"] = ellipsoid("belly", 0.10, 0.145, 0.13, skin)
-        self.parts["chest"] = ellipsoid("chest", 0.115, 0.175, 0.17, skin)
+                self.parts[f"{j}_{side}_ball"] = ellipsoid(f"{j}_{side}_ball", r, r, r, skin if detailed else joint)
+        self.torso = None
+        if detailed:
+            from anatomy import Torso
+            self.torso = Torso(f0, skin)
+        else:
+            self.parts["pelvis"] = ellipsoid("pelvis", 0.105, 0.165, 0.11, skin)
+            self.parts["belly"] = ellipsoid("belly", 0.10, 0.145, 0.13, skin)
+            self.parts["chest"] = ellipsoid("chest", 0.115, 0.175, 0.17, skin)
         self.parts["head"] = ellipsoid("head", 0.098, 0.082, 0.118, skin)
-        if f0.get("head_detail", [0])[0]:
-            self.parts["nose"] = ellipsoid("nose", .028, .020, .024, skin)
-            self.parts["chin"] = ellipsoid("chin", .035, .034, .026, skin)
+        # Keep the mannequin featureless; head orientation remains articulated.
 
     def pose(self, fr):
         for name, (a, b, _, _) in LIMBS.items():
@@ -260,28 +292,40 @@ class Figure:
                 place_segment(self.parts["foot_" + side], h, t)
             for j in ("knee", "elbow", "ankle", "wrist"):
                 self.parts[f"{j}_{side}_ball"].location = fr[f"{j}_{side}"]
-            pc, u, n, sv, segs = hand_segments(fr, side)
+            pc, u, n, sv, segs = hand_segments(fr, side, self.bar_grip, self.ring_grip)
             palm = self.parts["palm_" + side]
             palm.location = pc
             # ellipsoid axes: x = across (s), y = thickness (n), z = along (u)
-            palm.rotation_quaternion = Matrix((sv, n, u)).transposed().to_quaternion()
+            palm.rotation_quaternion = Matrix((n.cross(u), n, u)).transposed().to_quaternion()
+            for name, sign in (("palm_pad_", 1), ("hand_back_", -1)):
+                detail = self.parts[name + side]
+                detail.location = pc + n * (0.016 * sign)
+                detail.rotation_quaternion = palm.rotation_quaternion
             for i, (a, b) in enumerate(segs):
-                place_segment(self.parts[f"fing_{side}_{i}"], a, b)
+                ob = self.parts[f"fing_{side}_{i}"]
+                if ob.name in self.dynamic_finger_shapes:
+                    # Fit the authored phalanx endpoints while preserving the
+                    # hemispherical end caps and radial skin thickness.
+                    from ring_geometry import capsule_vertex_z
+                    initial, coordinates = self.dynamic_finger_shapes[ob.name]
+                    length = (b-a).length
+                    for vertex, z in zip(ob.data.vertices, coordinates):
+                        vertex.co.z = capsule_vertex_z(z,initial,length)
+                place_segment(ob, a, b)
         up1, up2 = Vector(fr["pelvis_up"]), Vector(fr["chest_up"])
         l1 = Vector(fr.get("pelvis_left", (0, 1, 0)))
         l2 = Vector(fr.get("chest_left", (0, 1, 0)))
         P, S, C = Vector(fr["pelvis"]), Vector(fr["spine"]), Vector(fr["chest"])
-        place_basis(self.parts["pelvis"], P + up1 * 0.03, up1, l1)
-        place_basis(self.parts["belly"], (P + S) / 2 + up1 * 0.06, (up1 + up2).normalized(), (l1 + l2).normalized())
-        place_basis(self.parts["chest"], C - up2 * 0.11, up2, l2)
+        if self.torso:
+            self.torso.pose(fr)
+        else:
+            place_basis(self.parts["pelvis"], P + up1 * 0.03, up1, l1)
+            place_basis(self.parts["belly"], (P + S) / 2 + up1 * 0.06, (up1 + up2).normalized(), (l1 + l2).normalized())
+            place_basis(self.parts["chest"], C - up2 * 0.11, up2, l2)
         head_up = (Vector(fr["head"]) - Vector(fr["neck"])).normalized()
         head_left = Vector(fr.get("head_left", l2))
         center = Vector(fr["head"])
         place_basis(self.parts["head"], center + head_up * 0.02, head_up, head_left)
-        if "nose" in self.parts:
-            forward = head_left.cross(head_up).normalized()
-            place_basis(self.parts["nose"], center + head_up * .025 + forward * .10, head_up, head_left)
-            place_basis(self.parts["chin"], center - head_up * .060 + forward * .078, head_up, head_left)
 
 
 # ---------------------------------------------------------------- props
@@ -335,6 +379,12 @@ class Props:
                     self.points.append(tuple(a_))
                 if not isinstance(pr["b"], dict):
                     self.points.append(tuple(b_))
+            elif k == "ring":
+                from ring_geometry import ring_outline
+                ring=torus('gymnastic_ring',pr['radius'],pr['tube'],material('wood_ring',tuple(pr.get('color',(.55,.29,.10)))))
+                strap=box('ring_strap',(0,0,0),(.025,.006,1),material('strap',(.055,.065,.075)))
+                self.dynamic.append(('ring',(ring,strap),pr));self._place_ring((ring,strap),pr,f0)
+                self.points.extend(tuple(v) for v in ring_outline(f0,pr));self.points.append(tuple(pr['anchor']))
             elif k == "weight":
                 obs = self._weight(pr["type"], mat)
                 self.dynamic.append(("weight", obs, pr))
@@ -351,6 +401,16 @@ class Props:
         a_, b_ = P(pr["a"], fr), P(pr["b"], fr)
         place_segment(ob, a_, b_)
         ob.scale = (1, 1, max((b_ - a_).length, 1e-4))
+
+    @staticmethod
+    def _place_ring(obs, pr, fr):
+        from ring_geometry import ring_frame,strap_attachment
+        centre,normal,_,_=ring_frame(fr,pr)
+        ring,strap=obs;ring.location=Vector(centre)
+        ring.rotation_quaternion=Vector((0,0,1)).rotation_difference(Vector(normal))
+        a=Vector(pr['anchor']);b=Vector(strap_attachment(fr,pr))
+        place_segment(strap,a,b);strap.location=(a+b)/2
+        strap.scale=(.025,.006,(b-a).length)
 
     @staticmethod
     def _weight(kind, mat):
@@ -386,6 +446,8 @@ class Props:
         for kind, ob, pr in self.dynamic:
             if kind == "rod":
                 self._rod(ob, pr, fr)
+            elif kind == "ring":
+                self._place_ring(ob, pr, fr)
             else:
                 self._place_weight(ob, pr, fr)
 
@@ -499,13 +561,23 @@ def render(ex_id, engine, start_only):
     path = os.path.join(WORK, ex_id, "joints.json")
     with open(path) as fh:
         data = json.load(fh)
+    if start_only:
+        # A preview replaces frame zero; invalidate full-render provenance.
+        detail_stamp = os.path.join(WORK, ex_id, "blender", "render-detail.json")
+        if os.path.isfile(detail_stamp):
+            os.unlink(detail_stamp)
+    from motion_quality import audit
+    motion = audit(data)
+    if motion['status'] == 'fail':
+        raise ValueError('Motion checks failed before render: ' + str(motion['failures']))
     override = camera_stamp(ex_id)
     if override:
         data.update(override)
     sc = scene_setup(engine)
     props_ = Props(data["props"], material("prop", PROP), data["frames"][0])
     pts = list(props_.points)
-    fig = Figure(data["frames"][0])
+    ring_specs=[p for p in data['props'] if p['kind']=='ring'] if data.get('ring_grip') else None
+    fig = Figure(data["frames"][0], data.get("anatomy_detail", False), data.get("bar_grip"), ring_specs)
     for fr in data["frames"]:
         for k, v in fr.items():
             if not (k.endswith(("_up", "_left")) or k.startswith(("palmn_", "grip_", "finger_lift_", "foot_arch_")) or k == "head_detail"):
@@ -516,7 +588,45 @@ def render(ex_id, engine, start_only):
     pad = data.get("camera_padding", 0.12)
     pts = [(p[0] + dx, p[1] + dy, max(p[2] + dz, 0.0)) for p in set(pts)
            for dx, dy, dz in ((0, 0, 0), (pad, 0, 0), (-pad, 0, 0), (0, pad, 0), (0, -pad, 0), (0, 0, pad), (0, 0, -pad))]
-    camera(data, pts)
+    full_camera = camera(data, pts)
+    detail_camera = None
+    if data.get("grip_detail"):
+        hand_points = []
+        for fr in data["frames"]:
+            pc, u, n, sv, segs = hand_segments(fr, "r", data.get("bar_grip"), ring_specs)
+            hand_points.extend(tuple(p) for segment in segs for p in segment)
+            hand_points.append(tuple(Vector(fr["wrist_r"]) - u * 0.10))
+        if ring_specs:
+            from ring_geometry import ring_outline
+            spec=next(p for p in ring_specs if p['joint']=='wrist_r')
+            for fr in data['frames']:hand_points.extend(tuple(v) for v in ring_outline(fr,spec))
+        # A view from in front of the demonstrator reveals palm versus dorsum.
+        detail_camera = camera(dict(cam_az=-25 if ring_specs else 70, cam_el=5), hand_points)
+        detail_camera.data.lens = 42
+        sc.camera = full_camera
+    detail_hide=[]
+    if ring_specs:
+        # The close-up isolates the right grip; the main view retains both rings.
+        keep=('fore_r','wrist_r_ball','palm_r','palm_pad_r','hand_back_r')
+        detail_hide=[ob for name,ob in fig.parts.items() if name not in keep and not name.startswith('fing_r_')]
+        if fig.torso:detail_hide.append(fig.torso.obj)
+        for kind,obs,pr in props_.dynamic:
+            if kind=='ring' and pr['joint']=='wrist_l':detail_hide.extend(obs)
+    from bpy_extras.object_utils import world_to_camera_view
+    bpy.context.view_layer.update()
+    projected = []
+    projection_names = ("shoulder_l", "shoulder_r", "elbow_l", "elbow_r", "wrist_l", "wrist_r",
+                        "hip_l", "hip_r", "knee_l", "knee_r", "ankle_l", "ankle_r")
+    for fr in data["frames"]:
+        points = {}
+        for name in projection_names:
+            v = world_to_camera_view(sc, full_camera, Vector(fr[name]))
+            points[name] = [round(v.x * RES[0], 4), round((1-v.y) * RES[1], 4)]
+        projected.append(points)
+    projection_path = os.path.join(WORK, ex_id, "blender", "camera-projection.json")
+    os.makedirs(os.path.dirname(projection_path), exist_ok=True)
+    with open(projection_path, "w") as fh:
+        json.dump(dict(fps=data["fps"], projected_frames=projected), fh)
     out = os.path.join(WORK, ex_id, "blender", "frames")
     os.makedirs(out, exist_ok=True)
     frames = data["frames"][:1] if start_only else data["frames"]
@@ -526,11 +636,24 @@ def render(ex_id, engine, start_only):
         props_.pose(fr)
         sc.render.filepath = os.path.join(out, f"{i:04d}.png")
         bpy.ops.render.render(write_still=True)
+        if detail_camera:
+            detail_dir = os.path.join(WORK, ex_id, "blender", "grip-frames")
+            os.makedirs(detail_dir, exist_ok=True)
+            sc.camera = detail_camera
+            sc.render.filepath = os.path.join(detail_dir, f"{i:04d}.png")
+            for ob in detail_hide:ob.hide_render=True
+            bpy.ops.render.render(write_still=True)
+            for ob in detail_hide:ob.hide_render=False
+            sc.camera = full_camera
         if i == 0:
             sc.render.filepath = os.path.join(WORK, ex_id, "blender", "start.png")
             bpy.ops.render.render(write_still=True)
     # A start-only preview is deliberately incomplete and must never make a
     # cached full render appear current. Stamp only after every frame succeeds.
+    if not start_only:
+        from render_contract import render_stamp
+        with open(os.path.join(WORK, ex_id, "blender", "render-detail.json"), "w") as fh:
+            json.dump(render_stamp(), fh, sort_keys=True)
     if not start_only and override:
         stamp_path = os.path.join(WORK, ex_id, "blender", "render-camera.json")
         with open(stamp_path, "w") as fh:
@@ -555,9 +678,29 @@ def done_already(ex_id):
     if not os.path.isdir(out):
         return False
     with open(j) as fh:
-        n = len(json.load(fh)["frames"])
-    names = [f for f in os.listdir(out) if f.endswith(".png")]
-    return len(names) >= n and min(os.path.getmtime(os.path.join(out, f)) for f in names) > os.path.getmtime(j)
+        data = json.load(fh)
+        n = len(data["frames"])
+    if data.get("grip_detail") or data.get("motion_profile"):
+        from render_contract import render_stamp
+        try:
+            with open(os.path.join(WORK, ex_id, "blender", "render-detail.json")) as fh:
+                if json.load(fh) != render_stamp():
+                    return False
+            detail_dir = os.path.join(WORK, ex_id, "blender", "grip-frames")
+            if data.get("grip_detail") and set(os.listdir(detail_dir)) != {f"{i:04d}.png" for i in range(n)}:
+                return False
+            if data.get("grip_detail") and any(os.path.getmtime(os.path.join(detail_dir, f)) <= os.path.getmtime(j) for f in os.listdir(detail_dir)):
+                return False
+        except (OSError, ValueError):
+            return False
+    names = {f for f in os.listdir(out) if f.endswith(".png")}
+    expected = {f"{i:04d}.png" for i in range(n)}
+    fresh_after = os.path.getmtime(j)
+    if not (data.get("grip_detail") or data.get("motion_profile")):
+        fresh_after = max(fresh_after, os.path.getmtime(__file__),
+                          os.path.getmtime(os.path.join(os.path.dirname(__file__), "hand_axes.py")))
+    return names == expected and all(os.path.getmtime(os.path.join(out, f)) > fresh_after for f in names)
+
 
 
 def main():
@@ -593,7 +736,8 @@ def main():
         print("[bakeoff] FAILED", f)
     with open(os.path.join(WORK, "render-summary.txt"), "w") as fh:
         fh.write(summary + "\n" + "\n".join("FAILED " + f for f in failed) + "\n")
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

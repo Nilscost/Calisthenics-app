@@ -1,0 +1,29 @@
+[
+  {
+    "exercise": "ring-muscle-up",
+    "status": "needs_human_review",
+    "form_approval": false,
+    "meaning": "Geometry-only measurements; no physiological range-of-motion or loaded-contact approval",
+    "questions": [
+      "Does the wrist bend in a plausible direction relative to the forearm and palm?",
+      "Does the grip permit this wrist position under load through every phase?",
+      "Are hand, wrist, forearm and implement contacts continuous and legible?"
+    ],
+    "wrists": {
+      "l": {
+        "min_bend_deg": 1.453,
+        "max_bend_deg": 47.421,
+        "max_bend_frame": 56,
+        "max_bend_time_s": 2.333,
+        "max_frame_angle_change_deg": 7.455
+      },
+      "r": {
+        "min_bend_deg": 1.453,
+        "max_bend_deg": 47.421,
+        "max_bend_frame": 56,
+        "max_bend_time_s": 2.333,
+        "max_frame_angle_change_deg": 7.455
+      }
+    }
+  }
+]

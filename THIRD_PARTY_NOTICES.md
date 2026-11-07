@@ -68,12 +68,15 @@ JUnit 4 (EPL-1.0), Robolectric 4.13 (MIT), Conscrypt (Apache-2.0), AndroidX test
 Before adding code/data/media: add an entry with upstream URL, revision, author, licence, attribution, modifications, redistribution permission.
 
 ## Material Symbols (icon paths)
-`ui/theme/AppIcons.kt` contains vector paths copied from Google's Material Symbols/Icons (Apache License 2.0). Further icons are added there as screens need them.
+`shared/src/commonMain/kotlin/io/github/gonbei774/calisthenicsmemory/ui/theme/AppIcons.kt` contains vector paths copied from Google's Material Symbols/Icons (Apache License 2.0). Further icons are added there as screens need them.
+
+### Material icons (shared copy of the imported subset)
+`shared/src/commonMain/kotlin/io/github/gonbei774/calisthenicsmemory/ui/icons/` holds the 19 vectors the app imports (Add, ArrowBack, ArrowForward, Build, Check, Close, DateRange, Edit, Info, KeyboardArrowDown/Left/Right/Up, Lock, MoreVert, PlayArrow, Refresh, Settings, Star) plus the `Icons` and `materialIcon` helpers. Source: AndroidX `androidx.compose.material:material-icons-core` 1.7.8 (https://dl.google.com/dl/android/maven2/androidx/compose/material/material-icons-core-android/1.7.8/material-icons-core-android-1.7.8-sources.jar, SHA-256 `14db888d2f698178799a4c18a58bb134b3e98063c6748c443b339044e0145432`), Copyright The Android Open Source Project, Apache License 2.0 (headers kept in every file). Modification: only the package name changed, so the copy can run on Kotlin/Wasm without the large `material-icons-extended` dependency.
 
 ## Ready-made routines and exercise structure (V21b, V22)
 The "Recommended Routine" and "Minimalist Routine" and several exercise progressions (dips, hamstring paths, core triplet, warm-up items) follow the **structure and numbers** of the r/bodyweightfitness wiki (Recommended Routine, Minimalist Routine and the progression pages, read live on 2026-10-09; the Minimalist Routine derives from u/m092's Concept Wednesday post). The wiki states no licence, so no text, images or tables are copied: the instructions, names of our items and every clip are our own work, and the numbers are DRAFT product heuristics. Credit is shown in the app under each ready-made routine.
 
-## Fonts (bundled in `app/src/main/res/font/`)
+## Fonts (bundled in `shared/src/commonMain/composeResources/font/`)
 - **Barlow Condensed** (SemiBold, Bold): Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow). SIL Open Font License 1.1: `licenses/fonts/BarlowCondensed-OFL.txt`.
 - **IBM Plex Sans** (variable font, used at 400/500/600/700): Copyright 2017 IBM Corp., Reserved Font Name "Plex". SIL Open Font License 1.1: `licenses/fonts/IBMPlexSans-OFL.txt`.
-- Source for both: the official Google Fonts repository, github.com/google/fonts (`ofl/barlowcondensed`, `ofl/ibmplexsans`), downloaded 2026-10-10. The files are unmodified; only the file names were changed to Android resource names.
+- Source for both: the official Google Fonts repository, github.com/google/fonts (`ofl/barlowcondensed`, `ofl/ibmplexsans`), downloaded 2026-10-10. The files are unmodified; only the file names were changed to resource names.

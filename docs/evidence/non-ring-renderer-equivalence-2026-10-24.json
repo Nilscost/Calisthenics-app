@@ -1,0 +1,34 @@
+{
+  "burpee-pushup": {
+    "frames": 252,
+    "verticesCompared": 3822336,
+    "maxWorldVertexDeltaM": 0,
+    "oldRendererSha256": "49534caf46b560d3ef5561d97dcc15fe10d7069e516c40d9f445b5b7df5433e9",
+    "currentRendererSha256": "84f28339201e41beacfe2a9c326bee0c82e97245bbe4fc3adf181e9f1c50444c",
+    "result": "identical actual body meshes; props unchanged by ring-only renderer branches"
+  },
+  "squat-pistol": {
+    "frames": 96,
+    "verticesCompared": 1456128,
+    "maxWorldVertexDeltaM": 0,
+    "oldRendererSha256": "49534caf46b560d3ef5561d97dcc15fe10d7069e516c40d9f445b5b7df5433e9",
+    "currentRendererSha256": "84f28339201e41beacfe2a9c326bee0c82e97245bbe4fc3adf181e9f1c50444c",
+    "result": "identical actual body meshes; props unchanged by ring-only renderer branches"
+  },
+  "pilates-roll-over": {
+    "frames": 96,
+    "verticesCompared": 1456128,
+    "maxWorldVertexDeltaM": 0,
+    "oldRendererSha256": "49534caf46b560d3ef5561d97dcc15fe10d7069e516c40d9f445b5b7df5433e9",
+    "currentRendererSha256": "84f28339201e41beacfe2a9c326bee0c82e97245bbe4fc3adf181e9f1c50444c",
+    "result": "identical actual body meshes; props unchanged by ring-only renderer branches"
+  },
+  "hanging-windshield-wiper": {
+    "frames": 156,
+    "verticesCompared": 2366208,
+    "maxWorldVertexDeltaM": 0,
+    "oldRendererSha256": "49534caf46b560d3ef5561d97dcc15fe10d7069e516c40d9f445b5b7df5433e9",
+    "currentRendererSha256": "84f28339201e41beacfe2a9c326bee0c82e97245bbe4fc3adf181e9f1c50444c",
+    "result": "identical actual body meshes; props unchanged by ring-only renderer branches"
+  }
+}

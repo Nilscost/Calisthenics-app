@@ -1,0 +1,68 @@
+{
+  "state": "running",
+  "runner_pid": 72536,
+  "runner_alive": true,
+  "child_pid": 73166,
+  "child_alive": true,
+  "items": [
+    {
+      "id": "ring-muscle-up",
+      "state": "complete",
+      "frames": "192/192",
+      "log_bytes": 68467,
+      "error": null
+    },
+    {
+      "id": "depth-jump",
+      "state": "rendering",
+      "frames": "56/163",
+      "log_bytes": 10026,
+      "error": null
+    },
+    {
+      "id": "burpee-pushup",
+      "state": "prepared",
+      "frames": "0/252",
+      "log_bytes": 0,
+      "error": null
+    },
+    {
+      "id": "squat-pistol",
+      "state": "prepared",
+      "frames": "0/96",
+      "log_bytes": 0,
+      "error": null
+    },
+    {
+      "id": "pilates-roll-over",
+      "state": "prepared",
+      "frames": "0/96",
+      "log_bytes": 0,
+      "error": null
+    },
+    {
+      "id": "hanging-windshield-wiper",
+      "state": "prepared",
+      "frames": "0/156",
+      "log_bytes": 0,
+      "error": null
+    },
+    {
+      "id": "pullup-pullover",
+      "state": "prepared",
+      "frames": "0/264",
+      "log_bytes": 0,
+      "error": null
+    },
+    {
+      "id": "handstand-press-straddle",
+      "state": "prepared",
+      "frames": "0/192",
+      "log_bytes": 0,
+      "error": null
+    }
+  ],
+  "note": "Snapshot only: PID and files do not prove useful render progress.",
+  "recorded_at": 1792562237.9449978,
+  "meaning": "Live native batch snapshot after ring encode and actual desktop playback mechanics checks; not whole-batch completion or form approval."
+}

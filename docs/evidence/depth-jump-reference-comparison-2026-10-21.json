@@ -1,0 +1,635 @@
+{
+  "exercise": "depth-jump",
+  "status": "requires_visual_review",
+  "candidate_sha256": "b7d1addc9ae4f9b27c8cd686ac2d96645f02b55314fd7413a3bff786135e7de4",
+  "references": [
+    {
+      "video_id": "GeN0S3XCZnM",
+      "url": "https://www.youtube.com/watch?v=GeN0S3XCZnM",
+      "status": "inconclusive",
+      "comparison": {
+        "mean_deg": 17.54,
+        "path_coverage": 1.0,
+        "joints": {
+          "elbow_r": {
+            "mean_deg": 14.42,
+            "p95_deg": 44.46,
+            "coverage": 1.0
+          },
+          "shoulder_r": {
+            "mean_deg": 20.92,
+            "p95_deg": 55.03,
+            "coverage": 1.0
+          },
+          "knee_l": {
+            "mean_deg": 20.98,
+            "p95_deg": 44.08,
+            "coverage": 1.0
+          },
+          "knee_r": {
+            "mean_deg": 13.83,
+            "p95_deg": 29.42,
+            "coverage": 1.0
+          }
+        },
+        "aligned_pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            8,
+            8
+          ],
+          [
+            9,
+            8
+          ],
+          [
+            10,
+            8
+          ],
+          [
+            11,
+            8
+          ],
+          [
+            12,
+            8
+          ],
+          [
+            13,
+            8
+          ],
+          [
+            14,
+            8
+          ],
+          [
+            15,
+            8
+          ],
+          [
+            16,
+            8
+          ],
+          [
+            17,
+            8
+          ],
+          [
+            18,
+            9
+          ],
+          [
+            19,
+            10
+          ],
+          [
+            20,
+            11
+          ],
+          [
+            21,
+            12
+          ],
+          [
+            22,
+            12
+          ],
+          [
+            23,
+            12
+          ],
+          [
+            24,
+            12
+          ],
+          [
+            25,
+            12
+          ],
+          [
+            26,
+            12
+          ],
+          [
+            27,
+            12
+          ],
+          [
+            28,
+            13
+          ],
+          [
+            29,
+            14
+          ],
+          [
+            30,
+            15
+          ],
+          [
+            31,
+            16
+          ],
+          [
+            32,
+            17
+          ],
+          [
+            33,
+            18
+          ],
+          [
+            34,
+            19
+          ],
+          [
+            35,
+            20
+          ],
+          [
+            36,
+            21
+          ],
+          [
+            37,
+            21
+          ],
+          [
+            38,
+            22
+          ],
+          [
+            39,
+            23
+          ]
+        ]
+      },
+      "hand_frame_coverage": 0.0,
+      "comparison_joints": [
+        "elbow_l",
+        "elbow_r",
+        "shoulder_l",
+        "shoulder_r",
+        "knee_l",
+        "knee_r"
+      ],
+      "reference_video_sha256": "70541daa6c5667584bad1c4bae00642075a28dcf99e3e1355eb1aa3766e77f57",
+      "analysis_sha256": "033d4dc51d7d8c8ec72abf9331a455d916744a421cce9b13a1eadc1c6706f75c",
+      "visual_grip_review": "pending"
+    },
+    {
+      "video_id": "AzPJZHOmGEg",
+      "url": "https://www.youtube.com/watch?v=AzPJZHOmGEg",
+      "status": "inconclusive",
+      "comparison": {
+        "mean_deg": 18.1,
+        "path_coverage": 1.0,
+        "joints": {
+          "elbow_l": {
+            "mean_deg": 14.4,
+            "p95_deg": 63.01,
+            "coverage": 1.0
+          },
+          "shoulder_l": {
+            "mean_deg": 27.21,
+            "p95_deg": 69.32,
+            "coverage": 1.0
+          },
+          "knee_l": {
+            "mean_deg": 18.25,
+            "p95_deg": 46.41,
+            "coverage": 1.0
+          },
+          "knee_r": {
+            "mean_deg": 12.56,
+            "p95_deg": 25.56,
+            "coverage": 1.0
+          }
+        },
+        "aligned_pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            4
+          ],
+          [
+            6,
+            4
+          ],
+          [
+            7,
+            4
+          ],
+          [
+            8,
+            4
+          ],
+          [
+            9,
+            4
+          ],
+          [
+            10,
+            4
+          ],
+          [
+            11,
+            4
+          ],
+          [
+            12,
+            4
+          ],
+          [
+            13,
+            4
+          ],
+          [
+            14,
+            4
+          ],
+          [
+            15,
+            4
+          ],
+          [
+            16,
+            5
+          ],
+          [
+            17,
+            6
+          ],
+          [
+            18,
+            7
+          ],
+          [
+            19,
+            8
+          ],
+          [
+            20,
+            9
+          ],
+          [
+            21,
+            10
+          ],
+          [
+            22,
+            11
+          ],
+          [
+            23,
+            12
+          ],
+          [
+            24,
+            12
+          ],
+          [
+            25,
+            12
+          ],
+          [
+            26,
+            12
+          ],
+          [
+            27,
+            12
+          ],
+          [
+            28,
+            12
+          ],
+          [
+            29,
+            12
+          ],
+          [
+            30,
+            12
+          ],
+          [
+            31,
+            13
+          ],
+          [
+            32,
+            14
+          ],
+          [
+            33,
+            15
+          ],
+          [
+            34,
+            16
+          ],
+          [
+            35,
+            17
+          ],
+          [
+            36,
+            18
+          ],
+          [
+            37,
+            19
+          ],
+          [
+            38,
+            20
+          ],
+          [
+            39,
+            21
+          ],
+          [
+            39,
+            22
+          ]
+        ]
+      },
+      "hand_frame_coverage": 0.0,
+      "comparison_joints": [
+        "elbow_l",
+        "elbow_r",
+        "shoulder_l",
+        "shoulder_r",
+        "knee_l",
+        "knee_r"
+      ],
+      "reference_video_sha256": "bdbd5bbf05d08d378ac207f76d1c041a82d47662959b6a57572051f851405d0f",
+      "analysis_sha256": "83b39a14af65a6b8c839fe59076d29e3f666dcf161ff76d15e634c0ac478f53a",
+      "visual_grip_review": "pending"
+    },
+    {
+      "video_id": "DxzbXy0lC6Y",
+      "url": "https://www.youtube.com/watch?v=DxzbXy0lC6Y",
+      "status": "inconclusive",
+      "comparison": {
+        "mean_deg": 26.35,
+        "path_coverage": 1.0,
+        "joints": {
+          "elbow_l": {
+            "mean_deg": 13.3,
+            "p95_deg": 28.28,
+            "coverage": 1.0
+          },
+          "shoulder_l": {
+            "mean_deg": 43.08,
+            "p95_deg": 145.54,
+            "coverage": 1.0
+          },
+          "knee_l": {
+            "mean_deg": 26.44,
+            "p95_deg": 43.92,
+            "coverage": 1.0
+          },
+          "knee_r": {
+            "mean_deg": 28.65,
+            "p95_deg": 51.83,
+            "coverage": 0.488
+          }
+        },
+        "aligned_pairs": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ],
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            4
+          ],
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            6
+          ],
+          [
+            7,
+            7
+          ],
+          [
+            8,
+            8
+          ],
+          [
+            9,
+            9
+          ],
+          [
+            10,
+            9
+          ],
+          [
+            11,
+            9
+          ],
+          [
+            12,
+            9
+          ],
+          [
+            13,
+            9
+          ],
+          [
+            14,
+            9
+          ],
+          [
+            15,
+            10
+          ],
+          [
+            16,
+            11
+          ],
+          [
+            17,
+            12
+          ],
+          [
+            17,
+            13
+          ],
+          [
+            18,
+            14
+          ],
+          [
+            19,
+            15
+          ],
+          [
+            20,
+            16
+          ],
+          [
+            21,
+            17
+          ],
+          [
+            22,
+            18
+          ],
+          [
+            23,
+            19
+          ],
+          [
+            24,
+            19
+          ],
+          [
+            25,
+            20
+          ],
+          [
+            26,
+            21
+          ],
+          [
+            27,
+            21
+          ],
+          [
+            28,
+            21
+          ],
+          [
+            29,
+            22
+          ],
+          [
+            30,
+            22
+          ],
+          [
+            31,
+            22
+          ],
+          [
+            32,
+            22
+          ],
+          [
+            33,
+            23
+          ],
+          [
+            34,
+            24
+          ],
+          [
+            35,
+            25
+          ],
+          [
+            36,
+            26
+          ],
+          [
+            37,
+            27
+          ],
+          [
+            38,
+            27
+          ],
+          [
+            39,
+            28
+          ]
+        ]
+      },
+      "hand_frame_coverage": 0.069,
+      "comparison_joints": [
+        "elbow_l",
+        "elbow_r",
+        "shoulder_l",
+        "shoulder_r",
+        "knee_l",
+        "knee_r"
+      ],
+      "reference_video_sha256": "fa74fb0e94b0f6313aa23fceb5b082510fd593ab980beaba1e272a9b14c065ef",
+      "analysis_sha256": "ee2da8d8d936ef71b6303e2154b699dbb3e4c254508161edfaf0a1ec558fa90c",
+      "visual_grip_review": "pending"
+    }
+  ],
+  "limitations": [
+    "2D camera and occlusion affect angles; no biomechanics certification.",
+    "Hand detection coverage is not grip correctness.",
+    "Review whole reps, floor/bar contacts, thumbs and encoded phone-size output."
+  ]
+}

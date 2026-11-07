@@ -409,32 +409,205 @@ def box_jump_rebound():
 
 
 def depth_jump():
-    # Step off a 30 cm box (never jump down), absorb the floor landing, then jump vertically.
+    import math
+
+    # Source cue sequence: a lead-foot step off the ~30 cm box, both feet
+    # descend under gravity, a short bilateral absorption, immediate vertical
+    # rebound, second landing, recovery and an unhurried walk back to the box.
+    # The rebound and landing occupy the opening phase; the return uses planted steps.
+    seconds = 8.75  # 210 frames at 24 fps, so authored seconds map exactly.
+    fps = 24
     h = .30
-    box = dict(kind="box", center=[-.42, 0, h / 2], size=[.52, .62, h])
-    top = _pose([-.42, 0, h + .975], ([-.42, -.10, h + .08], [1, 0, 0], [1, 0, 0]),
-                ([-.42, .10, h + .08], [1, 0, 0], [1, 0, 0]), arms=_arms(-.18))
-    step = _pose([-.12, 0, 1.12], ([-.42, -.10, h + .08], [1, 0, 0], [1, 0, 0]),
-                 ([.10, .10, .25], [1, 0, -.7], [1, 0, 0]), arms=_arms(.12))
-    fall = _pose([.30, 0, 1.10], ([.30, -.10, .27], [1, 0, -.45], [1, 0, 0]),
-                 ([.30, .10, .27], [1, 0, -.45], [1, 0, 0]), p1=4, p2=6, arms=_arms(.32))
-    land = _two(.30, .56, 28, swing=-.3)
-    rebound = _pose([.30, 0, 1.22], ([.30, -.10, .40], [1, 0, -.25], [1, 0, 0]),
-                    ([.30, .10, .49], [1, 0, -.25], [1, 0, 0]), p1=4, p2=5, arms=_arms(.55))
-    apex = _pose([.30, 0, 1.43], ([.30, -.10, .57], [1, 0, -.18], [1, 0, 0]),
-                 ([.30, .10, .57], [1, 0, -.18], [1, 0, 0]), p1=3, p2=4, arms=_arms(.32))
-    jump_land = _two(.30, .57, 27, swing=.1)
-    keys = [(0, top), (.12, step), (.22, fall), (.30, land), (.34, land),
-            (.45, rebound), (.54, apex), (.63, jump_land), (.71, jump_land)]
-    keys += _timed_walk(0.0, -.55, axis="y", y=.30, t0=.72, t1=.765)
-    keys += _timed_walk(.30, -.90, y=-.55, t0=.77, t1=.88)
-    keys += _timed_walk(-.55, 0.0, axis="y", y=-.90, t0=.885, t1=.93)
-    step_up_r = _pose([-.82, 0, .94], ([-.42, -.10, .47], [1, 0, -.2], [1, 0, 0]),
-                      ([-.90, .10, .08], [1, 0, 0], [1, 0, 0]), arms=_arms(.1))
-    step_up_l = _pose([-.55, 0, 1.10], ([-.42, -.10, h + .08], [1, 0, 0], [1, 0, 0]),
-                      ([-.42, .10, .50], [1, 0, -.4], [1, 0, 0]), arms=_arms(.1))
-    keys += [(.945, step_up_r), (.97, step_up_l), (.99, top)]
-    return dict(seconds=8.0, keys=keys, cam_az=28, cam_el=12, props=[box])
+    box = dict(kind="box", center=[-.42, 0, h / 2], size=[.60, .62, h])
+
+    def arms(angle_deg, radius=.54):
+        # Sweep on a near-constant shoulder radius to keep elbows extended.
+        # Hands point with the forearms, avoiding a fixed-world-axis wrist kink.
+        theta = math.radians(angle_deg)
+        wx, wz = radius * math.cos(theta), radius * math.sin(theta)
+        right = [wx, -.12, wz]; left = [wx, .12, wz]
+        return dict(wrist_r_rel=right, wrist_l_rel=left,
+                    elbow_r=[-.15, -.03, -.18], elbow_l=[-.15, .03, -.18],
+                    hand_r=[v / math.sqrt(sum(x * x for x in right)) for v in right],
+                    hand_l=[v / math.sqrt(sum(x * x for x in left)) for v in left])
+
+    def rotate(v, yaw):
+        c, s = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+        return [c*v[0]-s*v[1], s*v[0]+c*v[1], v[2]]
+
+    def pose(x, y, z, r, l, *, p=0, arm=(-85, .51), yaw=0, headings=None):
+        headings = headings or (yaw, yaw)
+        aa = {k:rotate(v,yaw) for k,v in arms(*arm).items()}
+        aa.update(palm_r=rotate([0,1,0],yaw), palm_l=rotate([0,-1,0],yaw))
+        value = _pose([x,y,z], (r,rotate([1,0,0],headings[0]),rotate([1,-.15,0],yaw)),
+                      (l,rotate([1,0,0],headings[1]),rotate([1,.15,0],yaw)), p1=p,p2=p,arms=aa)
+        value['yaw']=yaw
+        return value
+
+    keys_by_frame = {}
+    def put(frame, value): keys_by_frame[int(frame)] = value
+
+    top = pose(-.30, 0, h + .975,
+               [-.30, -.10, h + .08], [-.30, .10, h + .08])
+    put(0, top)
+
+    # Step the lead foot forward beyond the box edge while the rear foot stays
+    # level on the box; then the rear foot walks off without a push-off jump.
+    lead_step = pose(-.18, 0, 1.25, [.02, -.10, h + .08], [-.30, .10, h + .08],
+                     p=4, arm=(-105, .54))
+    rear_edge = pose(-.06, 0, 1.25, [.02, -.10, h + .08], [-.16, .10, h + .08],
+                     p=4, arm=(-105, .54))
+    rear_off = pose(.02, 0, 1.25, [.02, -.10, h + .08], [.02, .10, h + .08],
+                    p=4, arm=(-105, .54))
+    put(5, lead_step); put(9, rear_edge); put(12, rear_off)
+
+    # Gravity drop from ankle height .38 m to .08 m: about .247 s. Both feet
+    # share the same vertical path, avoiding a single-foot floor catch.
+    drop_start, impact, g = 12 / fps, 18 / fps, 9.81
+    x0, x1, z0, z_floor = .02, .09, 1.25, .08
+    for frame in range(12, 19):
+        time_s = frame / fps
+        dt = time_s - drop_start
+        z = max(z_floor, h + .08 - .5 * g * dt * dt)
+        u = dt / (impact - drop_start)
+        x = x0 + (x1 - x0) * u
+        pelvis_z = z0 - .5 * g * dt * dt
+        pitch = 4 + 5 * u
+        put(frame, pose(x, 0, pelvis_z, [x, -.10, z], [x, .10, z],
+                        p=pitch, arm=(-105 + 7 * u, .54)))
+
+    # Absorb with a modest hip/knee bend, then extend into takeoff by 1.0 s.
+    # Bilateral feet stay anchored for .25 s; arms swing from back to overhead.
+    for frame in range(18, 25):
+        u = (frame - 18) / 6
+        if u <= 1 / 3:
+            s = u * 3
+            pelvis_z = .94 + (.80 - .94) * (s * s * (3 - 2 * s))
+        else:
+            # Hermite extension from the absorption trough (zero velocity) to
+            # the ballistic launch state. Position and velocity meet the
+            # airborne arc rather than ease-to-stop then jump instantaneously.
+            s = (u - 1 / 3) * 1.5
+            duration = 4 / fps
+            start_z, launch_z, launch_v = .80, .97, g * .625 / 2
+            h00 = 2 * s**3 - 3 * s**2 + 1
+            h01 = -2 * s**3 + 3 * s**2
+            h11 = s**3 - s**2
+            pelvis_z = h00 * start_z + h01 * launch_z + h11 * duration * launch_v
+        # Start the forward drive at first contact and carry it through the
+        # first airborne frames. This gives the arms a smoother stroke than
+        # reaching overhead before takeoff, while still reaching overhead near
+        # the rebound apex.
+        arm_angle = -98 + (32 + 98) * u
+        pitch = 13 * (1 - u)
+        put(frame, pose(.09, 0, pelvis_z, [.09, -.10, z_floor], [.09, .10, z_floor],
+                        p=pitch, arm=(arm_angle, .54)))
+
+    # A .625 s ballistic COM/pelvis arc gives a .479 m rise under g=9.81.
+    # One authored key per frame preserves gravity-shaped acceleration and
+    # prevents a visually weightless apex hold. Arms lower toward landing.
+    # The landing height is ~.94 m; launch is a distinct extended state above
+    # it. Do not reuse the drop's ballistic impact height for rebound takeoff.
+    takeoff, flight, takeoff_z = 24 / fps, .625, .97
+    v0 = g * flight / 2
+    for frame in range(24, 40):
+        time_s = frame / fps
+        dt = time_s - takeoff
+        rise = v0 * dt - .5 * g * dt * dt
+        rise = max(0.0, rise)
+        u = dt / flight
+        if frame <= 26:
+            arm_angle = 32 + (79 - 32) * ((frame - 24) / 2)
+        else:
+            arm_angle = 79 + (45 - 79) * ((frame - 26) / 13)
+        p = 3 + 4 * u
+        ankle_z = z_floor + 1.03 * rise
+        put(frame, pose(.09, 0, takeoff_z + rise,
+                        [.09, -.10, ankle_z], [.09, .10, ankle_z], p=p, arm=(arm_angle, .54)))
+
+    # Second landing and recovery: arms come down as the figure stands before
+    # the planted turn and sequential step-up restore the initial pose.
+    for frame in range(39, 52):
+        u = (frame - 39) / 12
+        if u <= .35:
+            s = u / .35
+            z = takeoff_z + (.84 - takeoff_z) * (s * s * (3 - 2 * s))
+        else:
+            s = (u - .35) / .65
+            z = .84 + (.975 - .84) * (s * s * (3 - 2 * s))
+        arm_angle = 45 + (-85 - 45) * u
+        put(frame, pose(.09, 0, z, [.09, -.10, z_floor], [.09, .10, z_floor],
+                        p=8 * (1 - u), arm=(arm_angle, .51)))
+    # A short forward step gives room to turn on the floor. Each swing
+    # foot is lifted; the supporting sole and its heading stay planted.
+    feet = [[.09,-.10,.08],[.09,.10,.08]]
+    headings = [0.,0.]
+    def ease(t): return t*t*(3-2*t)
+    def step(first,last,side,target,*,start_center,end_center,z,yaw0,yaw1,lift=.065):
+        old=feet[side][:]; old_heading=headings[side]
+        for frame in range(first,last+1):
+            q=(frame-first)/(last-first); u=ease(q)
+            moving=[old[k]+(target[k]-old[k])*u for k in range(3)]
+            moving[2]+=lift*math.sin(math.pi*q)
+            pair=[v[:] for v in feet];pair[side]=moving
+            hh=headings[:];hh[side]=old_heading+(yaw1-old_heading)*u
+            center=[start_center[k]+(end_center[k]-start_center[k])*u for k in range(2)]
+            put(frame,pose(*center,z,pair[0],pair[1],yaw=yaw0+(yaw1-yaw0)*u,headings=hh))
+        feet[side]=target[:]; headings[side]=yaw1
+
+    step(51,60,0,[.27,-.10,.08],start_center=[.09,0],end_center=[.18,0],z=.96,yaw0=0,yaw1=0)
+    step(60,69,1,[.27,.10,.08],start_center=[.18,0],end_center=[.27,0],z=.96,yaw0=0,yaw1=0)
+
+    def turn(first,last,center,height,yaw0,stance):
+        for j in range(5):
+            side=j%2; angle=yaw0+min(j+1,4)*45
+            offset=rotate([0,(-1 if side==0 else 1)*stance,0],angle)
+            target=[center[0]+offset[0],center[1]+offset[1],height+.08]
+            step(round(first+(last-first)*j/5),round(first+(last-first)*(j+1)/5),side,target,
+                 start_center=center,end_center=center,z=height+.96,
+                 yaw0=yaw0+min(j,4)*45,yaw1=angle,lift=.065)
+    turn(69,104,[.27,0],0,0,.10)
+
+    # Lift before advancing over the solid box edge, then lower onto it.
+    # Body weight transfers over the lead leg before the rear leg comes up.
+    waypoints=[(104,.27,.96,[[.27,.10,.08],[.27,-.10,.08]]),
+               (115,.23,.94,[[.27,.10,.48],[.27,-.10,.08]]),
+               (127,.13,.90,[[-.42,.075,.48],[.27,-.10,.08]]),
+               (132,.08,.91,[[-.42,.075,.38],[.27,-.10,.08]]),
+               (142,-.26,1.16,[[-.42,.075,.38],[.19,-.10,.48]]),
+               (152,-.42,1.26,[[-.42,.075,.38],[-.42,-.075,.48]]),
+               (157,-.42,1.26,[[-.42,.075,.38],[-.42,-.075,.38]])]
+    for index in range(len(waypoints)-1):
+        f0,x0,z0,pair0=waypoints[index];f1,x1,z1,pair1=waypoints[index+1]
+        for frame in range(f0,f1+1):
+            u=ease((frame-f0)/(f1-f0))
+            pair=[[aa+(bb-aa)*u for aa,bb in zip(a,b)] for a,b in zip(pair0,pair1)]
+            put(frame,pose(x0+(x1-x0)*u,0,z0+(z1-z0)*u,*pair,yaw=180,headings=[180,180]))
+    feet=[v[:] for v in waypoints[-1][3]];headings=[180.,180.]
+    turn(157,192,[-.42,0],h,180,.075)
+    step(192,200,1,[-.30,.10,.38],start_center=[-.42,0],end_center=[-.36,0],z=1.26,yaw0=360,yaw1=360,lift=.045)
+    step(200,208,0,[-.30,-.10,.38],start_center=[-.36,0],end_center=[-.30,0],z=1.26,yaw0=360,yaw1=360,lift=.045)
+    end=pose(-.30,0,1.275,feet[0],feet[1],yaw=360)
+    put(210,end)
+
+    keys = [(frame / (seconds * fps), value) for frame, value in sorted(keys_by_frame.items())]
+    # Sample exactly on the 24 fps grid with linear interpolation, then resolve
+    # each elbow/wrist pair and point the hand along its forearm. This avoids
+    # both eased ballistic phases and wrist kinks between sparse return keys.
+    from poses import sample, solve
+    dense_keys = []
+    frame_count = round(seconds * fps)
+    for frame in range(frame_count):
+        t = frame / frame_count
+        value = sample(keys, t)
+        joints = solve(value, {})
+        for side in ("r", "l"):
+            forearm = [joints[f"wrist_{side}"][i] - joints[f"elbow_{side}"][i] for i in range(3)]
+            length = math.sqrt(sum(component * component for component in forearm))
+            value[f"hand_{side}"] = [component / length for component in forearm]
+        dense_keys.append((t, value))
+    return dict(seconds=seconds, keys=dense_keys, cam_az=28, cam_el=12, props=[box],
+                motion_profile="depth-jump-ballistic-planted-return-v3")
 
 
 EXERCISES = {

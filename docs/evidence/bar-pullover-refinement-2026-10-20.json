@@ -1,0 +1,467 @@
+{
+  "scope": "Source media correction only; no new APK, phone verification or expert form approval",
+  "media": {
+    "frames_decoded": 264,
+    "duration_seconds": 11,
+    "bytes": 42035,
+    "sha256": "68cc6b17548ac63c94184ec3eae59c435fb971e2e46b96917b985b6c101bba04",
+    "selected_visual_frames": [
+      0,
+      32,
+      48,
+      64,
+      80,
+      96,
+      104,
+      116,
+      138,
+      164,
+      190,
+      224,
+      263
+    ],
+    "max_step_frame": 104,
+    "max_pixel_step": 0.7973418209876543,
+    "loop_pixel_step": 0.26731095679012346,
+    "stream": {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "Main",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "mime_codec_string": "avc1.4d4015",
+      "width": 480,
+      "height": 360,
+      "coded_width": 480,
+      "coded_height": 360,
+      "has_b_frames": 2,
+      "pix_fmt": "yuv420p",
+      "level": 21,
+      "chroma_location": "left",
+      "field_order": "progressive",
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "24/1",
+      "avg_frame_rate": "24/1",
+      "time_base": "1/12288",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 135168,
+      "duration": "11.000000",
+      "bit_rate": "27731",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "264",
+      "extradata_size": 40,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler",
+        "encoder": "Lavc61.19.100 libx264"
+      }
+    }
+  },
+  "installed_sha256": "68cc6b17548ac63c94184ec3eae59c435fb971e2e46b96917b985b6c101bba04",
+  "thumb_sha256": "458038a36e9bf0855d82f3a0707b5068749c5e0be4fecf4a4c9a8f9a3e4948e6",
+  "tests_passed": 94,
+  "motion_audit": {
+    "exercise": "pullup-pullover",
+    "style": "Controlled full bar pullover and slower reverse, continuous rotation with hands rolling around the bar",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.1581,
+        "min": null,
+        "max": 0.17,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.1581,
+        "min": null,
+        "max": 0.17,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 11.0,
+        "min": 9,
+        "max": null,
+        "ok": true
+      },
+      "rotation_range_deg": {
+        "value": 360.0,
+        "min": 350,
+        "max": 370,
+        "ok": true
+      },
+      "angular_speed_deg_s": {
+        "value": 151.24165,
+        "min": null,
+        "max": 165,
+        "ok": true
+      },
+      "angular_acceleration_deg_s2": {
+        "value": 414.33354,
+        "min": null,
+        "max": 500,
+        "ok": true
+      },
+      "turnover_interior_speed_deg_s": {
+        "value": 98.68956,
+        "min": 15,
+        "max": null,
+        "ok": true
+      },
+      "return_interior_speed_deg_s": {
+        "value": 85.83284,
+        "min": 15,
+        "max": null,
+        "ok": true
+      },
+      "descent_ascent_time_ratio": {
+        "value": 1.16667,
+        "min": 1.05,
+        "max": null,
+        "ok": true
+      },
+      "joint_acceleration_m_s2": {
+        "value": 5.969,
+        "min": null,
+        "max": 8,
+        "ok": true
+      },
+      "rolling_grip": {
+        "value": 1,
+        "min": 1,
+        "max": null,
+        "ok": true
+      },
+      "wrist_l_contact_error_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.0001,
+        "ok": true
+      },
+      "wrist_l_axial_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "wrist_r_contact_error_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.0001,
+        "ok": true
+      },
+      "wrist_r_axial_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "body_bar_volume_clearance_m": {
+        "value": 0.00998,
+        "min": 0.001,
+        "max": null,
+        "ok": true
+      },
+      "finger_bar_clearance_m": {
+        "value": 0.00117,
+        "min": 0.0005,
+        "max": null,
+        "ok": true
+      },
+      "support_chest_above_bar_m": {
+        "value": 0.657,
+        "min": 0.5,
+        "max": null,
+        "ok": true
+      },
+      "hang_elbow_l_deg": {
+        "value": 163.89802,
+        "min": 160,
+        "max": null,
+        "ok": true
+      },
+      "support_elbow_l_deg": {
+        "value": 169.84782,
+        "min": 150,
+        "max": null,
+        "ok": true
+      },
+      "hang_elbow_r_deg": {
+        "value": 163.89802,
+        "min": 160,
+        "max": null,
+        "ok": true
+      },
+      "support_elbow_r_deg": {
+        "value": 169.84782,
+        "min": 150,
+        "max": null,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 2.07883,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "eeeb511269432b151ba7b0ea9c18d5f36fdee1881b58600b8bc0779930b1289d",
+    "contract_sha256": "3203b5ecadf25a82d49cc2e3ae6f118630be9faacf9dbdc071feaca72b656472",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  "catalog_motion_summary": {
+    "pass": 4,
+    "fail": 0,
+    "unscoped": 529
+  },
+  "catalog_summary": {
+    "schema": 1,
+    "scope": "Technical screening only. No clip is approved for exercise form by this report.",
+    "seconds": 12.65,
+    "total": 533,
+    "technical_status_counts": {
+      "review": 109,
+      "no_flags": 424
+    },
+    "flag_counts": {
+      "high_joint_speed": 97,
+      "large_loop_step": 32
+    },
+    "motion_contract_counts": {
+      "unscoped": 529,
+      "pass": 4
+    },
+    "not_checked": [
+      "reference agreement for remaining movements",
+      "full mesh collisions",
+      "intended contact anchors per exercise",
+      "expert form approval",
+      "phone playback"
+    ]
+  },
+  "source_isolation": {
+    "changed_trajectories": [
+      "pullup-pullover"
+    ],
+    "unchanged_other_trajectories": 532
+  },
+  "unchanged_other_installed_mp4s": 532,
+  "all_264_render_frames_fresh": true,
+  "gallery_qa": {
+    "passed": true,
+    "clips": [
+      {
+        "id": "ring-muscle-up",
+        "dimensions": [
+          480,
+          360,
+          6
+        ]
+      },
+      {
+        "id": "pullup-pullover",
+        "dimensions": [
+          480,
+          360,
+          11
+        ]
+      },
+      {
+        "id": "handstand-press-straddle",
+        "dimensions": [
+          480,
+          360,
+          4
+        ]
+      },
+      {
+        "id": "depth-jump",
+        "dimensions": [
+          480,
+          360,
+          8
+        ]
+      },
+      {
+        "id": "burpee-pushup",
+        "dimensions": [
+          480,
+          360,
+          6
+        ]
+      },
+      {
+        "id": "squat-pistol",
+        "dimensions": [
+          480,
+          360,
+          4
+        ]
+      },
+      {
+        "id": "pilates-roll-over",
+        "dimensions": [
+          480,
+          360,
+          4
+        ]
+      },
+      {
+        "id": "hanging-windshield-wiper",
+        "dimensions": [
+          480,
+          360,
+          5
+        ]
+      }
+    ],
+    "checks": [
+      "video metadata decode",
+      "complete 11-second pullover playback and replay at 2x",
+      "actual play/pause time advancement",
+      "frame stepping",
+      "speed selection",
+      "feedback retention",
+      "320/736 responsive layout",
+      "no runtime errors"
+    ]
+  },
+  "gallery_qa_note": "The initial extended QA incorrectly assumed the existing gallery automatically loops. The player intentionally stops at the end. Corrected QA checks complete playback to ended, then explicit replay; no gallery behavior change was made. Source/encoded loop continuity is measured separately.",
+  "bounded_luna_review": {
+    "exercise_id": "pullup-pullover",
+    "inspected_files": [
+      "tools/blender/families/pullup_new.py",
+      "app/src/main/assets/catalog.json",
+      "work/catalog-screening/frames/pullup-pullover.jpg"
+    ],
+    "source_findings": [
+      {
+        "claim": "The transition begins with a large position jump from hang to the gathered orbit pose.",
+        "evidence": "Hang pelvis z is 1.205; orbit(0) pelvis z is BAR_Z - 0.50 = 1.80. Those poses are keyed at t=0.10 and 0.18, only 0.36 s apart in the 4.5 s clip.",
+        "certainty": "high"
+      },
+      {
+        "claim": "The main orbit is a fast, sparse four-quarter rotation followed by a very fast reverse.",
+        "evidence": "Orbit angles 0/90/180/270/360 are reached at normalized times .18/.30/.40/.48/.58, then the reverse sequence runs from .81 to .995. The final four reverse quarter-turns are packed into 0.83 s, about 0.21 s per quarter-turn at a 4.5 s duration.",
+        "certainty": "high"
+      },
+      {
+        "claim": "The move to support and the return from support each include a substantial pelvis-height change over a short interval.",
+        "evidence": "The orbit endpoint has pelvis z=1.80; support uses z=2.46. They are keyed at .58 and .66 (0.36 s apart), and support to orbit(360) occurs from .75 to .81 (0.27 s apart).",
+        "certainty": "high"
+      },
+      {
+        "claim": "The source does not encode a distinct slow lowering from support through the same controlled phases.",
+        "evidence": "Support is held from .66 to .75, then the full reverse orbit is completed by .995; the catalog explicitly says to lower back down slowly.",
+        "certainty": "high"
+      },
+      {
+        "claim": "The hand targets remain at hang height for the orbit and then shift for the support pose, while shoulder and trunk orientation make a full 360-degree turn.",
+        "evidence": "Orbit hands are built with _hands(z=HANG_Z, ...); support uses wrist z=BAR_Z+.06, palms reversed and hands rotated, with p1/p2 set to 360 for both endpoints.",
+        "certainty": "high"
+      }
+    ],
+    "old_encoded_frame_observations": [
+      "The old contact sheet shows hang, bent-arm pull, near-horizontal/inverted-looking body, support-like poses, then another horizontal/inverted sample on the return. The order and spacing read as abrupt from these sparse stills.",
+      "The last sampled frame at 4.46 s appears bent-arm below the bar rather than matching the straight-arm opening hang exactly.",
+      "The bar visually overlaps or obscures the body in horizontal/inverted samples, so hand/hip contact cannot be judged from this camera and scale."
+    ],
+    "plausible_movement_phases": [
+      "Begin in a quiet straight-arm hang with both hands fixed on the bar; initiate a deliberate pull before raising the hips.",
+      "Bring the knees and hips toward and over the bar in a compact, controlled path. Allow a brief tuck for clearance if needed, then extend through the rotation rather than snapping through four equal quarter-turns.",
+      "Keep the hips close to the bar as the shoulders and torso roll over the hands; arrive with the chest above the bar and settle into front support with hands still contacting the bar.",
+      "Pause briefly in a stable support, then lower slowly through the reversed path, controlling the hips and legs around the bar back to a full hang."
+    ],
+    "specific_review_checks": [
+      "Inspect the initial pull to ensure the pelvis rises progressively from hang instead of jumping directly into a raised gathered pose.",
+      "Check several frames around the bottom-to-over-bar transition: hips should travel close to the bar, legs should clear it without clipping, and the hands should remain attached.",
+      "Check that the trunk rotation does not spin ahead of the hips/legs or accelerate abruptly at the 90/180/270-degree phase boundaries.",
+      "Check the arrival into front support for a smooth transfer of load from hanging to pressing, without a vertical pop or hands moving through the bar.",
+      "Check the full descent separately: it should take enough time to read as a controlled reverse, remain continuous through inversion, and finish in the same straight-arm hang used at the start.",
+      "Compare clip duration against the requested use; the inspected source sets 4.5 s, already longer than four seconds, but its active return is compressed into the last ~0.9 s. Judge perceived duration from the revised encode rather than duration metadata alone."
+    ],
+    "limitations": [
+      "Old visual evidence is a contact sheet of selected encoded frames, not full playback; it cannot establish the exact duration, motion smoothness or contact continuity between samples.",
+      "The phase sequence above is a movement-review proposal, not a certified technique standard."
+    ],
+    "changed_files": [
+      "work/pullover-refinement/luna-review.json"
+    ],
+    "checks_run": [
+      "Inspected pullup_pullover() source and its key times, orbit geometry, hand targets and duration.",
+      "Retrieved the actual catalog instructions for pullup-pullover.",
+      "Inspected the existing old installed-encode contact sheet.",
+      "Validated JSON syntax.",
+      "Inspected the candidate 12-frame Cycles phase-review sheet."
+    ],
+    "unresolved_issues": [
+      "Awaiting the candidate revised phase sheet for independent review.",
+      "The old contact sheet cannot verify whether the perceived abruptness matches continuous playback.",
+      "Exact hand/bar contact and temporal smoothness still need full playback or denser review.",
+      "Confirm with the owner whether the mostly extended-leg rollover is the intended visual interpretation of the catalog's knee-and-hip-over-bar wording."
+    ],
+    "candidate_phase_review": {
+      "inspected_image": "work/pullover-refinement/phase-review.png",
+      "evidence_type": "Twelve actual Cycles phase frames sampled across an 11-second loop; this is selected rendered evidence, not full playback.",
+      "observations": [
+        "The sampled ascent reads in a coherent sequence: straight hang at 0.00 s, chest-height pull at 1.33 s, torso/hips rotating toward and over the bar at 2.00\u20134.00 s, then upright front support by 4.83 s and a held support at 5.75 s.",
+        "The sampled return reverses through a long-body horizontal position at 6.83 s, an inverted position at 7.92 s, a bent-arm/angled hang at 9.33 s, and a straight hang at 10.96 s. These endpoints and broad phases look more coherent and controlled than the old sheet.",
+        "The body and legs appear extended during much of the orbit, with no obvious clipping or abrupt quarter-turn stop visible in these samples. A compact knee action is not apparent; the hips and extended legs travel around the bar as one long lever."
+      ],
+      "owner_reported_geometry_and_timing": "Root reports 3,965,808 of 3,965,808 actual body/hand vertices inside the app frame across 264 frames; minimum mesh/bar gap 4.689 mm; whole-finger capsule clearance 1.174 mm; source maximum joint speed 2.079 m/s versus old 32.64; maximum acceleration 5.969 versus old 729.8; return central duration 1.167 times ascent; and no quarter-turn stops. I did not independently reproduce these measurements.",
+      "material_concerns": [
+        "Several inverted/horizontal poses place the torso close to the bar and the hands appear to remain planted, but the small side-angle overview does not clearly show exact palm and wrist contact through the rollover.",
+        "The catalog wording says to bring the knees and hips over the bar. The sampled path uses a mostly extended body; confirm that this deliberate long-lever version still reads clearly as a pullover and that the legs clear without a visible snap.",
+        "The front-support arrival is upright and visually legible, but still frames cannot establish the load transfer or continuity into and out of support."
+      ],
+      "assessment": "The selected phases support the candidate's improved broad movement order, extended transition over the bar, a visible support, and more balanced return. No material abruptness is evident in the sampled poses.",
+      "uncertainty": "Moderate for phase order and silhouettes; high for motion continuity, contact, and perceived smoothness between the 12 sampled frames.",
+      "form_approval": false
+    }
+  },
+  "source_sha256": {
+    "tools/blender/bar_pullover.py": "1cc3eb98e6f57076a32e243b74142529a66d6517ab779f03d396f94c244f5520",
+    "tools/blender/bar_grip.py": "6e1ebae5881051682426155dee1012cc6ad0ce8983956c32d2943bb4fa013e18",
+    "tools/blender/families/pullup_new.py": "2ed61005cd2adab8e62c387638ea1cd1ac9980f9f257f2004d491c4d5d680400",
+    "tools/blender/motion_quality.py": "b321e0debc4afa48984f9093d85cd8cc3a40fb00936f66df9dcd0df0f9c574af",
+    "tools/blender/motion_contracts.json": "eda9f62f3c0819203e88924911c9deaac26add2dd0199306294158721b6f47d2",
+    "tools/blender/check_bar_pullover.py": "d0120fe7625473f96871e159fbbbecc03fb6157339115966ea9ebea1003352f6",
+    "tests/test_bar_pullover.py": "b14fba5105ffa32907f24c8ca2cd5c0c10e83010c53af370ac8d4fc71d730875",
+    "tests/fixtures/motion/pullup-pullover-before.json.gz": "b79f95ba6ac8f4d190b991eec234ac2f9d38eb179249d3a3192600f818d5e98d"
+  },
+  "video_generation_credits_used": 0,
+  "actual_device_verification": false,
+  "form_approval": false
+}

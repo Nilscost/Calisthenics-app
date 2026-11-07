@@ -9,7 +9,7 @@ appId: app.calisthenics.personal
 - assertNotVisible: { id: additional_pools }
 - tapOn: { id: preview_button }
 - extendedWaitUntil: { visible: { id: start_button }, timeout: 15000 }
-- scrollUntilVisible: { element: { id: add_start }, direction: DOWN, timeout: 10000 }
+- scrollUntilVisible: { element: { id: add_start }, direction: DOWN, visibilityPercentage: 100, centerElement: true, timeout: 10000 }
 - tapOn: { id: add_start }
 - extendedWaitUntil: { visible: { id: add_categories }, timeout: 10000 }
 - scrollUntilVisible: { element: { id: add_cat_squat }, direction: DOWN, timeout: 10000 }

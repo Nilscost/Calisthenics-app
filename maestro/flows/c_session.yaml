@@ -9,31 +9,47 @@ appId: app.calisthenics.personal
 - tapOn: { id: start_button }
 - extendedWaitUntil: { visible: { id: session_title }, timeout: 15000 }
 - takeScreenshot: 01-first-block-${VARIANT}
-# Skip ahead until a work block offers Done (warm-up / get-ready blocks come first).
+# Skip warm-up, preparation and stretches until a rep work block has its logger.
 - repeat:
-    while: { notVisible: { id: session_done, enabled: true } }
-    times: 6
+    while: { notVisible: { id: logger_plus } }
+    times: 30
     commands:
       - tapOn: { id: session_skip }
+      - waitForAnimationToEnd: { timeout: 1000 }
+- assertVisible: { id: logger_plus }
+- assertVisible: { id: session_done, enabled: true }
 - takeScreenshot: 02-work-block-${VARIANT}
-# R7-T03 (D3): a rep exercise is logged on its own work screen (- number +, Too easy), DONE saves the number and ends the set.
+# R7-T03 (D3): a rep exercise is logged on its own work screen (- number +), DONE saves the number and ends the set. No Too easy chip here (9.2 T3).
 - tapOn: { id: logger_plus }
-- tapOn: { id: logger_too_easy }
 - takeScreenshot: 03-work-logger-${VARIANT}
 - tapOn: { id: session_done }
-- extendedWaitUntil: { visible: { id: break_done }, timeout: 10000 }
+- waitForAnimationToEnd: { timeout: 1000 }
+# Per-side exercises can have another work block before the stretch.
+- repeat:
+    while: { notVisible: { id: break_done } }
+    times: 10
+    commands:
+      - tapOn: { id: session_skip }
+      - waitForAnimationToEnd: { timeout: 1000 }
+- assertVisible: { id: break_done }
 # R7-T02 (B4, B5): the break has a readable caption with the stretch name; DONE moves on to the next block.
 - takeScreenshot: 04-stretch-block-${VARIANT}
 - tapOn: { id: break_done }
 - extendedWaitUntil: { visible: { id: session_caption }, timeout: 10000 }
 - takeScreenshot: 04b-stretch-caption-${VARIANT}
-- tapOn: { id: break_done }
+- runFlow:
+    when: { visible: { id: break_done } }
+    commands:
+      - tapOn: { id: break_done }
 - extendedWaitUntil: { visible: { id: session_title }, timeout: 10000 }
 - repeat:
-    while: { notVisible: { id: session_done, enabled: true } }
-    times: 6
+    while: { notVisible: { id: logger_plus } }
+    times: 30
     commands:
       - tapOn: { id: session_skip }
+      - waitForAnimationToEnd: { timeout: 1000 }
+- assertVisible: { id: logger_plus }
+- assertVisible: { id: session_done, enabled: true }
 - takeScreenshot: 05-next-work-block-${VARIANT}
 - tapOn: { id: session_pause }
 - takeScreenshot: 06-paused-${VARIANT}
@@ -48,4 +64,5 @@ appId: app.calisthenics.personal
 - tapOn: { id: end_edit }
 - scrollUntilVisible: { element: { id: "end_fix_.*" }, direction: DOWN, timeout: 8000 }
 - takeScreenshot: 09-end-editor-${VARIANT}
+- scrollUntilVisible: { element: { id: end_done }, direction: DOWN, speed: 40, timeout: 30000 }
 - tapOn: { id: end_done }
