@@ -5,6 +5,7 @@
 Fixes for the owner's 9.1 feedback ([plan](docs/42-feedback-2026-11-06.md), [details](docs/user-feedback.md)).
 
 - **Half One-Arm Push-Up** is now the step after the Archer Push-Up, no longer an alternative that rotates in beside it. It is planned only after the archer push-up is mastered.
+- **Other alternatives harder than their step** were moved too: Ring L-Sit is now an alternative at the V-sit; Flag Clutch horizontal split is a step between horizontal tuck and bent-leg; One-Arm Push-Up, straight body, is library-only (harder than the one-arm push-up goal).
 - **"New exercise unlocked"** no longer announces the next step of an exercise you are still training (Bulgarian split squat while on split squat level 4). It appears when you actually move on. Unrelated exercises (shoulder taps after the plank) are still announced.
 - **End screen:** one card per exercise. A level reached or mastery shows on that exercise's own card (gold border, stars pop in).
 - **Stars:** the level you are working on is a dark star with a gold outline, on the end screen, Progress and the exercise page. "Level 4 of 5" shows 3 gold stars plus the outlined 4th.
