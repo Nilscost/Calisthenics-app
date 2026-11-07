@@ -297,3 +297,15 @@ Not run: Maestro flows and the device tests (no device or emulator in this sessi
   - `flag-clutch-horizontal-split` (anchor `flag-clutch-horizontal-tuck`, rank 35 vs 30);
   - `seated-knee-raise` (rank 12 vs next main `lying-bent-knee-raise` 10) and `calf-raise-step-bent-knee` (22 vs next main `calf-raise-single` 20) cross the next rung by rank only, targets are the same as the anchor's.
   Same-rung or slightly above the anchor but below the next main step (e.g. `pushup-diamond`, `pullup-typewriter`, `squat-pistol-elevated`, `dragon-flag-adv-tuck`, `inverted-row-wide`) were not flagged.
+
+### 9.2 alternates — 2026-11-07
+
+Owner approved reclassifying the alternates from the 9.2 T1 audit that are clearly harder than their rung. Edited `tools/progression_routes.py`, regenerated with `python3 tools/gen_r8_catalog.py` (`app/src/main/assets/catalog.json`, `content/starter/catalog.json`, `docs/29-progression-routes.json`).
+
+- `ring-l-sit`: ALTERNATE at `l-sit-floor` (rank 40 vs next main 34) -> ALTERNATE at `v-sit-floor` (rank 40, same rank). It needs rings, so it stays off the equipment-free `lsit` main path.
+- `pushup-one-arm-straight-body`: ALTERNATE at the goal `pushup-one-arm` (rank 75 vs 70, tier 1 = 8 reps) -> LIBRARY. Nothing on the route is as hard, it is harder than the goal, and it is not a next step on the direct path; adding a post-goal step would change goal semantics, so it stays selectable in the library only.
+- `flag-clutch-horizontal-split`: ALTERNATE at `flag-clutch-horizontal-tuck` (rank 35 vs 30) -> MAIN between `flag-clutch-horizontal-tuck` (30) and `flag-clutch-bent-leg` (40). Same pole equipment as the route. Gates follow: split requires horizontal-tuck tier 3 (as the main gate), bent-leg now requires split tier 3 (was horizontal-tuck), tuck's `nextVariationIds` is the split.
+- Unchanged by decision: `plank-shoulder-tap`, `seated-knee-raise`, `calf-raise-step-bent-knee`.
+- **Existing users:** progress is rebuilt from history; no exercise is removed from any route, and the library exercise stays available, so nobody loses a current exercise. A flag user between horizontal-tuck and bent-leg now gets the split as the next step first.
+- **Audit re-run** (rank of each ALTERNATE vs the next main step after its anchor): the three exercises are no longer flagged. Remaining flags are only the owner-excluded three plus alternates on routes whose anchor is the last main step or non-linear groups (sit-up, rower-situp, russian-twist, stretch-twist-*), which the T1 audit did not list and were left alone.
+- **Tests:** new `StarterCatalogTest.alternatesAreNotHarderThanTheirRung92` (new anchors, flag path and gates, and a guard that no other alternate outranks the next main step except the three owner exceptions). `:domain:jvmTest :domain:wasmJsNodeTest :data:testDebugUnitTest :app:testDebugUnitTest`: BUILD SUCCESSFUL; `check_kmp_test_parity.py`, `check_app_test_preservation.py` and `validate_content.py content/starter` OK.

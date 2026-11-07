@@ -236,6 +236,24 @@ class StarterCatalogTest {
         assertRouteGate("bridge-back", "bridge-wall-walkdown", 3)
     }
 
+    @Test fun alternatesAreNotHarderThanTheirRung92() {
+        // 9.2: an ALTERNATE is as hard as the main step at its rung, so these three were moved
+        assertRouteMember("lsit", "ring-l-sit", ProgressionRole.ALTERNATE, "v-sit-floor")
+        assertEquals(catalog.variation("v-sit-floor")!!.difficultyRank, catalog.variation("ring-l-sit")!!.difficultyRank)
+        assertRouteMember("pushup", "pushup-one-arm-straight-body", ProgressionRole.LIBRARY)
+        assertRoutePath("flag", listOf("flag-clutch-hang", "flag-clutch-diagonal-tuck", "flag-clutch-diagonal", "flag-clutch-horizontal-tuck", "flag-clutch-horizontal-split", "flag-clutch-bent-leg", "flag-clutch"))
+        assertRouteMember("flag", "flag-clutch-horizontal-split", ProgressionRole.MAIN)
+        assertRouteGate("flag-clutch-horizontal-split", "flag-clutch-horizontal-tuck", 3)
+        assertRouteGate("flag-clutch-bent-leg", "flag-clutch-horizontal-split", 3)
+        assertEquals(listOf("flag-clutch-horizontal-split"), catalog.policyForVariation("flag-clutch-horizontal-tuck")!!.nextVariationIds)
+        // no ALTERNATE in a route may outrank the main step after its anchor
+        for (route in catalog.progressionRoutes) for (m in route.members.filter { it.role == ProgressionRole.ALTERNATE && it.atVariationId in route.mainPath }) {
+            val next = route.mainPath.getOrNull(route.mainPath.indexOf(m.atVariationId) + 1) ?: continue
+            if (m.variationId in setOf("plank-shoulder-tap", "seated-knee-raise", "calf-raise-step-bent-knee")) continue   // owner-approved exceptions
+            assertTrue("${route.id}: ${m.variationId} is harder than $next", catalog.variation(m.variationId)!!.difficultyRank <= catalog.variation(next)!!.difficultyRank)
+        }
+    }
+
     @Test fun l02PushUpChainFollowsTheLoadCurve() {   // Ebben 2011: wall < high incline < knee / low incline < full < diamond / 30 cm decline < archer < one-arm
         assertRoutePath("pushup", listOf("pushup-wall", "pushup-incline-high", "pushup-incline", "pushup-standard", "pushup-feet-elevated", "pushup-archer", "pushup-half-one-arm", "pushup-one-arm-elevated", "pushup-one-arm-negative", "pushup-one-arm"))
         assertRouteMember("pushup", "pushup-knee", ProgressionRole.ALTERNATE, "pushup-incline")
