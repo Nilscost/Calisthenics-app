@@ -35,7 +35,7 @@ import io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier, onLevels: () -> Unit, onBackup: () -> Unit, onLicenses: () -> Unit, onProfiles: () -> Unit = {},
-    onPrivacy: () -> Unit = {}, theme: AppTheme = AppTheme.SYSTEM, onTheme: (AppTheme) -> Unit = {},
+    onPrivacy: () -> Unit = {}, onChatbot: () -> Unit = {}, theme: AppTheme = AppTheme.SYSTEM, onTheme: (AppTheme) -> Unit = {},
 ) {
     val ctx = currentPlatformContext()
     var confirmRedo by remember { mutableStateOf(false) }
@@ -100,6 +100,7 @@ fun SettingsScreen(
 
             Section(Res.string.settings_section_data)
             NavRow(Res.string.settings_backup, Res.string.settings_backup_hint, "settings_backup", onBackup)
+            NavRow(Res.string.settings_chatbot, Res.string.settings_chatbot_hint, "settings_chatbot", onChatbot)
 
             Section(Res.string.settings_section_about)
             NavRow(Res.string.settings_privacy, null, "settings_privacy", onPrivacy)

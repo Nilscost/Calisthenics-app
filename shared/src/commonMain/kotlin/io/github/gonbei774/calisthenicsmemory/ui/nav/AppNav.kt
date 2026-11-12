@@ -36,6 +36,7 @@ import androidx.compose.ui.platform.testTag
 import org.jetbrains.compose.resources.stringResource
 import io.github.gonbei774.calisthenicsmemory.shared.resources.*
 import io.github.gonbei774.calisthenicsmemory.ui.screens.BackupScreen2
+import io.github.gonbei774.calisthenicsmemory.ui.screens.ChatbotRoutinesScreen
 import app.calisthenics.data.settings.AppTheme
 import io.github.gonbei774.calisthenicsmemory.ui.history.HistoryScreen
 import io.github.gonbei774.calisthenicsmemory.ui.history.SessionDetailScreen
@@ -62,7 +63,7 @@ enum class Tab(val route: String, val labelRes: StringResource, val icon: ImageV
 enum class Route(val route: String) {
     TRAIN("train"), PROGRESS("progress"), HISTORY("history"), SETTINGS("settings"),
     SESSION("session"), ONBOARDING("onboarding"), FIRST_RUN("first_run"), BACKUP("backup"), LICENSES("licenses"),
-    PROFILES("profiles"), PROFILE_EDIT("profile_edit"), PREVIEW("preview"), HISTORY_DETAIL("history_detail"), PRIVACY("privacy");
+    PROFILES("profiles"), PROFILE_EDIT("profile_edit"), PREVIEW("preview"), HISTORY_DETAIL("history_detail"), PRIVACY("privacy"), CHATBOT("chatbot");
 
     val tab: Tab? get() = Tab.entries.firstOrNull { it.route == route }
     /** How deep in a flow the screen is: tabs 0, their sub-screens 1, the running workout 2 (drives the slide direction). */
@@ -134,7 +135,8 @@ fun AppNav(theme: AppTheme = AppTheme.SYSTEM, onTheme: (AppTheme) -> Unit = {}) 
             Route.HISTORY -> HistoryScreen(m, onOpenExercise = { OpenExercise.request(it); go(Route.PROGRESS) }, onOpen = { id -> detailId = id; go(Route.HISTORY_DETAIL) })
             Route.HISTORY_DETAIL -> { PlatformBackHandler { go(Route.HISTORY) }; SessionDetailScreen(detailId, m, onOpenExercise = { OpenExercise.request(it); go(Route.PROGRESS) }, onBack = { go(Route.HISTORY) }) }
             Route.PRIVACY -> { PlatformBackHandler { go(Route.SETTINGS) }; PrivacyScreen(m, onBack = { go(Route.SETTINGS) }) }
-            Route.SETTINGS -> SettingsScreen(m, onLevels = { go(Route.ONBOARDING) }, onBackup = { go(Route.BACKUP) }, onLicenses = { go(Route.LICENSES) }, onProfiles = { go(Route.PROFILES) }, onPrivacy = { go(Route.PRIVACY) }, theme = theme, onTheme = onTheme)
+            Route.SETTINGS -> SettingsScreen(m, onLevels = { go(Route.ONBOARDING) }, onBackup = { go(Route.BACKUP) }, onLicenses = { go(Route.LICENSES) }, onProfiles = { go(Route.PROFILES) }, onPrivacy = { go(Route.PRIVACY) }, onChatbot = { go(Route.CHATBOT) }, theme = theme, onTheme = onTheme)
+            Route.CHATBOT -> { PlatformBackHandler { go(Route.SETTINGS) }; ChatbotRoutinesScreen(m, onBack = { go(Route.SETTINGS) }) }
             Route.SESSION -> { PlatformBackHandler { go(Route.TRAIN) }; SessionScreen(m, onExit = { go(Route.TRAIN) }) }
             Route.FIRST_RUN -> OnboardingScreen(m, onBack = null, onDone = { OnboardingStore.setDone(ctx); go(Route.TRAIN) })
             Route.ONBOARDING -> { PlatformBackHandler { go(Route.SETTINGS) }; OnboardingScreen(m, onBack = { go(Route.SETTINGS) }, onDone = { OnboardingStore.setDone(ctx); go(Route.SETTINGS) }) }
