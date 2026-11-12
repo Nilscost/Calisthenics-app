@@ -37,11 +37,18 @@ ROUTE_REPORT = ROOT / "docs/29-progression-routes.json"
 # Owner 2026-10-26: how each exercise treats the two sides. unilateral=true in the contract means SPLIT (two work blocks,
 # Left then Right). The ids below work both sides inside ONE continuous set (ALTERNATING): their tier and program numbers
 # count each side, and every screen shows the total with the per-side number in parentheses ("12 reps (6 per side)").
-ALTERNATING_IDS = (
+ALTERNATING_ORIGINAL_IDS = (
     "pushup-archer", "ring-pushup-rto-archer", "pushup-single-leg",
     "pilates-single-leg-stretch", "pilates-scissors", "bicycle-crunch",
     "pilates-corkscrew", "pilates-saw", "pilates-double-leg-kick", "pilates-spine-twist",
 )
+# 9.3: the owner counts these per side too (decisions: docs/evidence/9.3-l1-side-modes.md). Their numbers are unchanged, except
+# plank-shoulder-tap, whose 9.2 numbers were totals and are now authored per side in gen_starter_catalog.py.
+ALTERNATING_ADDED_IDS = (
+    "walking-lunge", "russian-twist", "dead-bug", "dead-bug-single-leg", "bird-dog", "plank-arm-leg-reach", "plank-shoulder-tap",
+    "windshield-wiper-floor", "windshield-wiper-bent-knee", "bird-dog-arm-raise", "bird-dog-leg-raise",
+)
+ALTERNATING_IDS = ALTERNATING_ORIGINAL_IDS + ALTERNATING_ADDED_IDS
 
 
 def _apply_side_modes(result: dict[str, Any]) -> None:
@@ -57,6 +64,14 @@ def _apply_side_modes(result: dict[str, Any]) -> None:
         for item in program["items"]:
             variation = by_id[item["exerciseId"]]
             sided = variation["unilateral"] or variation.get("sides") == "ALTERNATING"
+            if sided and not item.get("perSide", False) and variation["id"] in ALTERNATING_ADDED_IDS:
+                # The source wrote a total ("10 lunges, alternate legs"): keep that total, now written per side (5 per side shows as "10 reps (5 per side)").
+                if item["reps"] % 2:
+                    raise ValueError(f"{program['id']}/{item['exerciseId']}: total of {item['reps']} reps cannot be halved per side")
+                item["reps"] //= 2
+                item["perSide"] = True
+                if "estSeconds" in item:   # an alternating block lasts twice its estimate, so the program keeps its length
+                    item["estSeconds"] //= 2
             if bool(item.get("perSide", False)) != sided:
                 raise ValueError(f"{program['id']}/{item['exerciseId']}: perSide={item.get('perSide', False)} but the exercise is "
                                  f"{'sided' if sided else 'not sided'}")

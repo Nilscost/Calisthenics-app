@@ -44,7 +44,7 @@ class SideDisplayTest {
         val content = app.calisthenics.domain.planner.ProgramContent("t", "t", listOf(
             FixedProgramItem("lunge-reverse", reps = 6, perSide = true, estSeconds = 24),
             FixedProgramItem("pushup-archer", reps = 6, perSide = true, estSeconds = 24),
-            FixedProgramItem("walking-lunge", reps = 10, estSeconds = 48)))
+            FixedProgramItem("squat-air", reps = 10, estSeconds = 48)))
         val plan = (app.calisthenics.domain.planner.buildProgramPlan(c, content, app.calisthenics.domain.equipment.SeedProfiles.home, flow = false)
             as app.calisthenics.domain.planner.FixedProgramPlanResult.Ready).plan
         val entries = circuitOf(plan)
@@ -58,10 +58,31 @@ class SideDisplayTest {
         rule.setContent {
             Text(programSideText(c.variation("lunge-reverse"), item("lunge-reverse"), 6), Modifier.testTag("split"))
             Text(programSideText(c.variation("pushup-archer"), item("pushup-archer"), 6), Modifier.testTag("alt"))
-            Text(programSideText(c.variation("walking-lunge"), FixedProgramItem("walking-lunge", reps = 10), 10), Modifier.testTag("none"))
+            Text(programSideText(c.variation("squat-air"), FixedProgramItem("squat-air", reps = 10), 10), Modifier.testTag("none"))
+            Text(programSideText(c.variation("walking-lunge"), item("walking-lunge", reps = 6), 6), Modifier.testTag("lunge"))
         }
         rule.onNodeWithTag("split").assertTextEquals("left, then right")
         rule.onNodeWithTag("alt").assertTextEquals("12 reps in all (6 per side)")
         rule.onNodeWithTag("none").assertTextEquals("")
+        rule.onNodeWithTag("lunge").assertTextEquals("12 reps in all (6 per side)")
+    }
+
+    /** 9.3: the owner counts a walking lunge per side. Preview, the workout screen and History all take the number from the same block, so one block tells all three. */
+    @Test fun walkingLungeShowsTwelveRepsWithSixPerSideInPreviewWorkoutAndHistory() {
+        val c = app.calisthenics.domain.content.parseCatalog(java.io.File(System.getProperty("user.dir"), "src/main/assets/catalog.json").readText())
+        val content = app.calisthenics.domain.planner.ProgramContent("t", "t", listOf(FixedProgramItem("walking-lunge", reps = 6, perSide = true, estSeconds = 24)))
+        val plan = (app.calisthenics.domain.planner.buildProgramPlan(c, content, app.calisthenics.domain.equipment.SeedProfiles.home, flow = false)
+            as app.calisthenics.domain.planner.FixedProgramPlanResult.Ready).plan
+        val entry = circuitOf(plan).single()                                    // Preview
+        val work = plan.blocks.single { it.type == BlockType.WORK }            // workout screen
+        val history = app.calisthenics.domain.history.exerciseDetails(plan,    // History
+            listOf(app.calisthenics.domain.history.BlockRecord(work.id, work.variationId, "WORK", "MET", 20, 6))).single()
+        assertTrue(entry.alternating && work.alternating && history.alternating)
+        rule.setContent {
+            Text(targetText(entry.target, entry.perSide, entry.loadGrams, entry.alternating), Modifier.testTag("preview"))
+            Text(targetLabel(work.target!!, work.alternating), Modifier.testTag("workout"))
+        }
+        rule.onNodeWithTag("preview").assertTextEquals("12 reps (6 per side)")
+        rule.onNodeWithTag("workout").assertTextEquals("12 reps (6 per side)")
     }
 }

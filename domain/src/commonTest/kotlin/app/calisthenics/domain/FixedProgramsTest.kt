@@ -13,6 +13,7 @@ import app.calisthenics.domain.progression.ProgressionEngine
 import app.calisthenics.domain.session.BlockLog
 import app.calisthenics.domain.session.rowLogsFrom
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -24,6 +25,9 @@ class FixedProgramsTest {
     private val byProgram = catalog.fixedPrograms.associateBy { it.id }
     /** Owner 2026-10-26: an item is two blocks (Left, Right) only when its exercise is SPLIT; an ALTERNATING one is a single block lasting twice the per-side estimate. */
     private fun blocksOf(exerciseId: String, perSide: Boolean) = if (perSide && catalog.variation(exerciseId)!!.sideMode == SideMode.SPLIT) 2 else 1
+    private fun writtenAsTotal(item: JsonObject) =
+        item["perSide"]?.jsonPrimitive?.content?.toBoolean() != true && item["reps"] != null &&
+            catalog.variation(item.getValue("exerciseId").jsonPrimitive.content)!!.sideMode == SideMode.ALTERNATING
     private fun durationFactor(exerciseId: String, perSide: Boolean) = if (perSide && catalog.variation(exerciseId)!!.sideMode == SideMode.ALTERNATING) 2 else 1
 
     // R8.1-T09 (F11): was "exactlyEight...": the eight drills stay as unlisted building blocks and two merged sessions (Army PRT, Pilates mat) are listed
@@ -36,7 +40,7 @@ class FixedProgramsTest {
             val program = byProgram.getValue(id)
             val expectedItems = source.getValue("items").jsonArray.map { it.jsonObject }
             val expectedIds = expectedItems.flatMap { item ->
-                List(blocksOf(item.getValue("exerciseId").jsonPrimitive.content, item["perSide"]?.jsonPrimitive?.content?.toBoolean() == true)) { item.getValue("exerciseId").jsonPrimitive.content }
+                List(blocksOf(item.getValue("exerciseId").jsonPrimitive.content, item["perSide"]?.jsonPrimitive?.content?.toBoolean() == true || writtenAsTotal(item))) { item.getValue("exerciseId").jsonPrimitive.content }
             }
             assertEquals(expectedIds, program.items.flatMap { item -> List(blocksOf(item.exerciseId, item.perSide)) { item.exerciseId } })
             val plan = (buildFixedProgramPlan(catalog, program, SeedProfiles.home, flow = program.flow) as FixedProgramPlanResult.Ready).plan
@@ -47,10 +51,12 @@ class FixedProgramsTest {
             assertTrue(plan.blocks.filter { it.type == BlockType.TRANSITION }.all { it.durationSeconds == 5 })
             var blockIndex = 0
             expectedItems.forEach { expected ->
-                val reps = expected["reps"]?.jsonPrimitive?.intOrNull
+                // 9.3: a source total for an exercise that is now ALTERNATING is kept as the same total, written per side (10 becomes 5, the estimate halves)
+                val half = if (writtenAsTotal(expected)) 2 else 1
+                val reps = expected["reps"]?.jsonPrimitive?.intOrNull?.div(half)
                 val seconds = expected["seconds"]?.jsonPrimitive?.intOrNull
-                val estimated = expected["estSeconds"]?.jsonPrimitive?.intOrNull
-                val perSide = expected["perSide"]?.jsonPrimitive?.content?.toBoolean() ?: false
+                val estimated = expected["estSeconds"]?.jsonPrimitive?.intOrNull?.div(half)
+                val perSide = expected["perSide"]?.jsonPrimitive?.content?.toBoolean() == true || half == 2
                 val exerciseId = expected.getValue("exerciseId").jsonPrimitive.content
                 val count = blocksOf(exerciseId, perSide)
                 val blocks = exerciseBlocks.subList(blockIndex, blockIndex + count)
