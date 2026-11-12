@@ -277,8 +277,8 @@ class SideBySideTests(unittest.TestCase):
                 Image.new('RGB', (480, 270), (20, 20, 200)).save(ref / ('f%02d.png' % i))
             out = side_by_side.build('ex', cand, [ref], tmp / 'out.png')
             im = Image.open(out)
-            self.assertEqual(150 + 8 * 200, im.width)
-            self.assertEqual(34 + 2 * (150 + 4), im.height)
+            self.assertEqual(150 + 8 * side_by_side.CELL[0], im.width)
+            self.assertEqual(34 + 2 * (side_by_side.CELL[1] + 4), im.height)
             with self.assertRaises(FileNotFoundError):
                 side_by_side.build('ex', tmp / 'nope', [ref], tmp / 'o2.png')
 

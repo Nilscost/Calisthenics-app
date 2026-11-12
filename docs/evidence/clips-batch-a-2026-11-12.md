@@ -16,3 +16,11 @@
 | plank-shoulder-tap | A10 | ca9d43c6693a93effd8262b50803afaa04e01e5b7bc4d2cf70d3934f9ab7f969 | 3e75d1400e1c4ae9ce28fc0e09adbc4cc7fe0af6d7cb19b97e4fe6cfef6bc9cf |
 | pushup-archer | control | 9183227a1f7f727510f6cd7ff64122e2a917cea90d4330a6a7b26c3bca0530d4 | 8cf06297e4dac806547d9c0de7d5e9624ec6dacdf03053bf4b2aa5065428d985 |
 | pullup-full | control | 1ce1557f1ec537e7eb6d5155b708749e01ad215c1181062454407b709d8ce741 | aed2423983ee35c32330426c5c5fe39c6f44eb6e082824cd9a60200be2fb0fcb |
+
+## Catalog ids
+
+plank-long-lever, bridge-single-leg, walking-lunge, russian-twist, side-plank, dip-parallel, inverted-row, glute-bridge, split-squat, plank-shoulder-tap. Controls: pushup-archer, pullup-full (source and media untouched).
+
+## Phase 1 status
+
+Rebuilt from references, class checks and native geometry preflight pass: plank-long-lever, bridge-single-leg, glute-bridge. Not yet rebuilt: walking-lunge, russian-twist, side-plank, dip-parallel, inverted-row, split-squat, plank-shoulder-tap. Reference intervals for all ten are in motion_references.json (batch_references). Note: glute-bridge ref2 interval crosses a camera cut.

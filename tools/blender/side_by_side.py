@@ -15,7 +15,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-CELL = (200, 150)
+CELL = (240, 180)
 
 
 def _fit(path, cell):
