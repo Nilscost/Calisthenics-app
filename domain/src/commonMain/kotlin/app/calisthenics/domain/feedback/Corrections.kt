@@ -36,7 +36,7 @@ fun effectiveRounds(plan: WorkoutPlan, vid: String, achieved: Map<String, Int?>,
     return plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid && (it.id in achieved || it.id in overrides) }.map { b ->
         val ov = overrides[b.id]
         val value = if (ov != null) valueOf(ov) else achieved[b.id]
-        val target = b.target?.value
+        val target = b.judgedValue
         val below = value != null && target != null && value < target
         val rating = ov?.rating ?: when {
             below -> Rating.BELOW

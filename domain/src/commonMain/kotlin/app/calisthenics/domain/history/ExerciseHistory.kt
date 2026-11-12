@@ -35,7 +35,7 @@ fun exerciseHistory(sessions: List<SessionWithPlan>, variationId: String, zone: 
             val values = rounds.mapNotNull { r -> r.value ?: byId[r.blockId]?.target?.shownValue() }
             val allDone = work.isNotEmpty() && done.size == work.size && done.all { it.outcome == "MET" }
             val reached = rounds.all { r ->
-                val t = byId[r.blockId]?.target?.value; val v = r.value ?: byId[r.blockId]?.target?.shownValue()
+                val t = byId[r.blockId]?.judgedValue; val v = r.value ?: byId[r.blockId]?.target?.shownValue()
                 t == null || (v != null && v >= t)
             }
             val good = allDone && reached && rounds.none { it.rating == Rating.BELOW || it.discomfort }

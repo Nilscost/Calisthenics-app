@@ -12,6 +12,8 @@ import app.calisthenics.domain.load.loadEquipmentId
 import app.calisthenics.domain.load.loadGramsFor
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.progression.ProgressSnapshot
+import app.calisthenics.domain.progression.ProgressionEngine
+import app.calisthenics.domain.progression.prescribedTarget
 import app.calisthenics.domain.routine.SessionDraft
 import app.calisthenics.domain.routine.normalizeStretchAreas
 import app.calisthenics.domain.routine.slotsForFocus
@@ -70,6 +72,7 @@ private class Planner(input: PlanInput) {
         d.copy(stretchOn = mode == BetweenSetMode.STRETCH, flow = mode == BetweenSetMode.FLOW)
     })
     val cat = this.input.catalog
+    private val engine = ProgressionEngine(cat)
     val draft = this.input.draft
     /** Legacy free-text lists: the discomfort-hold branch still writes to [warn]; they become PAIN / INFO notes at the end. Everything else uses [note]. */
     val explain = mutableListOf<String>()
@@ -507,17 +510,20 @@ private class Planner(input: PlanInput) {
                 val ruleTarget = if (rng.isRange) (if (isHold) Target(t.target.type, rng.holdFrom, rng.holdTo) else Target(t.target.type, c.slot.repFrom ?: rng.from, maxOf(c.slot.repTo ?: rng.to, c.slot.repFrom ?: rng.from))) else null
                 val policy = cat.policyFor(v)!!
                 val levelFiveEligible = free == null && ruleTarget == null && levelFive != null && t.index == 5
+                // L4: inside a level the target climbs towards the next level's with each good session. The existing rules keep priority: a typed / range / level-5 target and the lowered target after a shortfall.
+                val ramp = if (free == null && ruleTarget == null && !levelFiveEligible && reduced == null && c.inferredStartTier == null && progressed?.tier == t.index)
+                    prescribedTarget(policy, t.index, engine.qualifyingDays(input.progress, v.id, c.slot.progressionRouteId))?.takeIf { it.ramped } else null
                 val requested = when {
                     free != null -> Target(t.target.type, free.coerceIn(1, 999))
                     levelFiveEligible -> Target(t.target.type, maxOf(levelFive!!.coerceIn(1, 999), policy.tier(5).target.value))
-                    else -> ruleTarget ?: reduced?.let { t.target.copy(value = minOf(it, t.target.value)) } ?: t.target
+                    else -> ruleTarget ?: reduced?.let { t.target.copy(value = minOf(it, t.target.value)) } ?: ramp?.target ?: t.target
                 }
                 val target = cappedTarget(requested, policy)
                 val dur = if ((free != null || ruleTarget != null || levelFiveEligible) && isHold) maxOf(secs, (target.max ?: target.value) + 3) else secs
                 out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, if (levelFiveEligible) 5 else t.index,
                     mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams, freeTarget = free != null, groupIndex = group,
                     progressionRouteId = c.slot.progressionRouteId, inferredStartTier = c.inferredStartTier.takeIf { free == null && ruleTarget == null && !levelFiveEligible },
-                    levelFiveEligible = levelFiveEligible, targetRevision = cat.personalTargets[v.id]?.revision ?: 0, alternating = v.alternating)
+                    levelFiveEligible = levelFiveEligible, targetRevision = cat.personalTargets[v.id]?.revision ?: 0, alternating = v.alternating, levelTarget = ramp?.levelTarget?.value)
             }
             val isLast = pos == order.lastIndex
             fun extras() {

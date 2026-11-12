@@ -23,7 +23,7 @@ fun rowLogsFrom(plan: WorkoutPlan, logged: Map<String, BlockLog>): List<RowLog> 
     return work.groupBy { it.variationId!! }.entries.sortedBy { it.key }.map { (vid, blocks) ->
         val logs = blocks.map { it to logged.getValue(it.id) }
         val reps = logs.mapNotNull { it.second.reps }.minOrNull()
-        val below = logs.any { (b, l) -> l.tooHard || (l.reps != null && b.target != null && l.reps < b.target.value) }
+        val below = logs.any { (b, l) -> l.tooHard || (l.reps != null && b.judgedValue != null && l.reps < b.judgedValue!!) }
         val easy = logs.any { it.second.tooEasy }
         RowLog(vid, if (below) Rating.BELOW else if (easy) Rating.ABOVE else Rating.MET, logs.any { it.second.discomfort }, reps)
     }

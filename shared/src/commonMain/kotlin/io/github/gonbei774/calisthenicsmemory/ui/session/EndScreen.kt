@@ -104,7 +104,7 @@ fun EndScreen(
                         Text(SessionBus.names[vid] ?: vid, style = MaterialTheme.typography.titleMedium)
                         // V04b (R21): one number per round, plus Too hard / Too easy / Pain for the exercise.
                         RoundEditor(target, blocks.map { EditorRound(it.id, it.roundIndex ?: 1, it.side, st.logged[it.id]?.reps) }, sets = st.plan.format != WorkoutFormat.CIRCUIT,
-                            tooHard0 = logs.any { it.tooHard }, tooEasy0 = logs.any { it.tooEasy }, pain0 = logs.any { it.discomfort }, tag = "end_$vid", alternating = blocks.firstOrNull()?.alternating == true) { list ->
+                            tooHard0 = logs.any { it.tooHard }, tooEasy0 = logs.any { it.tooEasy }, pain0 = logs.any { it.discomfort }, tag = "end_$vid", alternating = blocks.firstOrNull()?.alternating == true, judged = blocks.firstOrNull()?.judgedValue) { list ->
                             scope.launch {
                                 val deadline = nowEpochMs() + 5000
                                 while (SessionBus.saveStatus.value.let { it == SaveStatus.NONE || it == SaveStatus.SAVING } && nowEpochMs() < deadline) delay(100) // the session row must exist first

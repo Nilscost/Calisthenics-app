@@ -29,7 +29,7 @@ data class EditorRound(val blockId: String, val round: Int, val side: Side, val 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RoundEditor(
-    target: Target?, rounds: List<EditorRound>, sets: Boolean = false, tooHard0: Boolean, tooEasy0: Boolean, pain0: Boolean, tag: String, alternating: Boolean = false,
+    target: Target?, rounds: List<EditorRound>, sets: Boolean = false, tooHard0: Boolean, tooEasy0: Boolean, pain0: Boolean, tag: String, alternating: Boolean = false, judged: Int? = target?.value,
     onChange: (List<RoundCorrection>) -> Unit,
 ) {
     val hold = target?.type == TargetType.HOLD_SECONDS
@@ -40,7 +40,7 @@ fun RoundEditor(
     var pain by remember(tag) { mutableStateOf(pain0) }
     fun push() = onChange(rounds.mapIndexed { i, r ->
         val reps = if (typed[i]) values[i] else null
-        RoundCorrection(r.blockId, reps, ratingFor(reps, target, tooHard, tooEasy), pain, hold)
+        RoundCorrection(r.blockId, reps, ratingFor(reps, target, tooHard, tooEasy, judged), pain, hold)
     })
     Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
         rounds.forEachIndexed { i, r ->

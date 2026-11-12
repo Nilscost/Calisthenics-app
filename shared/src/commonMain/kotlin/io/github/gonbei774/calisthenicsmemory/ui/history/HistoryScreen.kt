@@ -232,7 +232,7 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
                 val name = catalog?.variation(d.variationId)?.name ?: d.variationId
                 // V04b (R22): every round has its own number; a correction is saved as new revisions, the history stays append-only.
                 val rounds = effectiveRounds(plan, d.variationId, achieved, s.rows)
-                val tv = d.target?.value
+                val tv = d.judged
                 Card(Modifier.fillMaxWidth().testTag("detail_${d.variationId}"), shape = MaterialTheme.shapes.large) {
                     Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
@@ -242,7 +242,7 @@ fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source
                         RoundEditor(
                             d.target, rounds.map { EditorRound(it.blockId, it.round, it.side, it.value, it.corrected) }, sets = plan.format != app.calisthenics.domain.model.WorkoutFormat.CIRCUIT,
                             tooHard0 = rounds.any { it.rating == Rating.BELOW && !(it.value.let { v -> v != null && tv != null && v < tv }) },
-                            tooEasy0 = rounds.any { it.rating == Rating.ABOVE }, pain0 = rounds.any { it.discomfort }, tag = "fix_${d.variationId}", alternating = d.alternating,
+                            tooEasy0 = rounds.any { it.rating == Rating.ABOVE }, pain0 = rounds.any { it.discomfort }, tag = "fix_${d.variationId}", alternating = d.alternating, judged = d.judged,
                         ) { list ->
                             corrected = true
                             scope.launch { src.reviseRounds(sessionId, d.variationId, list) }

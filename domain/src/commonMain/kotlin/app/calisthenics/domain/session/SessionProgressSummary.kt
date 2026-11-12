@@ -14,6 +14,8 @@ import app.calisthenics.domain.model.TargetType
 import app.calisthenics.domain.model.WorkoutPlan
 import app.calisthenics.domain.progression.ProgressSnapshot
 import app.calisthenics.domain.progression.ProgressionEngine
+import app.calisthenics.domain.progression.VariationProgress
+import app.calisthenics.domain.progression.prescribedTarget
 import app.calisthenics.domain.tree.displayStars
 
 /** Good sessions so far towards the next level: [have] of [need], on the 14-day path or (when [weekly]) the 4-in-30-days path. [toLevel] 6 = mastery. */
@@ -79,7 +81,8 @@ fun summarizeSessionProgress(catalog: Catalog, before: ProgressSnapshot, after: 
             stars = starsAfter, starsBefore = displayStars(catalog, before, vid),
             leveledUpTo = if (leveledUp) a.tier else null, mastered = masteredNow, masteredAlready = masteredAlready,
             progress = dots, easierNextTime = easier,
-            nextTarget = if (newlyReduced && !easier) a.reducedTarget else null,
+            nextTarget = if (newlyReduced && !easier) a.reducedTarget
+                else rampedNext(engine, pol, before, after, vid, b, a).takeIf { !easier && !leveledUp && !masteredAlready && a.tier == tierBefore },
             nextTargetIsHold = tierTarget?.type == TargetType.HOLD_SECONDS,
             levelKept = kept,
         )
@@ -127,4 +130,13 @@ private fun isNextStepOfExerciseStillInTraining(catalog: Catalog, after: Progres
     if (activeId == vid) return false
     if (5 in (after.variations[activeId]?.achievedTiers ?: emptySet())) return false
     return vid in (catalog.policyForVariation(activeId)?.nextVariationIds.orEmpty())
+}
+
+/** L4: the climbing target inside a level, when this session moved it up (the same function the planner uses); null when it did not change or the lowered target is in force. */
+private fun rampedNext(engine: ProgressionEngine, pol: app.calisthenics.domain.model.ProgressionPolicy, before: ProgressSnapshot, after: ProgressSnapshot, vid: String,
+    b: VariationProgress?, a: VariationProgress): Int? {
+    fun at(p: VariationProgress, s: ProgressSnapshot) = if (p.reducedTarget != null && p.reducedTargetTier == p.tier) null
+        else prescribedTarget(pol, p.tier, engine.qualifyingDays(s, vid))?.takeIf { it.ramped }?.target?.value
+    val now = at(a, after) ?: return null
+    return now.takeIf { b == null || b.tier != a.tier || at(b, before) != now }
 }
