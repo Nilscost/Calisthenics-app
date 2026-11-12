@@ -306,6 +306,8 @@ class SessionScreenTest {
         assertEquals(WorkoutSessionService.ACTION_FINISH, lastIntent().action)
     }
 
+    private val firstWorkVid get() = plan.blocks.first { it.type == BlockType.WORK }.variationId!!
+
     @Test fun theEndScreenIsAShortSummaryWithAnEditLinkInsteadOfALongForm() {
         val s = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
         assertEquals(Phase.COMPLETED, s.phase)
@@ -314,9 +316,9 @@ class SessionScreenTest {
         show(s) { exited = true }
         rule.onNodeWithTag("end_title").assertTextEquals("Workout complete")
         rule.onNodeWithTag("end_tile_rounds").assertTextContains("2", substring = true) // three tiles with History's numbers
-        rule.onNodeWithTag("end_edit").assertIsDisplayed()
+        rule.onNodeWithTag("end_edit_$firstWorkVid").assertIsDisplayed()
         rule.onNodeWithText("How did it go?", substring = true).assertDoesNotExist() // the long form only opens on demand
-        rule.onNodeWithTag("end_done").performClick()
+        rule.onNodeWithTag("end_done").performScrollTo().performClick()
         assertTrue(exited)
     }
 
@@ -353,7 +355,7 @@ class SessionScreenTest {
         rule.onNodeWithTag("end_save_status").assertTextEquals(app.getString(R.string.end_saving))
         SessionBus.saveFailed(); rule.waitForIdle()
         rule.onNodeWithTag("end_save_status").assertTextEquals(app.getString(R.string.end_save_failed))
-        rule.onNodeWithTag("end_edit").assertDoesNotExist() // no corrections for a session that is not in history
+        rule.onNodeWithTag("end_edit_$firstWorkVid").assertDoesNotExist() // no corrections for a session that is not in history
     }
 
     // R8.1-T06 (F7): a Flow workout still logs actual reps, so its end screen keeps the editor; only a flow program has no per-item results
@@ -363,7 +365,7 @@ class SessionScreenTest {
         assertEquals(Phase.COMPLETED, s.phase)
         SessionBus.saved = true
         show(s)
-        rule.onNodeWithTag("end_edit").assertIsDisplayed()
+        rule.onNodeWithTag("end_edit_$firstWorkVid").assertIsDisplayed()
     }
 
     @Test fun aFlowProgramHasNoPerItemEditorOnTheEndScreen() {
@@ -371,7 +373,7 @@ class SessionScreenTest {
         val s = reduce(newSession("S", program), SessionEvent.Start(0)).state.let { reduce(it, SessionEvent.Tick(10_000_000)).state }
         SessionBus.saved = true
         show(s)
-        rule.onNodeWithTag("end_edit").assertDoesNotExist()
+        rule.onNodeWithTag("end_edit_$firstWorkVid").assertDoesNotExist()
     }
 
     @Test fun anAppLevelFlowProgramKeepsTheActualResultsEditor() {
@@ -379,17 +381,17 @@ class SessionScreenTest {
         val s = reduce(newSession("S", program), SessionEvent.Start(0)).state.let { reduce(it, SessionEvent.Tick(10_000_000)).state }
         SessionBus.saved = true
         show(s)
-        rule.onNodeWithTag("end_edit").assertIsDisplayed()
+        rule.onNodeWithTag("end_edit_$firstWorkVid").assertIsDisplayed()
     }
 
     @Test fun theEndScreenEditorHasOneNumberPerRoundAndTooEasyNextToTooHard() {
         val s = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
         SessionBus.saved = true
         show(s)
-        rule.onNodeWithTag("end_edit").performClick(); rule.waitForIdle()
-        val vid = plan.blocks.first { it.type == BlockType.WORK }.variationId!!
+        val vid = firstWorkVid
+        rule.onNodeWithTag("end_edit_$vid").performClick(); rule.waitForIdle()
         val rounds = plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid }.size
-        rule.onNodeWithTag("end_fix_$vid").assertExists()
+        rule.onNodeWithTag("end_fix_$vid").assertExists() // without a history comparison the exercise still has its own card
         for (i in 1..rounds) rule.onNodeWithTag("end_${vid}_round${i}_value").performScrollTo().assertExists()
         rule.onNodeWithTag("end_${vid}_too_hard").performScrollTo().assertExists()
         rule.onNodeWithTag("end_${vid}_too_easy").performScrollTo().assertExists()

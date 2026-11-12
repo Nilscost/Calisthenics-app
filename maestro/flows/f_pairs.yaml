@@ -21,8 +21,9 @@ appId: app.calisthenics.personal
 - tapOn: "End workout"
 - tapOn: "End workout"
 - extendedWaitUntil: { visible: { id: end_title }, timeout: 10000 }
-- tapOn: { id: end_edit }
-- scrollUntilVisible: { element: { id: "end_fix_.*" }, direction: DOWN, timeout: 8000 }
+- scrollUntilVisible: { element: { id: "end_edit_.*" }, direction: DOWN, timeout: 8000 }
+- tapOn: { id: "end_edit_.*", index: 0 }
+- scrollUntilVisible: { element: { id: "end_.*_round1_value" }, direction: DOWN, timeout: 8000 }
 - takeScreenshot: 04-pairs-end-editor-${VARIANT}
 - tapOn: { id: end_done }
 - extendedWaitUntil: { visible: { id: format_CIRCUIT }, timeout: 15000 }

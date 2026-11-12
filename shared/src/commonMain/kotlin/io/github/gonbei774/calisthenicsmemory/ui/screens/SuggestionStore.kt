@@ -14,6 +14,7 @@ object SuggestionStore {
  fun dismiss(ctx: PlatformContext, id: String) = Shared.dismiss(provider(ctx), id)
  fun accept(ctx: PlatformContext, variationId: String, tier: Int, day: Int) = Shared.accept(provider(ctx), variationId, tier, day)
  fun acceptNext(ctx: PlatformContext, variationId: String, toVariationId: String, day: Int) = Shared.acceptNext(provider(ctx), variationId, toVariationId, day)
+ fun acceptEasier(ctx: PlatformContext, variationId: String, tier: Int, day: Int) = Shared.acceptEasier(provider(ctx), variationId, tier, day)
  fun clearAll(ctx: PlatformContext) = Shared.clearAll(provider(ctx))
  fun accepted(ctx: PlatformContext) = Shared.accepted(provider(ctx))
 }

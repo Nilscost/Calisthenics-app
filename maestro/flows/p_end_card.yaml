@@ -1,0 +1,60 @@
+# P — the end screen: one card per exercise. Runs after the seed hook (maestro/hooks/p_end_card.pre.sh): a workout on the seeded levels, one logged
+# set, ended early. The card shows why a level was reached (when the seed makes one), how it felt (Too hard · Too easy · Pain), the move that follows
+# ("Go down to Level N"), the mastered exercise's next step, and "Edit what I logged" unfolding one number per round.
+# Which of the optional states appear depends on the seeded history; the Compose tests in EndScreenTest pin every one of them.
+appId: app.calisthenics.personal
+---
+- launchApp
+- runFlow: ../common/dismiss_system_dialogs.yaml
+- extendedWaitUntil: { visible: { id: preview_button }, timeout: 15000 }
+- tapOn: { id: preview_button }
+- extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
+- tapOn: { id: start_button }
+- extendedWaitUntil: { visible: { id: session_title }, timeout: 15000 }
+- repeat:
+    while: { notVisible: { id: logger_plus } }
+    times: 30
+    commands:
+      - tapOn: { id: session_skip }
+      - waitForAnimationToEnd: { timeout: 1000 }
+- tapOn: { id: logger_plus }
+- tapOn: { id: session_done }
+- waitForAnimationToEnd: { timeout: 1000 }
+- tapOn: { id: session_more }
+- tapOn: "End workout"
+- tapOn: "End workout"
+- extendedWaitUntil: { visible: { id: end_title }, timeout: 10000 }
+- extendedWaitUntil: { visible: { id: "end_card_.*" }, timeout: 15000 }
+- takeScreenshot: 01-end-cards-${VARIANT}
+# a level reached by three good sessions: the finished streak ("3 of 3 good sessions at Level N")
+- runFlow:
+    when: { visible: { text: ".* good sessions at Level .*" } }
+    commands:
+      - takeScreenshot: 02-end-level-by-streak-${VARIANT}
+# a level reached by typed reps that already met the new level: "You did the Level N reps today"
+- runFlow:
+    when: { visible: { id: "end_demonstrated_.*" } }
+    commands:
+      - takeScreenshot: 03-end-level-by-reps-${VARIANT}
+# a mastered exercise: divider and "Next: <exercise> · Level 1"
+- runFlow:
+    when: { visible: { id: "end_next_.*" } }
+    commands:
+      - takeScreenshot: 04-end-mastered-next-${VARIANT}
+# Too hard on a card above level 1: the button "Go down to Level N-1" (nothing changes until it is tapped)
+- scrollUntilVisible: { element: { id: "end_.*_too_hard" }, direction: DOWN, timeout: 8000 }
+- tapOn: { id: "end_.*_too_hard", index: 0 }
+- waitForAnimationToEnd: { timeout: 1500 }
+- takeScreenshot: 05-end-too-hard-${VARIANT}
+- runFlow:
+    when: { visible: { id: "end_.*_act" } }
+    commands:
+      - tapOn: { id: "end_.*_act", index: 0 }
+      - waitForAnimationToEnd: { timeout: 1500 }
+      - takeScreenshot: 06-end-move-applied-${VARIANT}
+- scrollUntilVisible: { element: { id: "end_edit_.*" }, direction: DOWN, timeout: 8000 }
+- tapOn: { id: "end_edit_.*", index: 0 }
+- scrollUntilVisible: { element: { id: "end_.*_round1_value" }, direction: DOWN, timeout: 8000 }
+- takeScreenshot: 07-end-rounds-unfolded-${VARIANT}
+- scrollUntilVisible: { element: { id: end_done }, direction: DOWN, speed: 40, timeout: 30000 }
+- tapOn: { id: end_done }

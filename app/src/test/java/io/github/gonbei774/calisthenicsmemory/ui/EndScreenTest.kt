@@ -11,13 +11,18 @@ import app.calisthenics.domain.model.WorkoutFormat
 import app.calisthenics.domain.planner.PlanResult
 import app.calisthenics.domain.planner.TrainSettings
 import app.calisthenics.domain.planner.buildTrainPlan
+import app.calisthenics.domain.progression.LevelUpBy
 import app.calisthenics.domain.progression.ProgressSnapshot
+import app.calisthenics.domain.progression.Suggestion
+import app.calisthenics.domain.progression.UserAction
 import app.calisthenics.domain.routine.StarterRoutine
 import app.calisthenics.domain.session.*
 import io.github.gonbei774.calisthenicsmemory.R
 import io.github.gonbei774.calisthenicsmemory.session.SessionBus
 import io.github.gonbei774.calisthenicsmemory.ui.session.EndProgress
 import io.github.gonbei774.calisthenicsmemory.ui.session.EndScreen
+import io.github.gonbei774.calisthenicsmemory.platform.todayEpochDay
+import io.github.gonbei774.calisthenicsmemory.ui.screens.SuggestionStore
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog
 import org.junit.After
@@ -90,7 +95,7 @@ class EndScreenTest {
         rule.onNodeWithTag("end_card_${vids[0]}").assertDoesNotExist()
         SessionBus.saveFailed(); rule.waitForIdle()
         rule.onNodeWithTag("end_save_status").assertTextEquals(app.getString(R.string.end_save_failed))
-        rule.onNodeWithTag("end_edit").assertDoesNotExist()
+        rule.onNodeWithTag("end_edit_${vids[0]}").assertDoesNotExist()
     }
 
     @Test fun oneCardPerExerciseShowsStarsLevelAndProgressDots() {
@@ -115,7 +120,7 @@ class EndScreenTest {
         SessionBus.saved = true
         val a = vids[0]; val b = vids[1]; val n = catalog.variations.first { it.id !in vids }.id
         show(finished(), progressWith(
-            ExerciseProgress(a, true, tier = 4, stars = 3, starsBefore = 2, leveledUpTo = 4, progress = LevelProgress(0, 3, false, 5)),
+            ExerciseProgress(a, true, tier = 4, stars = 3, starsBefore = 2, leveledUpTo = 4, progress = LevelProgress(3, 3, false, 4, finished = true), levelUpBy = LevelUpBy.STREAK),
             ExerciseProgress(b, true, tier = 5, stars = 5, starsBefore = 4, mastered = true, masteredAlready = true),
             newExercises = listOf(NewExercise(n, b))))
         rule.onNodeWithTag("end_unlocked_caption").assertExists()
@@ -131,7 +136,7 @@ class EndScreenTest {
     @Test fun aLevelUpAloneHasNoUnlockedSection() {
         SessionBus.saved = true
         val a = vids[0]
-        show(finished(), progressWith(ExerciseProgress(a, true, tier = 4, stars = 3, starsBefore = 2, leveledUpTo = 4, progress = LevelProgress(0, 3, false, 5))))
+        show(finished(), progressWith(ExerciseProgress(a, true, tier = 4, stars = 3, starsBefore = 2, leveledUpTo = 4, progress = LevelProgress(3, 3, false, 4, finished = true), levelUpBy = LevelUpBy.STREAK)))
         rule.onNodeWithTag("end_unlocked_caption").assertDoesNotExist()
         rule.onNodeWithTag("end_card_$a").assert(hasAnyDescendant(hasContentDescription("3 of 5 stars", substring = true)))
         inside("end_card_$a", "Level 4 unlocked")
@@ -162,8 +167,8 @@ class EndScreenTest {
         show(finished(), loadFails = true) { exited = true }
         rule.onNodeWithTag("end_tile_rounds").assertExists()
         rule.onNodeWithTag("end_card_${vids[0]}").assertDoesNotExist()
-        rule.onNodeWithTag("end_edit").assertIsDisplayed()
-        rule.onNodeWithTag("end_done").performClick()
+        rule.onNodeWithTag("end_edit_${vids[0]}").assertIsDisplayed()
+        rule.onNodeWithTag("end_done").performScrollTo().performClick()
         assertTrue(exited)
     }
 
@@ -171,7 +176,135 @@ class EndScreenTest {
         SessionBus.saved = true
         val a = vids[0]
         show(finished(), progressWith(ExerciseProgress(a, true, tier = 2, stars = 1)))
-        rule.onNodeWithTag("end_edit").performScrollTo().performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("end_fix_$a").performScrollTo().assertExists()
+        rule.onNodeWithTag("end_${a}_too_hard").performScrollTo().assertExists()
+        rule.onNodeWithTag("end_${a}_too_easy").assertExists()
+        rule.onNodeWithTag("end_${a}_pain").assertExists()
+        rule.onNodeWithTag("end_${a}_round1_value").assertDoesNotExist()
+        rule.onNodeWithTag("end_edit_$a").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("end_${a}_round1_value").performScrollTo().assertExists()
+        rule.onNodeWithTag("end_fix_$a").assertDoesNotExist()   // one card per exercise: no separate edit card
+        rule.onNodeWithTag("end_edit").assertDoesNotExist()
+    }
+
+    @Test fun aLevelReachedByThreeGoodSessionsShowsTheFinishedStreakAtTheOldLevel() {
+        SessionBus.saved = true
+        val a = vids[0]
+        show(finished(), progressWith(ExerciseProgress(a, true, tier = 2, stars = 1, starsBefore = 0, leveledUpTo = 2, levelUpBy = LevelUpBy.STREAK,
+            progress = LevelProgress(3, 3, false, 2, finished = true))))
+        rule.onNodeWithTag("end_progress_$a").assertTextContains("3 of 3 good sessions at Level 1")
+        rule.onNodeWithTag("end_demonstrated_$a").assertDoesNotExist()
+    }
+
+    @Test fun theWeeklyPathFinishesAsFourOfFour() {
+        SessionBus.saved = true
+        val a = vids[0]
+        show(finished(), progressWith(ExerciseProgress(a, true, tier = 2, stars = 1, leveledUpTo = 2, levelUpBy = LevelUpBy.STREAK,
+            progress = LevelProgress(4, 4, true, 2, finished = true))))
+        rule.onNodeWithTag("end_progress_$a").assertTextContains("4 of 4 weekly sessions at Level 1")
+    }
+
+    @Test fun aLevelReachedByRepsSaysSoAndKeepsTheDotsTowardsTheNextLevel() {
+        SessionBus.saved = true
+        val a = vids[0]
+        show(finished(), progressWith(ExerciseProgress(a, true, tier = 2, stars = 1, leveledUpTo = 2, levelUpBy = LevelUpBy.DEMONSTRATED,
+            progress = LevelProgress(1, 3, false, 3))))
+        rule.onNodeWithTag("end_demonstrated_$a").assertTextEquals("You did the Level 2 reps today")
+        rule.onNodeWithTag("end_progress_$a").assertTextContains("1 of 3 good sessions to Level 3")
+    }
+
+    private fun finishedWithRating(tooHard: Boolean = false, tooEasy: Boolean = false): SessionState {
+        val s = finished()
+        val work = plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vids[0] }
+        return s.copy(logged = s.logged + work.associate { it.id to BlockLog(tooHard = tooHard, tooEasy = tooEasy) })
+    }
+
+    private val actions get() = SuggestionStore.accepted(app)
+
+    @Before fun clearMoves() { SuggestionStore.clearAll(app) }
+
+    @Test fun tooHardAboveLevelOneOffersGoingDownAndOneTapAppliesItNothingBefore() {
+        SessionBus.saved = true
+        val a = vids[0]
+        show(finishedWithRating(tooHard = true), progressWith(ExerciseProgress(a, true, tier = 3, stars = 2)))
+        rule.onNodeWithTag("end_${a}_act").performScrollTo().assertTextEquals("Go down to Level 2")
+        assertTrue("nothing changes without the tap", actions.isEmpty())
+        rule.onNodeWithTag("end_${a}_act").performClick(); rule.waitForIdle()
+        val easier = actions.single() as UserAction.AcceptEasier
+        assertEquals(a, easier.variationId); assertEquals(2, easier.tier)
+        rule.onNodeWithTag("end_${a}_act").assertDoesNotExist()
+        rule.onNodeWithTag("end_${a}_acted").assertTextEquals("Level 2 from next time")
+    }
+
+    @Test fun tooHardAtLevelOneOffersNoMoveDown() {
+        SessionBus.saved = true
+        val a = vids[0]
+        show(finishedWithRating(tooHard = true), progressWith(ExerciseProgress(a, true, tier = 1, stars = 0)))
+        rule.onNodeWithTag("end_${a}_too_hard").performScrollTo().assertExists()
+        rule.onNodeWithTag("end_${a}_act").assertDoesNotExist()
+    }
+
+    @Test fun noRatingNoButton() {
+        SessionBus.saved = true
+        val a = vids[0]
+        show(finished(), progressWith(ExerciseProgress(a, true, tier = 3, stars = 2)))
+        rule.onNodeWithTag("end_${a}_act").assertDoesNotExist()
+    }
+
+    @Test fun tooEasyOffersWhatTheSuggestionAlreadyOffersAndOneTapAppliesIt() {
+        SessionBus.saved = true
+        val a = vids[0]
+        val raise = EndProgress(SessionProgressSummary(listOf(ExerciseProgress(a, true, tier = 2, stars = 1)), emptyList()), SessionBus.names,
+            mapOf(a to Suggestion.RaiseLevel(a, 4)))
+        show(finishedWithRating(tooEasy = true), raise)
+        rule.onNodeWithTag("end_${a}_act").performScrollTo().assertTextEquals("Go up to Level 4")
+        assertTrue(actions.isEmpty())
+        rule.onNodeWithTag("end_${a}_act").performClick(); rule.waitForIdle()
+        val harder = actions.single() as UserAction.AcceptHarder
+        assertEquals(4, harder.tier)
+        rule.onNodeWithTag("end_${a}_acted").assertTextEquals("Level 4 from next time")
+    }
+
+    @Test fun tooEasyAtTheTopOffersTheNextExercise() {
+        SessionBus.saved = true
+        val a = vids[0]; val n = catalog.variations.first { it.id !in vids }.id
+        val next = EndProgress(SessionProgressSummary(listOf(ExerciseProgress(a, true, tier = 5, stars = 4)), emptyList()), SessionBus.names + (n to "Next one"),
+            mapOf(a to Suggestion.NextExercise(a, n, 1)))
+        show(finishedWithRating(tooEasy = true), next)
+        rule.onNodeWithTag("end_${a}_act").performScrollTo().assertTextEquals("Switch to Next one")
+        rule.onNodeWithTag("end_${a}_act").performClick(); rule.waitForIdle()
+        assertEquals(UserAction.AcceptNextExercise(todayEpochDay().toInt(), a, n), actions.single())
+        rule.onNodeWithTag("end_${a}_acted").assertTextEquals("Next one from next time")
+    }
+
+    @Test fun tooEasyWithoutAMoveOnOffersNothing() {
+        SessionBus.saved = true
+        val a = vids[0]
+        show(finishedWithRating(tooEasy = true), progressWith(ExerciseProgress(a, true, tier = 5, stars = 5, masteredAlready = true)))
+        rule.onNodeWithTag("end_${a}_act").assertDoesNotExist()
+    }
+
+    @Test fun aMasteredExerciseShowsItsNextStepUnderADividerWithItsThumb() {
+        SessionBus.saved = true
+        val a = vids[0]; val n = catalog.variations.first { it.id !in vids }.id
+        val p = EndProgress(SessionProgressSummary(listOf(ExerciseProgress(a, true, tier = 5, stars = 5, starsBefore = 4, mastered = true, masteredAlready = true, nextVariationId = n)),
+            emptyList()), SessionBus.names)
+        show(finished(), p)
+        rule.onNodeWithTag("end_next_$a").performScrollTo().assertTextContains("Next: ${SessionBus.names.getValue(n)} · Level 1")
+    }
+
+    @Test fun whenTheNextExerciseHasItsOwnCardOnlyItsNameIsShown() {
+        SessionBus.saved = true
+        val a = vids[0]; val b = vids[1]
+        val p = EndProgress(SessionProgressSummary(listOf(
+            ExerciseProgress(a, true, tier = 5, stars = 5, masteredAlready = true, nextVariationId = b), ExerciseProgress(b, true, tier = 1, stars = 0)), emptyList()), SessionBus.names)
+        show(finished(), p)
+        rule.onNodeWithTag("end_next_$a").performScrollTo().assertTextEquals("Next: ${SessionBus.names.getValue(b)}")
+    }
+
+    @Test fun anExerciseWithoutAMasteredStepShowsNoNextRow() {
+        SessionBus.saved = true
+        val a = vids[0]
+        show(finished(), progressWith(ExerciseProgress(a, true, tier = 5, stars = 5, masteredAlready = true)))
+        rule.onNodeWithTag("end_next_$a").assertDoesNotExist()
     }
 }
