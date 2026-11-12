@@ -561,4 +561,6 @@
     <string name="preview_empty">No exercises selected</string>
     <string name="preview_empty_hint">Add an exercise to continue.</string>
     <string name="preview_undo_remove">Undo removal</string>
+    <!-- 9.3 L2 -->
+    <string name="prepare_held">%1$s held</string>
 </resources>

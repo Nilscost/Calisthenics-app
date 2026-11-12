@@ -1,4 +1,4 @@
-// U07 (F10, F11, F13, F14): the live workout. Observes the service-owned state; sends commands only.
+// The live workout. Observes the service-owned state; sends commands only.
 // Work block: big clip, name, target, ring timer, Next. Recovery/stretch/get-ready block: the same, with a compact
 // logger at the top for the work that just ended. No block is ever called "Rest" when stretch is on (CueText).
 package io.github.gonbei774.calisthenicsmemory.ui.session
@@ -18,7 +18,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import io.github.gonbei774.calisthenicsmemory.ui.icons.Icons
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.Add
 import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.MoreVert
+import io.github.gonbei774.calisthenicsmemory.ui.theme.AppIcons
+import io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel
+import io.github.gonbei774.calisthenicsmemory.ui.train.withLoad
+import io.github.gonbei774.calisthenicsmemory.ui.screens.DemoClip
+import androidx.compose.ui.text.style.TextOverflow
+import app.calisthenics.domain.session.BlockLog
+import app.calisthenics.domain.session.carriedReps
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -129,7 +137,7 @@ fun HeldDemoInstructions(demonstration: ExerciseVariation, modifier: Modifier = 
 
 /** The state of the logger for the work block [work]: lifted out of the card so the DONE button in the bottom row can confirm it. */
 @Stable
-private class LoggerState(val ctx: PlatformContext, val work: TimelineBlock, saved: app.calisthenics.domain.session.BlockLog?, /** R8.1-T03 (F3): the number of the previous set of this exercise. */ val carried: Int? = null) {
+private class LoggerState(val ctx: PlatformContext, val work: TimelineBlock, saved: BlockLog?, /** R8.1-T03 (F3): the number of the previous set of this exercise. */ val carried: Int? = null) {
     val target: Target? = work.target
     val hold = target?.type == TargetType.HOLD_SECONDS
     /** The previous set's number is shown and accepted as typed, so DONE without editing records what the screen showed. */
@@ -148,7 +156,7 @@ private class LoggerState(val ctx: PlatformContext, val work: TimelineBlock, sav
 private fun rememberLogger(st: SessionState, work: TimelineBlock?): LoggerState? {
     val ctx = currentPlatformContext()
     if (work == null) return null
-    val state = remember(work.id) { LoggerState(ctx, work, st.logged[work.id], app.calisthenics.domain.session.carriedReps(st.plan, st.logged, work)) }
+    val state = remember(work.id) { LoggerState(ctx, work, st.logged[work.id], carriedReps(st.plan, st.logged, work)) }
     LaunchedEffect(work.id) { state.pushCarried() }
     return state
 }
@@ -163,8 +171,8 @@ private fun blockLabel(b: TimelineBlock): StringResource = when (b.type) {
 }
 
 /**
- * V10 (R16, doc 17 §2.3): the clip on a white background fills the screen behind a transparent header (dark text); a dark bottom
- * sheet holds the big centred timer with its bar, the exercise and set, the logger (during recovery) and Pause · DONE · Skip.
+ * The live workout: the clip on a white background fills the screen behind a transparent header (dark text); a bottom sheet
+ * holds the big centred timer with its bar, the exercise and its target (SessionInfo), and Pause - DONE - Skip.
  * No Too hard / Too easy / Pain here: they are given on the end screen.
  */
 @OptIn(ExperimentalComposeUiApi::class)
@@ -172,17 +180,14 @@ private fun blockLabel(b: TimelineBlock): StringResource = when (b.type) {
 fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, catalogOverride: Catalog? = null) {
     val ctx = currentPlatformContext()
     val b = st.currentBlock ?: return
-    val names = SessionBus.names
+    val names = remember(st.plan, SessionBus.names) { sessionDisplayNames(st.plan, SessionBus.names) }
     val title = CueText.label(st.plan, b.id, names)
     val remSec = ((st.remainingAt(nowTick) + 999) / 1000).toInt()
     val progress = (st.remainingAt(nowTick) / (b.durationSeconds * 1000f)).coerceIn(0f, 1f)
     val paused = st.phase == Phase.PAUSED
-    var menu by remember { mutableStateOf(false) }
-    var confirmEnd by remember { mutableStateOf(false) }
     val logFor = loggerBlock(st)
     val repWork = repLoggerBlock(st)
     val logger = rememberLogger(st, logFor ?: repWork)
-    val haptic = LocalHapticFeedback.current
     val catalog = remember(catalogOverride) { catalogOverride ?: loadCatalog(ctx) }
     val heldIds = remember(catalogOverride) { catalogOverride?.variations?.filter { it.demonstrationHold }?.map { it.id }?.toSet() }
     val upcomingBlock = remember(st.plan, st.blockIndex, b) {
@@ -194,68 +199,27 @@ fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, catalogOverr
     val clip = remember(demoVariationId, catalogOverride) {
         demoVariationId?.let { id -> if (heldIds == null) DemoClips.file(ctx, id) else DemoClips.file(ctx, id, heldIds) }
     }
-    val elapsed = (st.activeElapsedMs / 1000).toInt()
     val sessionScheme = MaterialTheme.colorScheme
     val sessionAccent = AppAccentTheme.colors
+    var confirmEnd by remember { mutableStateOf(false) }
 
     Column(modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-        // ---- clip area with the transparent header (always the light palette: dark text on the white clip)
+        // the clip area with the transparent header: always the light palette (dark text on the white clip)
         MaterialTheme(colorScheme = appColorScheme(false), typography = AppTypography, shapes = AppShapes) {
             CompositionLocalProvider(LocalAppAccent provides LightAccent) {
                 CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) { Box(Modifier.weight(1f).fillMaxWidth().background(Color.White)) {
-                    if (clip != null) Box(Modifier.fillMaxSize().padding(top = 132.dp), contentAlignment = Alignment.Center) { DemoPlayer(clip, controls = false, fit = true) }
-                    else if (demonstration?.demonstrationHold == true) HeldDemoInstructions(
-                        demonstration,
-                        Modifier.align(Alignment.Center).padding(horizontal = Spacing.l).padding(top = 132.dp),
-                    )
-                    else if (demonstration != null) Column(Modifier.align(Alignment.Center).padding(horizontal = Spacing.l).padding(top = 132.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
-                        ExerciseThumb(demonstration.id, demonstration.name, 180.dp)
-                        Text(demonstration.name, style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
-                        demonstration.instructions.take(2).forEach { Text(it, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center) }
-                    }
-                    Column(Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = Spacing.l, vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                        Row(verticalAlignment = Alignment.Top) {
-                            Column(Modifier.weight(1f)) {
-                                val hd = headerFor(st.plan, b, st.blockIndex)
-                                Text(
-                                    when (hd.kind) {
-                                        HeaderKind.ROUND -> stringResource(Res.string.session_round, hd.set, hd.sets)
-                                        HeaderKind.PAIR -> stringResource(Res.string.session_pair_set, hd.group ?: 1, hd.set, hd.sets)
-                                        HeaderKind.EXERCISE -> stringResource(Res.string.session_exercise_set, hd.group ?: 1, hd.set, hd.sets)
-                                        HeaderKind.STEP -> stringResource(Res.string.session_step, hd.set, hd.sets)
-                                        HeaderKind.WARMUP -> stringResource(Res.string.session_warmup, hd.set, hd.sets)
-                                        HeaderKind.COOLDOWN -> stringResource(Res.string.session_cooldown, hd.set, hd.sets)
-                                    }.uppercase(),
-                                    style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_round"),
-                                )
-                                SetMarkers(st.plan.rounds, b.roundIndex ?: 0)
-                            }
-                            Text(formatClock(elapsed), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.outline, modifier = Modifier.padding(top = 6.dp).testTag("session_elapsed"))
-                            Box {
-                                IconButton(onClick = { menu = true }, modifier = Modifier.testTag("session_more")) { Icon(Icons.Filled.MoreVert, stringResource(Res.string.session_more), tint = MaterialTheme.colorScheme.onBackground) }
-                                DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
-                                    DropdownMenuItem(text = { Text(stringResource(Res.string.session_end)) }, onClick = { menu = false; confirmEnd = true }, modifier = Modifier.testTag("session_end"))
-                                }
-                            }
-                        }
-                        Text(title, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_title"))
-                        // R7-T12 (D9): the light-red "pay attention to" points of Jefferson curl and German hang, on the workout screen too
-                        val strongCautions = demonstration?.takeIf { it.cautionStrong }?.cautions.orEmpty()
-                        if (strongCautions.isNotEmpty() && b.type != BlockType.TRANSITION) Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).background(CautionRedLightSurface).border(1.dp, CautionRedLightBorder, RoundedCornerShape(10.dp)).padding(Spacing.s).testTag("session_caution_red")) {
-                            strongCautions.forEach { Text(it, style = MaterialTheme.typography.bodySmall, color = CautionRedLightText) }
-                        }
-                        CueText.nextLabel(st.plan, b.id, names)?.takeIf { it != title }?.let { Text(stringResource(Res.string.session_next, it), Modifier.testTag("session_next"), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
-                    }
+                    ClipArea(clip, demonstration)
+                    SessionHeader(st, b, title, names, demonstration, onEnd = { confirmEnd = true })
                 } }
             }
         }
 
-        // ---- controls follow the saved app appearance; the bundled media above keeps its white canvas.
+        // the controls follow the saved app appearance; the bundled media above keeps its white canvas
         MaterialTheme(colorScheme = sessionScheme, typography = AppTypography, shapes = AppShapes) {
             CompositionLocalProvider(LocalAppAccent provides sessionAccent) {
                 CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onBackground) { Box(Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background, RoundedCornerShape(topStart = 22.dp, topEnd = 22.dp))) {
                     Column(Modifier.navigationBarsPadding().padding(horizontal = Spacing.l).padding(top = Spacing.m, bottom = Spacing.m), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
-                        // R7-T02 (B5): the block caption is readable (titleMedium, full contrast) and a stretch block names its stretch
+                        // the block caption is readable (titleMedium, full contrast) and a stretch block names its stretch
                         val caption = (if (b.type == BlockType.TRANSITION) stringResource(Res.string.feedback_prepare_upcoming) else stringResource(blockLabel(b))).uppercase() + if (b.type == BlockType.STRETCH) (names[b.variationId]?.let { " · $it" } ?: "") else ""
                         Text(caption, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center, modifier = Modifier.testTag("session_caption"))
                         val timeDescription = stringResource(Res.string.session_time_description, title, remSec / 60, remSec % 60)
@@ -265,39 +229,8 @@ fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, catalogOverr
                         )
                         LinearProgressIndicator(progress = { progress }, Modifier.fillMaxWidth().height(6.dp).clip(RoundedCornerShape(3.dp)), color = AppAccentTheme.colors.accent, trackColor = MaterialTheme.colorScheme.surfaceVariant)
                         if (paused) Text(stringResource(Res.string.session_paused), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("session_paused"))
-                        val infoBlock = if (b.type == BlockType.TRANSITION) upcomingBlock ?: b else b
-                        val sideText = when (infoBlock.side) { Side.LEFT -> stringResource(Res.string.side_left); Side.RIGHT -> stringResource(Res.string.side_right); else -> "" }
-                        val targetText = infoBlock.target?.let { io.github.gonbei774.calisthenicsmemory.ui.components.targetLabel(it, infoBlock.alternating) }.orEmpty()
-                        val sub = listOf(io.github.gonbei774.calisthenicsmemory.ui.train.withLoad(targetText, infoBlock.loadGrams), sideText).filter { it.isNotEmpty() }.joinToString(" · ")
-                        if (logger != null && logFor != null) RepLogger(logger, logFor, showName = true)
-                        else if (logger != null && repWork != null) {
-                            // R7-T03: the rep work block: name, target, then the number to log with Too easy beside it
-                            Text(names[b.variationId] ?: "", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
-                            if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_target"))
-                            RepLogger(logger, repWork, showName = false)
-                        } else {
-                            if ((b.type == BlockType.WORK || b.note != null) && names[b.variationId] != null) Text(names[b.variationId] ?: "", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
-                            if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_target"))
-                            b.note?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center, modifier = Modifier.testTag("session_note")) }
-                        }
-                        Row(Modifier.fillMaxWidth().padding(top = Spacing.xs), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
-                            // R7.2-T05 (F6): while paused, Resume is the filled gold button on one line (smaller label and padding so it fits at font 1.3); Pause stays outlined
-                            if (paused) Button(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, SessionCommand.RESUME) }, Modifier.weight(1f).height(54.dp).testTag("session_resume"),
-                                shape = RoundedCornerShape(Radius.button), contentPadding = PaddingValues(horizontal = 8.dp)) { Text(stringResource(Res.string.session_resume), maxLines = 1, softWrap = false, style = MaterialTheme.typography.labelLarge) }
-                            else AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, SessionCommand.PAUSE) }, Modifier.weight(1f).height(54.dp).testTag("session_pause")) { Text(stringResource(Res.string.session_pause)) }
-                            // Flow programs advance on their timers and expose no per-item logging or skip controls.
-                            if (timerOnlyFlowBlock(st, b)) Unit
-                            // DONE in the middle, gold and a little wider: ends the set during work; in any other block (R7-T02, B4) it saves the pending log and moves on.
-                            else if (b.type == BlockType.WORK) Button(
-                                onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); if (repWork != null) logger?.push(); sessionCommand(ctx, SessionCommand.DONE) }, enabled = st.phase == Phase.RUNNING,
-                                modifier = Modifier.weight(1.3f).height(58.dp).testTag("session_done"), shape = RoundedCornerShape(Radius.button),
-                            ) { Text(stringResource(Res.string.session_done).uppercase(), style = MaterialTheme.typography.titleLarge) }
-                            else Button(
-                                onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); logger?.push(); sessionCommand(ctx, SessionCommand.SKIP) }, enabled = st.phase == Phase.RUNNING,
-                                modifier = Modifier.weight(1.3f).height(58.dp).testTag(if (logger != null) "logger_done" else "break_done"), shape = RoundedCornerShape(Radius.button),
-                            ) { Text(stringResource(Res.string.logger_done).uppercase(), style = MaterialTheme.typography.titleLarge) }
-                            if (!timerOnlyFlowBlock(st, b)) AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, SessionCommand.SKIP) }, Modifier.weight(1f).height(54.dp).testTag("session_skip")) { Text(stringResource(Res.string.session_skip)) }
-                        }
+                        SessionInfo(b, upcomingBlock, names, logger, logFor, repWork)
+                        SessionButtons(st, b, logger, repWork, paused)
                     }
                 } }
             }
@@ -314,6 +247,122 @@ fun LiveScreen(st: SessionState, nowTick: Long, modifier: Modifier, catalogOverr
     )
 }
 
+/** The demonstration clip, or its written fallback while a clip is held for review, or the thumbnail with the first cues. */
+@Composable
+private fun BoxScope.ClipArea(clip: DemoClip?, demonstration: ExerciseVariation?) {
+    if (clip != null) Box(Modifier.fillMaxSize().padding(top = 132.dp), contentAlignment = Alignment.Center) { DemoPlayer(clip, controls = false, fit = true) }
+    else if (demonstration?.demonstrationHold == true) HeldDemoInstructions(
+        demonstration,
+        Modifier.align(Alignment.Center).padding(horizontal = Spacing.l).padding(top = 132.dp),
+    )
+    else if (demonstration != null) Column(Modifier.align(Alignment.Center).padding(horizontal = Spacing.l).padding(top = 132.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+        ExerciseThumb(demonstration.id, demonstration.name, 180.dp)
+        Text(demonstration.name, style = MaterialTheme.typography.titleLarge, textAlign = TextAlign.Center)
+        demonstration.instructions.take(2).forEach { Text(it, style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center) }
+    }
+}
+
+/** The transparent header over the clip: round, clock, menu, the block title, the red cautions and what comes next. */
+@Composable
+private fun SessionHeader(st: SessionState, b: TimelineBlock, title: String, names: Map<String, String>, demonstration: ExerciseVariation?, onEnd: () -> Unit) {
+    var menu by remember { mutableStateOf(false) }
+    val elapsed = (st.activeElapsedMs / 1000).toInt()
+    Column(Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = Spacing.l, vertical = Spacing.s), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Row(verticalAlignment = Alignment.Top) {
+            Column(Modifier.weight(1f)) {
+                val hd = headerFor(st.plan, b, st.blockIndex)
+                Text(
+                    when (hd.kind) {
+                        HeaderKind.ROUND -> stringResource(Res.string.session_round, hd.set, hd.sets)
+                        HeaderKind.PAIR -> stringResource(Res.string.session_pair_set, hd.group ?: 1, hd.set, hd.sets)
+                        HeaderKind.EXERCISE -> stringResource(Res.string.session_exercise_set, hd.group ?: 1, hd.set, hd.sets)
+                        HeaderKind.STEP -> stringResource(Res.string.session_step, hd.set, hd.sets)
+                        HeaderKind.WARMUP -> stringResource(Res.string.session_warmup, hd.set, hd.sets)
+                        HeaderKind.COOLDOWN -> stringResource(Res.string.session_cooldown, hd.set, hd.sets)
+                    }.uppercase(),
+                    style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_round"),
+                )
+                SetMarkers(st.plan.rounds, b.roundIndex ?: 0)
+            }
+            Text(formatClock(elapsed), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.outline, modifier = Modifier.padding(top = 6.dp).testTag("session_elapsed"))
+            Box {
+                IconButton(onClick = { menu = true }, modifier = Modifier.testTag("session_more")) { Icon(Icons.Filled.MoreVert, stringResource(Res.string.session_more), tint = MaterialTheme.colorScheme.onBackground) }
+                DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
+                    DropdownMenuItem(text = { Text(stringResource(Res.string.session_end)) }, onClick = { menu = false; onEnd() }, modifier = Modifier.testTag("session_end"))
+                }
+            }
+        }
+        Text(title, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_title"))
+        // the light-red "pay attention to" points of Jefferson curl and German hang, on the workout screen too
+        val strongCautions = demonstration?.takeIf { it.cautionStrong }?.cautions.orEmpty()
+        if (strongCautions.isNotEmpty() && b.type != BlockType.TRANSITION) Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp)).background(CautionRedLightSurface).border(1.dp, CautionRedLightBorder, RoundedCornerShape(10.dp)).padding(Spacing.s).testTag("session_caution_red")) {
+            strongCautions.forEach { Text(it, style = MaterialTheme.typography.bodySmall, color = CautionRedLightText) }
+        }
+        CueText.nextLabel(st.plan, b.id, names)?.takeIf { it != title }?.let { Text(stringResource(Res.string.session_next, it), Modifier.testTag("session_next"), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
+    }
+}
+
+/**
+ * The exercise name and its target in the sheet. Prepare shows what comes next (name, target and side) and, only when the block before was a hold,
+ * one compact row to correct that hold. Rest and stretch blocks keep the hold logger as the main element; a rep work block carries its own logger.
+ */
+@Composable
+private fun SessionInfo(
+    b: TimelineBlock, upcoming: TimelineBlock?, names: Map<String, String>, logger: LoggerState?, logFor: TimelineBlock?, repWork: TimelineBlock?,
+) {
+    val prepare = b.type == BlockType.TRANSITION
+    val infoBlock = if (prepare) upcoming ?: b else b
+    val sideText = when (infoBlock.side) { Side.LEFT -> stringResource(Res.string.side_left); Side.RIGHT -> stringResource(Res.string.side_right); else -> "" }
+    val targetText = infoBlock.target?.let { targetLabel(it, infoBlock.alternating) }.orEmpty()
+    val sub = listOf(withLoad(targetText, infoBlock.loadGrams), sideText).filter { it.isNotEmpty() }.joinToString(" · ")
+    val name = names[infoBlock.variationId].orEmpty()
+    if (prepare) {
+        if (name.isNotEmpty()) Text(name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center, modifier = Modifier.testTag("session_name"))
+        if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_target"))
+        if (logger != null && logFor != null) RepLogger(logger, logFor, showName = true, compact = true)
+        b.note?.let { SessionNote(it) }
+    } else if (logger != null && logFor != null) {
+        RepLogger(logger, logFor, showName = true)
+    } else if (logger != null && repWork != null) {
+        // the rep work block: name, target, then the number to log
+        Text(name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
+        if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_target"))
+        RepLogger(logger, repWork, showName = false)
+    } else {
+        if ((b.type == BlockType.WORK || b.note != null) && name.isNotEmpty()) Text(name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center)
+        if (sub.isNotEmpty()) Text(sub, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.testTag("session_target"))
+        b.note?.let { SessionNote(it) }
+    }
+}
+
+@Composable
+private fun SessionNote(note: String) =
+    Text(note, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground, textAlign = TextAlign.Center, modifier = Modifier.testTag("session_note"))
+
+/** Pause (or Resume) - DONE - Skip. DONE ends the set during work; in any other block it saves the pending log and moves on. */
+@Composable
+private fun SessionButtons(st: SessionState, b: TimelineBlock, logger: LoggerState?, repWork: TimelineBlock?, paused: Boolean) {
+    val ctx = currentPlatformContext()
+    val haptic = LocalHapticFeedback.current
+    Row(Modifier.fillMaxWidth().padding(top = Spacing.xs), horizontalArrangement = Arrangement.spacedBy(Spacing.s), verticalAlignment = Alignment.CenterVertically) {
+        // while paused, Resume is the filled gold button on one line (smaller label and padding so it fits at font 1.3); Pause stays outlined
+        if (paused) Button(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, SessionCommand.RESUME) }, Modifier.weight(1f).height(54.dp).testTag("session_resume"),
+            shape = RoundedCornerShape(Radius.button), contentPadding = PaddingValues(horizontal = 8.dp)) { Text(stringResource(Res.string.session_resume), maxLines = 1, softWrap = false, style = MaterialTheme.typography.labelLarge) }
+        else AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove); sessionCommand(ctx, SessionCommand.PAUSE) }, Modifier.weight(1f).height(54.dp).testTag("session_pause")) { Text(stringResource(Res.string.session_pause)) }
+        // Flow programs advance on their timers and expose no per-item logging or skip controls.
+        if (timerOnlyFlowBlock(st, b)) Unit
+        else if (b.type == BlockType.WORK) Button(
+            onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); if (repWork != null) logger?.push(); sessionCommand(ctx, SessionCommand.DONE) }, enabled = st.phase == Phase.RUNNING,
+            modifier = Modifier.weight(1.3f).height(58.dp).testTag("session_done"), shape = RoundedCornerShape(Radius.button),
+        ) { Text(stringResource(Res.string.session_done).uppercase(), style = MaterialTheme.typography.titleLarge) }
+        else Button(
+            onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); logger?.push(); sessionCommand(ctx, SessionCommand.SKIP) }, enabled = st.phase == Phase.RUNNING,
+            modifier = Modifier.weight(1.3f).height(58.dp).testTag(if (logger != null) "logger_done" else "break_done"), shape = RoundedCornerShape(Radius.button),
+        ) { Text(stringResource(Res.string.logger_done).uppercase(), style = MaterialTheme.typography.titleLarge) }
+        if (!timerOnlyFlowBlock(st, b)) AppOutlinedButton(onClick = { haptic.performHapticFeedback(HapticFeedbackType.LongPress); sessionCommand(ctx, SessionCommand.SKIP) }, Modifier.weight(1f).height(54.dp).testTag("session_skip")) { Text(stringResource(Res.string.session_skip)) }
+    }
+}
+
 /** One small bar per round; the rounds up to the current one are gold. */
 @Composable
 private fun SetMarkers(total: Int, current: Int) {
@@ -323,19 +372,38 @@ private fun SetMarkers(total: Int, current: Int) {
 }
 
 /**
- * V03/V10 (R17): the logger during the recovery, in the bottom sheet: the exercise and set, then - [big number] +.
- * Prefilled with the target; every change is saved at once and untouched = as planned. DONE (in the bottom row)
- * saves the number and moves on to the next block (R7-T02).
+ * The logger for a finished hold, in the bottom sheet: the exercise and set, then - [big number] +.
+ * Prefilled with the target; every change is saved at once and untouched = as planned. DONE (in the bottom row) saves the number and moves on.
+ * [compact] is the one-row form of the Prepare sheet: "Side Plank held  - 40 s +", same tags and the same values written.
  */
 @Composable
-private fun RepLogger(l: LoggerState, work: TimelineBlock, showName: Boolean) {
-    val name = SessionBus.names[work.variationId] ?: work.variationId.orEmpty()
+private fun RepLogger(l: LoggerState, work: TimelineBlock, showName: Boolean, compact: Boolean = false) {
+    val name = sessionDisplayName(SessionBus.names[work.variationId] ?: work.variationId.orEmpty(), work.side)
     val setNo = work.roundIndex
+    val step = if (l.hold && (l.target?.shownValue() ?: 0) >= 30) 5 else 1
+    val suffix = stringResource(if (l.hold) Res.string.unit_suffix_s else Res.string.unit_suffix_x)
+    if (compact) {
+        Row(Modifier.fillMaxWidth().testTag("logger"), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            Text(
+                stringResource(Res.string.prepare_held, name), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f).testTag("logger_name"),
+            )
+            FilledTonalIconButton(onClick = { l.reps = (l.reps - step).coerceAtLeast(0); l.typed = true; l.push() }, enabled = l.reps > 0, modifier = Modifier.size(40.dp).testTag("logger_minus")) {
+                Icon(AppIcons.Remove, contentDescription = stringResource(Res.string.stepper_decrease), modifier = Modifier.size(20.dp))
+            }
+            Text(l.reps.toString(), style = MaterialTheme.typography.titleLarge, maxLines = 1, modifier = Modifier.semantics { contentDescription = l.reps.toString() }.testTag("logger_value"))
+            Text(suffix, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, modifier = Modifier.testTag("logger_unit"))
+            FilledTonalIconButton(onClick = { l.reps = (l.reps + step).coerceAtMost(999); l.typed = true; l.push() }, enabled = l.reps < 999, modifier = Modifier.size(40.dp).testTag("logger_plus")) {
+                Icon(Icons.Filled.Add, contentDescription = stringResource(Res.string.stepper_increase), modifier = Modifier.size(20.dp))
+            }
+        }
+        return
+    }
     Column(Modifier.fillMaxWidth().testTag("logger"), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
         if (showName) Text(if (setNo != null) stringResource(Res.string.logger_name_set, name, setNo) else name, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onBackground, maxLines = 1, modifier = Modifier.testTag("logger_name"))
         Text(stringResource(if (l.hold) (if (work.alternating) Res.string.logger_seconds_held_per_side else Res.string.logger_seconds_held) else (if (work.alternating) Res.string.logger_reps_done_per_side else Res.string.logger_reps_done)), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.outline)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
-            BigStepper(l.reps, { l.reps = it; l.typed = true; l.push() }, 0..999, Modifier.weight(1f), step = if (l.hold && (l.target?.shownValue() ?: 0) >= 30) 5 else 1, tag = "logger", suffix = stringResource(if (l.hold) Res.string.unit_suffix_s else Res.string.unit_suffix_x))
+            BigStepper(l.reps, { l.reps = it; l.typed = true; l.push() }, 0..999, Modifier.weight(1f), step = step, tag = "logger", suffix = suffix)
         }
     }
 }
