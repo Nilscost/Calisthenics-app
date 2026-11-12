@@ -59,6 +59,9 @@ sealed interface UserAction {
     data class ResumeNormal(override val day: Int, val variationId: String) : UserAction
 }
 
+/** How the current level was reached: three good sessions at the one before ([STREAK]), or typed reps that already met this level's targets ([DEMONSTRATED]). */
+enum class LevelUpBy { STREAK, DEMONSTRATED }
+
 data class VariationProgress(
     val variationId: String,
     val familyId: String,
@@ -96,6 +99,8 @@ data class VariationProgress(
     val reducedTargetTier: Int? = null,
     /** W2: at level 5 of a route with no next exercise, the automatically raised level-5 target (+1 rep / +5 s after each qualifying streak); null = the level's own target. */
     val topTarget: Int? = null,
+    /** How a session last raised the level (read by the end screen); null until one has. */
+    val levelUpBy: LevelUpBy? = null,
 ) {
     /** Highest consecutive achieved tier counted from the tier the variation was started at. */
     fun earnedStars(): Int {
@@ -318,6 +323,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                         demonstratedTier = maxOf(p.demonstratedTier ?: 0, adopted),
                         demonstratedTargetRevision = ev.targetRevision,
                         reducedTarget = null, reducedTargetTier = null, topTarget = null,
+                        levelUpBy = LevelUpBy.DEMONSTRATED,
                     )
                     events += ProgressEvent(ev.day, vid,
                         "You met the level $adopted targets, so level $adopted is now your level. 1 of 3 good workouts toward the next level.")
@@ -582,7 +588,7 @@ class ProgressionEngine(private val catalog: Catalog) {
             events += ProgressEvent(day, p0.variationId,
                 "Level ${r.fromTier} done after ${r.evidenceDays.size} good workouts in ${r.evidenceDays.last() - r.evidenceDays.first()} days. Next: level ${r.toTier}, target $newTarget.$assumedNote")
             return p0.copy(tier = r.toTier, enrolledAtDay = day, achievedTiers = p0.achievedTiers + r.fromTier,
-                lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0)
+                lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0, levelUpBy = LevelUpBy.STREAK)
         }
         // Top tier: same pacing gate (evaluated as if a 6th tier existed) then successor move.
         // W2: back on a rung after an easier step (discomfort) with all five levels already earned: the same gate lets it move on again.

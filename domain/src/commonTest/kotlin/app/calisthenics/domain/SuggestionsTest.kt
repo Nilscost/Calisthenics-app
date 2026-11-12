@@ -33,6 +33,30 @@ class SuggestionsTest {
         assertFalse(suggest(catalog, bare, snap(vp("pushup-standard", 5, raise = true)), emptySet()) is Suggestion.RaiseLevel)   // top level: nothing to raise
     }
 
+    // 9.3 (end screen): the same move on, asked for one exercise
+    @Test fun moveOnForGivesTheTooEasyMoveOfThatExerciseOnly() {
+        val p = snap(vp("pushup-standard", 3, raise = true), vp("row-band", 3))
+        assertEquals(Suggestion.RaiseLevel("pushup-standard", 5), moveOnFor(catalog, bare, p, "pushup-standard"))
+        assertNull(moveOnFor(catalog, bare, p, "row-band"))                                  // not flagged "too easy"
+        assertNull(moveOnFor(catalog, bare, snap(vp("pushup-standard", 3)), "pushup-standard"))
+        assertNull(moveOnFor(catalog, bare, p, "no-such-exercise"))
+    }
+
+    @Test fun moveOnForOnTheTopLevelOffersTheNextExercise() {
+        val next = catalog.policyFor(catalog.variation("plank")!!)!!.nextVariationIds.first()
+        val p = snap(vp("plank", 5, setOf(1, 2, 3, 4), raise = true))
+        assertEquals(Suggestion.NextExercise("plank", next, 1), moveOnFor(catalog, SeedProfiles.home, p, "plank"))
+    }
+
+    @Test fun moveOnForIsNullOnceTheRouteMovedOnAndSuggestStillAgrees() {
+        val next = catalog.policyFor(catalog.variation("plank")!!)!!.nextVariationIds.first()
+        val fam = catalog.variation("plank")!!.familyId
+        val p = ProgressSnapshot(mapOf("plank" to vp("plank", 5, setOf(1, 2, 3, 4, 5), raise = true)), mapOf(fam to next), emptyMap(), emptyList())
+        assertNull(moveOnFor(catalog, SeedProfiles.home, p, "plank"))
+        val open = snap(vp("pushup-standard", 3, raise = true))
+        assertEquals(moveOnFor(catalog, bare, open, "pushup-standard"), suggest(catalog, bare, open, emptySet()))
+    }
+
     @Test fun masteredBandRowSuggestsALowBarForInvertedRows() {
         val p = snap(vp("row-band", 5, setOf(1, 2, 3, 4, 5)))
         val s = suggest(catalog, bare.copy(items = listOf(EquipmentItem("resistance-band", suitability = setOf("stable-anchor")), EquipmentItem("pullup-bar"))), p, emptySet()) as Suggestion.GetEquipment

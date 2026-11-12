@@ -12,12 +12,16 @@ import app.calisthenics.domain.model.BlockType
 import app.calisthenics.domain.model.Catalog
 import app.calisthenics.domain.model.TargetType
 import app.calisthenics.domain.model.WorkoutPlan
+import app.calisthenics.domain.progression.LevelUpBy
 import app.calisthenics.domain.progression.ProgressSnapshot
 import app.calisthenics.domain.progression.ProgressionEngine
 import app.calisthenics.domain.tree.displayStars
 
-/** Good sessions so far towards the next level: [have] of [need], on the 14-day path or (when [weekly]) the 4-in-30-days path. [toLevel] 6 = mastery. */
-data class LevelProgress(val have: Int, val need: Int, val weekly: Boolean, val toLevel: Int)
+/**
+ * Good sessions so far towards the next level: [have] of [need], on the 14-day path or (when [weekly]) the 4-in-30-days path. [toLevel] 6 = mastery.
+ * [finished]: the streak that raised the level in this session, all filled; the level it was earned at is `toLevel - 1`.
+ */
+data class LevelProgress(val have: Int, val need: Int, val weekly: Boolean, val toLevel: Int, val finished: Boolean = false)
 
 data class ExerciseProgress(
     val variationId: String,
@@ -37,6 +41,10 @@ data class ExerciseProgress(
     val nextTarget: Int? = null,
     val nextTargetIsHold: Boolean = false,
     val levelKept: Boolean = false,
+    /** Why [leveledUpTo] was reached (null when no level was reached): three good sessions, or typed reps that already met the new level. */
+    val levelUpBy: LevelUpBy? = null,
+    /** Mastered (now or before) and the route has a next step that is now the one in training: the exercise the person moves on to. */
+    val nextVariationId: String? = null,
 )
 
 data class NewExercise(val variationId: String, val unlockedBy: String?)
@@ -70,7 +78,13 @@ fun summarizeSessionProgress(catalog: Catalog, before: ProgressSnapshot, after: 
         val leveledUp = !masteredNow && a.tier > tierBefore && (b != null || a.demonstratedTier != null)
         val hold = after.holds[fam]
         val easier = hold != null && hold.steps > (before.holds[fam]?.steps ?: 0)
-        val dots = if (masteredAlready || hold != null || a.autoPaused) null else levelProgress(engine.qualifyingDays(after, vid), a.tier)
+        val streakLevelUp = leveledUp && a.levelUpBy == LevelUpBy.STREAK
+        val dots = when {
+            masteredAlready || hold != null || a.autoPaused -> null
+            // reached by three good sessions: the finished streak at the old level (the engine clears it, so it is rebuilt from the days before + today)
+            streakLevelUp -> a.lastAutoAdvanceDay?.let { day -> levelProgress(engine.qualifyingDays(before, vid) + day, tierBefore).let { it.copy(have = it.need, finished = true) } }
+            else -> levelProgress(engine.qualifyingDays(after, vid), a.tier)
+        }
         val tierTarget = pol.tiers.firstOrNull { it.index == a.tier }?.target
         val newlyReduced = a.reducedTarget != null && a.reducedTargetTier == a.tier && a.reducedTarget != b?.reducedTarget
         val kept = !easier && !leveledUp && !masteredNow && a.tier == tierBefore && a.consecutiveBelow > (b?.consecutiveBelow ?: 0)
@@ -82,9 +96,19 @@ fun summarizeSessionProgress(catalog: Catalog, before: ProgressSnapshot, after: 
             nextTarget = if (newlyReduced && !easier) a.reducedTarget else null,
             nextTargetIsHold = tierTarget?.type == TargetType.HOLD_SECONDS,
             levelKept = kept,
+            levelUpBy = if (leveledUp) a.levelUpBy else null,
+            nextVariationId = if (masteredAlready) routeNextStep(catalog, after, vid) else null,
         )
     }
     return SessionProgressSummary(exercises, newExercises(catalog, before, after, done))
+}
+
+/** The main step after [vid] on its route, when [vid] is a main step itself and the route has actually moved on to it (prerequisites and equipment allowed it). */
+private fun routeNextStep(catalog: Catalog, after: ProgressSnapshot, vid: String): String? {
+    val route = catalog.mainRouteFor(vid) ?: return null
+    if (vid !in route.mainPath) return null
+    val next = catalog.nextMain(vid) ?: return null
+    return next.takeIf { catalog.variation(it) != null && after.activeInFamily[catalog.variation(vid)?.familyId] == it }
 }
 
 /** Good sessions on the closer of the two paths: 3 inside 14 days, or 4 inside 30 days (the weekly path). */
