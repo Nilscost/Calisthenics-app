@@ -34,6 +34,10 @@ import io.github.gonbei774.calisthenicsmemory.ui.session.SessionScreen
 import io.github.gonbei774.calisthenicsmemory.ui.session.LiveScreen
 import io.github.gonbei774.calisthenicsmemory.ui.session.loggerBlock
 import io.github.gonbei774.calisthenicsmemory.ui.session.repLoggerBlock
+import io.github.gonbei774.calisthenicsmemory.ui.session.sessionDisplayName
+import io.github.gonbei774.calisthenicsmemory.ui.session.sessionDisplayNames
+import app.calisthenics.domain.model.Side
+import app.calisthenics.domain.model.Target
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog
 import org.junit.After
@@ -169,6 +173,101 @@ class SessionScreenTest {
         rule.onNodeWithTag("logger_value").assertTextEquals(holdPlan.blocks[i].target!!.shownValue().toString())
         rule.onNodeWithTag("logger_unit").assertTextEquals("s")   // R7.2-T07 (F12): "30 s"
         rule.onNodeWithTag("session_done").assertDoesNotExist()
+    }
+
+    // The Prepare sheet shows what comes next; the hold just finished is one compact row (same tags) so it can still be corrected.
+    private fun text(tag: String): String =
+        (rule.onNodeWithTag(tag).fetchSemanticsNode().config.first { it.key.name == "Text" }.value as List<*>).first().toString()
+
+    private fun variationNamed(name: String) = catalog.variations.first { it.name == name }
+
+    /** A side plank hold (left), the 5 s Prepare block, then the split squat's left and right sides. */
+    private val sidedPlan by lazy {
+        val hold = holdPlan.blocks[holdIdx].copy(id = "h1", variationId = variationNamed("Side Plank (per side)").id, side = Side.LEFT, roundIndex = 1)
+        val squat = variationNamed("Split Squat (per side)").id
+        plan.copy(
+            id = "plan-sided",
+            blocks = listOf(
+                hold,
+                TimelineBlock("t1", BlockType.TRANSITION, 5),
+                TimelineBlock("w1", BlockType.WORK, 30, variationId = squat, side = Side.LEFT, target = Target(TargetType.REPS, 8)),
+                TimelineBlock("w2", BlockType.WORK, 30, variationId = squat, side = Side.RIGHT, target = Target(TargetType.REPS, 8)),
+            ),
+            plannedDurationSeconds = 95, rounds = 1,
+        )
+    }
+
+    @Test fun prepareAfterAHoldShowsTheUpcomingExerciseFirstThenTheHoldAsACompactRow() {
+        val st = stateAt(sidedPlan, 1)
+        assertEquals("the hold before Prepare is the logger block", "h1", loggerBlock(st)?.id)
+        show(st)
+        assertEquals("Split Squat", text("session_name"))
+        assertEquals("8 reps · Left side", text("session_target"))
+        rule.onNodeWithTag("logger").assertIsDisplayed()
+        assertEquals("Side Plank held", text("logger_name"))
+        rule.onNodeWithTag("logger_unit").assertTextEquals("s")
+        rule.onNodeWithTag("logger_value").assertTextEquals(sidedPlan.blocks[0].target!!.shownValue().toString())
+        // the hold is not the headline any more: no big "Seconds you held" prompt
+        rule.onAllNodesWithText("Seconds you held", substring = true).assertCountEquals(0)
+        // the name comes before the target, and the target before the hold row
+        val top = { tag: String -> rule.onNodeWithTag(tag).fetchSemanticsNode().positionInRoot.y }
+        assertTrue(top("session_name") < top("session_target"))
+        assertTrue(top("session_target") < top("logger"))
+    }
+
+    @Test fun theHoldCanStillBeCorrectedFromThePrepareSheet() {
+        val shown = sidedPlan.blocks[0].target!!.shownValue()
+        show(stateAt(sidedPlan, 1))
+        rule.onNodeWithTag("logger_minus").performClick(); rule.waitForIdle()
+        val intent = lastIntent()
+        assertEquals(WorkoutSessionService.ACTION_LOG, intent.action)
+        assertEquals("h1", intent.getStringExtra(WorkoutSessionService.EXTRA_BLOCK_ID))
+        val step = if (shown >= 30) 5 else 1
+        assertEquals(shown - step, intent.getIntExtra(WorkoutSessionService.EXTRA_REPS, -2))
+        rule.onNodeWithTag("logger_value").assertTextEquals((shown - step).toString())
+        rule.onNodeWithTag("logger_plus").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("logger_value").assertTextEquals(shown.toString())
+    }
+
+    @Test fun prepareTitleSaysTheSideOnceAndNothingOnTheSheetSaysPerSide() {
+        show(stateAt(sidedPlan, 1))
+        assertEquals("Prepare: Split Squat — Left side", text("session_title"))
+        rule.onAllNodesWithText("per side", substring = true, ignoreCase = true).assertCountEquals(0)
+    }
+
+    @Test fun prepareAfterRepsHasNoHoldRowAndStillNamesTheUpcomingExercise() {
+        val i = plan.blocks.indices.first { plan.blocks[it].type == BlockType.TRANSITION && loggerBlock(stateAt(it)) == null }
+        val st = stateAt(i)
+        show(st)
+        rule.onNodeWithTag("logger").assertDoesNotExist()
+        val upcoming = plan.blocks[i].takeIf { it.variationId != null }
+            ?: plan.blocks.drop(i + 1).first { it.type == BlockType.WORK && it.variationId != null }
+        assertEquals(sessionDisplayNames(plan, SessionBus.names)[upcoming.variationId], text("session_name"))
+        rule.onNodeWithTag("session_target").assertExists()
+    }
+
+    @Test fun restAndStretchAfterAHoldKeepTheBigHoldLoggerAsTheMainElement() {
+        val st = stateAt(holdPlan, holdIdx + 1)
+        assertTrue(st.currentBlock!!.type != BlockType.TRANSITION)
+        show(st)
+        rule.onNodeWithTag("logger").assertIsDisplayed()
+        rule.onAllNodesWithText("Seconds you held", substring = true).assertCountEquals(1)
+    }
+
+    @Test fun thePerSideSuffixIsDroppedOnlyWhenASideIsShown() {
+        assertEquals("Split Squat", sessionDisplayName("Split Squat (per side)", Side.LEFT))
+        assertEquals("Split Squat", sessionDisplayName("Split Squat (per side)", Side.RIGHT))
+        assertEquals("Split Squat (per side)", sessionDisplayName("Split Squat (per side)", Side.NONE))
+        assertEquals("Split Squat (per side)", sessionDisplayName("Split Squat (per side)", Side.BOTH))
+        assertEquals("Plank", sessionDisplayName("Plank", Side.LEFT))
+        assertEquals("Per Side (per side) Lunge", sessionDisplayName("Per Side (per side) Lunge", Side.LEFT))
+        val squat = variationNamed("Split Squat (per side)").id
+        val plank = variationNamed("Side Plank (per side)").id
+        val names = mapOf(squat to "Split Squat (per side)", plank to "Side Plank (per side)")
+        val shown = sessionDisplayNames(sidedPlan, names)
+        assertEquals("Split Squat", shown[squat])
+        assertEquals("Side Plank", shown[plank])
+        assertSame("a plan without sided blocks keeps the names untouched", names, sessionDisplayNames(sidedPlan.copy(blocks = sidedPlan.blocks.map { it.copy(side = Side.NONE) }), names))
     }
 
     @Test fun afterRepsTheBreakHasNoLoggerBecauseTheNumberWasLoggedOnTheWorkBlock() {
