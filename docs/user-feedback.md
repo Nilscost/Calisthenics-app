@@ -107,3 +107,7 @@ Owner report (9.2, Android), handled in release 9.3 ([plan](43-feedback-2026-11-
 - **Pull-ups jump too far between levels.** Inside a level the target now climbs with each good session toward the next level (pull-up level 3: 5, 6, 7, then level 4 at 8). A good session is still judged against the level's own target, so levels and stars from past sessions are unchanged.
 - **New: routines from a chatbot.** Settings → Routines from a chatbot exports a guide (the app, the routine format and the full exercise library) and imports a routine from a file or pasted text into My routines.
 - **Clips (long-lever plank, single-leg glute bridge).** Rebuilt from filmed coaching references with seven more from the current workout (Batch A, nine accepted on side-by-side review); Russian twist did not pass and keeps its clip. Evidence: `docs/evidence/clips-batch-a-2026-11-12.md`.
+
+Owner follow-up (2026-11-13), for the next batch:
+- **Workout preview: the text at the top is too long.** Make it much more concise (the plan notes block under the header; confirm which text with the owner).
+- **History** for lunge and twist sessions logged before 9.3 stays as it is (bare numbers).
