@@ -1,0 +1,85 @@
+{
+  "purpose": "Owner review candidates, not bulk app installation or form approval",
+  "clips": [
+    {
+      "id": "ring-muscle-up",
+      "video": "/Users/nils/Documents/hermes/Apps/calisthenics/work/ring-articulation-refinement-2026-10-21/render-v1/staged/ring-muscle-up/blender/ring-muscle-up.mp4",
+      "sha256": "70c07371710fdff7a223e11466faec80d44f73f895adf28e8a4df53019f23490",
+      "frames": 192,
+      "duration_s": 8.0,
+      "source_batch": "/Users/nils/Documents/hermes/Apps/calisthenics/work/ring-articulation-refinement-2026-10-21/render-v1",
+      "form_status": "not_approved",
+      "installed_by_this_task": false
+    },
+    {
+      "id": "pullup-pullover",
+      "video": "/Users/nils/Documents/hermes/Apps/calisthenics/work/render-batches/2026-10-21-lessons-b/staged/pullup-pullover/blender/pullup-pullover.mp4",
+      "sha256": "48361c7ea05d3711b9626d07635b0db512f7285d0a76a8c11c6173018d0a1e07",
+      "frames": 264,
+      "duration_s": 11.0,
+      "source_batch": "/Users/nils/Documents/hermes/Apps/calisthenics/work/render-batches/2026-10-21-lessons-b",
+      "form_status": "not_approved",
+      "installed_by_this_task": false
+    },
+    {
+      "id": "handstand-press-straddle",
+      "video": "/Users/nils/Documents/hermes/Apps/calisthenics/work/render-batches/2026-10-21-lessons-b/staged/handstand-press-straddle/blender/handstand-press-straddle.mp4",
+      "sha256": "bf741f7b7016392cceb0af09bef684a17493d4da31634231075fc3d11dbd1720",
+      "frames": 192,
+      "duration_s": 8.0,
+      "source_batch": "/Users/nils/Documents/hermes/Apps/calisthenics/work/render-batches/2026-10-21-lessons-b",
+      "form_status": "not_approved",
+      "installed_by_this_task": false
+    },
+    {
+      "id": "depth-jump",
+      "video": "/Users/nils/Documents/hermes/Apps/calisthenics/work/ring-articulation-refinement-2026-10-21/render-v1/staged/depth-jump/blender/depth-jump.mp4",
+      "sha256": "ebb0e087724fb2241db92a3a4b53e46a71a44bf8936144dc5785a3f771749132",
+      "frames": 210,
+      "duration_s": 8.75,
+      "source_batch": "/Users/nils/Documents/hermes/Apps/calisthenics/work/ring-articulation-refinement-2026-10-21/render-v1",
+      "form_status": "not_approved",
+      "installed_by_this_task": false
+    },
+    {
+      "id": "burpee-pushup",
+      "video": "/Users/nils/Documents/hermes/Apps/calisthenics/work/burpee-refinement-2026-10-21/render-v1/staged/burpee-pushup/blender/burpee-pushup.mp4",
+      "sha256": "631699408989bf45b4b62d9946cb41865e3739e52a061755e09a8f9679b9ab3b",
+      "frames": 252,
+      "duration_s": 10.5,
+      "source_batch": "/Users/nils/Documents/hermes/Apps/calisthenics/work/burpee-refinement-2026-10-21/render-v1",
+      "form_status": "not_approved",
+      "installed_by_this_task": false
+    },
+    {
+      "id": "squat-pistol",
+      "video": "/Users/nils/Documents/hermes/Apps/calisthenics/work/render-batches/2026-10-21-lessons-b/staged/squat-pistol/blender/squat-pistol.mp4",
+      "sha256": "b0897390a67c1d1704d8a46401b42f23237c73588733c0a96ca12253a95f927e",
+      "frames": 96,
+      "duration_s": 4.0,
+      "source_batch": "/Users/nils/Documents/hermes/Apps/calisthenics/work/render-batches/2026-10-21-lessons-b",
+      "form_status": "not_approved",
+      "installed_by_this_task": false
+    },
+    {
+      "id": "pilates-roll-over",
+      "video": "/Users/nils/Documents/hermes/Apps/calisthenics/work/render-batches/2026-10-21-lessons-b/staged/pilates-roll-over/blender/pilates-roll-over.mp4",
+      "sha256": "8b9e8fb548ca6403a8423054af4c52b7624f7ca9dd6bfaa11cdbb9a45d7393d0",
+      "frames": 96,
+      "duration_s": 4.0,
+      "source_batch": "/Users/nils/Documents/hermes/Apps/calisthenics/work/render-batches/2026-10-21-lessons-b",
+      "form_status": "not_approved",
+      "installed_by_this_task": false
+    },
+    {
+      "id": "hanging-windshield-wiper",
+      "video": "/Users/nils/Documents/hermes/Apps/calisthenics/work/render-batches/2026-10-21-lessons-b/staged/hanging-windshield-wiper/blender/hanging-windshield-wiper.mp4",
+      "sha256": "0b02a70312e0a91356250a59daa57e16905f7e73d46f037ed5b38fb354834e55",
+      "frames": 156,
+      "duration_s": 6.5,
+      "source_batch": "/Users/nils/Documents/hermes/Apps/calisthenics/work/render-batches/2026-10-21-lessons-b",
+      "form_status": "not_approved",
+      "installed_by_this_task": false
+    }
+  ]
+}

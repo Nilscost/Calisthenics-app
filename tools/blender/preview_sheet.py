@@ -64,6 +64,12 @@ def prop_lines(props, fr=None):
         if pr["kind"] == "plate":
             c, r = pr["center"], pr.get("r", 0.2)
             out.append(([c[0] - r, c[1], c[2]], [c[0] + r, c[1], c[2]]))
+        if pr['kind']=='ring' and fr is not None:
+            from ring_geometry import ring_outline,ring_frame
+            points=ring_outline(fr,pr)
+            out.extend(zip(points,points[1:]+points[:1]))
+            centre,_,_,_=ring_frame(fr,pr)
+            out.append((pr['anchor'],[centre[0],centre[1],centre[2]+pr['radius']]))
         if pr["kind"] == "bar":
             x = pr.get("x", 0)
             out.append(([x, -pr["half"], pr["z"]], [x, pr["half"], pr["z"]]))

@@ -255,18 +255,6 @@ def rower_situp():
     return dict(seconds=4.0,keys=keys,cam_az=32,cam_el=22,props=[])
 
 
-def russian_twist():
-    arms=dict(wrist_l_rel=[.18,.10,-.06],wrist_r_rel=[.18,-.10,-.06],
-              elbow_l=[-1,.2,0],elbow_r=[-1,-.2,0],hand_l=[1,0,0],hand_r=[1,0,0],
-              palm_l=[0,1,0],palm_r=[0,1,0],grip_l=.5,grip_r=.5)
-    def pose(yaw):
-        return base_pose(pelvis=[0,0,.30],p1=-18,p2=-18,hp=0,yaw=yaw,**arms,
-                         ankle_l=[.45,.10,.08],ankle_r=[.45,-.10,.08],
-                         foot_l=[1,0,0],foot_r=[1,0,0],knee_l=[1,0,0],knee_r=[1,0,0])
-    keys=[(0,pose(0)),(.12,pose(0)),(.30,pose(-32)),(.42,pose(0)),(.55,pose(32)),(.68,pose(0)),(.82,pose(-32)),(.94,pose(0)),(.98,pose(0))]
-    return dict(seconds=3.8,keys=keys,cam_az=32,cam_el=18,props=[])
-
-
 def _side_base(pz, bottom_ankle, top_ankle, chair=None):
     k=base_pose(pelvis=[0,0,pz],p1=90,p2=90,roll=-90,hp=0,
                 wrist_l=[.22,.24,.035],elbow_l=[-1,0,-.25],hand_l=[0,1,0],palm_l=[0,0,-1],grip_l=0,
@@ -333,7 +321,6 @@ EXERCISES={
     "bicycle-crunch":bicycle_crunch,
     "sit-up":sit_up,
     "rower-situp":rower_situp,
-    "russian-twist":russian_twist,
     "side-plank-knee":side_plank_knee,
     "side-plank-hip-raise":side_plank_hip_raise,
     "copenhagen-adduction":copenhagen_adduction,

@@ -14,17 +14,6 @@ def squat_air():
     return dict(seconds=3.0, keys=rep(top, bottom), cam_az=35, cam_el=8, props=[])
 
 
-def split_squat():
-    # Stance fixed (right foot 0.9 m in front). Top: standing in the stride; bottom: back knee on the floor.
-    top = base_pose(pelvis=[0.0, 0.0, 0.85], p1=3, p2=4, hp=-5,
-                    ankle_r=[0.45, -0.10, 0.08], foot_r=[1, 0, 0], knee_r=[1, 0, 0],
-                    ankle_l=[-0.45, 0.10, 0.07], foot_l=[1, 0, -0.3], knee_l=[1, 0, -1])
-    bottom = base_pose(pelvis=[0.0, 0.0, 0.50], p1=6, p2=8, hp=-5,
-                       ankle_r=[0.45, -0.10, 0.08], foot_r=[1, 0, 0], knee_r=[1, 0, 0],
-                       ankle_l=[-0.45, 0.10, 0.07], foot_l=[1, 0, -0.35], knee_l=[1, 0, -1])
-    return dict(seconds=3.0, keys=rep(top, bottom), cam_az=30, cam_el=10, props=[])
-
-
 def split_squat_bulgarian():
     # Rear foot on a chair seat behind (chair back at x = -0.75); front foot 0.85 m ahead of the chair back.
     chair = dict(kind="chair", x=-0.75, seat=0.45)
@@ -109,20 +98,6 @@ def squat_pistol_counterbalance():
     return dict(seconds=4.0, keys=rep(top, bottom), cam_az=22, cam_el=10, props=weights)
 
 
-def walking_lunge():
-    # Four keys: right-front lunge, stand, left-front lunge, stand. Feet slide between the stances.
-    lunge_r = base_pose(pelvis=[0.0, 0.0, 0.50], p1=6, p2=8, hp=-5,
-                        ankle_r=[0.45, -0.10, 0.08], foot_r=[1, 0, 0], knee_r=[1, 0, 0],
-                        ankle_l=[-0.45, 0.10, 0.07], foot_l=[1, 0, -0.35], knee_l=[1, 0, -1])
-    lunge_l = base_pose(pelvis=[0.0, 0.0, 0.50], p1=6, p2=8, hp=-5,
-                        ankle_r=[-0.45, -0.10, 0.07], foot_r=[1, 0, -0.35], knee_r=[1, 0, -1],
-                        ankle_l=[0.45, 0.10, 0.08], foot_l=[1, 0, 0], knee_l=[1, 0, 0])
-    stand = base_pose(pelvis=[0.0, 0.0, 0.975], ankle_r=[0.0, -0.10, 0.08], ankle_l=[0.0, 0.10, 0.08],
-                      knee_r=[1, 0, 0], knee_l=[1, 0, 0])
-    keys = [(0.0, lunge_r), (0.25, stand), (0.5, lunge_l), (0.75, stand)]
-    return dict(seconds=4.0, keys=keys, cam_az=35, cam_el=10, props=[])
-
-
 def calf_raise():
     # Both feet, heels down, then rise onto the balls of the feet with straight knees.
     flat = base_pose(pelvis=[0.0, 0.0, 0.975], ankle_r=[0.0, -0.10, 0.08], ankle_l=[0.0, 0.10, 0.08],
@@ -184,7 +159,6 @@ def tibialis_raise_single():
 
 EXERCISES = {
     "squat-air": squat_air,
-    "split-squat": split_squat,
     "split-squat-bulgarian": split_squat_bulgarian,
     "squat-shrimp": squat_shrimp,
     "squat-shrimp-intermediate": squat_shrimp_intermediate,
@@ -192,7 +166,6 @@ EXERCISES = {
     "squat-pistol-assisted": squat_pistol_assisted,
     "squat-pistol-box": squat_pistol_box,
     "squat-pistol-counterbalance": squat_pistol_counterbalance,
-    "walking-lunge": walking_lunge,
     "calf-raise": calf_raise,
     "calf-raise-single": calf_raise_single,
     "calf-raise-single-loaded": calf_raise_single_loaded,

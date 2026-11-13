@@ -1,5 +1,301 @@
 # Actual project status
 
+## Release 9.3 · 0.12.3-r9 (code 22) · 2026-11-13
+
+Fixes for the owner's 9.2 feedback ([plan](docs/43-feedback-2026-11-12-review-and-plan.md), [details](docs/user-feedback.md)).
+
+- **Per side:** Walking Lunge and Russian Twist now read "16 reps (8 per side)": the number you did per side is the stored one. The same for dead bug, single-leg dead bug, bird dog (and its arm and leg raises), plank arm-leg reach and the floor and bent-knee windshield wipers. Plank Shoulder Taps are 5–10 per side, the same 10–20 taps in total. Past sessions replay to the same levels and stars. [Decisions per exercise](docs/evidence/9.3-l1-side-modes.md).
+- **Prepare** shows what comes next: the exercise, then its target and side ("8 reps · Left side"). After a hold, one small row still lets you correct it. The side is no longer said twice in the title.
+- **End screen, one card per exercise:** Too hard · Too easy · Pain are always on the card; "Edit what I logged" opens the numbers on the same card.
+  - A level reached by three good sessions says "3 of 3 good sessions at Level 1"; a level reached by doing its reps says "You did the Level 2 reps today".
+  - After Too hard: "Go down to Level N−1". After Too easy: the move up the app offers. Nothing changes until you tap it.
+  - A mastered exercise shows what comes next ("Next: Half One-Arm Push-Up · Level 1").
+- **Archer push-up "Mastered" but still planned:** not a bug. The workout that earns the fifth star was planned before it, so its end screen shows "Mastered" for an exercise in it; the next workout plans the half one-arm push-up. [Evidence](docs/evidence/9.3-l3-mastered-still-planned.md).
+- **Gentler steps inside a level:** the target climbs with each good session toward the next level (pull-up level 3: 5, 6, 7, then level 4 at 8). A session still counts as good at the level's own target.
+- **Routines from a chatbot** (Settings): export a guide with the routine format and the whole exercise library for a chatbot, and import the routine it writes from a file or pasted text into My routines.
+- **Cleanup:** old pre-Blender clip generators removed; `scripts/gen_catalog.sh` regenerates the catalog and checks both copies. [Evidence](docs/evidence/9.3-l7-cleanup.md).
+- **Clips (Batch A):** nine demonstrations rebuilt from filmed coaching references and accepted on a side-by-side review: Long-Lever (RKC) Plank (elbows ahead of the shoulders, fists together; no longer looks like the forearm plank), Single-Leg Glute Bridge (limbs fixed, free leg in line), Glute Bridge, Side Plank, Plank Shoulder Taps, Walking Lunge (alternating, in place), Split Squat, Dip and Inverted Row. Russian Twist did not pass after two rounds and keeps its clip. [Evidence](docs/evidence/clips-batch-a-2026-11-12.md); review gallery (local): `work/batch-a/gallery/index.html`.
+
+The APK to sideload is `/Users/nils/Documents/hermes/Apps/builds/app-debug-R9.3.apk`. The web app (same unannounced URL) is redeployed with 9.3.
+
+Extra phone checks for 9.3:
+- [ ] Walking lunge shows "N reps (N/2 per side)" in the Preview, the workout and History. Result:
+- [ ] Prepare after a side plank shows the next exercise and its target first; the hold can still be corrected. Result:
+- [ ] End screen: Too hard / Too easy / Pain on each card; "Go down to Level N−1" after Too hard on the inverted row, and the next workout uses that level. Result:
+- [ ] Pull-ups: the target goes up by one or two between level-ups. Result:
+- [ ] Settings → Routines from a chatbot: export the guide, paste a routine from a chatbot, Save, find it under My routines. Result:
+- [ ] Clips: the long-lever plank and single-leg glute bridge read correctly on the phone. Result:
+
+## Release 9.2 · 0.12.2-r9 (code 21) · 2026-11-06
+
+Fixes for the owner's 9.1 feedback ([plan](docs/42-feedback-2026-11-06.md), [details](docs/user-feedback.md)).
+
+- **Half One-Arm Push-Up** is now the step after the Archer Push-Up, no longer an alternative that rotates in beside it. It is planned only after the archer push-up is mastered.
+- **Other alternatives harder than their step** were moved too: Ring L-Sit is now an alternative at the V-sit; Flag Clutch horizontal split is a step between horizontal tuck and bent-leg; One-Arm Push-Up, straight body, is library-only (harder than the one-arm push-up goal).
+- **"New exercise unlocked"** no longer announces the next step of an exercise you are still training (Bulgarian split squat while on split squat level 4). It appears when you actually move on. Unrelated exercises (shoulder taps after the plank) are still announced.
+- **End screen:** one card per exercise. A level reached or mastery shows on that exercise's own card (gold border, stars pop in).
+- **Stars:** the level you are working on is a dark star with a gold outline, on the end screen, Progress and the exercise page. "Level 4 of 5" shows 3 gold stars plus the outlined 4th.
+- **Exercise page of an exercise you moved past:** it showed 5 stars but marked Level 1 as "NOW". Its levels now all read "DONE", matching the stars.
+- **Training screen:** "Too easy" is removed; it stays on the end screen next to "Too hard".
+- **Targets:** Calf Raise 20/25/30/35/40 (was 15–25); Plank Shoulder Taps 10/12/14/16/20 total taps (was 6–16). Single-leg calf raises keep 15–25.
+
+The APK to sideload is `/Users/nils/Documents/hermes/Apps/builds/app-debug-R9.2.apk`. The web app (same unannounced URL) is redeployed with 9.2.
+
+Extra phone checks for 9.2:
+- [ ] The Workout preview never shows the half one-arm push-up while you are on the archer push-up. Result:
+- [ ] No "Too easy" during training; it is on the end screen. Result:
+- [ ] End screen: one card per exercise; the outlined star matches "Level N of 5". Result:
+- [ ] Calf raise and shoulder taps feel right at the new targets. Result:
+
+## Release 9.1 · 0.12.1-r9 (code 20) · 2026-11-05
+
+Version 9.1 includes the KMP port (below) plus fixes for the owner's 8.2 reports ([details](docs/user-feedback.md)).
+
+- **Train count vs Preview:** Train now shows the number of exercises the workout actually holds. Two causes were fixed:
+  - Exercises added by hand in the Preview are kept in the saved draft.
+  - The planner silently dropped an exercise it was asked for, and now fills that spot.
+- **Preview:** a new "Exercises per round" stepper, sharing the setting with Train.
+- **Level progress, cause 1 (the owner's case):** a level raised with the Preview + now counts. Completing every set at the planned reps and pressing Done makes that level current with "1 of 3". Before, it counted only with typed reps. Owner decision, 2026-11-05.
+- **Level progress, cause 2:** a session done on the same day as a level set on the exercise detail page now counts. Past sessions are re-evaluated automatically for both causes.
+- **Level picker:** a live line under the chips shows which levels count as done and which level is current. Chip N means levels 1–N are done.
+- **Exercise history:** the exercise detail page in Progress lists that exercise's past sessions, newest first.
+
+The APK to sideload is `/Users/nils/Documents/hermes/Apps/builds/app-debug-R9.1.apk`, replacing `app-debug-R9-kmp.apk`. The web app (same unannounced URL) is redeployed with 9.1.
+
+Extra phone checks for 9.1, on top of the checklist below:
+- [ ] Train count equals the number of exercises in the Preview, including after adding one by hand. Result:
+- [ ] The Preview "Exercises per round" stepper changes the round and Train follows. Result:
+- [ ] Raise the archer push-up level with the Preview +, do the planned reps, press Done, and check the end screen shows the new level with 1 of 3. Result:
+- [ ] Progress → archer push-up shows its history. Result:
+
+## KMP port ready for the owner phone test (2026-11-02)
+
+The app is now one Kotlin Multiplatform codebase: the same domain, data and Compose UI code runs as the Android app and as a web app that iPhone friends install from Safari ("Add to Home Screen"). Android behaviour is unchanged (same screens, same data, signed install-over passes). The web app runs full workouts with demo clips, thumbnails, beeps and voice, backup export/import and browser Back, and works offline after one visit (service worker, clips cached on first use). No owner phone test has been done yet; results below are empty.
+
+- **Android APK to sideload (debug-signed, installs over the current app):** `/Users/nils/Documents/hermes/Apps/builds/app-debug-R9-kmp.apk` (outside git).
+- **Web app (not announced; do not share before the phone test):** https://nilscost.github.io/Calisthenics-app/ (GitHub Pages, deployed from `codex/kmp-port`).
+- Evidence: [KMP execution log](docs/evidence/kmp-port.md) (Phase 5 section) · [plan](docs/41-multiplatform-port-plan.md).
+
+### Final owner phone test (results empty)
+
+**Android (Galaxy S21), installed over the current app, not a fresh install:**
+- [ ] 1. All existing history, routines, levels and settings are still there. Result:
+- [ ] 2. A full workout: clips play, rest timer + beeps + voice, screen off and on mid-rest, Done. Result:
+- [ ] 3. End screen, Progress tree, exercise detail, backup export. Result:
+
+**iPhone (Safari, iOS 18.2+), ideally on a friend's phone:**
+- [ ] 1. Open the URL, Add to Home Screen, open from the icon. Result:
+- [ ] 2. Onboarding, then a full workout as above, including locking the phone during rest. Result:
+- [ ] 3. Close the app fully, reopen: history kept. Airplane mode: app and seen clips still work. Result:
+- [ ] 4. Backup export, then import it on another browser/phone. Result:
+
+Findings go to `docs/user-feedback.md`; fixes are a follow-up batch. After a pass, the owner shares the link with friends.
+
+## iPhone and web port resumed (2026-10-30)
+
+Work continues on `codex/kmp-port` under [the multiplatform plan](docs/41-multiplatform-port-plan.md), with Terra executors and coordinator review. Phases 0 and 1 are approved. All 616 original domain tests run on JVM and WebAssembly; 619 common tests, one additional JVM fixture test and all 290 app tests pass. Build/lint, connected database tests and signed install-over pass. Phase 1's final screenshot gate passed all 51 flows with one permitted retry; visual limitations are documented. Phase 2 storage interfaces and platform adapters are implemented; host and Chromium/WebKit storage contracts pass. Signed upgrade, device and full screenshot gates remain in progress; Phases 3–5 remain pending. The iPhone deliverable is an installable web app; native iOS remains optional Phase 6. No new release APK or web URL is ready for owner testing.
+
+[Execution evidence](docs/evidence/kmp-port.md) · [Latest screenshot review](docs/evidence/ui/KMP-phase1-review.md).
+
+## Clip fixes installed (2026-10-26 · no new APK)
+
+Eleven demonstrations were fixed at source, rendered in one isolated batch and installed.
+
+- **The seven doc-40 candidates:**
+  - Flag kick press, installed as rendered.
+  - Toes to bar, now with the legs together.
+  - Heel hook, with a readable hook-up.
+  - Dragon-flag negative, with a tucked recovery.
+  - Wall walk, with alternating planted hand steps.
+  - Pilates Saw, with level arms and no slide.
+  - Russian dip, kept as installed.
+- **Five installed clips:**
+  - Archer push-up, reframed with the feet raised above the floor.
+  - Straddle press, with a wider straddle and a front-oblique view.
+  - Windshield wiper, with a readable sweep.
+  - Pistol squat, with the free leg held up and full extension.
+  - Ring muscle-up, with a camera view that keeps the straps off the torso.
+
+All eleven passed native geometry and the install gates. 594 domain and 265 app tests pass. Owner real-speed form review and phone checks remain open.
+[Evidence](docs/evidence/clip-fixes-2026-10-26.md).
+
+## Burpee foot contact and fluidity review (2026-10-25 · no new APK)
+
+The revised review candidate uses raised heels/toe support, a gradual feet-in
+approach and grounded settling crouch, then a continuous rise into jump preload.
+242 Python tests, native body/floor/framing and actual foot-skin contact checks
+pass. The other 532 trajectories and all installed app build inputs are unchanged.
+Owner naturalness/form and phone checks remain open.
+[Evidence](docs/evidence/burpee-fluidity-2026-10-25.md).
+
+## R8.5 session editing and video candidate (2026-10-25 · 0.11.5-r8, 19)
+
+Changing the exercise count rebuilds the automatic selection without shared-route
+alternatives; manual choices survive other navigation/settings until count changes.
+Deleting the only exercise leaves Add/Undo available; final-row deletion preserves
+remaining work. The exact six-to-eight transition agrees across both Start paths.
+539 domain, 256 app and 238 Python tests pass, alongside lint, packaging and content
+checks. Five eligible updated videos/thumbnails are installed; the rigid ring hand
+experiment is isolated because full arm/wrist checks still fail. Phone audio/music,
+manual-lock/timeout, upgrade/recovery, screenshots and form acceptance remain open.
+[Release evidence](docs/evidence/r8.5-implementation-2026-10-25.md) ·
+[Phone checks](docs/evidence/owner-check-r8.5.md) ·
+[Video procedure](docs/39-video-generation-and-review-procedure.md).
+
+## Depth Jump return and moving-ring review (2026-10-21 · no new APK)
+
+The Depth Jump review candidate now has a higher gravity-shaped rebound, planted
+turn steps and a direct sequential step back onto the box. The moving-ring
+candidate couples wrists/hands and apparatus, with explicit false-grip identity
+and native mesh checks. Its procedural proximal finger lengths and skin/wood
+gap remain unresolved; **ring app promotion is blocked** despite collision
+clearance. 205 Python tests and all-frame native geometry checks pass.
+The other 531 trajectories and all 1,066 installed media files are unchanged.
+Both renders and full desktop playback/control checks across the eight-clip
+gallery completed on 2026-10-22. Owner, phone-size and expert form acceptance
+remain open.
+[Depth evidence](docs/evidence/depth-return-refinement-2026-10-21.md) ·
+[Ring evidence](docs/evidence/ring-articulation-refinement-2026-10-21.md).
+
+## Push-Up Burpee knee correction (2026-10-21 · review candidate, no new APK)
+
+The burpee review candidate now uses sagittal knee bends, lower bilateral hop-back
+feet, smooth planted push-up transitions, bilateral feet-in travel and a short
+jump with extended takeoff. 179 Python tests, all-frame native geometry, full
+decode and actual desktop playback/control checks pass. Three filmed references
+were reviewed and extracted; numerical comparisons remain inconclusive because
+of camera, variation and cycle differences. The updated eight-video gallery
+preserves earlier candidates and feedback. All installed app media is unchanged;
+phone readability and owner/form approval remain open.
+[Evidence](docs/evidence/burpee-refinement-2026-10-21.md).
+
+## Depth Jump realism and eight-candidate review (2026-10-21 · no new APK)
+
+Depth Jump now has a 0.50-second gravity-shaped rebound, coordinated arm drive,
+neutral wrists and proper leg extension at takeoff. Only this video and thumbnail
+are replaced. The other 532 trajectories and videos are unchanged by this follow-up.
+169 Python tests, actual mesh/floor/framing checks, full decode and complete desktop
+playback/replay of all eight review clips pass. The eight-render batch is complete;
+its other clips are review candidates. Three reference comparisons remain
+inconclusive; actual phone and expert form approval remain open.
+[Evidence and review priorities](docs/evidence/depth-jump-refinement-2026-10-21.md).
+
+
+## Scripted video refinement and render batch (2026-10-21 · review candidates)
+
+Six source motions are refined: ring wrist/hand contact, actual depth-jump flight
+and rebound, controlled burpee phases, explicit pistol phases, progressive
+roll-over curl and shin-relative full-wiper feet. The other 527 trajectories and
+all 533 installed videos and thumbnails are unchanged from this batch's baseline.
+162 Python tests and ten scoped contracts pass; 523 trajectories remain unscoped.
+Scripts do not certify exercise form or phone behavior.
+
+The first eight-item isolated native Blender batch was started, then stopped
+after native mesh checks exposed burpee foot-floor penetration and a smaller
+pre-existing roll-over chest-floor contact issue. The corrected batch passed native preflight and subsequently completed. All 21,335,472
+body vertices fit the final app frame and pass the 2 mm floor tolerance. It includes those six candidates plus accepted
+Pullover and Straddle Press regression controls. Its manifest is the authority
+for current completion/failure, and nothing is automatically installed. Full
+encoded review, phone-size readability and owner/form acceptance remain open.
+All eight candidates have completed encode/decode and desktop playback mechanics
+checks. The newer Depth Jump correction above supersedes the original batch draft.
+[Lessons and batch workflow](docs/38-video-generation-lessons-and-batch.md).
+
+
+## Straddle Press foot direction (2026-10-21 · source assets, no new APK)
+
+Feet now turn continuously with the Straddle Press and finish pointed along the
+legs. A full descent completes an eight-second loop. 105 Python tests, actual
+Blender foot/floor/orientation and framing checks, full decoding, installation
+and structural content validation pass. Desktop full playback/replay and review
+controls also pass. The other 532 trajectories and installed
+videos are unchanged, including the Pullover that the owner called “Much better.”
+Five scoped motion contracts pass; 528 remain unscoped. Wrist/hand realism is now
+an explicit review step with compact articulation reports; the ring wrist
+concern remains open. No phone or expert form approval is claimed.
+[Evidence](docs/evidence/straddle-foot-refinement-2026-10-21.md).
+
+## Bar pullover smoothing (2026-10-20 · source assets, no new APK)
+
+The owner-reported abrupt Bar Pullover is replaced with an eleven-second loop,
+continuous rotation, a deliberate slower reverse and wrists rolling around the
+bar. 94 Python tests pass, including frozen old-motion and mid-turn pause/pop
+regressions. All 264 frames decode; actual Blender mesh/bar and framing checks
+pass. The other 532 source trajectories and installed videos are unchanged.
+Four movement contracts pass; 529 remain unscoped. Phone playback and expert
+form acceptance remain open. [Evidence](docs/evidence/bar-pullover-refinement-2026-10-20.md).
+
+## Ring muscle-up refinement (2026-10-20 · source assets, no new APK)
+
+Owner feedback addressed with visible wooden rings, suspension straps, an isolated
+grip close-up and a smaller, slower crossover with controlled return. Whole-arm
+and finger/ring volume checks cover all 144 frames. 85 Python tests, installation,
+content checks and desktop review playback controls pass. Only this clip and its
+thumbnail are replaced; the other 532 installed videos are unchanged. Three
+motion contracts pass; 530 remain unscoped. Expert form and phone acceptance
+remain open. [Evidence](docs/evidence/ring-muscle-up-refinement-2026-10-20.md).
+
+## Catalog screening and eight-video review set (2026-10-20)
+
+A read-only pass builds all 533 trajectories and decodes 48,310 installed frames;
+zero media-format/decode errors, 111 clips with heuristic speed/loop review flags.
+Only two exercise-specific contracts exist; 531 remain unscoped. Three bounded
+Luna lanes reviewed source and selected encoded frames for a diverse eight-clip
+owner review set. 77 Python tests and desktop review-control QA pass. Optional
+same-pose appearance concepts are previews only. All 533 MP4 hashes are unchanged;
+no source media replacement, APK or phone/form approval. [Workflow/evidence](docs/37-catalog-motion-screening.md).
+
+## Smooth mannequin heads (2026-10-20 · source assets, no new APK)
+
+The renderer now uses featureless heads, removing nose/chin geometry while
+retaining head articulation. Pull-up and chin-up clips are regenerated with
+exactly the same motion data and approved pull-up pacing. Archer assets remain
+unchanged. [Evidence](docs/evidence/smooth-heads-2026-10-20.md).
+
+## Pull-up pacing correction (2026-10-20 · source assets, no new APK)
+
+A further owner-reported mid-movement surge is corrected with steady central
+vertical travel and smooth endpoint ramps, retaining the grip and authored pose
+path. 72 Python tests pass; a frozen previous trajectory fails the new surge
+gates. Central vertical speed ratio is 1.00036 in both directions. The approved
+archer assets are unchanged. [Evidence](docs/evidence/pullup-steady-pace-2026-10-20.md).
+Phone playback acceptance remains open; no generation credits spent.
+
+## Pull-up follow-up (2026-10-20 · source assets, no new APK)
+
+The pull-up now moves continuously through intermediate keys and wraps modeled
+fingers/thumbs around the bar with conservative collision clearance. The approved
+archer clip and thumbnail are unchanged. 69 Python tests pass; Blender mesh,
+encoded-output and installation evidence are recorded in the
+[follow-up report](docs/evidence/pullup-smooth-grip-2026-10-20.md).
+Phone playback/readability acceptance remains open. No generation credits spent.
+
+## Motion-quality pilot (2026-10-20 · source assets, no new APK)
+
+The archer push-up and pull-up now have exercise-specific motion gates, corrected trajectories and a continuous torso mesh. Archer: alternating sides, assisting elbow about 170°, about 19 cm chest travel toward each hand and planted anchors. Pull-up: controlled mild arch, about 17° torso inclination at the top and shoulder initiation, preserving the grip inset. Exact old poses and disguised normal push-ups are rejected by regression tests. 64 Python tests, real hand/torso/framing checks and media validation pass. Six real reference analyses replay from cache; approximate camera comparisons remain screening evidence with material residual differences. Only two exercises have motion contracts; 531 are explicitly unscoped. Phone readability/form acceptance remains open. [Evidence](docs/evidence/motion-quality-pilot-2026-10-20.md) · [Workflow](docs/36-motion-quality-pilot.md). No generation credits spent.
+
+## Blender grip and reference-comparison pilot (2026-10-20)
+
+Implements readable hand direction for the chin-up/pull-up pilot: anatomical thumb rotation, distinct palm/back surfaces, corrected underhand bar contact and synchronized enlarged grip views. Local automated body/hand extraction and timing-aligned comparisons ran against five actual YouTube videos, three per exercise. Camera differences and variable hand visibility keep numerical results inconclusive; no automated form approval or phone-readability claim. Both 72-frame loops and thumbnails are installed in source assets after decoded-output review; 51 Python tests and content validation pass. Existing R8.4 APK is unchanged. No generation credits spent. [Implementation and reference evidence](docs/evidence/blender-grip-pilot-2026-10-20.md) · [Reproduction](tools/blender/FORM_REVIEW.md).
+
+## R8.4 phone-feedback candidate (2026-10-20 · 0.11.4-r8, versionCode 18)
+
+Implements document 35 with Sol integration and three bounded Luna lanes, preserving the substantial dirty/untracked R8.3 baseline. Flow/Rest/Stretch controls are synchronized on Train and both Preview forms; real compatible stretches, safe explained fallback, preparation, dormant rest overlays, saved edits and both Start paths agree. Ordinary contexts use App levels through scoped, versioned migration; saved/preset Rep range and Custom remain intact. Explicit full higher-level performance adopts N as current and success 1/3; two more qualifying distinct days within 14 days permit advancement. Compatible untried same-rung choices may start at demonstrated N−1 without transferred achievements. Historical replay retains its original semantics; new plans snapshot effective policies. Warning beeps use media-classified playback, per-sample/load/play diagnostics and saved app gain independently of voice, without audio-focus requests. An Activity lifecycle binding keeps visible unfinished RUNNING/PAUSED sessions awake and never wakes/unlocks the phone.
+
+Fresh local checkout plus the final working-source overlay: **539 domain and 252 app tests pass**, data unit-test task has no sources; lint, debug APK and content validation pass. Preflight and migration SQL checks pass. All **1,444** recorded source/build/test/content/flow files match the shared workspace. No Room schema change. [Implementation report](docs/evidence/r8.4-implementation-2026-10-20.md) · [build/source/certificate record](docs/evidence/r8.4-build-2026-10-20.json) · [full verification log](docs/evidence/r8.4-fresh-verify-2026-10-20.log).
+
+APK: `/Users/nils/Documents/hermes/Apps/builds/app-debug-R8.4.apk` (also `app/build/outputs/apk/debug/app-debug-R8.4.apk`); SHA-256 `b5c4dd20b1bb66648bb0b3527263b045da1e960651f9e51d90428980d7cfd851`. Certificate matches the actual R8.3 and R7.2 APKs; R8.3 is retained unchanged. No commit, push, publication or CI run occurred.
+
+**Phone audibility/music/Bluetooth, manual-lock/timeout, actual upgrade/recovery acceptance, screenshots and owner acceptance remain open.** No connected device/emulator/Maestro was available; automated sink/window tests are not physical verification. [Owner checklist](docs/evidence/owner-check-r8.4.md) · [visual gate](docs/evidence/ui/R8.4-review.md). Training content remains DRAFT. Document 34’s old “implementation not started” wording does not describe this workspace.
+
+## R8.3 implementation candidate (2026-10-20 · 0.11.3-r8, versionCode 17)
+
+The approved feedback in `docs/34-user-feedback-executor-handoff.md` is implemented: app-only voice/beep volume (30% default) without audio-focus requests; Train's exclusive Flow / Rest / Stretch modes; persisted 1–30 s preparation with upcoming silent demonstrations; personal five-level targets and above-level-5 rep/hold extensions with level-5 evidence; static Pilates/Conditioning cards; ultramarine/blanc cassé Light default with yellow achievement stars and saved Dark support. Routines, drafts, backups and recovery carry the new fields; no Room schema change was needed. Historical achievements remain, while revised personal targets start compatible future streaks.
+
+Fresh local checkout plus the recorded working-source overlay: **513 domain and 229 app tests pass**, data unit-test task has no sources, lint, debug APK and content validation pass (`docs/evidence/r8.3-fresh-verify-2026-10-20.log`). Preflight and migration SQL checks pass. Build/source/certificate details: `docs/evidence/r8.3-build-2026-10-20.json`; implementation and changed-file manifest: `docs/evidence/r8.3-implementation-2026-10-20.md`. Local APK: `/Users/nils/Documents/hermes/Apps/builds/app-debug-R8.3.apk`, SHA-256 `cec3959ff4256c6c3cc5d7e7ca945003369a71de164edf8ee1fac1eaca7b281a`; its signing certificate matches the actual R7.2 and R8.2 APKs.
+
+**Screenshot execution/review, phone music/Bluetooth checks and owner acceptance remain open.** No emulator/Maestro or compatible native screenshot renderer is available locally; no earlier screenshots substitute for this candidate (`docs/evidence/ui/R8.3-review.md`). No CI, push, publication or deployment occurred. Content stays DRAFT. Walkthrough: [owner-check-r8.3.md](docs/evidence/owner-check-r8.3.md).
+
 ## R8.2 release (2026-10-18 · 0.11.2-r8, versionCode 16)
 
 R8.2 (`docs/33-r8.2-plan.md`, entries `R8.2-T01` to `T05` in `docs/evidence/progress-notes.md`): the Power tab is gone and its exercises sit in Squat and Push with their routes (gates unchanged); Prehab and the warm-up items are one Warm-up category by body area, and the automatic warm-up adds 2 to 4 items matched to the session within its usual time; Train has one Include row (Warm-up, Conditioning, Cool-down) with a 5 to 10 minute conditioning finisher, shown as blocks in the Preview; the duplicate exercises-per-round tile is removed. **Nothing was tested on a phone; content stays DRAFT.** Fresh clone of `ce593e8` exit 0 (495 domain, 211 app tests, lint, assembleDebug, content); GitHub verify [39160885835](https://github.com/Nilscost/Calisthenics-app/actions/runs/39160885835) and ui-screens [39160885932](https://github.com/Nilscost/Calisthenics-app/actions/runs/39160885932) success (51 of 51, reviewed in `docs/evidence/ui/R8.2-review.md`). APK `Apps/builds/app-debug-R8.2.apk`, SHA-256 `8309858a1603faeca268ffcddf80b74124070ec8cf15bed9fd74f99de8ced886`, certificate identical to R7.2 (`docs/evidence/r8.2-build-2026-10-18.json`). Walk-through: [owner-check-r8.2.md](docs/evidence/owner-check-r8.2.md).

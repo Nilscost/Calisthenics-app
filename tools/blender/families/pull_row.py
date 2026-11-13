@@ -146,9 +146,9 @@ def chair_assisted_pullup():
 
 def chinup_full():
     # Palms face the body (underhand grip); chin over the bar.
-    hands = _hands(palm=(-1, 0, 0), elbow=(0.2, 1.0, -0.2))
-    hang = _pose(*HANG, hands, _hang_legs())
-    top = _pose(*TOP, hands, _hang_legs())
+    hands = _hands(x=0.045, palm=(-1, 0, 0), elbow=(0.2, 1.0, -0.2))
+    hang = _pose(HANG[0], HANG[1] + 0.09, HANG[2], HANG[3], hands, _hang_legs())
+    top = _pose(TOP[0], TOP[1] + 0.09, TOP[2], TOP[3], hands, _hang_legs())
     return dict(seconds=3.0, keys=rep(hang, top), cam_az=35, cam_el=8, props=[_bar()])
 
 
@@ -231,14 +231,6 @@ def _row_pose(S, ang, ankles, grip=0.18, wrists=None, sy=0.0, wz=WRIST_ROW):
                      elbow_l=[0.0, 1.0, -0.6], elbow_r=[0.0, -1.0, -0.6],
                      ankle_l=al, ankle_r=ar, knee_l=[0, 0, 1], knee_r=[0, 0, 1],
                      foot_l=[1, 0, 0], foot_r=[1, 0, 0])
-
-
-def inverted_row():
-    # Straight body, heels on the floor; top: chest pulled up toward the bar.
-    A = (1.287, 0.08)
-    bottom = _row_pose(_S_from_ankle(A, -12.1), -12.1, _ankles(*A))
-    top = _row_pose(_S_from_ankle(A, -34.0), -34.0, _ankles(*A))
-    return dict(seconds=3.0, keys=rep(top, bottom), cam_az=30, cam_el=15, props=[dict(kind="bar", z=LOW_Z, half=0.65, r=0.017)])
 
 
 def inverted_row_wide():
@@ -359,7 +351,6 @@ EXERCISES = {
     "chinup-full": chinup_full,
     "row-band": row_band,
     "inverted-row-bent-knees": inverted_row_bent_knees,
-    "inverted-row": inverted_row,
     "inverted-row-wide": inverted_row_wide,
     "inverted-row-feet-elevated": inverted_row_feet_elevated,
     "archer-row": archer_row,

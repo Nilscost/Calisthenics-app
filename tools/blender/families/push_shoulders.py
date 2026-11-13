@@ -87,15 +87,60 @@ def pushup_diamond():
 
 
 def pushup_archer():
-    # Wide hands; the near (right) arm takes the load, the far (left) arm stays straight.
-    def key(a, pel_y, right_wy, left_wy):
-        k = _line(-1.1, a, -0.12, wy=0.27, elbow=(-0.6, 0.7, 1.0))
-        k.update(wrist_l=[-0.12, left_wy, 0.035], wrist_r=[-0.12, -right_wy, 0.035])
-        k["pelvis"] = add(k["pelvis"], [0.0, pel_y, 0.0])
+    # Fixed wide palms. Rotate the whole plank about the feet, keeping the
+    # assisting elbow extended through descent; mirror for the second rep.
+    from motion_constraints import bisect_target, planted_ankle
+    from poses import norm, sub, sample, trunk_frame
+    half_width, wrist_x, ankle_x = 0.47, 0.0, -1.1
+    # Ankle height: the rendered forefoot hangs ~3 cm below the toe joint, so lift the
+    # planted feet 3.1 cm to keep the sole on, not in, the floor (native geometry gate).
+    az=0.08+0.031
+    reach = 0.568  # 2 mm short of arm length: straight, without IK clamping.
+
+    def key(a, yaw):
+        ar, yr = math.radians(a), math.radians(yaw)
+        k = _line(ankle_x, a, wrist_x)
+        k.update(yaw=yaw, wrist_l=[wrist_x, half_width, .035],
+                 wrist_r=[wrist_x, -half_width, .035],
+                 hand_l=[.7,.7,0], hand_r=[.7,-.7,0], head_detail=1)
+        k['pelvis'] = [ankle_x + math.cos(ar)*math.cos(yr)*.898,
+                       math.cos(ar)*math.sin(yr)*.898, az + math.sin(ar)*.898]
+        for side, sign in (('l',1),('r',-1)):
+            # Feet pivot a few mm at the ankles; the toe tips stay planted.
+            ankle=[ankle_x-math.sin(yr)*sign*.08, math.cos(yr)*sign*.08, az]
+            toe=[ankle_x+.18,sign*.08,az-.06]
+            # Hip positions follow the same rotated rigid plank as the torso.
+            up,left=trunk_frame(90-a,yaw,0)
+            hip=add(add(k['pelvis'],mul(left,sign*.09)),mul(up,-.03))
+            ankle=planted_ankle(hip,toe,ankle,side=sign)
+            k['ankle_'+side]=ankle
+            k['foot_'+side]=sub(toe,ankle)
         return k
-    top = key(18, 0.0, 0.26, 0.26)
-    bottom = key(4, -0.08, 0.20, 0.36)
-    return dict(seconds=3.0, keys=rep(top, bottom), cam_az=30, cam_el=10, props=[])
+
+    def support_distance(a, yaw):
+        up,left=trunk_frame(90-a,yaw,0)
+        pelvis=add([ankle_x,0,az],mul(up,.898))
+        shoulder=add(add(pelvis,mul(up,.47)),mul(left,.18))
+        return norm(sub(shoulder,[wrist_x,half_width,.035]))
+
+    top=bisect_target(lambda a:support_distance(a,0), 12,18,reach)
+    def pose(a, side):
+        yaw=bisect_target(lambda y:support_distance(a,y),-15,0,reach) if a<top-1e-7 else 0
+        return key(a,yaw*side)
+    # One right and one left repetition; reset at the centre between sides.
+    phases=[(0,dict(a=top,side=1)),(.07,dict(a=top,side=1)),
+            (.21,dict(a=4,side=1)),(.27,dict(a=4,side=1)),
+            (.43,dict(a=top,side=1)),(.5,dict(a=top,side=-1)),
+            (.57,dict(a=top,side=-1)),(.71,dict(a=4,side=-1)),
+            (.77,dict(a=4,side=-1)),(.93,dict(a=top,side=-1)),
+            (1,dict(a=top,side=-1))]
+    # Explicit half-cycle side avoids interpolating a sign through zero.
+    def frame(t):
+        values=sample(phases,t)
+        return pose(values['a'],1 if t<.5 else -1)
+    return dict(seconds=6, keys=[(i/144,frame(i/144)) for i in range(145)],
+                cam_az=65,cam_el=28,props=[],motion_profile='archer-alternating',
+                anatomy_detail=True)
 
 
 def _one_arm(a, wx, wy_r=-0.14, elbow_r=(-0.6, -0.7, 1.0), ankle_x=-0.99):
@@ -176,12 +221,6 @@ def dip_negative():
     return dict(seconds=4.0, keys=rep(a, b, down_end=0.80), cam_az=30, cam_el=10, props=bars)
 
 
-def dip_parallel():
-    a, bars = _dip(1.15, 0.0, 2, [0.03, 0.07, -0.84])
-    b, _ = _dip(0.85, 0.0, 12, [0.30, 0.07, -0.60])
-    return dict(seconds=3.0, keys=rep(a, b), cam_az=30, cam_el=10, props=bars)
-
-
 def _pike(px, pz, p, ankle=(-0.9, 0.10, 0.08), wx=0.05, wy=0.20):
     """Hips high, trunk folded forward; the feet and hands are the fixed contacts."""
     return base_pose(pelvis=[px, 0.0, pz], p1=p, p2=p, hp=0,
@@ -254,7 +293,6 @@ EXERCISES = {
     "planche-adv-tuck": planche_adv_tuck,
     "dip-support-hold": dip_support_hold,
     "dip-negative": dip_negative,
-    "dip-parallel": dip_parallel,
     "pike-pushup": pike_pushup,
     "pike-pushup-elevated": pike_pushup_elevated,
     "wall-handstand-hold": wall_handstand_hold,

@@ -5,7 +5,7 @@ import json, re, sys, pathlib
 root = pathlib.Path(__file__).resolve().parent.parent
 sd = root / "data/schemas/io.github.gonbei774.calisthenicsmemory.data.AppDatabase"
 v21 = json.load(open(sd / "21.json"))["database"]; v22 = json.load(open(sd / "22.json"))["database"]
-src = (root / "data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt").read_text()
+src = (root / "data/src/androidMain/kotlin/io/github/gonbei774/calisthenicsmemory/data/AppDatabase.kt").read_text()
 block = src[src.index("MIGRATION_21_22 = object"):]
 block = block[:block.index("val MIGRATION_9_10")]
 mig = set(re.findall(r'execSQL\("(.*?)"\)', block))

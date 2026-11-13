@@ -1,0 +1,17 @@
+{
+  "baselineTrajectories": 533,
+  "changed": [
+    "dip-russian",
+    "flag-kick-press",
+    "handstand-wall-walk-up",
+    "handstand-kick-up",
+    "toes-to-bar",
+    "heel-hook",
+    "dragon-flag-negative",
+    "pilates-saw"
+  ],
+  "unchanged": 525,
+  "kickUpPromotion": "blocked: missing catalog bail",
+  "newAppMediaInstalled": false,
+  "ringExperimentalSource": "isolated outside default registry"
+}

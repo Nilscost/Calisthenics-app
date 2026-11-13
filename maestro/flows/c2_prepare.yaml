@@ -1,0 +1,26 @@
+# C2 — the Prepare (get ready) block shows what comes next: name, target and side, and after a hold only one compact row to correct that hold.
+# Walks the default workout with Skip and takes a screenshot at each Prepare block that matches; the hold row is only present when the block before was a hold.
+appId: app.calisthenics.personal
+---
+- launchApp
+- runFlow: ../common/dismiss_system_dialogs.yaml
+- extendedWaitUntil: { visible: { id: preview_button }, timeout: 15000 }
+- tapOn: { id: preview_button }
+- extendedWaitUntil: { visible: { id: start_button }, timeout: 10000 }
+- tapOn: { id: start_button }
+- extendedWaitUntil: { visible: { id: session_title }, timeout: 15000 }
+# Walk through the workout with Skip (blocks also end on their own timers, so nothing is asserted at a fixed step): screenshot each Prepare block,
+# and a Prepare after a hold (compact "held" row) when the workout has one. The layout itself is pinned by SessionScreenTest.
+- repeat:
+    times: 60
+    commands:
+      - runFlow:
+          when: { visible: "PREPARE.*" }   # the Prepare block's caption ("PREPARE / UPCOMING"); work and stretch blocks have their own
+          commands:
+            - takeScreenshot: 01-prepare-${VARIANT}
+            - runFlow:
+                when: { visible: { id: logger_minus } }
+                commands:
+                  - takeScreenshot: 02-prepare-after-hold-${VARIANT}
+      - tapOn: { id: session_skip, optional: true }   # the workout may already have ended
+      - waitForAnimationToEnd: { timeout: 1000 }

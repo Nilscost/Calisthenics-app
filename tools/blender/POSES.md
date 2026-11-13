@@ -93,3 +93,44 @@ For each id:
 - `OK`, with a one-line description and your 1–5 self-score after checking the sheet, **or** `PROBLEM`, with what is wrong.
 
 Then list any prop or helper you missed. Keep the report short.
+
+## Grip readability and reference review
+
+Hand direction is instructional content. `hand_l/r` is wrist-to-fingers;
+`palm_l/r` is the direction the palm faces. `grip_l/r` curls the fingers and
+**does not choose overhand versus underhand**. Thumb side follows anatomical
+handedness and rotates with the palm; do not clamp it to a world/body midline.
+Keep the palm normal perpendicular to the hand direction where possible.
+
+Review the exact encoded 480×360 loop. A grip that exists in joint data but
+cannot be distinguished on screen is insufficient. The chin-up/pull-up pilot
+uses blue palm surfaces, visible thumb/finger ordering, face direction and a
+synchronized hand inset. Its underhand wrist is on the opposite side of the bar
+from the overhand wrist. A hand inset must not cover the moving main figure.
+
+See [FORM_REVIEW.md](FORM_REVIEW.md) for three-to-five-source reference screening,
+hand/body tracking limitations and promotion checks. Numerical body similarity
+is never proof of correct grip, contact or exercise form.
+
+## Scoped moving rings
+
+A moving-ring specification can carry `ring_center_l/r` positions,
+`ring_plane_l_up/r_up` unit normals and `ring_radial_l_up/r_up` unit axes in
+that plane. The ring prop names these channels with `frame_center`,
+`frame_normal` and `frame_radial`. Suspension anchors stay fixed;
+`strap_attachment` finds the highest actual hoop point. Do not use the current
+grip radial as the strap attachment. Legacy fixed-ring props remain supported.
+
+`grip_offset_l/r` stores two coefficients along the fingertip and palm-normal
+axes for the wrist-to-declared-contact relationship. They are authored grip
+proxies, not measured skin/force contacts. Separate palm, finger, forearm and
+native mesh checks remain necessary. Fingers approach the hoop from their
+actual knuckle side before curling; a fixed curl angle can cut through the
+wood when the palm rotates independently of the ring.
+
+False grip is a movement identity: the heel/wrist drapes over the loaded wood,
+with the palm facing toward it. An upward palm and a wrist below the wood can
+pass absolute wrist-angle checks while representing an underhook. Inspect
+polarity, actual contact surfaces, flexion and sideways deviation separately.
+The hang and support need different wrist screens; never impose a universal
+neutral-wrist target on a deliberately flexed false grip.

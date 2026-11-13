@@ -7,11 +7,16 @@
 set -uo pipefail
 APK="$1"; OUT="$2"; ROOT=$(pwd); PKG=app.calisthenics.personal
 export MAESTRO_CLI_NO_ANALYTICS=1
+# Keep Maestro on the same device as adb when ANDROID_SERIAL is set.
+maestro_device=()
+[ -z "${ANDROID_SERIAL:-}" ] || maestro_device=(--device "$ANDROID_SERIAL")
 # FLOWS (default: all) is a glob over maestro/flows names, e.g. FLOWS=j_warmup, for debugging a single flow.
 # VARIANTS (default: all three) lets CI run one variant per job; the results file is then results-<variant>.txt.
 VARIANTS="${VARIANTS:-light dark font13}"
 RES="$OUT/results.txt"; [ "$VARIANTS" = "light dark font13" ] || RES="$OUT/results-${VARIANTS// /_}.txt"
 mkdir -p "$OUT"; : > "$RES"
+OUT=$(cd "$OUT" && pwd)
+RES="$OUT/$(basename "$RES")"
 adb wait-for-device
 until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = 1 ]; do sleep 2; done
 adb shell settings put global hide_error_dialogs 1   # no "isn't responding" dialogs over the app
@@ -37,20 +42,38 @@ for variant in $VARIANTS; do
   for flow in maestro/flows/${FLOWS:-*}.yaml; do
     name=$(basename "$flow" .yaml)
     mkdir -p "$OUT/$name"
+    # An output directory may be reused; old captures must never satisfy this run.
+    find "$OUT/$name" -maxdepth 1 -type f -name "*-$variant.png" -delete
     # Optional hook before a flow (maestro/hooks/<flow>.pre.sh), e.g. the debug seed for e_seeded.
     hook="maestro/hooks/$name.pre.sh"; [ -f "$hook" ] || hook="maestro/hooks/default.pre.sh"
     # Maestro only writes screenshots inside its own output folder: run it there with relative names, then collect them.
     # One retry: the emulator occasionally shows a blank or frozen screen after a configuration change.
     for try in 1 2; do
       tmp=$(mktemp -d)
+      debug="$OUT/$name/debug-$variant-attempt-$try"
+      rm -rf "$debug"
+      rm -rf "$OUT/$name/failed-$variant-attempt-$try"
+      rm -f "$OUT/$name/hook-failure-$variant-attempt-$try.png" "$OUT/$name/log-$variant-attempt-$try.txt" "$OUT/$name/hook-$variant-attempt-$try.txt"
+      shots="$debug/$name/takeScreenshot"
       # The hook runs before every attempt (fresh state / seed / theme of the variant).
-      bash "$hook" "$variant" > "$OUT/$name/hook-$variant.txt" 2>&1 || echo "HOOKFAIL $name $variant" >> "$RES"
-      if (cd "$tmp" && maestro test --no-ansi --test-output-dir "$tmp" -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant.txt" 2>&1; then
-        ok=1; else ok=0; fi
+      if bash "$hook" "$variant" > "$OUT/$name/hook-$variant-attempt-$try.txt" 2>&1; then
+        if (cd "$tmp" && maestro ${maestro_device[@]+"${maestro_device[@]}"} test --no-ansi --test-output-dir "$tmp" --debug-output="$debug" --flatten-debug-output -e VARIANT=$variant "$ROOT/$flow") > "$OUT/$name/log-$variant-attempt-$try.txt" 2>&1; then
+          ok=1; else ok=0; fi
+        if [ "$ok" = 1 ] && { [ ! -d "$shots" ] || ! find "$shots" -maxdepth 1 -name '*.png' -type f -print -quit | grep -q .; }; then
+          echo "NOSHOTS $name $variant attempt $try" >> "$RES"; ok=0
+        fi
+      else
+        echo "HOOKFAIL $name $variant" >> "$RES"; fail=1; ok=0
+        adb exec-out screencap -p > "$OUT/$name/hook-failure-$variant-attempt-$try.png" || true
+      fi
       [ $ok = 1 ] && break
-      [ $try = 1 ] && { echo "RETRY $name $variant" >> "$RES"; adb shell am force-stop $PKG; adb shell input keyevent KEYCODE_HOME; sleep 15; rm -rf "$tmp"; }
+      if [ $try = 1 ]; then
+        mkdir -p "$OUT/$name/failed-$variant-attempt-$try"
+        [ ! -d "$shots" ] || find "$shots" -maxdepth 1 -name '*.png' -type f -exec cp {} "$OUT/$name/failed-$variant-attempt-$try/" \;
+        echo "RETRY $name $variant" >> "$RES"; adb shell am force-stop $PKG; adb shell input keyevent KEYCODE_HOME; sleep 15; rm -rf "$tmp"
+      fi
     done
-    find "$tmp" -name '*.png' -not -path '*/.maestro/*' -not -name 'screenshot-*' -exec cp {} "$OUT/$name/" \;
+    [ ! -d "$shots" ] || find "$shots" -maxdepth 1 -name '*.png' -type f -exec cp {} "$OUT/$name/" \;
     rm -rf "$tmp"
     if [ $ok = 1 ]; then
       echo "PASS $name $variant" >> "$RES"

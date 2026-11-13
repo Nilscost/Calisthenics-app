@@ -1,0 +1,18 @@
+{
+  "baselineFiles": 1066,
+  "changed": [
+    "app/src/main/assets/demos/depth-jump.mp4",
+    "app/src/main/assets/demos/burpee-pushup.mp4",
+    "app/src/main/assets/demos/pilates-roll-over.mp4",
+    "app/src/main/assets/demos/hanging-windshield-wiper.mp4",
+    "app/src/main/assets/demos/squat-pistol.mp4",
+    "app/src/main/assets/thumbs/burpee-pushup.webp",
+    "app/src/main/assets/thumbs/pilates-roll-over.webp",
+    "app/src/main/assets/thumbs/depth-jump.webp",
+    "app/src/main/assets/thumbs/squat-pistol.webp",
+    "app/src/main/assets/thumbs/hanging-windshield-wiper.webp"
+  ],
+  "unchanged": 1056,
+  "newFileCount": 0,
+  "meaning": "This follow-up changes exactly five installed demos and their thumbnails; experimental next-batch media remains isolated."
+}

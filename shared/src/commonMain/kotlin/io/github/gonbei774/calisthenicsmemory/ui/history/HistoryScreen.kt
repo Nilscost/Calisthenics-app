@@ -1,0 +1,256 @@
+// U12 (§3.8): the History tab. A week strip with a dot on every day you trained, the workouts of the week, and a detail
+// screen with what was logged in each round. A correction adds a new feedback revision; nothing is overwritten.
+package io.github.gonbei774.calisthenicsmemory.ui.history
+
+import io.github.gonbei774.calisthenicsmemory.platform.systemTimeZone
+import io.github.gonbei774.calisthenicsmemory.platform.currentPlatformContext
+import io.github.gonbei774.calisthenicsmemory.ui.theme.AppAccentTheme
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.background
+import androidx.compose.foundation.verticalScroll
+import io.github.gonbei774.calisthenicsmemory.ui.icons.Icons
+import io.github.gonbei774.calisthenicsmemory.ui.icons.automirrored.filled.ArrowBack
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.KeyboardArrowLeft
+import io.github.gonbei774.calisthenicsmemory.ui.icons.filled.KeyboardArrowRight
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.pluralStringResource
+import org.jetbrains.compose.resources.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import app.calisthenics.domain.feedback.Rating
+import app.calisthenics.domain.history.*
+import app.calisthenics.domain.model.Side
+import app.calisthenics.domain.model.TargetType
+import io.github.gonbei774.calisthenicsmemory.shared.resources.*
+import app.calisthenics.domain.feedback.effectiveRounds
+import io.github.gonbei774.calisthenicsmemory.ui.session.EditorRound
+import io.github.gonbei774.calisthenicsmemory.ui.session.RoundEditor
+import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
+import io.github.gonbei774.calisthenicsmemory.ui.components.Caption
+import io.github.gonbei774.calisthenicsmemory.ui.components.countText
+import io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog
+import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.plus
+import io.github.gonbei774.calisthenicsmemory.platform.chartDateLabel
+import io.github.gonbei774.calisthenicsmemory.platform.formatMediumDate
+import io.github.gonbei774.calisthenicsmemory.platform.shortWeekdayName
+import io.github.gonbei774.calisthenicsmemory.platform.todayLocalDate
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HistoryScreen(modifier: Modifier = Modifier, source: HistorySource? = null, today: LocalDate = todayLocalDate(), onOpenExercise: (String) -> Unit = {}, onOpen: (String) -> Unit) {
+    val ctx = currentPlatformContext()
+    val src = source ?: remember { RoomHistorySource(ctx) }
+    val zone = remember { systemTimeZone() }
+    var all by remember { mutableStateOf<List<StoredSession>?>(null) }
+    LaunchedEffect(Unit) { all = try { src.sessions() } catch (_: Throwable) { emptyList() } }
+    var weekStart by remember { mutableStateOf(weekStartOf(today)) }
+    var selected by remember { mutableStateOf<LocalDate?>(null) }
+
+    val catalog = remember { runCatching { loadCatalog(ctx) }.getOrNull() }
+    var progress by remember { mutableStateOf<app.calisthenics.domain.progression.ProgressSnapshot?>(null) }
+    LaunchedEffect(catalog, all) { if (catalog != null) progress = try { io.github.gonbei774.calisthenicsmemory.ui.screens.ProgressLoader.load(ctx, catalog) } catch (_: Throwable) { null } }
+    var chartFor by remember { mutableStateOf<String?>(null) }
+    Scaffold(modifier = modifier) { pad ->
+        Column(Modifier.padding(pad).fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+            Text(stringResource(Res.string.tab_history).uppercase(), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("history_title"))
+            val list = all
+            if (list == null) { Text(stringResource(Res.string.history_loading)); return@Column }
+            val finished = finishedSessions(list.map { it.record }).map { it.sessionId }.toSet()
+            val overviews = list.filter { it.record.sessionId in finished }.map { overviewOf(it.plan, it.record, zone) }
+            val days = weekDays(weekStart)
+            val trained = overviews.map { it.day }.toSet()
+            // doc 17 §2.5: summary tiles
+            val levelUpDays = progress?.events?.filter { isLevelUp(it) }?.map { LocalDate.fromEpochDays(it.day.toLong()) }.orEmpty()
+            val tiles = remember(list, levelUpDays, today) { historyTiles(list.map { it.record }, levelUpDays, today, zone) }
+            Row(Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                StatTile(tiles.sessionsThisWeek.toString(), Res.string.history_tile_sessions, "tile_sessions", Modifier.weight(1f).fillMaxHeight())
+                StatTile(tiles.levelUpsThisMonth.toString(), Res.string.history_tile_levelups, "tile_levelups", Modifier.weight(1f).fillMaxHeight())
+                StatTile(tiles.workMinutesThisWeek.toString(), Res.string.history_tile_minutes, "tile_minutes", Modifier.weight(1f).fillMaxHeight())
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = { weekStart = weekStart.plus(-7, DateTimeUnit.DAY); selected = null }, modifier = Modifier.testTag("week_prev")) { Icon(Icons.Filled.KeyboardArrowLeft, stringResource(Res.string.history_prev_week)) }
+                Text(stringResource(Res.string.history_week_range, formatMediumDate(days.first()), formatMediumDate(days.last())), Modifier.weight(1f).testTag("week_label"), textAlign = TextAlign.Center, style = MaterialTheme.typography.titleMedium)
+                IconButton(onClick = { weekStart = weekStart.plus(7, DateTimeUnit.DAY); selected = null }, enabled = weekStart < weekStartOf(today), modifier = Modifier.testTag("week_next")) { Icon(Icons.Filled.KeyboardArrowRight, stringResource(Res.string.history_next_week)) }
+            }
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                days.forEach { d ->
+                    val on = d in trained; val sel = selected == d
+                    val dayDesc = formatMediumDate(d) + if (on) " · " + stringResource(Res.string.history_day_trained) else ""
+                    Column(
+                        Modifier.weight(1f).clip(MaterialTheme.shapes.medium).background(if (sel) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface)
+                            .clickable(enabled = on) { selected = if (sel) null else d }.padding(vertical = Spacing.s).semantics(mergeDescendants = true) { contentDescription = dayDesc }.testTag("day_$d"),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(shortWeekdayName(d), style = MaterialTheme.typography.labelSmall)
+                        Text(d.dayOfMonth.toString(), style = MaterialTheme.typography.titleMedium)
+                        Box(Modifier.size(8.dp).clip(CircleShape).background(if (on) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface).testTag(if (on) "dot_$d" else "nodot_$d"))
+                    }
+                }
+            }
+            val inWeek = overviews.filter { it.day in days }.sortedByDescending { it.startedAtEpochMs }
+            val shown = selected?.let { s -> inWeek.filter { it.day == s } } ?: inWeek
+            if (inWeek.isNotEmpty()) {
+                val week = weeklySummaries(list.filter { it.record.sessionId in finished }.map { it.record }, zone).firstOrNull { it.weekStart == weekStart }
+                if (week != null) Text(pluralStringResource(Res.plurals.history_week_summary, week.sessions, week.sessions, week.workSeconds / 60, week.stretchSeconds / 60), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("week_summary"))
+            }
+            if (shown.isEmpty()) Text(stringResource(if (overviews.isEmpty()) Res.string.history_empty else Res.string.history_empty_week), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.testTag("history_empty"))
+            shown.forEach { o ->
+                Card(Modifier.fillMaxWidth().clickable { onOpen(o.sessionId) }.testTag("session_${o.sessionId}"), shape = MaterialTheme.shapes.large) {
+                    Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                        Text(formatMediumDate(o.day), style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) Res.string.history_session_line else Res.string.history_session_line_sets, o.minutes, countText(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) Res.plurals.count_rounds else Res.plurals.count_sets, o.rounds), countText(Res.plurals.count_exercises, o.exercises)), style = MaterialTheme.typography.bodyLarge)
+                        if (o.finishedEarly) Text(stringResource(Res.string.history_finished_early), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text)
+                    }
+                }
+            }
+            // doc 17 §2.5: every progression with its current best, and the lowest set per session for the one that is open
+            val series = remember(list) { effectiveSetSeries(list.map { SessionWithPlan(it.record, it.plan, it.rows) }, zone) }
+            if (series.isNotEmpty() && catalog != null) {
+                Caption(stringResource(Res.string.history_progressions))
+                series.entries.sortedByDescending { it.value.last().day }.forEach { (vid, pts) ->
+                    val v = catalog.variation(vid) ?: return@forEach
+                    val tier = progress?.tierFor(vid)
+                    val unit = if (v.kind == app.calisthenics.domain.model.Kind.HOLD) "s" else ""
+                    val open = chartFor == vid
+                    Card(Modifier.fillMaxWidth().clickable { chartFor = if (open) null else vid }.testTag("progression_$vid"), shape = MaterialTheme.shapes.large) {
+                        Column(Modifier.padding(Spacing.m), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                                io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(vid, v.name, 40.dp)
+                                Column(Modifier.weight(1f)) {
+                                    Text(v.name, style = MaterialTheme.typography.titleMedium)
+                                    Text(listOfNotNull(tier?.let { stringResource(Res.string.history_level_of, it) }, stringResource(Res.string.history_best, pts.maxOf { it.lowest }, unit)).joinToString(" · "), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
+                            }
+                            if (open) {
+                                val gate = tier?.let { t -> catalog.policyFor(v)?.tiers?.firstOrNull { it.index == t }?.target?.value }
+                                LowestSetChart(pts.takeLast(12).map { it.lowest }, pts.takeLast(12).map { it.day }, gate, Modifier.fillMaxWidth().height(160.dp).testTag("chart_$vid"))
+                                if (pts.size < 2) Text(stringResource(Res.string.history_chart_hint), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.testTag("chart_hint_$vid"))
+                                io.github.gonbei774.calisthenicsmemory.ui.components.AppTextButton(onClick = { onOpenExercise(vid) }, modifier = Modifier.testTag("open_exercise_$vid")) { Text(stringResource(Res.string.history_open_exercise)) }
+                                if (gate != null) Text(stringResource(Res.string.history_chart_gate, gate, unit), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatTile(value: String, caption: StringResource, tag: String, modifier: Modifier) {
+    Card(modifier.semantics(mergeDescendants = true) {}.testTag(tag), shape = MaterialTheme.shapes.large) {
+        Column(Modifier.padding(Spacing.m).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+            Text(value, style = MaterialTheme.typography.headlineMedium)
+            Caption(stringResource(caption))
+        }
+    }
+}
+
+/**
+ * The lowest set of each session as a line with big dots and their values; the dashed line is the number that gates the level.
+ * R7.2-T08 (F8): a short date under each dot (with more than 6 dots, under every second one and always the last).
+ */
+@Composable
+private fun LowestSetChart(values: List<Int>, days: List<LocalDate>, gate: Int?, modifier: Modifier) {
+    val line = AppAccentTheme.colors.accent; val grid = MaterialTheme.colorScheme.outlineVariant; val gateColor = MaterialTheme.colorScheme.outline
+    val labelColor = MaterialTheme.colorScheme.onSurface
+    val labelStyle = MaterialTheme.typography.labelLarge.copy(color = labelColor)
+    val dateStyle = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+    val measurer = androidx.compose.ui.text.rememberTextMeasurer()
+    val labels = days.map { chartDateLabel(it) }
+    val desc = stringResource(Res.string.history_chart_desc, values.zip(labels).joinToString(", ") { (v, d) -> "$d: $v" })
+    androidx.compose.foundation.Canvas(modifier.semantics { contentDescription = desc }) {
+        val dateH = measurer.measure("13 Oct", dateStyle).size.height
+        val bottom = dateH + 8.dp.toPx()                       // room for the dates under the axis
+        val top = (values + listOfNotNull(gate)).max().toFloat().coerceAtLeast(1f); val pad = 22.dp.toPx(); val dot = 7.dp.toPx()
+        val axisY = size.height - bottom
+        fun y(v: Float) = axisY - (axisY - pad) * (v / top)
+        drawLine(grid, androidx.compose.ui.geometry.Offset(0f, axisY), androidx.compose.ui.geometry.Offset(size.width, axisY), 1.dp.toPx())
+        gate?.let { drawLine(gateColor, androidx.compose.ui.geometry.Offset(0f, y(it.toFloat())), androidx.compose.ui.geometry.Offset(size.width, y(it.toFloat())), 1.dp.toPx(), pathEffect = androidx.compose.ui.graphics.PathEffect.dashPathEffect(floatArrayOf(10f, 10f))) }
+        val side = 28.dp.toPx()
+        val xs = values.indices.map { i -> side + (size.width - 2 * side) * (if (values.size == 1) 0.5f else i / (values.size - 1f)) }
+        for (i in 0 until values.size - 1) drawLine(line, androidx.compose.ui.geometry.Offset(xs[i], y(values[i].toFloat())), androidx.compose.ui.geometry.Offset(xs[i + 1], y(values[i + 1].toFloat())), 3.dp.toPx())
+        val dated = chartDateIndexes(values.size)
+        values.forEachIndexed { i, v ->
+            drawCircle(line, dot, androidx.compose.ui.geometry.Offset(xs[i], y(v.toFloat())))   // 14 dp across (R7-T06)
+            val t = measurer.measure(v.toString(), labelStyle)
+            val tx = (xs[i] - t.size.width / 2f).coerceIn(0f, size.width - t.size.width)
+            val ty = (y(v.toFloat()) - dot - t.size.height - 2.dp.toPx()).coerceAtLeast(0f)
+            drawText(t, topLeft = androidx.compose.ui.geometry.Offset(tx, ty))
+            if (i in dated && i < labels.size) {
+                val d = measurer.measure(labels[i], dateStyle)
+                drawText(d, topLeft = androidx.compose.ui.geometry.Offset((xs[i] - d.size.width / 2f).coerceIn(0f, size.width - d.size.width), axisY + 4.dp.toPx()))
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SessionDetailScreen(sessionId: String, modifier: Modifier = Modifier, source: HistorySource? = null, onOpenExercise: (String) -> Unit = {}, onBack: () -> Unit) {
+    val ctx = currentPlatformContext()
+    val src = source ?: remember { RoomHistorySource(ctx) }
+    val scope = rememberCoroutineScope()
+    val catalog = remember { runCatching { loadCatalog(ctx) }.getOrNull() }
+    var stored by remember { mutableStateOf<StoredSession?>(null) }
+    var loaded by remember { mutableStateOf(false) }
+    var corrected by remember { mutableStateOf(false) }
+    LaunchedEffect(sessionId) { stored = try { src.sessions().firstOrNull { it.record.sessionId == sessionId } } catch (_: Throwable) { null }; loaded = true }
+
+    Scaffold(modifier = modifier, topBar = {
+        TopAppBar(title = { Text(stringResource(Res.string.history_detail_title)) }, navigationIcon = { IconButton(onClick = onBack) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(Res.string.back)) } })
+    }) { pad ->
+        Column(Modifier.padding(pad).fillMaxSize().verticalScroll(rememberScrollState()).padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.m)) {
+            val s = stored
+            if (s == null) { Text(stringResource(if (loaded) Res.string.history_not_found else Res.string.history_loading)); return@Column }
+            val o = overviewOf(s.plan, s.record, systemTimeZone())
+            Text(formatMediumDate(o.day), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.testTag("detail_title"))
+            Text(stringResource(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) Res.string.history_session_line else Res.string.history_session_line_sets, o.minutes, countText(if (o.format == app.calisthenics.domain.model.WorkoutFormat.CIRCUIT) Res.plurals.count_rounds else Res.plurals.count_sets, o.rounds), countText(Res.plurals.count_exercises, o.exercises)), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("detail_summary"))
+            if (s.plan == null) Text(stringResource(Res.string.history_no_plan), style = MaterialTheme.typography.bodyMedium)
+            val details = s.plan?.let { exerciseDetails(it, s.record.blocks) }.orEmpty()
+            val achieved = s.record.blocks.filter { it.outcome == "MET" || it.outcome == "PARTIAL" }.associate { it.blockId to it.achievedValue }
+            if (details.isNotEmpty()) Text(stringResource(Res.string.history_correct), style = MaterialTheme.typography.labelLarge)
+            details.forEach { d ->
+                val plan = s.plan ?: return@forEach
+                val name = catalog?.variation(d.variationId)?.name ?: d.variationId
+                // V04b (R22): every round has its own number; a correction is saved as new revisions, the history stays append-only.
+                val rounds = effectiveRounds(plan, d.variationId, achieved, s.rows)
+                val tv = d.judged
+                Card(Modifier.fillMaxWidth().testTag("detail_${d.variationId}"), shape = MaterialTheme.shapes.large) {
+                    Column(Modifier.padding(Spacing.l), verticalArrangement = Arrangement.spacedBy(Spacing.s)) {
+                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
+                            io.github.gonbei774.calisthenicsmemory.ui.components.ExerciseThumb(d.variationId, name, 48.dp)
+                            Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f).heightIn(min = 48.dp).wrapContentHeight(Alignment.CenterVertically).clickable { onOpenExercise(d.variationId) }.testTag("open_exercise_${d.variationId}"))
+                        }
+                        RoundEditor(
+                            d.target, rounds.map { EditorRound(it.blockId, it.round, it.side, it.value, it.corrected) }, sets = plan.format != app.calisthenics.domain.model.WorkoutFormat.CIRCUIT,
+                            tooHard0 = rounds.any { it.rating == Rating.BELOW && !(it.value.let { v -> v != null && tv != null && v < tv }) },
+                            tooEasy0 = rounds.any { it.rating == Rating.ABOVE }, pain0 = rounds.any { it.discomfort }, tag = "fix_${d.variationId}", alternating = d.alternating, judged = d.judged,
+                        ) { list ->
+                            corrected = true
+                            scope.launch { src.reviseRounds(sessionId, d.variationId, list) }
+                        }
+                    }
+                }
+            }
+            if (corrected) Text(stringResource(Res.string.history_corrected), style = MaterialTheme.typography.bodyMedium, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("corrected_note"))
+        }
+    }
+}

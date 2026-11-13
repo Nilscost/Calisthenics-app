@@ -28,13 +28,6 @@ def _forearm_pose(ax=-1.35, angle=11, shift=0.0, bump=0.0, lever=0.27):
                      knee_l=[0,0,1], knee_r=[0,0,1], foot_l=[0.95,0,-0.3], foot_r=[0.95,0,-0.3])
 
 
-def plank_long_lever():
-    # Elbows are conspicuously ahead of the shoulder line; squeeze into a short hold.
-    a = _forearm_pose(lever=0.34, bump=0.005)
-    b = _forearm_pose(lever=0.34, bump=-0.005)
-    return dict(seconds=3.0, keys=rep(a,b), cam_az=30, cam_el=18, props=[])
-
-
 def _high_plank(angle=22.5, ax=-1.245, reach=None):
     p0 = [ax + 0.898*_c(angle), 0.0, 0.08 + 0.898*_s(angle)]
     sx = p0[0] + L_SH*_c(angle)
@@ -435,7 +428,6 @@ def swimmer():
 
 
 EXERCISES = {
-    "plank-long-lever": plank_long_lever,
     "plank-contralateral": plank_contralateral,
     "plank-arm-leg-reach": plank_arm_leg_reach,
     "body-saw": body_saw,
