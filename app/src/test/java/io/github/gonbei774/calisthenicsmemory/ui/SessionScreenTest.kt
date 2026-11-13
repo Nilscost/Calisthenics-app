@@ -490,7 +490,9 @@ class SessionScreenTest {
         val vid = firstWorkVid
         rule.onNodeWithTag("end_edit_$vid").performClick(); rule.waitForIdle()
         val rounds = plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid }.size
-        rule.onNodeWithTag("end_fix_$vid").assertExists() // without a history comparison the exercise still has its own card
+        // one card for the exercise: the progress card when the history comparison has loaded (Room is shared by the tests in this class),
+        // otherwise the edit-only card; either way it carries the rounds and the chips
+        rule.onAllNodes(hasTestTag("end_fix_$vid") or hasTestTag("end_card_$vid")).assertCountEquals(1)
         for (i in 1..rounds) rule.onNodeWithTag("end_${vid}_round${i}_value").performScrollTo().assertExists()
         rule.onNodeWithTag("end_${vid}_too_hard").performScrollTo().assertExists()
         rule.onNodeWithTag("end_${vid}_too_easy").performScrollTo().assertExists()
