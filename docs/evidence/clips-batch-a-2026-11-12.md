@@ -49,3 +49,16 @@ Asset check: sha256 of every file under app/src/main/assets before and after. Ex
 Controls unchanged (before equals after); their full hashes are in the first table.
 
 Checks: tools/validate_content.py content/starter OK; ClipAssetsTest 3 tests, 0 failures.
+
+## Phase 4: side-plank installed, Russian twist not passed (2026-11-13)
+
+side-plank was accepted in round 2, rendered alone in work/render-batches/batch-a-2026-11-12/final-side-plank (geometry preflight pass, 72 frames, 9712 bytes, 480x360, 24 fps, H.264 Main yuv420p, decodes cleanly) and installed with install_clips.py (explicit id).
+Hash diff against the asset list taken after the phase 3 install: exactly two files changed, app/src/main/assets/demos/side-plank.mp4 and app/src/main/assets/thumbs/side-plank.webp. Controls and every other file are byte-identical.
+
+| id | new demo sha256 | new thumb sha256 |
+| --- | --- | --- |
+| side-plank | 4ee287f038e1337cd2ecbecc2170cd34084704475dc53b3e02bbad2d3dbb8824 | 8d7b2c2f9de119babcb3b1fddf1dddb290117f63a53620dd177428b86ade4154 |
+
+russian-twist: not passed after two rounds (doc 43 section 5 stop rule): hands stay at chin height, feet look grounded; current clip kept (installed hashes unchanged, see the first table). The new pose source stays in the branch but is not rendered or installed.
+
+Checks: tools/validate_content.py content/starter OK; ClipAssetsTest 3 tests, 0 failures.
