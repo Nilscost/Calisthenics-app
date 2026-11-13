@@ -1,67 +1,86 @@
 # Calisthenics App
 
-A personal Android app for bodyweight and equipment-assisted training. Its library contains533 exercise, stretch and warm-up variations, with explicit progression paths toward skills such as the muscle-up, front lever and pistol squat. It runs fully offline: no account, no internet permission, and all data stays on the phone. Demonstrations that need improvement are withheld, with written instructions available instead.
+A personal training app that turns bodyweight and equipment-assisted exercises into structured workouts, with guided sessions, adaptive progression and a clear record of progress.
 
-![Six of the generated exercise demos](docs/media/exercises.png)
+Built for Android and the web with Kotlin Multiplatform and Compose Multiplatform.
 
-I built it as the product owner. AI coding agents wrote most of the code; I set the scope, made the decisions, reviewed the results and tested on my phone. The repository shows the app and also how the work was run: specification, ordered workplan, decision log, approval gates and evidence for every step.
+**Latest version: 9.3** · `0.12.3-r9` · November 2026
 
-## What the app does
+[Version 9.3 source](https://github.com/Nilscost/Calisthenics-app/tree/codex/kmp-port) · [Release notes and status](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/STATUS.md)
 
-**R8.2 (0.11.2-r8):** power exercises sit in Squat and Push (no Power tab), Prehab and warm-up items are one Warm-up category with an automatic matched warm-up, Train has an Include row (Warm-up, Conditioning, Cool-down) with a conditioning finisher, and the duplicate exercise count is gone. [Phone check](docs/evidence/owner-check-r8.2.md). Not phone-tested; content DRAFT.
+![A selection of generated exercise demonstrations](docs/media/exercises.png)
 
-**R8.1 (0.11.1-r8):** engine fixes from the owner's R8 phone test (never below the shown level, one exercise per progression, actual reps, 3 good sessions within 14 days), set formats, Flow and persistent edits in the Preview, programs and routines in one dropdown, merged 30+ minute Army and Pilates sessions, search on top and visible alternatives in Progress, equipment icons and order. Walk-through: [phone check](docs/evidence/owner-check-r8.1.md). Not phone-tested; content DRAFT.
+## The app
 
-**R8 (0.11.0-r8):** expands the library, adds eight fixed programs, equipment-aware selection and searchable aliases, and keeps the main progression paths compact. Completed workouts alternate approved variations; new comparable alternatives receive conservative starting targets, then follow their own results. Preview rests are editable, voice cues are slower and name the working side, and two-sided holds have a five-second changeover. Fixed programs live under Routine; specialist exercises can be added manually in Preview and follow the selected equipment profile. See the [phone walk-through](docs/evidence/owner-check-r8.md). All 25 previously unclear demonstration videos are replaced and no demonstration is withheld. The final APK is verified on CI and in a fresh Docker clone (`docs/evidence/r8-build-2026-10-17.json`). R8 phone checks and owner acceptance remain open; training content remains DRAFT.
+The app brings workout planning, exercise guidance and progression tracking into one place. Its library covers 533 exercise, stretch and warm-up variations, with progression paths toward skills such as the muscle-up, front lever and pistol squat.
 
-- **Train:** pick a goal (a skill such as the handstand push-up, or a body focus), your equipment profile and the number of rounds. You get a circuit preview with the muscles worked; swap any exercise for today or permanently, then start.
-- **During the workout:** large timer, looping demo clip, voice cues and a foreground service, so it keeps time with the screen off. Stretches replace passive rest. You log reps on the exercise screen and holds during the following break.
-- **Progression:** every exercise has five levels. The app moves you up after three successful sessions within any 14 days (sessions on a same-level alternative count together), holds the level if you fall below target, pauses the whole exercise family if you report pain, and hands you to the next exercise when you master one. Kettlebell levels count per weight: a heavier bell restarts the same exercise, while the same bell leads to harder exercises.
-- **Progress:** a skill tree per family (push, pull, squat, core…) with 0–5 stars, locks and equipment badges.
-- **History:** a week view and per-workout details, with corrections saved as new revisions so nothing is overwritten.
-- **Data:** checksummed backup and restore, crash-safe workout recovery, and a schema-checked database with no destructive migrations.
+- **Personalised workouts:** choose a skill or body focus, select your equipment and adjust the session before you start. Save routines or use ready-made programs.
+- **Guided training:** follow demonstration clips, timers and voice cues, with optional warm-ups, conditioning and cool-downs.
+- **Adaptive progression:** work through five levels per exercise, build consistency across sessions and move toward harder variations as you progress.
+- **Visible progress:** explore skill trees, review exercise history and correct workout logs without losing the original record.
+- **Local data:** keep your history, routines and settings on your device, with backup and restore. The Android app runs fully offline; the web app works offline after loading, with demonstrations cached as they are used.
 
-**Version 2 (release R7, 0.10.0-r7):** R7 adds, on top of R6, rep logging on the exercise screen, an exercises-per-round stepper (aiming for at least 30 minutes when enough equipment-compatible exercises are available), skill sessions built around the skill, a full-timeline editor, an Edit mode and links in Progress, Jefferson curl and German hang, and a cool-down switch; see `docs/evidence/owner-check-r7.md`. Nothing has been tested on a phone and the exercise content is an unreviewed draft.
+## What’s new in 9.3
 
-**Version 2 (release R6, 0.9.0-r6):** a redesigned Train and workout screen, a round preview you can edit (levels, stretches, per-set numbers), three workout formats (circuit, pairs, straight sets), progression rules (levels or rep ranges), saved routines and the ready-made Recommended and Minimalist routines, an optional warm-up, History charts, weight tracks and suggestions for extra equipment, a 24-stretch library with a "Starting To Stretch" session, a RAMP warm-up and the Barlow Condensed and IBM Plex Sans type. See `STATUS.md` and `docs/evidence/owner-check-final.md`. Exercise content is still an unreviewed draft and nothing has been tested on a phone yet.
+Version 9.3 focuses on making workouts easier to follow and progress easier to understand:
 
-## How the project was run
+- **Clearer repetition counts:** alternating exercises show both the total and the count per side.
+- **A more useful preparation screen:** the next exercise, its target and the working side take priority.
+- **Simpler workout feedback:** one card per exercise brings together results, corrections and difficulty feedback, with clearer explanations of level changes and the next progression.
+- **Smaller steps between levels:** targets increase gradually after successful sessions.
+- **Routine import from a chatbot:** export the exercise library and routine format, then import a generated routine from a file or pasted text.
+- **Refined demonstrations:** nine exercise clips were rebuilt and reviewed against filmed coaching references.
 
-| Stage | Where |
-|---|---|
-| Idea and product specification, approved before coding | `docs/archive/00-owner-idea.md`, `docs/archive/01-product-specification.md` |
-| Coding specification, workplan (27 tasks) and verification plan | `docs/02`–`04` |
-| Decisions, open risks, architecture records | `docs/archive/07-decisions-and-blockers.md`, `docs/adr/` |
-| UX overhaul from my phone feedback: 18 findings, 8 open questions, 14 tasks | `docs/10-ux-overhaul-plan.md` |
-| Evidence: a verification log per task, phone-run results, reviews | `docs/evidence/` |
-| Honest current state | `STATUS.md` |
+## My role
 
-Ground rules I set for the agents:
+I built this project as the product owner, starting from an open-source Android app. I defined the product direction, translated my own training needs into requirements, prioritised improvements and tested the app on my phone. AI coding agents wrote most of the code; I directed their work, reviewed the results and made the product decisions.
 
-- one small task at a time, with tests first;
-- the full verification run before every commit, with its log kept;
-- no claims without evidence;
-- I approve gates myself; an agent never does.
+The repository documents that process: specifications, architecture decisions, feedback-driven iterations and verification evidence. It shows how I take a practical problem from an initial idea through implementation, testing and continued refinement.
 
-Every number in the exercise catalog is marked DRAFT until I have reviewed it (`docs/review/draft-numbers.md`).
+## Technical overview
 
-## Engineering
+| Area | Implementation |
+| --- | --- |
+| Shared application | Kotlin Multiplatform and Compose Multiplatform |
+| Android | Jetpack Compose, Room and a foreground workout service; Android 8.0+ |
+| Web | Kotlin/WebAssembly, shared Compose UI and offline caching |
+| Training logic | Deterministic workout planning, progression and session state |
+| Content | Script-generated exercise catalog and Blender-rendered demonstrations |
+| Verification | JVM and WebAssembly tests, Android UI tests, browser checks, lint and content validation |
 
-- Kotlin and Jetpack Compose (Material 3), Room, and a foreground service; minimum Android 8.0 (API 26). Built on the open-source [CalisthenicsMemory](https://codeberg.org/Gonbei774/CalisthenicsMemory) app (GPL-3.0), whose old screens were replaced.
-- Three modules:
-  - `domain`: pure Kotlin, holding the planner, progression engine and session state machine, all deterministic and unit-tested;
-  - `data`: storage;
-  - `app`: the user interface.
-- **Automated tests** covering domain logic, catalog rules, and Robolectric UI tests at phone size, at text size 1.3 and in dark mode. Lint, an offline build check and a hygiene check run in CI (`.github/workflows/android.yml`).
-- The exercise catalog and demo clips are generated from scripts, so content changes are reviewable as code: the catalog by `tools/gen_starter_catalog.py`, the clips as poses in `tools/blender/` rendered in Blender. `tools/gen_demo_clips_v3.py` (the earlier stick-figure generator) still writes the muscle data (`clip_meta.json`) and checks that every exercise has a pose.
+The code is organised into `domain` (training logic), `data` (storage), `shared` (shared interface), `app` (Android) and `web` (browser).
 
-## Build
+## Build and explore
+
+Version 9.3 is on the [`codex/kmp-port` branch](https://github.com/Nilscost/Calisthenics-app/tree/codex/kmp-port). The default branch currently contains an earlier implementation.
 
 ```sh
-bash scripts/verify.sh            # tests, lint, debug APK, content validation (JDK 21 + Android SDK 35)
-./gradlew :app:assembleDebug      # APK in app/build/outputs/apk/debug/
+git clone --branch codex/kmp-port https://github.com/Nilscost/Calisthenics-app.git
+cd Calisthenics-app
+
+# Build the Android debug APK
+./gradlew :app:assembleDebug
+
+# Build the web app
+./gradlew :web:wasmJsBrowserDistribution
+
+# Run the host verification suite
+bash scripts/verify.sh
 ```
 
-## Status
+See the [toolchain requirements](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/toolchain.lock.md) for Java, Android SDK, Node.js and Python versions.
 
-The app is in personal use on a Galaxy S21. The latest UX overhaul is verified by the automated tests but not yet fully re-tested on the phone. The training numbers are not yet professionally reviewed. Licensed under GPL-3.0 (see `LICENSE`, `THIRD_PARTY_NOTICES.md` and `PRIVACY.md`).
+For a closer look at the work:
+
+- [Product specification](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/docs/archive/01-product-specification.md)
+- [Multiplatform architecture and implementation](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/docs/evidence/kmp-port.md)
+- [User feedback and iterations](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/docs/user-feedback.md)
+- [Version 9.3 interface review](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/docs/evidence/ui/R9.3-review.md)
+
+## Project status
+
+This is a personal project in active development, used on a Samsung Galaxy S21. Version 9.3 has automated verification and screenshot-review evidence; its release-specific phone checks remain open. Exercise targets remain a draft and have not been professionally reviewed.
+
+## License and acknowledgements
+
+Based on [CalisthenicsMemory](https://codeberg.org/Gonbei774/CalisthenicsMemory) and licensed under [GPL-3.0](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for attribution and licensing details.
