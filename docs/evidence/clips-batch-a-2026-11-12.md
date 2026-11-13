@@ -28,3 +28,24 @@ Rebuilt from references, class checks and native geometry preflight pass: plank-
 ## Phase 2 status
 
 All ten rebuilt (families/batch_a.py, batch_a_more.py), class checks and native geometry PASS for all ten (work/render-batches/batch-a-2026-11-12/_preflight-phase2/geometry.json). Known reference problems: glute-bridge ref2 and dip-parallel ref2 intervals cross camera cuts; split-squat ref2 interval is a different pace/segment. walking-lunge is an in-place alternating forward lunge (step out, lower, return), not a travelling walk.
+
+## Phase 3: render and install (2026-11-13)
+
+Rendered with render_batch.py (prepare, run) in work/render-batches/batch-a-2026-11-12/final: 8 ids, geometry preflight pass, all complete. Every encode decodes cleanly and is 480x360, 24 fps, H.264 Main, yuv420p, well under 120 KiB. Installed with install_clips.py (explicit ids): plank-long-lever, bridge-single-leg, glute-bridge, plank-shoulder-tap, walking-lunge, split-squat, dip-parallel, inverted-row. Sent back and not rendered: side-plank, russian-twist.
+
+Asset check: sha256 of every file under app/src/main/assets before and after. Exactly the 16 files below differ (8 demos, 8 thumbs); all other files, including the pushup-archer and pullup-full clips and thumbnails, are byte-identical.
+
+| id | new demo sha256 | new thumb sha256 |
+| --- | --- | --- |
+| plank-long-lever | b32d24a48797c025ab03998b1edd4623749753390a2b7b7c80bcb17840ad4940 | 10a3a2b1c0a69ea040fdf12a68bd1f43e8084aef180345ca1eb62891f9e58cac |
+| bridge-single-leg | 4099fb79b41ca6ed71b49d2b4c6417adafd7d9d62fdd07b00bfb4ed7e764ee84 | d3802065c6a1c43c73c085dd7697a374cdc6d11fcd1c2cd90158f03656939ba0 |
+| glute-bridge | 49a594e804fa3dc6966ea0422d3fee43ea5fb4abd7842ce5c682ad2ad0070bde | 4de52b3b6f5743d8cfffadba9030c65307860cd9d6913dba19aaa156700d9110 |
+| plank-shoulder-tap | 4a9fddb30debf0d5065385200965db5a11c874f887e8523e43bfb69eb8b76121 | ab85b96125e0eb83787aca3384bb93a510ec1a201248b395434c732442a0f370 |
+| walking-lunge | 3ccb22d40c0eae30c4400a44bd6d0758fb841d412fbfad429e39ae4ccdaebc55 | b94b7728d6d29c5d5332f33380d6b41bd686319f5587d593ba47a280d64bc4f2 |
+| split-squat | 27c0c472c3fca455cc6f3eeeb8bb9a953033f7d6fbe4c48381ed765d3e94de11 | bc834465b605a213e5edcbefb0289524f5a541b902d7d08007626e33d3770770 |
+| dip-parallel | 7644f61400332e9badd1a6a882e783149c56181a41b7fd26d083438e8dec5884 | 76bf393a66cb303a3b5a337ee6e007b734a7810ef88da84599833b3ba6f45751 |
+| inverted-row | 4dfd2565e19fa547ce53e465e4324705ba7d406089a2433f4856cab50027a06c | 4730076bf1c40ad9212f26a835d4f4020b5f252f5835471574c085ba0e403cc8 |
+
+Controls unchanged (before equals after); their full hashes are in the first table.
+
+Checks: tools/validate_content.py content/starter OK; ClipAssetsTest 3 tests, 0 failures.
