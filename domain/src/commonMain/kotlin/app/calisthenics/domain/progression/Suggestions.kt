@@ -64,17 +64,23 @@ private fun moveOn(c: Catalog, profile: EquipmentProfile, p: ProgressSnapshot, v
     return if (vp.tier < top) Suggestion.RaiseLevel(v.id, top, round) else null              // no next exercise: 4 -> 5, nothing at 5
 }
 
+/** The move on offered after a "too easy" session of [variationId] (what [suggest] offers first), or null: not flagged, or the route already moved on. */
+fun moveOnFor(c: Catalog, profile: EquipmentProfile, p: ProgressSnapshot, variationId: String, goalId: String? = null): Suggestion? {
+    val vp = p.variations[variationId]?.takeIf { it.raiseSuggested } ?: return null
+    val v = c.variation(variationId) ?: return null
+    val active = p.activeInFamily[v.familyId]
+    val route = c.mainRouteFor(v.id, goalId)
+    if (active != null && active != v.id && c.progressionGroupOf(active) == c.progressionGroupOf(v.id) &&
+        (route == null || active in route.mainPath)) return null // already moved on within this same progression
+    return moveOn(c, profile, p, v, vp, goalId)
+}
+
 /** At most one suggestion; [dismissed] are the ids the person closed. Order: a raise they can accept, a heavier weight, then new equipment. */
 fun suggest(c: Catalog, profile: EquipmentProfile, p: ProgressSnapshot, dismissed: Set<String>, goalId: String? = null): Suggestion? {
     // 1. D7 / R7.2-T06 (F7, O1): one "too easy" offers a move on. Level 1 -> 3, 2 -> 4, 3 -> 5; level 4 or 5 -> level 1 of the next exercise.
     //    No next exercise: 4 -> 5 and nothing at 5. Weighted exercises: 4 -> 5, and at 5 the heavier weight. Under a Rep range rule (no levels): the next exercise.
     for (vp in p.variations.values.filter { it.raiseSuggested }.sortedBy { it.variationId }) {
-        val v = c.variation(vp.variationId) ?: continue
-        val active = p.activeInFamily[v.familyId]
-        val route = c.mainRouteFor(v.id, goalId)
-        if (active != null && active != v.id && c.progressionGroupOf(active) == c.progressionGroupOf(v.id) &&
-            (route == null || active in route.mainPath)) continue // already moved on within this same progression
-        moveOn(c, profile, p, v, vp, goalId)?.takeIf { it.id !in dismissed }?.let { return it }
+        moveOnFor(c, profile, p, vp.variationId, goalId)?.takeIf { it.id !in dismissed }?.let { return it }
     }
     // 2. a heavier weight when every level is earned at the weight in use
     for (v in c.variations.filter { it.kind == Kind.REPS || it.kind == Kind.HOLD }.sortedBy { it.id }) {

@@ -1,7 +1,16 @@
 package app.calisthenics.domain
 
 import app.calisthenics.domain.content.parseCatalog
+import app.calisthenics.domain.feedback.Execution
+import app.calisthenics.domain.feedback.Feedback
 import app.calisthenics.domain.feedback.SessionEvidence
+import app.calisthenics.domain.feedback.deriveEvidence
+import app.calisthenics.domain.feedback.resolveFeedback
+import app.calisthenics.domain.model.BlockType
+import app.calisthenics.domain.model.Side
+import app.calisthenics.domain.model.StrengthFocus
+import app.calisthenics.domain.model.TimelineBlock
+import app.calisthenics.domain.model.WorkoutPlan
 import app.calisthenics.domain.progression.*
 import app.calisthenics.domain.session.*
 import kotlin.test.Test
@@ -31,7 +40,60 @@ class SessionProgressSummaryTest {
         assertEquals(4, e.leveledUpTo); assertEquals(4, e.tier)
         assertEquals(2, e.starsBefore); assertEquals(3, e.stars)
         assertFalse(e.mastered); assertEquals(listOf(e), s.levelUps); assertTrue(s.hasUnlocks)
-        assertEquals(0, e.progress!!.have); assertEquals(5, e.progress!!.toLevel)
+        // 9.3: the card says why the level was reached (three good sessions at level 3, all filled), not progress towards level 5
+        assertEquals(LevelProgress(3, 3, false, 4, finished = true), e.progress); assertEquals(LevelUpBy.STREAK, e.levelUpBy)
+    }
+
+    @Test fun aLevelReachedOnTheWeeklyPathShowsFourOfFour() {
+        val e = summary(std, 3, listOf(0, 10, 20, 28)).exercises.single()
+        assertEquals(4, e.leveledUpTo); assertEquals(LevelUpBy.STREAK, e.levelUpBy)
+        assertEquals(LevelProgress(4, 4, true, 4, finished = true), e.progress)
+    }
+
+    @Test fun twoLevelUpsByStreakLookTheSameWhateverTheEngineDoesWithTheStreak() {
+        // the engine clears the streak after a level-up (0 of 3); the card must not depend on that
+        val e = summary(std, 1, listOf(0, 4, 8)).exercises.single()
+        assertEquals(2, e.leveledUpTo)
+        assertEquals(LevelProgress(3, 3, false, 2, finished = true), e.progress)
+    }
+
+    /** Typed reps that already met level 3's targets: the level is adopted at once, with one good session towards level 4. */
+    @Test fun aLevelReachedByDemonstratedRepsSaysSoAndKeepsTheNormalDots() {
+        val policy = c.policyForVariation(std)!!
+        val plan = WorkoutPlan("p3", "usual", 1, 1, 0, "home", 180, 180, setOf(StrengthFocus.FULL_BODY), false, null, 3, emptyList(), emptyList(), false,
+            false, emptyList(), progressionEvidenceVersion = 1, progressionPolicies = mapOf(std to policy))
+        val work = List(3) { i -> TimelineBlock("w${i + 1}", BlockType.WORK, 90, i + 1, "push", std, side = Side.NONE, target = policy.tier(3).target, prescriptionTier = 3, freeTarget = false) }
+        val full = plan.copy(blocks = work)
+        val logs = work.associate { it.id to Feedback(actualReps = policy.tier(3).target.value) }
+        val outcomes = resolveFeedback(full, work.associate { it.id to Execution.COMPLETED }, logs)
+        val ev = deriveEvidence("s5", 5, full, outcomes, { c.variation(it)?.familyId ?: it }, { v, t -> c.policyForVariation(v)?.tier(t ?: 1)?.minQualifyingBlocks ?: 2 },
+            loggedBlockIds = work.map { it.id }.toSet(), effectivePolicyOf = { c.policyForVariation(it) })
+        val act = listOf(UserAction.SelfAssessment(0, std, 1))
+        val e = summarizeSessionProgress(c, engine.replay(emptyList(), act), engine.replay(ev, act), listOf(std)).exercises.single()
+        assertEquals(3, e.leveledUpTo); assertEquals(LevelUpBy.DEMONSTRATED, e.levelUpBy)
+        assertEquals(LevelProgress(1, 3, false, 4), e.progress)
+    }
+
+    @Test fun anExerciseThatDidNotLevelUpHasNoLevelUpBy() {
+        assertNull(summary(std, 3, listOf(0, 5)).exercises.single().levelUpBy)
+    }
+
+    @Test fun aMasteredExerciseNamesTheNextStepOfItsRouteWhenTheRouteMovedOn() {
+        val archer = "pushup-archer"
+        val now = summary(archer, 5, listOf(0, 5, 10)).exercises.single()
+        assertTrue(now.mastered); assertEquals("pushup-half-one-arm", now.nextVariationId)
+        // mastered before this session: still named
+        val act = listOf(UserAction.SelfAssessment(0, archer, 5))
+        val days = listOf(0, 5, 10, 14)
+        val all = days.map { ev(it, archer, 5) }
+        val s = summarizeSessionProgress(c, engine.replay(all.dropLast(1), act), engine.replay(all, act), listOf(archer)).exercises.single()
+        assertFalse(s.mastered); assertTrue(s.masteredAlready); assertEquals("pushup-half-one-arm", s.nextVariationId)
+    }
+
+    @Test fun noNextStepWhenTheRouteEndsOrTheExerciseIsNotMastered() {
+        val last = c.progressionRoutes.first { it.id == "pushup" }.mainPath.last()
+        assertNull(summary(last, 5, listOf(0, 5, 10)).exercises.single().nextVariationId)
+        assertNull(summary(std, 3, listOf(0, 5, 10)).exercises.single().nextVariationId)
     }
 
     @Test fun masteringTheTopLevelOfARouteAlsoUnlocksTheNextExercise() {

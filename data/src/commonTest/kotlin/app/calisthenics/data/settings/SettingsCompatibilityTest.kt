@@ -4,6 +4,7 @@ import app.calisthenics.domain.model.ProgressionRule
 import app.calisthenics.domain.model.RuleKind
 import app.calisthenics.domain.planner.PlanEdits
 import app.calisthenics.domain.planner.PreviewDraft
+import app.calisthenics.domain.progression.UserAction
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -48,6 +49,16 @@ class SettingsCompatibilityTest {
         SuggestionStore.dismiss(p, "c"); SuggestionStore.acceptNext(p, "pushup-standard", "pushup-diamond", 19001)
         assertEquals(setOf("a", "b", "c"), p.open("suggestions").stringSetOrNull("dismissed"))
         assertEquals(2, SuggestionStore.accepted(p).size)
+    }
+
+    /** 9.3: "Go down to Level N" on the end screen is stored next to the other accepted moves and replays as AcceptEasier. */
+    @Test fun anAcceptedMoveDownIsReplayedAsAcceptEasierAndKeepsTheOtherMoves() {
+        val p = MemoryProvider()
+        SuggestionStore.accept(p, "pushup-standard", 5, 19000)
+        SuggestionStore.acceptEasier(p, "row-inverted", 2, 19002)
+        assertEquals(listOf<UserAction>(UserAction.AcceptHarder(19000, "pushup-standard", 5), UserAction.AcceptEasier(19002, "row-inverted", 2)), SuggestionStore.accepted(p))
+        SuggestionStore.clearAll(p)
+        assertEquals(emptyList<UserAction>(), SuggestionStore.accepted(p))
     }
 
     @Test fun draftKeyAndExplicitRuleSurviveAndUnrelatedKeyDoesNotLoad() {

@@ -584,6 +584,17 @@
     <string name="preview_empty_hint">Add an exercise to continue.</string>
     <string name="preview_undo_remove">Undo removal</string>
     <string name="prepare_held">%1$s held</string>
+    <string name="end_progress_done_sessions">%1$d of %2$d good sessions at Level %3$d</string>
+    <string name="end_progress_done_weekly">%1$d of %2$d weekly sessions at Level %3$d</string>
+    <string name="end_demonstrated">You did the Level %1$d reps today</string>
+    <string name="end_next_exercise">Next: %1$s · Level 1</string>
+    <string name="end_next_exercise_name">Next: %1$s</string>
+    <string name="end_rate_caption">How did it feel?</string>
+    <string name="end_go_down">Go down to Level %1$d</string>
+    <string name="end_go_up">Go up to Level %1$d</string>
+    <string name="end_go_next">Switch to %1$s</string>
+    <string name="end_acted_level">Level %1$d from next time</string>
+    <string name="end_acted_next">%1$s from next time</string>
     <string name="feedback_app_volume">App volume · %1$d%</string>
     <string name="feedback_app_volume_hint">Controls voice and workout sounds</string>
     <string name="feedback_between_flow">Flow</string>

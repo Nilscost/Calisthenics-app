@@ -60,9 +60,10 @@ appId: app.calisthenics.personal
 - tapOn: "End workout"
 - extendedWaitUntil: { visible: { id: end_title }, timeout: 10000 }
 - takeScreenshot: 08-end-screen-${VARIANT}
-# V04b: the per-round editor (one number per round, Too hard / Too easy / Pain).
-- tapOn: { id: end_edit }
-- scrollUntilVisible: { element: { id: "end_fix_.*" }, direction: DOWN, timeout: 8000 }
+# One card per exercise: Too hard / Too easy / Pain are on it; "Edit what I logged" unfolds one number per round.
+- scrollUntilVisible: { element: { id: "end_edit_.*" }, direction: DOWN, timeout: 8000 }
+- tapOn: { id: "end_edit_.*", index: 0 }
+- scrollUntilVisible: { element: { id: "end_.*_round1_value" }, direction: DOWN, timeout: 8000 }
 - takeScreenshot: 09-end-editor-${VARIANT}
 - scrollUntilVisible: { element: { id: end_done }, direction: DOWN, speed: 40, timeout: 30000 }
 - tapOn: { id: end_done }

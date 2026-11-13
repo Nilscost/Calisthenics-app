@@ -33,6 +33,49 @@ class SuggestionsTest {
         assertFalse(suggest(catalog, bare, snap(vp("pushup-standard", 5, raise = true)), emptySet()) is Suggestion.RaiseLevel)   // top level: nothing to raise
     }
 
+    // 9.3 (end screen): the same move on, asked for one exercise
+    @Test fun moveOnForGivesTheTooEasyMoveOfThatExerciseOnly() {
+        val p = snap(vp("pushup-standard", 3, raise = true), vp("row-band", 3))
+        assertEquals(Suggestion.RaiseLevel("pushup-standard", 5), moveOnFor(catalog, bare, p, "pushup-standard"))
+        assertNull(moveOnFor(catalog, bare, p, "row-band"))                                  // not flagged "too easy"
+        assertNull(moveOnFor(catalog, bare, snap(vp("pushup-standard", 3)), "pushup-standard"))
+        assertNull(moveOnFor(catalog, bare, p, "no-such-exercise"))
+    }
+
+    @Test fun moveOnForOnTheTopLevelOffersTheNextExercise() {
+        val next = catalog.policyFor(catalog.variation("plank")!!)!!.nextVariationIds.first()
+        val p = snap(vp("plank", 5, setOf(1, 2, 3, 4), raise = true))
+        assertEquals(Suggestion.NextExercise("plank", next, 1), moveOnFor(catalog, SeedProfiles.home, p, "plank"))
+    }
+
+    @Test fun moveOnForIsNullOnceTheRouteMovedOnAndSuggestStillAgrees() {
+        val next = catalog.policyFor(catalog.variation("plank")!!)!!.nextVariationIds.first()
+        val fam = catalog.variation("plank")!!.familyId
+        val p = ProgressSnapshot(mapOf("plank" to vp("plank", 5, setOf(1, 2, 3, 4, 5), raise = true)), mapOf(fam to next), emptyMap(), emptyList())
+        assertNull(moveOnFor(catalog, SeedProfiles.home, p, "plank"))
+        val open = snap(vp("pushup-standard", 3, raise = true))
+        assertEquals(moveOnFor(catalog, bare, open, "pushup-standard"), suggest(catalog, bare, open, emptySet()))
+    }
+
+    /** The end screen applies the move itself: the Progress suggestion must not offer the same move again, and a move down clears the "below target" hint. */
+    @Test fun aMoveTakenOnTheEndScreenIsNotSuggestedAgain() {
+        val id = "pushup-standard"
+        val fam = catalog.variation(id)!!.familyId
+        fun ev(day: Int, below: Boolean = false, above: Boolean = false) =
+            app.calisthenics.domain.feedback.SessionEvidence("s$day", id, fam, day, 3, 3, false, below, false, null, false, 3, 0, 2, anyAbove = above, progressionRouteId = "pushup")
+        val engine = ProgressionEngine(catalog)
+        val hand = UserAction.SelfAssessment(0, id, 3)
+        val easy = engine.replay(listOf(ev(10, above = true)), listOf(hand))
+        assertEquals(Suggestion.RaiseLevel(id, 5), suggest(catalog, SeedProfiles.home, easy, emptySet()))
+        val taken = engine.replay(listOf(ev(10, above = true)), listOf(hand, UserAction.AcceptHarder(10, id, 5)))
+        assertFalse(suggest(catalog, SeedProfiles.home, taken, emptySet()) is Suggestion.RaiseLevel)
+        assertNull(moveOnFor(catalog, SeedProfiles.home, taken, id))
+        val hard = engine.replay(listOf(ev(10, below = true), ev(12, below = true)), listOf(hand))
+        assertTrue(hard.variations.getValue(id).lowerTargetSuggested)
+        val down = engine.replay(listOf(ev(10, below = true), ev(12, below = true)), listOf(hand, UserAction.AcceptEasier(12, id, 2)))
+        assertEquals(2, down.tierFor(id)); assertFalse(down.variations.getValue(id).lowerTargetSuggested)
+    }
+
     @Test fun masteredBandRowSuggestsALowBarForInvertedRows() {
         val p = snap(vp("row-band", 5, setOf(1, 2, 3, 4, 5)))
         val s = suggest(catalog, bare.copy(items = listOf(EquipmentItem("resistance-band", suitability = setOf("stable-anchor")), EquipmentItem("pullup-bar"))), p, emptySet()) as Suggestion.GetEquipment
