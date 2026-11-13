@@ -342,7 +342,7 @@ strength("side-plank", "Side Plank (per side)", "side-plank", ["CORE_ANTI_LATERA
          hold_tiers([10, 15, 20, 30, 40]), [S_OG, S_YG], CORE_ST, unilateral=True, rank=20)
 strength("dead-bug", "Dead Bug", "dead-bug", ["CORE_ANTI_EXTENSION"], ["CORE"], "REPS", "supine",
          ["Lie on your back, arms up, hips and knees at 90°.", "Lower the opposite arm and leg slowly toward the floor, lower back flat.",
-          "Return and alternate sides. One rep = both sides."],
+          "Return and alternate sides. Each side counts as one rep."],
          ["Lower back stays flat", "Slow and controlled"],
          reps_tiers([6, 8, 10, 12, 14]), [S_OG, S_YG], CORE_ST, rank=10)
 
@@ -764,9 +764,9 @@ strength("reverse-hyperextension", "Reverse Hyperextension", "reverse-hyper", ["
          cautions=(CAUTION_STRENGTH, "Check that the table or counter is stable. Stop on any pinching in the lower back; arch raises (Arch Hold) are the floor alternative."))
 strength("plank-shoulder-tap", "Plank Shoulder Taps", "plank-tap", ["CORE_ANTI_EXTENSION"], ["CORE"], "REPS", "floor",
          ["Start in a high plank, hands under the shoulders, feet a little wider than hip width.", "Lift one hand and tap the opposite shoulder without letting the hips rock.",
-          "Put it back and tap with the other hand. One tap on each side counts as two reps."],
+          "Put it back and tap with the other hand. Each tap counts as one rep."],
          ["Hips stay level", "Feet wider for balance", "Slow taps"],
-         reps_tiers([10, 12, 14, 16, 20]), RR, CORE_ST, rank=25, prereq={"allOf": [[vt("plank", 2)]]})
+         reps_tiers([5, 6, 7, 8, 10]), RR, CORE_ST, rank=25, prereq={"allOf": [[vt("plank", 2)]]})
 strength("walking-lunge", "Walking Lunge", "lunge", ["LUNGE"], ["LOWER_BODY"], "REPS", "standing",
          ["Step forward into a lunge until both knees are bent at about a right angle.", "Push through the front foot and bring the back foot forward into the next step.", "Keep the chest up; each step counts as one rep."],
          ["Chest up", "Front knee over the foot", "Controlled steps"],
