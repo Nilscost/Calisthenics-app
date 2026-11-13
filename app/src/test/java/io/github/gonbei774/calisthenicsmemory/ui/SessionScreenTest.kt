@@ -488,11 +488,13 @@ class SessionScreenTest {
         SessionBus.saved = true
         show(s)
         val vid = firstWorkVid
-        rule.onNodeWithTag("end_edit_$vid").performClick(); rule.waitForIdle()
+        // the history comparison may still arrive (it depends on Room state left by earlier tests) and replace the edit-only card: let it settle first
+        runCatching { rule.waitUntil(3000) { rule.onAllNodes(hasTestTag("end_card_$vid") or hasTestTag("end_plain_$vid")).fetchSemanticsNodes().isNotEmpty() } }
+        rule.onNodeWithTag("end_edit_$vid").performScrollTo().performClick(); rule.waitForIdle()
         val rounds = plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid }.size
-        // one card for the exercise: the progress card when the history comparison has loaded (Room is shared by the tests in this class),
-        // otherwise the edit-only card; either way it carries the rounds and the chips
-        rule.onAllNodes(hasTestTag("end_fix_$vid") or hasTestTag("end_card_$vid")).assertCountEquals(1)
+        // exactly one place for the exercise: its progress card or its row under "also done" once the history comparison has loaded
+        // (whether it loads here depends on Room state left by earlier tests in this class), otherwise the edit-only card
+        rule.onAllNodes(hasTestTag("end_fix_$vid") or hasTestTag("end_card_$vid") or hasTestTag("end_plain_$vid")).assertCountEquals(1)
         for (i in 1..rounds) rule.onNodeWithTag("end_${vid}_round${i}_value").performScrollTo().assertExists()
         rule.onNodeWithTag("end_${vid}_too_hard").performScrollTo().assertExists()
         rule.onNodeWithTag("end_${vid}_too_easy").performScrollTo().assertExists()
