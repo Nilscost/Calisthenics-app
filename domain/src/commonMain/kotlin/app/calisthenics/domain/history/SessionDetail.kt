@@ -45,7 +45,7 @@ fun overviewOf(plan: WorkoutPlan?, s: SessionRecord, zone: TimeZone): SessionOve
 
 data class RoundEntry(val round: Int, val side: Side, val blockId: String, val outcome: String, /** null = not typed (assumed as planned) */ val reps: Int?)
 
-data class ExerciseDetail(val variationId: String, val target: Target?, val rounds: List<RoundEntry>, /** One block worked both sides: the numbers are per side. */ val alternating: Boolean = false) {
+data class ExerciseDetail(val variationId: String, val target: Target?, val rounds: List<RoundEntry>, /** One block worked both sides: the numbers are per side. */ val alternating: Boolean = false, /** The number a round must reach to be met: the level's own target when [target] is ramped above it (L4). */ val judged: Int? = target?.value) {
     /** The lowest typed round: what the progression evidence uses. */
     val lowest: Int? get() = rounds.mapNotNull { it.reps }.minOrNull()
     val isHold: Boolean get() = target?.type == TargetType.HOLD_SECONDS
@@ -57,13 +57,13 @@ fun exerciseDetails(plan: WorkoutPlan, blocks: List<BlockRecord>): List<Exercise
     return plan.blocks.filter { it.type == BlockType.WORK && it.variationId != null && results[it.id]?.outcome.let { o -> o == "MET" || o == "PARTIAL" } }
         .groupBy { it.variationId!! }
         .map { (vid, bs) ->
-            ExerciseDetail(vid, bs.first().target, bs.map { b -> RoundEntry(b.roundIndex ?: 1, b.side, b.id, results.getValue(b.id).outcome, results.getValue(b.id).achievedValue) }, bs.first().alternating)
+            ExerciseDetail(vid, bs.first().target, bs.map { b -> RoundEntry(b.roundIndex ?: 1, b.side, b.id, results.getValue(b.id).outcome, results.getValue(b.id).achievedValue) }, bs.first().alternating, bs.first().judgedValue)
         }
 }
 
 /** The rating a corrected number implies (spec §5): below the target is BELOW, otherwise MET unless the user said "too hard". */
-fun ratingFor(reps: Int?, target: Target?, tooHard: Boolean, tooEasy: Boolean = false): Rating =
-    if (tooHard || (reps != null && target != null && reps < target.value)) Rating.BELOW else if (tooEasy) Rating.ABOVE else Rating.MET
+fun ratingFor(reps: Int?, target: Target?, tooHard: Boolean, tooEasy: Boolean = false, judged: Int? = target?.value): Rating =
+    if (tooHard || (reps != null && judged != null && reps < judged)) Rating.BELOW else if (tooEasy) Rating.ABOVE else Rating.MET
 
 internal fun LocalDate.mondayOfWeek(): LocalDate = minus(dayOfWeek.ordinal, DateTimeUnit.DAY)
 

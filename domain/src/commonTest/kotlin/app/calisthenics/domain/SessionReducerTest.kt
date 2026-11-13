@@ -110,6 +110,15 @@ class SessionReducerTest {
         assertEquals(Execution.COMPLETED, enough.executions["h1"])
     }
 
+    @Test fun `done on a ramped hold is judged against the level target, not the climbing one`() {
+        // prescribed 35 s at a 30 s level (L4 ramp): holding 32 s meets the level, 25 s does not
+        fun hold() = TimelineBlock("h1", BlockType.WORK, 38, 1, "s-h", "plank", target = Target(TargetType.HOLD_SECONDS, 35), prescriptionTier = 3, levelTarget = 30)
+        val met = reduce(started(plan(hold(), rec("r1")), at = 0), SessionEvent.EarlyDone(32_000)).state
+        assertEquals(Execution.COMPLETED, met.executions["h1"])
+        val short = reduce(started(plan(hold(), rec("r1")), at = 0), SessionEvent.EarlyDone(25_000)).state
+        assertEquals(Execution.PARTIAL, short.executions["h1"])
+    }
+
     @Test fun `easier alternative pauses, keeps the original as partial and inserts the replacement`() {
         val easierBlock = TimelineBlock("w1-easier", BlockType.WORK, 40, 1, "s-w1", "pushup-knee", target = Target(TargetType.REPS, 3), prescriptionTier = 1)
         val s = reduce(started(), SessionEvent.EasierAlternative(11_000, easierBlock)).state

@@ -153,6 +153,8 @@ suspend fun loadEndProgress(ctx: PlatformContext, st: SessionState): EndProgress
 /** What one exercise card needs to let the person correct the log: its rounds and the ratings given so far. */
 internal class CardEditor(
     val target: Target?, val rounds: List<EditorRound>, val sets: Boolean, val tooHard: Boolean, val tooEasy: Boolean, val pain: Boolean, val alternating: Boolean,
+    /** The number a round must reach: the level's own target when the shown one is ramped above it (L4). */
+    val judged: Int? = target?.value,
 )
 
 /** What a tap on the card's move button does; each one is the existing accepted action that the progression replay already understands. */
@@ -177,7 +179,7 @@ private fun cardEditor(st: SessionState, vid: String): CardEditor? {
     val logs = blocks.mapNotNull { st.logged[it.id] }
     return CardEditor(
         blocks.first().target, blocks.map { EditorRound(it.id, it.roundIndex ?: 1, it.side, st.logged[it.id]?.reps) }, st.plan.format != WorkoutFormat.CIRCUIT,
-        logs.any { it.tooHard }, logs.any { it.tooEasy }, logs.any { it.discomfort }, blocks.first().alternating,
+        logs.any { it.tooHard }, logs.any { it.tooEasy }, logs.any { it.discomfort }, blocks.first().alternating, blocks.first().judgedValue,
     )
 }
 
@@ -437,7 +439,7 @@ private fun CardCorrection(
         Caption(stringResource(Res.string.end_rate_caption))
         RoundEditor(
             editor.target, editor.rounds, sets = editor.sets, tooHard0 = editor.tooHard, tooEasy0 = editor.tooEasy, pain0 = editor.pain, tag = "end_$vid",
-            alternating = editor.alternating, showRounds = expanded, chipsFirst = true,
+            alternating = editor.alternating, judged = editor.judged, showRounds = expanded, chipsFirst = true,
             onRating = { hard, easy ->
                 if (hard != tooHard || easy != tooEasy) acted = null // a changed rating is a new question
                 tooHard = hard; tooEasy = easy

@@ -2,6 +2,8 @@
 // Pure Kotlin: no Android, no wall clock, no Room. All values immutable.
 package app.calisthenics.domain.model
 
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 
 // ---------- enums ----------
@@ -514,8 +516,16 @@ data class TimelineBlock(
     val targetRevision: Int = 0,
     /** The exercise works both sides within this one block: [target] is per side and screens show the total with the per-side number. Absent in older plans. */
     val alternating: Boolean = false,
+    /**
+     * L4 (gentler steps): set only when [target] was ramped above the level's own target; then this is the level's own (capped) target, the number a set is judged
+     * against ("below target", good session, "Level kept"). Null = [target] is what the level asks for. Never written when null, so plans without a ramp serialize as before.
+     */
+    @OptIn(ExperimentalSerializationApi::class) @EncodeDefault(EncodeDefault.Mode.NEVER) val levelTarget: Int? = null,
 ) {
     init { require(durationSeconds > 0) { "block $id must have positive duration" } }
+
+    /** The number a logged set must reach to count as met: the level's own target when [target] is ramped above it, else [target] itself. */
+    val judgedValue: Int? get() = levelTarget ?: target?.value
 }
 
 /**

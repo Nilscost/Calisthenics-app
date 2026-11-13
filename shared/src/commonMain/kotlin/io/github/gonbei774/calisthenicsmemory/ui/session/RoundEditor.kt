@@ -60,7 +60,7 @@ data class EditorRound(val blockId: String, val round: Int, val side: Side, val 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RoundEditor(
-    target: Target?, rounds: List<EditorRound>, sets: Boolean = false, tooHard0: Boolean, tooEasy0: Boolean, pain0: Boolean, tag: String, alternating: Boolean = false,
+    target: Target?, rounds: List<EditorRound>, sets: Boolean = false, tooHard0: Boolean, tooEasy0: Boolean, pain0: Boolean, tag: String, alternating: Boolean = false, judged: Int? = target?.value,
     showRounds: Boolean = true, chipsFirst: Boolean = false, afterChips: @Composable () -> Unit = {}, onRating: (tooHard: Boolean, tooEasy: Boolean) -> Unit = { _, _ -> },
     onChange: (List<RoundCorrection>) -> Unit,
 ) {
@@ -74,7 +74,7 @@ fun RoundEditor(
         onRating(tooHard, tooEasy)
         onChange(rounds.mapIndexed { i, r ->
             val reps = if (typed[i]) values[i] else null
-            RoundCorrection(r.blockId, reps, ratingFor(reps, target, tooHard, tooEasy), pain, hold)
+            RoundCorrection(r.blockId, reps, ratingFor(reps, target, tooHard, tooEasy, judged), pain, hold)
         })
     }
     val captionRes = when {

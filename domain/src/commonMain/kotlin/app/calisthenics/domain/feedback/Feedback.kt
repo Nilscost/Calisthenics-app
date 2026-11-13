@@ -71,8 +71,9 @@ fun resolveFeedback(
     }
     var finalRating = rating
     var conflict: String? = null
-    if (target != null && actual != null && actual < target.value) {
-        if (rating != Rating.BELOW) conflict = "You entered $actual but the target was ${target.value} while rating ${rating.name.lowercase()} — counted as below target. Please correct if wrong."
+    val judged = b.judgedValue   // the level's own target when the shown one is ramped above it (L4)
+    if (target != null && actual != null && judged != null && actual < judged) {
+        if (rating != Rating.BELOW) conflict = "You entered $actual but the target was $judged while rating ${rating.name.lowercase()} — counted as below target. Please correct if wrong."
         finalRating = Rating.BELOW
     }
     ResolvedOutcome(b.id, vid, exec, finalRating, if (finalRating != rating) origin else origin, reps, hold, discomfort, conflict)
@@ -235,7 +236,7 @@ fun deriveEvidence(
         val workById = work.associateBy { it.id }
         val shortfall = if (plan.rule.kind != RuleKind.APP_LEVELS || disc) null else {
             val logged = os.filter { it.execution == Execution.COMPLETED }.mapNotNull { o ->
-                val b = workById[o.blockId]; val a = actualOf(o, b); if (b?.target != null && a != null) b.target.value to a else null }
+                val b = workById[o.blockId]; val a = actualOf(o, b); val judged = b?.judgedValue; if (judged != null && a != null) judged to a else null }
             if (logged.any { (target, actual) -> actual < target }) logged.minOf { it.second }.coerceAtLeast(1) else null
         }
         val reduced = plan.rule.kind == RuleKind.APP_LEVELS && policySnapshot != null && work.isNotEmpty() && work.any { b ->
