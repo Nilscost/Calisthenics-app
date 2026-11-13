@@ -24,3 +24,7 @@ plank-long-lever, bridge-single-leg, walking-lunge, russian-twist, side-plank, d
 ## Phase 1 status
 
 Rebuilt from references, class checks and native geometry preflight pass: plank-long-lever, bridge-single-leg, glute-bridge. Not yet rebuilt: walking-lunge, russian-twist, side-plank, dip-parallel, inverted-row, split-squat, plank-shoulder-tap. Reference intervals for all ten are in motion_references.json (batch_references). Note: glute-bridge ref2 interval crosses a camera cut.
+
+## Phase 2 status
+
+All ten rebuilt (families/batch_a.py, batch_a_more.py), class checks and native geometry PASS for all ten (work/render-batches/batch-a-2026-11-12/_preflight-phase2/geometry.json). Known reference problems: glute-bridge ref2 and dip-parallel ref2 intervals cross camera cuts; split-squat ref2 interval is a different pace/segment. walking-lunge is an in-place alternating forward lunge (step out, lower, return), not a travelling walk.

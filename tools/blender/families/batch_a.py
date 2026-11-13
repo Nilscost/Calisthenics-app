@@ -38,17 +38,17 @@ def _dense(fn, phases, seconds):
 def plank_long_lever():
     """RKC plank: elbows ahead of the shoulders (under the eyes), forearms converging to fists
     that touch, pelvis tucked, feet together. References: Nichols, Exercise Encyclopedia, Baird."""
-    ahead = .20           # elbow ahead of the shoulder along the body (references: 0.15 to 0.25 m)
+    ahead = .16           # elbow ahead of the shoulder along the body (references: 0.15 to 0.25 m)
     elbow_y = .17         # elbows about shoulder width
     fist_y = .045         # fists touch: forearms converge
-    az, toe_x, toe_h = .111, -1.40, .051
+    az, toe_x, toe_h = .17, -1.40, .05
     elbow_z = .052
 
     def key(a, breath=0.0):
         k = base_pose(pelvis=[0, 0, 1], p1=90 - a - 5, p2=90 - a, hp=-12 + breath)
         # Pelvis at 0.898 from the planted ankles along the body line, as in the archer push-up.
         ar = math.radians(a)
-        k['pelvis'] = [toe_x - .18 + math.cos(ar) * .898, 0, az + math.sin(ar) * .898]
+        k['pelvis'] = [toe_x - .16 + math.cos(ar) * .898, 0, az + math.sin(ar) * .898]
         J = _joints(k)
         for sg, name in ((1, 'l'), (-1, 'r')):
             sh = J['shoulder_' + name]
@@ -61,8 +61,8 @@ def plank_long_lever():
             k.update({'wrist_' + name: wrist, 'elbow_' + name: pole, 'hand_' + name: [1, 0, 0],
                       'palm_' + name: [0, -sg, 0], 'grip_' + name: .9})
             hip = J['hip_' + name]
-            toe = [toe_x, sg * .045, az - .06]
-            k['ankle_' + name] = planted_ankle(hip, toe, [toe_x - .18, sg * .05, az], side=-sg)
+            toe = [toe_x, sg * .045, az - .12]
+            k['ankle_' + name] = planted_ankle(hip, toe, [toe_x - .16, sg * .05, az], side=-sg)
             k['foot_' + name] = sub(toe, k['ankle_' + name])
             k['knee_' + name] = [0, 0, 1]
         k['head_detail'] = 1
@@ -75,7 +75,7 @@ def plank_long_lever():
         def key_stub(a):
             k = base_pose(pelvis=[0, 0, 1], p1=90 - a - 5, p2=90 - a, hp=-12)
             ar = math.radians(a)
-            k['pelvis'] = [toe_x - .18 + math.cos(ar) * .898, 0, az + math.sin(ar) * .898]
+            k['pelvis'] = [toe_x - .16 + math.cos(ar) * .898, 0, az + math.sin(ar) * .898]
             return k
         target = elbow_z + math.sqrt(L['upper'] ** 2 - ahead ** 2)
         a = bisect_target(shoulder_z, 2, 14, target)
@@ -84,16 +84,16 @@ def plank_long_lever():
     a_key = build(0.0)
     b_key = build(2.0)
     keys = [(0, a_key), (.25, a_key), (.5, b_key), (.75, a_key)]
-    return dict(seconds=3.0, keys=keys, cam_az=32, cam_el=14, props=[], anatomy_detail=True,
-                motion_profile='plank-long-lever')
+    return dict(seconds=3.0, keys=keys, cam_az=42, cam_el=10, props=[], anatomy_detail=True,
+                camera_padding=.05, motion_profile='plank-long-lever')
 
 
 # ---------------------------------------------------------------- 2. single-leg glute bridge
 def _bridge(single):
     """Working foot planted, shoulders on the floor, hips level, free leg straight and parallel to
     (in line with) the working thigh. References: MedStar Health (side), Runna (front-right)."""
-    chest = [0.0, 0.0, .13]
-    top_deg = 22.0
+    chest = [0.0, 0.0, .125]
+    top_deg = 23.0
     ankle_x = {}
 
     def pelvis_for(phi):
@@ -123,10 +123,11 @@ def _bridge(single):
             k.update(both(wrist=[J['shoulder_l'][0] + .5, .26, .035], hand=[1, 0, 0], palm=[0, 0, -1], grip=0.0, elbow=[0, 1, .4]))
             k['head_detail'] = 1
             return k
-        # free (left) leg: straight, parallel to the working thigh
-        J2 = _joints({**k, 'knee_l': [1, 0, .8], 'ankle_l': add(hip_l, [0, 0, -.8]), 'foot_l': [1, 0, 0]})
-        thigh = unit(sub(J2['knee_r'], J2['hip_r']))
-        k.update(ankle_l=add(hip_l, mul(thigh, (L['thigh'] + L['shin']) * .9998)), knee_l=[0, 0, 1], foot_l=[0, 0, 1])
+        # free (left) leg: straight, extended in line with the working side through the whole rep:
+        # 45 deg above the floor at the bottom, easing to 38 deg at the top (references: 40 to 45 deg).
+        lift = 45 - 7 * min(1, phi / top_deg)
+        direction = [_c(lift), 0, _s(lift)]
+        k.update(ankle_l=add(hip_l, mul(direction, (L['thigh'] + L['shin']) * .9998)), knee_l=[0, 0, 1], foot_l=[0, 0, 1])
         sh = J['shoulder_l']
         k.update(both(wrist=[sh[0] + .5, .26, .035], hand=[1, 0, 0], palm=[0, 0, -1], grip=0.0,
                       elbow=[0, 1, .4]))

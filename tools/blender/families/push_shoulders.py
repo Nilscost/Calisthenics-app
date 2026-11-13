@@ -221,12 +221,6 @@ def dip_negative():
     return dict(seconds=4.0, keys=rep(a, b, down_end=0.80), cam_az=30, cam_el=10, props=bars)
 
 
-def dip_parallel():
-    a, bars = _dip(1.15, 0.0, 2, [0.03, 0.07, -0.84])
-    b, _ = _dip(0.85, 0.0, 12, [0.30, 0.07, -0.60])
-    return dict(seconds=3.0, keys=rep(a, b), cam_az=30, cam_el=10, props=bars)
-
-
 def _pike(px, pz, p, ankle=(-0.9, 0.10, 0.08), wx=0.05, wy=0.20):
     """Hips high, trunk folded forward; the feet and hands are the fixed contacts."""
     return base_pose(pelvis=[px, 0.0, pz], p1=p, p2=p, hp=0,
@@ -299,7 +293,6 @@ EXERCISES = {
     "planche-adv-tuck": planche_adv_tuck,
     "dip-support-hold": dip_support_hold,
     "dip-negative": dip_negative,
-    "dip-parallel": dip_parallel,
     "pike-pushup": pike_pushup,
     "pike-pushup-elevated": pike_pushup_elevated,
     "wall-handstand-hold": wall_handstand_hold,

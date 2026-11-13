@@ -1758,6 +1758,224 @@
      "hi": 0.16
     }
    ]
+  },
+  "side-plank": {
+   "movement_class": "static_hold",
+   "style": "forearm side plank, straight line, feet stacked, top hand on hip",
+   "references": [
+    "iNbH7_edNI8",
+    "44ND4bOB-T0"
+   ],
+   "params": {
+    "contacts": [
+     "wrist_l",
+     "ankle_l"
+    ]
+   },
+   "identity": [
+    {
+     "metric": "hip_z",
+     "stat": "min",
+     "sides": [
+      "l"
+     ],
+     "lo": 0.35
+    },
+    {
+     "metric": "knee_angle",
+     "stat": "min",
+     "sides": [
+      "l",
+      "r"
+     ],
+     "lo": 165
+    }
+   ]
+  },
+  "walking-lunge": {
+   "movement_class": "lunge",
+   "style": "alternating forward lunge, left then right, back to standing between (in-place loop)",
+   "references": [
+    "tQNktxPkSeE",
+    "vYfp2t4XgqQ"
+   ],
+   "params": {
+    "contacts": [],
+    "main_range": {
+     "metric": "knee_angle",
+     "sides": [
+      "l",
+      "r"
+     ],
+     "min": 35,
+     "agg": "min"
+    },
+    "dwell_s": 0.3,
+    "speed_max_m_s": 3.0
+   },
+   "identity": [
+    {
+     "metric": "ankle_split_m",
+     "stat": "max",
+     "lo": 0.35
+    }
+   ]
+  },
+  "split-squat": {
+   "movement_class": "lunge",
+   "style": "static split squat, rear heel raised, front foot flat",
+   "references": [
+    "hXpGSa5HYqY",
+    "la0pLPq-3A8"
+   ],
+   "params": {
+    "contacts": [
+     "ankle_r",
+     "toe_l"
+    ],
+    "slide_max_m": 0.012,
+    "main_range": {
+     "metric": "knee_angle",
+     "sides": [
+      "l",
+      "r"
+     ],
+     "min": 60
+    }
+   },
+   "identity": [
+    {
+     "metric": "ankle_split_m",
+     "stat": "min",
+     "lo": 0.9
+    }
+   ]
+  },
+  "dip-parallel": {
+   "movement_class": "dip",
+   "style": "parallel bar dip with forward lean, knees bent",
+   "references": [
+    "U7HeutDqS_w",
+    "85u_8mz5lBA"
+   ],
+   "params": {
+    "contacts": [],
+    "main_range": {
+     "metric": "elbow_angle",
+     "sides": [
+      "l",
+      "r"
+     ],
+     "min": 60
+    },
+    "prop_contacts": [
+     "wrist_l",
+     "wrist_r"
+    ]
+   },
+   "identity": [
+    {
+     "metric": "elbow_angle",
+     "stat": "min",
+     "sides": [
+      "l",
+      "r"
+     ],
+     "hi": 110
+    },
+    {
+     "metric": "elbow_angle",
+     "stat": "max",
+     "sides": [
+      "l",
+      "r"
+     ],
+     "lo": 160
+    }
+   ]
+  },
+  "inverted-row": {
+   "movement_class": "row",
+   "style": "inverted row under a low bar, straight body, heels planted",
+   "references": [
+    "9fItzuh9Iok",
+    "KOaCM1HMwU0"
+   ],
+   "params": {
+    "contacts": [
+     "ankle_l",
+     "ankle_r"
+    ],
+    "main_range": {
+     "metric": "elbow_angle",
+     "sides": [
+      "l",
+      "r"
+     ],
+     "min": 50
+    },
+    "prop_contacts": [
+     "wrist_l",
+     "wrist_r"
+    ]
+   },
+   "identity": [
+    {
+     "metric": "body_line_deg",
+     "stat": "min",
+     "lo": 160
+    }
+   ]
+  },
+  "plank-shoulder-tap": {
+   "movement_class": "plank_hold",
+   "style": "high plank, hands alternately tap the opposite shoulder, hips stable",
+   "references": [
+    "0PrTUpElJ44",
+    "8rgurWd-PB8"
+   ],
+   "params": {
+    "contacts": [
+     "toe_l",
+     "toe_r",
+     "wrist_l",
+     "wrist_r"
+    ],
+    "slide_max_m": 0.02,
+    "dwell_s": 0
+   },
+   "identity": [
+    {
+     "metric": "body_line_deg",
+     "stat": "min",
+     "lo": 160
+    },
+    {
+     "metric": "elbow_angle",
+     "stat": "range",
+     "sides": [
+      "l",
+      "r"
+     ],
+     "lo": 40
+    }
+   ]
+  },
+  "russian-twist": {
+   "movement_class": "twist",
+   "style": "seated V, trunk leaned back, hands together, turn to both sides",
+   "references": [
+    "DJQGX2J4IVw",
+    "wkD8rjkodUI",
+    "IJDOoVyVjhc"
+   ],
+   "params": {
+    "contacts": [],
+    "main_range": {
+     "metric": "shoulder_yaw_deg",
+     "min": 20
+    }
+   }
   }
  },
  "movement_classes": {
