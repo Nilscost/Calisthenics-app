@@ -18,6 +18,11 @@ appId: app.calisthenics.personal
 - tapOn: { id: chatbot_check }
 - extendedWaitUntil: { visible: { id: chatbot_summary }, timeout: 10000 }
 - takeScreenshot: 03-import-summary-${VARIANT}
+- runFlow:   # at font 1.3 the Save button is below the fold
+    file: ../common/reveal.yaml
+    env: { ID: chatbot_save }
 - tapOn: { id: chatbot_save }
-- extendedWaitUntil: { visible: { id: chatbot_status }, timeout: 10000 }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: chatbot_status }
 - takeScreenshot: 04-import-saved-${VARIANT}

@@ -10,22 +10,17 @@ appId: app.calisthenics.personal
 - tapOn: { id: start_button }
 - extendedWaitUntil: { visible: { id: session_title }, timeout: 15000 }
 # Walk through the workout with Skip (blocks also end on their own timers, so nothing is asserted at a fixed step): screenshot each Prepare block,
-# and in particular a Prepare after a hold (compact "held" row) and a Prepare of a one-sided exercise ("Left side").
+# and a Prepare after a hold (compact "held" row) when the workout has one. The layout itself is pinned by SessionScreenTest.
 - repeat:
     times: 60
     commands:
       - runFlow:
-          when: { visible: { id: session_name } }
+          when: { visible: "PREPARE.*" }   # the Prepare block's caption ("PREPARE / UPCOMING"); work and stretch blocks have their own
           commands:
             - takeScreenshot: 01-prepare-${VARIANT}
             - runFlow:
                 when: { visible: { id: logger_minus } }
                 commands:
-                  - assertVisible: { id: logger_name }
                   - takeScreenshot: 02-prepare-after-hold-${VARIANT}
-            - runFlow:
-                when: { visible: ".*Left side.*" }
-                commands:
-                  - takeScreenshot: 03-prepare-split-left-${VARIANT}
       - tapOn: { id: session_skip, optional: true }   # the workout may already have ended
       - waitForAnimationToEnd: { timeout: 1000 }
