@@ -62,3 +62,7 @@ Hash diff against the asset list taken after the phase 3 install: exactly two fi
 russian-twist: not passed after two rounds (doc 43 section 5 stop rule): hands stay at chin height, feet look grounded; current clip kept (installed hashes unchanged, see the first table). The new pose source stays in the branch but is not rendered or installed.
 
 Checks: tools/validate_content.py content/starter OK; ClipAssetsTest 3 tests, 0 failures.
+
+## 2026-11-13: walking-lunge fix after owner review
+
+Owner: "the leg goes in the other direction". Cause: the rear knee's bend hint flipped from up to down at half depth, so the rear knee bent backward while stepping in and out of each lunge. The hint is now continuous and always forward of the hip-ankle line. Rendered alone in work/render-batches/batch-a-2026-11-12/fix-walking-lunge (geometry preflight pass, 156 frames, 29708 bytes), frames checked by eye in both halves, installed with install_clips.py (explicit id); only the two walking-lunge assets changed. Still lunges in place.

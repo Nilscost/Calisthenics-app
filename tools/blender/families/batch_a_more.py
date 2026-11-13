@@ -48,7 +48,7 @@ def walking_lunge():
         # rear foot stays where it stood; its heel rises as the body moves forward and down
         toe = [.20, y[rear], .08 + .045 * step]
         ankle, foot = _toe_planted(toe, 55 * step, y[rear])
-        k.update({'ankle_' + rear: ankle, 'foot_' + rear: foot, 'knee_' + rear: [0, 0, -1 if depth > .5 else 1]})
+        k.update({'ankle_' + rear: ankle, 'foot_' + rear: foot, 'knee_' + rear: [max(.15, 1 - depth), 0, -depth]})  # always forward of the hip-ankle line: never bends backward
         lift = .16 * math.sin(math.pi * step)
         k.update({'ankle_' + lead: [stride * step, y[lead], .08 + lift], 'foot_' + lead: [1, 0, -.15 * math.sin(math.pi * step)],
                   'knee_' + lead: [1, 0, 0]})
