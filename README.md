@@ -8,7 +8,13 @@ Built for Android and the web with Kotlin Multiplatform and Compose Multiplatfor
 
 [Version 9.3 source](https://github.com/Nilscost/Calisthenics-app/tree/codex/kmp-port) · [Release notes and status](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/STATUS.md)
 
-![A selection of generated exercise demonstrations](docs/media/exercises.png)
+<p align="center">
+  <img src="docs/media/screenshots/train.png" width="250" alt="Plan a workout: goal, equipment, rounds and workout format">
+  <img src="docs/media/screenshots/workout.png" width="250" alt="Guided workout with exercise demonstration, timer and repetition logging">
+  <img src="docs/media/screenshots/progress.png" width="250" alt="Track progress through the push-up skill tree">
+</p>
+
+<p align="center"><em>Plan your workout · Follow a guided session · Track your progress</em></p>
 
 ## The app
 
@@ -70,7 +76,7 @@ bash scripts/verify.sh
 
 See the [toolchain requirements](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/toolchain.lock.md) for Java, Android SDK, Node.js and Python versions.
 
-For a closer look at the work:
+For a closer look at the work, start with the [documentation index](docs/README.md), or explore:
 
 - [Product specification](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/docs/archive/01-product-specification.md)
 - [Multiplatform architecture and implementation](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/docs/evidence/kmp-port.md)
