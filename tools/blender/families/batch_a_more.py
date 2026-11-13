@@ -24,7 +24,7 @@ def side_plank():
         return k
     a, b = pose(.565), pose(.561)
     keys = [(0, a), (.3, a), (.5, b), (.8, a)]
-    return dict(seconds=3.0, keys=keys, cam_az=30, cam_el=10, props=[], anatomy_detail=True,
+    return dict(seconds=3.0, keys=keys, cam_az=50, cam_el=8, props=[], anatomy_detail=True,
                 motion_profile='side-plank')
 
 
@@ -174,21 +174,22 @@ def russian_twist():
     """Seated V: trunk leaned back about 40 deg, feet lifted, hands together; the chest turns to each
     side in turn and back to centre. References: Leap Fitness, Howcast, Runna."""
     def pose(tw):
-        k = base_pose(pelvis=[0, 0, .145], p1=-42, p2=-42, hp=14, thoracic_twist=tw,
-                      ankle_l=[.50, .07, .25], ankle_r=[.50, -.07, .25], foot_l=[1, 0, -.2], foot_r=[1, 0, -.2],
+        k = base_pose(pelvis=[0, 0, .145], p1=-48, p2=-48, hp=16, thoracic_twist=tw,
+                      ankle_l=[.46, .07, .22], ankle_r=[.46, -.07, .22], foot_l=[1, 0, -.1], foot_r=[1, 0, -.1],
                       knee_l=[0, 0, 1], knee_r=[0, 0, 1])
         J = _joints(k)
         fwd = unit(cross(J['chest_left'], J['chest_up']))
-        mid = add(add(J['chest'], mul(fwd, .30)), mul(J['chest_up'], -.04))
+        swing = tw / 62.0
+        mid = add(add(add(J['chest'], mul(fwd, .30 - .06 * abs(swing))), mul(J['chest_up'], -.06 - .10 * abs(swing))), mul(J['chest_left'], -.30 * swing))
         for sg, name in ((1, 'l'), (-1, 'r')):
             k.update({'wrist_' + name: add(mid, mul(J['chest_left'], sg * .03)),
                       'elbow_' + name: add(mul(J['chest_left'], sg), [0, 0, -.4]),
                       'hand_' + name: fwd, 'palm_' + name: mul(J['chest_left'], -sg), 'grip_' + name: .6})
         k['head_detail'] = 1
         return k
-    ph = [(0, dict(tw=0.)), (.06, dict(tw=0.)), (.20, dict(tw=42.)), (.30, dict(tw=42.)), (.46, dict(tw=0.)), (.54, dict(tw=0.)),
-          (.68, dict(tw=-42.)), (.78, dict(tw=-42.)), (.94, dict(tw=0.))]
-    return dict(seconds=4.0, keys=_dense(lambda tw: pose(tw), ph, 4.0), cam_az=34, cam_el=12, props=[], anatomy_detail=True,
+    ph = [(0, dict(tw=0.)), (.06, dict(tw=0.)), (.20, dict(tw=62.)), (.30, dict(tw=62.)), (.46, dict(tw=0.)), (.54, dict(tw=0.)),
+          (.68, dict(tw=-62.)), (.78, dict(tw=-62.)), (.94, dict(tw=0.))]
+    return dict(seconds=4.0, keys=_dense(lambda tw: pose(tw), ph, 4.0), cam_az=25, cam_el=14, props=[], anatomy_detail=True,
                 motion_profile='russian-twist')
 
 

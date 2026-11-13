@@ -1973,7 +1973,7 @@
     "contacts": [],
     "main_range": {
      "metric": "shoulder_yaw_deg",
-     "min": 20
+     "min": 80
     }
    }
   }
