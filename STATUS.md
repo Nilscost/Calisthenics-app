@@ -1,5 +1,31 @@
 # Actual project status
 
+## Release 9.3 · 0.12.3-r9 (code 22) · 2026-11-13
+
+Fixes for the owner's 9.2 feedback ([plan](docs/43-feedback-2026-11-12-review-and-plan.md), [details](docs/user-feedback.md)).
+
+- **Per side:** Walking Lunge and Russian Twist now read "16 reps (8 per side)": the number you did per side is the stored one. The same for dead bug, single-leg dead bug, bird dog (and its arm and leg raises), plank arm-leg reach and the floor and bent-knee windshield wipers. Plank Shoulder Taps are 5–10 per side, the same 10–20 taps in total. Past sessions replay to the same levels and stars. [Decisions per exercise](docs/evidence/9.3-l1-side-modes.md).
+- **Prepare** shows what comes next: the exercise, then its target and side ("8 reps · Left side"). After a hold, one small row still lets you correct it. The side is no longer said twice in the title.
+- **End screen, one card per exercise:** Too hard · Too easy · Pain are always on the card; "Edit what I logged" opens the numbers on the same card.
+  - A level reached by three good sessions says "3 of 3 good sessions at Level 1"; a level reached by doing its reps says "You did the Level 2 reps today".
+  - After Too hard: "Go down to Level N−1". After Too easy: the move up the app offers. Nothing changes until you tap it.
+  - A mastered exercise shows what comes next ("Next: Half One-Arm Push-Up · Level 1").
+- **Archer push-up "Mastered" but still planned:** not a bug. The workout that earns the fifth star was planned before it, so its end screen shows "Mastered" for an exercise in it; the next workout plans the half one-arm push-up. [Evidence](docs/evidence/9.3-l3-mastered-still-planned.md).
+- **Gentler steps inside a level:** the target climbs with each good session toward the next level (pull-up level 3: 5, 6, 7, then level 4 at 8). A session still counts as good at the level's own target.
+- **Routines from a chatbot** (Settings): export a guide with the routine format and the whole exercise library for a chatbot, and import the routine it writes from a file or pasted text into My routines.
+- **Cleanup:** old pre-Blender clip generators removed; `scripts/gen_catalog.sh` regenerates the catalog and checks both copies. [Evidence](docs/evidence/9.3-l7-cleanup.md).
+- **Clips (Batch A):** nine demonstrations rebuilt from filmed coaching references and accepted on a side-by-side review: Long-Lever (RKC) Plank (elbows ahead of the shoulders, fists together; no longer looks like the forearm plank), Single-Leg Glute Bridge (limbs fixed, free leg in line), Glute Bridge, Side Plank, Plank Shoulder Taps, Walking Lunge (alternating, in place), Split Squat, Dip and Inverted Row. Russian Twist did not pass after two rounds and keeps its clip. [Evidence](docs/evidence/clips-batch-a-2026-11-12.md); review gallery (local): `work/batch-a/gallery/index.html`.
+
+The APK to sideload is `/Users/nils/Documents/hermes/Apps/builds/app-debug-R9.3.apk`. The web app (same unannounced URL) is redeployed with 9.3.
+
+Extra phone checks for 9.3:
+- [ ] Walking lunge shows "N reps (N/2 per side)" in the Preview, the workout and History. Result:
+- [ ] Prepare after a side plank shows the next exercise and its target first; the hold can still be corrected. Result:
+- [ ] End screen: Too hard / Too easy / Pain on each card; "Go down to Level N−1" after Too hard on the inverted row, and the next workout uses that level. Result:
+- [ ] Pull-ups: the target goes up by one or two between level-ups. Result:
+- [ ] Settings → Routines from a chatbot: export the guide, paste a routine from a chatbot, Save, find it under My routines. Result:
+- [ ] Clips: the long-lever plank and single-leg glute bridge read correctly on the phone. Result:
+
 ## Release 9.2 · 0.12.2-r9 (code 21) · 2026-11-06
 
 Fixes for the owner's 9.1 feedback ([plan](docs/42-feedback-2026-11-06.md), [details](docs/user-feedback.md)).
