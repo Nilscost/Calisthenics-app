@@ -1,0 +1,23 @@
+# P: Settings > Your data > Routines from a chatbot: the screen, the paste-import and the summary (9.3 L5).
+appId: app.calisthenics.personal
+---
+- launchApp
+- runFlow: ../common/dismiss_system_dialogs.yaml
+- extendedWaitUntil: { visible: { id: bottom_bar }, timeout: 15000 }
+- tapOn: { id: tab_settings }
+- runFlow:
+    file: ../common/reveal.yaml
+    env: { ID: settings_chatbot }
+- takeScreenshot: 01-settings-data-${VARIANT}
+- tapOn: { id: settings_chatbot }
+- extendedWaitUntil: { visible: { id: chatbot_export }, timeout: 10000 }
+- takeScreenshot: 02-chatbot-screen-${VARIANT}
+- tapOn: { id: chatbot_paste }
+- inputText: '{"calisthenicsRoutine":1,"name":"Pull day","sets":3,"format":"CIRCUIT","exercises":[{"id":"pullup-full"},{"id":"plank","seconds":30},{"id":"walking-lunge","reps":8}]}'
+- hideKeyboard
+- tapOn: { id: chatbot_check }
+- extendedWaitUntil: { visible: { id: chatbot_summary }, timeout: 10000 }
+- takeScreenshot: 03-import-summary-${VARIANT}
+- tapOn: { id: chatbot_save }
+- extendedWaitUntil: { visible: { id: chatbot_status }, timeout: 10000 }
+- takeScreenshot: 04-import-saved-${VARIANT}
