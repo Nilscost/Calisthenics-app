@@ -212,6 +212,12 @@ async function run(engine, browserType, base, server, notes) {
     const audio = () => page.evaluate(() => { const a = globalThis.__calAudio; return a && { state: a.ctx && a.ctx.state, beeps: a.beeps, spoken: a.spoken.length }; });
     const sessionShowing = im => near(px(im, 150, 803), BLUE, 30) && !near(px(im, 40, 725), BLUE, 10); // DONE button, no Train button
     const endDoneY = im => { for (let y = 380; y < 640; y += 2) if (near(px(im, 80, y), BLUE, 30) && near(px(im, 300, y), BLUE, 30)) return y; return null; };
+    // Done on the end screen; a tap that lands while the cards recompose (history comparison arriving) can be lost on WebKit, so retry once
+    const tapEndDone = async im => {
+      await tap(195, endDoneY(im) + 8); await sleep(1200);
+      const again = await pixels();
+      if (endDoneY(again) !== null && near(px(again, 200, 650), PAPER, 6)) { await tap(195, endDoneY(again) + 8); await sleep(1200); }
+    };
     const endWorkout = async () => {
       await tap(350, 32); await shot('session-menu');                      // overflow menu -> End workout
       await tap(315, 88); await sleep(500); await shot('end-confirm');     // confirm dialog
@@ -219,7 +225,8 @@ async function run(engine, browserType, base, server, notes) {
       // the end screen's Done button sits under the exercise cards, so its height depends on them (9.3: rating chips on every card): find it
       const im = await waitPx(i => endDoneY(i) !== null && near(px(i, 200, 650), PAPER, 6), 'end screen');
       await sleep(1500);                                                   // "Saved to your history."
-      return im;
+      // the cards can change height once the history comparison arrives: read Done's position again after it settled
+      return waitPx(i => endDoneY(i) !== null, 'end screen settled');
     };
     const openHistory = async () => { await goTab(243); return settle(null); };
 
@@ -293,7 +300,7 @@ async function run(engine, browserType, base, server, notes) {
 
     // End workout (confirm) -> end screen -> Done -> Train -> History shows the workout; it survives a reload
     img = await endWorkout(); await shot('end-screen');
-    await tap(195, endDoneY(img) + 8); await sleep(1200);
+    await tapEndDone(img);
     img = await settle(null);
     expect(near(px(img, 40, 725), BLUE), 'Done on the end screen did not return to Train');
     img = await openHistory(); await shot('history-after-workout');
@@ -318,7 +325,7 @@ async function run(engine, browserType, base, server, notes) {
     await waitPx(i => !near(px(i, 40, 725), BLUE, 10) && !near(px(i, 117, 172), BLUE, 30), 'session screen after Continue');
     await sleep(1000); await shot('recovered-session');
     img = await endWorkout(); await shot('end-screen-recovered');
-    await tap(195, endDoneY(img) + 8); await sleep(1200);
+    await tapEndDone(img);
     img = await openHistory(); await shot('history-two-workouts');
     expect(near(px(img, 300, 490), WHITE, 3), 'History does not show the second (recovered) workout');
 
