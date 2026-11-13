@@ -1,0 +1,43 @@
+Running on test
+ > Flow p_chatbot_routines
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: bottom_bar is visible... COMPLETED
+Tap on id: tab_settings... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... WARNED
+  Run flow when id: settings_chatbot is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+    Scrolling DOWN until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: settings_chatbot is not visible... COMPLETED
+Run ../common/reveal.yaml... COMPLETED
+Take screenshot 01-settings-data-${VARIANT}... COMPLETED
+Tap on id: settings_chatbot... COMPLETED
+Assert that id: chatbot_export is visible... COMPLETED
+Take screenshot 02-chatbot-screen-${VARIANT}... COMPLETED
+Tap on id: chatbot_paste... COMPLETED
+Input text {"calisthenicsRoutine":1,"name":"Pull day","sets":3,"format":"CIRCUIT","exercises":[{"id":"pullup-full"},{"id":"plank","seconds":30},{"id":"walking-lunge","reps":8}]}... COMPLETED
+Hide Keyboard... COMPLETED
+Tap on id: chatbot_check... COMPLETED
+Assert that id: chatbot_summary is visible... COMPLETED
+Take screenshot 03-import-summary-${VARIANT}... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+    Scrolling UP until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... WARNED
+  Run flow when id: chatbot_save is not visible... COMPLETED
+  Run flow when id: ${ID} is not visible...
+    Scrolling DOWN until id: ${ID} is visible with speed 40, visibility percentage 100%, timeout 60000 ms, with centering disabled... COMPLETED
+  Run flow when id: chatbot_save is not visible... COMPLETED
+Run ../common/reveal.yaml... COMPLETED
+Tap on id: chatbot_save... COMPLETED
+Run ../common/reveal.yaml...
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: chatbot_status is not visible... SKIPPED
+  Run flow when id: ${ID} is not visible...
+  Run flow when id: chatbot_status is not visible... SKIPPED
+Run ../common/reveal.yaml... COMPLETED
+Take screenshot 04-import-saved-${VARIANT}... COMPLETED

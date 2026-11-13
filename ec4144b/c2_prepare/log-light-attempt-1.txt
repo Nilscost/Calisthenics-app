@@ -1,0 +1,35 @@
+Running on test
+ > Flow c2_prepare
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Tap on id: start_button... COMPLETED
+Assert that id: session_title is visible... COMPLETED
+Repeat 60 times...
+  Run flow when id: session_name is visible...
+  Run flow when id: session_name is visible... SKIPPED
+  Tap on (Optional) id: session_skip... COMPLETED
+  Wait for animation to end within 1000 ms... COMPLETED
+    Take screenshot 01-prepare-${VARIANT}... COMPLETED
+    Run flow when id: logger_minus is visible...
+      Assert that id: logger_name is visible... FAILED
+    Run flow when id: logger_minus is visible... FAILED
+Repeat 60 times... FAILED
+
+Assertion is false: id: logger_name is visible
+
+Assertion 'id: logger_name is visible' failed. Check the UI hierarchy in debug artifacts to verify the element state and properties.
+
+Possible causes:
+- Element selector may be incorrect - check if there are similar elements with slightly different names/properties.
+- Element may be temporarily unavailable due to loading state
+- This could be a real regression that needs to be addressed
+
+==== Debug output (logs & screenshots) ====
+
+/home/runner/work/_temp/shots/c2_prepare/debug-light-attempt-1

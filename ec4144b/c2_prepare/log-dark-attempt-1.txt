@@ -1,0 +1,24 @@
+Running on test
+ > Flow c2_prepare
+Launch app "app.calisthenics.personal"... COMPLETED
+Run ../common/dismiss_system_dialogs.yaml...
+  Run flow when "isn't responding" is visible...
+  Run flow when "isn't responding" is visible... SKIPPED
+Run ../common/dismiss_system_dialogs.yaml... COMPLETED
+Assert that id: preview_button is visible... COMPLETED
+Tap on id: preview_button... COMPLETED
+Assert that id: start_button is visible... COMPLETED
+Tap on id: start_button... COMPLETED
+Assert that id: session_title is visible... COMPLETED
+Repeat 60 times...
+  Run flow when id: session_name is visible...
+  Run flow when id: session_name is visible... SKIPPED
+  Tap on (Optional) id: session_skip... COMPLETED
+  Wait for animation to end within 1000 ms... COMPLETED
+    Take screenshot 01-prepare-${VARIANT}... COMPLETED
+    Run flow when id: logger_minus is visible...
+    Run flow when id: logger_minus is visible... SKIPPED
+    Run flow when ".*Left side.*" is visible...
+      Take screenshot 03-prepare-split-left-${VARIANT}... COMPLETED
+    Run flow when ".*Left side.*" is visible... COMPLETED
+Repeat 60 times... COMPLETED

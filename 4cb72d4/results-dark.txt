@@ -1,0 +1,2 @@
+RETRY c2_prepare dark
+FAIL c2_prepare dark
