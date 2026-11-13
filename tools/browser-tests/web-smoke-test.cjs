@@ -211,11 +211,13 @@ async function run(engine, browserType, base, server, notes) {
     const goTab = async x => { await tap(x, 806); await sleep(1200); return pixels(); };  // 40 Train, 243 History
     const audio = () => page.evaluate(() => { const a = globalThis.__calAudio; return a && { state: a.ctx && a.ctx.state, beeps: a.beeps, spoken: a.spoken.length }; });
     const sessionShowing = im => near(px(im, 150, 803), BLUE, 30) && !near(px(im, 40, 725), BLUE, 10); // DONE button, no Train button
+    const endDoneY = im => { for (let y = 380; y < 640; y += 2) if (near(px(im, 80, y), BLUE, 30) && near(px(im, 300, y), BLUE, 30)) return y; return null; };
     const endWorkout = async () => {
       await tap(350, 32); await shot('session-menu');                      // overflow menu -> End workout
       await tap(315, 88); await sleep(500); await shot('end-confirm');     // confirm dialog
       await tap(278, 478);                                                 // End workout
-      const im = await waitPx(i => near(px(i, 80, 410), BLUE, 30) && near(px(i, 200, 650), PAPER, 6), 'end screen');
+      // the end screen's Done button sits under the exercise cards, so its height depends on them (9.3: rating chips on every card): find it
+      const im = await waitPx(i => endDoneY(i) !== null && near(px(i, 200, 650), PAPER, 6), 'end screen');
       await sleep(1500);                                                   // "Saved to your history."
       return im;
     };
@@ -291,7 +293,7 @@ async function run(engine, browserType, base, server, notes) {
 
     // End workout (confirm) -> end screen -> Done -> Train -> History shows the workout; it survives a reload
     img = await endWorkout(); await shot('end-screen');
-    await tap(195, 410); await sleep(1200);
+    await tap(195, endDoneY(img) + 8); await sleep(1200);
     img = await settle(null);
     expect(near(px(img, 40, 725), BLUE), 'Done on the end screen did not return to Train');
     img = await openHistory(); await shot('history-after-workout');
@@ -316,7 +318,7 @@ async function run(engine, browserType, base, server, notes) {
     await waitPx(i => !near(px(i, 40, 725), BLUE, 10) && !near(px(i, 117, 172), BLUE, 30), 'session screen after Continue');
     await sleep(1000); await shot('recovered-session');
     img = await endWorkout(); await shot('end-screen-recovered');
-    await tap(195, 410); await sleep(1200);
+    await tap(195, endDoneY(img) + 8); await sleep(1200);
     img = await openHistory(); await shot('history-two-workouts');
     expect(near(px(img, 300, 490), WHITE, 3), 'History does not show the second (recovered) workout');
 
@@ -336,8 +338,8 @@ async function run(engine, browserType, base, server, notes) {
     expect(dark > 300, `licences list did not render (${dark} dark pixels)`);
     await shot('licences');
     await page.evaluate(() => history.back()); await sleep(1500); await settle(null);
-    await scrollSettingsDown();
-    await click(195, 510);                                                 // Backup and restore
+    await scrollSettingsDown(); await shot('settings-bottom');
+    await click(195, 430);                                                 // Backup and restore (9.3: "Routines from a chatbot" is the row below it)
     await shot('backup-screen');
     const [download] = await Promise.all([page.waitForEvent('download', { timeout: 15000 }), page.mouse.click(86, 186)]);   // Export backup
     const backupFile = path.join(dir, 'calisthenics-backup.json');
@@ -366,8 +368,8 @@ async function run(engine, browserType, base, server, notes) {
     expect(!near(px(img, 300, 420), WHITE, 3), 'History is not empty after wiping storage');
     img = await openSettings();
     expect(region(img, ...ROUNDS) !== roundsBefore, 'the rounds setting was not reset by the wipe');
-    await scrollSettingsDown();
-    await click(195, 510);                                                 // Backup and restore
+    await scrollSettingsDown(); await shot('settings-bottom');
+    await click(195, 430);                                                 // Backup and restore (9.3: "Routines from a chatbot" is the row below it)
     // Check a backup file. A click right after the screen change can be lost on a loaded CI runner, so it is retried.
     let fileChooser = null;
     for (let attempt = 1; attempt <= 3 && !fileChooser; attempt++) {
