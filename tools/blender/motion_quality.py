@@ -38,6 +38,11 @@ def audit(data, contract=None):
     contract=contract or json.loads(CONTRACT.read_text())
     ex=data['id'];definition=contract['exercises'].get(ex)
     if not definition:return {'exercise':ex,'status':'unscoped','failures':[]}
+    if definition.get('movement_class'):
+        from movement_class import audit as class_audit
+        report=class_audit(data,definition,contract)
+        report.update(data_sha256=digest(data),contract_sha256=digest(contract))
+        return report
     fs=data.get('frames',[]);b=definition['bounds'];metrics={};failures=[]
     def record(name,value,lo=None,hi=None,frame=None):
         good=math.isfinite(value) and (lo is None or value>=lo) and (hi is None or value<=hi)
