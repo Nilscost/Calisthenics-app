@@ -90,11 +90,11 @@ class GentlerStepsTest {
     private val profile = EquipmentProfile("home", "Home", emptyList(), emptySet())
     private val settings = TrainSettings(rounds = 3, exercisesPerRound = 1, betweenSetMode = BetweenSetMode.FLOW)
 
-    private inner class World(val vids: List<String>, val policies: List<ProgressionPolicy>, val start: Map<String, Int>) {
+    private inner class World(val vids: List<String>, val policies: List<ProgressionPolicy>, val start: Map<String, Int>, val hold: Boolean = false) {
         val catalog = Fx.catalog().let { base ->
             val extra = mapOf("pullup" to (Pattern.PULL_VERTICAL to Area.UPPER_BODY), "calf" to (Pattern.CALF_RAISE to Area.LOWER_BODY), "pushup" to (Pattern.PUSH_HORIZONTAL to Area.UPPER_BODY),
-                "flat" to (Pattern.SQUAT to Area.LOWER_BODY))
-            val vs = vids.map { Fx.strength(it, it, extra.getValue(it).first, extra.getValue(it).second) }
+                "flat" to (Pattern.SQUAT to Area.LOWER_BODY), "hold" to (Pattern.CORE_ANTI_EXTENSION to Area.CORE))
+            val vs = vids.map { Fx.strength(it, it, extra.getValue(it).first, extra.getValue(it).second).let { v -> if (hold) v.copy(kind = Kind.HOLD) else v } }
             Catalog(1, vs + Fx.stretch, policies)
         }
         val engine = ProgressionEngine(catalog)
@@ -241,6 +241,15 @@ class GentlerStepsTest {
         val plain = rampedBlock.copy(levelTarget = null)
         assertEquals(7, plain.judgedValue)
         assertEquals(Rating.BELOW, ratingFor(5, plain.target, false, judged = plain.judgedValue))
+    }
+
+    @Test fun aRampedHoldBlockLastsLongEnoughToHoldTheShownTarget() {
+        val h = pol("hold", 10, 20, 30, 40, 50, type = TargetType.HOLD_SECONDS)
+        val w = World(listOf("hold"), listOf(h), mapOf("hold" to 1), hold = true)
+        for (day in listOf(1, 3)) { val plan = w.plan(day); w.train(day, plan) { it.target!!.value } }
+        val block = w.plan(5).blocks.first { it.type == BlockType.WORK }
+        assertEquals(15, block.target!!.value); assertEquals(10, block.levelTarget)
+        assertTrue(block.durationSeconds >= 15 + 3)
     }
 
     @Test fun theLevelTargetIsOnlyWrittenWhenThereIsARamp() {

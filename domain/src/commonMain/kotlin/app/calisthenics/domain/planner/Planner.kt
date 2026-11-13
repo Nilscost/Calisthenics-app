@@ -519,7 +519,7 @@ private class Planner(input: PlanInput) {
                     else -> ruleTarget ?: reduced?.let { t.target.copy(value = minOf(it, t.target.value)) } ?: ramp?.target ?: t.target
                 }
                 val target = cappedTarget(requested, policy)
-                val dur = if ((free != null || ruleTarget != null || levelFiveEligible) && isHold) maxOf(secs, (target.max ?: target.value) + 3) else secs
+                val dur = if ((free != null || ruleTarget != null || levelFiveEligible || ramp != null) && isHold) maxOf(secs, (target.max ?: target.value) + 3) else secs
                 out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, if (levelFiveEligible) 5 else t.index,
                     mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams, freeTarget = free != null, groupIndex = group,
                     progressionRouteId = c.slot.progressionRouteId, inferredStartTier = c.inferredStartTier.takeIf { free == null && ruleTarget == null && !levelFiveEligible },

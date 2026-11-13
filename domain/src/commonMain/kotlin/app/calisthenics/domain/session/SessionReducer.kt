@@ -222,7 +222,7 @@ private fun earlyDone(s: SessionState, now: Long): Reduced {
     if (s.phase != Phase.RUNNING || b.type != BlockType.WORK) return Reduced(s)
     val t = addActive(s, now)
     val heldEnough = b.target?.type != app.calisthenics.domain.model.TargetType.HOLD_SECONDS ||
-        (t.activeMs[b.id] ?: 0L) >= (b.target?.value ?: 0) * 1000L
+        (t.activeMs[b.id] ?: 0L) >= (b.judgedValue ?: 0) * 1000L   // L4: the level's own target when the shown one is ramped
     return moveOn(t.copy(executions = t.executions + (b.id to if (heldEnough) Execution.COMPLETED else Execution.PARTIAL)), now)
 }
 
