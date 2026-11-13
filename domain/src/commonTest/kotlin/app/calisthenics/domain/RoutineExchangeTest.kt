@@ -71,9 +71,10 @@ class RoutineExchangeTest {
         assertTrue("`pullup-full`" in exportGuide(catalog))
         assertFalse("`pullup-full`" in exportGuide(fewer))
         // a side mode read from the catalog at run time, never hard-coded
-        val flipped = catalog.copy(variations = catalog.variations.map { if (it.id == "walking-lunge") it.copy(sides = SideMode.ALTERNATING) else it })
-        assertTrue(exportGuide(flipped).lines().first { it.startsWith("| `walking-lunge` |") }.contains("per side (alternating)"))
-        assertTrue(exportGuide(catalog).lines().first { it.startsWith("| `walking-lunge` |") }.contains(" total "))
+        // (walking-lunge is ALTERNATING in the 9.3 catalog, so the flip goes the other way: to no side mode)
+        val flipped = catalog.copy(variations = catalog.variations.map { if (it.id == "walking-lunge") it.copy(sides = null) else it })
+        assertTrue(exportGuide(catalog).lines().first { it.startsWith("| `walking-lunge` |") }.contains("per side (alternating)"))
+        assertTrue(exportGuide(flipped).lines().first { it.startsWith("| `walking-lunge` |") }.contains(" total "))
     }
 
     @Test fun theExampleInTheGuideParses() {
