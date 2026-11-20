@@ -60,6 +60,9 @@ import app.calisthenics.domain.session.Phase
 import app.calisthenics.domain.session.SessionProgressSummary
 import app.calisthenics.domain.session.SessionState
 import app.calisthenics.domain.progression.LevelUpBy
+import app.calisthenics.domain.session.LevelNote
+import app.calisthenics.domain.session.NextTime
+import app.calisthenics.domain.session.NextTimeKind
 import app.calisthenics.domain.session.doneVariationIds
 import app.calisthenics.domain.session.summarizeSessionProgress
 import io.github.gonbei774.calisthenicsmemory.platform.IoDispatcher
@@ -86,6 +89,23 @@ import io.github.gonbei774.calisthenicsmemory.shared.resources.end_go_down
 import io.github.gonbei774.calisthenicsmemory.shared.resources.end_go_next
 import io.github.gonbei774.calisthenicsmemory.shared.resources.end_go_up
 import io.github.gonbei774.calisthenicsmemory.shared.resources.end_mastered
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_next_time_reps
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_next_time_secs
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_next_time_again_reps
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_next_time_again_secs
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_next_time_then_reps
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_next_time_then_secs
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_progress_at_reps
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_progress_at_reps_weekly
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_progress_at_secs
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_progress_at_secs_weekly
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_progress_to_level_reps
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_progress_to_level_secs
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_progress_to_mastered
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_level_back_after_break
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_level_again
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_level_starting
+import io.github.gonbei774.calisthenicsmemory.shared.resources.end_next_exercise_level
 import io.github.gonbei774.calisthenicsmemory.shared.resources.end_next_exercise
 import io.github.gonbei774.calisthenicsmemory.shared.resources.end_next_exercise_name
 import io.github.gonbei774.calisthenicsmemory.shared.resources.end_progress_done_sessions
@@ -295,7 +315,7 @@ internal fun EndProgressCards(
                     // the next exercise only needs its thumbnail when it has no card of its own in this session
                     val next = e.nextVariationId
                     ExerciseCard(
-                        e, name(e.variationId), next?.let { NextStep(it, name(it), hasOwnCard = s.exercises.any { x -> x.variationId == it }) },
+                        e, name(e.variationId), next?.let { NextStep(it, name(it), hasOwnCard = s.exercises.any { x -> x.variationId == it }, tier = e.nextVariationTier) },
                         editors[e.variationId], p.moveOns[e.variationId], ::name, onSave, onAct,
                     )
                 }
@@ -325,7 +345,7 @@ internal fun EndProgressCards(
 }
 
 /** The exercise a mastered one leads on to. */
-internal data class NextStep(val variationId: String, val name: String, val hasOwnCard: Boolean)
+internal data class NextStep(val variationId: String, val name: String, val hasOwnCard: Boolean, val tier: Int = 1)
 
 @Composable
 private fun goldBorder() = BorderStroke(1.5.dp, if (MaterialTheme.colorScheme.surface.luminance() > 0.5f) GoldMarkOnLight else Gold)
@@ -370,7 +390,14 @@ private fun ExerciseCard(
                             current = !e.masteredAlready && !e.mastered,
                         )
                         Text(
-                            if (e.masteredAlready) stringResource(Res.string.end_mastered) else stringResource(Res.string.history_level_of, e.tier),
+                            when {
+                                e.masteredAlready -> stringResource(Res.string.end_mastered)
+                                e.levelNote == LevelNote.STARTING -> stringResource(Res.string.end_level_starting, e.tier)
+                                e.levelNote == LevelNote.BACK_AFTER_BREAK -> stringResource(Res.string.end_level_back_after_break, e.tier)
+                                e.levelNote == LevelNote.AGAIN -> stringResource(Res.string.end_level_again, e.tier)
+                                else -> stringResource(Res.string.history_level_of, e.tier)
+                            },
+                            Modifier.testTag("end_level_${e.variationId}"),
                             style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
@@ -378,10 +405,10 @@ private fun ExerciseCard(
                         stringResource(Res.string.end_demonstrated, e.leveledUpTo ?: e.tier), Modifier.testTag("end_demonstrated_${e.variationId}"),
                         style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                    e.progress?.let { ProgressDots(e.variationId, it) }
+                    e.nextTime?.let { NextTimeLine(e.variationId, it) }
+                    e.progress?.let { ProgressDots(e.variationId, it, e.levelTarget, e.nextLevelTarget, e.nextTargetIsHold) }
                     val chips = buildList {
                         if (e.easierNextTime) add("easier" to stringResource(Res.string.end_chip_easier))
-                        e.nextTarget?.let { add("target" to stringResource(if (e.nextTargetIsHold) Res.string.end_chip_next_seconds else Res.string.end_chip_next_reps, it)) }
                         if (e.levelKept) add("kept" to stringResource(Res.string.end_chip_kept))
                     }
                     if (chips.isNotEmpty()) FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.xs), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
@@ -401,7 +428,7 @@ private fun NextStepRow(vid: String, next: NextStep) {
     Row(Modifier.semantics(mergeDescendants = true) {}.testTag("end_next_$vid"), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Spacing.m)) {
         if (!next.hasOwnCard) ExerciseThumb(next.variationId, next.name, size = 44.dp)
         Text(
-            stringResource(if (next.hasOwnCard) Res.string.end_next_exercise_name else Res.string.end_next_exercise, next.name),
+            if (next.hasOwnCard) stringResource(Res.string.end_next_exercise_name, next.name) else stringResource(Res.string.end_next_exercise_level, next.name, next.tier),
             style = MaterialTheme.typography.titleMedium,
         )
     }
@@ -495,9 +522,18 @@ private fun StatusChip(text: String, modifier: Modifier) {
  * just raised the level (all filled, "at Level N" with the level it was earned at).
  */
 @Composable
-private fun ProgressDots(vid: String, p: LevelProgress) {
+private fun ProgressDots(vid: String, p: LevelProgress, levelTarget: Int?, nextLevelTarget: Int?, hold: Boolean) {
     val mastery = p.toLevel > 5
-    val text = when {
+    // 9.4 F3: with the level's own target the line says what counts and what the next level asks; the finished streak keeps its 9.3 wording
+    val text = if (!p.finished && levelTarget != null && (mastery || nextLevelTarget != null)) {
+        val head = stringResource(
+            if (hold) (if (p.weekly) Res.string.end_progress_at_secs_weekly else Res.string.end_progress_at_secs)
+            else (if (p.weekly) Res.string.end_progress_at_reps_weekly else Res.string.end_progress_at_reps), p.have, p.need, levelTarget,
+        )
+        val tail = if (mastery) stringResource(Res.string.end_progress_to_mastered)
+            else stringResource(if (hold) Res.string.end_progress_to_level_secs else Res.string.end_progress_to_level_reps, p.toLevel, nextLevelTarget ?: 0)
+        "$head $tail"
+    } else when {
         p.finished -> stringResource(if (p.weekly) Res.string.end_progress_done_weekly else Res.string.end_progress_done_sessions, p.have, p.need, p.toLevel - 1)
         mastery -> stringResource(if (p.weekly) Res.string.end_progress_mastery_weekly else Res.string.end_progress_mastery_sessions, p.have, p.need, p.toLevel)
         else -> stringResource(if (p.weekly) Res.string.end_progress_weekly else Res.string.end_progress_sessions, p.have, p.need, p.toLevel)
@@ -513,4 +549,15 @@ private fun ProgressDots(vid: String, p: LevelProgress) {
         }
         Text(text, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
+}
+
+/** 9.4 F3: the first of the card's two progress lines, the number the planner will prescribe next time. */
+@Composable
+private fun NextTimeLine(vid: String, n: NextTime) {
+    val text = when (n.kind) {
+        NextTimeKind.NORMAL -> stringResource(if (n.isHold) Res.string.end_next_time_secs else Res.string.end_next_time_reps, n.value)
+        NextTimeKind.AGAIN -> stringResource(if (n.isHold) Res.string.end_next_time_again_secs else Res.string.end_next_time_again_reps, n.value)
+        NextTimeKind.THEN_BACK -> stringResource(if (n.isHold) Res.string.end_next_time_then_secs else Res.string.end_next_time_then_reps, n.value, n.backTo ?: n.value)
+    }
+    Text(text, Modifier.testTag("end_next_time_$vid"), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurface)
 }

@@ -70,7 +70,8 @@ class SessionProgressSummaryTest {
             loggedBlockIds = work.map { it.id }.toSet(), effectivePolicyOf = { c.policyForVariation(it) })
         val act = listOf(UserAction.SelfAssessment(0, std, 1))
         val e = summarizeSessionProgress(c, engine.replay(emptyList(), act), engine.replay(ev, act), listOf(std)).exercises.single()
-        assertEquals(3, e.leveledUpTo); assertEquals(LevelUpBy.DEMONSTRATED, e.levelUpBy)
+        // 9.4 F5: the first session of an exercise is its starting level, not an unlock (the dots are unchanged)
+        assertNull(e.leveledUpTo); assertEquals(LevelNote.STARTING, e.levelNote); assertEquals(3, e.tier)
         assertEquals(LevelProgress(1, 3, false, 4), e.progress)
     }
 
@@ -189,6 +190,79 @@ class SessionProgressSummaryTest {
     @Test fun unrelatedPrerequisitesMetThisSessionAreStillAnnounced() {
         val s = summary(split, 5, listOf(0, 5, 10)) { squatEv(it, 5) }
         assertTrue(s.newExercises.isNotEmpty())
+    }
+
+    // ---- 9.4 L2: the card's two progress lines, starting level, back after a break, a level earned again ----
+    private fun evOf(vid: String, route: String, day: Int, tier: Int, below: Boolean = false, shortfall: Int? = null) =
+        SessionEvidence("s$day$vid", vid, c.variation(vid)!!.familyId, day, tier, 3, false, below, false, null, false, 3, 0, 2, progressionRouteId = route, shortfallValue = shortfall)
+
+    private fun summaryOf(vid: String, route: String, start: Int, sessions: List<Pair<Int, Int>>, miss: Map<Int, Int> = emptyMap()): ExerciseProgress {
+        val act = listOf(UserAction.SelfAssessment(0, vid, start))
+        val all = sessions.map { (day, tier) -> evOf(vid, route, day, tier, below = day in miss, shortfall = miss[day]) }
+        return summarizeSessionProgress(c, engine.replay(all.dropLast(1), act), engine.replay(all, act), listOf(vid)).exercises.single()
+    }
+
+    @Test fun aFirstMissAtTheLevelTargetSaysTheSameTargetAgain() {
+        // chin-up shape: level 3 (5 reps), earlier sessions good, today 5, 5, 4
+        val e = summaryOf("chinup-full", "pullup", 3, listOf(0 to 3, 5 to 3, 10 to 3), miss = mapOf(10 to 4))
+        assertEquals(NextTime(5, false, NextTimeKind.AGAIN), e.nextTime)
+        assertTrue(e.levelKept); assertEquals(LevelNote.NONE, e.levelNote)
+    }
+
+    @Test fun aLoweredTargetSaysThenBackToTheLevelTarget() {
+        // far off: lowest set 2 of 5, so 2 next time, then back to 5
+        val e = summaryOf("pullup-full", "pullup", 3, listOf(0 to 3, 5 to 3), miss = mapOf(5 to 2))
+        assertEquals(NextTime(2, false, NextTimeKind.THEN_BACK, 5), e.nextTime)
+    }
+
+    @Test fun theNextTimeNumberIsTheRampTheDotsAreCountedAtTheLevelTarget() {
+        // pull-up shape: level 3 is 5 reps, level 4 is 8; one good session in 14 days (the other is 40 days back) -> ramp 6
+        val e = summaryOf("pullup-full", "pullup", 3, listOf(0 to 3, 40 to 3))
+        assertEquals(NextTime(6, false, NextTimeKind.NORMAL), e.nextTime)
+        assertEquals(LevelProgress(1, 3, false, 4), e.progress)
+        assertEquals(5, e.levelTarget); assertEquals(8, e.nextLevelTarget); assertEquals(LevelNote.NONE, e.levelNote)
+    }
+
+    @Test fun zeroGoodSessionsAfterTwoMissesLowersTheTargetByOneAndShowsNoRamp() {
+        val e = summaryOf("pullup-full", "pullup", 3, listOf(0 to 3, 5 to 3), miss = mapOf(0 to 3, 5 to 3))
+        assertEquals(0, e.progress!!.have)
+        assertEquals(NextTime(4, false, NextTimeKind.THEN_BACK, 5), e.nextTime)
+    }
+
+    @Test fun anArcherLevelUpByStreakKeepsTheFinishedLineAndIsAnUnlock() {
+        val e = summaryOf("pushup-archer", "pushup", 4, listOf(0 to 4, 5 to 4, 10 to 4))
+        assertEquals(5, e.leveledUpTo); assertEquals(LevelNote.NONE, e.levelNote)
+        assertEquals(LevelProgress(3, 3, false, 5, finished = true), e.progress)
+        assertEquals(4, e.stars)
+    }
+
+    @Test fun theFirstSessionOfAnExerciseIsTheStartingLevelNotAnUnlock() {
+        val e = summaryOf("pullup-full", "pullup", 3, listOf(0 to 3))
+        assertEquals(LevelNote.STARTING, e.levelNote); assertEquals(3, e.tier)
+        assertNull(e.leveledUpTo); assertNull(e.levelUpBy)
+        assertEquals(LevelProgress(1, 3, false, 4), e.progress)
+        assertNotNull(e.nextTime)
+    }
+
+    @Test fun aSessionDoneOneLevelDownAfterABreakIsBackAfterABreak() {
+        // three good sessions at level 3 raised it to 4 on day 6; day 30 is the break-day session done at level 3
+        val e = summaryOf("pullup-full", "pullup", 3, listOf(0 to 3, 3 to 3, 6 to 3, 30 to 3))
+        assertEquals(3, e.tier); assertEquals(LevelNote.BACK_AFTER_BREAK, e.levelNote); assertNull(e.leveledUpTo)
+    }
+
+    @Test fun aLevelHeldBeforeAndEarnedAgainIsNotAnUnlock() {
+        val e = summaryOf("pullup-full", "pullup", 3, listOf(0 to 3, 3 to 3, 6 to 3, 30 to 3, 33 to 3, 36 to 3))
+        assertEquals(4, e.tier); assertEquals(LevelNote.AGAIN, e.levelNote)
+        assertNull(e.leveledUpTo); assertNull(e.levelUpBy)
+        assertEquals(LevelProgress(3, 3, false, 4, finished = true), e.progress)
+    }
+
+    @Test fun theNextExerciseShowsItsRealLevel() {
+        val archer = "pushup-archer"; val next = "pushup-half-one-arm"
+        val act = listOf(UserAction.SelfAssessment(0, archer, 5), UserAction.SelfAssessment(0, next, 3))
+        val all = listOf(0, 5, 10, 14).map { evOf(archer, "pushup", it, 5) } + evOf(next, "pushup", 15, 3)
+        val s = summarizeSessionProgress(c, engine.replay(all.dropLast(2), act), engine.replay(all.dropLast(1), act), listOf(archer)).exercises.single()
+        assertEquals(next, s.nextVariationId); assertEquals(3, s.nextVariationTier)
     }
 
 }

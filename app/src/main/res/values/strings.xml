@@ -610,4 +610,22 @@
     <string name="mix_it_up_tag">Mixed in</string>
     <string name="mix_it_up_summary">Mixed in today: %1$s.</string>
     <string name="mix_it_up_summary_item">%1$s (for %2$s)</string>
+    <!-- 9.4 L2: end screen card lines (F1, F3, F4, F5) -->
+    <string name="end_next_time_reps">Next time: %1$d reps</string>
+    <string name="end_next_time_secs">Next time: %1$d s</string>
+    <string name="end_next_time_again_reps">Next time: %1$d reps again</string>
+    <string name="end_next_time_again_secs">Next time: %1$d s again</string>
+    <string name="end_next_time_then_reps">Next time: %1$d reps, then back to %2$d</string>
+    <string name="end_next_time_then_secs">Next time: %1$d s, then back to %2$d s</string>
+    <string name="end_progress_at_reps">%1$d of %2$d good sessions at %3$d+ reps</string>
+    <string name="end_progress_at_reps_weekly">%1$d of %2$d weekly sessions at %3$d+ reps</string>
+    <string name="end_progress_at_secs">%1$d of %2$d good sessions at %3$d+ s</string>
+    <string name="end_progress_at_secs_weekly">%1$d of %2$d weekly sessions at %3$d+ s</string>
+    <string name="end_progress_to_level_reps">→ Level %1$d (%2$d reps)</string>
+    <string name="end_progress_to_level_secs">→ Level %1$d (%2$d s)</string>
+    <string name="end_progress_to_mastered">→ mastered</string>
+    <string name="end_level_back_after_break">Level %1$d of 5 · back after a break</string>
+    <string name="end_level_again">Level %1$d again</string>
+    <string name="end_level_starting">Starting at Level %1$d</string>
+    <string name="end_next_exercise_level">Next: %1$s · Level %2$d</string>
 </resources>
