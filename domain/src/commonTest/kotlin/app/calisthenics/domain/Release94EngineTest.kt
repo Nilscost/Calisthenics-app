@@ -18,9 +18,9 @@ class Release94EngineTest {
     private val real = parseCatalog(fixtureText("content/starter/catalog.json"))
     private val engine = ProgressionEngine(real)
 
-    private fun ev(day: Int, vid: String, tier: Int, completed: Int = 3, below: Boolean = false, partial: Boolean = false, version: Int = 0, shortfall: Int? = null) =
+    private fun ev(day: Int, vid: String, tier: Int, completed: Int = 3, below: Boolean = false, partial: Boolean = false, version: Int = 0, shortfall: Int? = null, reentry: Int? = null) =
         SessionEvidence("s$day$vid", vid, real.variation(vid)!!.familyId, day, tier, completed, partial, below, false, null, false, completed, 0, 2,
-            progressionRouteId = null, shortfallValue = shortfall, progressionEvidenceVersion = version)
+            progressionRouteId = null, shortfallValue = shortfall, progressionEvidenceVersion = version, reentryFromTier = reentry)
 
     // (a) the archer push-up and the abandoned half one-arm push-up plan
     @Test fun anAbandonedPlanOfALaterExerciseDoesNotMakeTheArcherMastered() {
@@ -86,7 +86,7 @@ class Release94EngineTest {
     private val sa4 = listOf(UserAction.SelfAssessment(0, "pushup-standard", 4))
 
     @Test fun aSessionOneLevelDownAfterABreakBecomesTheLevelAndKeepsStars() {
-        val s = engine.replay(listOf(ev(2, "pushup-standard", 4), ev(20, "pushup-standard", 3)), sa4)
+        val s = engine.replay(listOf(ev(2, "pushup-standard", 4), ev(20, "pushup-standard", 3, reentry = 4)), sa4)
         val p = s.variations.getValue("pushup-standard")
         assertEquals(3, p.tier); assertEquals(20, p.reentryResolvedDay); assertEquals(20, p.backFromBreakDay); assertEquals(4, p.highestTierReached)
         assertEquals(listOf(20), p.streakDays)                    // the session was good: a normal streak starts with it
@@ -96,21 +96,21 @@ class Release94EngineTest {
     }
 
     @Test fun reEarningTheOldLevelTakesTheNormalThreeGoodSessions() {
-        val s = engine.replay(listOf(ev(2, "pushup-standard", 4), ev(20, "pushup-standard", 3), ev(22, "pushup-standard", 3), ev(24, "pushup-standard", 3)), sa4)
+        val s = engine.replay(listOf(ev(2, "pushup-standard", 4), ev(20, "pushup-standard", 3, reentry = 4), ev(22, "pushup-standard", 3), ev(24, "pushup-standard", 3)), sa4)
         val p = s.variations.getValue("pushup-standard")
         assertEquals(4, p.tier); assertEquals(setOf(3), p.achievedTiers); assertEquals(4, p.highestTierReached)
     }
 
     @Test fun aBelowTargetReEntrySessionStillSetsTheLevelButStartsNoStreak() {
-        val s = engine.replay(listOf(ev(2, "pushup-standard", 4), ev(20, "pushup-standard", 3, below = true)), sa4)
+        val s = engine.replay(listOf(ev(2, "pushup-standard", 4), ev(20, "pushup-standard", 3, below = true, reentry = 4)), sa4)
         val p = s.variations.getValue("pushup-standard")
         assertEquals(3, p.tier); assertEquals(20, p.backFromBreakDay); assertTrue(p.streakDays.isEmpty())
     }
 
     @Test fun noReEntryWithinFourteenDaysAtTheSameLevelWithoutWorkOrAfterAHold() {
-        assertEquals(4, engine.replay(listOf(ev(2, "pushup-standard", 4), ev(15, "pushup-standard", 3)), sa4).tierFor("pushup-standard"))        // 13 days
+        assertEquals(4, engine.replay(listOf(ev(2, "pushup-standard", 4), ev(15, "pushup-standard", 3, reentry = 4)), sa4).tierFor("pushup-standard"))        // 13 days
         assertEquals(4, engine.replay(listOf(ev(2, "pushup-standard", 4), ev(30, "pushup-standard", 4)), sa4).tierFor("pushup-standard"))        // same level
-        val p = engine.replay(listOf(ev(2, "pushup-standard", 4), ev(30, "pushup-standard", 3, completed = 0, partial = true)), sa4).variations.getValue("pushup-standard")
+        val p = engine.replay(listOf(ev(2, "pushup-standard", 4), ev(30, "pushup-standard", 3, completed = 0, partial = true, reentry = 4)), sa4).variations.getValue("pushup-standard")
         assertEquals(4, p.tier); assertNull(p.backFromBreakDay)
     }
 
@@ -260,5 +260,44 @@ class Release94EngineTest {
         assertEquals(10, planTarget(missed))                                         // first miss: the level target again
         val twice = e.replay(listOf(e1(1), e1(3, below = true, short = 9), e1(5, below = true, short = 9)), act)
         assertEquals(9, planTarget(twice))                                           // second miss: one rep less
+    }
+
+    // ---- L1b ----
+
+    @Test fun aSessionOneLevelDownWithoutThePlannersReentryMarkerChangesNothing() {
+        val s = engine.replay(listOf(ev(2, "pushup-standard", 4), ev(20, "pushup-standard", 3), ev(22, "pushup-standard", 4)), sa4)
+        assertEquals(4, s.tierFor("pushup-standard")); assertNull(s.variations.getValue("pushup-standard").backFromBreakDay)
+        val marked = engine.replay(listOf(ev(2, "pushup-standard", 4), ev(20, "pushup-standard", 3, reentry = 4)), sa4)
+        assertEquals(3, marked.tierFor("pushup-standard"))
+        // a marker for a different level (the level changed since the plan) does nothing
+        assertEquals(4, engine.replay(listOf(ev(2, "pushup-standard", 4), ev(20, "pushup-standard", 3, reentry = 5)), sa4).tierFor("pushup-standard"))
+    }
+
+    @Test fun thePlannerMarksAReentryPlanOnlyWhenTheLoweredLevelIsTheFinalOne() {
+        val c = Fx.catalog(); val e = ProgressionEngine(c)
+        val act = listOf(UserAction.SelfAssessment(0, "pushup-std", 3))
+        val p = e.replay(listOf(SessionEvidence("s1", "pushup-std", "pushup", 1, 3, 3, false, false, false, null, false, 3, 0, 2)), act)
+        fun work(tierOverride: Int?): TimelineBlock {
+            val r = Routine("t", 1, "T", listOf(RoutineSlot("push", Pattern.PUSH_HORIZONTAL, Area.UPPER_BODY, "pushup-std")))
+            val d = SessionDraft(600, false, emptySet(), false, false, setOf(StrengthFocus.FULL_BODY), SeedProfiles.home.id, rounds = 1).let { if (tierOverride != null) it.copy(tierOverrides = mapOf("push" to tierOverride)) else it }
+            return (generate(PlanInput("plan", 0, 30, c, r, d, SeedProfiles.home, progress = p)) as PlanResult.Ready).plan.blocks.first { it.type == BlockType.WORK }
+        }
+        assertEquals(2, work(null).prescriptionTier); assertEquals(3, work(null).reentryFromTier)
+        assertNull(work(4).reentryFromTier); assertNull(work(1).reentryFromTier)
+    }
+
+    @Test fun aCleanSessionBetweenTwoMissesWeeksApartResetsTheBelowCount() {
+        val p = at("chin", 3, miss(1, "chin", 3, 4), good(10, "chin", 3, reduced = true), good(20, "chin", 3, reduced = true), miss(40, "chin", 3, 4))
+        assertEquals(1, p.consecutiveBelow); assertFalse(p.lowerTargetSuggested)
+        val q = at("chin", 3, miss(1, "chin", 3, 4), good(3, "chin", 3, reduced = true))
+        assertEquals(0, q.consecutiveBelow)
+        assertTrue(at("chin", 3, miss(1, "chin", 3, 4), miss(3, "chin", 3, 4)).lowerTargetSuggested)
+    }
+
+    @Test fun theFirstRealSessionOfAnOldPlanCountsTheLevelsBelowItsStartLevelAsStars() {
+        val p = engine.replay(listOf(ev(1, "pushup-standard", 3, completed = 0, partial = true), ev(3, "pushup-standard", 3)), emptyList()).variations.getValue("pushup-standard")
+        assertEquals(3, p.tier); assertEquals(2, p.earnedStars())
+        assertEquals(3, engine.replay(listOf(ev(3, "pushup-standard", 4)), emptyList()).variations.getValue("pushup-standard").earnedStars())
+        assertEquals(0, engine.replay(listOf(ev(3, "pushup-standard", 1)), emptyList()).variations.getValue("pushup-standard").earnedStars())
     }
 }

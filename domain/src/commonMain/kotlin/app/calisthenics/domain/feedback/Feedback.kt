@@ -121,6 +121,8 @@ data class SessionEvidence(
     val shortfallValue: Int? = null,
     /** W2: the session was prescribed less than the level's own (capped) target, i.e. a lowered target after a shortfall: it is done and kept, but it is not a qualifying session for the level. */
     val reducedPrescription: Boolean = false,
+    /** 9.4 F4: the plan was built as a re-entry: the level it was lowered from (see [TimelineBlock.reentryFromTier]). Null for every other plan and for old evidence. */
+    val reentryFromTier: Int? = null,
 ) {
     /** Spec §5 / ADR C2 exposure definition. */
     val qualifying: Boolean
@@ -273,6 +275,7 @@ fun deriveEvidence(
             effectivePolicySnapshot = policySnapshot,
             shortfallValue = shortfall,
             reducedPrescription = reduced,
+            reentryFromTier = work.firstNotNullOfOrNull { it.reentryFromTier },
         )
     }
 }
