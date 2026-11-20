@@ -167,19 +167,24 @@ fun trainingNow(c: Catalog, progress: ProgressSnapshot, goalId: String?): Set<St
 fun stars(progress: ProgressSnapshot, id: String): Int = progress.variations[id]?.earnedStars() ?: 0
 
 /**
- * R26 / D8: what the tree shows. Your own stars, but an exercise you have clearly moved past (a harder exercise that follows it has
- * been started) shows all five, because the level is below your current one.
+ * R26 / D8: what the tree shows. Your own stars, but an exercise you have clearly moved past shows all five, because the level is below your current one.
+ * 9.4 F1: for an exercise you trained, "moved past" means a harder exercise that follows it has completed work (an abandoned or skipped plan does not count) AND
+ * was trained more recently than this one. For one you never trained, any record of a harder one counts (a hand-set level too). A harder exercise trained earlier (the person came back down to this one) does not hide this exercise's own stars.
  */
 fun displayStars(c: Catalog, progress: ProgressSnapshot, id: String): Int {
     val own = stars(progress, id)
     if (own >= 5) return own
+    val myLast = progress.variations[id]?.lastTrainedDay
     val seen = mutableSetOf(id)
     val queue = ArrayDeque(listOf(id))
     while (queue.isNotEmpty()) {
         val cur = queue.removeFirst()
         for (n in c.policyForVariation(cur)?.nextVariationIds.orEmpty()) {
             if (!seen.add(n)) continue
-            if (progress.variations.containsKey(n)) return 5
+            // lastTrainedDay is only ever set by a session with completed work. Never trained here: any later record counts, a hand-set level included
+            // (the questionnaire answer "standard push-up" leaves the knee push-up below at five stars). Trained here: the later one must be trained more recently.
+            val later = progress.variations[n]
+            if (later != null && (myLast == null || (later.lastTrainedDay ?: Int.MIN_VALUE) > myLast)) return 5
             queue += n
         }
     }

@@ -82,10 +82,10 @@ class DemonstratedProgressionTest {
         val ev = deriveEvidence("unconfirmed", 1, p, unconfirmed, { "pushup" }, { _, _ -> 2 },
             effectivePolicyOf = { policy }).single()
 
-        val progress = ProgressionEngine(catalog).replay(listOf(ev), emptyList()).variations.getValue(variationId)
-        assertEquals(1, progress.tier)
-        assertNull(progress.baselineTier)
-        assertEquals(0, progress.earnedStars())
+        // 9.4 F1: evidence with no completed work creates no progress record at all (so no tier, baseline or stars)
+        val snapshot = ProgressionEngine(catalog).replay(listOf(ev), emptyList())
+        assertNull(snapshot.variations[variationId])
+        assertEquals(1, snapshot.tierFor(variationId) ?: 1)
     }
 
     @Test fun oneExceptionalSetCannotDemonstrateTheSelectedLevel() {

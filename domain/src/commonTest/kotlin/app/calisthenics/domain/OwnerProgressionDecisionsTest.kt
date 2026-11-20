@@ -96,28 +96,47 @@ class OwnerProgressionDecisionsTest {
 
     @Test fun theLowestLoggedValueIsTheNextTargetThenItBuildsBackUp() {
         val act = listOf(UserAction.SelfAssessment(0, "pushup-std", 2))
-        val short = engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 8)), act)
+        // 9.4 F2: at most half of the 10 reps (5): the lowest set at once. A smaller miss holds the target first, then steps down one rep (next test).
+        val short = engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 5)), act)
         val p = short.variations.getValue("pushup-std")
-        assertEquals(8, p.reducedTarget); assertEquals(2, p.reducedTargetTier); assertEquals(2, short.tierFor("pushup-std"))
-        assertEquals(8, work(plan(short, slotVid = "pushup-std")).target!!.value)
+        assertEquals(5, p.reducedTarget); assertEquals(2, p.reducedTargetTier); assertEquals(2, short.tierFor("pushup-std"))
+        assertEquals(5, work(plan(short, slotVid = "pushup-std")).target!!.value)
         // doing the lowered target builds it back up by one, without counting towards the level
-        val up = engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 8), ev(2, "pushup-std", 2, reduced = true)), act)
-        assertEquals(9, up.variations.getValue("pushup-std").reducedTarget); assertTrue(up.variations.getValue("pushup-std").streakDays.isEmpty())
-        assertEquals(9, work(plan(up, slotVid = "pushup-std")).target!!.value)
+        val up = engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 5), ev(2, "pushup-std", 2, reduced = true)), act)
+        assertEquals(6, up.variations.getValue("pushup-std").reducedTarget); assertTrue(up.variations.getValue("pushup-std").streakDays.isEmpty())
+        assertEquals(6, work(plan(up, slotVid = "pushup-std")).target!!.value)
         // back at the level's own target: normal again, and the next full-target sessions count
-        val full = engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 8), ev(2, "pushup-std", 2, reduced = true), ev(4, "pushup-std", 2, reduced = true)), act)
+        val back = (0..4).map { ev(2 + 2 * it, "pushup-std", 2, reduced = true) }
+        val full = engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 5)) + back, act)
         assertNull(full.variations.getValue("pushup-std").reducedTarget)
-        assertEquals(10, work(plan(full, slotVid = "pushup-std")).target!!.value)
-        assertEquals(3, engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 8), ev(2, "pushup-std", 2, reduced = true), ev(4, "pushup-std", 2, reduced = true), ev(6, "pushup-std", 2), ev(8, "pushup-std", 2), ev(10, "pushup-std", 2)), act).tierFor("pushup-std"))
+        assertEquals(10, work(plan(full, slotVid = "pushup-std", day = 12)).target!!.value)
+        assertEquals(3, engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 5)) + back + listOf(ev(12, "pushup-std", 2), ev(14, "pushup-std", 2), ev(16, "pushup-std", 2)), act).tierFor("pushup-std"))
+    }
+
+    @Test fun aSmallMissHoldsTheTargetAndASecondOneStepsDownOneRep() {
+        val act = listOf(UserAction.SelfAssessment(0, "pushup-std", 2))
+        val once = engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 8)), act)
+        assertNull(once.variations.getValue("pushup-std").reducedTarget)
+        assertEquals(10, work(plan(once, slotVid = "pushup-std", day = 2)).target!!.value)
+        val twice = engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 8), ev(2, "pushup-std", 2, shortfall = 8)), act)
+        assertEquals(9, twice.variations.getValue("pushup-std").reducedTarget)
+        assertEquals(9, work(plan(twice, slotVid = "pushup-std", day = 4)).target!!.value)
+        // one session at the lowered 9 reaches the level's 10 again
+        val up = engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 8), ev(2, "pushup-std", 2, shortfall = 8), ev(4, "pushup-std", 2, reduced = true)), act)
+        assertNull(up.variations.getValue("pushup-std").reducedTarget)
+        assertEquals(10, work(plan(up, slotVid = "pushup-std", day = 6)).target!!.value)
     }
 
     @Test fun holdsMirrorTheSameRuleInSeconds() {
         val hc = Catalog(1, listOf(Fx.strength("plank", "plank", Pattern.CORE_ANTI_EXTENSION, Area.CORE).copy(kind = Kind.HOLD), Fx.stretch), listOf(Fx.policy("plank", type = TargetType.HOLD_SECONDS)))
         val e = SessionEvidence("s", "plank", "plank", 0, 2, 2, false, true, false, null, false, 0, 2, 2, shortfallValue = 7)
-        val s = ProgressionEngine(hc).replay(listOf(e), listOf(UserAction.SelfAssessment(0, "plank", 2)))
-        assertEquals(7, s.variations.getValue("plank").reducedTarget)
-        val up = ProgressionEngine(hc).replay(listOf(e, e.copy(sessionId = "s2", day = 2, shortfallValue = null, anyBelow = false, reducedPrescription = true)), listOf(UserAction.SelfAssessment(0, "plank", 2)))
-        // 7 + 5 reaches the level's own 10 s: back to normal
+        val act = listOf(UserAction.SelfAssessment(0, "plank", 2))
+        // 9.4 F2: the first miss at 10 s holds it; the second in a row steps down 5 s (never below the previous level's 5 s)
+        assertNull(ProgressionEngine(hc).replay(listOf(e), act).variations.getValue("plank").reducedTarget)
+        val s = ProgressionEngine(hc).replay(listOf(e, e.copy(sessionId = "s1", day = 1)), act)
+        assertEquals(5, s.variations.getValue("plank").reducedTarget)
+        val up = ProgressionEngine(hc).replay(listOf(e, e.copy(sessionId = "s1", day = 1), e.copy(sessionId = "s2", day = 2, shortfallValue = null, anyBelow = false, reducedPrescription = true)), act)
+        // 5 + 5 reaches the level's own 10 s: back to normal
         assertNull(up.variations.getValue("plank").reducedTarget)
     }
 

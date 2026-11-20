@@ -134,11 +134,8 @@ class AlternativeStartingTargetTest {
         val plan = plan()
         val outcomes = resolveFeedback(plan, plan.blocks.associate { it.id to Execution.SKIPPED })
         val evidence = deriveEvidence("skipped-alt", 1, plan, outcomes, { c.variation(it)!!.familyId }, { _, _ -> 2 })
-        val p = ProgressionEngine(c).replay(evidence, actions).variations.getValue(alt.id)
-        assertEquals(3, p.tier)
-        assertEquals(3, p.baselineTier)
-        assertTrue(p.achievedTiers.isEmpty())
-        assertTrue(p.streakDays.isEmpty())
+        // 9.4 F1: a fully skipped workout leaves no progress record; the estimate is made again from the main exercise at the next plan
+        assertNull(ProgressionEngine(c).replay(evidence, actions).variations[alt.id])
     }
 
     @Test fun transferRequiresMatchingRepMovementAndExplicitSameRungMembership() {

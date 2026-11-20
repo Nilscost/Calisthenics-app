@@ -152,11 +152,17 @@ class SkillTreeTest {
 
     @Test fun exercisesYouHaveMovedPastShowFiveStars() {
         val s = snap("pushup-standard" to 2, "pushup-feet-elevated" to 1)
-        assertEquals(5, displayStars(catalog, s, "pushup-standard"))     // a harder exercise after it has been started
+        assertEquals(5, displayStars(catalog, s, "pushup-standard"))     // never trained, a harder exercise after it has been started (hand-set counts)
         assertEquals(5, displayStars(catalog, s, "pushup-knee"))          // and everything below it in the chain
         assertEquals(0, displayStars(catalog, s, "pushup-feet-elevated")) // the current one shows its own stars
         assertEquals(0, displayStars(catalog, s, "pushup-one-arm"))
         assertEquals(1, displayStars(catalog, snap("pushup-standard" to 2), "pushup-standard"))
+        // 9.4 F1: trained here, then a harder one trained since: moved past
+        fun trained(day: Int, vid: String, tier: Int) = app.calisthenics.domain.feedback.SessionEvidence("s$day$vid", vid, catalog.variation(vid)!!.familyId, day, tier, 3, false, false, false, null, false, 3, 0, 2)
+        val acts = listOf("pushup-standard" to 2, "pushup-feet-elevated" to 1).map { (v, t) -> UserAction.SelfAssessment(0, v, t) }
+        assertEquals(5, displayStars(catalog, engine.replay(listOf(trained(5, "pushup-standard", 2), trained(9, "pushup-feet-elevated", 1)), acts), "pushup-standard"))
+        // 9.4 F1: trained here more recently than the harder one (came back down to it): its own stars
+        assertEquals(1, displayStars(catalog, engine.replay(listOf(trained(5, "pushup-feet-elevated", 1), trained(9, "pushup-standard", 2)), acts), "pushup-standard"))
     }
 
     // ---- R7-T11 (D7, O3): no "With weights" tab; each weighted exercise sits right after its bodyweight counterpart

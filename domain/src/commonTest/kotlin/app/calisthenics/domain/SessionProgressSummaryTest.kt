@@ -141,9 +141,10 @@ class SessionProgressSummaryTest {
     }
 
     @Test fun aShortfallGivesTheLowestSetAsNextTargetAndKeepsTheLevel() {
-        val s = summary(std, 3, listOf(0, 4)) { if (it == 4) ev(it, std, 3, below = true, shortfall = 6) else ev(it, std, 3) }
+        // 9.4 F2: at most half of the level's 8 reps: the lowest set at once (a smaller miss holds the target first)
+        val s = summary(std, 3, listOf(0, 4)) { if (it == 4) ev(it, std, 3, below = true, shortfall = 4) else ev(it, std, 3) }
         val e = s.exercises.single()
-        assertEquals(6, e.nextTarget); assertFalse(e.nextTargetIsHold)
+        assertEquals(4, e.nextTarget); assertFalse(e.nextTargetIsHold)
         assertTrue(e.levelKept); assertNull(e.leveledUpTo); assertEquals(3, e.tier)
     }
 
