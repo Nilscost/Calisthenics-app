@@ -202,7 +202,8 @@ class PlannerTest {
         val p = ready(input(30, progress = prog, day = 1))
         // W2: discomfort never drops the slot; with nothing easier than level 1 the exercise stays at its lowest level
         assertEquals(Target(TargetType.REPS, 5), p.blocks.first { it.variationId == "pushup-knee" }.target)
-        assertTrue(p.changesExplained.any { it.contains("discomfort") })
+        assertTrue(p.warnings.any { it.contains("discomfort") })   // 9.4 F6: the easier-option note is an action item (a warning), no longer background info
+        assertEquals(NoteKind.PAIN, p.notes.first { it.text.contains("discomfort") }.kind)
     }
 
     @Test fun `successor replaces the completed variation with an explanation`() {
@@ -216,7 +217,27 @@ class PlannerTest {
         val evs = listOf(0, 3, 7).map { app.calisthenics.domain.feedback.SessionEvidence("s$it", "pushup-knee", "pushup", it, 2, 2, false, false, false, null, false, 2, 0, 2) }
         val prog = ProgressionEngine(catalog).replay(evs, listOf(UserAction.SelfAssessment(0, "pushup-knee", 2)))
         val p = ready(input(30, progress = prog, day = 30))
-        assertTrue(p.needsAcceptance); assertTrue(p.warnings.any { it.contains("Welcome back") })
+        assertTrue(p.needsAcceptance)
+        assertEquals(listOf("Back after 2 weeks: pushup-knee one level easier today (2, was 3)."), p.warnings.filter { it.startsWith("Back after") })
+        assertFalse(p.warnings.any { it.contains("Pick another level") })
+    }
+
+    @Test fun `re-entry at the lowest level changes nothing, so it says nothing but still asks for acceptance`() {
+        val evs = listOf(0, 3, 7).map { app.calisthenics.domain.feedback.SessionEvidence("s$it", "pushup-knee", "pushup", it, 2, 2, false, false, false, null, false, 2, 0, 2) }
+        val prog = ProgressionEngine(catalog).replay(evs, listOf(UserAction.SelfAssessment(0, "pushup-knee", 1)))
+        val p = ready(input(30, progress = prog, day = 30))
+        assertEquals(1, prog.tierFor("pushup-knee"))
+        assertTrue(p.needsAcceptance)
+        assertTrue(p.notes.toString(), p.notes.none { it.kind == NoteKind.RETURN })
+    }
+
+    @Test fun `several re-entries share one line`() {
+        fun ev(id: String, fam: String) = listOf(0, 3, 7).map { app.calisthenics.domain.feedback.SessionEvidence("s$it$id", id, fam, it, 2, 2, false, false, false, null, false, 2, 0, 2) }
+        val prog = ProgressionEngine(catalog).replay(ev("pushup-knee", "pushup") + ev("squat-air", "squat"),
+            listOf(UserAction.SelfAssessment(0, "pushup-knee", 2), UserAction.SelfAssessment(0, "squat-air", 3)))
+        val p = ready(input(30, progress = prog, day = 30))
+        val lines = p.notes.filter { it.kind == NoteKind.RETURN }.map { it.text }
+        assertEquals(listOf("Back after 2 weeks, one level easier today: pushup-knee (2, was 3), squat-air (2, was 3)."), lines)
     }
 
     @Test fun `warm up on without a template is infeasible, with a template it is budgeted`() {

@@ -62,7 +62,13 @@ sealed interface PlanResult {
 /** Floor back work for a pull slot with no pull equipment, best first (owner decision: towel row, prone raises, then back extensions). */
 private val FLOOR_BACK_WORK = listOf("towel-door-row", "prone-y-raise", "prone-t-raise", "prone-w-raise", "prone-i-raise", "prone-l-raise", "superman-hold", "swimmer", "back-extension-floor")
 
-private data class Chosen(val slot: RoutineSlot, val variation: ExerciseVariation, val tier: Tier, val loadGrams: Int? = null, val inferredStartTier: Int? = null)
+/**
+ * [swap]: today's exercise stands in for [PlanSwap.replacedId] (one entry of the "Swapped in today" line). [moveOn]: the person finished every level of
+ * this name, so this exercise is new today. [reentry]: the level went down after a break, as (today, was). They are turned into notes once the final
+ * plan is known (an exercise left out to fit the time says nothing).
+ */
+private data class Chosen(val slot: RoutineSlot, val variation: ExerciseVariation, val tier: Tier, val loadGrams: Int? = null, val inferredStartTier: Int? = null,
+    val swap: PlanSwap? = null, val moveOn: String? = null, val reentry: Pair<Int, Int>? = null)
 
 fun generate(input: PlanInput): PlanResult = Planner(input).run()
 
@@ -198,6 +204,7 @@ private class Planner(input: PlanInput) {
             note(NoteKind.LENGTH, "This workout takes ${fmt(pick.total)}, ${fmt(under)} less than the ${fmt(budget)} you asked for. Start anyway, or change the length.")
         }
         coverageWarning(pick.slots)
+        val swaps = summaryNotes(pick.slots)
 
         // 10. invariants (defensive; failing here is a bug, not a user problem)
         val mode = effectiveBetweenSetMode(draft.betweenSetMode, draft.flow, draft.stretchOn)
@@ -215,8 +222,26 @@ private class Planner(input: PlanInput) {
             requestedDurationSeconds = budget, plannedDurationSeconds = pick.total, focus = draft.focus,
             stretchOn = mode == BetweenSetMode.STRETCH, goalId = draft.goalId, rounds = pick.rounds, timed = draft.timed, format = draft.format, rule = draft.rule, flow = mode == BetweenSetMode.FLOW,
             changesExplained = allNotes().filter { !it.kind.warning }.map { it.text }, warnings = allNotes().filter { it.kind.warning }.map { it.text }, needsAcceptance = needsAcceptance,
-            usesDraftContent = usesDraft, blocks = blocks, betweenSetMode = mode, preparationSeconds = draft.preparationSeconds.coerceIn(1, 30), notes = allNotes(),
+            usesDraftContent = usesDraft, blocks = blocks, betweenSetMode = mode, preparationSeconds = draft.preparationSeconds.coerceIn(1, 30), notes = allNotes(), swaps = swaps,
         ))
+    }
+
+    /**
+     * F4 / F6: the summary lines for the exercises that are really in the plan: "New: Y (you finished X).", one re-entry line, and one
+     * "Swapped in today" line per [SwapKind], built from the structured [PlanSwap] list. Returns that list (the Preview captions the rows from it).
+     */
+    private fun summaryNotes(slots: List<Chosen>): List<PlanSwap> {
+        for (c in slots) c.moveOn?.let { note(NoteKind.INFO, "New: ${c.variation.name} (you finished $it).") }
+        val back = slots.mapNotNull { c -> c.reentry?.let { (now, was) -> Triple(c.variation.name, now, was) } }
+        val weeks = app.calisthenics.domain.progression.REENTRY_DAYS / 7
+        if (back.size == 1) back.single().let { (name, now, was) -> note(NoteKind.RETURN, "Back after $weeks weeks: $name one level easier today ($now, was $was).") }
+        else if (back.size > 1) note(NoteKind.RETURN, "Back after $weeks weeks, one level easier today: ${back.joinToString { (name, now, was) -> "$name ($now, was $was)" }}.")
+        val swaps = slots.mapNotNull { it.swap }
+        for (kind in SwapKind.entries) {
+            val of = swaps.filter { it.kind == kind }
+            if (of.isNotEmpty()) note(NoteKind.ROTATION, "${kind.lineLabel}: ${of.joinToString { "${cat.variation(it.variationId)?.name} (for ${cat.variation(it.replacedId)?.name})" }}.")
+        }
+        return swaps
     }
 
     /**
@@ -286,10 +311,12 @@ private class Planner(input: PlanInput) {
         // The same holds for an alternate the person answered at the start (or trains on its own) while the rung's main step has no progress yet.
         val answeredAlternate = if (draft.swaps[slot.id] != null || slot.id.startsWith("add-")) null else answeredAlternateAtRung(pref, route, active)
         val explicitPick = draft.swaps[slot.id] != null || slot.id.startsWith("add-") || answeredAlternate != null
+        var moveOnFrom: String? = null
         if (active != null && active != pref.id && !explicitPick) {
             // R8.1-T01 (F1): the route position is kept even when its exercise needs equipment that is missing today; the substitution below then stays at or above this rung
             cat.variation(active)?.takeIf { (route?.let { r -> it.id in r.mainPath } ?: (cat.progressionGroupOf(it.id) == group)) && (usable(it) || route != null) }?.let {
-                if (usable(it) && 5 in input.progress.variations[pref.id]?.achievedTiers.orEmpty()) note(NoteKind.INFO, "You finished every level of ${pref.name}, so today you do ${it.name}.")
+                // F6: said only in the first plan after the move-on (the new exercise has no session yet)
+                if (usable(it) && 5 in input.progress.variations[pref.id]?.achievedTiers.orEmpty() && input.progress.variations[it.id]?.lastTrainedDay == null) moveOnFrom = pref.name
                 pref = it
             }
         }
@@ -307,9 +334,10 @@ private class Planner(input: PlanInput) {
                 cat.variation(step.variationId)?.takeIf(::usable)?.let { pref = it }
                 holdTier = if (pref.id == step.variationId) step.tier else 1
             }
-            explain += "${pref.name}: an easier option after reported discomfort. Once you complete it without discomfort, normal progression resumes from there."
+            note(NoteKind.PAIN, "${pref.name}: an easier option after reported discomfort. Once you complete it without discomfort, normal progression resumes from there.")
         }
         var inferredTier: Int? = null
+        var swapFrom: ExerciseVariation? = null
         if (hold == null && !explicitPick) {
             val rotated = rotatedExercise(cat, pref, input.progress, input.profile, input.excludedVariationIds, route?.id)
             if (rotated.id != pref.id && !draft.rule.isRange && !draft.timed && draft.freeTargets.isEmpty()) {
@@ -317,7 +345,7 @@ private class Planner(input: PlanInput) {
                     ?.atVariationId?.let(cat::variation) ?: pref
                 inferredTier = inferredAlternativeTier(cat, anchor, rotated, input.progress, route?.id)
             }
-            if (rotated.id != pref.id) explain += "${rotated.name} is today's variation instead of ${pref.name}. Each exercise keeps its own level."
+            if (rotated.id != pref.id) swapFrom = pref
             pref = rotated
         }
         var v: ExerciseVariation = pref
@@ -358,9 +386,12 @@ private class Planner(input: PlanInput) {
             if (inferredTier != null) note(NoteKind.INFO, "${v.name} starts a bit easier today, based on a similar exercise you do. Your results will adjust it.")
         }
         holdTier?.let { tierIdx = minOf(tierIdx ?: it, it) }
+        var reentry: Pair<Int, Int>? = null
         input.progress.reentryNeeded(v.id, input.nowDay)?.takeIf { holdTier == null }?.let { lower ->
+            // F4: the note (see summaryNotes) only exists when the level really goes down; acceptance is unchanged
+            val was = tierIdx!!
+            if (lower < was) reentry = lower to was
             tierIdx = lower; needsAcceptance = true
-            note(NoteKind.RETURN, "Welcome back. You haven't done ${v.name} for ${app.calisthenics.domain.progression.REENTRY_DAYS} days or more, so today starts at level $lower. Pick another level before you start if you like.")
         }
         // Kettlebell weight (owner 2026-10-08): a heavier bell than the one the level was earned with restarts at tier 1.
         val load = input.profile.loadGramsFor(v)
@@ -377,7 +408,10 @@ private class Planner(input: PlanInput) {
             tierIdx = t
         }
         return Chosen(slot.copy(progressionRouteId = route?.id), v, pol.tier(tierIdx!!), load,
-            inferredTier?.takeIf { it == tierIdx && !(slot.id in draft.tierOverrides && draft.overrideVariations[slot.id].let { on -> on == null || on == v.id }) })
+            inferredTier?.takeIf { it == tierIdx && !(slot.id in draft.tierOverrides && draft.overrideVariations[slot.id].let { on -> on == null || on == v.id }) },
+            swap = swapFrom?.takeIf { v.id == pref.id && v.id != it.id }?.let { PlanSwap(v.id, it.id, SwapKind.ROTATED) },
+            moveOn = moveOnFrom?.takeIf { v.id == pref.id && swapFrom == null },   // a rotated-in alternate is not the exercise the person moved on to
+            reentry = reentry)
     }
 
     /**

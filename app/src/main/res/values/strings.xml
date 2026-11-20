@@ -600,4 +600,5 @@
     <string name="chatbot_errors_hint">Tell your chatbot what is wrong and paste its answer again.</string>
     <string name="chatbot_save">Save</string>
     <string name="chatbot_saved">Saved: %1$s. Find it under My routines on Train.</string>
+    <string name="preview_rotated">Rotated</string>
 </resources>

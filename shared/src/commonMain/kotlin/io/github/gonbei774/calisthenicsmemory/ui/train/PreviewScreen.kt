@@ -116,16 +116,23 @@ fun EquipmentNeededRow(ids: List<String>, modifier: Modifier = Modifier) {
     }
 }
 
-/** The plan's notes: the one or two most important as plain lines, the rest behind a compact "More (n)". Nothing when there are none. */
+/** F6: the row caption for each [SwapKind]; a new kind needs one more line here (and its string). */
+private fun swapCaption(kind: SwapKind): StringResource = when (kind) {
+    SwapKind.ROTATED -> Res.string.preview_rotated
+}
+
+/** The plan's notes: the three most important as plain lines (actions first), the rest behind a compact "More (n)". Nothing when there are none. */
 fun planNotesOf(p: WorkoutPlan): List<PlanNote> =
     p.notes.sortedBy { it.priority }.ifEmpty { (p.warnings.map { PlanNote(it, NoteKind.INFO) } + p.changesExplained.filter { it.isNotBlank() }.map { PlanNote(it, NoteKind.INFO) }) }
+
+private const val NOTES_VISIBLE = 3
 
 @Composable
 private fun InfoRow(p: WorkoutPlan) {
     var open by remember { mutableStateOf(false) }
     val notes = planNotesOf(p)
     if (notes.isEmpty()) return
-    val shown = notes.take(2); val rest = notes.drop(2)
+    val shown = notes.take(NOTES_VISIBLE); val rest = notes.drop(NOTES_VISIBLE)
     Column(Modifier.fillMaxWidth().testTag("info_row"), verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
         (if (open) notes else shown).forEachIndexed { i, n -> Text(n.text, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("plan_note_$i")) }
         if (rest.isNotEmpty()) Text(
@@ -148,7 +155,7 @@ private fun movementTag(v: ExerciseVariation?): StringResource = when (v?.patter
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name: String, levels: Int, onStep: (Int) -> Unit, onSwap: () -> Unit, onRemove: () -> Unit, sfx: String = "", onTypeNumber: (() -> Unit)? = null, badge: Int? = null, chain: Pair<Int, Int>? = null) {
+private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name: String, levels: Int, onStep: (Int) -> Unit, onSwap: () -> Unit, onRemove: () -> Unit, sfx: String = "", onTypeNumber: (() -> Unit)? = null, badge: Int? = null, chain: Pair<Int, Int>? = null, swapKind: SwapKind? = null) {
     val removeLabel = stringResource(Res.string.preview_remove)
     val largeText = LocalDensity.current.fontScale > 1.2f
     val removeNow by rememberUpdatedState(onRemove)   // the pointer handler outlives recompositions: always call the current slot's callback
@@ -163,6 +170,7 @@ private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text(stringResource(Res.string.preview_slot_tag, index + 1, stringResource(movementTag(v))), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("slot_tag_${e.slotId}$sfx"))
                     if (!largeText) Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("exercise_name_${e.slotId}$sfx"))
+                    swapKind?.let { Caption(stringResource(swapCaption(it)), Modifier.testTag("swap_kind_${e.slotId}$sfx")) }
                 }
                 if (v != null && v.primaryMuscles.isNotEmpty()) io.github.gonbei774.calisthenicsmemory.ui.components.BodyMap(v.primaryMuscles, v.secondaryMuscles, showNamesOnTap = false, tag = "muscles_${e.slotId}$sfx", viewWidth = 24.dp)
                 IconButton(onClick = onSwap, modifier = Modifier.testTag("swap_${e.slotId}$sfx")) { Icon(Icons.Filled.Refresh, stringResource(Res.string.preview_swap, name)) }
@@ -441,7 +449,8 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                             },
                             onSwap = { swapSlot = e.slotId }, onRemove = { removeSlot = e.slotId }, sfx = sfx,
                             onTypeNumber = if (typed) ({ typeFor = e.slotId to st }) else null, badge = badge,
-                            chain = if (rule.isRange && idx >= 0) idx to options.size else null)
+                            chain = if (rule.isRange && idx >= 0) idx to options.size else null,
+                            swapKind = p.swaps.firstOrNull { it.variationId == e.variationId }?.kind)
                         BreakRow(e.slotId, p, st, names, onChange = { breakSlot = e.slotId to (if (typed) st else null) }, onRestChange = { restDurations = restDurations + (e.slotId to it) }, onAdd = { addAfter = e.slotId }, sfx = sfx)
                     }
                     // R8.2-T03 (G3): the included warm-up as a block, its items removable
