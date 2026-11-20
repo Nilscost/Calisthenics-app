@@ -521,6 +521,11 @@ data class TimelineBlock(
      * against ("below target", good session, "Level kept"). Null = [target] is what the level asks for. Never written when null, so plans without a ramp serialize as before.
      */
     @OptIn(ExperimentalSerializationApi::class) @EncodeDefault(EncodeDefault.Mode.NEVER) val levelTarget: Int? = null,
+    /**
+     * 9.4 F4: set only when the planner lowered this exercise's level as a re-entry after a break and the level of this block is that lowered one: the level it was lowered from.
+     * Only a plan carrying it counts as a re-entry session for the engine. Never written when null, so older plans decode and serialize as before.
+     */
+    @OptIn(ExperimentalSerializationApi::class) @EncodeDefault(EncodeDefault.Mode.NEVER) val reentryFromTier: Int? = null,
 ) {
     init { require(durationSeconds > 0) { "block $id must have positive duration" } }
 

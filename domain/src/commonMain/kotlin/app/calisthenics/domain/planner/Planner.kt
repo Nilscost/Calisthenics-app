@@ -68,7 +68,7 @@ private val FLOOR_BACK_WORK = listOf("towel-door-row", "prone-y-raise", "prone-t
  * plan is known (an exercise left out to fit the time says nothing).
  */
 private data class Chosen(val slot: RoutineSlot, val variation: ExerciseVariation, val tier: Tier, val loadGrams: Int? = null, val inferredStartTier: Int? = null,
-    val swap: PlanSwap? = null, val moveOn: String? = null, val reentry: Pair<Int, Int>? = null)
+    val swap: PlanSwap? = null, val moveOn: String? = null, val reentry: Pair<Int, Int>? = null, val reentryFromTier: Int? = null)
 
 fun generate(input: PlanInput): PlanResult = Planner(input).run()
 
@@ -411,7 +411,8 @@ private class Planner(input: PlanInput) {
             inferredTier?.takeIf { it == tierIdx && !(slot.id in draft.tierOverrides && draft.overrideVariations[slot.id].let { on -> on == null || on == v.id }) },
             swap = swapFrom?.takeIf { v.id == pref.id && v.id != it.id }?.let { PlanSwap(v.id, it.id, SwapKind.ROTATED) },
             moveOn = moveOnFrom?.takeIf { v.id == pref.id && swapFrom == null },   // a rotated-in alternate is not the exercise the person moved on to
-            reentry = reentry)
+            reentry = reentry,
+            reentryFromTier = reentry?.takeIf { it.first == tierIdx }?.second)   // 9.4 F4: no marker when a Preview override or a heavier load made the final level something else
     }
 
     /**
@@ -558,7 +559,7 @@ private class Planner(input: PlanInput) {
                 out += TimelineBlock(id, BlockType.WORK, dur, r, c.slot.id, v.id, side, target, if (levelFiveEligible) 5 else t.index,
                     mediaId = v.mediaId, earlyCompletionStretchId = t.earlyCompletionStretchId, loadGrams = c.loadGrams, freeTarget = free != null, groupIndex = group,
                     progressionRouteId = c.slot.progressionRouteId, inferredStartTier = c.inferredStartTier.takeIf { free == null && ruleTarget == null && !levelFiveEligible },
-                    levelFiveEligible = levelFiveEligible, targetRevision = cat.personalTargets[v.id]?.revision ?: 0, alternating = v.alternating, levelTarget = ramp?.levelTarget?.value)
+                    levelFiveEligible = levelFiveEligible, targetRevision = cat.personalTargets[v.id]?.revision ?: 0, alternating = v.alternating, levelTarget = ramp?.levelTarget?.value, reentryFromTier = c.reentryFromTier)
             }
             val isLast = pos == order.lastIndex
             fun extras() {

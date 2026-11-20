@@ -269,17 +269,20 @@ class ProgressionEngine(private val catalog: Catalog) {
             // Keep an inferred starting estimate in baselineTier, but never promote an untracked variation
             // merely because its first plan selected a higher prescription.
             val initialTier = if (ev.progressionEvidenceVersion >= 1 && inferred == null) 1 else (ev.prescribedTier ?: 1)
+            val isNew = vid !in vars
             var p = ensure(vid, ev.day, tier = initialTier, baseline = inferred)
+            // 9.4 D8: the first real session creates the record; a start level above 1 counts the levels below it as stars
+            if (isNew && initialTier > 1) p = p.copy(starsFloor = initialTier - 1)
             if (p.targetRevision != ev.targetRevision) p = p.copy(targetRevision = ev.targetRevision, streakDays = emptyList(), streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false,
                 demonstratedTier = null, demonstratedTargetRevision = null,
                 reducedTarget = null, reducedTargetTier = null, topTarget = null, missedTarget = null, missedTargetTier = null)
             if (ev.progressionEvidenceVersion >= 1 && ev.effectivePolicySnapshot != null) {
                 p = p.copy(effectivePolicySnapshot = ev.effectivePolicySnapshot)
             }
-            // 9.4 F4: a session done one level below after a break is applied like a ReentryChoice: that level becomes the level (stars and achieved levels kept), and this session counts towards re-earning the old one.
+            // 9.4 F4: a session from a plan the planner built as a re-entry (it carries [SessionEvidence.reentryFromTier] = the current level) is applied like a ReentryChoice; any other session one level below changes nothing: that level becomes the level (stars and achieved levels kept), and this session counts towards re-earning the old one.
             val lastSeen = maxOf(p.lastTrainedDay ?: Int.MIN_VALUE, p.reentryResolvedDay ?: Int.MIN_VALUE)
             if (ev.completedWorkBlocks > 0 && !ev.discomfort && ev.ruleMet == null && p.lastTrainedDay != null && ev.prescribedTier != null && p.tier > 1 &&
-                ev.prescribedTier == p.tier - 1 && ev.day - lastSeen >= REENTRY_DAYS && holds[p.familyId] == null) {
+                ev.prescribedTier == p.tier - 1 && ev.reentryFromTier == p.tier && ev.day - lastSeen >= REENTRY_DAYS && holds[p.familyId] == null) {
                 val was = p.tier
                 p = p.copy(tier = ev.prescribedTier, enrolledAtDay = ev.day, streakDays = emptyList(), streakAssumed = 0, reentryResolvedDay = ev.day, backFromBreakDay = ev.day,
                     consecutiveBelow = 0, lowerTargetSuggested = false, consecutiveAbove = 0, raiseSuggested = false,
@@ -479,6 +482,8 @@ class ProgressionEngine(private val catalog: Catalog) {
                 }
                 // 9.4 F2: a session with work and no miss ends a pending first miss ("in a row")
                 if (ev.shortfallValue == null && ev.completedWorkBlocks > 0 && p.missedTarget != null) p = p.copy(missedTarget = null, missedTargetTier = null)
+                // 9.4 F2: "in a row": a session with completed work, no shortfall, no below-target rating and no discomfort ends the run of misses
+                if (ev.shortfallValue == null && ev.completedWorkBlocks > 0 && !ev.anyBelow && p.consecutiveBelow > 0) p = p.copy(consecutiveBelow = 0)
             }
             // V02 / D7, R7.2-T06 (F7, O1): "too easy" (once is enough) suggests a move on; the tier itself never changes here. What the move is (two levels, or the next exercise) is decided in [suggest].
             val byRule = ev.ruleMet != null
