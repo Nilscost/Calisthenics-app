@@ -111,3 +111,15 @@ Owner report (9.2, Android), handled in release 9.3 ([plan](43-feedback-2026-11-
 Owner follow-up (2026-11-13), for the next batch:
 - **Workout preview: the text at the top is too long.** Make it much more concise (the plan notes block under the header; confirmed by the owner).
 - **History** for lunge and twist sessions logged before 9.3 stays as it is (bare numbers).
+
+## Release 9.3 test · 2026-11-20
+
+Owner report (9.3, Android, with a backup), handled in release 9.4 ([plan](44-feedback-2026-11-20-review-and-plan.md)). Every screenshot was matched to its session by replaying the backup:
+- **"Level 2 unlocked · 0 of 3" (single-leg bridge).** From the 9.2 build; already fixed in 9.3 ("3 of 3 good sessions at Level 1").
+- **Archer "Level 5" with five stars and "Mastered"; bent-knee row "Level 4" with five stars; reverse lunge "Mastered".** The level-ups were real (three good sessions each). The stars were wrong: a later exercise with any record (the half one-arm push-up from an abandoned plan) made the earlier one look moved past. Now an exercise you still train shows its own stars; abandoned plans leave no record. "Next: Inverted Row" shows its real level, not a fixed "Level 1".
+- **Pull-up and chin-up "0 of 3".** Owner rule adopted: one miss keeps the same target, two misses in a row lower it by one rep, and only a far-off session (lowest set at most half the target) drops to the lowest set. Two misses weeks apart are no longer "twice in a row".
+- **Card text.** Every card says "Next time: 6 reps" ("5 reps again", "4 reps, then back to 5"), and the dots name the numbers ("1 of 3 good sessions at 5+ reps → Level 4 (8 reps)"). A first session says "Starting at Level 3", a re-earned level "Level 4 again", a workout after a break "back after a break"; none of them is a gold "unlocked".
+- **"Welcome back… level 1".** The rule already was one level down after 14 days (owner: keep 14 days). It is now said only when the level drops ("Back after 2 weeks: Inverted Row one level easier today (3, was 4)"), and doing that planned easier workout makes it the current level. Old history is not rewritten.
+- **Preview text too long.** At most three lines; "New: X, now that you finished Y" only the first time; all rotations on one line with a "Rotated" caption on their rows.
+- **Variety (owner decision).** A "Mix it up" button in Preview swaps 2 exercises for a type missing today (back extension, anti-rotation, calves, hip hinge, lateral). It swaps the ones with the least progress to lose (mastered first, then fewest good sessions), each tap gives the next pair, Undo restores, and it is for that workout only.
+- **Found on the way.** Stars below a starting level now count; backups now carry hand-set levels, accepted suggestions and the questionnaire reset moment.

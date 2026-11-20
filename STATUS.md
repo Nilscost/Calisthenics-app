@@ -1,5 +1,26 @@
 # Actual project status
 
+## Release 9.4 · 0.12.4-r9 (code 23) · 2026-11-20
+
+Fixes for the owner's 9.3 feedback ([plan](docs/44-feedback-2026-11-20-review-and-plan.md), [details](docs/user-feedback.md)). Checked by replaying the owner's backup before and after: every level is unchanged except pike push-up, now at the level 3 actually trained (an abandoned plan had set level 1).
+
+- **Stars:** an exercise you still train shows its own stars (archer 4, bent-knee row 3, reverse lunge 3); a harder exercise counts as moved past only when it was trained more recently, or when the easier one was never trained. Abandoned plans leave no record. Stars below a starting level count (split squat 4, pull-up 2).
+- **Missed sets (owner rule):** one miss keeps the target, two in a row lower it by one rep (never below the previous level's target), far off (lowest set ≤ half) drops to the lowest set. Clean sessions in between reset "in a row".
+- **End-screen cards:** "Next time: …" on every card; dots with numbers ("1 of 3 good sessions at 5+ reps → Level 4 (8 reps)"); "Starting at Level N", "Level N again" and "back after a break" instead of a gold unlock; "Next: X · Level N" with the real level.
+- **Back after 2 weeks:** said only when the level drops ("one level easier today (3, was 4)"); doing that planned workout makes it the current level. Only plans built as re-entry from 9.4 on count; old history is not rewritten.
+- **Preview:** at most three lines at the top; "New: X" once; one "Swapped in today" line; "Rotated" caption on rotated rows.
+- **Mix it up** (Preview): swaps 2 exercises for a missing type (back extension, anti-rotation, calves, hip hinge, lateral), least progress to lose first; tap again for the next pair, Undo, for that workout only.
+- **Backup:** now includes hand-set levels, accepted suggestions and the questionnaire reset moment (older files still import).
+
+The APK to sideload is `/Users/nils/Documents/hermes/Apps/builds/app-debug-R9.4.apk` (same signature as 9.3: build with `-Pcalisthenics.debugKeystore=/Users/nils/Documents/hermes/Apps/keys/calisthenics-debug.jks`).
+
+Extra phone checks for 9.4:
+- [ ] Update over 9.3 keeps history and levels; archer shows 4 stars on Progress. Result:
+- [ ] End screen: every card has "Next time"; after 5·5·4 on chin-ups it says "5 reps again". Result:
+- [ ] Preview: at most three lines at the top; rotated rows say "Rotated". Result:
+- [ ] Mix it up: swaps 2 rows (side plank first), tap again gives another pair, Undo restores; the next workout is the usual one. Result:
+- [ ] After 14 days off an exercise: "Back after 2 weeks … one level easier", and the end card says "back after a break". Result:
+
 ## Release 9.3 · 0.12.3-r9 (code 22) · 2026-11-13
 
 Fixes for the owner's 9.2 feedback ([plan](docs/43-feedback-2026-11-12-review-and-plan.md), [details](docs/user-feedback.md)).
