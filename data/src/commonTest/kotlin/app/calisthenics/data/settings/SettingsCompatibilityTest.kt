@@ -69,6 +69,16 @@ class SettingsCompatibilityTest {
         assertEquals(draft, PreviewDraftStore.get(p, draft.key, 20000))
     }
 
+    @Test fun aMixItUpIsForItsDayOnlyAndHandEditsStay() {   // 9.4 L4
+        val p = MemoryProvider()
+        val edits = PlanEdits(swaps = mapOf("row" to "inverted-row", "side" to "superman-hold"), mixSwaps = mapOf("side" to "superman-hold"), mixTaps = 1, mixEpochDay = 20000)
+        val draft = PreviewDraft("general|-|-", edits = edits, ruleDefaultVersion = 1)
+        PreviewDraftStore.put(p, draft, 20000)
+        assertEquals(draft, PreviewDraftStore.get(p, draft.key, 20000))
+        val next = PreviewDraftStore.get(p, draft.key, 20001)!!
+        assertEquals(PlanEdits(swaps = mapOf("row" to "inverted-row")), next.edits)
+    }
+
     @Test fun trainLegacyStringSetIsClearedAndVersionMarkersAreIdempotent() {
         val p = MemoryProvider(); p.open("train").edit { putStringSet("additional_pools", setOf("power")) }
         val first = TrainSettingsStore.load(p, 20000); val second = TrainSettingsStore.load(p, 20000)

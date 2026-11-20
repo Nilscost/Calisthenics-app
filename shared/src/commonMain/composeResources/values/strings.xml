@@ -619,6 +619,13 @@
     <string name="chatbot_errors_hint">Tell your chatbot what is wrong and paste its answer again.</string>
     <string name="chatbot_save">Save</string>
     <string name="chatbot_saved">Saved: %1$s. Find it under My routines on Train.</string>
+    <string name="mix_it_up">Mix it up</string>
+    <string name="mix_it_up_caption">Swap 2 exercises for a different type today</string>
+    <string name="mix_it_up_undo">Undo mix</string>
+    <string name="mix_it_up_none">Nothing to mix in with today's equipment.</string>
+    <string name="mix_it_up_tag">Mixed in</string>
+    <string name="mix_it_up_summary">Mixed in today: %1$s.</string>
+    <string name="mix_it_up_summary_item">%1$s (for %2$s)</string>
     <string name="feedback_app_volume">App volume · %1$d%</string>
     <string name="feedback_app_volume_hint">Controls voice and workout sounds</string>
     <string name="feedback_between_flow">Flow</string>
