@@ -31,6 +31,7 @@ import app.calisthenics.domain.model.Catalog
 import app.calisthenics.domain.model.Routine
 import app.calisthenics.domain.model.BetweenSetMode
 import app.calisthenics.domain.planner.TrainSettings
+import app.calisthenics.domain.planner.withoutMix
 import app.calisthenics.domain.progression.ProgressSnapshot
 import io.github.gonbei774.calisthenicsmemory.ui.screens.*
 import io.github.gonbei774.calisthenicsmemory.ui.components.appSegmentedColors
@@ -121,9 +122,17 @@ fun BetweenSetSelector(mode: BetweenSetMode, onModeChange: (BetweenSetMode) -> U
 
 /** Starts [plan] as a workout (one history snapshot per workout): used by the Train tab's START and by the Preview. */
 fun startPlan(ctx: PlatformContext, plan: app.calisthenics.domain.model.WorkoutPlan) {
+    dropMixAfterStart(ctx)
     val p = plan.copy(id = newUuid())
     val json = kotlinx.serialization.json.Json { encodeDefaults = true }.encodeToString(app.calisthenics.domain.model.WorkoutPlan.serializer(), p)
     io.github.gonbei774.calisthenicsmemory.ui.session.startWorkout(ctx, json, newUuid(), PrefsStore.load(ctx).audioEnabled)
+}
+
+/** 9.4 L4 (F7): a Mix it up is for this one workout; once it is started the saved draft is the usual plan again (a mix also expires with the day, see PreviewDraftStore). */
+fun dropMixAfterStart(ctx: PlatformContext) {
+    val draft = PreviewDraftStore.get(ctx, draftKey(TrainSettingsStore.load(ctx))) ?: return
+    if (draft.edits.mixSwaps.isEmpty() && draft.edits.mixTaps == 0) return
+    PreviewDraftStore.put(ctx, draft.copy(edits = draft.edits.withoutMix()))
 }
 
 /** V22: the ready-made routines (built for the selected equipment profile) followed by the person's saved ones. */

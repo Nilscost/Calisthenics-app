@@ -50,6 +50,12 @@ data class PlanEdits(
     val overrideVariations: Map<String, String> = emptyMap(),
     /** The day (epoch day) a manual level / typed number was last set; 0 = none or unknown (an older draft). */
     val overrideEpochDay: Long = 0L,
+    /** 9.4 L4 (Mix it up): slot -> exercise of the swaps that came from the Mix it up button (they are also in [swaps]); see MixItUp.kt. */
+    val mixSwaps: Map<String, String> = emptyMap(),
+    /** 9.4 L4: how many times Mix it up was tapped since the last Undo (the next tap takes the next pair). */
+    val mixTaps: Int = 0,
+    /** 9.4 L4: the day (epoch day) the mix was made; a mix is for that day's workout only and is dropped on any later day. */
+    val mixEpochDay: Long = 0L,
 ) {
     fun isEmpty() = this == PlanEdits()
     fun hasLevelOverrides() = tierOverrides.isNotEmpty() || levelFiveTargets.isNotEmpty() || freeTargets.isNotEmpty()

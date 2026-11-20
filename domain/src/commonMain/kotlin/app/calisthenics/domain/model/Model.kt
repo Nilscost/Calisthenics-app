@@ -544,7 +544,7 @@ enum class NoteKind(val warning: Boolean) {
  * summary line per kind from the list. To add a kind (L4: MIXED_IN("Mixed in today")), add one enum entry here and its row caption in `PreviewScreen.kt` (`swapCaption`).
  */
 @Serializable
-enum class SwapKind(val lineLabel: String) { ROTATED("Swapped in today") }
+enum class SwapKind(val lineLabel: String) { ROTATED("Swapped in today"), MIXED_IN("Mixed in today") }
 
 /** [variationId] is in today's plan instead of [replacedId]. */
 @Serializable

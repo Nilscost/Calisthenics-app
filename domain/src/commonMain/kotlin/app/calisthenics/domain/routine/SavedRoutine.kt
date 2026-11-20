@@ -51,7 +51,8 @@ data class SavedRoutine(
 fun savedFrom(id: String, name: String, revision: Int, base: Routine, edits: PlanEdits, settings: TrainSettings, rule: ProgressionRule, now: Long, createdAt: Long = now): SavedRoutine {
     val applied = applyEdits(base, edits)
     val slots = applied.slots.map { s -> edits.swaps[s.id]?.let { s.copy(preferredVariationId = it) } ?: s }
-    val overlay = edits.copy(swaps = emptyMap(), removed = emptySet(), added = emptyList(), rule = null)
+    val overlay = edits.copy(swaps = emptyMap(), removed = emptySet(), added = emptyList(), rule = null,
+        mixSwaps = emptyMap(), mixTaps = 0, mixEpochDay = 0L)   // a Mix it up swap saved with the routine is simply its exercise now
     val mode = settings.effectiveBetweenSetMode()
     return SavedRoutine(id, name.trim().ifBlank { "My routine" }, revision, applied.copy(id = id, revision = revision, name = name.trim().ifBlank { "My routine" }, slots = slots, rule = rule),
         overlay, settings.format, rule, mode == BetweenSetMode.STRETCH, settings.rounds, createdAt, now, settings.warmupOn, exercisesPerRound = settings.exercisesPerRound, cooldownOn = settings.cooldownOn, cooldownMode = settings.cooldownMode, cooldownMinutes = settings.cooldownMinutes, flow = mode == BetweenSetMode.FLOW, conditioningOn = settings.conditioningOn, conditioningMinutes = settings.conditioningMinutes, betweenSetMode = mode, preparationSeconds = settings.preparationSeconds.coerceIn(1, 30))

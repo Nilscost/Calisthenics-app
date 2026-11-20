@@ -369,7 +369,7 @@ private class Planner(input: PlanInput) {
             }
             v = sv
         }
-        if (draft.swaps[slot.id] != null && slot.intent !in v.patterns) {
+        if (draft.swaps[slot.id] != null && slot.id !in draft.mixSlots && slot.intent !in v.patterns) {
             note(NoteKind.MISSING_MOVEMENT, "${v.name} is a different kind of exercise from the one it replaces (${plainMovement(slot.intent)}). Check it before you start.")
             needsAcceptance = true
         }

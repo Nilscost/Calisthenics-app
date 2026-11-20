@@ -464,6 +464,69 @@ class PreviewScreenTest {
         rule.onNodeWithText("unreviewed draft", substring = true).assertDoesNotExist()
     }
 
+    // 9.4 L4 (F7): Mix it up
+    private fun mixedSlots(): Set<String> = rule.onAllNodes(SemanticsMatcher("mixed-in caption") { it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.TestTag)?.startsWith("mixed_in_") == true })
+        .fetchSemanticsNodes().map { it.config[androidx.compose.ui.semantics.SemanticsProperties.TestTag].removePrefix("mixed_in_") }.toSet()
+    private fun planIds(): List<String> = rule.onAllNodes(SemanticsMatcher("exercise rows") { it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.TestTag)?.startsWith("exercise_name_") == true })
+        .fetchSemanticsNodes().map { it.config.first { c -> c.key.name == "Text" }.value.let { v -> (v as List<*>).first().toString() } }
+
+    @Test fun mixItUpSwapsTwoExercisesAndExplainsIt() {
+        show(); rule.waitForIdle()
+        val before = planIds()
+        rule.onNodeWithTag("mix_caption").performScrollTo().assertTextContains("Swap 2 exercises for a different type today", ignoreCase = true)
+        rule.onNodeWithTag("mix_undo").assertDoesNotExist(); rule.onNodeWithTag("mix_summary").assertDoesNotExist()
+        rule.onNodeWithTag("mix_it_up").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(2, mixedSlots().size)
+        assertEquals(before.size, planIds().size)
+        assertEquals(2, planIds().zip(before).count { (now, was) -> now != was })
+        rule.onNodeWithTag("mix_summary").assertExists().assertTextContains("Mixed in today:", substring = true)
+        rule.onNodeWithTag("mix_undo").assertExists()
+    }
+
+    @Test fun mixItUpAgainTakesTheNextPairAndUndoRestoresTheUsualPlan() {
+        show(); rule.waitForIdle()
+        val before = planIds()
+        rule.onNodeWithTag("mix_it_up").performScrollTo().performClick(); rule.waitForIdle()
+        val first = mixedSlots()
+        rule.onNodeWithTag("mix_it_up").performScrollTo().performClick(); rule.waitForIdle()
+        val second = mixedSlots()
+        assertEquals(2, second.size)
+        assertTrue("the next pair, not the same two: $first / $second", first.intersect(second).isEmpty())
+        rule.onNodeWithTag("mix_undo").performScrollTo().performClick(); rule.waitForIdle()
+        assertTrue(mixedSlots().isEmpty())
+        assertEquals(before, planIds())
+        rule.onNodeWithTag("mix_undo").assertDoesNotExist()
+    }
+
+    @Test fun aMixSurvivesLeavingThePreviewAndAHandSwapIsNeverMixed() {
+        var visible by mutableStateOf(true)
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { if (visible) PreviewScreen(onBack = {}, onStarted = {}) else androidx.compose.foundation.layout.Box {} } }
+        rule.waitForIdle()
+        openSwap("push")
+        rule.onNodeWithTag("swap_option_pushup-knee").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick); rule.waitForIdle()
+        rule.onNodeWithTag("mix_it_up").performScrollTo().performClick(); rule.waitForIdle()
+        val mixed = mixedSlots(); val names = planIds()
+        assertEquals(2, mixed.size); assertFalse("push was swapped by hand", "push" in mixed)
+        visible = false; rule.waitForIdle(); visible = true; rule.waitForIdle()
+        assertEquals(mixed, mixedSlots()); assertEquals(names, planIds())
+        rule.onNodeWithTag("mix_undo").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_name_push").assertTextEquals("Knee Push-Up")   // Undo leaves the hand swap alone
+    }
+
+    @Test fun startingAMixedWorkoutUsesTheMixAndLeavesTheNextDraftUsual() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("mix_it_up").performScrollTo().performClick(); rule.waitForIdle()
+        val key = io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(TrainSettingsStore.load(app))
+        assertEquals(2, io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(app, key)!!.edits.mixSwaps.size)
+        val mixedIds = planIds().toSet()
+        rule.onNodeWithTag("start_button").assertIsEnabled().performClick(); rule.waitForIdle()
+        val plan = Json { ignoreUnknownKeys = true }.decodeFromString(WorkoutPlan.serializer(), shadowOf(app).nextStartedService!!.getStringExtra(WorkoutSessionService.EXTRA_PLAN)!!)
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(app)
+        assertEquals(mixedIds, plan.blocks.filter { it.type == BlockType.WORK }.mapNotNull { it.variationId }.distinct().mapNotNull { catalog.variation(it)?.name }.toSet().intersect(mixedIds))
+        val draft = io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(app, key)!!
+        assertTrue("the next workout is the usual plan again", draft.edits.mixSwaps.isEmpty() && draft.edits.swaps.isEmpty() && draft.edits.mixTaps == 0)
+    }
+
     @Test fun startLaunchesTheServiceWithAFreshPlanId() {
         var started = false
         show { started = true }; rule.waitForIdle()
@@ -558,7 +621,7 @@ class PreviewScreenTest {
     @Test fun theLevelStepperChangesTheTargetAndStaysWithinOneToFive() {
         show(); rule.waitForIdle()
         val before = rule.onNodeWithTag("exercise_target_push").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
-        rule.onNodeWithTag("level_plus_push").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("level_plus_push").performScrollTo().performClick(); rule.waitForIdle()   // the Mix it up block pushed the list down
         val after = rule.onNodeWithTag("exercise_target_push").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
         assertNotEquals(before, after)
         rule.onNodeWithTag("level_push").assertTextContains("Level 2 of 5")

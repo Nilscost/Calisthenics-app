@@ -119,6 +119,7 @@ fun EquipmentNeededRow(ids: List<String>, modifier: Modifier = Modifier) {
 /** F6: the row caption for each [SwapKind]; a new kind needs one more line here (and its string). */
 private fun swapCaption(kind: SwapKind): StringResource = when (kind) {
     SwapKind.ROTATED -> Res.string.preview_rotated
+    SwapKind.MIXED_IN -> Res.string.mix_it_up_tag
 }
 
 /** The plan's notes: the three most important as plain lines (actions first), the rest behind a compact "More (n)". Nothing when there are none. */
@@ -170,7 +171,7 @@ private fun ExerciseRow(index: Int, e: CircuitEntry, v: ExerciseVariation?, name
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     Text(stringResource(Res.string.preview_slot_tag, index + 1, stringResource(movementTag(v))), style = MaterialTheme.typography.labelLarge, color = AppAccentTheme.colors.text, modifier = Modifier.testTag("slot_tag_${e.slotId}$sfx"))
                     if (!largeText) Text(name, style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("exercise_name_${e.slotId}$sfx"))
-                    swapKind?.let { Caption(stringResource(swapCaption(it)), Modifier.testTag("swap_kind_${e.slotId}$sfx")) }
+                    swapKind?.let { Caption(stringResource(swapCaption(it)), Modifier.testTag((if (it == SwapKind.MIXED_IN) "mixed_in_" else "swap_kind_") + "${e.slotId}$sfx")) }
                 }
                 if (v != null && v.primaryMuscles.isNotEmpty()) io.github.gonbei774.calisthenicsmemory.ui.components.BodyMap(v.primaryMuscles, v.secondaryMuscles, showNamesOnTap = false, tag = "muscles_${e.slotId}$sfx", viewWidth = 24.dp)
                 IconButton(onClick = onSwap, modifier = Modifier.testTag("swap_${e.slotId}$sfx")) { Icon(Icons.Filled.Refresh, stringResource(Res.string.preview_swap, name)) }
@@ -333,6 +334,21 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
     val emptyAfterRemoval = result is PlanResult.Infeasible && edits.removed.isNotEmpty() &&
         result.reasons.any { it.code == "no-slots" }
     val names = remember(data) { data.catalog.variations.associate { it.id to it.name } }
+    // 9.4 L4 (F7): Mix it up. The swaps live in [edits] like a hand swap (so Start, Save as routine and the round preview just work); the draft keeps them for today only.
+    val mixedNow = edits.mixOwned().keys
+    var mixNone by remember { mutableStateOf(false) }
+    val mixedFrom: Map<String, String> = remember(data, routine, settings, modeRevision, edits) {   // slot -> the exercise it had before the mix, for the "Mixed in today" note
+        if (edits.mixOwned().isEmpty()) emptyMap()
+        else (buildTrainPlan(data.catalog, routine, data.progress, profile, settings, edits = effectivePlanEdits(edits.withoutMix(), modeRevision), nowEpochMs = nowEpochMs(), nowDay = todayEpochDay().toInt()) as? PlanResult.Ready)
+            ?.plan?.let { pl -> circuitOf(pl).associate { it.slotId to it.variationId } }.orEmpty()
+    }
+    fun mixTap() {
+        val usual = edits.withoutMix()
+        val plan = (buildTrainPlan(data.catalog, routine, data.progress, profile, settings, edits = effectivePlanEdits(usual, modeRevision), nowEpochMs = nowEpochMs(), nowDay = todayEpochDay().toInt()) as? PlanResult.Ready)?.plan ?: return
+        val picks = mixItUp(data.catalog, data.progress, profile, circuitOf(plan).map { MixSlot(it.slotId, it.variationId) }, usual.handSlotIds(), edits.mixTaps)
+        mixNone = picks.isEmpty()
+        if (picks.isNotEmpty()) edits = edits.withMix(picks, todayEpochDay())
+    }
 
     Scaffold(
         modifier = modifier,
@@ -450,7 +466,7 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                             onSwap = { swapSlot = e.slotId }, onRemove = { removeSlot = e.slotId }, sfx = sfx,
                             onTypeNumber = if (typed) ({ typeFor = e.slotId to st }) else null, badge = badge,
                             chain = if (rule.isRange && idx >= 0) idx to options.size else null,
-                            swapKind = p.swaps.firstOrNull { it.variationId == e.variationId }?.kind)
+                            swapKind = if (e.slotId in mixedNow) SwapKind.MIXED_IN else p.swaps.firstOrNull { it.variationId == e.variationId }?.kind)
                         BreakRow(e.slotId, p, st, names, onChange = { breakSlot = e.slotId to (if (typed) st else null) }, onRestChange = { restDurations = restDurations + (e.slotId to it) }, onAdd = { addAfter = e.slotId }, sfx = sfx)
                     }
                     // R8.2-T03 (G3): the included warm-up as a block, its items removable
@@ -470,6 +486,19 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                     // R7.2-T01 (F1): one round view for all sets (the edits apply to every set), no set tabs; the full timeline below lists every set
                     Text(stringResource(Res.string.preview_all_sets, (p.blocks.filter { it.roundIndex == set }.sumOf { it.durationSeconds } + 30) / 60), style = MaterialTheme.typography.titleMedium, modifier = Modifier.testTag("all_sets_header").padding(top = Spacing.xs))
                     Caption(stringResource(Res.string.preview_applies_to_all))
+                    // 9.4 L4 (F7): manual only, no nudge. Each tap takes the next pair; Undo is back to the usual plan.
+                    Column(Modifier.fillMaxWidth().testTag("mix_block"), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            AppTextButton(onClick = ::mixTap, modifier = Modifier.testTag("mix_it_up")) { Text(stringResource(Res.string.mix_it_up)) }
+                            if (mixedNow.isNotEmpty()) AppTextButton(onClick = { edits = edits.withoutMix(); mixNone = false }, modifier = Modifier.testTag("mix_undo")) { Text(stringResource(Res.string.mix_it_up_undo)) }
+                        }
+                        Caption(stringResource(Res.string.mix_it_up_caption), Modifier.testTag("mix_caption"))
+                        // 9.4 L4: the one-line "Mixed in today" note. Separate from the plan notes above (L3 owns those); the merge folds it into their line.
+                        if (mixedNow.isNotEmpty()) Text(
+                            stringResource(Res.string.mix_it_up_summary, edits.mixOwned().map { (slot, id) -> stringResource(Res.string.mix_it_up_summary_item, names[id] ?: id, mixedFrom[slot]?.let { names[it] } ?: slot) }.joinToString(", ")),
+                            style = MaterialTheme.typography.bodyMedium, modifier = Modifier.testTag("mix_summary"))
+                        if (mixNone && mixedNow.isEmpty()) Text(stringResource(Res.string.mix_it_up_none), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline, modifier = Modifier.testTag("mix_none"))
+                    }
                     AddButton({ addAfter = null }, Modifier.align(Alignment.End).testTag("add_start"))
                     circuitOf(p, set).forEachIndexed { i, e -> Tile(i, e, set, "", null, false) }
                     // R7-T13 (D10): the cool-down after the last set: timed minutes with - / +, or stretches that can be swapped
