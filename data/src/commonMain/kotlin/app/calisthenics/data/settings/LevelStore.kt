@@ -2,6 +2,7 @@
 package app.calisthenics.data.settings
 
 
+import app.calisthenics.domain.backup.LevelEditRecord
 import app.calisthenics.domain.model.Catalog
 import app.calisthenics.domain.progression.ProgressSnapshot
 import app.calisthenics.domain.progression.ProgressionEngine
@@ -29,6 +30,13 @@ object LevelStore {
         val old = load(ctx); val oldDays = days(ctx)
         val d = if (undated) emptyMap() else m.mapNotNull { (k, v) -> if (restart || old[k] != v) k to today else oldDays[k]?.let { k to it } }.toMap()
         ctx.legacy("levels").edit().putString("v", Json.encodeToString(ser, m)).putString("days", Json.encodeToString(ser, d)).apply()
+    }
+    /** 9.4 F9: the hand-set levels with their days, for the backup. */
+    fun edits(ctx: SettingsProvider): List<LevelEditRecord> { val d = days(ctx); return load(ctx).map { (v, t) -> LevelEditRecord(v, t, d[v] ?: 0) }.sortedBy { it.variationId } }
+    /** 9.4 F9: writes merged levels with their own days (restore); leaves the questionnaire reset moment alone. */
+    fun saveEdits(ctx: SettingsProvider, edits: List<LevelEditRecord>) {
+        ctx.legacy("levels").edit().putString("v", Json.encodeToString(ser, edits.associate { it.variationId to it.tier }))
+            .putString("days", Json.encodeToString(ser, edits.filter { it.day != 0 }.associate { it.variationId to it.day })).apply()
     }
     /** The levels as dated self-assessments for the replay. */
     fun actions(ctx: SettingsProvider): List<UserAction> { val d = days(ctx); return load(ctx).map { (v, t) -> app.calisthenics.domain.progression.selfAssessmentFor(v, t, d[v] ?: 0) } }

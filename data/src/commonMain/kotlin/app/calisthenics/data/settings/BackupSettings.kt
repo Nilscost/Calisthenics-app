@@ -1,5 +1,7 @@
 package app.calisthenics.data.settings
 
+import app.calisthenics.domain.backup.AcceptedSuggestionRecord
+import app.calisthenics.domain.backup.LevelEditRecord
 import app.calisthenics.domain.model.EquipmentProfile
 import app.calisthenics.domain.model.PersonalLevelTargets
 import app.calisthenics.domain.model.Preferences
@@ -26,6 +28,10 @@ interface BackupSettings {
     fun putDraft(draft: PreviewDraft, todayEpochDay: Long)
     fun clearDraft()
     fun setModeRevision(key: String, revision: Long)
+    fun loadLevelEdits(): List<LevelEditRecord>
+    fun saveLevelEdits(value: List<LevelEditRecord>)
+    fun loadAcceptedSuggestions(): List<AcceptedSuggestionRecord>
+    fun saveAcceptedSuggestions(value: List<AcceptedSuggestionRecord>)
 }
 class StoreBackupSettings(private val provider: SettingsProvider, private val todayEpochDay: Long) : BackupSettings {
     override fun loadPreferences() = PrefsStore.load(provider)
@@ -45,4 +51,8 @@ class StoreBackupSettings(private val provider: SettingsProvider, private val to
     override fun putDraft(draft: PreviewDraft, todayEpochDay: Long) = PreviewDraftStore.put(provider, draft, todayEpochDay)
     override fun clearDraft() = PreviewDraftStore.clear(provider)
     override fun setModeRevision(key: String, revision: Long) = TrainSettingsStore.setModeRevision(provider, key, revision)
+    override fun loadLevelEdits() = LevelStore.edits(provider)
+    override fun saveLevelEdits(value: List<LevelEditRecord>) = LevelStore.saveEdits(provider, value)
+    override fun loadAcceptedSuggestions() = SuggestionStore.acceptedRecords(provider)
+    override fun saveAcceptedSuggestions(value: List<AcceptedSuggestionRecord>) = SuggestionStore.saveAcceptedRecords(provider, value)
 }

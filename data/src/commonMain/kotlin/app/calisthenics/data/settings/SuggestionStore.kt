@@ -2,6 +2,7 @@
 package app.calisthenics.data.settings
 
 
+import app.calisthenics.domain.backup.AcceptedSuggestionRecord
 import app.calisthenics.domain.progression.UserAction
 
 object SuggestionStore {
@@ -27,5 +28,17 @@ object SuggestionStore {
         val f = r.split('|'); if (f.size != 3) null else runCatching { UserAction.AcceptNextExercise(f[2].toInt(), f[0], f[1]) }.getOrNull()
     } + rawEasier(ctx).mapNotNull { r ->
         val f = r.split('|'); if (f.size != 3) null else runCatching { UserAction.AcceptEasier(f[2].toInt(), f[0], f[1].toInt()) }.getOrNull()
+    }
+
+    private fun records(kind: String, raw: List<String>) = raw.mapNotNull { r ->
+        val f = r.split('|'); if (f.size != 3) null else f[2].toIntOrNull()?.let { AcceptedSuggestionRecord(kind, f[0], f[1], it) }
+    }
+    /** 9.4 F9: every accepted suggestion, for the backup. */
+    fun acceptedRecords(ctx: SettingsProvider): List<AcceptedSuggestionRecord> =
+        records("harder", rawAccepted(ctx)) + records("next", rawNext(ctx)) + records("easier", rawEasier(ctx))
+    /** 9.4 F9: replaces the accepted suggestions (restore, already merged). Dismissed ones are not part of a backup. */
+    fun saveAcceptedRecords(ctx: SettingsProvider, all: List<AcceptedSuggestionRecord>) {
+        fun enc(kind: String) = all.filter { it.kind == kind }.joinToString(";") { "${it.variationId}|${it.value}|${it.day}" }
+        p(ctx).edit().putString("accepted", enc("harder")).putString("acceptedNext", enc("next")).putString("acceptedEasier", enc("easier")).commit()
     }
 }

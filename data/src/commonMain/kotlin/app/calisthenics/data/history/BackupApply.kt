@@ -4,6 +4,8 @@ import app.calisthenics.data.settings.BackupSettings
 import app.calisthenics.domain.backup.BackupPayload
 import app.calisthenics.domain.backup.FeedbackRecord
 import app.calisthenics.domain.backup.ProgressionEventRecord
+import app.calisthenics.domain.backup.mergeAcceptedSuggestions
+import app.calisthenics.domain.backup.mergeLevelEdits
 import app.calisthenics.domain.backup.PlanRecord as BackupPlanRecord
 import app.calisthenics.domain.history.BlockRecord
 import app.calisthenics.domain.history.SessionRecord
@@ -38,6 +40,7 @@ class BackupApply(private val history: HistoryRepository, private val settings: 
             events = history.allEvents().map { ProgressionEventRecord(it.eventId, it.variationId, it.kind, it.fromTier, it.toTier, it.reason, it.atEpochMs) },
             profiles = settings.loadProfiles(), savedRoutines = settings.loadSavedRoutines(), personalTargets = settings.loadPersonalTargets(),
             trainSettings = train, previewDraftJson = draft?.let { PreviewDraftBackupCodec.encode(it) },
+            levelEdits = settings.loadLevelEdits(), acceptedSuggestions = settings.loadAcceptedSuggestions(),
         )
     }
     suspend fun restore(p: BackupPayload, todayEpochDay: Long): Int {
@@ -57,6 +60,9 @@ class BackupApply(private val history: HistoryRepository, private val settings: 
             val local = settings.loadPersonalTargets()
             settings.savePersonalTargets(local + p.personalTargets.filter { (id, value) -> value.revision >= (local[id]?.revision ?: 0) })
         }
+        // 9.4 F9: levels merge per variation (later day wins, tie = backup); accepted suggestions are a union, so a second import adds nothing.
+        if (p.levelEdits.isNotEmpty()) settings.saveLevelEdits(mergeLevelEdits(settings.loadLevelEdits(), p.levelEdits))
+        if (p.acceptedSuggestions.isNotEmpty()) settings.saveAcceptedSuggestions(mergeAcceptedSuggestions(settings.loadAcceptedSuggestions(), p.acceptedSuggestions))
         settings.clearTrainDefaultMarkers()
         p.trainSettings?.let { settings.saveTrainSettings(it) }
         p.trainSettings?.let { train ->
