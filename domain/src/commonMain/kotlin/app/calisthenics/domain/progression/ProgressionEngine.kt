@@ -101,14 +101,33 @@ data class VariationProgress(
     val topTarget: Int? = null,
     /** How a session last raised the level (read by the end screen); null until one has. */
     val levelUpBy: LevelUpBy? = null,
+    /**
+     * 9.4 F2: the target T of the last session that missed (some set below the level's own target, or below the lowered target in force) and was the
+     * first miss in a row at T; null = no miss pending. A second miss at the same T steps the target down one rep (5 s); any other session clears it.
+     * Applies to level [missedTargetTier] only. While set, the planner prescribes T itself, without the in-level ramp ("next time T again").
+     */
+    val missedTarget: Int? = null,
+    val missedTargetTier: Int? = null,
+    /**
+     * 9.4 F8: stars credited to the levels below a level the engine raised the exercise to (three good sessions, or typed reps that met it): `tier - 1` at that moment.
+     * It only ever grows (a re-entry or an easier level keeps the stars) and is cleared by a dated hand edit and by a heavier kettlebell, which restart the exercise.
+     */
+    val starsFloor: Int = 0,
+    /** 9.4 F4: the highest level this exercise has ever been at (start level, hand edits and engine moves included). 0 = unknown (a snapshot built by hand). Lets the end screen say "Level N again". */
+    val highestTierReached: Int = 0,
+    /**
+     * 9.4 F4: the day of the last re-entry: a session done one level below after a break of [REENTRY_DAYS] or more (applied by the engine like a [UserAction.ReentryChoice]),
+     * or the choice itself. The end screen says "back after a break" for the session whose day equals this. Null = never.
+     */
+    val backFromBreakDay: Int? = null,
 ) {
-    /** Highest consecutive achieved tier counted from the tier the variation was started at. */
+    /** Highest consecutive achieved tier counted from the tier the variation was started at; levels below an engine-reached level count too ([starsFloor], 9.4 F8). */
     fun earnedStars(): Int {
         val start = baselineTier ?: 1
         var t = start
         while (t in achievedTiers) t++
         // D8 / R26: levels below the one you start at count as stars too (one kind of star, earned or assumed).
-        return t - 1
+        return maxOf(t - 1, starsFloor)
     }
 }
 
@@ -242,6 +261,8 @@ class ProgressionEngine(private val catalog: Catalog) {
 
         for (ev in evidence) items += Item(ev.day, 0, ev.sessionId + ev.variationId) {
             val vid = ev.variationId
+            // 9.4 F1: evidence with no completed work (fully skipped or abandoned) creates no progress record; for an existing one it leaves "last trained" alone.
+            if (ev.completedWorkBlocks == 0 && vid !in vars) return@Item
             // This is a planned starting estimate, not evidence of completed tiers, including when skipped.
             val inferred = ev.inferredStartTier?.takeIf { it == ev.prescribedTier }
             // Version 1 plans can only establish a higher current tier from explicit demonstrated results.
@@ -251,11 +272,21 @@ class ProgressionEngine(private val catalog: Catalog) {
             var p = ensure(vid, ev.day, tier = initialTier, baseline = inferred)
             if (p.targetRevision != ev.targetRevision) p = p.copy(targetRevision = ev.targetRevision, streakDays = emptyList(), streakAssumed = 0, consecutiveAbove = 0, raiseSuggested = false,
                 demonstratedTier = null, demonstratedTargetRevision = null,
-                reducedTarget = null, reducedTargetTier = null, topTarget = null)
+                reducedTarget = null, reducedTargetTier = null, topTarget = null, missedTarget = null, missedTargetTier = null)
             if (ev.progressionEvidenceVersion >= 1 && ev.effectivePolicySnapshot != null) {
                 p = p.copy(effectivePolicySnapshot = ev.effectivePolicySnapshot)
             }
-            p = p.copy(lastTrainedDay = maxOf(p.lastTrainedDay ?: ev.day, ev.day))
+            // 9.4 F4: a session done one level below after a break is applied like a ReentryChoice: that level becomes the level (stars and achieved levels kept), and this session counts towards re-earning the old one.
+            val lastSeen = maxOf(p.lastTrainedDay ?: Int.MIN_VALUE, p.reentryResolvedDay ?: Int.MIN_VALUE)
+            if (ev.completedWorkBlocks > 0 && !ev.discomfort && ev.ruleMet == null && p.lastTrainedDay != null && ev.prescribedTier != null && p.tier > 1 &&
+                ev.prescribedTier == p.tier - 1 && ev.day - lastSeen >= REENTRY_DAYS && holds[p.familyId] == null) {
+                val was = p.tier
+                p = p.copy(tier = ev.prescribedTier, enrolledAtDay = ev.day, streakDays = emptyList(), streakAssumed = 0, reentryResolvedDay = ev.day, backFromBreakDay = ev.day,
+                    consecutiveBelow = 0, lowerTargetSuggested = false, consecutiveAbove = 0, raiseSuggested = false,
+                    reducedTarget = null, reducedTargetTier = null, topTarget = null, missedTarget = null, missedTargetTier = null)
+                events += ProgressEvent(ev.day, vid, "Welcome back. You restart at level ${p.tier} (it was $was). Your stars are kept.")
+            }
+            if (ev.completedWorkBlocks > 0) p = p.copy(lastTrainedDay = maxOf(p.lastTrainedDay ?: ev.day, ev.day))
             val start = p
             raiseActive(active, p.familyId, vid, ev.progressionRouteId, ev.completedWorkBlocks > 0 && !ev.skippedOrPartial)
             var hold = holds[p.familyId]
@@ -284,7 +315,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                     val kept = p.earnedStars()
                     p = p.copy(tier = 1, baselineTier = null, achievedTiers = emptySet(), enrolledAtDay = ev.day,
                         lastAutoAdvanceDay = null, streakDays = emptyList(), streakAssumed = 0, consecutiveBelow = 0,
-                        lowerTargetSuggested = false, loadGrams = load,
+                        lowerTargetSuggested = false, loadGrams = load, starsFloor = 0, missedTarget = null, missedTargetTier = null,
                         demonstratedTier = null, demonstratedTargetRevision = null,
                         starsByLoad = p.starsByLoad + (recorded to maxOf(kept, p.starsByLoad[recorded] ?: 0)))
                     events += ProgressEvent(ev.day, vid,
@@ -322,7 +353,8 @@ class ProgressionEngine(private val catalog: Catalog) {
                         ruleAbove = false,
                         demonstratedTier = maxOf(p.demonstratedTier ?: 0, adopted),
                         demonstratedTargetRevision = ev.targetRevision,
-                        reducedTarget = null, reducedTargetTier = null, topTarget = null,
+                        reducedTarget = null, reducedTargetTier = null, topTarget = null, missedTarget = null, missedTargetTier = null,
+                        starsFloor = maxOf(p.starsFloor, adopted - 1),
                         levelUpBy = LevelUpBy.DEMONSTRATED,
                     )
                     events += ProgressEvent(ev.day, vid,
@@ -394,16 +426,48 @@ class ProgressionEngine(private val catalog: Catalog) {
                 val levelTarget = pol?.tiers?.firstOrNull { it.index == p.tier }?.target
                 val own = if (levelTarget != null) app.calisthenics.domain.planner.cappedTarget(levelTarget, pol).value else null
                 val stepUp = if (levelTarget?.type == app.calisthenics.domain.model.TargetType.HOLD_SECONDS) 5 else 1
+                val unit = if (levelTarget?.type == app.calisthenics.domain.model.TargetType.HOLD_SECONDS) " s" else " reps"
+                val topInForce = p.tier == 5 && (p.topTarget ?: 0) > 0
                 when {
-                    p.tier != start.tier -> p = p.copy(reducedTarget = null, reducedTargetTier = null)
-                    ev.shortfallValue != null && own != null && ev.prescribedTier == p.tier -> {
+                    p.tier != start.tier -> p = p.copy(reducedTarget = null, reducedTargetTier = null, missedTarget = null, missedTargetTier = null)
+                    ev.shortfallValue != null && own != null && ev.prescribedTier == p.tier && topInForce -> {
+                        // the raised level-5 target of the top of a route keeps the W2 rule: the lowest set becomes the target
                         val low = ev.shortfallValue
                         if (low < own) {
-                            p = p.copy(reducedTarget = low, reducedTargetTier = p.tier, topTarget = if (p.tier == 5 && (p.topTarget ?: 0) > 0) null else p.topTarget)
+                            p = p.copy(reducedTarget = low, reducedTargetTier = p.tier, topTarget = null, missedTarget = null, missedTargetTier = null)
                             events += ProgressEvent(ev.day, vid, "Your lowest set was $low. That is your target next time ($low per set), then it builds back up to $own.")
-                        } else if (p.tier == 5 && p.topTarget != null && low < p.topTarget!!) {
+                        } else if (low < p.topTarget!!) {
                             p = p.copy(topTarget = low.takeIf { it > own })
                             events += ProgressEvent(ev.day, vid, "Your lowest set was $low. That is your level 5 target next time.")
+                        }
+                    }
+                    // 9.4 F2: a session that is not good (a set below the level's own target, or below the lowered target in force).
+                    // First miss at T: T again. Second miss in a row at the same T: one rep (5 s) less, never below the previous level's own target. Far off (lowest set at most half of T): the lowest set at once.
+                    ev.shortfallValue != null && own != null && ev.prescribedTier == p.tier -> {
+                        val target = if (p.reducedTarget != null && p.reducedTargetTier == p.tier) minOf(p.reducedTarget!!, own) else own
+                        val low = minOf(ev.shortfallValue, target).coerceAtLeast(1)
+                        val previous = pol?.tiers?.firstOrNull { it.index == p.tier - 1 }?.target?.let { app.calisthenics.domain.planner.cappedTarget(it, pol).value }
+                        val floor = previous ?: stepUp   // level 1: never below 1 rep / 5 s
+                        val again = p.missedTarget == target && p.missedTargetTier == p.tier
+                        when {
+                            low * 2 <= target -> {
+                                p = p.copy(reducedTarget = low, reducedTargetTier = p.tier, missedTarget = null, missedTargetTier = null)
+                                events += ProgressEvent(ev.day, vid, "Your lowest set was $low, far below $target. That is your target next time ($low$unit per set), then it builds back up to $own.")
+                            }
+                            again -> {
+                                val next = minOf(target, maxOf(target - stepUp, floor))
+                                if (next < target) {
+                                    p = p.copy(reducedTarget = next, reducedTargetTier = p.tier, missedTarget = null, missedTargetTier = null)
+                                    events += ProgressEvent(ev.day, vid, "Below $target$unit twice in a row. Your target next time is $next$unit per set, then it builds back up to $own.")
+                                } else {
+                                    p = p.copy(missedTarget = target, missedTargetTier = p.tier)
+                                    events += ProgressEvent(ev.day, vid, "Below $target$unit again. That is as low as this level goes: your target next time stays $target$unit.")
+                                }
+                            }
+                            else -> {
+                                p = p.copy(missedTarget = target, missedTargetTier = p.tier)
+                                events += ProgressEvent(ev.day, vid, "A set was below $target$unit. Your target next time is $target$unit again. Missing it a second time in a row lowers it by $stepUp${if (stepUp == 1) " rep" else " s"}.")
+                            }
                         }
                     }
                     p.reducedTarget != null && p.reducedTargetTier == p.tier && ev.shortfallValue == null && ev.completedWorkBlocks > 0 && !ev.skippedOrPartial && ev.prescribedTier == p.tier -> {
@@ -413,6 +477,8 @@ class ProgressionEngine(private val catalog: Catalog) {
                             else p.copy(reducedTarget = next, consecutiveBelow = 0, lowerTargetSuggested = false)
                     }
                 }
+                // 9.4 F2: a session with work and no miss ends a pending first miss ("in a row")
+                if (ev.shortfallValue == null && ev.completedWorkBlocks > 0 && p.missedTarget != null) p = p.copy(missedTarget = null, missedTargetTier = null)
             }
             // V02 / D7, R7.2-T06 (F7, O1): "too easy" (once is enough) suggests a move on; the tier itself never changes here. What the move is (two levels, or the next exercise) is decided in [suggest].
             val byRule = ev.ruleMet != null
@@ -435,7 +501,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                 val target = vars[step.variationId] ?: ensure(step.variationId, reportDay, step.tier)
                 val tier = if (step.variationId == ev.variationId) step.tier else minOf(target.tier, step.tier)
                 vars[step.variationId] = target.copy(tier = tier, enrolledAtDay = reportDay, streakDays = emptyList(), streakAssumed = 0, consecutiveBelow = 0,
-                    lowerTargetSuggested = false, consecutiveAbove = 0, raiseSuggested = false, reducedTarget = null, reducedTargetTier = null, topTarget = null)
+                    lowerTargetSuggested = false, consecutiveAbove = 0, raiseSuggested = false, reducedTarget = null, reducedTargetTier = null, topTarget = null, missedTarget = null, missedTargetTier = null)
                 val before = holds[fam]
                 holds[fam] = FamilyHold(fam, reportDay, tier, step.variationId, (before?.steps ?: 0) + 1)
                 val name = catalog.variation(step.variationId)?.name ?: step.variationId
@@ -452,7 +518,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                     // W2: a dated (day > 0) hand edit / questionnaire answer restarts this exercise from its day: earlier evidence neither raises it above the answer nor leaves stale streaks or suggestions.
                     if (a.day > 0) vars[a.variationId]?.let { old -> vars[a.variationId] = old.copy(achievedTiers = emptySet(), lastAutoAdvanceDay = null, streakDays = emptyList(), streakAssumed = 0,
                         consecutiveBelow = 0, lowerTargetSuggested = false, consecutiveAbove = 0, raiseSuggested = false, ruleAbove = false, demonstratedTier = null,
-                        demonstratedTargetRevision = null, reducedTarget = null, reducedTargetTier = null, topTarget = null, autoPaused = false) }
+                        demonstratedTargetRevision = null, reducedTarget = null, reducedTargetTier = null, topTarget = null, autoPaused = false, missedTarget = null, missedTargetTier = null, starsFloor = 0) }
                     val top = policy(a.variationId)?.tiers?.maxOfOrNull { it.index } ?: 5
                     if (a.tier > top) {
                         // R7-T04 (B1): above the top step: the top step is achieved too (five stars) and the successor is active at level 1
@@ -508,7 +574,7 @@ class ProgressionEngine(private val catalog: Catalog) {
                 is UserAction.ReentryChoice -> {
                     val p = ensure(a.variationId, a.day)
                     vars[a.variationId] = p.copy(tier = a.tier, enrolledAtDay = a.day, streakDays = emptyList(),
-                        streakAssumed = 0, reentryResolvedDay = a.day)
+                        streakAssumed = 0, reentryResolvedDay = a.day, backFromBreakDay = a.day)
                     events += ProgressEvent(a.day, a.variationId, "Welcome back. You restart at level ${a.tier}. Your stars are kept.")
                 }
                 is UserAction.ManualOverride -> {
@@ -526,7 +592,13 @@ class ProgressionEngine(private val catalog: Catalog) {
             }
         }
 
-        items.sortedWith(compareBy({ it.day }, { it.order }, { it.key })).forEach { it.run() }
+        // 9.4 F4: the highest level each exercise has ever been at, read after every step of the replay
+        val highest = mutableMapOf<String, Int>()
+        items.sortedWith(compareBy({ it.day }, { it.order }, { it.key })).forEach {
+            it.run()
+            for ((id, v) in vars) if (v.tier > (highest[id] ?: 0)) highest[id] = v.tier
+        }
+        for ((id, v) in vars.toMap()) vars[id] = v.copy(highestTierReached = maxOf(v.highestTierReached, highest[id] ?: v.tier))
         val counts = evidence.filter { it.completedWorkBlocks > 0 }.groupBy { it.familyId }
             .mapValues { (_, sessions) -> sessions.map { it.sessionId }.distinct().size }
         val routeCounts = evidence.filter { it.completedWorkBlocks > 0 && it.progressionRouteId != null }
@@ -588,7 +660,7 @@ class ProgressionEngine(private val catalog: Catalog) {
             events += ProgressEvent(day, p0.variationId,
                 "Level ${r.fromTier} done after ${r.evidenceDays.size} good workouts in ${r.evidenceDays.last() - r.evidenceDays.first()} days. Next: level ${r.toTier}, target $newTarget.$assumedNote")
             return p0.copy(tier = r.toTier, enrolledAtDay = day, achievedTiers = p0.achievedTiers + r.fromTier,
-                lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0, levelUpBy = LevelUpBy.STREAK)
+                lastAutoAdvanceDay = day, streakDays = emptyList(), streakAssumed = 0, levelUpBy = LevelUpBy.STREAK, starsFloor = maxOf(p0.starsFloor, r.toTier - 1))
         }
         // Top tier: same pacing gate (evaluated as if a 6th tier existed) then successor move.
         // W2: back on a rung after an easier step (discomfort) with all five levels already earned: the same gate lets it move on again.

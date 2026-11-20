@@ -511,7 +511,8 @@ private class Planner(input: PlanInput) {
                 val policy = cat.policyFor(v)!!
                 val levelFiveEligible = free == null && ruleTarget == null && levelFive != null && t.index == 5
                 // L4: inside a level the target climbs towards the next level's with each good session. The existing rules keep priority: a typed / range / level-5 target and the lowered target after a shortfall.
-                val ramp = if (free == null && ruleTarget == null && !levelFiveEligible && reduced == null && c.inferredStartTier == null && progressed?.tier == t.index)
+                val ramp = if (free == null && ruleTarget == null && !levelFiveEligible && reduced == null && c.inferredStartTier == null && progressed?.tier == t.index &&
+                    !(progressed.missedTarget != null && progressed.missedTargetTier == t.index))   // 9.4 F2: after a first miss the target is the level's own again, no ramp
                     prescribedTarget(policy, t.index, engine.qualifyingDays(input.progress, v.id, c.slot.progressionRouteId))?.takeIf { it.ramped } else null
                 val requested = when {
                     free != null -> Target(t.target.type, free.coerceIn(1, 999))

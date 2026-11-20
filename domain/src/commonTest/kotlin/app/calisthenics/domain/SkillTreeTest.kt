@@ -151,12 +151,16 @@ class SkillTreeTest {
     }
 
     @Test fun exercisesYouHaveMovedPastShowFiveStars() {
-        val s = snap("pushup-standard" to 2, "pushup-feet-elevated" to 1)
-        assertEquals(5, displayStars(catalog, s, "pushup-standard"))     // a harder exercise after it has been started
-        assertEquals(5, displayStars(catalog, s, "pushup-knee"))          // and everything below it in the chain
+        // 9.4 F1: moved past = a later exercise has completed work and was trained more recently
+        fun trained(day: Int, vid: String, tier: Int) = app.calisthenics.domain.feedback.SessionEvidence("s$day$vid", vid, catalog.variation(vid)!!.familyId, day, tier, 3, false, false, false, null, false, 3, 0, 2)
+        val acts = listOf("pushup-standard" to 2, "pushup-feet-elevated" to 1).map { (v, t) -> UserAction.SelfAssessment(0, v, t) }
+        val s = engine.replay(listOf(trained(5, "pushup-standard", 2), trained(9, "pushup-feet-elevated", 1)), acts)
+        assertEquals(5, displayStars(catalog, s, "pushup-standard"))     // a harder exercise after it has been trained since
         assertEquals(0, displayStars(catalog, s, "pushup-feet-elevated")) // the current one shows its own stars
         assertEquals(0, displayStars(catalog, s, "pushup-one-arm"))
         assertEquals(1, displayStars(catalog, snap("pushup-standard" to 2), "pushup-standard"))
+        // started by hand only (never trained): not moved past
+        assertEquals(1, displayStars(catalog, snap("pushup-standard" to 2, "pushup-feet-elevated" to 1), "pushup-standard"))
     }
 
     // ---- R7-T11 (D7, O3): no "With weights" tab; each weighted exercise sits right after its bodyweight counterpart

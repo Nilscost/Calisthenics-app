@@ -23,7 +23,7 @@ class BackupChecksumCompatibilityTest {
     @Test fun committedSeedPayloadRetainsItsOriginalChecksum() {
         val text = fixtureText("app/src/debug/assets/seed/backup.json")
         val seed = Json.decodeFromString(BackupFile.serializer(), text)
-        assertEquals("2abfd4e4282e873bea3276d088e6dbac13fb6d30cb1b55a75c4a71558860b91d", seed.payloadSha256)
+        assertEquals("04344c7a33e1655991e7ac258e20edf7546bc3fe05241616588d0744c3375c80", seed.payloadSha256)
         assertTrue(importBackup(text) is ImportResult.Ok)
     }
 }

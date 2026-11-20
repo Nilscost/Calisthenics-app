@@ -172,7 +172,7 @@ class GentlerStepsTest {
         assertEquals(4, w.progress().tierFor("pullup"))                 // the gate is unchanged: three good sessions
     }
 
-    @Test fun missingTheLevelTargetIsStillBelowAndItsLowestSetBecomesTheNextTarget() {
+    @Test fun missingTheLevelTargetIsStillBelowFirstHoldsTheTargetThenStepsDownOneRep() {
         val w = single(pullup, 3)
         for (day in listOf(1, 3)) { val plan = w.plan(day); w.train(day, plan) { it.target!!.value } }     // 5, 6 done: 2 good sessions
         val plan = w.plan(5)
@@ -181,14 +181,19 @@ class GentlerStepsTest {
         assertTrue(ev.anyBelow); assertEquals(4, ev.shortfallValue)
         val p = w.progress().variations.getValue("pullup")
         assertEquals(3, p.tier); assertEquals(2, p.streakDays.size)     // the shortfall is not a good session and takes nothing away
-        assertEquals(4, p.reducedTarget)
-        // the lowered target keeps priority over the climbing one
+        // 9.4 F2: the first miss keeps the target: the level's own 5 again, not the climbing 7 and not the lowest set
+        assertNull(p.reducedTarget)
         val next = w.plan(7)
-        assertEquals(4, w.targetOf(next, "pullup"))
+        assertEquals(5, w.targetOf(next, "pullup"))
         assertNull(next.blocks.first { it.type == BlockType.WORK }.levelTarget)
-        val after = w.train(7, next) { it.target!!.value }.single()
+        assertTrue(w.train(7, next) { 4 }.single().anyBelow)            // the second miss in a row at 5
+        assertEquals(4, w.progress().variations.getValue("pullup").reducedTarget)
+        val lowered = w.plan(9)
+        assertEquals(4, w.targetOf(lowered, "pullup"))
+        assertNull(lowered.blocks.first { it.type == BlockType.WORK }.levelTarget)
+        val after = w.train(9, lowered) { it.target!!.value }.single()
         assertFalse(after.qualifying)                                   // a lowered session is done and kept, not a good one
-        assertEquals(7, w.targetOf(w.plan(9), "pullup"))   // the lowered target built back up to the level's own; the climb resumes from the 2 good sessions
+        assertEquals(7, w.targetOf(w.plan(11), "pullup"))   // the lowered target built back up to the level's own; the climb resumes from the 2 good sessions
     }
 
     @Test fun theTopLevelTargetAndTheSelfRaisedLevelFiveTargetAreNotRamped() {
