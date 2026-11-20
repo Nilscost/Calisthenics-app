@@ -534,10 +534,21 @@ data class TimelineBlock(
  */
 @Serializable
 enum class NoteKind(val warning: Boolean) {
-    EQUIPMENT(true), PAIN(true), MISSING_MOVEMENT(true), RETURN(true), LOAD(true), LENGTH(true), COVERAGE(false), INFO(false);
+    EQUIPMENT(true), PAIN(true), MISSING_MOVEMENT(true), RETURN(true), ROTATION(false), LOAD(true), LENGTH(true), COVERAGE(false), INFO(false);
     /** 1 = most important. */
     val priority: Int get() = ordinal + 1
 }
+
+/**
+ * Why an exercise in the plan is not the one the routine names. One entry per exercise; the Preview captions its row and the planner builds one
+ * summary line per kind from the list. To add a kind (L4: MIXED_IN("Mixed in today")), add one enum entry here and its row caption in `PreviewScreen.kt` (`swapCaption`).
+ */
+@Serializable
+enum class SwapKind(val lineLabel: String) { ROTATED("Swapped in today") }
+
+/** [variationId] is in today's plan instead of [replacedId]. */
+@Serializable
+data class PlanSwap(val variationId: String, val replacedId: String, val kind: SwapKind)
 
 /** A short, plain sentence for the person about today's plan, with its importance ([priority], 1 = most important, from [kind]). */
 @Serializable
@@ -585,9 +596,11 @@ data class WorkoutPlan(
     val progressionPolicies: Map<String, ProgressionPolicy> = emptyMap(),
     /** Plain-language notes, most important first ([PlanNote.priority]); the UI shows the first one or two ([topNotes]). [warnings] and [changesExplained] carry the same texts for older readers. */
     val notes: List<PlanNote> = emptyList(),
+    /** F6: exercises that stand in for another one today (rotation); the Preview captions their rows. Appended last. */
+    val swaps: List<PlanSwap> = emptyList(),
 ) {
-    /** The [limit] most important notes (the UI shows one or two); equal importance keeps the planner's order. */
-    fun topNotes(limit: Int = 2): List<PlanNote> = notes.sortedBy { it.priority }.take(limit)
+    /** The [limit] most important notes (the UI shows up to three); equal importance keeps the planner's order. */
+    fun topNotes(limit: Int = 3): List<PlanNote> = notes.sortedBy { it.priority }.take(limit)
 }
 
 /** [plan] with one more note; it is also listed in [WorkoutPlan.warnings] (warning kinds) or [WorkoutPlan.changesExplained]. */

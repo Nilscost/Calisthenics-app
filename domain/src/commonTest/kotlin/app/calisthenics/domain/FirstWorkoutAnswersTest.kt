@@ -287,7 +287,7 @@ class FirstWorkoutAnswersTest {
         val p = (buildTrainPlan(catalog, routine, progress, home, TrainSettings(), nowDay = 30) as PlanResult.Ready).plan
         assertTrue(p.needsAcceptance)
         val back = p.notes.first { it.kind == NoteKind.RETURN }
-        assertTrue(back.text, back.text.startsWith("Welcome back. You haven't done Knee Push-Up"))
+        assertEquals("Back after 2 weeks: Knee Push-Up one level easier today (2, was 3).", back.text)
         assertPlain(p, "reentry")
     }
 }
