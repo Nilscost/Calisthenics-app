@@ -534,7 +534,7 @@ data class TimelineBlock(
  */
 @Serializable
 enum class NoteKind(val warning: Boolean) {
-    EQUIPMENT(true), PAIN(true), MISSING_MOVEMENT(true), RETURN(true), ROTATION(false), LOAD(true), LENGTH(true), COVERAGE(false), INFO(false);
+    EQUIPMENT(true), PAIN(true), MISSING_MOVEMENT(true), RETURN(true), LOAD(true), LENGTH(true), ROTATION(false), COVERAGE(false), INFO(false);
     /** 1 = most important. */
     val priority: Int get() = ordinal + 1
 }

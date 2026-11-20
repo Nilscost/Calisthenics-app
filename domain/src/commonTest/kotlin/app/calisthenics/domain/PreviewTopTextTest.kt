@@ -36,7 +36,7 @@ class PreviewTopTextTest {
         //   Plank Shoulder Taps is today's variation instead of Long-Lever (RKC) Plank. Each exercise keeps its own level.   (and one more per rotation)
         val first = plan(ownerProgress())
         val firstTexts = first.notes.map { it.text }
-        assertTrue(firstTexts.toString(), "New: Single-Leg Glute Bridge (per side) (you finished Glute Bridge)." in firstTexts)
+        assertTrue(firstTexts.toString(), "New: Single-Leg Glute Bridge (per side), now that you finished Glute Bridge." in firstTexts)
         assertTrue(firstTexts.toString(), firstTexts.none { it.contains("finished every level") || it.contains("Each exercise keeps its own level") })
         // after: every rotation in ONE line
         val rotation = first.notes.filter { it.kind == NoteKind.ROTATION }.map { it.text }

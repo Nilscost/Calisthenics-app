@@ -227,11 +227,11 @@ private class Planner(input: PlanInput) {
     }
 
     /**
-     * F4 / F6: the summary lines for the exercises that are really in the plan: "New: Y (you finished X).", one re-entry line, and one
+     * F4 / F6: the summary lines for the exercises that are really in the plan: "New: Y, now that you finished X.", one re-entry line, and one
      * "Swapped in today" line per [SwapKind], built from the structured [PlanSwap] list. Returns that list (the Preview captions the rows from it).
      */
     private fun summaryNotes(slots: List<Chosen>): List<PlanSwap> {
-        for (c in slots) c.moveOn?.let { note(NoteKind.INFO, "New: ${c.variation.name} (you finished $it).") }
+        for (c in slots) c.moveOn?.let { note(NoteKind.INFO, "New: ${c.variation.name}, now that you finished $it.") }
         val back = slots.mapNotNull { c -> c.reentry?.let { (now, was) -> Triple(c.variation.name, now, was) } }
         val weeks = app.calisthenics.domain.progression.REENTRY_DAYS / 7
         if (back.size == 1) back.single().let { (name, now, was) -> note(NoteKind.RETURN, "Back after $weeks weeks: $name one level easier today ($now, was $was).") }
