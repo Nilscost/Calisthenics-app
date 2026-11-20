@@ -2,6 +2,7 @@ package app.calisthenics.data.settings
 
 import app.calisthenics.domain.planner.PreviewDraft
 import app.calisthenics.domain.planner.expireLevelOverrides
+import app.calisthenics.domain.planner.expireMix
 import kotlinx.serialization.json.Json
 
 object PreviewDraftStore {
@@ -11,8 +12,8 @@ object PreviewDraftStore {
     /** The draft saved for [key], or null when there is none or it belongs to another objective. */
     fun get(ctx: SettingsProvider, key: String, todayEpochDay: Long): PreviewDraft? {
         val d = runCatching { p(ctx).getString("draft", null)?.let { json.decodeFromString(PreviewDraft.serializer(), it) } }.getOrNull()
-        // A manual level or typed number is for the next workout only: older ones are dropped
-        return d?.takeIf { it.key == key }?.let { it.copy(edits = it.edits.expireLevelOverrides(todayEpochDay)) }
+        // A manual level or typed number is for the next workout only: older ones are dropped. So is a Mix it up (9.4 L4): the usual plan is back the next day.
+        return d?.takeIf { it.key == key }?.let { it.copy(edits = it.edits.expireLevelOverrides(todayEpochDay).expireMix(todayEpochDay)) }
     }
 
     fun put(ctx: SettingsProvider, d0: PreviewDraft, todayEpochDay: Long) {

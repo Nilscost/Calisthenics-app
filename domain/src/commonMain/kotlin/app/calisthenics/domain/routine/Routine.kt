@@ -93,6 +93,8 @@ data class SessionDraft(
     val levelFiveTargets: Map<String, Int> = emptyMap(),
     /** slot -> the exercise a manual level was set on; the override is ignored for another exercise in that slot. */
     val overrideVariations: Map<String, String> = emptyMap(),
+    /** 9.4 L4: swaps (a subset of [swaps]) that came from "Mix it up"; a cross-type swap there is intended, so it gets no "check it" warning. */
+    val mixSlots: Set<String> = emptySet(),
 ) {
     companion object {
         fun from(prefs: Preferences, routine: Routine) = SessionDraft(
