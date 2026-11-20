@@ -100,7 +100,7 @@ class ProgressScreenTest {
         rule.onNodeWithTag("panel_open_detail").performClick(); rule.waitForIdle()
     }
 
-    // 9.2: an exercise you moved past shows five stars, so its level list reads all done, with no "now"
+    // 9.4 F1 (test name kept for the baseline): a later exercise set by hand has no completed work, so it does not mark the earlier one as moved past: the earlier one keeps its own levels
     @Test fun anExerciseMovedPastListsEveryLevelAsDone() {
         show()
         rule.onNodeWithTag("tab_chip_core").performScrollTo().performClick(); rule.waitForIdle()
@@ -111,7 +111,7 @@ class ProgressScreenTest {
         rule.waitUntil(5_000) { runCatching { rule.onNodeWithTag("detail_level_4").assertTextContains("NOW", substring = true, ignoreCase = true) }.isSuccess }
         rule.onNodeWithTag("detail_back").performClick(); rule.waitForIdle()
         openDetailOf("leg-raise-lying")
-        (1..5).forEach { rule.onNodeWithTag("detail_level_$it").performScrollTo().assertTextContains("DONE", substring = true, ignoreCase = true) }
+        rule.onNodeWithTag("detail_level_1").performScrollTo().assertTextContains("NOW", substring = true, ignoreCase = true)
     }
 
     // R7-T11 (D5): Edit mode sets the level by hand; V-up at level 3 shows 3 stars
@@ -467,14 +467,13 @@ class ProgressScreenTest {
         rule.onNodeWithTag("panel_title").assertTextEquals("Bar Muscle-Up")
     }
 
+    // 9.4 F1 (test name kept for the baseline): only a later exercise with completed work (trained more recently) marks the earlier ones as moved past; a level set by hand does not
     @Test fun exercisesBelowTheCurrentOneShowFiveStars() {
         LevelStore.save(ctx, mapOf("pushup-standard" to 2, "pushup-feet-elevated" to 1))
         show()
         chooseRouteContaining("pushup-standard")
         revealTreeNode("pushup-standard")
-        assertTrue(desc("tree_node_pushup-standard"), desc("tree_node_pushup-standard").contains("5 of 5 stars"))
-        revealTreeNode("pushup-incline")
-        assertTrue(desc("tree_node_pushup-incline").contains("5 of 5 stars"))
+        assertTrue(desc("tree_node_pushup-standard"), desc("tree_node_pushup-standard").contains("1 of 5 stars"))
     }
 
     @Test fun treeNodesAreVerticalSoLowerExercisesAreBelowEasierOnes() {

@@ -94,7 +94,7 @@ class OwnerProgressionDecisionsTest {
         assertNull(derive(listOf(10, 12, 11)).shortfallValue)
     }
 
-    @Test fun aFarOffMissMakesTheLowestLoggedValueTheNextTargetThenItBuildsBackUp() {
+    @Test fun theLowestLoggedValueIsTheNextTargetThenItBuildsBackUp() {
         val act = listOf(UserAction.SelfAssessment(0, "pushup-std", 2))
         // 9.4 F2: at most half of the 10 reps (5): the lowest set at once. A smaller miss holds the target first, then steps down one rep (next test).
         val short = engine.replay(listOf(ev(0, "pushup-std", 2, shortfall = 5)), act)
