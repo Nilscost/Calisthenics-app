@@ -147,10 +147,74 @@ class EndScreenTest {
         val a = vids[0]; val b = vids[1]
         show(finished(), progressWith(
             ExerciseProgress(a, true, tier = 2, stars = 1, easierNextTime = true),
-            ExerciseProgress(b, true, tier = 2, stars = 1, nextTarget = 5, levelKept = true)))
+            ExerciseProgress(b, true, tier = 2, stars = 1, nextTarget = 5, levelKept = true, nextTime = NextTime(5, false, NextTimeKind.AGAIN))))
         rule.onNodeWithTag("end_chip_${a}_easier").assertTextEquals("Easier next time")
-        rule.onNodeWithTag("end_chip_${b}_target").assertTextEquals("Next target: 5 reps")
+        // 9.4 F3: the "Next target" chip is replaced by the "Next time" line
+        rule.onNodeWithTag("end_chip_${b}_target").assertDoesNotExist()
+        rule.onNodeWithTag("end_next_time_$b").assertTextEquals("Next time: 5 reps again")
         rule.onNodeWithTag("end_chip_${b}_kept").assertTextEquals("Level kept")
+    }
+
+    @Test fun nextTimeReadsClimbingAgainAndLoweredAndUsesSecondsForHolds() {
+        SessionBus.saved = true
+        val a = vids[0]; val b = vids[1]
+        show(finished(), progressWith(
+            ExerciseProgress(a, true, tier = 3, stars = 2, nextTime = NextTime(6, false)),
+            ExerciseProgress(b, true, tier = 3, stars = 2, nextTime = NextTime(4, false, NextTimeKind.THEN_BACK, 5))))
+        rule.onNodeWithTag("end_next_time_$a").assertTextEquals("Next time: 6 reps")
+        rule.onNodeWithTag("end_next_time_$b").assertTextEquals("Next time: 4 reps, then back to 5")
+    }
+
+    @Test fun holdsSaySecondsInBothLines() {
+        SessionBus.saved = true
+        val a = vids[0]
+        show(finished(), progressWith(ExerciseProgress(a, true, tier = 3, stars = 2, nextTargetIsHold = true, nextTime = NextTime(35, true),
+            progress = LevelProgress(1, 3, false, 4), levelTarget = 30, nextLevelTarget = 45)))
+        rule.onNodeWithTag("end_next_time_$a").assertTextEquals("Next time: 35 s")
+        rule.onNodeWithTag("end_progress_$a").assertTextContains("1 of 3 good sessions at 30+ s → Level 4 (45 s)")
+    }
+
+    @Test fun theDotsLineNamesTheTargetThatCountsAndWhatTheNextLevelAsks() {
+        SessionBus.saved = true
+        val a = vids[0]; val b = vids[1]; val c = vids[2]
+        show(finished(), progressWith(
+            ExerciseProgress(a, true, tier = 3, stars = 2, progress = LevelProgress(1, 3, false, 4), levelTarget = 5, nextLevelTarget = 8),
+            ExerciseProgress(b, true, tier = 3, stars = 2, progress = LevelProgress(2, 4, true, 4), levelTarget = 5, nextLevelTarget = 8),
+            ExerciseProgress(c, true, tier = 5, stars = 4, progress = LevelProgress(0, 3, false, 6), levelTarget = 8)))
+        rule.onNodeWithTag("end_progress_$a").assertTextContains("1 of 3 good sessions at 5+ reps → Level 4 (8 reps)")
+        rule.onNodeWithTag("end_progress_$b").assertTextContains("2 of 4 weekly sessions at 5+ reps → Level 4 (8 reps)")
+        rule.onNodeWithTag("end_progress_$c").assertTextContains("0 of 3 good sessions at 8+ reps → mastered")
+    }
+
+    @Test fun theFirstSessionSaysStartingAtWithoutTheGoldCard() {
+        SessionBus.saved = true
+        val a = vids[0]
+        show(finished(), progressWith(ExerciseProgress(a, true, tier = 3, stars = 2, levelNote = LevelNote.STARTING, progress = LevelProgress(1, 3, false, 4))))
+        rule.onNodeWithTag("end_level_$a").assertTextEquals("Starting at Level 3")
+        rule.onNodeWithTag("end_unlock_$a").assertDoesNotExist()
+        rule.onNodeWithTag("end_progress_$a").assertExists()
+    }
+
+    @Test fun backAfterABreakAndALevelEarnedAgainAreNotGold() {
+        SessionBus.saved = true
+        val a = vids[0]; val b = vids[1]
+        show(finished(), progressWith(
+            ExerciseProgress(a, true, tier = 3, stars = 2, levelNote = LevelNote.BACK_AFTER_BREAK),
+            ExerciseProgress(b, true, tier = 4, stars = 3, levelNote = LevelNote.AGAIN, progress = LevelProgress(3, 3, false, 4, finished = true))))
+        rule.onNodeWithTag("end_level_$a").assertTextEquals("Level 3 of 5 · back after a break")
+        rule.onNodeWithTag("end_level_$b").assertTextEquals("Level 4 again")
+        rule.onNodeWithTag("end_unlock_$a").assertDoesNotExist()
+        rule.onNodeWithTag("end_unlock_$b").assertDoesNotExist()
+        rule.onNodeWithTag("end_progress_$b").assertTextContains("3 of 3 good sessions at Level 3")
+    }
+
+    @Test fun theNextExerciseShowsItsRealLevel() {
+        SessionBus.saved = true
+        val a = vids[0]; val n = catalog.variations.first { it.id !in vids }.id
+        val p = EndProgress(SessionProgressSummary(listOf(ExerciseProgress(a, true, tier = 5, stars = 5, mastered = true, masteredAlready = true, nextVariationId = n, nextVariationTier = 4)),
+            emptyList()), SessionBus.names)
+        show(finished(), p)
+        rule.onNodeWithTag("end_next_$a").performScrollTo().assertTextContains("Next: ${SessionBus.names.getValue(n)} · Level 4")
     }
 
     @Test fun exercisesWithoutLevelsAreAPlainRow() {

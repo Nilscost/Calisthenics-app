@@ -16,6 +16,7 @@ import app.calisthenics.domain.progression.LevelUpBy
 import app.calisthenics.domain.progression.ProgressSnapshot
 import app.calisthenics.domain.progression.ProgressionEngine
 import app.calisthenics.domain.progression.VariationProgress
+import app.calisthenics.domain.planner.cappedTarget
 import app.calisthenics.domain.progression.prescribedTarget
 import app.calisthenics.domain.tree.displayStars
 
@@ -24,6 +25,23 @@ import app.calisthenics.domain.tree.displayStars
  * [finished]: the streak that raised the level in this session, all filled; the level it was earned at is `toLevel - 1`.
  */
 data class LevelProgress(val have: Int, val need: Int, val weekly: Boolean, val toLevel: Int, val finished: Boolean = false)
+
+/** Why the card says something other than "unlocked" about the level (9.4 F4, F5). */
+enum class LevelNote {
+    NONE,
+    /** The first session of the exercise: this is the level it started at, nothing was unlocked ("Starting at Level 3"). */
+    STARTING,
+    /** The level dropped after a break of 14 days or more and this session was done there ("Level 3 of 5 · back after a break"). */
+    BACK_AFTER_BREAK,
+    /** A level held before was earned again ("Level 4 again"). */
+    AGAIN,
+}
+
+/** How [NextTime.value] relates to the level's own target: the usual climb, the same target once more after a first miss, or a lowered target that builds back up to [NextTime.backTo]. */
+enum class NextTimeKind { NORMAL, AGAIN, THEN_BACK }
+
+/** The per-set number the planner will prescribe next time (reps, or seconds when [isHold]). */
+data class NextTime(val value: Int, val isHold: Boolean, val kind: NextTimeKind = NextTimeKind.NORMAL, val backTo: Int? = null)
 
 data class ExerciseProgress(
     val variationId: String,
@@ -47,6 +65,14 @@ data class ExerciseProgress(
     val levelUpBy: LevelUpBy? = null,
     /** Mastered (now or before) and the route has a next step that is now the one in training: the exercise the person moves on to. */
     val nextVariationId: String? = null,
+    /** The level the next exercise is really at now (from the after-snapshot; 1 when it has no record yet). */
+    val nextVariationTier: Int = 1,
+    /** 9.4 F3: what the planner prescribes next time (null for mastered, easier-next-time, paused and level-5 top-target cards). */
+    val nextTime: NextTime? = null,
+    /** The level's own target and the next level's, for "good sessions at 5+ reps → Level 4 (8 reps)"; null when not a plain reps / seconds target. */
+    val levelTarget: Int? = null,
+    val nextLevelTarget: Int? = null,
+    val levelNote: LevelNote = LevelNote.NONE,
 )
 
 data class NewExercise(val variationId: String, val unlockedBy: String?)
@@ -78,6 +104,17 @@ fun summarizeSessionProgress(catalog: Catalog, before: ProgressSnapshot, after: 
         // an exercise already moved past (a harder one of its route was started) shows all five stars, like the Progress tab: no level or dots then
         val masteredAlready = 5 in a.achievedTiers || starsAfter >= 5
         val leveledUp = !masteredNow && a.tier > tierBefore && (b != null || a.demonstratedTier != null)
+        val firstSession = b == null || b.lastTrainedDay == null
+        val backFromBreak = a.backFromBreakDay != null && a.backFromBreakDay != b?.backFromBreakDay
+        // 9.4 F4/F5: not an unlock when it is the starting level, a level after a break, or a level held before
+        val note = when {
+            masteredNow || masteredAlready -> LevelNote.NONE
+            firstSession -> LevelNote.STARTING
+            backFromBreak -> LevelNote.BACK_AFTER_BREAK
+            leveledUp && a.tier <= (b?.highestTierReached ?: 0) -> LevelNote.AGAIN
+            else -> LevelNote.NONE
+        }
+        val unlock = leveledUp && note == LevelNote.NONE
         val hold = after.holds[fam]
         val easier = hold != null && hold.steps > (before.holds[fam]?.steps ?: 0)
         val streakLevelUp = leveledUp && a.levelUpBy == LevelUpBy.STREAK
@@ -90,20 +127,41 @@ fun summarizeSessionProgress(catalog: Catalog, before: ProgressSnapshot, after: 
         val tierTarget = pol.tiers.firstOrNull { it.index == a.tier }?.target
         val newlyReduced = a.reducedTarget != null && a.reducedTargetTier == a.tier && a.reducedTarget != b?.reducedTarget
         val kept = !easier && !leveledUp && !masteredNow && a.tier == tierBefore && a.consecutiveBelow > (b?.consecutiveBelow ?: 0)
+        val routeNext = if (masteredAlready) routeNextStep(catalog, after, vid) else null
+        val ownTarget = pol.tiers.firstOrNull { it.index == a.tier }?.target?.let { cappedTarget(it, pol) }
+        val nextOwn = pol.tiers.firstOrNull { it.index == a.tier + 1 }?.target?.let { cappedTarget(it, pol) }
         ExerciseProgress(
             variationId = vid, hasProgression = true, tier = a.tier.coerceIn(1, 5),
             stars = starsAfter, starsBefore = displayStars(catalog, before, vid),
-            leveledUpTo = if (leveledUp) a.tier else null, mastered = masteredNow, masteredAlready = masteredAlready,
+            leveledUpTo = if (unlock) a.tier else null, mastered = masteredNow, masteredAlready = masteredAlready,
             progress = dots, easierNextTime = easier,
             nextTarget = if (newlyReduced && !easier) a.reducedTarget
                 else rampedNext(engine, pol, before, after, vid, b, a).takeIf { !easier && !leveledUp && !masteredAlready && a.tier == tierBefore },
             nextTargetIsHold = tierTarget?.type == TargetType.HOLD_SECONDS,
             levelKept = kept,
-            levelUpBy = if (leveledUp) a.levelUpBy else null,
-            nextVariationId = if (masteredAlready) routeNextStep(catalog, after, vid) else null,
+            levelUpBy = if (unlock) a.levelUpBy else null,
+            nextVariationId = routeNext,
+            nextVariationTier = routeNext?.let { after.variations[it]?.tier?.coerceIn(1, 5) } ?: 1,
+            nextTime = if (masteredAlready || masteredNow || easier || a.autoPaused || hold != null) null else nextTime(engine, pol, after, vid, a),
+            levelTarget = ownTarget?.takeIf { it.max == null }?.value,
+            nextLevelTarget = nextOwn?.takeIf { it.max == null && it.type == ownTarget?.type }?.value,
+            levelNote = note,
         )
     }
     return SessionProgressSummary(exercises, newExercises(catalog, before, after, done))
+}
+
+/** The number the planner prescribes next time: a pending first miss holds the target, a lowered target is in force, else the ramp (the same [prescribedTarget] call as the planner). */
+private fun nextTime(engine: ProgressionEngine, pol: app.calisthenics.domain.model.ProgressionPolicy, after: ProgressSnapshot, vid: String, a: VariationProgress): NextTime? {
+    val own = pol.tiers.firstOrNull { it.index == a.tier }?.target?.let { cappedTarget(it, pol) } ?: return null
+    val hold = own.type == TargetType.HOLD_SECONDS
+    if (a.tier == 5 && (a.topTarget ?: 0) > 0) return null   // the raised level-5 target keeps its own behaviour
+    if (a.missedTarget != null && a.missedTargetTier == a.tier) return NextTime(a.missedTarget!!, hold, NextTimeKind.AGAIN)
+    if (a.reducedTarget != null && a.reducedTargetTier == a.tier) {
+        val r = minOf(a.reducedTarget!!, own.value)
+        return NextTime(r, hold, if (r < own.value) NextTimeKind.THEN_BACK else NextTimeKind.NORMAL, own.value)
+    }
+    return NextTime(prescribedTarget(pol, a.tier, engine.qualifyingDays(after, vid))?.target?.value ?: own.value, hold)
 }
 
 /** The main step after [vid] on its route, when [vid] is a main step itself and the route has actually moved on to it (prerequisites and equipment allowed it). */
