@@ -95,7 +95,7 @@ Today variety exists only *inside* a rung: alternates of the same rung rotate in
   1. exercises with nothing left to earn (mastered, no next step);
   2. then the fewest good sessions toward the next level (the same `levelProgress` as the card dots);
   3. ties go to plan order, last first.
-  Exercises the person swapped or added by hand are never picked. Example from 20 Nov: Side Plank (mastered), then Uneven Push-Up (0 of 3 at its new level). Dip (2 of 3) stays.
+  Exercises the person swapped or added by hand are never picked. Example from 20 Nov: the first tap swaps Side Plank (mastered) and Chin-Up (the last of the 0-of-3 ones in plan order). The next tap swaps Split Squat and Uneven Push-Up instead; each tap replaces the previous pair. Dip (2 of 3) stays.
 - **What replaces them: a different type, missing from today's plan,** whichever was trained least recently (never trained counts as oldest). The types:
   - back extension (superman hold, reverse hyper)
   - anti-rotation (pallof hold / press)
