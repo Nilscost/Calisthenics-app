@@ -5,6 +5,8 @@ import app.calisthenics.domain.history.SessionRecord
 import app.calisthenics.domain.model.EquipmentProfile
 import app.calisthenics.domain.model.Preferences
 import app.calisthenics.domain.model.Routine
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.kotlincrypto.hash.sha2.SHA256
@@ -25,6 +27,29 @@ data class ProgressionEventRecord(val eventId: String, val variationId: String, 
 @Serializable
 data class PlanRecord(val planId: String, val planJson: String)
 
+/** 9.4 F9: a hand-set level (LevelStore): the variation's level and the epoch day it was set (0 = undated). */
+@Serializable
+data class LevelEditRecord(val variationId: String, val tier: Int, val day: Int)
+
+/**
+ * 9.4 F9: an accepted suggestion (SuggestionStore). [kind] is "harder" ("Too easy" raise, [value] = tier), "easier" ("Go down to level N-1",
+ * [value] = tier) or "next" (accepted next exercise, [value] = the new variation id). [day] is the epoch day it was accepted.
+ */
+@Serializable
+data class AcceptedSuggestionRecord(val kind: String, val variationId: String, val value: String, val day: Int)
+
+/** Restore merge for levels: per variation the later day wins; on a tie the backup's value wins (same as personal targets). */
+fun mergeLevelEdits(local: List<LevelEditRecord>, incoming: List<LevelEditRecord>): List<LevelEditRecord> {
+    val out = LinkedHashMap<String, LevelEditRecord>()
+    local.forEach { out[it.variationId] = it }
+    incoming.forEach { e -> val l = out[e.variationId]; if (l == null || e.day >= l.day) out[e.variationId] = e }
+    return out.values.toList()
+}
+
+/** Restore merge for accepted suggestions: union, so importing the same file twice adds nothing. */
+fun mergeAcceptedSuggestions(local: List<AcceptedSuggestionRecord>, incoming: List<AcceptedSuggestionRecord>): List<AcceptedSuggestionRecord> =
+    (local + incoming).distinct()
+
 @Serializable
 data class BackupPayload(
     val preferences: Preferences,
@@ -42,6 +67,12 @@ data class BackupPayload(
     val personalTargets: Map<String, app.calisthenics.domain.model.PersonalLevelTargets> = emptyMap(),
     /** Current objective draft, encoded by the app adapter; absent in older backups. */
     val previewDraftJson: String? = null,
+    /** 9.4 F9: hand-set levels. Appended with a default and not written when empty, so older files import and their checksums stay valid. */
+    @OptIn(ExperimentalSerializationApi::class) @EncodeDefault(EncodeDefault.Mode.NEVER) val levelEdits: List<LevelEditRecord> = emptyList(),
+    /** 9.4 F9: accepted suggestions (moves up and down, next exercise). Same rules as [levelEdits]. */
+    @OptIn(ExperimentalSerializationApi::class) @EncodeDefault(EncodeDefault.Mode.NEVER) val acceptedSuggestions: List<AcceptedSuggestionRecord> = emptyList(),
+    /** 9.4 F9: moment (epoch ms) of the last questionnaire reset (LevelStore.resetAtMs); 0 = never. Same rules as [levelEdits]. */
+    @OptIn(ExperimentalSerializationApi::class) @EncodeDefault(EncodeDefault.Mode.NEVER) val levelResetAtMs: Long = 0L,
 )
 
 @Serializable

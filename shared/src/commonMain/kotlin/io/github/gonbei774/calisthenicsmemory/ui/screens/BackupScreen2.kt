@@ -47,7 +47,7 @@ fun BackupScreen2(modifier: Modifier = Modifier, onBack: () -> Unit) {
         scope.launch {
             when (val r = importBackup(text)) {
                 is ImportResult.Rejected -> { pending = null; status = getString(Res.string.backup_not_imported, r.reason) }
-                is ImportResult.Ok -> { pending = r.payload; status = getString(Res.string.backup_valid, r.payload.sessions.size) }
+                is ImportResult.Ok -> { pending = r.payload; status = getString(Res.string.backup_valid_levels, r.payload.sessions.size, r.payload.levelEdits.size, r.payload.acceptedSuggestions.size) }
             }
         }
     }

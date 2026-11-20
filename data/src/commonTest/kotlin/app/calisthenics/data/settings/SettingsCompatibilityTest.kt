@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-private class MemoryProvider : SettingsProvider {
+internal class MemoryProvider : SettingsProvider {
     private val files = mutableMapOf<String, MemoryFile>()
     override fun open(name: String): NamedSettings = files.getOrPut(name) { MemoryFile() }
 }

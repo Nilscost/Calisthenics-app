@@ -619,6 +619,7 @@
     <string name="chatbot_errors_hint">Tell your chatbot what is wrong and paste its answer again.</string>
     <string name="chatbot_save">Save</string>
     <string name="chatbot_saved">Saved: %1$s. Find it under My routines on Train.</string>
+    <string name="backup_valid_levels">File is valid: %1$d workout(s), %2$d hand-set level(s), %3$d accepted suggestion(s). Confirm to restore.</string>
     <string name="feedback_app_volume">App volume · %1$d%</string>
     <string name="feedback_app_volume_hint">Controls voice and workout sounds</string>
     <string name="feedback_between_flow">Flow</string>
