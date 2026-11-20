@@ -40,7 +40,7 @@ class BackupApply(private val history: HistoryRepository, private val settings: 
             events = history.allEvents().map { ProgressionEventRecord(it.eventId, it.variationId, it.kind, it.fromTier, it.toTier, it.reason, it.atEpochMs) },
             profiles = settings.loadProfiles(), savedRoutines = settings.loadSavedRoutines(), personalTargets = settings.loadPersonalTargets(),
             trainSettings = train, previewDraftJson = draft?.let { PreviewDraftBackupCodec.encode(it) },
-            levelEdits = settings.loadLevelEdits(), acceptedSuggestions = settings.loadAcceptedSuggestions(),
+            levelEdits = settings.loadLevelEdits(), levelResetAtMs = settings.loadLevelResetAtMs(), acceptedSuggestions = settings.loadAcceptedSuggestions(),
         )
     }
     suspend fun restore(p: BackupPayload, todayEpochDay: Long): Int {
@@ -63,6 +63,7 @@ class BackupApply(private val history: HistoryRepository, private val settings: 
         // 9.4 F9: levels merge per variation (later day wins, tie = backup); accepted suggestions are a union, so a second import adds nothing.
         if (p.levelEdits.isNotEmpty()) settings.saveLevelEdits(mergeLevelEdits(settings.loadLevelEdits(), p.levelEdits))
         if (p.acceptedSuggestions.isNotEmpty()) settings.saveAcceptedSuggestions(mergeAcceptedSuggestions(settings.loadAcceptedSuggestions(), p.acceptedSuggestions))
+        if (p.levelResetAtMs > settings.loadLevelResetAtMs()) settings.saveLevelResetAtMs(p.levelResetAtMs) // the later reset wins
         settings.clearTrainDefaultMarkers()
         p.trainSettings?.let { settings.saveTrainSettings(it) }
         p.trainSettings?.let { train ->

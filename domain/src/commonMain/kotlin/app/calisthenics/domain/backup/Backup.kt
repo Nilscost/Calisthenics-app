@@ -71,6 +71,8 @@ data class BackupPayload(
     @OptIn(ExperimentalSerializationApi::class) @EncodeDefault(EncodeDefault.Mode.NEVER) val levelEdits: List<LevelEditRecord> = emptyList(),
     /** 9.4 F9: accepted suggestions (moves up and down, next exercise). Same rules as [levelEdits]. */
     @OptIn(ExperimentalSerializationApi::class) @EncodeDefault(EncodeDefault.Mode.NEVER) val acceptedSuggestions: List<AcceptedSuggestionRecord> = emptyList(),
+    /** 9.4 F9: moment (epoch ms) of the last questionnaire reset (LevelStore.resetAtMs); 0 = never. Same rules as [levelEdits]. */
+    @OptIn(ExperimentalSerializationApi::class) @EncodeDefault(EncodeDefault.Mode.NEVER) val levelResetAtMs: Long = 0L,
 )
 
 @Serializable

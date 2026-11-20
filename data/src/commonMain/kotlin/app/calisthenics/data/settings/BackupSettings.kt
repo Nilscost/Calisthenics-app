@@ -32,6 +32,8 @@ interface BackupSettings {
     fun saveLevelEdits(value: List<LevelEditRecord>)
     fun loadAcceptedSuggestions(): List<AcceptedSuggestionRecord>
     fun saveAcceptedSuggestions(value: List<AcceptedSuggestionRecord>)
+    fun loadLevelResetAtMs(): Long
+    fun saveLevelResetAtMs(value: Long)
 }
 class StoreBackupSettings(private val provider: SettingsProvider, private val todayEpochDay: Long) : BackupSettings {
     override fun loadPreferences() = PrefsStore.load(provider)
@@ -55,4 +57,6 @@ class StoreBackupSettings(private val provider: SettingsProvider, private val to
     override fun saveLevelEdits(value: List<LevelEditRecord>) = LevelStore.saveEdits(provider, value)
     override fun loadAcceptedSuggestions() = SuggestionStore.acceptedRecords(provider)
     override fun saveAcceptedSuggestions(value: List<AcceptedSuggestionRecord>) = SuggestionStore.saveAcceptedRecords(provider, value)
+    override fun loadLevelResetAtMs() = LevelStore.resetAtMs(provider)
+    override fun saveLevelResetAtMs(value: Long) = LevelStore.markReset(provider, value)
 }

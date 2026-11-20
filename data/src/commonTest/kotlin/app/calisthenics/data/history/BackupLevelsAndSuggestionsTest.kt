@@ -21,6 +21,7 @@ class BackupLevelsAndSuggestionsTest {
         SuggestionStore.accept(p, "pushup-standard", 4, 19_995)
         SuggestionStore.acceptNext(p, "pushup-standard", "pushup-diamond", 19_996)
         SuggestionStore.acceptEasier(p, "row-inverted", 1, 19_997)
+        LevelStore.markReset(p, 1_700_000_000_000L)
     }
     private suspend fun export(from: MemoryProvider): String = exportBackup(apply(from).buildPayload(day), "t", 1L)
     private suspend fun restore(text: String, into: MemoryProvider) =
@@ -32,6 +33,7 @@ class BackupLevelsAndSuggestionsTest {
         assertEquals(LevelStore.actions(from).toSet(), LevelStore.actions(to).toSet())
         assertEquals(SuggestionStore.accepted(from), SuggestionStore.accepted(to))
         assertEquals(3, SuggestionStore.accepted(to).size)
+        assertEquals(1_700_000_000_000L, LevelStore.resetAtMs(to))
         assertEquals(2, LevelStore.actions(to).size)
     }
 
@@ -45,9 +47,19 @@ class BackupLevelsAndSuggestionsTest {
     @Test fun oldBackupWithoutTheFieldsStillImportsAndLeavesLocalStoresAlone() = runTest {
         val text = export(MemoryProvider())
         assertFalse(text.contains("levelEdits")); assertFalse(text.contains("acceptedSuggestions")) // empty fields are not written
+        assertFalse(text.contains("levelResetAtMs"))
         val to = source(); val before = LevelStore.actions(to).toSet() to SuggestionStore.accepted(to)
         restore(text, to)
         assertEquals(before, LevelStore.actions(to).toSet() to SuggestionStore.accepted(to))
+        assertEquals(1_700_000_000_000L, LevelStore.resetAtMs(to))
+    }
+
+    @Test fun theLaterResetWins() = runTest {
+        val text = export(source()) // reset at 1.7e12
+        val later = MemoryProvider().also { LevelStore.markReset(it, 1_800_000_000_000L) }
+        restore(text, later); assertEquals(1_800_000_000_000L, LevelStore.resetAtMs(later))
+        val earlier = MemoryProvider().also { LevelStore.markReset(it, 1_600_000_000_000L) }
+        restore(text, earlier); assertEquals(1_700_000_000_000L, LevelStore.resetAtMs(earlier))
     }
 
     @Test fun restoreKeepsAMoreRecentLocalLevelAndAddsTheRest() = runTest {
