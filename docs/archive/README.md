@@ -1,3 +1,7 @@
-# Archive
+# Historical project documents
 
-Superseded planning documents (first build, v1 handoff, early roadmap, older executor handoffs). Kept for history; the current contract is in `docs/` (10, 12, 14, 16-19, 21, 22). Old verify logs, early owner checks and the stick-figure clip reviews are in `docs/evidence/archive/`.
+This folder preserves the original product specification, first-build plans, early handoffs and superseded roadmaps. These describe the project at the time they were written.
+
+For current release information and a guide to the repository, start with the [documentation index](../README.md).
+
+Older verification logs, early phone-check records and the original exercise-animation reviews are kept in [archived evidence](../evidence/archive/).
