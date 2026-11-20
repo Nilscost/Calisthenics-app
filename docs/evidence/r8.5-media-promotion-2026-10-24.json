@@ -1,0 +1,42 @@
+[
+  {
+    "id": "depth-jump",
+    "batch": "work/ring-articulation-refinement-2026-10-21/render-v1",
+    "bytes": 39489,
+    "sha256": "ebb0e087724fb2241db92a3a4b53e46a71a44bf8936144dc5785a3f771749132",
+    "thumbBytes": 3200,
+    "status": "installed DRAFT; phone/form acceptance open"
+  },
+  {
+    "id": "burpee-pushup",
+    "batch": "work/burpee-refinement-2026-10-21/render-v1",
+    "bytes": 51287,
+    "sha256": "631699408989bf45b4b62d9946cb41865e3739e52a061755e09a8f9679b9ab3b",
+    "thumbBytes": 2670,
+    "status": "installed DRAFT; phone/form acceptance open"
+  },
+  {
+    "id": "squat-pistol",
+    "batch": "work/render-batches/2026-10-21-lessons-b",
+    "bytes": 24150,
+    "sha256": "b0897390a67c1d1704d8a46401b42f23237c73588733c0a96ca12253a95f927e",
+    "thumbBytes": 3998,
+    "status": "installed DRAFT; phone/form acceptance open"
+  },
+  {
+    "id": "pilates-roll-over",
+    "batch": "work/render-batches/2026-10-21-lessons-b",
+    "bytes": 16811,
+    "sha256": "8b9e8fb548ca6403a8423054af4c52b7624f7ca9dd6bfaa11cdbb9a45d7393d0",
+    "thumbBytes": 3198,
+    "status": "installed DRAFT; phone/form acceptance open"
+  },
+  {
+    "id": "hanging-windshield-wiper",
+    "batch": "work/render-batches/2026-10-21-lessons-b",
+    "bytes": 22493,
+    "sha256": "0b02a70312e0a91356250a59daa57e16905f7e73d46f037ed5b38fb354834e55",
+    "thumbBytes": 4422,
+    "status": "installed DRAFT; phone/form acceptance open"
+  }
+]

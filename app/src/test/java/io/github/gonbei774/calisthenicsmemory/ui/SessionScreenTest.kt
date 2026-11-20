@@ -34,6 +34,10 @@ import io.github.gonbei774.calisthenicsmemory.ui.session.SessionScreen
 import io.github.gonbei774.calisthenicsmemory.ui.session.LiveScreen
 import io.github.gonbei774.calisthenicsmemory.ui.session.loggerBlock
 import io.github.gonbei774.calisthenicsmemory.ui.session.repLoggerBlock
+import io.github.gonbei774.calisthenicsmemory.ui.session.sessionDisplayName
+import io.github.gonbei774.calisthenicsmemory.ui.session.sessionDisplayNames
+import app.calisthenics.domain.model.Side
+import app.calisthenics.domain.model.Target
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog
 import org.junit.After
@@ -171,6 +175,101 @@ class SessionScreenTest {
         rule.onNodeWithTag("session_done").assertDoesNotExist()
     }
 
+    // The Prepare sheet shows what comes next; the hold just finished is one compact row (same tags) so it can still be corrected.
+    private fun text(tag: String): String =
+        (rule.onNodeWithTag(tag).fetchSemanticsNode().config.first { it.key.name == "Text" }.value as List<*>).first().toString()
+
+    private fun variationNamed(name: String) = catalog.variations.first { it.name == name }
+
+    /** A side plank hold (left), the 5 s Prepare block, then the split squat's left and right sides. */
+    private val sidedPlan by lazy {
+        val hold = holdPlan.blocks[holdIdx].copy(id = "h1", variationId = variationNamed("Side Plank (per side)").id, side = Side.LEFT, roundIndex = 1)
+        val squat = variationNamed("Split Squat (per side)").id
+        plan.copy(
+            id = "plan-sided",
+            blocks = listOf(
+                hold,
+                TimelineBlock("t1", BlockType.TRANSITION, 5),
+                TimelineBlock("w1", BlockType.WORK, 30, variationId = squat, side = Side.LEFT, target = Target(TargetType.REPS, 8)),
+                TimelineBlock("w2", BlockType.WORK, 30, variationId = squat, side = Side.RIGHT, target = Target(TargetType.REPS, 8)),
+            ),
+            plannedDurationSeconds = 95, rounds = 1,
+        )
+    }
+
+    @Test fun prepareAfterAHoldShowsTheUpcomingExerciseFirstThenTheHoldAsACompactRow() {
+        val st = stateAt(sidedPlan, 1)
+        assertEquals("the hold before Prepare is the logger block", "h1", loggerBlock(st)?.id)
+        show(st)
+        assertEquals("Split Squat", text("session_name"))
+        assertEquals("8 reps · Left side", text("session_target"))
+        rule.onNodeWithTag("logger").assertIsDisplayed()
+        assertEquals("Side Plank held", text("logger_name"))
+        rule.onNodeWithTag("logger_unit").assertTextEquals("s")
+        rule.onNodeWithTag("logger_value").assertTextEquals(sidedPlan.blocks[0].target!!.shownValue().toString())
+        // the hold is not the headline any more: no big "Seconds you held" prompt
+        rule.onAllNodesWithText("Seconds you held", substring = true).assertCountEquals(0)
+        // the name comes before the target, and the target before the hold row
+        val top = { tag: String -> rule.onNodeWithTag(tag).fetchSemanticsNode().positionInRoot.y }
+        assertTrue(top("session_name") < top("session_target"))
+        assertTrue(top("session_target") < top("logger"))
+    }
+
+    @Test fun theHoldCanStillBeCorrectedFromThePrepareSheet() {
+        val shown = sidedPlan.blocks[0].target!!.shownValue()
+        show(stateAt(sidedPlan, 1))
+        rule.onNodeWithTag("logger_minus").performClick(); rule.waitForIdle()
+        val intent = lastIntent()
+        assertEquals(WorkoutSessionService.ACTION_LOG, intent.action)
+        assertEquals("h1", intent.getStringExtra(WorkoutSessionService.EXTRA_BLOCK_ID))
+        val step = if (shown >= 30) 5 else 1
+        assertEquals(shown - step, intent.getIntExtra(WorkoutSessionService.EXTRA_REPS, -2))
+        rule.onNodeWithTag("logger_value").assertTextEquals((shown - step).toString())
+        rule.onNodeWithTag("logger_plus").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("logger_value").assertTextEquals(shown.toString())
+    }
+
+    @Test fun prepareTitleSaysTheSideOnceAndNothingOnTheSheetSaysPerSide() {
+        show(stateAt(sidedPlan, 1))
+        assertEquals("Prepare: Split Squat — Left side", text("session_title"))
+        rule.onAllNodesWithText("per side", substring = true, ignoreCase = true).assertCountEquals(0)
+    }
+
+    @Test fun prepareAfterRepsHasNoHoldRowAndStillNamesTheUpcomingExercise() {
+        val i = plan.blocks.indices.first { plan.blocks[it].type == BlockType.TRANSITION && loggerBlock(stateAt(it)) == null }
+        val st = stateAt(i)
+        show(st)
+        rule.onNodeWithTag("logger").assertDoesNotExist()
+        val upcoming = plan.blocks[i].takeIf { it.variationId != null }
+            ?: plan.blocks.drop(i + 1).first { it.type == BlockType.WORK && it.variationId != null }
+        assertEquals(sessionDisplayNames(plan, SessionBus.names)[upcoming.variationId], text("session_name"))
+        rule.onNodeWithTag("session_target").assertExists()
+    }
+
+    @Test fun restAndStretchAfterAHoldKeepTheBigHoldLoggerAsTheMainElement() {
+        val st = stateAt(holdPlan, holdIdx + 1)
+        assertTrue(st.currentBlock!!.type != BlockType.TRANSITION)
+        show(st)
+        rule.onNodeWithTag("logger").assertIsDisplayed()
+        rule.onAllNodesWithText("Seconds you held", substring = true).assertCountEquals(1)
+    }
+
+    @Test fun thePerSideSuffixIsDroppedOnlyWhenASideIsShown() {
+        assertEquals("Split Squat", sessionDisplayName("Split Squat (per side)", Side.LEFT))
+        assertEquals("Split Squat", sessionDisplayName("Split Squat (per side)", Side.RIGHT))
+        assertEquals("Split Squat (per side)", sessionDisplayName("Split Squat (per side)", Side.NONE))
+        assertEquals("Split Squat (per side)", sessionDisplayName("Split Squat (per side)", Side.BOTH))
+        assertEquals("Plank", sessionDisplayName("Plank", Side.LEFT))
+        assertEquals("Per Side (per side) Lunge", sessionDisplayName("Per Side (per side) Lunge", Side.LEFT))
+        val squat = variationNamed("Split Squat (per side)").id
+        val plank = variationNamed("Side Plank (per side)").id
+        val names = mapOf(squat to "Split Squat (per side)", plank to "Side Plank (per side)")
+        val shown = sessionDisplayNames(sidedPlan, names)
+        assertEquals("Split Squat", shown[squat])
+        assertEquals("Side Plank", shown[plank])
+        assertSame("a plan without sided blocks keeps the names untouched", names, sessionDisplayNames(sidedPlan.copy(blocks = sidedPlan.blocks.map { it.copy(side = Side.NONE) }), names))
+    }
+
     @Test fun afterRepsTheBreakHasNoLoggerBecauseTheNumberWasLoggedOnTheWorkBlock() {
         show(stateAt(firstRecovery()))
         rule.onNodeWithTag("logger").assertDoesNotExist()
@@ -201,13 +300,14 @@ class SessionScreenTest {
         assertEquals(target + 1, intents[0].getIntExtra(WorkoutSessionService.EXTRA_REPS, -2))
     }
 
-    // R7-T03 (D3, B9): "Too easy" next to the stepper feeds the same tooEasy flag as the end screen
+    // Name kept from the baseline; 9.2 T3: there is no Too easy chip in the logger, so a logged set never sends tooEasy
     @Test fun tooEasyNextToTheStepperIsSentWithTheLog() {
         show(stateAt(0))
-        rule.onNodeWithTag("logger_too_easy").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("logger_too_easy").assertDoesNotExist()
+        rule.onNodeWithTag("logger_plus").performClick(); rule.waitForIdle()
         val intent = lastIntent()
         assertEquals(WorkoutSessionService.ACTION_LOG, intent.action)
-        assertTrue(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_EASY, false))
+        assertFalse(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_EASY, true))
         assertFalse(intent.getBooleanExtra(WorkoutSessionService.EXTRA_TOO_HARD, true))
     }
 
@@ -219,11 +319,12 @@ class SessionScreenTest {
         rule.onNodeWithTag("logger").assertDoesNotExist() // a hold is not logged while it runs
     }
 
-    @Test fun noRatingChipsDuringTheWorkoutExceptTooEasy() {
-        // doc 17 §2.3: Too hard / Pain stay on the end screen; R7-T03: Too easy is next to the stepper
+    // Name kept from the baseline (config/app-test-baseline.txt); 9.2 T3 removed Too easy from the logger too, so it is asserted absent.
+    @Test fun noRatingChipsDuringTheWorkout() {
+        // doc 17 §2.3: Too hard / Pain stay on the end screen; 9.2 T3: Too easy is no longer in the logger either
         show(stateAt(0))
-        for (t in listOf("logger_too_hard", "logger_pain")) rule.onNodeWithTag(t).assertDoesNotExist()
-        rule.onNodeWithTag("logger_minus").assertExists(); rule.onNodeWithTag("logger_plus").assertExists(); rule.onNodeWithTag("logger_too_easy").assertExists(); rule.onNodeWithTag("session_done").assertExists()
+        for (t in listOf("logger_too_hard", "logger_pain", "logger_too_easy")) rule.onNodeWithTag(t).assertDoesNotExist()
+        rule.onNodeWithTag("logger_minus").assertExists(); rule.onNodeWithTag("logger_plus").assertExists(); rule.onNodeWithTag("session_done").assertExists()
     }
 
     @Test fun theBottomRowIsPauseDoneSkipWithDoneInTheMiddle() {
@@ -269,7 +370,7 @@ class SessionScreenTest {
             rule.waitForIdle()
             val title = rule.onNodeWithTag("session_title").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
             assertFalse("block $i shows '$title'", title.contains("rest", ignoreCase = true))
-            if (plan.blocks[i].type == BlockType.TRANSITION) { assertTrue(title.startsWith("Get ready: ")); sawGetReady += title }
+            if (plan.blocks[i].type == BlockType.TRANSITION) { assertTrue(title.startsWith("Prepare: ")); sawGetReady += title }
             rule.onAllNodesWithText("Rest", substring = true, ignoreCase = true).assertCountEquals(0)
         }
         assertTrue("the routine has a position change", sawGetReady.isNotEmpty())
@@ -304,6 +405,8 @@ class SessionScreenTest {
         assertEquals(WorkoutSessionService.ACTION_FINISH, lastIntent().action)
     }
 
+    private val firstWorkVid get() = plan.blocks.first { it.type == BlockType.WORK }.variationId!!
+
     @Test fun theEndScreenIsAShortSummaryWithAnEditLinkInsteadOfALongForm() {
         val s = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
         assertEquals(Phase.COMPLETED, s.phase)
@@ -311,11 +414,47 @@ class SessionScreenTest {
         var exited = false
         show(s) { exited = true }
         rule.onNodeWithTag("end_title").assertTextEquals("Workout complete")
-        rule.onNodeWithTag("end_summary").assertTextContains("2 rounds", substring = true)
-        rule.onNodeWithTag("end_edit").assertIsDisplayed()
+        rule.onNodeWithTag("end_tile_rounds").assertTextContains("2", substring = true) // three tiles with History's numbers
+        rule.onNodeWithTag("end_edit_$firstWorkVid").assertIsDisplayed()
         rule.onNodeWithText("How did it go?", substring = true).assertDoesNotExist() // the long form only opens on demand
-        rule.onNodeWithTag("end_done").performClick()
+        rule.onNodeWithTag("end_done").performScrollTo().performClick()
         assertTrue(exited)
+    }
+
+    @Test fun aRestoredSessionRouteWithNoLiveSessionGoesBackInsteadOfStartingForever() {
+        var exited = false
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = { exited = true }) } }
+        rule.waitForIdle()
+        assertTrue(exited)
+    }
+
+    @Test fun startingStaysOnTheStartingScreenUntilTheFirstPublish() {
+        SessionBus.begin()
+        var exited = false
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { SessionScreen(onExit = { exited = true }) } }
+        rule.waitForIdle()
+        assertFalse(exited)
+        rule.onNodeWithText(app.getString(R.string.session_starting)).assertExists()
+    }
+
+    @Test fun beginDropsAFinishedSessionButNeverALiveOne() {
+        val live = stateAt(1)
+        SessionBus.publish(live); SessionBus.begin()
+        assertSame(live, SessionBus.state.value)
+        val done = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
+        SessionBus.publish(done); SessionBus.saved = true; SessionBus.begin()
+        assertNull(SessionBus.state.value); assertFalse(SessionBus.saved)
+        assertTrue(SessionBus.starting.value)
+    }
+
+    @Test fun theEndScreenSaysSavingThenSavedAndNeverSavedAfterAFailure() {
+        val s = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
+        SessionBus.saving()
+        show(s)
+        rule.onNodeWithTag("end_save_status").assertTextEquals(app.getString(R.string.end_saving))
+        SessionBus.saveFailed(); rule.waitForIdle()
+        rule.onNodeWithTag("end_save_status").assertTextEquals(app.getString(R.string.end_save_failed))
+        rule.onNodeWithTag("end_edit_$firstWorkVid").assertDoesNotExist() // no corrections for a session that is not in history
     }
 
     // R8.1-T06 (F7): a Flow workout still logs actual reps, so its end screen keeps the editor; only a flow program has no per-item results
@@ -325,25 +464,37 @@ class SessionScreenTest {
         assertEquals(Phase.COMPLETED, s.phase)
         SessionBus.saved = true
         show(s)
-        rule.onNodeWithTag("end_edit").assertIsDisplayed()
+        rule.onNodeWithTag("end_edit_$firstWorkVid").assertIsDisplayed()
     }
 
     @Test fun aFlowProgramHasNoPerItemEditorOnTheEndScreen() {
+        val program = plan.copy(flow = true, fixedProgramId = "army-pd", blocks = plan.blocks.map { it.copy(prescriptionTier = null) })
+        val s = reduce(newSession("S", program), SessionEvent.Start(0)).state.let { reduce(it, SessionEvent.Tick(10_000_000)).state }
+        SessionBus.saved = true
+        show(s)
+        rule.onNodeWithTag("end_edit_$firstWorkVid").assertDoesNotExist()
+    }
+
+    @Test fun anAppLevelFlowProgramKeepsTheActualResultsEditor() {
         val program = plan.copy(flow = true, fixedProgramId = "army-pd")
         val s = reduce(newSession("S", program), SessionEvent.Start(0)).state.let { reduce(it, SessionEvent.Tick(10_000_000)).state }
         SessionBus.saved = true
         show(s)
-        rule.onNodeWithTag("end_edit").assertDoesNotExist()
+        rule.onNodeWithTag("end_edit_$firstWorkVid").assertIsDisplayed()
     }
 
     @Test fun theEndScreenEditorHasOneNumberPerRoundAndTooEasyNextToTooHard() {
         val s = reduce(stateAt(plan.blocks.size - 1), SessionEvent.Tick(10_000_000)).state
         SessionBus.saved = true
         show(s)
-        rule.onNodeWithTag("end_edit").performClick(); rule.waitForIdle()
-        val vid = plan.blocks.first { it.type == BlockType.WORK }.variationId!!
+        val vid = firstWorkVid
+        // the history comparison may still arrive (it depends on Room state left by earlier tests) and replace the edit-only card: let it settle first
+        runCatching { rule.waitUntil(3000) { rule.onAllNodes(hasTestTag("end_card_$vid") or hasTestTag("end_plain_$vid")).fetchSemanticsNodes().isNotEmpty() } }
+        rule.onNodeWithTag("end_edit_$vid").performScrollTo().performClick(); rule.waitForIdle()
         val rounds = plan.blocks.filter { it.type == BlockType.WORK && it.variationId == vid }.size
-        rule.onNodeWithTag("end_fix_$vid").assertExists()
+        // exactly one place for the exercise: its progress card or its row under "also done" once the history comparison has loaded
+        // (whether it loads here depends on Room state left by earlier tests in this class), otherwise the edit-only card
+        rule.onAllNodes(hasTestTag("end_fix_$vid") or hasTestTag("end_card_$vid") or hasTestTag("end_plain_$vid")).assertCountEquals(1)
         for (i in 1..rounds) rule.onNodeWithTag("end_${vid}_round${i}_value").performScrollTo().assertExists()
         rule.onNodeWithTag("end_${vid}_too_hard").performScrollTo().assertExists()
         rule.onNodeWithTag("end_${vid}_too_easy").performScrollTo().assertExists()

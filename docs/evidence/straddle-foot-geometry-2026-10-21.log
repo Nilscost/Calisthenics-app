@@ -1,0 +1,13 @@
+00:03.296  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/straddle-foot-refinement/phases/0.png'
+00:05.698  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/straddle-foot-refinement/phases/32.png'
+00:07.386  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/straddle-foot-refinement/phases/48.png'
+00:09.117  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/straddle-foot-refinement/phases/72.png'
+00:10.835  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/straddle-foot-refinement/phases/96.png'
+00:12.501  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/straddle-foot-refinement/phases/120.png'
+00:14.181  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/straddle-foot-refinement/phases/144.png'
+00:16.438  render           | Saved: '/Users/nils/Documents/hermes/Apps/calisthenics/work/straddle-foot-refinement/phases/191.png'
+PASS: 2912256 actual body vertices across 192 frames fit the app camera
+PASS: 151296 actual foot vertices, minimum floor clearance 9.423 mm, source/rendered toe alignment >= 0.999717, consecutive heel normal dot >= 0.997921
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:49:19)
+
+Blender quit

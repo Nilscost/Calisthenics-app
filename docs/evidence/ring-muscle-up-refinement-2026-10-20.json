@@ -1,0 +1,463 @@
+{
+  "scope": "Source asset refinement; no APK or device verification, no expert form approval",
+  "media": {
+    "frames_decoded": 144,
+    "duration_seconds": 6,
+    "bytes": 29539,
+    "sha256": "184b4e3b4c49cfdcc30b4214ffe6ed2202812ddf65b57ef660b78d648ee42e2b",
+    "selected_visual_frames": [
+      0,
+      12,
+      20,
+      28,
+      35,
+      42,
+      49,
+      55,
+      59,
+      65,
+      79,
+      93,
+      100,
+      116,
+      132,
+      143
+    ],
+    "max_step_frame": 59,
+    "max_pixel_step": 1.2691994598765433,
+    "loop_pixel_step": 0.44171489197530867,
+    "stream": {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "Main",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "mime_codec_string": "avc1.4d4015",
+      "width": 480,
+      "height": 360,
+      "coded_width": 480,
+      "coded_height": 360,
+      "has_b_frames": 2,
+      "pix_fmt": "yuv420p",
+      "level": 21,
+      "chroma_location": "left",
+      "field_order": "progressive",
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "24/1",
+      "avg_frame_rate": "24/1",
+      "time_base": "1/12288",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 73728,
+      "duration": "6.000000",
+      "bit_rate": "36020",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "144",
+      "extradata_size": 40,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler",
+        "encoder": "Lavc61.19.100 libx264"
+      }
+    }
+  },
+  "motion_audit": {
+    "summary": {
+      "pass": 1,
+      "fail": 0,
+      "unscoped": 0
+    },
+    "seconds": 0.196,
+    "staged": [],
+    "reports": [
+      {
+        "exercise": "ring-muscle-up",
+        "style": "Strict neutral-ring support, close smooth crossover, straight hanging legs and controlled descent",
+        "status": "pass",
+        "metrics": {
+          "wrist_l_drift_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.003,
+            "ok": true
+          },
+          "wrist_r_drift_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.003,
+            "ok": true
+          },
+          "visible_rings_count": {
+            "value": 2,
+            "min": 2,
+            "max": 2,
+            "ok": true
+          },
+          "ring_grip_geometry": {
+            "value": 1,
+            "min": 1,
+            "max": null,
+            "ok": true
+          },
+          "ring_grip_closeup": {
+            "value": 1,
+            "min": 1,
+            "max": null,
+            "ok": true
+          },
+          "ring_radius_m": {
+            "value": 0.105,
+            "min": 0.09,
+            "max": null,
+            "ok": true
+          },
+          "arm_ring_volume_clearance_m": {
+            "value": 0.00224,
+            "min": 0.0005,
+            "max": null,
+            "ok": true
+          },
+          "chest_fore_aft_m": {
+            "value": 0.22159,
+            "min": null,
+            "max": 0.28,
+            "ok": true
+          },
+          "pelvis_fore_aft_m": {
+            "value": 0.10254,
+            "min": null,
+            "max": 0.14,
+            "ok": true
+          },
+          "chest_forward_speed_m_s": {
+            "value": 0.63144,
+            "min": null,
+            "max": 0.7,
+            "ok": true
+          },
+          "chest_speed_m_s": {
+            "value": 0.90705,
+            "min": null,
+            "max": 1.0,
+            "ok": true
+          },
+          "rise_m": {
+            "value": 1.1043,
+            "min": 1.0,
+            "max": null,
+            "ok": true
+          },
+          "leg_tuck_change_l_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.025,
+            "ok": true
+          },
+          "hang_elbow_l_deg": {
+            "value": 167.10504,
+            "min": 160,
+            "max": null,
+            "ok": true
+          },
+          "support_elbow_l_deg": {
+            "value": 172.87645,
+            "min": 160,
+            "max": null,
+            "ok": true
+          },
+          "leg_tuck_change_r_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.025,
+            "ok": true
+          },
+          "hang_elbow_r_deg": {
+            "value": 167.10504,
+            "min": 160,
+            "max": null,
+            "ok": true
+          },
+          "support_elbow_r_deg": {
+            "value": 172.87645,
+            "min": 160,
+            "max": null,
+            "ok": true
+          },
+          "max_joint_speed_m_s": {
+            "value": 0.93823,
+            "min": null,
+            "max": 2.5,
+            "ok": true
+          },
+          "loop_gap_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.012,
+            "ok": true
+          }
+        },
+        "failures": [],
+        "data_sha256": "8b4bdeef500128be317678cfb961a95f1bfb7b5f5229c6febf3430217114bafa",
+        "contract_sha256": "cd097e9c842fa0c7c4df401276f29326d4c16259fff17c1f09040e04d4cc29e2",
+        "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+      }
+    ],
+    "scope": "Motion screening only; unscoped exercises have no movement-identity contract"
+  },
+  "catalog_motion_summary": {
+    "pass": 3,
+    "fail": 0,
+    "unscoped": 530
+  },
+  "catalog_screen_summary": {
+    "schema": 1,
+    "scope": "Technical screening only. No clip is approved for exercise form by this report.",
+    "seconds": 12.01,
+    "total": 533,
+    "technical_status_counts": {
+      "review": 110,
+      "no_flags": 423
+    },
+    "flag_counts": {
+      "high_joint_speed": 98,
+      "large_loop_step": 33
+    },
+    "motion_contract_counts": {
+      "unscoped": 530,
+      "pass": 3
+    },
+    "not_checked": [
+      "reference agreement for remaining movements",
+      "full mesh collisions",
+      "intended contact anchors per exercise",
+      "expert form approval",
+      "phone playback"
+    ]
+  },
+  "tests_passed": 85,
+  "all_288_frames_fresh": true,
+  "unchanged_other_installed_mp4s": 532,
+  "changed_installed_mp4s": [
+    "ring-muscle-up"
+  ],
+  "geometry_log": "ring-muscle-up-geometry-2026-10-20.log",
+  "gallery_qa": {
+    "passed": true,
+    "clips": [
+      {
+        "id": "ring-muscle-up",
+        "dimensions": [
+          480,
+          360,
+          6
+        ]
+      },
+      {
+        "id": "pullup-pullover",
+        "dimensions": [
+          480,
+          360,
+          4.5
+        ]
+      },
+      {
+        "id": "handstand-press-straddle",
+        "dimensions": [
+          480,
+          360,
+          4
+        ]
+      },
+      {
+        "id": "depth-jump",
+        "dimensions": [
+          480,
+          360,
+          8
+        ]
+      },
+      {
+        "id": "burpee-pushup",
+        "dimensions": [
+          480,
+          360,
+          6
+        ]
+      },
+      {
+        "id": "squat-pistol",
+        "dimensions": [
+          480,
+          360,
+          4
+        ]
+      },
+      {
+        "id": "pilates-roll-over",
+        "dimensions": [
+          480,
+          360,
+          4
+        ]
+      },
+      {
+        "id": "hanging-windshield-wiper",
+        "dimensions": [
+          480,
+          360,
+          5
+        ]
+      }
+    ],
+    "checks": [
+      "video metadata decode",
+      "actual play/pause time advancement",
+      "frame stepping",
+      "speed selection",
+      "feedback retention",
+      "320/736 responsive layout",
+      "no runtime errors"
+    ]
+  },
+  "bounded_luna_review": {
+    "movement_id": "ring-muscle-up",
+    "review_scope": "Source inspection and selected frames from the old installed encode contact sheet only; no full playback or form approval.",
+    "acceptance_questions": [
+      "Are two clearly visible rings present throughout, with ring bottoms staying at the wrists and straps remaining plausible?",
+      "Does the start show a readable false grip, with the rings bearing across the heel of the palm/wrist rather than being held like a conventional handle?",
+      "Does the pull bring the chest close to the rings/sternum, then move the shoulders and chest modestly forward through the turnover?",
+      "Do the elbows travel back and around the rings during turnover, then come behind the torso for a stable straight-arm support?",
+      "Does the strict path avoid a knee tuck, leg kick or swing used to create the transition?",
+      "Does the press finish with controlled support, then reverse through a coherent, controlled descent to the original hang?",
+      "Does the loop boundary return to the initial body, hand and ring-contact configuration without a visible jump?"
+    ],
+    "source_issues": [
+      {
+        "claim": "The old path has very limited chest crossover and forward travel.",
+        "evidence": "In _mu_pose, pelvis x moves only from -0.04 to 0.13 before returning to -0.04 while pelvis height rises from 1.18 to 2.304; the sequence principally elevates the body.",
+        "certainty": "high"
+      },
+      {
+        "claim": "Elbow turnover is not explicitly represented by changing elbow targets.",
+        "evidence": "All four stages use the same elbow_l and elbow_r targets; hand and palm orientation change only at stage 3.",
+        "certainty": "high"
+      },
+      {
+        "claim": "The old movement includes a noticeable tuck and does not encode a visibly distinct false-grip setup changing through transition.",
+        "evidence": "_legs(tuck=.24) and _legs(tuck=.30) are used in stages 1 and 2; grip values remain .95 for every stage and hand/palm targets are held until support stage 3.",
+        "certainty": "high"
+      },
+      {
+        "claim": "The rods are wrist-anchored but provide little visual ring shape.",
+        "evidence": "_ring_props emits two thin rods from fixed anchors to wrist targets with radius .015; it does not encode torus-shaped rings.",
+        "certainty": "high"
+      }
+    ],
+    "encoded_frame_observations": [
+      "In the old contact sheet, the two thin straps are visible but ring bodies are not readily distinguishable from the hands; this supports the owner's report that rings are visually missing.",
+      "The body rises with little visible forward chest crossover. At sampled 1.33 s the figure is tucked with bent arms; at 2.00 s it appears reclined with hands near the lower chest while the straps remain vertical.",
+      "At 2.67 s the body reads nearly upright and the arms appear low beside the torso, then by 3.38 s it resembles upright support. The samples do not clearly show elbows moving around the rings.",
+      "The knees are visibly bent in several transition samples. The last sampled frame at 4.46 s resembles the straight hang at 0.00 s, but selected stills cannot establish whether interpolation creates a smooth controlled return or loop."
+    ],
+    "reference_checks": [
+      {
+        "source": "https://gmb.io/muscle-up/",
+        "relevant_guidance": "The written strict rings breakdown calls for a false grip, a strong smooth pull, a body transition from below to above the rings, elbows kept in during progressions, and a controlled push to top support."
+      },
+      {
+        "source": "https://www.crossfit.com/essentials/crossfit-ring-muscle-up-rx-plan",
+        "relevant_guidance": "The written breakdown describes false grip and a deep pull to the sternum, elbows moving back and around with wrist flexion-to-extension through transition, then a dip; it emphasizes strict control before adding momentum and keeping rings still."
+      }
+    ],
+    "uncertainties": [
+      "The 3x3 old contact sheet samples nine encoded frames and cannot show continuous playback, transient contact, or whether apparent gaps are interpolation artifacts.",
+      "These visual and source observations are review prompts, not expert form judgment or exercise certification.",
+      "The web references are written guidance only; no reference video was compared."
+    ],
+    "changed_files": [
+      "work/ring-muscle-up-review/luna-review.json"
+    ],
+    "checks_run": [
+      "Read rings.py _mu_pose, _muscle_up and _ring_props.",
+      "Inspected work/catalog-screening/frames/ring-muscle-up.jpg.",
+      "Read the two supplied written guidance pages.",
+      "Validated JSON syntax.",
+      "Inspected the revised phase-review and first-frame preview images.",
+      "Validated the appended report JSON syntax.",
+      "Inspected the final encoded-review contact sheet of 16 selected MP4 frames.",
+      "Validated updated report JSON syntax."
+    ],
+    "unresolved_issues": [
+      "Temporal continuity and loop quality remain unreviewed because this evidence consists of still renders rather than encoded-video playback.",
+      "False-grip wrist mechanics and precise support contact remain visually ambiguous at the available scale.",
+      "No full playback review; turnover contact and timing between selected frames remain unverified."
+    ],
+    "revised_preview_review": {
+      "inspected_images": [
+        "work/ring-muscle-up-review/phase-review.png",
+        "work/ring-muscle-up-review/preview.png"
+      ],
+      "observations": [
+        "The revised preview makes both ring loops easy to distinguish from the straps at the displayed app-size composition. The inset clarifies that the hand wraps the ring at its lower arc; it improves grip readability, though the small stylized hand does not make heel-of-palm pressure or wrist flexion fully unambiguous.",
+        "Across the eight actual Blender phase renders, the trunk remains comparatively upright and the chest crossover appears modest. The sequence reads more like pull, close turnover, support, then a return through the pull to hang than the old large vertical rise with little torso travel.",
+        "The legs appear long and together in all sampled phases; I do not see an obvious tuck or kick. Feet stay near one another without visible swing in these stills.",
+        "Rings remain visible at the wrists through the sampled transition and support. In the upright support render, however, the arms/hands and rings overlap the torso silhouette, so the exact wrist and hand contact remains hard to judge from the overview.",
+        "The last phase render returns to a straight hang that visually resembles the first phase. These endpoints look compatible for a loop, but the stills cannot show whether the interpolated descent is controlled or whether the loop join is seamless."
+      ],
+      "evidence_type": "Selected actual Blender phase renders and a final first-frame app-size composition with grip inset; phase renders are not encoded-video playback.",
+      "owner_measurements_context": "Root reports chest fore-aft range 0.222 m versus 0.416 m old, maximum forward speed 0.631 m/s versus 1.564, hand mesh/ring vertex clearance at least 7.5 mm, conservative finger-capsule clearance at least 0.5 mm, and 19.3 px minimum main-view ring width. I did not independently reproduce these measurements; they support modest travel/readable contact but do not establish general form correctness.",
+      "acceptance_read": "The revised selected evidence addresses the previous invisible-ring concern, shows more modest body crossover, and shows no obvious tuck or kick in sampled phases. The inset makes the grip contact easier to parse.",
+      "material_concerns": [
+        "False grip still cannot be confirmed decisively from the small stylized hand and single inset angle.",
+        "Support-phase ring/hand contact is visually crowded against the torso in the overview.",
+        "Selected images cannot establish smoothness, contact continuity between samples, descent control, or loop playback."
+      ],
+      "uncertainty": "Moderate for visible shapes and sampled poses; high for temporal continuity and detailed grip mechanics.",
+      "form_approval": false
+    },
+    "final_encoded_sample_review": {
+      "inspected_image": "work/ring-muscle-up-review/encoded-review.png",
+      "observations": [
+        "All 16 sampled MP4 frames show distinct brown ring loops on visible straps; unlike the old encode, the apparatus is immediately readable.",
+        "The sampled pull brings the hands and rings toward the chest and the torso shifts through a modest forward turnover. The figure stays comparatively long through the legs, with no obvious tuck or kick in these samples.",
+        "The sampled return moves back through bent-arm/pull positions to a hang. The last frame at 5.96 s resembles the initial 0.00 s hang, though this does not prove a seamless loop.",
+        "The grip inset consistently shows the ring against the hand at its rear/lower arc. No obvious full-arm intersection is visible in the selected phases. Around 1.75 to 2.29 s, elbows and ring contacts crowd the upper torso and their exact spatial clearance is difficult to judge in the overview; mild apparent arm asymmetry may be projection or pose design."
+      ],
+      "evidence_type": "16 selected frames from the actual final 144-frame/6-second MP4, shown in a contact sheet; not full playback.",
+      "owner_reported_geometry": "Root reports the final correction uses neutral rings gripped on the rear/lower arc; automated bounds are 2.240 mm minimum for upper/forearm including joint envelopes, 1.497 mm for fingers, and 11.338 mm all-frame body-vertex gap. All 85 tests pass. I did not independently reproduce these measurements.",
+      "assessment": "Selected encoded frames support that the rings are visible and that crossover and return poses look more coherent than the old sample. The no-tuck/no-kick appearance is consistent across these samples.",
+      "material_concerns": [
+        "The turnover samples visually crowd the arms and rings near the upper torso; the contact is not fully legible in the overview.",
+        "Still samples cannot establish continuous contact, motion smoothness, descent control or a seamless loop."
+      ],
+      "uncertainty": "Moderate for the sampled silhouettes and visible ring contact; high for temporal behavior between samples.",
+      "form_approval": false
+    }
+  },
+  "video_generation_credits_used": 0
+}

@@ -1,0 +1,598 @@
+{
+ "schema": 1,
+ "purpose": "Two-exercise motion-quality pilot; all numerical comparisons remain screening only",
+ "references": [
+  {
+   "video_id": "GBcUcATb8RQ",
+   "url": "https://www.youtube.com/watch?v=GBcUcATb8RQ",
+   "channel": "FitnessFAQs",
+   "title": "Pull-Ups OR Chin-Ups? (CHOOSE WISELY)",
+   "exercises": [
+    "pullup-full"
+   ],
+   "view": "rear oblique",
+   "analysis": {
+    "pullup-full": "work/motion-quality-pilot/GBcUcATb8RQ-pullup-reference.json"
+   },
+   "review": {
+    "pullup-full": {
+     "interval": [
+      71.2,
+      73.3
+     ],
+     "view_comparable": true,
+     "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+     "note": "Manual approximate view-category match, not calibrated; individual style and perspective differences remain.",
+     "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+    }
+   },
+   "local_video": "work/form-reference-pilot/GBcUcATb8RQ.mp4",
+   "comparison_camera": {
+    "pullup-full": {
+     "cam_az": -65,
+     "cam_el": 5
+    }
+   },
+   "candidate_projection": {
+    "pullup-full": "work/motion-quality-pilot/GBcUcATb8RQ-pullup-projection.json"
+   }
+  },
+  {
+   "video_id": "eGo4IYlbE5g",
+   "url": "https://www.youtube.com/watch?v=eGo4IYlbE5g",
+   "channel": "Calisthenicmovement",
+   "title": "The Perfect Pull Up - Do it right!",
+   "exercises": [
+    "pullup-full"
+   ],
+   "view": "side oblique",
+   "analysis": {
+    "pullup-full": "work/motion-quality-pilot/eGo4IYlbE5g-pullup-reference.json"
+   },
+   "review": {
+    "pullup-full": {
+     "interval": [
+      230,
+      234.5
+     ],
+     "view_comparable": true,
+     "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+     "note": "Manual approximate view-category match, not calibrated; individual style and perspective differences remain.",
+     "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+    }
+   },
+   "local_video": "work/form-reference-pilot/eGo4IYlbE5g.mp4",
+   "comparison_camera": {
+    "pullup-full": {
+     "cam_az": 0,
+     "cam_el": 5
+    }
+   },
+   "candidate_projection": {
+    "pullup-full": "work/motion-quality-pilot/eGo4IYlbE5g-pullup-projection.json"
+   }
+  },
+  {
+   "video_id": "Hdc7Mw6BIEE",
+   "url": "https://www.youtube.com/watch?v=Hdc7Mw6BIEE",
+   "channel": "Jeff Nippard",
+   "title": "The Best Way To Do Pull Ups For A Wide Back",
+   "exercises": [
+    "pullup-full"
+   ],
+   "view": "rear",
+   "analysis": {
+    "pullup-full": "work/motion-quality-pilot/Hdc7Mw6BIEE-pullup-reference.json"
+   },
+   "review": {
+    "pullup-full": {
+     "interval": [
+      307.6,
+      311.8
+     ],
+     "view_comparable": true,
+     "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+     "note": "Manual approximate view-category match, not calibrated; individual style and perspective differences remain.",
+     "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+    }
+   },
+   "local_video": "work/form-reference-pilot/Hdc7Mw6BIEE.mp4",
+   "comparison_camera": {
+    "pullup-full": {
+     "cam_az": -90,
+     "cam_el": 5
+    }
+   },
+   "candidate_projection": {
+    "pullup-full": "work/motion-quality-pilot/Hdc7Mw6BIEE-pullup-projection.json"
+   }
+  },
+  {
+   "video_id": "G8BvsXteJ2s",
+   "url": "https://www.youtube.com/watch?v=G8BvsXteJ2s",
+   "channel": "FitnessFAQs",
+   "title": "Chest and Tricep Home Workout",
+   "exercises": [
+    "pushup-archer"
+   ],
+   "local_video": "work/motion-quality-pilot/G8BvsXteJ2s.mp4",
+   "analysis": {
+    "pushup-archer": "work/motion-quality-pilot/G8BvsXteJ2s-archer.json"
+   },
+   "comparison_camera": {
+    "pushup-archer": {
+     "cam_az": 90,
+     "cam_el": 25
+    }
+   },
+   "candidate_projection": {
+    "pushup-archer": "work/motion-quality-pilot/G8BvsXteJ2s-archer-projection.json"
+   },
+   "comparison_joints": [
+    "elbow_l",
+    "elbow_r",
+    "shoulder_l",
+    "shoulder_r"
+   ],
+   "review": {
+    "pushup-archer": {
+     "interval": [
+      9.7,
+      12.8
+     ],
+     "view_comparable": true,
+     "grip": "Hands-out direction checked in decoded source montage; owner phone readability pending",
+     "note": "Whole-rep source selected from decoded contact sheets. Camera category manually approximated, not calibrated. Source cycle may show one or both sides."
+    }
+   },
+   "candidate_interval": {
+    "pushup-archer": [
+     0,
+     3
+    ]
+   }
+  },
+  {
+   "video_id": "ZLWko5aP1FM",
+   "url": "https://www.youtube.com/watch?v=ZLWko5aP1FM",
+   "channel": "Minus The Gym",
+   "title": "Archer Push Ups Tutorial | Progressions From Basic Push Ups",
+   "exercises": [
+    "pushup-archer"
+   ],
+   "local_video": "work/motion-quality-pilot/ZLWko5aP1FM.mp4",
+   "analysis": {
+    "pushup-archer": "work/motion-quality-pilot/ZLWko5aP1FM-archer.json"
+   },
+   "comparison_camera": {
+    "pushup-archer": {
+     "cam_az": -30,
+     "cam_el": 30
+    }
+   },
+   "candidate_projection": {
+    "pushup-archer": "work/motion-quality-pilot/ZLWko5aP1FM-archer-projection.json"
+   },
+   "comparison_joints": [
+    "elbow_l",
+    "elbow_r",
+    "shoulder_l",
+    "shoulder_r"
+   ],
+   "review": {
+    "pushup-archer": {
+     "interval": [
+      303,
+      306
+     ],
+     "view_comparable": true,
+     "grip": "Hands-out direction checked in decoded source montage; owner phone readability pending",
+     "note": "Whole-rep source selected from decoded contact sheets. Camera category manually approximated, not calibrated. Source cycle may show one or both sides."
+    }
+   },
+   "candidate_interval": {
+    "pushup-archer": [
+     0,
+     3
+    ]
+   }
+  },
+  {
+   "video_id": "x-WosgklhR0",
+   "url": "https://www.youtube.com/watch?v=x-WosgklhR0",
+   "channel": "Calisthenicmovement",
+   "title": "The 5 Most Important Push Up Exercises",
+   "exercises": [
+    "pushup-archer"
+   ],
+   "local_video": "work/motion-quality-pilot/x-WosgklhR0.mp4",
+   "analysis": {
+    "pushup-archer": "work/motion-quality-pilot/x-WosgklhR0-archer.json"
+   },
+   "comparison_camera": {
+    "pushup-archer": {
+     "cam_az": 90,
+     "cam_el": 5
+    }
+   },
+   "candidate_projection": {
+    "pushup-archer": "work/motion-quality-pilot/x-WosgklhR0-archer-projection.json"
+   },
+   "comparison_joints": [
+    "elbow_l",
+    "elbow_r",
+    "shoulder_l",
+    "shoulder_r"
+   ],
+   "review": {
+    "pushup-archer": {
+     "interval": [
+      105.8,
+      110.4
+     ],
+     "view_comparable": true,
+     "grip": "Hands-out direction checked in decoded source montage; owner phone readability pending",
+     "note": "Whole-rep source selected from decoded contact sheets. Camera category manually approximated, not calibrated. Source cycle may show one or both sides."
+    }
+   },
+   "candidate_interval": {
+    "pushup-archer": [
+     0,
+     6
+    ]
+   }
+  }
+ ],
+ "batch_references": {
+  "plank-long-lever": [
+   {
+    "video_id": "DGJccwYZWFA",
+    "url": "https://www.youtube.com/watch?v=DGJccwYZWFA",
+    "creator": "Danny Nichols Fitness",
+    "title": "How To Do A RKC Plank",
+    "interval": [
+     14.5,
+     17.0
+    ],
+    "variant": "RKC long-lever forearm plank, fists together",
+    "view": "side oblique, camera low, front-left",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "a4d4f6a507cb08c549654c7caa7e387557351f796075c36aadea682a2907f777"
+   },
+   {
+    "video_id": "so-sI9hdEGc",
+    "url": "https://www.youtube.com/watch?v=so-sI9hdEGc",
+    "creator": "Exercise Encyclopedia",
+    "title": "Long-Lever Forearm Plank",
+    "interval": [
+     4.5,
+     7.0
+    ],
+    "variant": "long-lever forearm plank",
+    "view": "pure side",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "b0f43106d046e00bf94beb97c2a9ba59ba86eedd8c92d12b7ae1d328ab26b961"
+   },
+   {
+    "video_id": "4hQmAsF9iL4",
+    "url": "https://www.youtube.com/watch?v=4hQmAsF9iL4",
+    "creator": "Dr. Carl Baird",
+    "title": "RKC Plank | Core Strengthening Exercise",
+    "interval": [
+     64.0,
+     66.5
+    ],
+    "variant": "RKC plank, hands clasped near face",
+    "view": "pure side",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "dc9abbbdc56b3b5208eb4fda9ca60476ed54dc50e6e09a30d12442c4df950ac8"
+   }
+  ],
+  "bridge-single-leg": [
+   {
+    "video_id": "AVAXhy6pl7o",
+    "url": "https://www.youtube.com/watch?v=AVAXhy6pl7o",
+    "creator": "MedStar Health",
+    "title": "Strengthening Exercise for ACL: Single Leg Bridge",
+    "interval": [
+     11.9,
+     22.4
+    ],
+    "variant": "single-leg glute bridge, free leg straight and in line with the thigh",
+    "view": "pure side",
+    "assistance": "none",
+    "notes": "one repetition including the top hold",
+    "sha256": "4b1d051ecb71a1967b44467e3ffba90c77946f223b837f3fd01b259efa58413c"
+   },
+   {
+    "video_id": "VUl8R0kn6v4",
+    "url": "https://www.youtube.com/watch?v=VUl8R0kn6v4",
+    "creator": "Runna",
+    "title": "Single Leg Glute Bridge Tutorial - Proper Form and Technique",
+    "interval": [
+     5.0,
+     15.8
+    ],
+    "variant": "single-leg glute bridge, free leg straight",
+    "view": "front-right oblique, low",
+    "assistance": "none",
+    "notes": "coach talks beside the demonstrator",
+    "sha256": "3071c09abd43b21e9a0682745a5104cb8155772ba10c40e20e5a51245db81fc0"
+   }
+  ],
+  "walking-lunge": [
+   {
+    "video_id": "tQNktxPkSeE",
+    "url": "https://www.youtube.com/watch?v=tQNktxPkSeE",
+    "creator": "Onnit Academy",
+    "title": "Walking Lunge",
+    "interval": [
+     0.5,
+     4.2
+    ],
+    "variant": "bodyweight walking lunge, hands at chest",
+    "view": "pure side",
+    "assistance": "none",
+    "notes": "two steps (left, right)",
+    "sha256": "6c87c38dc7aaf88548af4cd1e549e3d284c448f4cb3903c62ac62065e0eb4fa2"
+   },
+   {
+    "video_id": "vYfp2t4XgqQ",
+    "url": "https://www.youtube.com/watch?v=vYfp2t4XgqQ",
+    "creator": "Runna",
+    "title": "Walking Lunge Tutorial - Proper Form and Technique",
+    "interval": [
+     8.5,
+     12.3
+    ],
+    "variant": "bodyweight walking lunge",
+    "view": "side, close crop of legs",
+    "assistance": "none",
+    "notes": "camera crops to the legs",
+    "sha256": "9649ee5af31a969d70f9a1640ebed613398c21c0e5010e9be012ddc005c3843b"
+   }
+  ],
+  "russian-twist": [
+   {
+    "video_id": "DJQGX2J4IVw",
+    "url": "https://www.youtube.com/watch?v=DJQGX2J4IVw",
+    "creator": "Leap Fitness",
+    "title": "How to Do: RUSSIAN TWIST",
+    "interval": [
+     2.9,
+     7.4
+    ],
+    "variant": "bodyweight Russian twist, feet slightly lifted, hands together",
+    "view": "side-front oblique",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "b510a422f49339b4779b0dfd38684c9edd264828d611fba57ea4dd07102bb0b9"
+   },
+   {
+    "video_id": "wkD8rjkodUI",
+    "url": "https://www.youtube.com/watch?v=wkD8rjkodUI",
+    "creator": "Howcast",
+    "title": "How to Do a Russian Twist | Ab Workout",
+    "interval": [
+     22.8,
+     30.4
+    ],
+    "variant": "bodyweight Russian twist, feet lifted",
+    "view": "front oblique",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "99fcc746164e569b87cf2715e2e91ab60ca77e8e9abf4d731388e58a7a303ee6"
+   },
+   {
+    "video_id": "IJDOoVyVjhc",
+    "url": "https://www.youtube.com/watch?v=IJDOoVyVjhc",
+    "creator": "Runna",
+    "title": "Russian Twist Tutorial - Proper Form and Technique",
+    "interval": [
+     18.0,
+     24.0
+    ],
+    "variant": "Russian twist holding a kettlebell, feet lifted",
+    "view": "side oblique",
+    "assistance": "none",
+    "notes": "holds a kettlebell, which the app clip does not",
+    "sha256": "905722e1dadaa474efb935f89a1771a5f52ed4534f8edd345d76f26374782bc5"
+   }
+  ],
+  "side-plank": [
+   {
+    "video_id": "iNbH7_edNI8",
+    "url": "https://www.youtube.com/watch?v=iNbH7_edNI8",
+    "creator": "Runna",
+    "title": "Side Plank Tutorial - Proper Form and Technique",
+    "interval": [
+     10.5,
+     13.0
+    ],
+    "variant": "side plank on forearm, top hand on hip, legs stacked",
+    "view": "front oblique, low",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "56f68d5e0d1903cc0c5e95eeb86939260ca35e26f11c4d01c5674b8b0c249f20"
+   },
+   {
+    "video_id": "44ND4bOB-T0",
+    "url": "https://www.youtube.com/watch?v=44ND4bOB-T0",
+    "creator": "National Academy of Sports Medicine (NASM)",
+    "title": "How to do a Side Plank | Proper Form & Technique | NASM",
+    "interval": [
+     4.0,
+     6.5
+    ],
+    "variant": "side plank on straight arm, top hand on hip, legs stacked",
+    "view": "front, low",
+    "assistance": "none",
+    "notes": "a loop band sits around the shins",
+    "sha256": "ebd11492358b9661360d6f4f795c83aa1251f230c7ec5b6ec9e7b8745df5074a"
+   }
+  ],
+  "dip-parallel": [
+   {
+    "video_id": "U7HeutDqS_w",
+    "url": "https://www.youtube.com/watch?v=U7HeutDqS_w",
+    "creator": "Live Lean TV Daily Exercises",
+    "title": "How To Do Parallel Bar Dips",
+    "interval": [
+     4.5,
+     7.5
+    ],
+    "variant": "parallel bar dip, knees bent, forward lean",
+    "view": "side, camera low",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "e6b1dc10c00d1c8dfdd1059b0aaf7149fbcc61c62abc4c830a61de50fefa98fc"
+   },
+   {
+    "video_id": "85u_8mz5lBA",
+    "url": "https://www.youtube.com/watch?v=85u_8mz5lBA",
+    "creator": "One Minute Tutorial",
+    "title": "Parallel Bars Dips: Perfect Form & Common Mistakes",
+    "interval": [
+     26.0,
+     30.0
+    ],
+    "variant": "parallel bar dip, knees bent",
+    "view": "side oblique",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "3b4874fe1e4d671ac03aa2c1c2cf031726965d093c1181b2b2f8620f74a8cea7"
+   }
+  ],
+  "inverted-row": [
+   {
+    "video_id": "9fItzuh9Iok",
+    "url": "https://www.youtube.com/watch?v=9fItzuh9Iok",
+    "creator": "The Active Life",
+    "title": "Inverted Rows",
+    "interval": [
+     22.0,
+     24.6
+    ],
+    "variant": "barbell inverted row, legs straight, heels down",
+    "view": "front-left oblique",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "0aca0edf0ba3286d2c07eda8211f7d9158a1476a43bf95c331568d06e574b3fb"
+   },
+   {
+    "video_id": "KOaCM1HMwU0",
+    "url": "https://www.youtube.com/watch?v=KOaCM1HMwU0",
+    "creator": "Renaissance Periodization",
+    "title": "Inverted Row",
+    "interval": [
+     1.0,
+     3.6
+    ],
+    "variant": "inverted row on a fixed bar, body straight",
+    "view": "oblique from behind the head",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "a1984d266defa5c5043f949eadf4936773fa16a01d4f54d4d11ff6e1858cb8ba"
+   }
+  ],
+  "glute-bridge": [
+   {
+    "video_id": "L9KZfxT654Y",
+    "url": "https://www.youtube.com/watch?v=L9KZfxT654Y",
+    "creator": "Runna",
+    "title": "Glute Bridge Tutorial - Proper Form and Technique",
+    "interval": [
+     15.2,
+     21.6
+    ],
+    "variant": "two-leg glute bridge",
+    "view": "front-right oblique, low",
+    "assistance": "none",
+    "notes": "coach talks beside the demonstrator",
+    "sha256": "8ef5909fb8792e49fdba1982067e5800c74f6bd807209487c34da8abb444cc75"
+   },
+   {
+    "video_id": "wPM8icPu6H8",
+    "url": "https://www.youtube.com/watch?v=wPM8icPu6H8",
+    "creator": "Well+Good",
+    "title": "How To Do A Glute Bridge | The Right Way | Well+Good",
+    "interval": [
+     58.8,
+     69.5
+    ],
+    "variant": "two-leg glute bridge",
+    "view": "pure side, wide shot",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "2c1f4d4bdce14321f34c031226197fbb71815718efc08ee4e1c4ee295df107bc"
+   }
+  ],
+  "split-squat": [
+   {
+    "video_id": "hXpGSa5HYqY",
+    "url": "https://www.youtube.com/watch?v=hXpGSa5HYqY",
+    "creator": "Atomic Athlete",
+    "title": "How to do a SPLIT SQUAT",
+    "interval": [
+     2.0,
+     5.3
+    ],
+    "variant": "static split squat, dumbbells at the sides",
+    "view": "pure side",
+    "assistance": "none",
+    "notes": "holds dumbbells; the app clip is bodyweight",
+    "sha256": "d8239b46f1bf1c7346d013b2436d94c7c8fb2c41c2e287cb7034310c02a6bf12"
+   },
+   {
+    "video_id": "la0pLPq-3A8",
+    "url": "https://www.youtube.com/watch?v=la0pLPq-3A8",
+    "creator": "Get Exercise Confident",
+    "title": "How to do the perfect SPLIT SQUAT: technique and common mistakes",
+    "interval": [
+     136.0,
+     144.0
+    ],
+    "variant": "bodyweight split squat",
+    "view": "pure side, close crop",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "de71c8071ab53f0fd5659f07e640d14adbed8dd687338d7c27f92b00b8dd9fa8"
+   }
+  ],
+  "plank-shoulder-tap": [
+   {
+    "video_id": "0PrTUpElJ44",
+    "url": "https://www.youtube.com/watch?v=0PrTUpElJ44",
+    "creator": "Joanna Soh",
+    "title": "How to do Plank With Shoulder Tap",
+    "interval": [
+     3.4,
+     6.2
+    ],
+    "variant": "high plank shoulder tap",
+    "view": "front-left oblique",
+    "assistance": "none",
+    "notes": "",
+    "sha256": "61073aa183d183a0c86bdd8642cfb78cc7f2429c74c8eb7bbeced2f1f358bd61"
+   },
+   {
+    "video_id": "8rgurWd-PB8",
+    "url": "https://www.youtube.com/watch?v=8rgurWd-PB8",
+    "creator": "The Active Life",
+    "title": "Plank Shoulder Taps",
+    "interval": [
+     4.0,
+     9.0
+    ],
+    "variant": "high plank shoulder tap, feet shoulder-width",
+    "view": "side oblique",
+    "assistance": "coach touches the hips lightly",
+    "notes": "",
+    "sha256": "2684d08539e75abdac37637129536b1d80a6412f3db98fb7c35e3b25c7a5f3b1"
+   }
+  ]
+ }
+}

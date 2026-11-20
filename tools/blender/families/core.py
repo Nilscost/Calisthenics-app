@@ -47,12 +47,6 @@ def _side_forearm_base(pz, top_ankle, bottom_ankle=(-0.867, 0.0, 0.08)):
                      ankle_r=list(top_ankle), foot_r=[0, 1, 0], knee_r=[0, 0, 1])
 
 
-def side_plank():
-    a = _side_forearm_base(0.390, (-0.867, 0.0, 0.26))
-    b = _side_forearm_base(0.380, (-0.867, 0.0, 0.26))
-    return dict(seconds=3.0, keys=rep(a, b), cam_az=30, cam_el=10, props=[])
-
-
 def side_plank_leg_raise():
     a = _side_forearm_base(0.390, (-0.867, 0.0, 0.26))
     b = _side_forearm_base(0.390, (-0.895, 0.0, 0.566))
@@ -93,12 +87,6 @@ def _high_plank(bump=0.0, tap=False):
                      grip_l=0.0, grip_r=0.0, knee_l=[0, 0, -1], knee_r=[0, 0, -1],
                      ankle_l=[ax, 0.14, 0.08], ankle_r=[ax, -0.14, 0.08],
                      foot_l=[0.95, 0, -0.3], foot_r=[0.95, 0, -0.3])
-
-
-def plank_shoulder_tap():
-    a = _high_plank(0.0, tap=False)
-    b = _high_plank(0.0, tap=True)
-    return dict(seconds=3.0, keys=rep(a, b, down_end=0.5), cam_az=30, cam_el=10, props=[])
 
 
 # --- lying face up -----------------------------------------------------------------------------
@@ -322,7 +310,6 @@ def pallof_press():
 
 EXERCISES = {
     "plank": plank,
-    "side-plank": side_plank,
     "dead-bug": dead_bug,
     "hollow-tuck": hollow_tuck,
     "hollow-one-leg": hollow_one_leg,
@@ -343,5 +330,4 @@ EXERCISES = {
     "kettlebell-suitcase-carry": suitcase_carry,
     "pallof-hold": pallof_hold,
     "pallof-press": pallof_press,
-    "plank-shoulder-tap": plank_shoulder_tap,
 }

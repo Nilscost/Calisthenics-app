@@ -107,8 +107,8 @@ class PoseRepairTests(unittest.TestCase):
         data = self.build("pilates-saw")
         frames = data["frames"]
         # These are the held-turn peaks in the two alternating half-cycles.
-        for index, reaching, opposite, rear in ((48, "r", "l", "l"),
-                                                 (144, "l", "r", "r")):
+        for index, reaching, opposite, rear in ((len(frames)//4, "r", "l", "l"),
+                                                 (3*len(frames)//4, "l", "r", "r")):
             with self.subTest(peak_frame=index):
                 frame = frames[index]
                 toe = frame["toe_" + opposite]

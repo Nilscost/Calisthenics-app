@@ -1,0 +1,80 @@
+ M README.md
+ M STATUS.md
+ M app/build.gradle.kts
+ M app/src/debug/assets/seed/backup.json
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/session/WorkoutSessionService.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/components/StarRow.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/progress/ProgressScreen.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/BackupApply.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/PrefsStore.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/ProgressLoader.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/SettingsScreen.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/session/SessionScreen.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/theme/Color.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/theme/Theme.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/train/PreviewDraft.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/train/PreviewScreen.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/train/ProgramPreview.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/train/TrainData.kt
+ M app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/train/TrainScreen.kt
+ M app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/DesignSystemTest.kt
+ M app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/HistorySettingsTest.kt
+ M app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PolishTest.kt
+ M app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PreviewScreenTest.kt
+ M app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/ProgramPreviewTest.kt
+ M app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/ProgressScreenTest.kt
+ M app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/SessionScreenTest.kt
+ M app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/TrainScreenTest.kt
+ M data/src/main/java/io/github/gonbei774/calisthenicsmemory/data/ThemePreferences.kt
+ M docs/evidence/progress-notes.md
+ M domain/src/main/kotlin/app/calisthenics/domain/backup/Backup.kt
+ M domain/src/main/kotlin/app/calisthenics/domain/feedback/Feedback.kt
+ M domain/src/main/kotlin/app/calisthenics/domain/model/Model.kt
+ M domain/src/main/kotlin/app/calisthenics/domain/planner/PlanEdits.kt
+ M domain/src/main/kotlin/app/calisthenics/domain/planner/Planner.kt
+ M domain/src/main/kotlin/app/calisthenics/domain/planner/ProgramPlan.kt
+ M domain/src/main/kotlin/app/calisthenics/domain/planner/SideChange.kt
+ M domain/src/main/kotlin/app/calisthenics/domain/planner/TrainPlan.kt
+ M domain/src/main/kotlin/app/calisthenics/domain/progression/ProgressionEngine.kt
+ M domain/src/main/kotlin/app/calisthenics/domain/routine/Routine.kt
+ M domain/src/main/kotlin/app/calisthenics/domain/routine/SavedRoutine.kt
+ M domain/src/main/kotlin/app/calisthenics/domain/session/CueText.kt
+ M domain/src/test/kotlin/app/calisthenics/domain/FixedProgramsTest.kt
+ M domain/src/test/kotlin/app/calisthenics/domain/FlowOptionTest.kt
+ M domain/src/test/kotlin/app/calisthenics/domain/HoldTimingTest.kt
+ M domain/src/test/kotlin/app/calisthenics/domain/PlannerTest.kt
+ M domain/src/test/kotlin/app/calisthenics/domain/ProgramPreviewPlanTest.kt
+ M domain/src/test/kotlin/app/calisthenics/domain/StretchSessionTest.kt
+ M domain/src/test/kotlin/app/calisthenics/domain/StretchUseTest.kt
+ M maestro/flows/b_train_preview.yaml
+ M maestro/flows/d_tabs.yaml
+ M maestro/flows/m_r8_programs_flow.yaml
+?? app/src/main/java/io/github/gonbei774/calisthenicsmemory/session/AppAudioGain.kt
+?? app/src/main/java/io/github/gonbei774/calisthenicsmemory/ui/screens/PersonalTargetStore.kt
+?? app/src/main/res/values/feedback_audio.xml
+?? app/src/main/res/values/feedback_planning.xml
+?? app/src/main/res/values/feedback_targets.xml
+?? app/src/test/java/io/github/gonbei774/calisthenicsmemory/session/AppAudioGainTest.kt
+?? app/src/test/java/io/github/gonbei774/calisthenicsmemory/ui/PersonalTargetStoreTest.kt
+?? docs/34-user-feedback-executor-handoff.md
+?? docs/35-phone-feedback-sol-luna-plan.md
+?? docs/evidence/owner-check-r8.3.md
+?? docs/evidence/r8.3-app-compile-2026-10-19.log
+?? docs/evidence/r8.3-build-2026-10-20.json
+?? docs/evidence/r8.3-changed-files-2026-10-20.txt
+?? docs/evidence/r8.3-foundation-domain-2026-10-19.log
+?? docs/evidence/r8.3-fresh-verify-2026-10-19.log
+?? docs/evidence/r8.3-fresh-verify-2026-10-20.log
+?? docs/evidence/r8.3-implementation-2026-10-20.md
+?? docs/evidence/r8.3-integrated-tests-2026-10-19.log
+?? docs/evidence/r8.3-migration-check-2026-10-20.log
+?? docs/evidence/r8.3-preflight-2026-10-20.log
+?? docs/evidence/r8.3-preview-boundary-2026-10-20.log
+?? docs/evidence/r8.3-source-manifest-2026-10-20.json
+?? docs/evidence/r8.3-targets-domain-2026-10-19.log
+?? docs/evidence/r8.3-verify-2026-10-19.log
+?? docs/evidence/r8.4-baseline-stat-2026-10-20.txt
+?? docs/evidence/r8.4-baseline-status-2026-10-20.txt
+?? docs/evidence/ui/R8.3-review.md
+?? domain/src/main/kotlin/app/calisthenics/domain/model/PersonalLevelTargets.kt
+?? domain/src/test/kotlin/app/calisthenics/domain/PersonalTargetsTest.kt

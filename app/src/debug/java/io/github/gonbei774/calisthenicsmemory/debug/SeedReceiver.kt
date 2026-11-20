@@ -2,7 +2,7 @@
 // History and Progress with data. Trigger:
 //   adb shell am broadcast -n app.calisthenics.personal/io.github.gonbei774.calisthenicsmemory.debug.SeedReceiver \
 //       -a app.calisthenics.personal.debug.SEED -f 0x20
-// Times in the fixture are rebased so its newest session is about two hours old.
+// Times in the fixture are rebased so its newest session is about two hours old (clamped into the current week).
 // Optional extra `--ei keep N` (R7.2-T08): seed only the N newest sessions, to show the History chart with one, two or seven dots.
 package io.github.gonbei774.calisthenicsmemory.debug
 
@@ -30,7 +30,13 @@ class SeedReceiver : BroadcastReceiver() {
                 val text = app.assets.open("seed/backup.json").use { it.readBytes().decodeToString() }
                 val payload = (importBackup(text) as? ImportResult.Ok)?.payload ?: error("seed backup rejected")
                 val newest = payload.sessions.maxOf { it.startedAtEpochMs }
-                val shift = System.currentTimeMillis() - 2 * 3_600_000L - newest
+                // Newest session = now minus 2 h, but never before this week's Monday 00:00 (device zone) and never in the
+                // future: shortly after Monday midnight the History week view would otherwise be empty (flake in k1/k2/k7).
+                val now = System.currentTimeMillis()
+                val weekStart = java.time.LocalDate.now().with(java.time.temporal.TemporalAdjusters.previousOrSame(java.time.DayOfWeek.MONDAY))
+                    .atStartOfDay(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli()
+                val target = minOf(now - 60_000L, maxOf(now - 2 * 3_600_000L, weekStart))
+                val shift = target - newest
                 val keep = intent.getIntExtra("keep", 0)
                 val kept = if (keep > 0) payload.sessions.sortedByDescending { it.startedAtEpochMs }.take(keep).map { it.sessionId }.toSet() else payload.sessions.map { it.sessionId }.toSet()
                 val shifted = payload.copy(
@@ -41,7 +47,7 @@ class SeedReceiver : BroadcastReceiver() {
                 val added = runBlocking { BackupApply.restore(app, shifted) }
                 val levels = Json.decodeFromString(MapSerializer(String.serializer(), Int.serializer()),
                     app.assets.open("seed/levels.json").use { it.readBytes().decodeToString() })
-                LevelStore.save(app, levels)
+                LevelStore.save(app, levels, undated = true)
                 OnboardingStore.setDone(app)
                 Log.i("SeedReceiver", "seeded: $added sessions, ${levels.size} levels")
                 code = 1

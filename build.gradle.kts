@@ -1,11 +1,29 @@
+buildscript {
+    dependencies {
+        // AGP's built-in Kotlin defaults to an older version; keep all compilers aligned.
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.4.21")
+        classpath("com.google.devtools.ksp:symbol-processing-gradle-plugin:2.3.12")
+    }
+}
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.kotlin.android) apply false
+    id("com.android.kotlin.multiplatform.library") version "9.1.1" apply false
     alias(libs.plugins.kotlin.jvm) apply false
+    id("org.jetbrains.kotlin.multiplatform") version "2.4.21" apply false
     alias(libs.plugins.kotlin.compose) apply false
-    id("com.google.devtools.ksp") version "2.0.21-1.0.28" apply false
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21" apply false
+    alias(libs.plugins.compose.multiplatform) apply false
+    id("com.google.devtools.ksp") version "2.3.12" apply false
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.4.21" apply false
+    id("androidx.room") version "2.8.5" apply false
     id("com.mikepenz.aboutlibraries.plugin") version "11.2.3" apply false
+}
+
+// Use the provisioned Node runtime; this preserves settings-level repository enforcement.
+allprojects {
+    plugins.withType<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsPlugin> {
+        extensions.getByType<org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsEnvSpec>().download.set(false)
+    }
 }

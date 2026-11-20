@@ -49,23 +49,6 @@ def _overhead(x, y, z):
 
 # --- lying face up: bridges ---------------------------------------------------
 
-def glute_bridge():
-    # Lying with feet flat and knees bent; top: hips lifted, shoulders on the floor, shoulder-hip-knee in a line.
-    arms = _sides(-0.02, 0.22)
-    legs = _feet(0.60)
-    lying = base_pose(pelvis=[0.10, 0, 0.11], p1=-90, p2=-90, **arms, **legs)
-    top = base_pose(pelvis=[0.05, 0, 0.29], p1=-105, p2=-105, **arms, **legs)
-    return dict(seconds=3.0, keys=rep(lying, top), cam_az=35, cam_el=15, props=[])
-
-
-def bridge_single_leg():
-    # Right (working) foot on the floor; left leg straight up. Lying, then the right hip lifts level.
-    arms = _sides(-0.02, 0.22)
-    lying = base_pose(pelvis=[0.10, 0, 0.11], p1=-90, p2=-90, **arms, **_right_foot(0.60), **_left_leg_up())
-    top = base_pose(pelvis=[0.05, 0, 0.29], p1=-105, p2=-105, **arms, **_right_foot(0.60), **_left_leg_up())
-    return dict(seconds=3.0, keys=rep(lying, top), cam_az=35, cam_el=15, props=[])
-
-
 def bridge_table():
     # Reverse tabletop: hands on the floor behind the shoulders (fingers toward the feet), arms straight at the top,
     # belly up, trunk level, knees about 90. Lowers to a lower table.
@@ -379,11 +362,9 @@ def slide_negative_single():
 
 
 EXERCISES = {
-    "glute-bridge": glute_bridge,
     "superman-hold": superman_hold,
     "kettlebell-deadlift": kettlebell_deadlift,
     "bridge-table": bridge_table,
-    "bridge-single-leg": bridge_single_leg,
     "bridge-incline": bridge_incline,
     "bridge-head": bridge_head,
     "bridge-wall-walkdown": bridge_wall_walkdown,

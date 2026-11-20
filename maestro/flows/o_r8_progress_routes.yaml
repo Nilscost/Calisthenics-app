@@ -31,11 +31,22 @@ appId: app.calisthenics.personal
 - tapOn: { id: route_chip_pushup }
 - repeat:
     while: { notVisible: { id: tree_node_pushup-feet-elevated } }
-    times: 8
+    times: 12
     commands:
       - swipe:
-          from: { id: tree_rows, point: "50%, 80%" }
+          from: { id: tree_rows, point: "50%, 75%" }
           direction: UP
+          duration: 600
+      - waitForAnimationToEnd: { timeout: 1000 }
+- repeat:
+    while: { notVisible: { id: tree_node_pushup-feet-elevated } }
+    times: 12
+    commands:
+      - swipe:
+          from: { id: tree_rows, point: "50%, 25%" }
+          direction: DOWN
+          duration: 600
+      - waitForAnimationToEnd: { timeout: 1000 }
 - assertVisible: { id: tree_node_pushup-feet-elevated }
 - takeScreenshot: 02-push-up-main-spine-${VARIANT}
 # R8.1-T10 (F13): the same-rung alternate is a node beside its rung, no toggle

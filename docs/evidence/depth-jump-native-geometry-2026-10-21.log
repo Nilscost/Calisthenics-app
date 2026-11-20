@@ -1,0 +1,10 @@
+depth-jump 0
+depth-jump 48
+depth-jump 96
+depth-jump 144
+depth-jump 192
+{"id": "depth-jump", "data_sha256": "735cab3d6e30b9af086927dfedab954253c0e5c2505dfd0a4831da9414b0a4f9", "minimum_floor_frame": 136, "minimum_floor_part": "foot_l", "frames": 198, "vertices": 3003264, "outside_vertices": 0, "first_outside": null, "minimum_body_z_m": 0.004010282456874847, "minimum_foot_z_m": 0.004010282456874847, "status": "pass"}
+PASS: native batch geometry; 3003264 vertices
+Blender 5.2.2 LTS (hash d13f752e3b9c built 2026-09-15 01:49:19)
+
+Blender quit

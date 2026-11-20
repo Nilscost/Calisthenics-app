@@ -66,6 +66,17 @@ appId: app.calisthenics.personal
 - tapOn: { id: detail_back }
 - tapOn: { id: progress_search }
 - eraseText: 100
+# The exercise detail shows that exercise's past sessions below its levels (the seed has Standard Push-Up sessions)
+- inputText: "Standard Push"
+- hideKeyboard
+- extendedWaitUntil: { visible: { id: search_result_pushup-standard }, timeout: 10000 }
+- tapOn: { id: search_result_pushup-standard }
+- extendedWaitUntil: { visible: { id: exercise_detail }, timeout: 10000 }
+- scrollUntilVisible: { element: { id: "detail_history_.*" }, direction: DOWN, timeout: 8000 }
+- takeScreenshot: 07c2-exercise-history-${VARIANT}
+- tapOn: { id: detail_back }
+- tapOn: { id: progress_search }
+- eraseText: 100
 - hideKeyboard
 # V25: the core tab with the tuck L-sit; R7-T11: the weighted exercises sit in the movement tabs (no "With weights" tab)
 - repeat:

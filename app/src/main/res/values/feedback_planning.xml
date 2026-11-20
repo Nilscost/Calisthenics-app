@@ -1,0 +1,6 @@
+<resources>
+    <string name="feedback_between_flow">Flow</string>
+    <string name="feedback_preparation_time">Preparation time</string>
+    <string name="feedback_prepare_upcoming">Prepare / Upcoming</string>
+    <string name="program_stretch_fallback">Some program breaks use passive rest because no compatible stretch is available or its repeat limit was reached.</string>
+</resources>

@@ -1,0 +1,5 @@
+Picked up JAVA_TOOL_OPTIONS: -Dorg.sqlite.tmpdir=/root/sqlitetmp -Djava.io.tmpdir=/root/sqlitetmp -Dorg.sqlite.lib.path=/root/toolchain/sqlite -Dorg.sqlite.lib.name=libsqlitejdbc.so
+Signer #1 certificate DN: CN=Calisthenics Debug, O=Personal, C=CH
+Signer #1 certificate SHA-256 digest: 8638d15f7e5327d0a4f3197dad470e70b1425dfcb00a6bfc4bbcdc96a63bd940
+Signer #1 certificate SHA-1 digest: 3a6676e2884d01c60902138ed239eb4970ee3013
+Signer #1 certificate MD5 digest: 812180513108a8c8020274797e3fc53f

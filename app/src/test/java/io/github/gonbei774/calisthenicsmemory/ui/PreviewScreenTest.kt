@@ -1,6 +1,17 @@
 package io.github.gonbei774.calisthenicsmemory.ui
 
 import android.app.Application
+import app.calisthenics.domain.equipment.SeedProfiles as SeedProfilesForTest
+import app.calisthenics.domain.planner.AddedSlot
+import app.calisthenics.domain.planner.slotFor
+import app.calisthenics.domain.planner.PlanEdits
+import app.calisthenics.domain.model.Routine
+import app.calisthenics.domain.model.RoutineSlot
+import app.calisthenics.domain.model.BetweenSetMode
+import app.calisthenics.domain.model.Kind
+import app.calisthenics.domain.model.ProgressionRule
+import app.calisthenics.domain.model.RuleKind
+import app.calisthenics.domain.routine.savedFrom
 import android.content.Context
 import androidx.compose.runtime.*
 import androidx.compose.ui.semantics.getOrNull
@@ -9,10 +20,14 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
 import app.calisthenics.domain.model.WorkoutPlan
 import app.calisthenics.domain.model.BlockType
+import app.calisthenics.domain.planner.PlanResult
+import app.calisthenics.domain.planner.buildTrainPlan
 import io.github.gonbei774.calisthenicsmemory.session.WorkoutSessionService
 import io.github.gonbei774.calisthenicsmemory.ui.theme.CalisthenicsMemoryTheme
 import io.github.gonbei774.calisthenicsmemory.ui.train.PreviewScreen
+import io.github.gonbei774.calisthenicsmemory.ui.train.TrainScreen
 import io.github.gonbei774.calisthenicsmemory.ui.train.TrainData
+import io.github.gonbei774.calisthenicsmemory.ui.train.TrainSettingsStore
 import io.github.gonbei774.calisthenicsmemory.ui.train.rememberTrainData
 import kotlinx.serialization.json.Json
 import org.junit.Assert.*
@@ -31,14 +46,218 @@ class PreviewScreenTest {
     private val app: Application get() = ApplicationProvider.getApplicationContext()
 
     @Before fun clean() {
-        for (n in listOf("profiles", "mode", "planner_prefs", "train", "goal", "levels", "routine"))
+        for (n in listOf("profiles", "mode", "planner_prefs", "train", "goal", "levels", "routine", "personal_targets", "preview_draft", "saved_routines"))
             app.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit()
+        io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.save(app, SeedProfilesForTest.all) // full gear: these tests are not about the first-run defaults
+    }
+
+    /** R8.4 regression: an older Preview mode must not beat a newer explicit Train choice. */
+    @Test fun latestTrainModeWinsOverAnExistingPreviewDraftAndProducesStretchBlocks() {
+        val settings = TrainSettingsStore.load(app).copy(betweenSetMode = BetweenSetMode.REST, flow = false, stretchOn = false)
+        TrainSettingsStore.save(app, settings)
+        val key = io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(settings)
+        io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.put(app,
+            io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraft(key, PlanEdits(), betweenSetMode = BetweenSetMode.REST))
+        var preview by mutableStateOf(false)
+        rule.setContent {
+            CalisthenicsMemoryTheme(darkTheme = false) {
+                if (preview) PreviewScreen(onBack = { preview = false }, onStarted = {})
+                else TrainScreen(onPreview = { preview = true }, onStarted = {}, onEditProfile = {})
+            }
+        }
+        rule.waitForIdle()
+        rule.onNodeWithTag("between_stretch").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("preview_button").performClick(); rule.waitForIdle()
+
+        rule.onNodeWithTag("between_stretch").assertIsSelected()
+        assertEquals(BetweenSetMode.STRETCH,
+            io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(app, key)?.betweenSetMode)
+        rule.onNodeWithTag("timeline_toggle").performScrollTo().performClick(); rule.waitForIdle()
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(app)
+        val compatibleStretchNames = catalog.variations.filter { it.kind == Kind.STRETCH }
+            .map { it.name }
+        assertTrue("Preview should show a real selected stretch block", compatibleStretchNames.any { name ->
+            rule.onAllNodesWithText(name, substring = true).fetchSemanticsNodes().isNotEmpty()
+        })
+        rule.onNodeWithTag("preparation_seconds_plus").performScrollTo().performClick(); rule.waitForIdle()
+        preview = false
+        rule.waitForIdle()
+        rule.onNodeWithTag("between_stretch").assertIsSelected()
+        rule.onNodeWithTag("train_start_button").performClick(); rule.waitForIdle()
+        val intent = shadowOf(app).nextStartedService
+        assertNotNull("direct Train start should launch the current Preview configuration", intent)
+        val plan = Json { ignoreUnknownKeys = true }.decodeFromString(WorkoutPlan.serializer(), intent!!.getStringExtra(WorkoutSessionService.EXTRA_PLAN)!!)
+        assertEquals(BetweenSetMode.STRETCH, plan.betweenSetMode)
+        assertEquals(6, plan.preparationSeconds)
+        assertTrue("direct Train start should use real stretch blocks", plan.blocks.any { it.type == BlockType.STRETCH })
+    }
+
+    @Test fun legacyOrdinaryRuleIsScopedToAppLevelsWhileSavedRoutineRuleSurvives() {
+        val legacyRange = ProgressionRule(RuleKind.REP_RANGE, sets = 3, from = 5, to = 8, sessions = 1)
+        val ordinary = io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore.load(app)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore.save(app, ordinary.copy(rule = legacyRange))
+        val settings = TrainSettingsStore.load(app)
+        assertEquals(RuleKind.APP_LEVELS, io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore.load(app).rule.kind)
+        assertEquals(ordinary.slots, io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore.load(app).slots)
+
+        val saved = savedFrom(
+            "legacy-range", "Legacy range", 1, ordinary, PlanEdits(), settings, legacyRange, 1L,
+        )
+        io.github.gonbei774.calisthenicsmemory.ui.screens.SavedRoutineStore.upsert(app, saved)
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(app)
+        val restored = io.github.gonbei774.calisthenicsmemory.ui.train.resolveTrain(
+            app, io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore.load(app), settings.copy(routineId = saved.id), catalog,
+        )
+        assertEquals(RuleKind.REP_RANGE, restored.routine.rule.kind)
+        assertEquals(RuleKind.REP_RANGE, restored.edits.rule?.kind)
+    }
+
+    @Test fun newerGlobalModeSuppressesOldExtraStretchUntilExplicitlyReadded() {
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(app)
+        val profile = io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.selected(app)
+        val progress = io.github.gonbei774.calisthenicsmemory.ui.screens.LevelStore.snapshot(catalog, io.github.gonbei774.calisthenicsmemory.ui.screens.LevelStore.load(app))
+        val settings = TrainSettingsStore.load(app).copy(betweenSetMode = BetweenSetMode.REST, flow = false, stretchOn = false)
+        val extraId = catalog.variations.first { it.kind == Kind.STRETCH && !it.demonstrationHold }.id
+        val legacyExtra = PlanEdits(extraStretches = mapOf("push" to listOf(extraId)), extraStretchModeRevision = 0L)
+        fun plan(edits: PlanEdits) = buildTrainPlan(
+            catalog, io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore.load(app), progress, profile, settings, edits = edits,
+        ) as PlanResult.Ready
+
+        assertFalse(plan(io.github.gonbei774.calisthenicsmemory.ui.train.effectivePlanEdits(legacyExtra, 1L)).plan.blocks.any { it.variationId == extraId })
+        val readded = legacyExtra.copy(extraStretchModeRevision = 1L)
+        assertTrue(plan(io.github.gonbei774.calisthenicsmemory.ui.train.effectivePlanEdits(readded, 1L)).plan.blocks.any { it.variationId == extraId })
+    }
+
+    @Test fun savingAfterANewerModeChoiceUsesTheEffectiveTimeline() {
+        val settings = TrainSettingsStore.load(app).copy(betweenSetMode = BetweenSetMode.REST, flow = false, stretchOn = false)
+        TrainSettingsStore.save(app, settings)
+        val key = io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(settings)
+        val extraId = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(app).variations.first { it.kind == Kind.STRETCH && !it.demonstrationHold }.id
+        io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.put(app,
+            io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraft(key, edits = PlanEdits(extraStretches = mapOf("push" to listOf(extraId))), rest = mapOf("push" to 75), betweenSetMode = BetweenSetMode.REST, ruleDefaultVersion = 1))
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("between_flow").performScrollTo().performClick(); rule.waitForIdle()
+        val currentSettings = TrainSettingsStore.load(app)
+        val currentDraft = io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(app, key)!!
+        // Invoke the exact production Save resolver; dialog rendering is a separate device check.
+        val saved = io.github.gonbei774.calisthenicsmemory.ui.train.savedCurrentWorkout(
+            "flow-copy", "Flow copy", 1, io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore.load(app), currentDraft.edits, currentSettings,
+            currentDraft.modeRevision, currentDraft.rest, 1L)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.SavedRoutineStore.upsert(app, saved)
+        assertEquals(saved, io.github.gonbei774.calisthenicsmemory.ui.screens.SavedRoutineStore.get(app, saved.id))
+        assertTrue(saved.edits.extraStretches.isEmpty())
+        assertTrue("saved routine should keep the dormant numeric rest override", saved.restDurations.containsKey("push"))
+    }
+
+    @Test fun ordinaryLegacyDraftRuleGetsOneScopedResetAndKeepsOtherEdits() {
+        val settings = TrainSettingsStore.load(app)
+        val key = io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(settings)
+        val legacy = ProgressionRule(RuleKind.REP_RANGE, sets = 3, from = 5, to = 8, sessions = 1)
+        val edits = PlanEdits(rule = legacy, swaps = mapOf("push" to "pushup-standard"), removed = setOf("core"))
+        io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.put(app,
+            io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraft(key, edits = edits))
+        app.getSharedPreferences("train", Context.MODE_PRIVATE).edit().putInt("ordinary_draft_rule_default_version", 0).commit()
+
+        TrainSettingsStore.load(app)
+        val migrated = io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(app, key)!!
+        assertEquals(RuleKind.APP_LEVELS, migrated.edits.rule?.kind)
+        assertEquals(edits.swaps, migrated.edits.swaps)
+        assertEquals(edits.removed, migrated.edits.removed)
+        assertEquals(1, migrated.ruleDefaultVersion)
+
+        val explicit = migrated.copy(edits = migrated.edits.copy(rule = legacy))
+        io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.put(app, explicit)
+        app.getSharedPreferences("train", Context.MODE_PRIVATE).edit().putInt("ordinary_draft_rule_default_version", 0).commit()
+        TrainSettingsStore.load(app)
+        assertEquals(legacy, io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(app, key)?.edits?.rule)
+    }
+
+    private fun oneExerciseAtLevelFive(id: String, slotId: String, values: List<Int>) {
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(app)
+        val v = catalog.variation(id)!!
+        val slot = RoutineSlot(slotId, v.patterns.first(), v.areas.first(), id)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.RoutineStore.save(app,
+            Routine("single", 1, "Single", listOf(slot)))
+        io.github.gonbei774.calisthenicsmemory.ui.screens.LevelStore.save(app, mapOf(id to 5))
+        io.github.gonbei774.calisthenicsmemory.ui.screens.PersonalTargetStore.save(app, id, values)
+        TrainSettingsStore.save(app, TrainSettingsStore.load(app).copy(exercisesPerRound = 1))
+    }
+
+    @Test fun repStepperUsesPersonalTopAndReturnsToBoundaryBeforeLevelFour() {
+        oneExerciseAtLevelFive("pushup-standard", "push", listOf(5, 7, 9, 10, 12))
+        show(); rule.waitForIdle()
+        fun target(n: Int) { rule.onNodeWithTag("exercise_target_push").performScrollTo().assertTextContains("$n reps", substring = true) }
+        fun tap(direction: String) { rule.onNodeWithTag("level_${direction}_push").performScrollTo().performClick(); rule.waitForIdle() }
+        target(12); tap("plus"); target(13); tap("plus"); target(14)
+        tap("minus"); target(13); tap("minus"); target(12); tap("minus"); target(10)
+    }
+
+    @Test fun raisedPersonalTopRemapsAnOlderSavedExtensionAndStepsFromTheNewBoundary() {
+        oneExerciseAtLevelFive("pushup-standard", "push", listOf(10, 20, 30, 40, 50))
+        val settings = TrainSettingsStore.load(app)
+        io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.put(app,
+            io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraft(
+                io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(settings),
+                PlanEdits(tierOverrides = mapOf("push" to 5), levelFiveTargets = mapOf("push" to 40))))
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_target_push").performScrollTo().assertTextContains("50 reps", substring = true)
+        rule.onNodeWithTag("level_plus_push").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_target_push").assertTextContains("51 reps", substring = true)
+        rule.onNodeWithTag("level_minus_push").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_target_push").assertTextContains("50 reps", substring = true)
+        rule.onNodeWithTag("level_minus_push").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_target_push").assertTextContains("40 reps", substring = true)
+    }
+
+    @Test fun holdStepperUsesFiveSecondsAndReturnsToBoundaryBeforeLevelFour() {
+        oneExerciseAtLevelFive("plank", "core", listOf(10, 15, 20, 25, 30))
+        show(); rule.waitForIdle()
+        fun target(n: Int) { rule.onNodeWithTag("exercise_target_core").performScrollTo().assertTextContains("$n s", substring = true) }
+        fun tap(direction: String) { rule.onNodeWithTag("level_${direction}_core").performScrollTo().performClick(); rule.waitForIdle() }
+        target(30); tap("plus"); target(35); tap("plus"); target(40)
+        tap("minus"); target(35); tap("minus"); target(30); tap("minus"); target(25)
     }
 
     // Touch injection does not reach the bottom-sheet window under Robolectric, so taps inside the sheet use the semantic click.
     private fun openSwap(slot: String) {
         rule.onNodeWithTag("swap_$slot").performScrollTo().performClick(); rule.waitForIdle()
         rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle() // let the sheet finish sliding in before tapping inside it
+    }
+
+    @Test fun sixToEightRebuildUsesSameDuplicateFreeExercisesOnBothStartPaths() {
+        val settings = TrainSettingsStore.load(app).copy(exercisesPerRound = 6,
+            betweenSetMode = BetweenSetMode.REST, flow = false, stretchOn = false)
+        TrainSettingsStore.save(app, settings)
+        val key = io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(settings)
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(app)
+        val manual = PlanEdits(swaps = mapOf("pull" to "chinup-full"),
+            added = listOf(AddedSlot("pull",
+                slotFor(catalog.variation("pullup-full")!!))))
+        io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.put(app,
+            io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraft(key, manual))
+        var preview by mutableStateOf(false)
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) {
+            if (preview) PreviewScreen(onBack = { preview = false }, onStarted = {})
+            else TrainScreen(onPreview = { preview = true }, onStarted = {}, onEditProfile = {})
+        } }
+        rule.waitForIdle()
+        // Train shows what the list holds (6 plus the hand-added one = 7), so one tap asks for 8
+        rule.onNodeWithTag("exercises_plus").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(8, TrainSettingsStore.load(app).exercisesPerRound)
+        rule.onNodeWithTag("train_start_button").performClick(); rule.waitForIdle()
+        fun nextPlan(): WorkoutPlan = Json { ignoreUnknownKeys = true }.decodeFromString(
+            WorkoutPlan.serializer(), shadowOf(app).nextStartedService!!.getStringExtra(WorkoutSessionService.EXTRA_PLAN)!!)
+        val direct = nextPlan()
+        rule.onNodeWithTag("preview_button").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("start_button").performClick(); rule.waitForIdle()
+        val viaPreview = nextPlan()
+        fun choices(plan: WorkoutPlan) = plan.blocks.filter { it.type == BlockType.WORK }
+            .mapNotNull { it.variationId }.distinct()
+        val ids = choices(direct)
+        assertEquals(ids, choices(viaPreview))
+        assertEquals(8, ids.size)
+        for ((i, id) in ids.withIndex()) for (other in ids.drop(i + 1))
+            assertFalse("automatic alternatives $id / $other", catalog.sharesLogicalRoute(id, other))
     }
 
     private fun show(onStarted: () -> Unit = {}) = rule.setContent {
@@ -91,16 +310,30 @@ class PreviewScreenTest {
         rule.onNodeWithTag("preview_header").assertTextContains("5 rounds", substring = true)
     }
 
-    // R8.1-T06 (F7): Flow is one toggle in the Preview, next to the rest controls, for every workout
-    @Test fun flowIsOneToggleInThePreviewAndShortensTheWorkout() {
+    // R8.2 (train-count): the exercises per round are chosen in the Preview too; same setting as Train, the list holds exactly that many
+    @Test fun theExercisesPerRoundAreChosenInThePreviewAndStayInSyncWithTheSetting() {
         show(); rule.waitForIdle()
-        fun minutes() = rule.onNodeWithTag("preview_header").fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.Text].first().text.split("·")[1].filter { it.isDigit() }.toInt()
-        val before = minutes()
-        rule.onNodeWithTag("preview_flow_switch").performScrollTo().assertIsOff().performClick(); rule.waitForIdle()
-        rule.onNodeWithTag("preview_flow_switch").assertIsOn()
-        assertTrue("$before -> ${minutes()}", minutes() < before)
+        fun shown() = rule.onNodeWithTag("preview_exercises_value").performScrollTo().fetchSemanticsNode().config[androidx.compose.ui.semantics.SemanticsProperties.Text].joinToString("").trim().toInt()
+        val before = shown()
+        rule.onNodeWithTag("preview_exercises_plus").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(before + 1, shown())
+        assertEquals(before + 1, app.getSharedPreferences("train", Context.MODE_PRIVATE).getInt("exercises", 0))
+        rule.onNodeWithTag("preview_exercises_minus").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(before, shown())
+        assertEquals(before, app.getSharedPreferences("train", Context.MODE_PRIVATE).getInt("exercises", 0))
+    }
+
+    // R8.3: Flow is chosen on Train; Preview exposes the shared preparation duration only.
+    @Test fun flowHasNoPreviewSwitchAndPreparationDurationPersists() {
+        val s = TrainSettingsStore.load(app)
+        TrainSettingsStore.save(app, s.copy(betweenSetMode = BetweenSetMode.FLOW, flow = true, stretchOn = false))
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("preview_flow_switch").assertDoesNotExist()
+        rule.onNodeWithTag("preparation_seconds_value").performScrollTo().assertTextEquals("5 s")
+        rule.onNodeWithTag("preparation_seconds_plus").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("preparation_seconds_value").assertTextEquals("6 s")
         assertTrue(app.getSharedPreferences("train", Context.MODE_PRIVATE).getBoolean("flow", false))
-        rule.onNodeWithTag("preview_flow_hint").assertExists()
+        assertEquals(6, TrainSettingsStore.load(app).preparationSeconds)
     }
 
     // R8.1-T05 (F6): every change survives going back to Train and returning; only another objective resets it
@@ -188,6 +421,12 @@ class PreviewScreenTest {
         assertEquals(2, saved.revision) // a new revision, never an edit of the old one
     }
 
+    @Test fun previewListsTheEquipmentTheExercisesNeed() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("equipment_needed").assertExists()
+        rule.onNodeWithText("Equipment needed", ignoreCase = true).assertExists()
+    }
+
     @Test fun todayOnlySwapLeavesTheUsualPlanAlone() {
         show(); rule.waitForIdle()
         openSwap("push")
@@ -212,11 +451,80 @@ class PreviewScreenTest {
         rule.onNodeWithTag("timeline_list").assertExists()
     }
 
-    @Test fun warningsAreOneCompactRowThatExpands() {
+    @Test fun notesShowAtMostTwoLinesAndTheRestBehindMore() {
+        // a plan that fits has no notes and no row; without the band the pull is replaced and the plan says so
+        val home = io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.selected(app)
+        io.github.gonbei774.calisthenicsmemory.ui.screens.ProfileStore.upsert(app, home.copy(items = home.items.filter { it.equipmentId != "resistance-band" }))
         show(); rule.waitForIdle()
         // R8.1-T08 (F10): was asserting the "unreviewed draft" bubble; the row now only points at the notes, and no draft bubble exists anywhere in the Preview
-        rule.onNodeWithTag("info_row").assertExists().assertTextContains("Check the notes", substring = true)
+        rule.onNodeWithTag("info_row").assertExists()
+        rule.onNodeWithTag("plan_note_0").assertExists()
+        rule.onNodeWithTag("plan_note_2").assertDoesNotExist()   // at most two lines until More is opened
+        rule.onNodeWithText("Check the notes", substring = true).assertDoesNotExist()
         rule.onNodeWithText("unreviewed draft", substring = true).assertDoesNotExist()
+    }
+
+    // 9.4 L4 (F7): Mix it up
+    private fun mixedSlots(): Set<String> = rule.onAllNodes(SemanticsMatcher("mixed-in caption") { it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.TestTag)?.startsWith("mixed_in_") == true })
+        .fetchSemanticsNodes().map { it.config[androidx.compose.ui.semantics.SemanticsProperties.TestTag].removePrefix("mixed_in_") }.toSet()
+    private fun planIds(): List<String> = rule.onAllNodes(SemanticsMatcher("exercise rows") { it.config.getOrNull(androidx.compose.ui.semantics.SemanticsProperties.TestTag)?.startsWith("exercise_name_") == true })
+        .fetchSemanticsNodes().map { it.config.first { c -> c.key.name == "Text" }.value.let { v -> (v as List<*>).first().toString() } }
+
+    @Test fun mixItUpSwapsTwoExercisesAndExplainsIt() {
+        show(); rule.waitForIdle()
+        val before = planIds()
+        rule.onNodeWithTag("mix_caption").performScrollTo().assertTextContains("Swap 2 exercises for a different type today", ignoreCase = true)
+        rule.onNodeWithTag("mix_undo").assertDoesNotExist(); rule.onNodeWithTag("mix_summary").assertDoesNotExist()
+        rule.onNodeWithTag("mix_it_up").performScrollTo().performClick(); rule.waitForIdle()
+        assertEquals(2, mixedSlots().size)
+        assertEquals(before.size, planIds().size)
+        assertEquals(2, planIds().zip(before).count { (now, was) -> now != was })
+        rule.onNodeWithTag("mix_summary").assertExists().assertTextContains("Mixed in today:", substring = true)
+        rule.onNodeWithTag("mix_undo").assertExists()
+    }
+
+    @Test fun mixItUpAgainTakesTheNextPairAndUndoRestoresTheUsualPlan() {
+        show(); rule.waitForIdle()
+        val before = planIds()
+        rule.onNodeWithTag("mix_it_up").performScrollTo().performClick(); rule.waitForIdle()
+        val first = mixedSlots()
+        rule.onNodeWithTag("mix_it_up").performScrollTo().performClick(); rule.waitForIdle()
+        val second = mixedSlots()
+        assertEquals(2, second.size)
+        assertTrue("the next pair, not the same two: $first / $second", first.intersect(second).isEmpty())
+        rule.onNodeWithTag("mix_undo").performScrollTo().performClick(); rule.waitForIdle()
+        assertTrue(mixedSlots().isEmpty())
+        assertEquals(before, planIds())
+        rule.onNodeWithTag("mix_undo").assertDoesNotExist()
+    }
+
+    @Test fun aMixSurvivesLeavingThePreviewAndAHandSwapIsNeverMixed() {
+        var visible by mutableStateOf(true)
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) { if (visible) PreviewScreen(onBack = {}, onStarted = {}) else androidx.compose.foundation.layout.Box {} } }
+        rule.waitForIdle()
+        openSwap("push")
+        rule.onNodeWithTag("swap_option_pushup-knee").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.OnClick); rule.waitForIdle()
+        rule.onNodeWithTag("mix_it_up").performScrollTo().performClick(); rule.waitForIdle()
+        val mixed = mixedSlots(); val names = planIds()
+        assertEquals(2, mixed.size); assertFalse("push was swapped by hand", "push" in mixed)
+        visible = false; rule.waitForIdle(); visible = true; rule.waitForIdle()
+        assertEquals(mixed, mixedSlots()); assertEquals(names, planIds())
+        rule.onNodeWithTag("mix_undo").performScrollTo().performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_name_push").assertTextEquals("Knee Push-Up")   // Undo leaves the hand swap alone
+    }
+
+    @Test fun startingAMixedWorkoutUsesTheMixAndLeavesTheNextDraftUsual() {
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("mix_it_up").performScrollTo().performClick(); rule.waitForIdle()
+        val key = io.github.gonbei774.calisthenicsmemory.ui.train.draftKey(TrainSettingsStore.load(app))
+        assertEquals(2, io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(app, key)!!.edits.mixSwaps.size)
+        val mixedIds = planIds().toSet()
+        rule.onNodeWithTag("start_button").assertIsEnabled().performClick(); rule.waitForIdle()
+        val plan = Json { ignoreUnknownKeys = true }.decodeFromString(WorkoutPlan.serializer(), shadowOf(app).nextStartedService!!.getStringExtra(WorkoutSessionService.EXTRA_PLAN)!!)
+        val catalog = io.github.gonbei774.calisthenicsmemory.ui.train.loadCatalog(app)
+        assertEquals(mixedIds, plan.blocks.filter { it.type == BlockType.WORK }.mapNotNull { it.variationId }.distinct().mapNotNull { catalog.variation(it)?.name }.toSet().intersect(mixedIds))
+        val draft = io.github.gonbei774.calisthenicsmemory.ui.train.PreviewDraftStore.get(app, key)!!
+        assertTrue("the next workout is the usual plan again", draft.edits.mixSwaps.isEmpty() && draft.edits.swaps.isEmpty() && draft.edits.mixTaps == 0)
     }
 
     @Test fun startLaunchesTheServiceWithAFreshPlanId() {
@@ -313,7 +621,7 @@ class PreviewScreenTest {
     @Test fun theLevelStepperChangesTheTargetAndStaysWithinOneToFive() {
         show(); rule.waitForIdle()
         val before = rule.onNodeWithTag("exercise_target_push").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
-        rule.onNodeWithTag("level_plus_push").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("level_plus_push").performScrollTo().performClick(); rule.waitForIdle()   // the Mix it up block pushed the list down
         val after = rule.onNodeWithTag("exercise_target_push").fetchSemanticsNode().config.first { it.key.name == "Text" }.value.let { (it as List<*>).first().toString() }
         assertNotEquals(before, after)
         rule.onNodeWithTag("level_push").assertTextContains("Level 2 of 5")
@@ -329,6 +637,55 @@ class PreviewScreenTest {
         rule.onNodeWithTag("exercise_core").assertDoesNotExist()
         rule.onNodeWithTag("edits_reset").performScrollTo().performClick(); rule.waitForIdle()
         rule.onNodeWithTag("exercise_core").assertExists()
+    }
+
+    @Test fun removingTheOnlyExerciseKeepsAnAddPathAndCanUndoJustThatRemoval() {
+        TrainSettingsStore.save(app, TrainSettingsStore.load(app).copy(exercisesPerRound = 1,
+            betweenSetMode = BetweenSetMode.REST, flow = false, stretchOn = false))
+        show(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_push").performScrollTo().performTouchInput { longClick() }; rule.waitForIdle()
+        rule.onNodeWithTag("remove_confirm").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("preview_empty").assertExists()
+        rule.onNodeWithTag("start_button").assertIsNotEnabled()
+        rule.onNodeWithTag("add_empty").performClick(); rule.waitForIdle()
+        rule.mainClock.advanceTimeBy(1_000); rule.waitForIdle()
+        rule.onNodeWithTag("add_categories").assertExists()
+        rule.onNodeWithTag("add_cat_stretches").assertDoesNotExist()
+        rule.onNodeWithTag("add_cat_push").performSemanticsAction(click); rule.waitForIdle()
+        rule.onNodeWithTag("add_option_pushup-knee").performScrollTo().performSemanticsAction(click); rule.waitForIdle()
+        rule.onNodeWithTag("preview_empty").assertDoesNotExist()
+        rule.onNodeWithTag("exercise_add-pushup-knee").assertExists()
+        rule.onNodeWithTag("start_button").assertIsEnabled()
+        rule.onNodeWithTag("exercise_add-pushup-knee").performScrollTo().performTouchInput { longClick() }; rule.waitForIdle()
+        rule.onNodeWithTag("remove_confirm").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("remove_undo").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag("exercise_add-pushup-knee").assertExists()
+        rule.onNodeWithTag("exercise_push").assertDoesNotExist()
+    }
+
+    @Test fun removingTheFinalRowLeavesTheOtherExercisesAndSurvivesReopening() {
+        TrainSettingsStore.save(app, TrainSettingsStore.load(app).copy(exercisesPerRound = 2,
+            betweenSetMode = BetweenSetMode.REST, flow = false, stretchOn = false))
+        var visible by mutableStateOf(true)
+        rule.setContent { CalisthenicsMemoryTheme(darkTheme = false) {
+            if (visible) PreviewScreen(onBack = {}, onStarted = {}) else androidx.compose.foundation.layout.Box {}
+        } }
+        rule.waitForIdle()
+        val cards = rule.onAllNodes(SemanticsMatcher("exercise cards") { node ->
+            val tag = androidx.compose.ui.semantics.SemanticsProperties.TestTag
+            node.config.contains(tag) && node.config[tag].startsWith("exercise_") &&
+                node.config.contains(androidx.compose.ui.semantics.SemanticsActions.OnLongClick)
+        }).fetchSemanticsNodes().map { it.config[androidx.compose.ui.semantics.SemanticsProperties.TestTag] }
+        assertEquals(2, cards.size)
+        val first = cards.first(); val last = cards.last()
+        rule.onNodeWithTag(last).performScrollTo().performTouchInput { longClick() }; rule.waitForIdle()
+        rule.onNodeWithTag("remove_confirm").performClick(); rule.waitForIdle()
+        rule.onNodeWithTag(last).assertDoesNotExist()
+        rule.onNodeWithTag(first).assertExists()
+        visible = false; rule.waitForIdle(); visible = true; rule.waitForIdle()
+        rule.onNodeWithTag(last).assertDoesNotExist()
+        rule.onNodeWithTag(first).assertExists()
+        rule.onNodeWithTag("start_button").assertIsEnabled()
     }
 
     @Test fun theRoundViewHasNoSetTabsAndOneAllSetsHeader() {

@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.junit4.createComposeRule
 import io.github.gonbei774.calisthenicsmemory.ui.screens.DemoPlayer
+import io.github.gonbei774.calisthenicsmemory.ui.screens.configureSilentDemo
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -12,6 +13,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.io.File
+import kotlin.io.path.createTempDirectory
 
 /** V01 / K1: when the block changes (stretch -> Split Squat), the player must load the new clip. */
 @RunWith(RobolectricTestRunner::class)
@@ -20,7 +22,7 @@ class DemoPlayerTest {
     @get:Rule val rule = createComposeRule()
 
     @Test fun changingTheFileLoadsTheNewClip() {
-        val dir = createTempDir("clips")
+        val dir = createTempDirectory("clips").toFile()
         val a = File(dir, "calf-stretch.mp4").apply { writeBytes(ByteArray(8)) }
         val b = File(dir, "split-squat.mp4").apply { writeBytes(ByteArray(8)) }
         val loaded = mutableListOf<String>()
@@ -37,11 +39,21 @@ class DemoPlayerTest {
     }
 
     @Test fun sameFileDoesNotReload() {
-        val a = File(createTempDir("clips"), "x.mp4").apply { writeBytes(ByteArray(8)) }
+        val a = File(createTempDirectory("clips").toFile(), "x.mp4").apply { writeBytes(ByteArray(8)) }
         val loaded = mutableListOf<String>()
         var tick by mutableStateOf(0)
         rule.setContent { tick; DemoPlayer(a, controls = false, onLoad = { loaded += it }) }
         rule.waitForIdle(); tick++; rule.waitForIdle()
         assertEquals(1, loaded.size)
+    }
+
+    /** Spotify bug: VideoView takes AUDIOFOCUS_GAIN by default, pausing external music on every exercise change. */
+    @Test fun demoVideoViewNeverRequestsAudioFocus() {
+        val ctx = androidx.test.core.app.ApplicationProvider.getApplicationContext<android.content.Context>()
+        val v = android.widget.VideoView(ctx)
+        val f = android.widget.VideoView::class.java.getDeclaredField("mAudioFocusType").apply { isAccessible = true }
+        assertEquals(android.media.AudioManager.AUDIOFOCUS_GAIN, f.getInt(v))
+        v.configureSilentDemo()
+        assertEquals(android.media.AudioManager.AUDIOFOCUS_NONE, f.getInt(v))
     }
 }

@@ -1,0 +1,2889 @@
+[
+  {
+    "exercise": "pushup-archer",
+    "style": "Fixed wide hands, alternating sides, assisting arm stays extended",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "lateral_range_m": {
+        "value": 0.37656,
+        "min": 0.3,
+        "max": null,
+        "ok": true
+      },
+      "chest_range_m": {
+        "value": 0.30741,
+        "min": 0.2,
+        "max": null,
+        "ok": true
+      },
+      "right_low_frames": {
+        "value": 31,
+        "min": 4,
+        "max": null,
+        "ok": true
+      },
+      "right_support_elbow_deg": {
+        "value": 170.38297,
+        "min": 165,
+        "max": null,
+        "ok": true
+      },
+      "right_working_elbow_deg": {
+        "value": 66.28778,
+        "min": null,
+        "max": 105,
+        "ok": true
+      },
+      "right_working_min_deg": {
+        "value": 60.52388,
+        "min": 40,
+        "max": null,
+        "ok": true
+      },
+      "left_low_frames": {
+        "value": 31,
+        "min": 4,
+        "max": null,
+        "ok": true
+      },
+      "left_support_elbow_deg": {
+        "value": 170.38297,
+        "min": 165,
+        "max": null,
+        "ok": true
+      },
+      "left_working_elbow_deg": {
+        "value": 66.28778,
+        "min": null,
+        "max": 105,
+        "ok": true
+      },
+      "left_working_min_deg": {
+        "value": 60.52388,
+        "min": 40,
+        "max": null,
+        "ok": true
+      },
+      "toe_l_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.008,
+        "ok": true
+      },
+      "toe_r_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.008,
+        "ok": true
+      },
+      "body_line_deg": {
+        "value": 176.14725,
+        "min": 165,
+        "max": null,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 0.73838,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "145a8f0bd2e610981b48b4eb3499cc11b15bdea35901aad191677c3d532d9f47",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "pullup-full",
+    "style": "Controlled mild arch, shoulder initiation, no kip",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.00027,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.00027,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "top_back_tilt_deg": {
+        "value": 16.80209,
+        "min": 12,
+        "max": 25,
+        "ok": true
+      },
+      "tilt_change_deg": {
+        "value": 12.24188,
+        "min": 8,
+        "max": null,
+        "ok": true
+      },
+      "hip_travel_m": {
+        "value": 0.19,
+        "min": 0.12,
+        "max": 0.3,
+        "ok": true
+      },
+      "shoulder_action_m": {
+        "value": 0.035,
+        "min": 0.025,
+        "max": 0.065,
+        "ok": true
+      },
+      "rise_m": {
+        "value": 0.47532,
+        "min": 0.4,
+        "max": null,
+        "ok": true
+      },
+      "interior_speed_min_m_s": {
+        "value": 0.33744,
+        "min": 0.12,
+        "max": null,
+        "ok": true
+      },
+      "rise_vertical_speed_ratio": {
+        "value": 1.00036,
+        "min": null,
+        "max": 1.03,
+        "ok": true
+      },
+      "rise_torso_speed_ratio": {
+        "value": 1.06668,
+        "min": null,
+        "max": 1.12,
+        "ok": true
+      },
+      "descent_vertical_speed_ratio": {
+        "value": 1.00036,
+        "min": null,
+        "max": 1.03,
+        "ok": true
+      },
+      "descent_torso_speed_ratio": {
+        "value": 1.06744,
+        "min": null,
+        "max": 1.12,
+        "ok": true
+      },
+      "finger_bar_clearance_m": {
+        "value": 0.00117,
+        "min": 0.0005,
+        "max": null,
+        "ok": true
+      },
+      "hang_elbow_l_deg": {
+        "value": 173.75432,
+        "min": 165,
+        "max": null,
+        "ok": true
+      },
+      "top_elbow_l_deg": {
+        "value": 38.4613,
+        "min": 30,
+        "max": 100,
+        "ok": true
+      },
+      "palm_l_forward": {
+        "value": 1.0,
+        "min": 0.95,
+        "max": null,
+        "ok": true
+      },
+      "hang_elbow_r_deg": {
+        "value": 173.75432,
+        "min": 165,
+        "max": null,
+        "ok": true
+      },
+      "top_elbow_r_deg": {
+        "value": 38.4613,
+        "min": 30,
+        "max": 100,
+        "ok": true
+      },
+      "palm_r_forward": {
+        "value": 1.0,
+        "min": 0.95,
+        "max": null,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 0.44335,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.00049,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "7bd5c49b8f86b505b07b4783915702843716402d3f1af0df941c12094b6bfcf4",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "ring-muscle-up",
+    "style": "Controlled strict false-grip ring muscle-up: flexed palm-heel grip in hang, close pull and turnover with moving rings, extended-arm support and quiet legs, then controlled return.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.08224,
+        "min": null,
+        "max": 0.15,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.08224,
+        "min": null,
+        "max": 0.15,
+        "ok": true
+      },
+      "visible_rings_count": {
+        "value": 2,
+        "min": 2,
+        "max": 2,
+        "ok": true
+      },
+      "ring_grip_geometry": {
+        "value": 1,
+        "min": 1,
+        "max": null,
+        "ok": true
+      },
+      "ring_grip_closeup": {
+        "value": 1,
+        "min": 1,
+        "max": null,
+        "ok": true
+      },
+      "ring_radius_m": {
+        "value": 0.105,
+        "min": 0.09,
+        "max": null,
+        "ok": true
+      },
+      "arm_ring_volume_clearance_m": {
+        "value": 0.00111,
+        "min": 0.0005,
+        "max": null,
+        "ok": true
+      },
+      "palm_ring_surface_clearance_m": {
+        "value": 0.02082,
+        "min": 0.0004,
+        "max": null,
+        "ok": true
+      },
+      "finger_ring_volume_clearance_m": {
+        "value": 0.0028,
+        "min": 0.0005,
+        "max": null,
+        "ok": true
+      },
+      "wrist_l_bend_deg": {
+        "value": 90.00306,
+        "min": null,
+        "max": 110,
+        "ok": true
+      },
+      "wrist_l_frame_change_deg": {
+        "value": 4.90191,
+        "min": null,
+        "max": 8,
+        "ok": true
+      },
+      "wrist_l_contact_error_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 2e-05,
+        "ok": true
+      },
+      "wrist_r_bend_deg": {
+        "value": 90.00306,
+        "min": null,
+        "max": 110,
+        "ok": true
+      },
+      "wrist_r_frame_change_deg": {
+        "value": 4.90191,
+        "min": null,
+        "max": 8,
+        "ok": true
+      },
+      "wrist_r_contact_error_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 2e-05,
+        "ok": true
+      },
+      "chest_fore_aft_m": {
+        "value": 0.22164,
+        "min": null,
+        "max": 0.28,
+        "ok": true
+      },
+      "pelvis_fore_aft_m": {
+        "value": 0.10254,
+        "min": null,
+        "max": 0.14,
+        "ok": true
+      },
+      "chest_forward_speed_m_s": {
+        "value": 0.47496,
+        "min": null,
+        "max": 0.7,
+        "ok": true
+      },
+      "chest_speed_m_s": {
+        "value": 0.83598,
+        "min": null,
+        "max": 1.0,
+        "ok": true
+      },
+      "rise_m": {
+        "value": 1.14866,
+        "min": 1.0,
+        "max": null,
+        "ok": true
+      },
+      "leg_tuck_change_l_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.025,
+        "ok": true
+      },
+      "hang_elbow_l_deg": {
+        "value": 164.78836,
+        "min": 160,
+        "max": null,
+        "ok": true
+      },
+      "support_elbow_l_deg": {
+        "value": 164.79242,
+        "min": 160,
+        "max": null,
+        "ok": true
+      },
+      "leg_tuck_change_r_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.025,
+        "ok": true
+      },
+      "hang_elbow_r_deg": {
+        "value": 164.78836,
+        "min": 160,
+        "max": null,
+        "ok": true
+      },
+      "support_elbow_r_deg": {
+        "value": 164.79242,
+        "min": 160,
+        "max": null,
+        "ok": true
+      },
+      "valid_timeline": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "two_rings": {
+        "value": 2.0,
+        "min": 2,
+        "max": 2,
+        "ok": true
+      },
+      "ring_l_dynamic_channels": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "ring_l_frame_data_valid": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "ring_l_center_excursion_m": {
+        "value": 0.09007,
+        "min": 0.025,
+        "max": 0.18,
+        "ok": true
+      },
+      "ring_l_plane_rotation_range_deg": {
+        "value": 29.99987,
+        "min": 8,
+        "max": 50,
+        "ok": true
+      },
+      "ring_l_unit_error": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.002,
+        "ok": true
+      },
+      "ring_l_orthogonality_error": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "ring_l_radial_rotation_range_deg": {
+        "value": 34.0793,
+        "min": 15,
+        "max": 100,
+        "ok": true
+      },
+      "ring_l_max_frame_twist_deg": {
+        "value": 0.54163,
+        "min": null,
+        "max": 12,
+        "ok": true
+      },
+      "ring_l_strap_radius_error_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 5e-05,
+        "ok": true
+      },
+      "ring_l_strap_length_variation_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.002,
+        "ok": true
+      },
+      "wrist_l_grip_contact_error_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 5e-05,
+        "ok": true
+      },
+      "hand_l_palm_orthogonality_error": {
+        "value": 6e-05,
+        "min": null,
+        "max": 0.02,
+        "ok": true
+      },
+      "hand_l_axis_rotation_range_deg": {
+        "value": 90.85686,
+        "min": 30,
+        "max": null,
+        "ok": true
+      },
+      "wrist_l_bend_step_deg": {
+        "value": 4.90191,
+        "min": null,
+        "max": 8,
+        "ok": true
+      },
+      "wrist_l_flexion_abs_deg": {
+        "value": 90.00306,
+        "min": null,
+        "max": 110,
+        "ok": true
+      },
+      "wrist_l_deviation_abs_deg": {
+        "value": 2.08876,
+        "min": null,
+        "max": 25,
+        "ok": true
+      },
+      "ring_r_dynamic_channels": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "ring_r_frame_data_valid": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "ring_r_center_excursion_m": {
+        "value": 0.09007,
+        "min": 0.025,
+        "max": 0.18,
+        "ok": true
+      },
+      "ring_r_plane_rotation_range_deg": {
+        "value": 29.99987,
+        "min": 8,
+        "max": 50,
+        "ok": true
+      },
+      "ring_r_unit_error": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.002,
+        "ok": true
+      },
+      "ring_r_orthogonality_error": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "ring_r_radial_rotation_range_deg": {
+        "value": 34.0793,
+        "min": 15,
+        "max": 100,
+        "ok": true
+      },
+      "ring_r_max_frame_twist_deg": {
+        "value": 0.54163,
+        "min": null,
+        "max": 12,
+        "ok": true
+      },
+      "ring_r_strap_radius_error_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 5e-05,
+        "ok": true
+      },
+      "ring_r_strap_length_variation_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.002,
+        "ok": true
+      },
+      "wrist_r_grip_contact_error_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 5e-05,
+        "ok": true
+      },
+      "hand_r_palm_orthogonality_error": {
+        "value": 6e-05,
+        "min": null,
+        "max": 0.02,
+        "ok": true
+      },
+      "hand_r_axis_rotation_range_deg": {
+        "value": 90.85686,
+        "min": 30,
+        "max": null,
+        "ok": true
+      },
+      "wrist_r_bend_step_deg": {
+        "value": 4.90191,
+        "min": null,
+        "max": 8,
+        "ok": true
+      },
+      "wrist_r_flexion_abs_deg": {
+        "value": 90.00306,
+        "min": null,
+        "max": 110,
+        "ok": true
+      },
+      "wrist_r_deviation_abs_deg": {
+        "value": 2.08876,
+        "min": null,
+        "max": 25,
+        "ok": true
+      },
+      "hang_sample_count": {
+        "value": 110.0,
+        "min": 1,
+        "max": null,
+        "ok": true
+      },
+      "hang_wrist_angle_min_deg": {
+        "value": 83.167,
+        "min": 45,
+        "max": null,
+        "ok": true
+      },
+      "hang_wrist_angle_max_deg": {
+        "value": 90.00306,
+        "min": null,
+        "max": 105,
+        "ok": true
+      },
+      "hang_flexion_abs_min_deg": {
+        "value": 83.16243,
+        "min": 45,
+        "max": null,
+        "ok": true
+      },
+      "hang_flexion_abs_max_deg": {
+        "value": 90.00306,
+        "min": null,
+        "max": 105,
+        "ok": true
+      },
+      "hang_deviation_abs_max_deg": {
+        "value": 2.08876,
+        "min": null,
+        "max": 25,
+        "ok": true
+      },
+      "support_sample_count": {
+        "value": 90.0,
+        "min": 1,
+        "max": null,
+        "ok": true
+      },
+      "support_wrist_angle_max_deg": {
+        "value": 20.29967,
+        "min": null,
+        "max": 35,
+        "ok": true
+      },
+      "support_deviation_abs_max_deg": {
+        "value": 0.00215,
+        "min": null,
+        "max": 25,
+        "ok": true
+      },
+      "false_grip_hang_wrist_over_wood_min_m": {
+        "value": 0.02093,
+        "min": 0.01,
+        "max": null,
+        "ok": true
+      },
+      "false_grip_hang_palm_normal_z_max": {
+        "value": -0.64567,
+        "min": null,
+        "max": -0.1,
+        "ok": true
+      },
+      "loop_seam_max_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      },
+      "chest_vertical_excursion_m": {
+        "value": 1.14866,
+        "min": 0.65,
+        "max": null,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 0.85508,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "413e69a90b31b8205102cd1b1eb15047c61036b5933317d4f5acc1d34d50b5c7",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "pullup-pullover",
+    "style": "Controlled full bar pullover and slower reverse, continuous rotation with hands rolling around the bar",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.1581,
+        "min": null,
+        "max": 0.17,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.1581,
+        "min": null,
+        "max": 0.17,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 11.0,
+        "min": 9,
+        "max": null,
+        "ok": true
+      },
+      "rotation_range_deg": {
+        "value": 360.0,
+        "min": 350,
+        "max": 370,
+        "ok": true
+      },
+      "angular_speed_deg_s": {
+        "value": 151.24165,
+        "min": null,
+        "max": 165,
+        "ok": true
+      },
+      "angular_acceleration_deg_s2": {
+        "value": 414.33354,
+        "min": null,
+        "max": 500,
+        "ok": true
+      },
+      "turnover_interior_speed_deg_s": {
+        "value": 98.68956,
+        "min": 15,
+        "max": null,
+        "ok": true
+      },
+      "return_interior_speed_deg_s": {
+        "value": 85.83284,
+        "min": 15,
+        "max": null,
+        "ok": true
+      },
+      "descent_ascent_time_ratio": {
+        "value": 1.16667,
+        "min": 1.05,
+        "max": null,
+        "ok": true
+      },
+      "joint_acceleration_m_s2": {
+        "value": 5.969,
+        "min": null,
+        "max": 8,
+        "ok": true
+      },
+      "rolling_grip": {
+        "value": 1,
+        "min": 1,
+        "max": null,
+        "ok": true
+      },
+      "wrist_l_contact_error_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.0001,
+        "ok": true
+      },
+      "wrist_l_axial_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "wrist_r_contact_error_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.0001,
+        "ok": true
+      },
+      "wrist_r_axial_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "body_bar_volume_clearance_m": {
+        "value": 0.00998,
+        "min": 0.001,
+        "max": null,
+        "ok": true
+      },
+      "finger_bar_clearance_m": {
+        "value": 0.00117,
+        "min": 0.0005,
+        "max": null,
+        "ok": true
+      },
+      "support_chest_above_bar_m": {
+        "value": 0.657,
+        "min": 0.5,
+        "max": null,
+        "ok": true
+      },
+      "hang_elbow_l_deg": {
+        "value": 163.89802,
+        "min": 160,
+        "max": null,
+        "ok": true
+      },
+      "support_elbow_l_deg": {
+        "value": 169.84782,
+        "min": 150,
+        "max": null,
+        "ok": true
+      },
+      "hang_elbow_r_deg": {
+        "value": 163.89802,
+        "min": 160,
+        "max": null,
+        "ok": true
+      },
+      "support_elbow_r_deg": {
+        "value": 169.84782,
+        "min": 150,
+        "max": null,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 2.07883,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "eeeb511269432b151ba7b0ea9c18d5f36fdee1881b58600b8bc0779930b1289d",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "handstand-press-straddle",
+    "style": "Existing straddle press body path with rotating feet and a controlled closed return; foot-direction screening only",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 8.0,
+        "min": 7.5,
+        "max": null,
+        "ok": true
+      },
+      "l_foot_turn_deg": {
+        "value": 250.00025,
+        "min": 235,
+        "max": 265,
+        "ok": true
+      },
+      "l_foot_angular_speed_deg_s": {
+        "value": 88.88229,
+        "min": null,
+        "max": 100,
+        "ok": true
+      },
+      "l_heel_frame_norm": {
+        "value": 0.31506,
+        "min": 0.25,
+        "max": null,
+        "ok": true
+      },
+      "l_heel_frame_step_cos": {
+        "value": 0.99792,
+        "min": 0.99,
+        "max": null,
+        "ok": true
+      },
+      "l_initial_toe_forward": {
+        "value": 1.0,
+        "min": 0.99,
+        "max": null,
+        "ok": true
+      },
+      "l_top_toe_shin_dot": {
+        "value": 0.93833,
+        "min": 0.9,
+        "max": null,
+        "ok": true
+      },
+      "l_ankle_joint_min_deg": {
+        "value": 45.437,
+        "min": 40,
+        "max": null,
+        "ok": true
+      },
+      "l_ankle_joint_max_deg": {
+        "value": 161.63548,
+        "min": null,
+        "max": 165,
+        "ok": true
+      },
+      "r_foot_turn_deg": {
+        "value": 250.00025,
+        "min": 235,
+        "max": 265,
+        "ok": true
+      },
+      "r_foot_angular_speed_deg_s": {
+        "value": 88.88229,
+        "min": null,
+        "max": 100,
+        "ok": true
+      },
+      "r_heel_frame_norm": {
+        "value": 0.31506,
+        "min": 0.25,
+        "max": null,
+        "ok": true
+      },
+      "r_heel_frame_step_cos": {
+        "value": 0.99792,
+        "min": 0.99,
+        "max": null,
+        "ok": true
+      },
+      "r_initial_toe_forward": {
+        "value": 1.0,
+        "min": 0.99,
+        "max": null,
+        "ok": true
+      },
+      "r_top_toe_shin_dot": {
+        "value": 0.93833,
+        "min": 0.9,
+        "max": null,
+        "ok": true
+      },
+      "r_ankle_joint_min_deg": {
+        "value": 45.437,
+        "min": 40,
+        "max": null,
+        "ok": true
+      },
+      "r_ankle_joint_max_deg": {
+        "value": 161.63548,
+        "min": null,
+        "max": 165,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 0.92848,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "386c81080eb22ecadd6c286a2cd7264fe6a01532d3d272e537aa07e26234ad47",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "pilates-roll-over",
+    "style": "Progressive pelvis-to-upper-trunk curl over the shoulder blades, slight leg opening overhead, slow reverse roll and fixed floor hand contacts.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.005,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.005,
+        "ok": true
+      },
+      "valid_geometry": {
+        "value": 1,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 4.0,
+        "min": 3.9,
+        "max": 4.1,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 2.04752,
+        "min": 0,
+        "max": 2.25,
+        "ok": true
+      },
+      "loop_seam_max_m": {
+        "value": 1e-05,
+        "min": 0,
+        "max": 0.04,
+        "ok": true
+      },
+      "hand_drift_max_m": {
+        "value": 0.0,
+        "min": 0,
+        "max": 0.005,
+        "ok": true
+      },
+      "trunk_curl_max_deg": {
+        "value": 54.00034,
+        "min": 45,
+        "max": 65,
+        "ok": true
+      },
+      "pelvis_lift_range_m": {
+        "value": 0.24199,
+        "min": 0.18,
+        "max": 0.4,
+        "ok": true
+      },
+      "leg_opening_max_m": {
+        "value": 0.36,
+        "min": 0.3,
+        "max": 0.42,
+        "ok": true
+      },
+      "floor_surface_min_m": {
+        "value": 0.01,
+        "min": -0.02,
+        "max": 10,
+        "ok": true
+      },
+      "chest_surface_min_m": {
+        "value": 0.0011,
+        "min": 0.001,
+        "max": null,
+        "ok": true
+      },
+      "heel_frame_condition_min": {
+        "value": 0.21128,
+        "min": 0.15,
+        "max": null,
+        "ok": true
+      },
+      "heel_frame_normal_step_max_deg": {
+        "value": 1.1583,
+        "min": null,
+        "max": 45,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 1.68223,
+        "min": null,
+        "max": 2.25,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "37a657f71320121af21ad5043feaf846011f9be4307f23d0ddfeefa76a0dc806",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "hanging-windshield-wiper",
+    "style": "Fixed bar hand contacts, active shoulders, full-height raise, controlled bilateral lateral sweep with visible torso counter-roll, centered return and lower.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.00226,
+        "min": null,
+        "max": 0.005,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.00224,
+        "min": null,
+        "max": 0.005,
+        "ok": true
+      },
+      "valid_geometry": {
+        "value": 1,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 6.5,
+        "min": 6.4,
+        "max": 6.6,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 3.23212,
+        "min": 0,
+        "max": 3.5,
+        "ok": true
+      },
+      "loop_seam_max_m": {
+        "value": 0.0,
+        "min": 0,
+        "max": 0.04,
+        "ok": true
+      },
+      "hand_drift_max_m": {
+        "value": 0.00226,
+        "min": 0,
+        "max": 0.005,
+        "ok": true
+      },
+      "torso_counterroll_max_deg": {
+        "value": 12.89132,
+        "min": 3.5,
+        "max": 18,
+        "ok": true
+      },
+      "lateral_sweep_range_m": {
+        "value": 0.6915,
+        "min": 0.6,
+        "max": 0.85,
+        "ok": true
+      },
+      "both_sweep_sides_m": {
+        "value": 0.34343,
+        "min": 0.2,
+        "max": 0.5,
+        "ok": true
+      },
+      "floor_surface_min_m": {
+        "value": 0.09631,
+        "min": -0.02,
+        "max": 10,
+        "ok": true
+      },
+      "heel_frame_condition_min": {
+        "value": 0.26318,
+        "min": 0.15,
+        "max": null,
+        "ok": true
+      },
+      "heel_frame_normal_step_max_deg": {
+        "value": 11.78861,
+        "min": null,
+        "max": 45,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 2.43155,
+        "min": null,
+        "max": 3.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "b5e127289abbcbaa809ec54ed19b1d8bcc09eef674af5de1f76f49c82be0811f",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "depth-jump",
+    "style": "Box step-off, bilateral absorption, stronger ballistic rebound, soft second landing, planted turn and sequential step back onto box.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 1.32056,
+        "min": null,
+        "max": 2.0,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 1.32056,
+        "min": null,
+        "max": 2.0,
+        "ok": true
+      },
+      "exercise_id": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_timeline": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "finite_geometry": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 8.75,
+        "min": 7.5,
+        "max": 9.0,
+        "ok": true
+      },
+      "box_prop_present": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "initial_both_box_frames": {
+        "value": 3.0,
+        "min": 3,
+        "max": null,
+        "ok": true
+      },
+      "early_floor_while_box_supported_frames": {
+        "value": 0.0,
+        "min": 0,
+        "max": 0,
+        "ok": true
+      },
+      "box_drop_flight_duration_s": {
+        "value": 0.33333,
+        "min": 0.18,
+        "max": 0.55,
+        "ok": true
+      },
+      "box_drop_bilateral_air_frames": {
+        "value": 8.0,
+        "min": 3,
+        "max": 15,
+        "ok": true
+      },
+      "step_departure_pelvis_rise_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.07,
+        "ok": true
+      },
+      "box_drop_gravity_m_s2": {
+        "value": 8.11653,
+        "min": 5.0,
+        "max": 15.0,
+        "ok": true
+      },
+      "box_drop_parabola_rmse_m": {
+        "value": 0.00465,
+        "min": null,
+        "max": 0.065,
+        "ok": true
+      },
+      "first_touch_pairing_frames": {
+        "value": 0.0,
+        "min": 0,
+        "max": 3,
+        "ok": true
+      },
+      "first_landing_contact_duration_s": {
+        "value": 0.25,
+        "min": 0.12,
+        "max": 0.42,
+        "ok": true
+      },
+      "first_landing_planted_slip_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "first_landing_compression_m": {
+        "value": 0.14,
+        "min": 0.015,
+        "max": 0.24,
+        "ok": true
+      },
+      "takeoff_knee_min_deg": {
+        "value": 162.69599,
+        "min": 155.0,
+        "max": null,
+        "ok": true
+      },
+      "takeoff_knee_extension_gain_deg": {
+        "value": 57.65549,
+        "min": 20.0,
+        "max": null,
+        "ok": true
+      },
+      "takeoff_boundary_velocity_delta_m_s": {
+        "value": 0.49944,
+        "min": null,
+        "max": 1.5,
+        "ok": true
+      },
+      "takeoff_boundary_step_delta_m": {
+        "value": 0.02081,
+        "min": null,
+        "max": 0.06,
+        "ok": true
+      },
+      "takeoff_upward_boundary_min_velocity_m_s": {
+        "value": 2.36184,
+        "min": 0.0,
+        "max": null,
+        "ok": true
+      },
+      "rebound_flight_duration_s": {
+        "value": 0.625,
+        "min": 0.38,
+        "max": 0.66,
+        "ok": true
+      },
+      "rebound_pelvis_rise_m": {
+        "value": 0.47688,
+        "min": 0.4,
+        "max": 0.55,
+        "ok": true
+      },
+      "rebound_gravity_m_s2": {
+        "value": 9.80984,
+        "min": 6.0,
+        "max": 13.5,
+        "ok": true
+      },
+      "rebound_parabola_rmse_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.035,
+        "ok": true
+      },
+      "rebound_rise_time_gravity_m_s2": {
+        "value": 9.7665,
+        "min": 6.0,
+        "max": 13.5,
+        "ok": true
+      },
+      "rebound_apex_dwell_frames": {
+        "value": 0.0,
+        "min": 0,
+        "max": 2,
+        "ok": true
+      },
+      "rebound_horizontal_range_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.14,
+        "ok": true
+      },
+      "rebound_lateral_range_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.12,
+        "ok": true
+      },
+      "second_landing_contact": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "second_landing_planted_frames": {
+        "value": 13.0,
+        "min": 2,
+        "max": null,
+        "ok": true
+      },
+      "second_landing_planted_slip_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "arm_start_down_or_backswing_m": {
+        "value": 0.50806,
+        "min": 0.08,
+        "max": null,
+        "ok": true
+      },
+      "arm_takeoff_elbow_min_deg": {
+        "value": 152.04466,
+        "min": 145,
+        "max": null,
+        "ok": true
+      },
+      "arm_takeoff_overhead_reach_m": {
+        "value": 0.28615,
+        "min": 0.04,
+        "max": null,
+        "ok": true
+      },
+      "arm_swing_relative_height_range_m": {
+        "value": 1.06482,
+        "min": 0.22,
+        "max": null,
+        "ok": true
+      },
+      "arm_reach_apex_offset_s": {
+        "value": 0.20833,
+        "min": null,
+        "max": 0.32,
+        "ok": true
+      },
+      "max_wrist_axis_bend_deg": {
+        "value": 0.0057,
+        "min": null,
+        "max": 45.0,
+        "ok": true
+      },
+      "return_both_feet_to_box_frames": {
+        "value": 6.0,
+        "min": 2,
+        "max": null,
+        "ok": true
+      },
+      "loop_return_joint_gap_m": {
+        "value": 0.0075,
+        "min": null,
+        "max": 0.1,
+        "ok": true
+      },
+      "return_travel_alignment_min": {
+        "value": 1.0,
+        "min": 0.8,
+        "max": null,
+        "ok": true
+      },
+      "return_planted_sole_slip_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "return_planted_sole_twist_deg": {
+        "value": 0.0,
+        "min": null,
+        "max": 2.0,
+        "ok": true
+      },
+      "return_reverse_facing_min_x": {
+        "value": -1.0,
+        "min": null,
+        "max": -0.8,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 7.57949,
+        "min": null,
+        "max": 8.0,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0075,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "6b08888191664692f6c926bbb48deff3263a633fcfbb490ae49318344dc07594",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "squat-pistol",
+    "style": "Controlled full-depth unilateral squat with a planted support foot, straight forward free leg, clear bottom hold, and explicit full return to standing.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.72168,
+        "min": 0.0,
+        "max": 0.75,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.72168,
+        "min": 0.0,
+        "max": 0.75,
+        "ok": true
+      },
+      "finite_geometry": {
+        "value": 1,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "known_variant": {
+        "value": 1,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 0.68654,
+        "min": 0.0,
+        "max": 2.5,
+        "ok": true
+      },
+      "support_ankle_drift_m": {
+        "value": 0.0,
+        "min": 0.0,
+        "max": 0.003,
+        "ok": true
+      },
+      "full_depth_range_m": {
+        "value": 0.595,
+        "min": 0.52,
+        "max": 0.64,
+        "ok": true
+      },
+      "deepest_pelvis_m": {
+        "value": 0.36,
+        "min": 0.32,
+        "max": 0.43,
+        "ok": true
+      },
+      "raised_leg_forward_reach_m": {
+        "value": 0.82469,
+        "min": 0.42,
+        "max": 0.9,
+        "ok": true
+      },
+      "raised_foot_clearance_m": {
+        "value": 0.15714,
+        "min": 0.1,
+        "max": 0.3,
+        "ok": true
+      },
+      "raised_leg_knee_angle_deg": {
+        "value": 164.96139,
+        "min": 160.0,
+        "max": 180.0,
+        "ok": true
+      },
+      "cycle_return_error_m": {
+        "value": 0.0,
+        "min": 0.0,
+        "max": 0.08,
+        "ok": true
+      },
+      "loop_seam_joint_gap_m": {
+        "value": 0.0,
+        "min": 0.0,
+        "max": 0.012,
+        "ok": true
+      },
+      "support_ankle_height_range_m": {
+        "value": 0.0,
+        "min": 0.0,
+        "max": 0.003,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 0.76417,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "38b35035b200183e9bbcfe7c550ce1ab5f394108ef289c2426e26f6da1f40ab4",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "burpee-pushup",
+    "style": "Strict push-up burpee with sagittal knee flexion, bilateral feet-back and feet-in transfers, planted high-low-high push-up, small ballistic jump and soft landing.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.9004,
+        "min": null,
+        "max": 2.0,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.9004,
+        "min": null,
+        "max": 2.0,
+        "ok": true
+      },
+      "valid_timeline": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "finite_geometry": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "foot_mesh_floor_min_z_m": {
+        "value": 0.00401,
+        "min": -0.002,
+        "max": null,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 10.5,
+        "min": 8.0,
+        "max": null,
+        "ok": true
+      },
+      "loop_seam_max_m": {
+        "value": 0.00018,
+        "min": null,
+        "max": 0.08,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 4.37219,
+        "min": null,
+        "max": 8.0,
+        "ok": true
+      },
+      "pushup_plank_frames": {
+        "value": 55.0,
+        "min": 12,
+        "max": null,
+        "ok": true
+      },
+      "pushup_chest_excursion_m": {
+        "value": 0.30903,
+        "min": 0.12,
+        "max": null,
+        "ok": true
+      },
+      "pushup_press_rise_m": {
+        "value": 0.28485,
+        "min": 0.12,
+        "max": null,
+        "ok": true
+      },
+      "pushup_top_elbow_deg": {
+        "value": 159.67839,
+        "min": 145,
+        "max": null,
+        "ok": true
+      },
+      "pushup_bottom_elbow_bend_deg": {
+        "value": 93.87465,
+        "min": 30,
+        "max": null,
+        "ok": true
+      },
+      "pushup_phase_order": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "plank_contact_drift_m": {
+        "value": 0.00174,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "leg_transfer_m": {
+        "value": 0.8,
+        "min": 0.65,
+        "max": null,
+        "ok": true
+      },
+      "jump_height_m": {
+        "value": 0.25937,
+        "min": 0.18,
+        "max": null,
+        "ok": true
+      },
+      "jump_preload_depth_m": {
+        "value": 0.44241,
+        "min": 0.1,
+        "max": null,
+        "ok": true
+      },
+      "landing_contact": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "landing_absorption_m": {
+        "value": 0.47313,
+        "min": 0.08,
+        "max": null,
+        "ok": true
+      },
+      "recovery_to_start_m": {
+        "value": 2e-05,
+        "min": null,
+        "max": 0.08,
+        "ok": true
+      },
+      "exercise_id": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "finite_leg_geometry": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "max_knee_lateral_excursion_m": {
+        "value": 0.00617,
+        "min": null,
+        "max": 0.1,
+        "ok": true
+      },
+      "flexed_knee_samples": {
+        "value": 354.0,
+        "min": 8,
+        "max": null,
+        "ok": true
+      },
+      "minimum_knee_angle_deg": {
+        "value": 29.63386,
+        "min": null,
+        "max": 125,
+        "ok": true
+      },
+      "meaningfully_bent_knee_samples": {
+        "value": 306.0,
+        "min": 12,
+        "max": null,
+        "ok": true
+      },
+      "forward_sagittal_bend_fraction": {
+        "value": 0.99435,
+        "min": 0.6,
+        "max": null,
+        "ok": true
+      },
+      "flexed_sagittal_branch_flips": {
+        "value": 0.0,
+        "min": null,
+        "max": 0,
+        "ok": true
+      },
+      "stable_plank_frames": {
+        "value": 55.0,
+        "min": 12,
+        "max": null,
+        "ok": true
+      },
+      "squat_to_plank_knee_accel_m_s2": {
+        "value": 28.01922,
+        "min": null,
+        "max": 30,
+        "ok": true
+      },
+      "plank_to_squat_knee_accel_m_s2": {
+        "value": 11.024,
+        "min": null,
+        "max": 30,
+        "ok": true
+      },
+      "peak_lateral_knee_accel_m_s2": {
+        "value": 0.02003,
+        "min": null,
+        "max": 24,
+        "ok": true
+      },
+      "final_jump_flight_duration_s": {
+        "value": 0.33333,
+        "min": 0.3,
+        "max": 0.75,
+        "ok": true
+      },
+      "final_jump_peak_rise_m": {
+        "value": 0.1853,
+        "min": 0.1,
+        "max": 0.35,
+        "ok": true
+      },
+      "final_jump_apex_dwell_s": {
+        "value": 0.08333,
+        "min": null,
+        "max": 0.16,
+        "ok": true
+      },
+      "final_jump_apex_fraction": {
+        "value": 0.57143,
+        "min": 0.25,
+        "max": 0.75,
+        "ok": true
+      },
+      "final_jump_takeoff_knee_min_deg": {
+        "value": 159.66633,
+        "min": 155,
+        "max": null,
+        "ok": true
+      },
+      "final_jump_fit_frame_count": {
+        "value": 8.0,
+        "min": 3,
+        "max": null,
+        "ok": true
+      },
+      "final_jump_gravity_fit_m_s2": {
+        "value": 10.08542,
+        "min": 6.0,
+        "max": 13.5,
+        "ok": true
+      },
+      "final_jump_fit_rmse_m": {
+        "value": 0.0022,
+        "min": null,
+        "max": 0.035,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 3.43464,
+        "min": null,
+        "max": 8.0,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 9e-05,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "e7ed211779e00a308df80a1b877938be63244c8f98869f323be941846a3c1599",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "handstand-wall-walk-up",
+    "style": "Toe-contact wall walk with a continuous walk-down return.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 1.56523,
+        "min": null,
+        "max": 1.65,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 1.56523,
+        "min": null,
+        "max": 1.65,
+        "ok": true
+      },
+      "known_variant": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_timeline": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "finite_world_joints": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 1.13496,
+        "min": 0.0,
+        "max": 2.5,
+        "ok": true
+      },
+      "head_ellipsoid_floor_proxy_m": {
+        "value": 0.02903,
+        "min": -0.002,
+        "max": null,
+        "ok": true
+      },
+      "max_toe_wall_anchor_error_m": {
+        "value": 4e-05,
+        "min": 0.0,
+        "max": 0.006,
+        "ok": true
+      },
+      "left_wrist_floor_height_error_m": {
+        "value": 0.0,
+        "min": 0.0,
+        "max": 0.001,
+        "ok": true
+      },
+      "hand_travel_range_m": {
+        "value": 1.56523,
+        "min": 0.2,
+        "max": 1.8,
+        "ok": true
+      },
+      "walk_up_wrist_progress_m": {
+        "value": 1.56523,
+        "min": 0.08,
+        "max": null,
+        "ok": true
+      },
+      "walk_down_wrist_progress_m": {
+        "value": 1.56462,
+        "min": 0.08,
+        "max": null,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 1.13496,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.00109,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "8c36ac2a3866ede8cc6d2bd37180b210d60fb8b78a7511cba97f6fd0dd617f28",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "toes-to-bar",
+    "style": "Controlled straight-leg toes-to-bar rise and lower.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.0,
+        "min": 0.0,
+        "max": 0.005,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.0,
+        "min": 0.0,
+        "max": 0.005,
+        "ok": true
+      },
+      "known_variant": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_timeline": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_fps": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "finite_required_geometry": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 4.79167,
+        "min": 0.0,
+        "max": 15.0,
+        "ok": true
+      },
+      "max_knee_speed_m_s": {
+        "value": 1.61799,
+        "min": 0.0,
+        "max": 4.0,
+        "ok": true
+      },
+      "bar_prop_present": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "minimum_foot_bar_gap_m": {
+        "value": 0.00177,
+        "min": -0.002,
+        "max": null,
+        "ok": true
+      },
+      "l_top_foot_bar_gap_m": {
+        "value": 0.00177,
+        "min": 0.0,
+        "max": 0.006,
+        "ok": true
+      },
+      "l_bar_contact": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "l_knee_extension_at_contact_deg": {
+        "value": 171.89931,
+        "min": 165.0,
+        "max": 180.0,
+        "ok": true
+      },
+      "r_top_foot_bar_gap_m": {
+        "value": 0.00177,
+        "min": 0.0,
+        "max": 0.006,
+        "ok": true
+      },
+      "r_bar_contact": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "r_knee_extension_at_contact_deg": {
+        "value": 171.89931,
+        "min": 165.0,
+        "max": 180.0,
+        "ok": true
+      },
+      "both_feet_contact_overlap_frames": {
+        "value": 16.0,
+        "min": 1,
+        "max": null,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 2.18989,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "a3d8f45ea15220a0068e191bb72d1258f0fe4e4afbff8cfff3c9afe58a1a9a61",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "heel-hook",
+    "style": "Feet-over-bar heel hook, crossed ankles and controlled reverse.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.0,
+        "min": 0.0,
+        "max": 0.005,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.0,
+        "min": 0.0,
+        "max": 0.005,
+        "ok": true
+      },
+      "known_variant": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_timeline": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_fps": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "finite_required_geometry": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 4.79167,
+        "min": 0.0,
+        "max": 15.0,
+        "ok": true
+      },
+      "max_knee_speed_m_s": {
+        "value": 3.62935,
+        "min": 0.0,
+        "max": 4.0,
+        "ok": true
+      },
+      "bar_prop_present": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "minimum_foot_bar_gap_m": {
+        "value": 0.00143,
+        "min": -0.002,
+        "max": null,
+        "ok": true
+      },
+      "both_ankles_crossed_above_bar_frames": {
+        "value": 20.0,
+        "min": 1,
+        "max": null,
+        "ok": true
+      },
+      "l_hook_foot_gap_m": {
+        "value": 0.00554,
+        "min": 0.0,
+        "max": 0.006,
+        "ok": true
+      },
+      "r_hook_foot_gap_m": {
+        "value": 0.00554,
+        "min": 0.0,
+        "max": 0.006,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 3.54144,
+        "min": null,
+        "max": 4,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "f456fb0365bf2d5db001ff5ef73720739b85c763193ac78957ba6273b6fd37e6",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "dip-russian",
+    "style": "Continuous support to forearm-rest Russian dip and full return.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.17588,
+        "min": null,
+        "max": 0.2,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.17588,
+        "min": null,
+        "max": 0.2,
+        "ok": true
+      },
+      "exercise_id": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_timeline": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "finite_geometry": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 4.0,
+        "min": 3.0,
+        "max": 5.0,
+        "ok": true
+      },
+      "loop_seam_max_m": {
+        "value": 2e-05,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      },
+      "max_speed_pelvis_m_s": {
+        "value": 0.86256,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_spine_m_s": {
+        "value": 1.00043,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_chest_m_s": {
+        "value": 1.18276,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_neck_m_s": {
+        "value": 1.2596,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_head_m_s": {
+        "value": 1.33804,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_shoulder_l_m_s": {
+        "value": 1.16056,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_shoulder_r_m_s": {
+        "value": 1.16056,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_elbow_l_m_s": {
+        "value": 2.04813,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_elbow_r_m_s": {
+        "value": 2.04813,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_wrist_l_m_s": {
+        "value": 0.4236,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_wrist_r_m_s": {
+        "value": 0.4236,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_hand_l_m_s": {
+        "value": 0.4236,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_hand_r_m_s": {
+        "value": 0.4236,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_hip_l_m_s": {
+        "value": 0.84828,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_hip_r_m_s": {
+        "value": 0.84828,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_knee_l_m_s": {
+        "value": 0.65503,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_knee_r_m_s": {
+        "value": 0.65503,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_ankle_l_m_s": {
+        "value": 0.29839,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_ankle_r_m_s": {
+        "value": 0.29839,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_toe_l_m_s": {
+        "value": 0.29839,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_toe_r_m_s": {
+        "value": 0.29839,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 2.04813,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "forearm_support_samples": {
+        "value": 8.0,
+        "min": 6,
+        "max": null,
+        "ok": true
+      },
+      "forearm_elbow_bar_axis_distance_max_m": {
+        "value": 0.06621,
+        "min": null,
+        "max": 0.067,
+        "ok": true
+      },
+      "wrist_bar_axis_distance_max_m": {
+        "value": 0.04,
+        "min": null,
+        "max": 0.045,
+        "ok": true
+      },
+      "supported_elbow_angle_min_deg": {
+        "value": 141.29626,
+        "min": 125.0,
+        "max": null,
+        "ok": true
+      },
+      "starts_in_upper_support": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "reaches_forearm_dip": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "returns_to_upper_support": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 1.33804,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 1e-05,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "d4763c571afc80c20e652315606ee8e430e164a4db75a4e678fa37f946c27a09",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "dragon-flag-negative",
+    "style": "Straight-body negative with tucked recovery over a bench.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.0,
+        "min": 0.0,
+        "max": 0.005,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.0,
+        "min": 0.0,
+        "max": 0.005,
+        "ok": true
+      },
+      "known_variant": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_timeline": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_fps": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "finite_required_geometry": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 7.0,
+        "min": 0.0,
+        "max": 15.0,
+        "ok": true
+      },
+      "max_knee_speed_m_s": {
+        "value": 3.00087,
+        "min": 0.0,
+        "max": 4.0,
+        "ok": true
+      },
+      "straight_negative_frames": {
+        "value": 122.0,
+        "min": 2,
+        "max": null,
+        "ok": true
+      },
+      "negative_trunk_alignment_max_deg": {
+        "value": 0.28337,
+        "min": 0.0,
+        "max": 8.0,
+        "ok": true
+      },
+      "negative_knee_extension_min_deg": {
+        "value": 173.37811,
+        "min": 165.0,
+        "max": 180.0,
+        "ok": true
+      },
+      "recovery_tuck_knee_angle_min_deg": {
+        "value": 57.58306,
+        "min": 0.0,
+        "max": 140.0,
+        "ok": true
+      },
+      "recovery_final_knee_extension_deg": {
+        "value": 174.50467,
+        "min": 165.0,
+        "max": 180.0,
+        "ok": true
+      },
+      "torso_bench_proxy_clearance_m": {
+        "value": 0.00557,
+        "min": 0.005,
+        "max": null,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 3.09453,
+        "min": null,
+        "max": 4,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "327cc5a839548adb474bc154baa4ae98d97cb2fecef72baa33a192f7cc88f088",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "flag-kick-press",
+    "style": "Explosive human-flag kick-through with landing absorption; not a held flag.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "exercise_id": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "valid_timeline": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "finite_geometry": {
+        "value": 1.0,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "duration_s": {
+        "value": 3.20833,
+        "min": 2.8,
+        "max": 4.0,
+        "ok": true
+      },
+      "loop_seam_max_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      },
+      "max_speed_pelvis_m_s": {
+        "value": 2.43384,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_spine_m_s": {
+        "value": 1.79785,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_chest_m_s": {
+        "value": 1.79785,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_neck_m_s": {
+        "value": 1.79785,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_head_m_s": {
+        "value": 1.79785,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "max_speed_shoulder_l_m_s": {
+        "value": 1.79785,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_shoulder_r_m_s": {
+        "value": 1.79785,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_elbow_l_m_s": {
+        "value": 0.99662,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_elbow_r_m_s": {
+        "value": 1.46802,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_wrist_l_m_s": {
+        "value": 0.0,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_wrist_r_m_s": {
+        "value": 0.0,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_hand_l_m_s": {
+        "value": 0.0,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_hand_r_m_s": {
+        "value": 0.0,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_hip_l_m_s": {
+        "value": 2.56934,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_hip_r_m_s": {
+        "value": 2.4922,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_knee_l_m_s": {
+        "value": 3.75748,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_knee_r_m_s": {
+        "value": 3.67457,
+        "min": null,
+        "max": null,
+        "ok": true
+      },
+      "max_speed_ankle_l_m_s": {
+        "value": 5.00052,
+        "min": null,
+        "max": 6.0,
+        "ok": true
+      },
+      "max_speed_ankle_r_m_s": {
+        "value": 4.96113,
+        "min": null,
+        "max": 6.0,
+        "ok": true
+      },
+      "max_speed_toe_l_m_s": {
+        "value": 5.10402,
+        "min": null,
+        "max": 6.0,
+        "ok": true
+      },
+      "max_speed_toe_r_m_s": {
+        "value": 5.00745,
+        "min": null,
+        "max": 6.0,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 5.10402,
+        "min": null,
+        "max": 6.0,
+        "ok": true
+      },
+      "kick_hip_peak_z_m": {
+        "value": 1.81172,
+        "min": 1.65,
+        "max": null,
+        "ok": true
+      },
+      "kick_ankle_peak_z_m": {
+        "value": 2.68112,
+        "min": 1.6,
+        "max": null,
+        "ok": true
+      },
+      "kick_apex_samples_within_5mm": {
+        "value": 1.0,
+        "min": null,
+        "max": 2,
+        "ok": true
+      },
+      "pole_wrist_centerline_distance_max_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.03,
+        "ok": true
+      },
+      "bilateral_landing_samples": {
+        "value": 19.0,
+        "min": 3,
+        "max": null,
+        "ok": true
+      },
+      "landing_knee_angle_min_deg": {
+        "value": 159.09563,
+        "min": null,
+        "max": 165.0,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 5.00052,
+        "min": null,
+        "max": 6,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "5dad56c35d2cbb8e40501d62909902fff1aeffb823c061a2a18fa8f37b33c353",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  {
+    "exercise": "pilates-saw",
+    "style": "Bilateral spinal rotation and opposite-foot reach with long planted legs.",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 1.41445,
+        "min": null,
+        "max": 1.5,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 1.41445,
+        "min": null,
+        "max": 1.5,
+        "ok": true
+      },
+      "saw_valid_geometry": {
+        "value": 1,
+        "min": 1,
+        "max": 1,
+        "ok": true
+      },
+      "saw_joint_speed_m_s": {
+        "value": 2.43749,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "saw_seam_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      },
+      "saw_pelvis_drift_m": {
+        "value": 0.02598,
+        "min": null,
+        "max": 0.04,
+        "ok": true
+      },
+      "saw_fold_range_m": {
+        "value": 0.33485,
+        "min": 0.3,
+        "max": 0.4,
+        "ok": true
+      },
+      "saw_left_rotation": {
+        "value": 0.61566,
+        "min": 0.5,
+        "max": 0.75,
+        "ok": true
+      },
+      "saw_right_rotation": {
+        "value": 0.61566,
+        "min": 0.5,
+        "max": 0.75,
+        "ok": true
+      },
+      "saw_l_heel_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "saw_l_knee_min_deg": {
+        "value": 175.63961,
+        "min": 165,
+        "max": null,
+        "ok": true
+      },
+      "saw_r_heel_drift_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "saw_r_knee_min_deg": {
+        "value": 175.63961,
+        "min": 165,
+        "max": null,
+        "ok": true
+      },
+      "common_max_joint_speed_m_s": {
+        "value": 1.91237,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.0,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "e8619f661ee0172a6fb530d45de55cd53b63d4110eaeaf514c4ffbb078e4d889",
+    "contract_sha256": "c2ec27d75e8792c8b4ca502e796c10920cfc491a41620fade358695dd7156b75",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  }
+]

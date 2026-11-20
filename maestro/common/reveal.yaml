@@ -4,8 +4,8 @@ appId: app.calisthenics.personal
 - runFlow:
     when: { notVisible: { id: "${ID}" } }
     commands:
-      - scrollUntilVisible: { element: { id: "${ID}" }, direction: UP, timeout: 60000, speed: 85, optional: true }
+      - scrollUntilVisible: { element: { id: "${ID}" }, direction: UP, timeout: 60000, speed: 40, optional: true }
 - runFlow:
     when: { notVisible: { id: "${ID}" } }
     commands:
-      - scrollUntilVisible: { element: { id: "${ID}" }, direction: DOWN, timeout: 60000, speed: 85 }
+      - scrollUntilVisible: { element: { id: "${ID}" }, direction: DOWN, timeout: 60000, speed: 40 }

@@ -1,0 +1,154 @@
+{
+  "schema": 1,
+  "purpose": "Screening pilot, not professional form approval",
+  "references": [
+    {
+      "video_id": "GBcUcATb8RQ",
+      "url": "https://www.youtube.com/watch?v=GBcUcATb8RQ",
+      "channel": "FitnessFAQs",
+      "title": "Pull-Ups OR Chin-Ups? (CHOOSE WISELY)",
+      "exercises": [
+        "pullup-full",
+        "chinup-full"
+      ],
+      "view": "rear oblique",
+      "analysis": {
+        "pullup-full": "work/form-reference-pilot/GBcUcATb8RQ-pullup-full.json",
+        "chinup-full": "work/form-reference-pilot/GBcUcATb8RQ-chinup-full.json"
+      },
+      "review": {
+        "pullup-full": {
+          "interval": [
+            71.2,
+            73.3
+          ],
+          "view_comparable": false,
+          "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+          "note": "Different camera from candidate: metrics remain inconclusive.",
+          "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+        },
+        "chinup-full": {
+          "interval": [
+            136.3,
+            139.0
+          ],
+          "view_comparable": false,
+          "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+          "note": "Different camera from candidate: metrics remain inconclusive.",
+          "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+        }
+      },
+      "local_video": "work/form-reference-pilot/GBcUcATb8RQ.mp4"
+    },
+    {
+      "video_id": "eGo4IYlbE5g",
+      "url": "https://www.youtube.com/watch?v=eGo4IYlbE5g",
+      "channel": "Calisthenicmovement",
+      "title": "The Perfect Pull Up - Do it right!",
+      "exercises": [
+        "pullup-full"
+      ],
+      "view": "side oblique",
+      "analysis": {
+        "pullup-full": "work/form-reference-pilot/eGo4IYlbE5g-pullup-full.json"
+      },
+      "review": {
+        "pullup-full": {
+          "interval": [
+            230,
+            234.5
+          ],
+          "view_comparable": false,
+          "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+          "note": "Different camera from candidate: metrics remain inconclusive.",
+          "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+        }
+      },
+      "local_video": "work/form-reference-pilot/eGo4IYlbE5g.mp4"
+    },
+    {
+      "video_id": "Hdc7Mw6BIEE",
+      "url": "https://www.youtube.com/watch?v=Hdc7Mw6BIEE",
+      "channel": "Jeff Nippard",
+      "title": "The Best Way To Do Pull Ups For A Wide Back",
+      "exercises": [
+        "pullup-full"
+      ],
+      "view": "rear",
+      "analysis": {
+        "pullup-full": "work/form-reference-pilot/Hdc7Mw6BIEE-pullup-full.json"
+      },
+      "review": {
+        "pullup-full": {
+          "interval": [
+            307.6,
+            311.8
+          ],
+          "view_comparable": false,
+          "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+          "note": "Different camera from candidate: metrics remain inconclusive.",
+          "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+        }
+      },
+      "local_video": "work/form-reference-pilot/Hdc7Mw6BIEE.mp4"
+    },
+    {
+      "video_id": "_71FpEaq-fQ",
+      "url": "https://www.youtube.com/watch?v=_71FpEaq-fQ",
+      "channel": "Howcast",
+      "title": "How to Do a Chin-Up | Back Workout",
+      "exercises": [
+        "chinup-full"
+      ],
+      "view": "rear",
+      "analysis": {
+        "chinup-full": "work/form-reference-pilot/_71FpEaq-fQ-chinup-full.json"
+      },
+      "review": {
+        "chinup-full": {
+          "interval": [
+            27.8,
+            31.4
+          ],
+          "view_comparable": false,
+          "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+          "note": "Different camera from candidate: metrics remain inconclusive.",
+          "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+        }
+      },
+      "local_video": "work/form-reference-pilot/_71FpEaq-fQ.mp4"
+    },
+    {
+      "video_id": "bZ6Ysk9jf6E",
+      "url": "https://www.youtube.com/watch?v=bZ6Ysk9jf6E",
+      "channel": "ScottHermanFitness",
+      "title": "How To: Weighted Chin-Up",
+      "exercises": [
+        "chinup-full"
+      ],
+      "view": "side; weighted variation, upper-limb comparison only",
+      "analysis": {
+        "chinup-full": "work/form-reference-pilot/bZ6Ysk9jf6E-chinup-full.json"
+      },
+      "review": {
+        "chinup-full": {
+          "interval": [
+            69.7,
+            72.8
+          ],
+          "view_comparable": false,
+          "grip": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending",
+          "note": "Different camera from candidate: metrics remain inconclusive. Weighted reference is not a whole-body template.",
+          "segment_review": "Selected from decoded contact sheets; no intentional wrong-form examples. Confirm full rep boundaries during detailed review."
+        }
+      },
+      "local_video": "work/form-reference-pilot/bZ6Ysk9jf6E.mp4",
+      "comparison_joints": [
+        "elbow_l",
+        "elbow_r",
+        "shoulder_l",
+        "shoulder_r"
+      ]
+    }
+  ]
+}

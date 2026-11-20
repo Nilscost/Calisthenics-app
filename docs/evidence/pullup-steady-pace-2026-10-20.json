@@ -1,0 +1,400 @@
+{
+  "before": {
+    "exercise": "pullup-full",
+    "style": "Controlled mild arch, shoulder initiation, no kip",
+    "status": "fail",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.00041,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.00041,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "top_back_tilt_deg": {
+        "value": 16.80209,
+        "min": 12,
+        "max": 25,
+        "ok": true
+      },
+      "tilt_change_deg": {
+        "value": 12.24188,
+        "min": 8,
+        "max": null,
+        "ok": true
+      },
+      "hip_travel_m": {
+        "value": 0.19,
+        "min": 0.12,
+        "max": 0.3,
+        "ok": true
+      },
+      "shoulder_action_m": {
+        "value": 0.035,
+        "min": 0.025,
+        "max": 0.065,
+        "ok": true
+      },
+      "rise_m": {
+        "value": 0.47532,
+        "min": 0.4,
+        "max": null,
+        "ok": true
+      },
+      "interior_speed_min_m_s": {
+        "value": 0.29928,
+        "min": 0.12,
+        "max": null,
+        "ok": true
+      },
+      "rise_vertical_speed_ratio": {
+        "value": 1.64677,
+        "min": null,
+        "max": 1.03,
+        "ok": false
+      },
+      "rise_torso_speed_ratio": {
+        "value": 1.69208,
+        "min": null,
+        "max": 1.12,
+        "ok": false
+      },
+      "descent_vertical_speed_ratio": {
+        "value": 1.47603,
+        "min": null,
+        "max": 1.03,
+        "ok": false
+      },
+      "descent_torso_speed_ratio": {
+        "value": 1.5161,
+        "min": null,
+        "max": 1.12,
+        "ok": false
+      },
+      "finger_bar_clearance_m": {
+        "value": 0.00117,
+        "min": 0.0005,
+        "max": null,
+        "ok": true
+      },
+      "hang_elbow_l_deg": {
+        "value": 173.75432,
+        "min": 165,
+        "max": null,
+        "ok": true
+      },
+      "top_elbow_l_deg": {
+        "value": 38.4613,
+        "min": 30,
+        "max": 100,
+        "ok": true
+      },
+      "palm_l_forward": {
+        "value": 1.0,
+        "min": 0.95,
+        "max": null,
+        "ok": true
+      },
+      "hang_elbow_r_deg": {
+        "value": 173.75432,
+        "min": 165,
+        "max": null,
+        "ok": true
+      },
+      "top_elbow_r_deg": {
+        "value": 38.4613,
+        "min": 30,
+        "max": 100,
+        "ok": true
+      },
+      "palm_r_forward": {
+        "value": 1.0,
+        "min": 0.95,
+        "max": null,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 0.65107,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.00087,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [
+      {
+        "check": "rise_vertical_speed_ratio",
+        "value": 1.64677,
+        "frame": null,
+        "time_s": null
+      },
+      {
+        "check": "rise_torso_speed_ratio",
+        "value": 1.69208,
+        "frame": null,
+        "time_s": null
+      },
+      {
+        "check": "descent_vertical_speed_ratio",
+        "value": 1.47603,
+        "frame": null,
+        "time_s": null
+      },
+      {
+        "check": "descent_torso_speed_ratio",
+        "value": 1.5161,
+        "frame": null,
+        "time_s": null
+      }
+    ],
+    "data_sha256": "7fdeb6f9d6044ae2a26c706784b003baf8363b7f1e31eaf2a7d356cbe8fde152",
+    "contract_sha256": "29e1d419fdb2150ab74d8c1ddc60e127307bcf7511c0b003fd1f268e7539d8cb",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  "after": {
+    "exercise": "pullup-full",
+    "style": "Controlled mild arch, shoulder initiation, no kip",
+    "status": "pass",
+    "metrics": {
+      "wrist_l_drift_m": {
+        "value": 0.00027,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "wrist_r_drift_m": {
+        "value": 0.00027,
+        "min": null,
+        "max": 0.003,
+        "ok": true
+      },
+      "top_back_tilt_deg": {
+        "value": 16.80209,
+        "min": 12,
+        "max": 25,
+        "ok": true
+      },
+      "tilt_change_deg": {
+        "value": 12.24188,
+        "min": 8,
+        "max": null,
+        "ok": true
+      },
+      "hip_travel_m": {
+        "value": 0.19,
+        "min": 0.12,
+        "max": 0.3,
+        "ok": true
+      },
+      "shoulder_action_m": {
+        "value": 0.035,
+        "min": 0.025,
+        "max": 0.065,
+        "ok": true
+      },
+      "rise_m": {
+        "value": 0.47532,
+        "min": 0.4,
+        "max": null,
+        "ok": true
+      },
+      "interior_speed_min_m_s": {
+        "value": 0.33744,
+        "min": 0.12,
+        "max": null,
+        "ok": true
+      },
+      "rise_vertical_speed_ratio": {
+        "value": 1.00036,
+        "min": null,
+        "max": 1.03,
+        "ok": true
+      },
+      "rise_torso_speed_ratio": {
+        "value": 1.06668,
+        "min": null,
+        "max": 1.12,
+        "ok": true
+      },
+      "descent_vertical_speed_ratio": {
+        "value": 1.00036,
+        "min": null,
+        "max": 1.03,
+        "ok": true
+      },
+      "descent_torso_speed_ratio": {
+        "value": 1.06744,
+        "min": null,
+        "max": 1.12,
+        "ok": true
+      },
+      "finger_bar_clearance_m": {
+        "value": 0.00117,
+        "min": 0.0005,
+        "max": null,
+        "ok": true
+      },
+      "hang_elbow_l_deg": {
+        "value": 173.75432,
+        "min": 165,
+        "max": null,
+        "ok": true
+      },
+      "top_elbow_l_deg": {
+        "value": 38.4613,
+        "min": 30,
+        "max": 100,
+        "ok": true
+      },
+      "palm_l_forward": {
+        "value": 1.0,
+        "min": 0.95,
+        "max": null,
+        "ok": true
+      },
+      "hang_elbow_r_deg": {
+        "value": 173.75432,
+        "min": 165,
+        "max": null,
+        "ok": true
+      },
+      "top_elbow_r_deg": {
+        "value": 38.4613,
+        "min": 30,
+        "max": 100,
+        "ok": true
+      },
+      "palm_r_forward": {
+        "value": 1.0,
+        "min": 0.95,
+        "max": null,
+        "ok": true
+      },
+      "max_joint_speed_m_s": {
+        "value": 0.44335,
+        "min": null,
+        "max": 2.5,
+        "ok": true
+      },
+      "loop_gap_m": {
+        "value": 0.00049,
+        "min": null,
+        "max": 0.012,
+        "ok": true
+      }
+    },
+    "failures": [],
+    "data_sha256": "7bd5c49b8f86b505b07b4783915702843716402d3f1af0df941c12094b6bfcf4",
+    "contract_sha256": "29e1d419fdb2150ab74d8c1ddc60e127307bcf7511c0b003fd1f268e7539d8cb",
+    "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+  },
+  "media": {
+    "frames_decoded": 96,
+    "bytes": 22883,
+    "sha256": "df1eb534a45929297ffc262c80dea08663f2646ea7631b4ba633d924ce9f591d",
+    "stream": {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "Main",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "mime_codec_string": "avc1.4d4015",
+      "width": 480,
+      "height": 360,
+      "coded_width": 480,
+      "coded_height": 360,
+      "has_b_frames": 2,
+      "pix_fmt": "yuv420p",
+      "level": 21,
+      "chroma_location": "left",
+      "field_order": "progressive",
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "24/1",
+      "avg_frame_rate": "24/1",
+      "time_base": "1/12288",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 49152,
+      "duration": "4.000000",
+      "bit_rate": "41822",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "96",
+      "extradata_size": 40,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler",
+        "encoder": "Lavc61.19.100 libx264"
+      }
+    },
+    "duration_seconds": 4.0,
+    "max_decoded_frame_step_mean": 1.0666840076446533,
+    "max_step_frame": 62,
+    "visually_reviewed_frames": [
+      0,
+      8,
+      17,
+      24,
+      33,
+      40,
+      48,
+      56,
+      62,
+      65,
+      73,
+      81,
+      88,
+      95
+    ],
+    "note": "Decoded image differences are diagnostics, not proof of phone playback or form correctness."
+  },
+  "installed_matches_reviewed_encode": true,
+  "apk_rebuilt": false,
+  "device_verified": false,
+  "credits_usd": 0,
+  "archer_assets_unchanged": true,
+  "assets": {
+    "app/src/main/assets/demos/pullup-full.mp4": {
+      "sha256": "df1eb534a45929297ffc262c80dea08663f2646ea7631b4ba633d924ce9f591d",
+      "bytes": 22883
+    },
+    "app/src/main/assets/thumbs/pullup-full.webp": {
+      "sha256": "66231e80f56e1187ccd0ed1ed825a69ba2f9642f624d2c68ed76f169ac739d16",
+      "bytes": 3400
+    }
+  }
+}

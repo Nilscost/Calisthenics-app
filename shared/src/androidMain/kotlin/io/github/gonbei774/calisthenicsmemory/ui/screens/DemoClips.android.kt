@@ -1,0 +1,100 @@
+// Demo clips: the owner films one short clip per exercise variation, named <variationId>.mp4 (see docs/demo-shot-list.md).
+// Import copies matching files into app-private storage; playback is offline via the platform VideoView (no new dependency).
+package io.github.gonbei774.calisthenicsmemory.ui.screens
+
+import android.content.Context
+import io.github.gonbei774.calisthenicsmemory.shared.resources.Res
+import io.github.gonbei774.calisthenicsmemory.shared.resources.demo_clip_description
+import org.jetbrains.compose.resources.stringResource
+import android.widget.MediaController
+import android.widget.VideoView
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import java.io.File
+
+actual typealias DemoClip = File
+
+/** Android actual: clips are bundled assets, copied once to the cache because VideoView needs a file. */
+actual object DemoClips {
+    private var heldForVersion: Pair<Long, Set<String>>? = null
+    /**
+     * Clips are rendered in Blender (tools/blender, installed by install_clips.py) and bundled in assets/demos/<variationId>.mp4. VideoView needs a file, so the clip is copied to the cache.
+     * R7-T07 (B10): the cached copy is keyed on the app's versionCode and the asset's size, and the first run of a new version clears the old files,
+     * so a clip that changed in an update is never played from a stale copy.
+     */
+    actual fun file(ctx: Context, id: String): DemoClip? {
+        val version = androidx.core.content.pm.PackageInfoCompat.getLongVersionCode(ctx.packageManager.getPackageInfo(ctx.packageName, 0))
+        val held = synchronized(this) {
+            heldForVersion?.takeIf { it.first == version }?.second ?: ctx.assets.open("catalog.json").bufferedReader().use {
+                app.calisthenics.domain.content.parseCatalog(it.readText()).variations.filter { v -> v.demonstrationHold }.map { v -> v.id }.toSet()
+            }.also { heldForVersion = version to it }
+        }
+        return file(ctx, id, held)
+    }
+
+    /** Shared policy seam for exercising a synthetic teaching hold even when the shipped catalog has none. */
+    actual fun file(ctx: Context, id: String, heldIds: Set<String>): DemoClip? {
+        val version = androidx.core.content.pm.PackageInfoCompat.getLongVersionCode(ctx.packageManager.getPackageInfo(ctx.packageName, 0))
+        // Applies to every caller, including old saved workouts, onboarding and program playback.
+        if (id in heldIds) return null
+        val asset = id
+        return cachedClip(File(ctx.cacheDir, "demos"), version, asset, assetSize = { assetSize(ctx, asset) }, open = { ctx.assets.open("demos/$asset.mp4") })
+    }
+
+    private fun assetSize(ctx: Context, id: String): Long = try {
+        ctx.assets.openFd("demos/$id.mp4").use { it.length }
+    } catch (_: Exception) { try { ctx.assets.open("demos/$id.mp4").use { s -> var n = 0L; val buf = ByteArray(65536); while (true) { val r = s.read(buf); if (r < 0) break; n += r }; n } } catch (_: Exception) { -1L } }
+
+    /** Testable core: [dir] is the cache folder, [open] reads the asset. Returns the cached file, or null when the asset is missing. */
+    fun cachedClip(dir: File, versionCode: Long, id: String, assetSize: () -> Long, open: () -> java.io.InputStream): File? {
+        dir.mkdirs()
+        val stamp = File(dir, ".version")
+        if (!stamp.isFile || stamp.readText().trim() != versionCode.toString()) {   // first run of a new version: clear every old copy
+            dir.listFiles()?.forEach { if (it.isFile) it.delete() }
+            stamp.writeText(versionCode.toString())
+        }
+        val size = assetSize()
+        val out = File(dir, "$id-$versionCode-$size.mp4")
+        if (out.isFile && out.length() > 0) return out
+        dir.listFiles { f -> f.name.startsWith("$id-") && f.name.endsWith(".mp4") }?.forEach { it.delete() }   // an older size of this clip
+        return try {
+            open().use { i -> out.outputStream().use { o -> i.copyTo(o) } }
+            out
+        } catch (_: Exception) { out.delete(); null }
+    }
+}
+
+/** Demo clips are silent: never take audio focus, so external music (Spotify etc.) keeps playing across exercise changes. Must run before setVideoPath. */
+fun VideoView.configureSilentDemo() {
+    setAudioFocusRequest(android.media.AudioManager.AUDIOFOCUS_NONE)
+}
+
+/**
+ * Plays [file] in a loop. K1 (v2 plan): the VideoView used to be created once and never reloaded, so the clip stayed on the
+ * first file when the block changed. The view is now keyed on the path (a new file = a new view) and `update` reloads
+ * defensively; [onLoad] is called with every path that is handed to the view (used by tests).
+ */
+@Composable
+actual fun DemoPlayer(file: DemoClip, controls: Boolean, onLoad: (String) -> Unit, minHeight: androidx.compose.ui.unit.Dp, fit: Boolean) {
+    val description = stringResource(Res.string.demo_clip_description)
+    val path = file.absolutePath
+    key(path) {
+        AndroidView(modifier = (if (fit) Modifier.heightIn(max = 260.dp).aspectRatio(16f / 10f) else Modifier.fillMaxWidth().heightIn(min = minHeight, max = 260.dp).aspectRatio(16f / 10f)).semantics { contentDescription = description }, factory = { c ->
+            VideoView(c).apply {
+                configureSilentDemo()
+                tag = path
+                setVideoPath(path); onLoad(path)
+                if (controls) setMediaController(MediaController(c).also { it.setAnchorView(this) })
+                setOnPreparedListener { it.isLooping = true; it.setVolume(0f, 0f); start() }
+            }
+        }, update = { v ->
+            if (v.tag != path) { v.tag = path; v.configureSilentDemo(); v.setVideoPath(path); onLoad(path); v.start() }
+        })
+    }
+}

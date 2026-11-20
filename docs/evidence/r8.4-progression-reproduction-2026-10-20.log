@@ -1,0 +1,41 @@
+Picked up JAVA_TOOL_OPTIONS: -Dorg.sqlite.tmpdir=/root/sqlitetmp -Djava.io.tmpdir=/root/sqlitetmp -Dorg.sqlite.lib.path=/root/toolchain/sqlite -Dorg.sqlite.lib.name=libsqlitejdbc.so
+> Task :domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :domain:compileKotlin
+> Task :domain:compileJava NO-SOURCE
+> Task :domain:processResources NO-SOURCE
+> Task :domain:classes UP-TO-DATE
+> Task :domain:jar
+
+> Task :domain:compileTestKotlin
+w: file:///workspace/calisthenics-r8.4/domain/src/test/kotlin/app/calisthenics/domain/ProfileEditTest.kt:91:19 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/calisthenics-r8.4/domain/src/test/kotlin/app/calisthenics/domain/SavedRoutineTest.kt:52:19 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/calisthenics-r8.4/domain/src/test/kotlin/app/calisthenics/domain/SeedFixtureTest.kt:68:26 Redundant creation of Json format. Creating instances for each usage can be slow.
+
+> Task :domain:compileTestJava NO-SOURCE
+> Task :domain:processTestResources NO-SOURCE
+> Task :domain:testClasses UP-TO-DATE
+
+> Task :domain:test FAILED
+Picked up JAVA_TOOL_OPTIONS: -Dorg.sqlite.tmpdir=/root/sqlitetmp -Djava.io.tmpdir=/root/sqlitetmp -Dorg.sqlite.lib.path=/root/toolchain/sqlite -Dorg.sqlite.lib.name=libsqlitejdbc.so
+
+DemonstratedProgressionTest > higherSelectedLevelWithExplicitCompleteResultsAdoptsAndThenConsolidates FAILED
+    java.lang.AssertionError: expected:<3> but was:<1>
+        at org.junit.Assert.fail(Assert.java:89)
+        at org.junit.Assert.failNotEquals(Assert.java:835)
+        at org.junit.Assert.assertEquals(Assert.java:120)
+        at org.junit.Assert.assertEquals(Assert.java:146)
+        at app.calisthenics.domain.DemonstratedProgressionTest.higherSelectedLevelWithExplicitCompleteResultsAdoptsAndThenConsolidates(DemonstratedProgressionTest.kt:48)
+
+4 tests completed, 1 failed
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':domain:test'.
+> There were failing tests. See the report at: file:///workspace/calisthenics-r8.4/domain/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights.
+
+BUILD FAILED in 25s
+4 actionable tasks: 4 executed

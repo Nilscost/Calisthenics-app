@@ -1,0 +1,146 @@
+// One number per round, plus Too hard · Too easy · Pain for the exercise. Used by the end screen and the History detail.
+// Every change is reported as a correction for EVERY round of the exercise (see feedback/Corrections.kt), saved as new revisions.
+package io.github.gonbei774.calisthenicsmemory.ui.session
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.semantics
+import app.calisthenics.domain.history.ratingFor
+import app.calisthenics.domain.model.Side
+import app.calisthenics.domain.model.Target
+import app.calisthenics.domain.model.TargetType
+import io.github.gonbei774.calisthenicsmemory.shared.resources.Res
+import io.github.gonbei774.calisthenicsmemory.shared.resources.logger_pain
+import io.github.gonbei774.calisthenicsmemory.shared.resources.logger_reps_done
+import io.github.gonbei774.calisthenicsmemory.shared.resources.logger_reps_done_per_side
+import io.github.gonbei774.calisthenicsmemory.shared.resources.logger_seconds_held
+import io.github.gonbei774.calisthenicsmemory.shared.resources.logger_seconds_held_per_side
+import io.github.gonbei774.calisthenicsmemory.shared.resources.logger_too_easy
+import io.github.gonbei774.calisthenicsmemory.shared.resources.logger_too_hard
+import io.github.gonbei774.calisthenicsmemory.shared.resources.round_as_planned
+import io.github.gonbei774.calisthenicsmemory.shared.resources.round_corrected
+import io.github.gonbei774.calisthenicsmemory.shared.resources.round_label
+import io.github.gonbei774.calisthenicsmemory.shared.resources.round_label_side
+import io.github.gonbei774.calisthenicsmemory.shared.resources.set_label
+import io.github.gonbei774.calisthenicsmemory.shared.resources.set_label_side
+import io.github.gonbei774.calisthenicsmemory.shared.resources.side_left
+import io.github.gonbei774.calisthenicsmemory.shared.resources.side_right
+import io.github.gonbei774.calisthenicsmemory.shared.resources.unit_suffix_s
+import io.github.gonbei774.calisthenicsmemory.shared.resources.unit_suffix_x
+import io.github.gonbei774.calisthenicsmemory.ui.components.Stepper
+import io.github.gonbei774.calisthenicsmemory.ui.history.RoundCorrection
+import io.github.gonbei774.calisthenicsmemory.ui.theme.Spacing
+import org.jetbrains.compose.resources.stringResource
+
+/** One round to edit. [value] null = not typed ("as planned"). */
+data class EditorRound(val blockId: String, val round: Int, val side: Side, val value: Int?, val corrected: Boolean = false)
+
+/**
+ * Tags: `<tag>_round<i>` (the label), `<tag>_round<i>_value|minus|plus` (i = 1..n in list order),
+ * `<tag>_too_hard`, `<tag>_too_easy`, `<tag>_pain`. [onChange] gets all rounds each time.
+ *
+ * The end-screen card shows only the chips ([showRounds] false) with its expand control in [afterChips] ([chipsFirst]), and reads the rating through
+ * [onRating]; the numbers keep their state while they are hidden.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun RoundEditor(
+    target: Target?, rounds: List<EditorRound>, sets: Boolean = false, tooHard0: Boolean, tooEasy0: Boolean, pain0: Boolean, tag: String, alternating: Boolean = false, judged: Int? = target?.value,
+    showRounds: Boolean = true, chipsFirst: Boolean = false, afterChips: @Composable () -> Unit = {}, onRating: (tooHard: Boolean, tooEasy: Boolean) -> Unit = { _, _ -> },
+    onChange: (List<RoundCorrection>) -> Unit,
+) {
+    val hold = target?.type == TargetType.HOLD_SECONDS
+    val values = remember(tag, rounds.map { it.blockId }) { mutableStateListOf<Int>().apply { rounds.forEach { add(it.value ?: target?.shownValue() ?: 0) } } }
+    val typed = remember(tag, rounds.map { it.blockId }) { mutableStateListOf<Boolean>().apply { rounds.forEach { add(it.value != null) } } }
+    var tooHard by remember(tag) { mutableStateOf(tooHard0) }
+    var tooEasy by remember(tag) { mutableStateOf(tooEasy0) }
+    var pain by remember(tag) { mutableStateOf(pain0) }
+    fun push() {
+        onRating(tooHard, tooEasy)
+        onChange(rounds.mapIndexed { i, r ->
+            val reps = if (typed[i]) values[i] else null
+            RoundCorrection(r.blockId, reps, ratingFor(reps, target, tooHard, tooEasy, judged), pain, hold)
+        })
+    }
+    val captionRes = when {
+        hold && alternating -> Res.string.logger_seconds_held_per_side
+        hold -> Res.string.logger_seconds_held
+        alternating -> Res.string.logger_reps_done_per_side
+        else -> Res.string.logger_reps_done
+    }
+
+    @Composable
+    fun Rounds() {
+        rounds.forEachIndexed { i, r ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f).semantics(mergeDescendants = true) {}.testTag("${tag}_round${i + 1}")) {
+                    val side = when (r.side) {
+                        Side.LEFT -> stringResource(Res.string.side_left)
+                        Side.RIGHT -> stringResource(Res.string.side_right)
+                        else -> ""
+                    }
+                    val label = when {
+                        side.isEmpty() -> stringResource(if (sets) Res.string.set_label else Res.string.round_label, r.round)
+                        else -> stringResource(if (sets) Res.string.set_label_side else Res.string.round_label_side, r.round, side)
+                    }
+                    Text(label, style = MaterialTheme.typography.bodyLarge)
+                    val note = listOfNotNull(
+                        if (!typed[i]) stringResource(Res.string.round_as_planned) else null,
+                        if (r.corrected) stringResource(Res.string.round_corrected) else null,
+                    ).joinToString(" · ")
+                    if (note.isNotEmpty()) Text(note, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Stepper(
+                    values[i], { values[i] = it; typed[i] = true; push() }, 0..999, step = if (hold && (target?.shownValue() ?: 0) >= 30) 5 else 1,
+                    tag = "${tag}_round${i + 1}", suffix = stringResource(if (hold) Res.string.unit_suffix_s else Res.string.unit_suffix_x),
+                )
+            }
+        }
+        Text(stringResource(captionRes), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+
+    @Composable
+    fun Chips() {
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(Spacing.s)) {
+            FilterChip(
+                selected = tooHard, onClick = { tooHard = !tooHard; if (tooHard) tooEasy = false; push() },
+                label = { Text(stringResource(Res.string.logger_too_hard)) }, modifier = Modifier.testTag("${tag}_too_hard"),
+            )
+            FilterChip(
+                selected = tooEasy, onClick = { tooEasy = !tooEasy; if (tooEasy) tooHard = false; push() },
+                label = { Text(stringResource(Res.string.logger_too_easy)) }, modifier = Modifier.testTag("${tag}_too_easy"),
+            )
+            FilterChip(
+                selected = pain, onClick = { pain = !pain; push() },
+                label = { Text(stringResource(Res.string.logger_pain)) }, modifier = Modifier.testTag("${tag}_pain"),
+            )
+        }
+    }
+
+    Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
+        if (chipsFirst) {
+            Chips()
+            afterChips()
+            if (showRounds) Rounds()
+        } else {
+            if (showRounds) Rounds()
+            Chips()
+            afterChips()
+        }
+    }
+}

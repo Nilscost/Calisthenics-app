@@ -10,6 +10,7 @@ import app.calisthenics.domain.history.SessionRecord
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.model.Target
 import io.github.gonbei774.calisthenicsmemory.data.AppTheme
+import io.github.gonbei774.calisthenicsmemory.data.ThemePreferences
 import io.github.gonbei774.calisthenicsmemory.ui.history.*
 import io.github.gonbei774.calisthenicsmemory.ui.screens.PrefsStore
 import io.github.gonbei774.calisthenicsmemory.ui.screens.PrivacyScreen
@@ -51,7 +52,7 @@ class HistorySettingsTest {
         SessionRecord(id, "p1", ms(d), ms(d) + 40 * 60_000L, "COMPLETED", reps.mapIndexed { i, v -> BlockRecord("r${i + 1}-push-work", "pushup-standard", "WORK", "MET", 60, v) }),
         plan, emptyMap())
 
-    @Before fun clean() { for (n in listOf("profiles", "planner_prefs", "train", "goal", "mode")) ctx.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit() }
+    @Before fun clean() { for (n in listOf("profiles", "planner_prefs", "train", "goal", "mode", "theme_preferences")) ctx.getSharedPreferences(n, Context.MODE_PRIVATE).edit().clear().commit() }
 
     private fun showHistory(src: HistorySource, open: (String) -> Unit = {}) = rule.setContent {
         CalisthenicsMemoryTheme(darkTheme = false) { HistoryScreen(source = src, today = today, onOpen = open) }
@@ -188,7 +189,7 @@ class HistorySettingsTest {
 
     @Test fun settingsHasEverySectionTheSpecAsks() {
         showSettings()
-        for (tag in listOf("settings_profiles", "set_rounds_value", "set_reps", "set_stretch", "set_voice", "settings_redo", "theme_system", "settings_backup")) rule.onNodeWithTag(tag).performScrollTo().assertExists()
+        for (tag in listOf("settings_profiles", "set_rounds_value", "set_reps", "set_between_rest", "set_voice", "set_app_volume", "settings_redo", "theme_system", "settings_backup")) rule.onNodeWithTag(tag).performScrollTo().assertExists()
         for (tag in listOf("settings_privacy", "settings_licenses", "settings_about")) rule.onNodeWithTag(tag).performScrollTo().assertExists()
     }
 
@@ -196,7 +197,7 @@ class HistorySettingsTest {
         showSettings()
         rule.onNodeWithTag("set_rounds_plus").performScrollTo().performClick()
         rule.onNodeWithTag("set_timed").performScrollTo().performClick()
-        rule.onNodeWithTag("set_stretch").performScrollTo().performClick()
+        rule.onNodeWithTag("set_between_rest").performScrollTo().performClick()
         rule.waitForIdle()
         val t = TrainSettingsStore.load(ctx)
         assertEquals(5, t.rounds); assertTrue(t.timed); assertFalse(t.stretchOn)
@@ -209,11 +210,25 @@ class HistorySettingsTest {
         assertFalse(PrefsStore.load(ctx).audioEnabled)
     }
 
+    @Test fun savedAppVolumeIsClampedAndRetained() {
+        PrefsStore.save(ctx, PrefsStore.load(ctx).copy(appVolumePercent = 73))
+        assertEquals(73, PrefsStore.load(ctx).appVolumePercent)
+        PrefsStore.save(ctx, PrefsStore.load(ctx).copy(appVolumePercent = 140))
+        assertEquals(100, PrefsStore.load(ctx).appVolumePercent)
+    }
+
     @Test fun themeChoiceIsReported() {
         var picked: AppTheme? = null
         showSettings(onTheme = { picked = it })
         rule.onNodeWithTag("theme_dark").performScrollTo().performClick()
         assertEquals(AppTheme.DARK, picked)
+    }
+
+    @Test fun freshThemeDefaultsLightAndExplicitChoiceSurvives() {
+        val themes = ThemePreferences(ctx)
+        assertEquals(AppTheme.LIGHT, themes.getTheme())
+        themes.setTheme(AppTheme.DARK)
+        assertEquals(AppTheme.DARK, ThemePreferences(ctx).getTheme())
     }
 
     @Test fun redoAsksForConfirmationFirst() {

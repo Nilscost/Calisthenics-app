@@ -1,0 +1,872 @@
+{
+  "date": "2026-10-20",
+  "scope": [
+    "pushup-archer",
+    "pullup-full"
+  ],
+  "unscoped_exercises": 531,
+  "generation_credit_spend_usd": 0,
+  "python_tests": 64,
+  "hand_samples_checked": 96620,
+  "torso_vertices_checked": 76800,
+  "phone_verified": false,
+  "new_apk_built": false,
+  "batch_seconds": 0.057,
+  "reference_cache_hits": 6,
+  "clips": [
+    {
+      "id": "pushup-archer",
+      "bytes": 47669,
+      "sha256": "9b09c221b618fe4b68536714c6994666505bc1eaa186baaa65cc393940e39f5a",
+      "previous_sha256": "fc2ff3f23f3f6924d95721dfa38a1c1647adc9e3315860d7fa4c487aad85be0f",
+      "frames": 144,
+      "fps": 24,
+      "width": 480,
+      "height": 360,
+      "codec": "h264 Main yuv420p",
+      "audio_streams": 0,
+      "installed_equals_reviewed_encode": true,
+      "motion": {
+        "exercise": "pushup-archer",
+        "style": "Fixed wide hands, alternating sides, assisting arm stays extended",
+        "status": "pass",
+        "metrics": {
+          "wrist_l_drift_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.003,
+            "ok": true
+          },
+          "wrist_r_drift_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.003,
+            "ok": true
+          },
+          "lateral_range_m": {
+            "value": 0.37656,
+            "min": 0.3,
+            "max": null,
+            "ok": true
+          },
+          "chest_range_m": {
+            "value": 0.30741,
+            "min": 0.2,
+            "max": null,
+            "ok": true
+          },
+          "right_low_frames": {
+            "value": 31,
+            "min": 4,
+            "max": null,
+            "ok": true
+          },
+          "right_support_elbow_deg": {
+            "value": 170.38297,
+            "min": 165,
+            "max": null,
+            "ok": true
+          },
+          "right_working_elbow_deg": {
+            "value": 66.28778,
+            "min": null,
+            "max": 105,
+            "ok": true
+          },
+          "right_working_min_deg": {
+            "value": 60.52388,
+            "min": 40,
+            "max": null,
+            "ok": true
+          },
+          "left_low_frames": {
+            "value": 31,
+            "min": 4,
+            "max": null,
+            "ok": true
+          },
+          "left_support_elbow_deg": {
+            "value": 170.38297,
+            "min": 165,
+            "max": null,
+            "ok": true
+          },
+          "left_working_elbow_deg": {
+            "value": 66.28778,
+            "min": null,
+            "max": 105,
+            "ok": true
+          },
+          "left_working_min_deg": {
+            "value": 60.52388,
+            "min": 40,
+            "max": null,
+            "ok": true
+          },
+          "toe_l_drift_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.008,
+            "ok": true
+          },
+          "toe_r_drift_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.008,
+            "ok": true
+          },
+          "body_line_deg": {
+            "value": 176.14725,
+            "min": 165,
+            "max": null,
+            "ok": true
+          },
+          "max_joint_speed_m_s": {
+            "value": 0.73838,
+            "min": null,
+            "max": 2.5,
+            "ok": true
+          },
+          "loop_gap_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.012,
+            "ok": true
+          }
+        },
+        "failures": [],
+        "data_sha256": "145a8f0bd2e610981b48b4eb3499cc11b15bdea35901aad191677c3d532d9f47",
+        "contract_sha256": "29e1d419fdb2150ab74d8c1ddc60e127307bcf7511c0b003fd1f268e7539d8cb",
+        "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+      },
+      "baseline_motion": {
+        "exercise": "pushup-archer",
+        "style": "Fixed wide hands, alternating sides, assisting arm stays extended",
+        "status": "fail",
+        "metrics": {
+          "wrist_l_drift_m": {
+            "value": 0.10045,
+            "min": null,
+            "max": 0.003,
+            "ok": false
+          },
+          "wrist_r_drift_m": {
+            "value": 0.05966,
+            "min": null,
+            "max": 0.003,
+            "ok": false
+          },
+          "lateral_range_m": {
+            "value": 0.08,
+            "min": 0.3,
+            "max": null,
+            "ok": false
+          },
+          "chest_range_m": {
+            "value": 0.33449,
+            "min": 0.2,
+            "max": null,
+            "ok": true
+          },
+          "right_low_frames": {
+            "value": 0,
+            "min": 4,
+            "max": null,
+            "ok": false
+          },
+          "left_low_frames": {
+            "value": 0,
+            "min": 4,
+            "max": null,
+            "ok": false
+          },
+          "toe_l_drift_m": {
+            "value": 0.00085,
+            "min": null,
+            "max": 0.008,
+            "ok": true
+          },
+          "toe_r_drift_m": {
+            "value": 0.00269,
+            "min": null,
+            "max": 0.008,
+            "ok": true
+          },
+          "body_line_deg": {
+            "value": 174.9102,
+            "min": 165,
+            "max": null,
+            "ok": true
+          },
+          "max_joint_speed_m_s": {
+            "value": 0.52223,
+            "min": null,
+            "max": 2.5,
+            "ok": true
+          },
+          "loop_gap_m": {
+            "value": 0.00127,
+            "min": null,
+            "max": 0.012,
+            "ok": true
+          }
+        },
+        "failures": [
+          {
+            "check": "wrist_l_drift_m",
+            "value": 0.10045,
+            "frame": 35,
+            "time_s": 1.458
+          },
+          {
+            "check": "wrist_r_drift_m",
+            "value": 0.05966,
+            "frame": 35,
+            "time_s": 1.458
+          },
+          {
+            "check": "lateral_range_m",
+            "value": 0.08,
+            "frame": null,
+            "time_s": null
+          },
+          {
+            "check": "right_low_frames",
+            "value": 0,
+            "frame": null,
+            "time_s": null
+          },
+          {
+            "check": "left_low_frames",
+            "value": 0,
+            "frame": null,
+            "time_s": null
+          }
+        ],
+        "data_sha256": "b62e4373f3f2ed43eabda0e15815451f3338bc35e6e7eedf7592e95751456aa0",
+        "contract_sha256": "29e1d419fdb2150ab74d8c1ddc60e127307bcf7511c0b003fd1f268e7539d8cb",
+        "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+      },
+      "render_stamp": {
+        "anatomy.py": "bf4d377020e0d9a5468b985c3619ce5213f3ab19ef0bb1e4a1f82bb55f86b277",
+        "hand_axes.py": "0bf9fa5ed1696126271dab4838a8095d6e01ed70aaf525d23735db7bc7123e07",
+        "motion_constraints.py": "1b5ea39dd27f98cd9cc174354944eef2e235d87ea90016745e1899a1d21469d1",
+        "motion_contracts.json": "f0e7e5e8584af566af83f1bc524b3ba5e875f2b5097c5a2b83ca513fc6c38e65",
+        "motion_quality.py": "7c49b2c3b1747d5ccd58829a1d30509e26b7fb76c9e44308fb83c1ca68780786",
+        "render.py": "888ea31e5bdbfac967c6da69ecc81902d5f24507d94c6767e7102c0015b6a1fa"
+      },
+      "decoded_media": {
+        "frames": 144,
+        "max_pixel_step": 3.789170524691358,
+        "max_step_frame": 21,
+        "loop_pixel_step": 0.9627662037037037,
+        "selected_review_frames": [
+          0,
+          16,
+          30,
+          45,
+          60,
+          72,
+          88,
+          102,
+          117,
+          136
+        ],
+        "additional_visual_outlier_frame": 21
+      },
+      "baseline_support_elbow_deg": 116.542
+    },
+    {
+      "id": "pullup-full",
+      "bytes": 22222,
+      "sha256": "fc24c805dd84ea539de6c6ab4bdae8def85f92a14e0193c82e13d97b05fcaee8",
+      "previous_sha256": "96ba9555b17b13777f5c1a13c8e9f71ebd0ee6b063b51eb87dcef3c61c8f567f",
+      "frames": 96,
+      "fps": 24,
+      "width": 480,
+      "height": 360,
+      "codec": "h264 Main yuv420p",
+      "audio_streams": 0,
+      "installed_equals_reviewed_encode": true,
+      "motion": {
+        "exercise": "pullup-full",
+        "style": "Controlled mild arch, shoulder initiation, no kip",
+        "status": "pass",
+        "metrics": {
+          "wrist_l_drift_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.003,
+            "ok": true
+          },
+          "wrist_r_drift_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.003,
+            "ok": true
+          },
+          "top_back_tilt_deg": {
+            "value": 16.80209,
+            "min": 12,
+            "max": 25,
+            "ok": true
+          },
+          "tilt_change_deg": {
+            "value": 12.24188,
+            "min": 8,
+            "max": null,
+            "ok": true
+          },
+          "hip_travel_m": {
+            "value": 0.19,
+            "min": 0.12,
+            "max": 0.3,
+            "ok": true
+          },
+          "shoulder_action_m": {
+            "value": 0.035,
+            "min": 0.025,
+            "max": 0.065,
+            "ok": true
+          },
+          "rise_m": {
+            "value": 0.47532,
+            "min": 0.4,
+            "max": null,
+            "ok": true
+          },
+          "hang_elbow_l_deg": {
+            "value": 173.75432,
+            "min": 165,
+            "max": null,
+            "ok": true
+          },
+          "top_elbow_l_deg": {
+            "value": 38.4613,
+            "min": 30,
+            "max": 100,
+            "ok": true
+          },
+          "palm_l_forward": {
+            "value": 1.0,
+            "min": 0.95,
+            "max": null,
+            "ok": true
+          },
+          "hang_elbow_r_deg": {
+            "value": 173.75432,
+            "min": 165,
+            "max": null,
+            "ok": true
+          },
+          "top_elbow_r_deg": {
+            "value": 38.4613,
+            "min": 30,
+            "max": 100,
+            "ok": true
+          },
+          "palm_r_forward": {
+            "value": 1.0,
+            "min": 0.95,
+            "max": null,
+            "ok": true
+          },
+          "max_joint_speed_m_s": {
+            "value": 0.72396,
+            "min": null,
+            "max": 2.5,
+            "ok": true
+          },
+          "loop_gap_m": {
+            "value": 0.0016,
+            "min": null,
+            "max": 0.012,
+            "ok": true
+          }
+        },
+        "failures": [],
+        "data_sha256": "3e87448c3b28821261afbdddd17ac9a5737f2946133c04585e5b6a5967d260ff",
+        "contract_sha256": "29e1d419fdb2150ab74d8c1ddc60e127307bcf7511c0b003fd1f268e7539d8cb",
+        "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+      },
+      "baseline_motion": {
+        "exercise": "pullup-full",
+        "style": "Controlled mild arch, shoulder initiation, no kip",
+        "status": "fail",
+        "metrics": {
+          "wrist_l_drift_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.003,
+            "ok": true
+          },
+          "wrist_r_drift_m": {
+            "value": 0.0,
+            "min": null,
+            "max": 0.003,
+            "ok": true
+          },
+          "top_back_tilt_deg": {
+            "value": 2.16008,
+            "min": 12,
+            "max": 25,
+            "ok": false
+          },
+          "tilt_change_deg": {
+            "value": 2.40013,
+            "min": 8,
+            "max": null,
+            "ok": false
+          },
+          "hip_travel_m": {
+            "value": 0.06,
+            "min": 0.12,
+            "max": 0.3,
+            "ok": false
+          },
+          "shoulder_action_m": {
+            "value": 1e-05,
+            "min": 0.025,
+            "max": 0.065,
+            "ok": false
+          },
+          "rise_m": {
+            "value": 0.53418,
+            "min": 0.4,
+            "max": null,
+            "ok": true
+          },
+          "hang_elbow_l_deg": {
+            "value": 166.10527,
+            "min": 165,
+            "max": null,
+            "ok": true
+          },
+          "top_elbow_l_deg": {
+            "value": 19.91903,
+            "min": 30,
+            "max": 100,
+            "ok": false
+          },
+          "palm_l_forward": {
+            "value": 1.0,
+            "min": 0.95,
+            "max": null,
+            "ok": true
+          },
+          "hang_elbow_r_deg": {
+            "value": 166.10527,
+            "min": 165,
+            "max": null,
+            "ok": true
+          },
+          "top_elbow_r_deg": {
+            "value": 19.91903,
+            "min": 30,
+            "max": 100,
+            "ok": false
+          },
+          "palm_r_forward": {
+            "value": 1.0,
+            "min": 0.95,
+            "max": null,
+            "ok": true
+          },
+          "max_joint_speed_m_s": {
+            "value": 0.74602,
+            "min": null,
+            "max": 2.5,
+            "ok": true
+          },
+          "loop_gap_m": {
+            "value": 0.00172,
+            "min": null,
+            "max": 0.012,
+            "ok": true
+          }
+        },
+        "failures": [
+          {
+            "check": "top_back_tilt_deg",
+            "value": 2.16008,
+            "frame": 35,
+            "time_s": 1.458
+          },
+          {
+            "check": "tilt_change_deg",
+            "value": 2.40013,
+            "frame": null,
+            "time_s": null
+          },
+          {
+            "check": "hip_travel_m",
+            "value": 0.06,
+            "frame": null,
+            "time_s": null
+          },
+          {
+            "check": "shoulder_action_m",
+            "value": 1e-05,
+            "frame": null,
+            "time_s": null
+          },
+          {
+            "check": "top_elbow_l_deg",
+            "value": 19.91903,
+            "frame": 35,
+            "time_s": 1.458
+          },
+          {
+            "check": "top_elbow_r_deg",
+            "value": 19.91903,
+            "frame": 35,
+            "time_s": 1.458
+          }
+        ],
+        "data_sha256": "89af28414a61e9c162be5445710b84900f967ce1c7e08f5162d0ff3d6dfe39da",
+        "contract_sha256": "29e1d419fdb2150ab74d8c1ddc60e127307bcf7511c0b003fd1f268e7539d8cb",
+        "meaning": "Authored-motion screening only; reference and encoded visual review still required"
+      },
+      "render_stamp": {
+        "anatomy.py": "bf4d377020e0d9a5468b985c3619ce5213f3ab19ef0bb1e4a1f82bb55f86b277",
+        "hand_axes.py": "0bf9fa5ed1696126271dab4838a8095d6e01ed70aaf525d23735db7bc7123e07",
+        "motion_constraints.py": "1b5ea39dd27f98cd9cc174354944eef2e235d87ea90016745e1899a1d21469d1",
+        "motion_contracts.json": "f0e7e5e8584af566af83f1bc524b3ba5e875f2b5097c5a2b83ca513fc6c38e65",
+        "motion_quality.py": "7c49b2c3b1747d5ccd58829a1d30509e26b7fb76c9e44308fb83c1ca68780786",
+        "render.py": "888ea31e5bdbfac967c6da69ecc81902d5f24507d94c6767e7102c0015b6a1fa"
+      },
+      "decoded_media": {
+        "frames": 96,
+        "max_pixel_step": 1.516412037037037,
+        "max_step_frame": 42,
+        "loop_pixel_step": 0.5941435185185185,
+        "selected_review_frames": [
+          0,
+          12,
+          24,
+          32,
+          48,
+          56,
+          72,
+          88,
+          95
+        ],
+        "additional_visual_outlier_frame": 42
+      }
+    }
+  ],
+  "reference_comparisons": {
+    "pushup-archer": {
+      "exercise": "pushup-archer",
+      "status": "requires_visual_review",
+      "candidate_sha256": "699e178937d5f205d244ffbf2d9de65b9ca951461cff239c1e23f200f79e2ddb",
+      "references": [
+        {
+          "video_id": "G8BvsXteJ2s",
+          "url": "https://www.youtube.com/watch?v=G8BvsXteJ2s",
+          "status": "screening_only",
+          "comparison_camera": {
+            "cam_az": 90,
+            "cam_el": 25,
+            "method": "manual approximate view match, uncalibrated"
+          },
+          "candidate_projection_sha256": "699e178937d5f205d244ffbf2d9de65b9ca951461cff239c1e23f200f79e2ddb",
+          "comparison": {
+            "mean_deg": 28.78,
+            "path_coverage": 0.958,
+            "joints": {
+              "elbow_l": {
+                "mean_deg": 18.05,
+                "p95_deg": 31.92,
+                "coverage": 0.958
+              },
+              "elbow_r": {
+                "mean_deg": 26.09,
+                "p95_deg": 63.33,
+                "coverage": 0.958
+              },
+              "shoulder_l": {
+                "mean_deg": 27.59,
+                "p95_deg": 66.79,
+                "coverage": 0.958
+              },
+              "shoulder_r": {
+                "mean_deg": 32.75,
+                "p95_deg": 91.27,
+                "coverage": 0.958
+              }
+            }
+          },
+          "hand_frame_coverage": 1.0,
+          "comparison_joints": [
+            "elbow_l",
+            "elbow_r",
+            "shoulder_l",
+            "shoulder_r"
+          ],
+          "reference_video_sha256": "31667b3c7ee163ac02d8fd2c2f082ccffb2079656f51279d55c3a9c1093139ee",
+          "analysis_sha256": "d44f054b05092df4d6cedf99f34ed8952ab822e798f9db0d32aa8da805406f3b",
+          "visual_grip_review": "Hands-out direction checked in decoded source montage; owner phone readability pending"
+        },
+        {
+          "video_id": "ZLWko5aP1FM",
+          "url": "https://www.youtube.com/watch?v=ZLWko5aP1FM",
+          "status": "screening_only",
+          "comparison_camera": {
+            "cam_az": -30,
+            "cam_el": 30,
+            "method": "manual approximate view match, uncalibrated"
+          },
+          "candidate_projection_sha256": "dcc59c21659f48892f9d7a649d43ec4c0fe13ae6f84217828029060bdb9c2834",
+          "comparison": {
+            "mean_deg": 9.28,
+            "path_coverage": 1.0,
+            "joints": {
+              "elbow_r": {
+                "mean_deg": 7.27,
+                "p95_deg": 17.54,
+                "coverage": 1.0
+              },
+              "shoulder_r": {
+                "mean_deg": 11.3,
+                "p95_deg": 33.13,
+                "coverage": 1.0
+              }
+            }
+          },
+          "hand_frame_coverage": 0.0,
+          "comparison_joints": [
+            "elbow_l",
+            "elbow_r",
+            "shoulder_l",
+            "shoulder_r"
+          ],
+          "reference_video_sha256": "10b7137fcb31df70cec0b3ffacabffefd7dfc0f55a06161080348b6fdd2128d7",
+          "analysis_sha256": "7bec665a113e92a406031b90ca510cd8d5e1c9e451aff28e3546a41a9f4245c8",
+          "visual_grip_review": "Hands-out direction checked in decoded source montage; owner phone readability pending"
+        },
+        {
+          "video_id": "x-WosgklhR0",
+          "url": "https://www.youtube.com/watch?v=x-WosgklhR0",
+          "status": "screening_only",
+          "comparison_camera": {
+            "cam_az": 90,
+            "cam_el": 5,
+            "method": "manual approximate view match, uncalibrated"
+          },
+          "candidate_projection_sha256": "fca7aaffef25744484106cb6ef0035853385e9ecb98bffcddf77439c50750d98",
+          "comparison": {
+            "mean_deg": 27.39,
+            "path_coverage": 1.0,
+            "joints": {
+              "elbow_l": {
+                "mean_deg": 29.93,
+                "p95_deg": 60.71,
+                "coverage": 1.0
+              },
+              "elbow_r": {
+                "mean_deg": 28.98,
+                "p95_deg": 81.2,
+                "coverage": 0.694
+              },
+              "shoulder_l": {
+                "mean_deg": 31.34,
+                "p95_deg": 58.72,
+                "coverage": 1.0
+              },
+              "shoulder_r": {
+                "mean_deg": 16.25,
+                "p95_deg": 54.8,
+                "coverage": 1.0
+              }
+            }
+          },
+          "hand_frame_coverage": 0.081,
+          "comparison_joints": [
+            "elbow_l",
+            "elbow_r",
+            "shoulder_l",
+            "shoulder_r"
+          ],
+          "reference_video_sha256": "b75e90cc1cef8140edfa13c66bc6b1bfddbfb257104c205e814c2c593f02f0ab",
+          "analysis_sha256": "7ea088c2554f43c114d405178394cc0c392c41ffd3d14f083e0a8bbb949e7589",
+          "visual_grip_review": "Hands-out direction checked in decoded source montage; owner phone readability pending"
+        }
+      ],
+      "limitations": [
+        "2D camera and occlusion affect angles; no biomechanics certification.",
+        "Hand detection coverage is not grip correctness.",
+        "Review whole reps, floor/bar contacts, thumbs and encoded phone-size output."
+      ]
+    },
+    "pullup-full": {
+      "exercise": "pullup-full",
+      "status": "requires_visual_review",
+      "candidate_sha256": "b8591820ebd152ab763b3dda95d5016f247ec61227d78fc7a96810f8bc564b58",
+      "references": [
+        {
+          "video_id": "GBcUcATb8RQ",
+          "url": "https://www.youtube.com/watch?v=GBcUcATb8RQ",
+          "status": "screening_only",
+          "comparison_camera": {
+            "cam_az": -65,
+            "cam_el": 5,
+            "method": "manual approximate view match, uncalibrated"
+          },
+          "candidate_projection_sha256": "b8591820ebd152ab763b3dda95d5016f247ec61227d78fc7a96810f8bc564b58",
+          "comparison": {
+            "mean_deg": 10.32,
+            "path_coverage": 1.0,
+            "joints": {
+              "elbow_l": {
+                "mean_deg": 9.14,
+                "p95_deg": 31.45,
+                "coverage": 1.0
+              },
+              "elbow_r": {
+                "mean_deg": 11.38,
+                "p95_deg": 23.88,
+                "coverage": 1.0
+              },
+              "shoulder_l": {
+                "mean_deg": 29.84,
+                "p95_deg": 29.84,
+                "coverage": 0.01
+              },
+              "shoulder_r": {
+                "mean_deg": 18.07,
+                "p95_deg": 18.07,
+                "coverage": 0.01
+              }
+            }
+          },
+          "hand_frame_coverage": 1.0,
+          "comparison_joints": [
+            "elbow_l",
+            "elbow_r",
+            "shoulder_l",
+            "shoulder_r",
+            "knee_l",
+            "knee_r"
+          ],
+          "reference_video_sha256": "08ae4efd0a198c07a8440f7b83217bc0050c5de77ee018cf550fc00e848363cb",
+          "analysis_sha256": "7393628e2f7371654019a73c676cc0a069da7aa0c0873d637f9f4fd5df077108",
+          "visual_grip_review": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending"
+        },
+        {
+          "video_id": "eGo4IYlbE5g",
+          "url": "https://www.youtube.com/watch?v=eGo4IYlbE5g",
+          "status": "screening_only",
+          "comparison_camera": {
+            "cam_az": 0,
+            "cam_el": 5,
+            "method": "manual approximate view match, uncalibrated"
+          },
+          "candidate_projection_sha256": "ca8b8e6fa23e7a0eab91a66e98a1c08ba2d47c67a31cf4b6a196dbb97739a0a2",
+          "comparison": {
+            "mean_deg": 22.31,
+            "path_coverage": 1.0,
+            "joints": {
+              "elbow_l": {
+                "mean_deg": 30.5,
+                "p95_deg": 83.36,
+                "coverage": 1.0
+              },
+              "elbow_r": {
+                "mean_deg": 19.44,
+                "p95_deg": 85.12,
+                "coverage": 0.68
+              },
+              "shoulder_l": {
+                "mean_deg": 15.88,
+                "p95_deg": 54.12,
+                "coverage": 1.0
+              },
+              "shoulder_r": {
+                "mean_deg": 17.31,
+                "p95_deg": 82.98,
+                "coverage": 0.68
+              },
+              "knee_l": {
+                "mean_deg": 15.63,
+                "p95_deg": 35.29,
+                "coverage": 1.0
+              },
+              "knee_r": {
+                "mean_deg": 40.14,
+                "p95_deg": 43.62,
+                "coverage": 0.278
+              }
+            }
+          },
+          "hand_frame_coverage": 0.028,
+          "comparison_joints": [
+            "elbow_l",
+            "elbow_r",
+            "shoulder_l",
+            "shoulder_r",
+            "knee_l",
+            "knee_r"
+          ],
+          "reference_video_sha256": "b93ace39cb242d8d7e1e5f77ab4e2c29b9401f0a8ca07d2ce2e8acc209272384",
+          "analysis_sha256": "17b870cceb59e9cb29745392aca026196a05229f20649a185a663cdaf4d6c28b",
+          "visual_grip_review": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending"
+        },
+        {
+          "video_id": "Hdc7Mw6BIEE",
+          "url": "https://www.youtube.com/watch?v=Hdc7Mw6BIEE",
+          "status": "screening_only",
+          "comparison_camera": {
+            "cam_az": -90,
+            "cam_el": 5,
+            "method": "manual approximate view match, uncalibrated"
+          },
+          "candidate_projection_sha256": "939d2983a1b157b2f79baa770ea8317564e7689bbfee4307a133deb364469087",
+          "comparison": {
+            "mean_deg": 19.16,
+            "path_coverage": 1.0,
+            "joints": {
+              "elbow_l": {
+                "mean_deg": 18.58,
+                "p95_deg": 47.62,
+                "coverage": 1.0
+              },
+              "elbow_r": {
+                "mean_deg": 17.04,
+                "p95_deg": 59.99,
+                "coverage": 1.0
+              },
+              "shoulder_l": {
+                "mean_deg": 18.4,
+                "p95_deg": 68.66,
+                "coverage": 0.594
+              },
+              "shoulder_r": {
+                "mean_deg": 25.28,
+                "p95_deg": 86.06,
+                "coverage": 0.594
+              }
+            }
+          },
+          "hand_frame_coverage": 1.0,
+          "comparison_joints": [
+            "elbow_l",
+            "elbow_r",
+            "shoulder_l",
+            "shoulder_r",
+            "knee_l",
+            "knee_r"
+          ],
+          "reference_video_sha256": "39218a5aff31e463f41c3564442cc17872f014e68045732780f306c99795e9ce",
+          "analysis_sha256": "f424f7261af95b0f682e535b8b988f62e5c2a8b052b6caea7746aac730374327",
+          "visual_grip_review": "reference grip visually checked; local encoded candidate reviewed; owner phone readability pending"
+        }
+      ],
+      "limitations": [
+        "2D camera and occlusion affect angles; no biomechanics certification.",
+        "Hand detection coverage is not grip correctness.",
+        "Review whole reps, floor/bar contacts, thumbs and encoded phone-size output."
+      ]
+    }
+  }
+}

@@ -79,19 +79,78 @@ def handstand_wall_plank():
 
 
 def handstand_wall_walk_up():
+    """Plank at the wall base, feet climb, then three alternating planted hand
+    steps per side bring the hands in to a near-vertical toe-anchored handstand.
+
+    The body is one straight line (ankle-to-shoulder 1.37 m). Feet stay on the
+    wall face (toe x = 0) and climb first; the shoulders then travel in while
+    the hands alternate: each hand is planted (zero slide, floor height) except
+    during its own short swing, and its planted spot is chosen so the arm never
+    needs more than its reach over the whole planted period.
+    """
+    from poses import steady_progress
     wall=[dict(kind="box",center=[.025,0,1.2],size=[.05,1.6,2.4])]
-    def k(t):
-        p=-120-60*t; r=math.radians(p); ux=math.sin(r); uz=math.cos(r)
-        az=1.02+.945*t
-        px=.90*ux; pz=az+.90*uz
-        sx=px+.47*ux; sz=pz+.47*uz
-        dz=sz-.035; dx=math.sqrt(max(.565**2-dz**2,.01))
-        wx=sx-dx
+    LEN=1.37; U_A=.20; EVENTS=6; U0=.21; U1=.96; SWING=.96; MARGIN=.03; LIFT=.07
+    def smooth(x):
+        x=max(0.,min(1.,x)); return x*x*(3-2*x)
+    def geom(u):
+        if u<=U_A:
+            az=.082+(1.0-.082)*smooth(u/U_A); sz=.45
+            sx=-.2-math.sqrt(LEN*LEN-(az-sz)**2); return az,sx,sz
+        b=steady_progress((u-U_A)/(1-U_A),.18)
+        sz=.45+.145*b**1.5
+        sx0=-.2-math.sqrt(LEN*LEN-(1.0-.45)**2)
+        sx=sx0+(-.2-sx0)*b
+        return sz+math.sqrt(max(LEN*LEN-(sx+.2)**2,0)),sx,sz
+    def window(u):
+        sx,sz=geom(u)[1:]
+        return sx,math.sqrt(max(.565**2-(sz-.035)**2,0))
+    sp=(U1-U0)/EVENTS
+    events=[(U0+e*sp+sp*(1-SWING)/2,U0+e*sp+sp*(1+SWING)/2) for e in range(EVENTS)]
+    def stances(hand):
+        mine=[e for e in range(EVENTS) if e%2==hand]
+        periods=[]; prev=0.
+        for e in mine:
+            periods.append((prev,events[e][0])); prev=events[e][1]
+        periods.append((prev,1.))
+        out=[]
+        for a,b in periods:
+            lo,hi=-9.,9.
+            for i in range(61):
+                sx,d=window(a+(b-a)*i/60); lo=max(lo,sx-d+MARGIN); hi=min(hi,sx+d-MARGIN)
+            out.append(lo+min(.01,(hi-lo)/2))  # straightest arm that never overreaches
+        out[-1]=max(lo,min(hi,-.2))
+        return mine,out
+    plan=[stances(0),stances(1)]
+    def hand(u,side):
+        mine,xs=plan[side]
+        for k,e in enumerate(mine):
+            a,b=events[e]
+            if u<a: return xs[k],0.
+            if u<=b:
+                f=(u-a)/(b-a); g=smooth((f-.12)/.76)  # lift first, travel while clear, then plant
+                return xs[k]+(xs[k+1]-xs[k])*g,LIFT*math.sin(math.pi*f)**2
+        return xs[-1],0.
+    def k(u):
+        az,sx,sz=geom(u)
+        ux=(sx+.2)/LEN; uz=(sz-az)/LEN
+        p=-math.degrees(math.acos(max(-1,min(1,uz))))
+        px=-.2+.9*ux; pz=az+.9*uz
+        (xl,zl),(xr,zr)=hand(u,0),hand(u,1)
         return base_pose(pelvis=[px,0,pz],p1=p,p2=p,hp=0,
-          ankle_l=[0,.09,az],ankle_r=[0,-.09,az],knee_l=[0,1,0],knee_r=[0,-1,0],foot_l=[1,0,0],foot_r=[1,0,0],
-          wrist_l=[wx,.18,.035],wrist_r=[wx,-.18,.035],elbow_l=[0,1,0],elbow_r=[0,-1,0],hand_l=[-1,0,0],hand_r=[-1,0,0],palm_l=[0,0,-1],palm_r=[0,0,-1],grip_l=0,grip_r=0)
-    keys=[(i/48,k(i/48)) for i in range(48)]
-    return dict(seconds=5,keys=keys,cam_az=-30,cam_el=12,props=wall)
+          ankle_l=[-.20,.09,az],ankle_r=[-.20,-.09,az],knee_l=[0,1,0],knee_r=[0,-1,0],foot_l=[1,0,0],foot_r=[1,0,0],
+          wrist_l=[xl,.18,.035+zl],wrist_r=[xr,-.18,.035+zr],elbow_l=[0,1,0],elbow_r=[0,-1,0],hand_l=[-1,0,0],hand_r=[-1,0,0],palm_l=[0,0,-1],palm_r=[0,0,-1],grip_l=0,grip_r=0)
+    keys=[]
+    n=216
+    for i in range(n+1):
+        phase=i/n
+        if phase<.02: u=0.
+        elif phase<.48: u=(phase-.02)/.46
+        elif phase<.52: u=1.
+        elif phase<.98: u=1-(phase-.52)/.46
+        else: u=0.
+        keys.append((phase,k(u)))
+    return dict(seconds=9,keys=keys,interpolation='continuous',cam_az=-30,cam_el=12,props=wall)
 
 
 def handstand_toe_pulls():
@@ -110,15 +169,25 @@ def handstand_wall_one_foot():
 
 
 def handstand_kick_up():
+    from poses import L, trunk_frame
     mat=MAT
     def k(pel,pitch,ankles,wx=-.20):
+        pelvis=list(pel)
+        up,left=trunk_frame(pitch)
+        def knee_pole(ankle,side):
+            hip=[pelvis[i]+left[i]*(side*L["hip_w"])-.03*up[i] for i in range(3)]
+            # A fixed +X pole becomes parallel to the leg as it sweeps
+            # through horizontal, which flips the solved knee. Keep the pole
+            # in the sagittal plane and perpendicular to the actual leg axis.
+            v=[ankle[i]-hip[i] for i in range(3)]
+            return [v[2],0,-v[0]]
         return base_pose(pelvis=list(pel),p1=pitch,p2=pitch,hp=0,
-          ankle_l=list(ankles[0]),ankle_r=list(ankles[1]),knee_l=[1,0,0],knee_r=[1,0,0],foot_l=[1,0,0],foot_r=[1,0,0],**_arms(wx,.18,.035,(0,1,0)))
+          ankle_l=list(ankles[0]),ankle_r=list(ankles[1]),knee_l=knee_pole(ankles[0],1),knee_r=knee_pole(ankles[1],-1),foot_l=[1,0,0],foot_r=[1,0,0],**_arms(wx,.18,.035,(0,1,0)))
     start=k([-.42,0,.70],130,[[-.86,.08,.08],[-.16,-.08,.08]])
     rise=k([-.34,0,.82],150,[[-.52,.08,.60],[-.18,-.08,1.10]])
     top=k([-.22,0,1.07],180,[[-.22,.095,1.965],[-.22,-.095,1.965]])
-    keys=[(0,start),(.16,start),(.32,rise),(.55,top),(.72,rise),(.92,start)]
-    return dict(seconds=4,keys=keys,cam_az=30,cam_el=16,props=mat)
+    keys=[(0,start),(.02,start),(.16,rise),(.46,top),(.55,top),(.85,rise),(.98,start)]
+    return dict(seconds=8,keys=keys,interpolation="continuous",cam_az=30,cam_el=16,props=mat)
 
 
 def handstand_free():
@@ -171,13 +240,14 @@ def handstand_press_elevated():
 
 
 def handstand_press_straddle():
+    from poses import steady_progress
     wrist_x=-.55
     def k(t):
         p2=180
-        spread=.30*(1-t)+.005*t
+        spread=.45*(1-t)+.005*t
         leg_xz=math.sqrt(.899*.899-spread*spread)
         dz=.53+.035*t; reach=.565
-        p0=math.degrees(math.acos(max(-1,min(1,(.565-.08+.23)/(math.sqrt(.899*.899-.30*.30)+.24)))))
+        p0=math.degrees(math.acos(max(-1,min(1,(.565-.08+.23)/(math.sqrt(.899*.899-.45*.45)+.24)))))
         p1=p0+(180-p0)*t
         dx=math.sqrt(max(reach*reach-dz*dz,0))
         shoulder=[wrist_x+dx,0,.035+dz]
@@ -185,12 +255,26 @@ def handstand_press_straddle():
         u2=[0,0,-1]
         pelvis=[shoulder[0]-.24*u1[0]-.23*u2[0],0,shoulder[2]-.24*u1[2]-.23*u2[2]]
         ax=pelvis[0]-leg_xz*u1[0]; az=pelvis[2]-leg_xz*u1[2]
+        # Flat in the initial floor contact; rotate with the legs into a
+        # pointed handstand foot. Keep a nonzero shin/toe angle so the heel
+        # frame cannot flip through its collinear fallback.
+        foot_angle=math.radians(-250*t)
+        foot=[math.cos(foot_angle),0,math.sin(foot_angle)]
         return base_pose(pelvis=pelvis,p1=p1,p2=p2,hp=0,
           ankle_l=[ax,.09+spread,az],ankle_r=[ax,-.09-spread,az],
-          knee_l=[0,0,1],knee_r=[0,0,1],foot_l=[1,0,0],foot_r=[1,0,0],
+          knee_l=[0,0,1],knee_r=[0,0,1],foot_l=foot,foot_r=foot,
           wrist_l=[wrist_x,.18,.035],wrist_r=[wrist_x,-.18,.035],elbow_l=[0,1,0],elbow_r=[0,-1,0],hand_l=[1,0,0],hand_r=[1,0,0],palm_l=[0,0,-1],palm_r=[0,0,-1],grip_l=0,grip_r=0)
-    keys=[(i/48,k(i/48)) for i in range(49)]
-    return dict(seconds=4,keys=keys,cam_az=30,cam_el=18,props=[])
+    keys=[]
+    for i in range(193):
+        phase=i/192
+        if phase<.06:progress=0
+        elif phase<.46:progress=steady_progress((phase-.06)/.40)
+        elif phase<.54:progress=1
+        elif phase<.94:progress=1-steady_progress((phase-.54)/.40)
+        else:progress=0
+        keys.append((phase,k(progress)))
+    return dict(seconds=8,keys=keys,interpolation='continuous',
+                cam_az=30,cam_el=18,props=[],motion_profile='straddle-press-foot-frame')
 
 
 def handstand_press_bent_arm():

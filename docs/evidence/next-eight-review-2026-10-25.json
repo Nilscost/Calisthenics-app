@@ -1,0 +1,77 @@
+{
+  "clips": [
+    {
+      "id": "flag-kick-press",
+      "sha256": "068f9ebf9439da97e356a3d7a88a5c751d85f11ba6daf47c6c988f91b1735a15",
+      "frames": 77,
+      "duration_s": 3.2083,
+      "media": "docs/media/flag-kick-press-review-2026-10-25.mp4",
+      "installed": false,
+      "form_status": "not_approved"
+    },
+    {
+      "id": "dip-russian",
+      "sha256": "f82cfed59d22fe5b3b2f992822b630818a06b936e6691c55641b19cb9391d2ee",
+      "frames": 96,
+      "duration_s": 4.0,
+      "media": "docs/media/dip-russian-review-2026-10-25.mp4",
+      "installed": false,
+      "form_status": "not_approved"
+    },
+    {
+      "id": "heel-hook",
+      "sha256": "21822d06f9f30db8d6a9a2dfff8fa3629c595d34a831d0036c9e88255ddd3cc6",
+      "frames": 115,
+      "duration_s": 4.7917,
+      "media": "docs/media/heel-hook-review-2026-10-25.mp4",
+      "installed": false,
+      "form_status": "not_approved"
+    },
+    {
+      "id": "toes-to-bar",
+      "sha256": "4ba9a2af4176dac32a1d94b3570bd338ca8c49495d0397db1a429e3d69a3b5b5",
+      "frames": 134,
+      "duration_s": 5.5833,
+      "media": "docs/media/toes-to-bar-review-2026-10-25.mp4",
+      "installed": false,
+      "form_status": "not_approved"
+    },
+    {
+      "id": "dragon-flag-negative",
+      "sha256": "c3c0caa7aab8c49d314f996bbed709754ee937de0871ca0d4c8bcf64aa8da274",
+      "frames": 168,
+      "duration_s": 7.0,
+      "media": "docs/media/dragon-flag-negative-review-2026-10-25.mp4",
+      "installed": false,
+      "form_status": "not_approved"
+    },
+    {
+      "id": "handstand-wall-walk-up",
+      "sha256": "4c8f5138b6ec375df6a3bf55574720ed2e13ea4d9c74101a75a7d903721fd936",
+      "frames": 120,
+      "duration_s": 5.0,
+      "media": "docs/media/handstand-wall-walk-up-review-2026-10-25.mp4",
+      "installed": false,
+      "form_status": "not_approved"
+    },
+    {
+      "id": "pilates-saw",
+      "sha256": "ca4a962c1a0f587e5194dfb0a65a65e0f8f704ad5bbe618714ac152b9755cb7a",
+      "frames": 204,
+      "duration_s": 8.5,
+      "media": "docs/media/pilates-saw-review-2026-10-25.mp4",
+      "installed": false,
+      "form_status": "not_approved"
+    },
+    {
+      "id": "pullup-pullover",
+      "sha256": "68cc6b17548ac63c94184ec3eae59c435fb971e2e46b96917b985b6c101bba04",
+      "frames": 264,
+      "duration_s": 11.0,
+      "media": "app/src/main/assets/demos/pullup-pullover.mp4",
+      "installed": true,
+      "form_status": "comparison"
+    }
+  ],
+  "purpose": "Seven new isolated DRAFT candidates and the unchanged accepted pullover; no automatic app installation or form approval."
+}

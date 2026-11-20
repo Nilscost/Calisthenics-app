@@ -6,6 +6,7 @@
 local.properties
 *.iml
 .kotlin/
+**/node_modules/
 __pycache__/
 *.pyc
 # Credentials and signing

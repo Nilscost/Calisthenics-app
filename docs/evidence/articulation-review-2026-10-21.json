@@ -1,0 +1,56 @@
+[
+  {
+    "exercise": "ring-muscle-up",
+    "status": "needs_human_review",
+    "form_approval": false,
+    "meaning": "Geometry-only measurements; no physiological range-of-motion or loaded-contact approval",
+    "questions": [
+      "Does the wrist bend in a plausible direction relative to the forearm and palm?",
+      "Does the grip permit this wrist position under load through every phase?",
+      "Are hand, wrist, forearm and implement contacts continuous and legible?"
+    ],
+    "wrists": {
+      "l": {
+        "min_bend_deg": 7.689,
+        "max_bend_deg": 115.668,
+        "max_bend_frame": 64,
+        "max_bend_time_s": 2.667,
+        "max_frame_angle_change_deg": 11.504
+      },
+      "r": {
+        "min_bend_deg": 7.689,
+        "max_bend_deg": 115.668,
+        "max_bend_frame": 64,
+        "max_bend_time_s": 2.667,
+        "max_frame_angle_change_deg": 11.504
+      }
+    }
+  },
+  {
+    "exercise": "handstand-press-straddle",
+    "status": "needs_human_review",
+    "form_approval": false,
+    "meaning": "Geometry-only measurements; no physiological range-of-motion or loaded-contact approval",
+    "questions": [
+      "Does the wrist bend in a plausible direction relative to the forearm and palm?",
+      "Does the grip permit this wrist position under load through every phase?",
+      "Are hand, wrist, forearm and implement contacts continuous and legible?"
+    ],
+    "wrists": {
+      "l": {
+        "min_bend_deg": 90.0,
+        "max_bend_deg": 110.067,
+        "max_bend_frame": 0,
+        "max_bend_time_s": 0.0,
+        "max_frame_angle_change_deg": 0.68
+      },
+      "r": {
+        "min_bend_deg": 90.0,
+        "max_bend_deg": 110.067,
+        "max_bend_frame": 0,
+        "max_bend_time_s": 0.0,
+        "max_frame_angle_change_deg": 0.68
+      }
+    }
+  }
+]
