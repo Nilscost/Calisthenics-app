@@ -193,12 +193,13 @@ class SessionProgressSummaryTest {
     }
 
     // ---- 9.4 L2: the card's two progress lines, starting level, back after a break, a level earned again ----
-    private fun evOf(vid: String, route: String, day: Int, tier: Int, below: Boolean = false, shortfall: Int? = null) =
-        SessionEvidence("s$day$vid", vid, c.variation(vid)!!.familyId, day, tier, 3, false, below, false, null, false, 3, 0, 2, progressionRouteId = route, shortfallValue = shortfall)
+    private fun evOf(vid: String, route: String, day: Int, tier: Int, below: Boolean = false, shortfall: Int? = null, reentryFrom: Int? = null) =
+        SessionEvidence("s$day$vid", vid, c.variation(vid)!!.familyId, day, tier, 3, false, below, false, null, false, 3, 0, 2, progressionRouteId = route, shortfallValue = shortfall, reentryFromTier = reentryFrom)
 
-    private fun summaryOf(vid: String, route: String, start: Int, sessions: List<Pair<Int, Int>>, miss: Map<Int, Int> = emptyMap()): ExerciseProgress {
+    /** [reentry]: day -> the level the planner lowered from on that day's plan (9.4 L1b: only planner-marked re-entry plans count). */
+    private fun summaryOf(vid: String, route: String, start: Int, sessions: List<Pair<Int, Int>>, miss: Map<Int, Int> = emptyMap(), reentry: Map<Int, Int> = emptyMap()): ExerciseProgress {
         val act = listOf(UserAction.SelfAssessment(0, vid, start))
-        val all = sessions.map { (day, tier) -> evOf(vid, route, day, tier, below = day in miss, shortfall = miss[day]) }
+        val all = sessions.map { (day, tier) -> evOf(vid, route, day, tier, below = day in miss, shortfall = miss[day], reentryFrom = reentry[day]) }
         return summarizeSessionProgress(c, engine.replay(all.dropLast(1), act), engine.replay(all, act), listOf(vid)).exercises.single()
     }
 
@@ -246,12 +247,12 @@ class SessionProgressSummaryTest {
 
     @Test fun aSessionDoneOneLevelDownAfterABreakIsBackAfterABreak() {
         // three good sessions at level 3 raised it to 4 on day 6; day 30 is the break-day session done at level 3
-        val e = summaryOf("pullup-full", "pullup", 3, listOf(0 to 3, 3 to 3, 6 to 3, 30 to 3))
+        val e = summaryOf("pullup-full", "pullup", 3, listOf(0 to 3, 3 to 3, 6 to 3, 30 to 3), reentry = mapOf(30 to 4))
         assertEquals(3, e.tier); assertEquals(LevelNote.BACK_AFTER_BREAK, e.levelNote); assertNull(e.leveledUpTo)
     }
 
     @Test fun aLevelHeldBeforeAndEarnedAgainIsNotAnUnlock() {
-        val e = summaryOf("pullup-full", "pullup", 3, listOf(0 to 3, 3 to 3, 6 to 3, 30 to 3, 33 to 3, 36 to 3))
+        val e = summaryOf("pullup-full", "pullup", 3, listOf(0 to 3, 3 to 3, 6 to 3, 30 to 3, 33 to 3, 36 to 3), reentry = mapOf(30 to 4))
         assertEquals(4, e.tier); assertEquals(LevelNote.AGAIN, e.levelNote)
         assertNull(e.leveledUpTo); assertNull(e.levelUpBy)
         assertEquals(LevelProgress(3, 3, false, 4, finished = true), e.progress)
