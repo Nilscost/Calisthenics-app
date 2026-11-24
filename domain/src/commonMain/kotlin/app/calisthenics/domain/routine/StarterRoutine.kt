@@ -16,7 +16,7 @@ object StarterRoutine {
             RoutineSlot("pull", Pattern.PULL_HORIZONTAL, Area.UPPER_BODY, "row-band"),
             RoutineSlot("core", Pattern.CORE_ANTI_EXTENSION, Area.CORE, "plank"),
             RoutineSlot("hinge", Pattern.HINGE, Area.LOWER_BODY, "glute-bridge", optional = true),
-            RoutineSlot("core2", Pattern.CORE_ANTI_LATERAL, Area.CORE, "side-plank", optional = true),
+            RoutineSlot("core2", Pattern.CORE_ANTI_LATERAL, Area.CORE, "side-plank-knee", optional = true),
         ),
     )
 }

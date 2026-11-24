@@ -36,7 +36,7 @@ object Presets {
      */
     fun recommended(c: Catalog, profile: EquipmentProfile): SavedRoutine {
         val rule = ProgressionRule(RuleKind.REP_RANGE, sets = 3, from = 5, to = 8, holdFrom = 10, holdTo = 30, sessions = 1)
-        val rotation = pick(c, profile, "pallof-press", "side-plank")   // no band: the Copenhagen path (it starts with the side plank)
+        val rotation = pick(c, profile, "pallof-press", "side-plank-knee", "side-plank")
         val slots = listOf(
             slot("rr-pull", Pattern.PULL_VERTICAL, Area.UPPER_BODY, pick(c, profile, "pullup-band-assisted", "scapular-pull"), group = 1, rest = 90),
             slot("rr-squat", Pattern.SQUAT, Area.LOWER_BODY, "squat-air", group = 1, rest = 90),

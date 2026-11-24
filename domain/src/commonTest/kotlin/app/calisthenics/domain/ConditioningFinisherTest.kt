@@ -52,6 +52,9 @@ class ConditioningFinisherTest {
         val b = cond(plan(TrainSettings(rounds = 1, conditioningOn = true), profile = withRope)).mapNotNull { it.variationId }.toSet()
         assertFalse("jump-rope" in a); assertTrue("jump-rope" in b)
         assertTrue("squat-thrust-step-back" in a)                                // a beginner starts with the easy burpee
+        val newToBurpees = ProgressionEngine(c).replay(emptyList(), listOf(
+            UserAction.SelfAssessment(0, "pushup-standard", 6), UserAction.SelfAssessment(0, "squat-air", 6)))
+        assertTrue(conditioningExercises(c, newToBurpees, SeedProfiles.home).any { it.id == "squat-thrust-step-back" })
         val strong = ProgressionEngine(c).replay(emptyList(), listOf(UserAction.SelfAssessment(0, "pushup-standard", 6), UserAction.SelfAssessment(0, "squat-air", 6), UserAction.SelfAssessment(0, "squat-thrust", 6)))
         val s = cond(plan(TrainSettings(rounds = 1, conditioningOn = true), p = strong)).mapNotNull { it.variationId }.toSet()
         assertTrue("burpee" in s && "squat-thrust-step-back" !in s)

@@ -489,7 +489,10 @@ private fun WorkoutPreview(modifier: Modifier, data: TrainData, stored: TrainSet
                     // 9.4 L4 (F7): manual only, no nudge. Each tap takes the next pair; Undo is back to the usual plan.
                     Column(Modifier.fillMaxWidth().testTag("mix_block"), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            AppTextButton(onClick = ::mixTap, modifier = Modifier.testTag("mix_it_up")) { Text(stringResource(Res.string.mix_it_up)) }
+                            AppOutlinedButton(
+                                onClick = ::mixTap,
+                                modifier = Modifier.heightIn(min = 56.dp).testTag("mix_it_up"),
+                            ) { Text(stringResource(Res.string.mix_it_up)) }
                             if (mixedNow.isNotEmpty()) AppTextButton(onClick = { edits = edits.withoutMix(); mixNone = false }, modifier = Modifier.testTag("mix_undo")) { Text(stringResource(Res.string.mix_it_up_undo)) }
                         }
                         Caption(stringResource(Res.string.mix_it_up_caption), Modifier.testTag("mix_caption"))

@@ -153,7 +153,7 @@ class AlternativeStartingTargetTest {
             Triple("pullup", "pullup-negative", "pullup-band-assisted"),
             // These authored route alternatives cross legacy family IDs, and therefore exercise the broadened membership rule.
             Triple("squat", "split-squat", "step-up"),
-            Triple("floor-legraise", "v-up", "v-up-tuck"),
+            Triple("floor-legraise", "v-up", "v-up-straddle"),
         )
         cases.forEach { (routeId, mainId, alternativeId) ->
             val source = c.variation(mainId)!!
@@ -163,18 +163,18 @@ class AlternativeStartingTargetTest {
     }
 
     @Test fun comparableTimedHoldsUseSecondsAndKeepBothSidesIndependentOfRepTargets() {
-        val source = c.variation("side-plank")!!
-        val alternative = c.variation("side-plank-knee")!!
-        val p = ProgressionEngine(c).replay(emptyList(), listOf(UserAction.SelfAssessment(0, source.id, 5)))
-            .copy(routeWorkoutCounts = mapOf("side-plank" to 1))
-        val route = c.routeById("side-plank")!!
-        val otherAlternatives = route.members.filter { it.role == ProgressionRole.ALTERNATE && it.variationId != alternative.id }.map { it.variationId }.toSet()
+        val source = c.variation("flag-clutch-diagonal")!!
+        val alternative = c.variation("flag-clutch-diagonal-split")!!
+        val readiness = listOf("flag-clutch-hang", "flag-clutch-diagonal-tuck").map { UserAction.SelfAssessment(0, it, 4) }
+        val p = ProgressionEngine(c).replay(emptyList(), readiness + UserAction.SelfAssessment(0, source.id, 5))
+            .copy(routeWorkoutCounts = mapOf("flag" to 1))
+        val route = c.routeById("flag")!!
+        val profile = SeedProfiles.home.copy(items = SeedProfiles.home.items + EquipmentItem("pole"))
         val r = routine.copy(slots = listOf(RoutineSlot("side", Pattern.CORE_ANTI_LATERAL, Area.CORE, source.id, progressionRouteId = route.id)))
-        val result = (generate(PlanInput("holds", 0, 1, c, r, draft, SeedProfiles.home,
-            excludedVariationIds = otherAlternatives, progress = p)) as PlanResult.Ready).plan
+        val result = (generate(PlanInput("holds", 0, 1, c, r, draft, profile, progress = p)) as PlanResult.Ready).plan
         val work = result.blocks.filter { it.type == BlockType.WORK }
         assertTrue(work.isNotEmpty())
-        assertTrue(work.all { it.variationId == alternative.id && it.target!!.type == TargetType.HOLD_SECONDS && it.target!!.value == 30 && it.inferredStartTier == 4 })
+        assertTrue(work.all { it.variationId == alternative.id && it.target!!.type == TargetType.HOLD_SECONDS && it.target!!.value == 15 && it.inferredStartTier == 4 })
         assertEquals(setOf(Side.LEFT, Side.RIGHT), work.map { it.side }.toSet())
         assertNull(inferredAlternativeTier(c, source, alt, p, route.id)) // never seconds to reps
     }

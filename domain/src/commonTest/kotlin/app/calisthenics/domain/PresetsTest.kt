@@ -62,7 +62,7 @@ class PresetsTest {
         assertEquals("pullup-band-assisted", withGear["rr-pull"]); assertEquals("dip-support-hold", withGear["rr-dip"])
         assertEquals("inverted-row-bent-knees", withGear["rr-row"]); assertEquals("pallof-press", withGear["rr-core-rot"])
         val noBand = gym.copy(items = gym.items.filter { it.equipmentId != "resistance-band" })
-        assertEquals("side-plank", Presets.recommended(catalog, noBand).routine.slots.first { it.id == "rr-core-rot" }.preferredVariationId) // Copenhagen path without a band
+        assertEquals("side-plank-knee", Presets.recommended(catalog, noBand).routine.slots.first { it.id == "rr-core-rot" }.preferredVariationId)
         assertEquals(Pattern.CORE_ANTI_LATERAL, Presets.recommended(catalog, noBand).routine.slots.first { it.id == "rr-core-rot" }.intent)
         val bandOnly = bare.copy(items = listOf(EquipmentItem("resistance-band", strengthLabel = "assorted", suitability = setOf("stable-anchor"))))
         assertEquals("row-band", Presets.recommended(catalog, bandOnly).routine.slots.first { it.id == "rr-row" }.preferredVariationId)

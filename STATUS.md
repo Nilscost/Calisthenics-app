@@ -1,5 +1,11 @@
 # Actual project status
 
+## Release 9.5 · 0.12.5-r9 (code 24) · 2026-11-24
+
+- Knee Side Plank precedes Side Plank. Tuck V-Up, Step-Back Squat Thrust and Advanced Tuck Dragon Flag also have their own progression steps.
+- Completing a same-step alternative counts toward the 14-day break check. Each exercise keeps its own training level.
+- “Mix it up” uses the same outlined button style as “Save as routine.”
+
 ## Release 9.4 · 0.12.4-r9 (code 23) · 2026-11-20
 
 Fixes for the owner's 9.3 feedback ([plan](docs/44-feedback-2026-11-20-review-and-plan.md), [details](docs/user-feedback.md)). Checked by replaying the owner's backup before and after: every level is unchanged except pike push-up, now at the level 3 actually trained (an abandoned plan had set level 1).

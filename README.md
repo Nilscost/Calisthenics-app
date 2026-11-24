@@ -4,9 +4,9 @@ A personal training app that turns bodyweight and equipment-assisted exercises i
 
 Built for Android and the web with Kotlin Multiplatform and Compose Multiplatform.
 
-**Latest version: 9.3** · `0.12.3-r9` · November 2026
+**Version 9.5** · `0.12.5-r9` · November 2026
 
-[Version 9.3 source](https://github.com/Nilscost/Calisthenics-app/tree/codex/kmp-port) · [Release notes and status](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/STATUS.md)
+[Release source](https://github.com/Nilscost/Calisthenics-app/tree/codex/kmp-port) · [Release notes and status](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/STATUS.md)
 
 <p align="center">
   <img src="docs/media/screenshots/train.png" width="250" alt="Plan a workout: goal, equipment, rounds and workout format">
@@ -58,7 +58,7 @@ The code is organised into `domain` (training logic), `data` (storage), `shared`
 
 ## Build and explore
 
-Version 9.3 is on the [`codex/kmp-port` branch](https://github.com/Nilscost/Calisthenics-app/tree/codex/kmp-port). The default branch currently contains an earlier implementation.
+The release branch is `codex/kmp-port`. Every update ships to Android and the web app, including the iPhone Home Screen version. See the [release policy](AGENTS.md).
 
 ```sh
 git clone --branch codex/kmp-port https://github.com/Nilscost/Calisthenics-app.git

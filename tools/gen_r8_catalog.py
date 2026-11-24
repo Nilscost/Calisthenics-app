@@ -111,11 +111,10 @@ REVIEWED_ROTATION_GROUPS = CONFIRMED_EXERCISE_GROUPS + [
     {"id": "calf-single-bent-knee-level", "mainVariationId": "calf-raise-single", "alternativeVariationIds": ["calf-raise-single-bent-knee"]},
     {"id": "calf-step-bent-knee-level", "mainVariationId": "calf-raise-step", "alternativeVariationIds": ["calf-raise-step-bent-knee"]},
     {"id": "calf-step-single-bent-knee-level", "mainVariationId": "calf-raise-step-single", "alternativeVariationIds": ["calf-raise-step-single-bent-knee"]},
-    {"id": "v-up-tuck-level", "mainVariationId": "v-up", "alternativeVariationIds": ["v-up-tuck", "v-up-straddle"]},
+    {"id": "v-up-straddle-level", "mainVariationId": "v-up", "alternativeVariationIds": ["v-up-straddle"]},
     {"id": "floor-legraise-entry-level", "mainVariationId": "leg-raise-lying", "alternativeVariationIds": ["seated-knee-raise", "reverse-crunch", "crunch", "sit-up", "rower-situp", "curl-up-mcgill"]},
     {"id": "crunch-flexion-level", "mainVariationId": "crunch", "alternativeVariationIds": ["sit-up", "rower-situp", "curl-up-mcgill"]},
     {"id": "core-rotation-level", "mainVariationId": "bicycle-crunch", "alternativeVariationIds": ["russian-twist"]},
-    {"id": "side-plank-entry-level", "mainVariationId": "side-plank", "alternativeVariationIds": ["side-plank-knee"]},
     {"id": "side-plank-core-variety", "mainVariationId": "side-plank", "alternativeVariationIds": ["bicycle-crunch", "russian-twist", "pallof-hold", "pallof-press", "bird-dog"]},
     {"id": "anti-rotation-plank-hold", "mainVariationId": "plank-long-lever", "alternativeVariationIds": ["plank-contralateral"]},
     {"id": "anti-rotation-plank-reps", "mainVariationId": "plank-shoulder-tap", "alternativeVariationIds": ["plank-arm-leg-reach"]},
@@ -376,6 +375,13 @@ def _link_compatible_stretches(catalog: dict[str, Any], new_ids: set[str]) -> No
             # roll); the general back stretch is the safe DRAFT fallback.
             variation["compatibleStretchIds"] = ["stretch-back"]
 
+    # The starter routine uses the knee-supported side plank. Its recovery rotation
+    # can use the full side plank's authored stretches as well.
+    knee_plank = variations["side-plank-knee"]
+    knee_plank["compatibleStretchIds"] = list(dict.fromkeys(
+        knee_plank["compatibleStretchIds"] + variations["side-plank"]["compatibleStretchIds"]
+    ))
+
     # Keep every authored stretch reachable. A top-three limit can otherwise
     # leave a narrow area (e.g. groin/adductors) orphaned when several general
     # hip stretches score equally well. Attach each orphan to its strongest
@@ -444,7 +450,10 @@ def _reviewed_routes(catalog: dict[str, Any]) -> tuple[list[dict[str, Any]], dic
                 raise ValueError(f"{variation_id}: unknown route anchor {anchor}")
             member["atVariationId"] = anchor
         target = next(r for r in routes if r["id"] == route_id)
-        if not any(m["variationId"] == variation_id and m["role"] == role for m in target["members"]):
+        prior = next((m for m in target["members"] if m["variationId"] == variation_id), None)
+        if prior is not None and prior != member:
+            raise ValueError(f"{variation_id}: conflicting membership in route {route_id}")
+        if prior is None:
             target["members"].append(member)
         classified[variation_id].append(member)
         primary_membership.setdefault(variation_id, target)

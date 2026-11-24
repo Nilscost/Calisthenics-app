@@ -19,7 +19,7 @@ class PreviewTopTextTest {
 
     /** The owner's situation of 20 Nov: Front Plank and Glute Bridge finished earlier, the alternates rotating in (odd workout counts). */
     private fun ownerProgress(sessionsOf: List<String> = emptyList()): ProgressSnapshot {
-        val actions = listOf("plank" to 6, "glute-bridge" to 6, "pushup-archer" to 4, "pullup-full" to 3, "inverted-row" to 4, "dip-parallel" to 3).map { selfAssessmentFor(it.first, it.second) }
+        val actions = listOf("plank" to 6, "glute-bridge" to 6, "pushup-archer" to 4, "pullup-full" to 3, "inverted-row" to 4, "dip-parallel" to 3, "side-plank" to 5).map { selfAssessmentFor(it.first, it.second) }
         val evidence = sessionsOf.map { id -> SessionEvidence("s-$id", id, catalog.variation(id)!!.familyId, 1, 2, 2, false, false, false, null, false, 2, 0, 2) }
         val base = ProgressionEngine(catalog).replay(evidence, actions)
         return base.copy(routeWorkoutCounts = catalog.progressionRoutes.associate { it.id to 5 }, familyWorkoutCounts = catalog.variations.associate { it.familyId to 5 })
@@ -41,8 +41,8 @@ class PreviewTopTextTest {
         // after: every rotation in ONE line
         val rotation = first.notes.filter { it.kind == NoteKind.ROTATION }.map { it.text }
         assertEquals(listOf("Swapped in today: Uneven Push-Up (per side) (for Archer Push-Up), Plank Shoulder Taps (for Long-Lever (RKC) Plank), " +
-            "Bicycle Crunch (pause at centre) (for Side Plank (per side))."), rotation)
-        assertEquals(listOf("pushup-uneven", "plank-shoulder-tap", "bicycle-crunch-pause").map { it }.size, first.swaps.size)
+            "Russian Twist (for Side Plank (per side))."), rotation)
+        assertEquals(listOf("pushup-uneven", "plank-shoulder-tap", "russian-twist"), first.swaps.map { it.variationId })
         assertTrue(first.swaps.all { it.kind == SwapKind.ROTATED })
         assertEquals(rotation.single(), "${SwapKind.ROTATED.lineLabel}: " + first.swaps.joinToString { "${catalog.variation(it.variationId)!!.name} (for ${catalog.variation(it.replacedId)!!.name})" } + ".")
     }

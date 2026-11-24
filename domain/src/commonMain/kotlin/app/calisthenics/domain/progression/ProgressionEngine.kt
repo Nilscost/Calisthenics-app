@@ -19,6 +19,8 @@ import app.calisthenics.domain.load.formatKg
 import app.calisthenics.domain.load.isLoaded
 import app.calisthenics.domain.model.Catalog
 import app.calisthenics.domain.model.ProgressionPolicy
+import app.calisthenics.domain.model.ProgressionRole
+import app.calisthenics.domain.model.ProgressionRoute
 import app.calisthenics.domain.model.Target
 import app.calisthenics.domain.Tier as SeedTier
 import app.calisthenics.domain.ProgressionPolicy as SeedPolicy
@@ -146,15 +148,65 @@ data class ProgressSnapshot(
     val familyWorkoutCounts: Map<String, Int> = emptyMap(),
     /** Distinct workouts completed in a route, including explicitly approved cross-family alternatives. */
     val routeWorkoutCounts: Map<String, Int> = emptyMap(),
+    /** Latest completed work at each main exercise's rung, using the route recorded by the work. */
+    val rungLastTrainedDays: Map<String, Int> = emptyMap(),
 ) {
     fun tierFor(variationId: String): Int? = variations[variationId]?.tier
     fun holdFor(familyId: String): FamilyHold? = holds[familyId]
 
-    /** Re-entry needed when the variation was trained before and not for >= 14 days (C8). */
-    fun reentryNeeded(variationId: String, nowDay: Int): Int? {
+    /** Lower re-entry level when the variation has been trained before and its rung has gone quiet (C8). */
+    fun reentryNeeded(variationId: String, nowDay: Int, catalog: Catalog? = null, routeId: String? = null): Int? {
         val p = variations[variationId] ?: return null
-        val last = maxOf(p.lastTrainedDay ?: return null, p.reentryResolvedDay ?: Int.MIN_VALUE)
-        return if (nowDay - last >= REENTRY_DAYS) maxOf(1, p.tier - 1) else null
+        val rung = catalog?.reentryRung(variationId, routeId)
+        val lastPractice = latestPractice(p.lastTrainedDay, rung?.let(rungLastTrainedDays::get))
+        return reentryTier(p, nowDay, lastPractice)
+    }
+}
+
+private fun latestPractice(ownDay: Int?, rungDay: Int?): Int? =
+    ownDay?.let { maxOf(it, rungDay ?: it) }
+
+private fun reentryTier(p: VariationProgress, day: Int, lastPractice: Int?): Int? {
+    val practiceDay = lastPractice ?: return null
+    val lastDay = maxOf(practiceDay, p.reentryResolvedDay ?: practiceDay)
+    return if (day - lastDay >= REENTRY_DAYS) maxOf(1, p.tier - 1) else null
+}
+
+private fun ProgressionRoute.reentryAnchor(variationId: String): String? =
+    if (variationId in mainPath) variationId else members.firstOrNull {
+        it.variationId == variationId && it.role == ProgressionRole.ALTERNATE && it.atVariationId in mainPath
+    }?.atVariationId
+
+private fun Catalog.reentryRung(variationId: String, routeId: String?): String? {
+    if (routeId != null) return routeById(routeId)?.reentryAnchor(variationId)
+    val anchors = routesFor(variationId).mapNotNull { it.reentryAnchor(variationId) }.distinct()
+    // Legacy evidence has no route. Share it only when the catalog identifies a single rung.
+    if (anchors.isNotEmpty()) return anchors.singleOrNull()
+    return exerciseGroups.filter { variationId == it.mainVariationId || variationId in it.alternativeVariationIds }
+        .map { it.mainVariationId }.distinct().singleOrNull()
+}
+
+/** Recency uses actual workout order while progression retains its historical replay order. */
+private class ReentryPractice(catalog: Catalog, evidence: List<SessionEvidence>) {
+    val lastTrainedByRung = mutableMapOf<String, Int>()
+    val priorPracticeByMarker = mutableMapOf<SessionEvidence, Int>()
+
+    init {
+        val lastTrainedByVariation = mutableMapOf<String, Int>()
+        val workouts = evidence.sortedWith(compareBy({ it.day }, { it.recordedAtEpochMs }, { it.sessionId }))
+            .groupBy { it.day to it.sessionId }
+        for (workout in workouts.values) {
+            val anchored = workout.map { it to catalog.reentryRung(it.variationId, it.progressionRouteId) }
+            // All marked exercises in a workout use the practice that preceded the workout.
+            for ((ev, rung) in anchored) if (ev.reentryFromTier != null) {
+                val rungDay = rung?.let(lastTrainedByRung::get)
+                latestPractice(lastTrainedByVariation[ev.variationId], rungDay)?.let { priorPracticeByMarker[ev] = it }
+            }
+            for ((ev, rung) in anchored) if (ev.completedWorkBlocks > 0) {
+                lastTrainedByVariation[ev.variationId] = ev.day
+                if (rung != null) lastTrainedByRung[rung] = ev.day
+            }
+        }
     }
 }
 
@@ -247,6 +299,7 @@ class ProgressionEngine(private val catalog: Catalog) {
         val active = mutableMapOf<String, String>()
         val holds = mutableMapOf<String, FamilyHold>()
         val events = mutableListOf<ProgressEvent>()
+        val practice = ReentryPractice(catalog, evidence)
 
         fun ensure(vid: String, day: Int, tier: Int = 1, baseline: Int? = null): VariationProgress =
             vars.getOrPut(vid) {
@@ -280,9 +333,8 @@ class ProgressionEngine(private val catalog: Catalog) {
                 p = p.copy(effectivePolicySnapshot = ev.effectivePolicySnapshot)
             }
             // 9.4 F4: a session from a plan the planner built as a re-entry (it carries [SessionEvidence.reentryFromTier] = the current level) is applied like a ReentryChoice; any other session one level below changes nothing: that level becomes the level (stars and achieved levels kept), and this session counts towards re-earning the old one.
-            val lastSeen = maxOf(p.lastTrainedDay ?: Int.MIN_VALUE, p.reentryResolvedDay ?: Int.MIN_VALUE)
-            if (ev.completedWorkBlocks > 0 && !ev.discomfort && ev.ruleMet == null && p.lastTrainedDay != null && ev.prescribedTier != null && p.tier > 1 &&
-                ev.prescribedTier == p.tier - 1 && ev.reentryFromTier == p.tier && ev.day - lastSeen >= REENTRY_DAYS && holds[p.familyId] == null) {
+            if (ev.completedWorkBlocks > 0 && !ev.discomfort && ev.ruleMet == null && ev.prescribedTier != null && p.tier > 1 &&
+                ev.reentryFromTier == p.tier && ev.prescribedTier == reentryTier(p, ev.day, practice.priorPracticeByMarker[ev]) && holds[p.familyId] == null) {
                 val was = p.tier
                 p = p.copy(tier = ev.prescribedTier, enrolledAtDay = ev.day, streakDays = emptyList(), streakAssumed = 0, reentryResolvedDay = ev.day, backFromBreakDay = ev.day,
                     consecutiveBelow = 0, lowerTargetSuggested = false, consecutiveAbove = 0, raiseSuggested = false,
@@ -610,7 +662,7 @@ class ProgressionEngine(private val catalog: Catalog) {
             .groupBy { it.progressionRouteId!! }.mapValues { (_, sessions) -> sessions.map { it.sessionId }.distinct().size }
         // Keep earned achievements while an edited definition starts a fresh prospective streak.
         for ((id, value) in vars.toMap()) if (value.targetRevision != (catalog.personalTargets[id]?.revision ?: 0)) vars[id] = value.copy(streakDays = emptyList(), streakAssumed = 0)
-        return ProgressSnapshot(vars.entries.sortedBy { it.key }.associate { it.toPair() }, active.entries.sortedBy { it.key }.associate { it.toPair() }, holds.entries.sortedBy { it.key }.associate { it.toPair() }, events.toList(), counts, routeCounts)
+        return ProgressSnapshot(vars.entries.sortedBy { it.key }.associate { it.toPair() }, active.entries.sortedBy { it.key }.associate { it.toPair() }, holds.entries.sortedBy { it.key }.associate { it.toPair() }, events.toList(), counts, routeCounts, practice.lastTrainedByRung.toMap())
     }
 
     /** The qualifying days that count towards the next level of [variationId] in [snapshot]: its own and the ones of its same-rung exercises since the level began. */

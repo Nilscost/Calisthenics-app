@@ -503,7 +503,7 @@ ex("leg-raise-lying", "Lying Leg Raise", "legraise", "CORE_ANTI_EXTENSION", C, "
    reps_tiers([6, 8, 10, 12, 15]), [S_CC, S_YG], CORE_ST, rank=20, nxt=["v-up"])
 ex("v-up", "V-Up", "legraise", "CORE_ANTI_EXTENSION", C, "REPS", "supine",
    ["Lie flat with arms overhead.", "Lift legs and torso together, reaching hands toward the toes.", "Lower slowly; keep control."],
-   reps_tiers([5, 7, 9, 12, 15]), [S_OG, S_YG], CORE_ST, rank=30, prereq={"allOf": [[vt("leg-raise-lying", 3)]]})
+   reps_tiers([5, 7, 9, 12, 15]), [S_OG, S_YG], CORE_ST, rank=30)
 # front lever
 ex("front-lever-tuck", "Tuck Front Lever", "lever", "PULL_VERTICAL", ["UPPER_BODY", "CORE"], "HOLD", "hang",
    ["Hang from a bar, pull the shoulders down and back.", "Tuck the knees, raise the hips until the back is horizontal.", "Hold with straight arms."],

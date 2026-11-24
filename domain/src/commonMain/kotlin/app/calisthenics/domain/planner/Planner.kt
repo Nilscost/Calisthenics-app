@@ -386,12 +386,13 @@ private class Planner(input: PlanInput) {
             if (inferredTier != null) note(NoteKind.INFO, "${v.name} starts a bit easier today, based on a similar exercise you do. Your results will adjust it.")
         }
         holdTier?.let { tierIdx = minOf(tierIdx ?: it, it) }
+        val overrideTier = draft.tierOverrides[slot.id]?.takeIf { draft.overrideVariations[slot.id].let { on -> on == null || on == v.id } }
         var reentry: Pair<Int, Int>? = null
-        input.progress.reentryNeeded(v.id, input.nowDay)?.takeIf { holdTier == null }?.let { lower ->
-            // F4: the note (see summaryNotes) only exists when the level really goes down; acceptance is unchanged
+        if (holdTier == null && overrideTier == null) input.progress.reentryNeeded(v.id, input.nowDay, cat, route?.id)?.let { lower ->
             val was = tierIdx!!
             if (lower < was) reentry = lower to was
-            tierIdx = lower; needsAcceptance = true
+            tierIdx = lower
+            needsAcceptance = true
         }
         // Kettlebell weight (owner 2026-10-08): a heavier bell than the one the level was earned with restarts at tier 1.
         val load = input.profile.loadGramsFor(v)
@@ -399,20 +400,21 @@ private class Planner(input: PlanInput) {
         val loadName = when (v.loadEquipmentId()) { app.calisthenics.domain.load.DUMBBELL_EQUIPMENT_ID -> "dumbbells"; app.calisthenics.domain.load.BARBELL_EQUIPMENT_ID -> "barbell"; app.calisthenics.domain.load.VEST_EQUIPMENT_ID -> "weighted vest"; else -> "kettlebell" }
         if (load != null && recorded != null && load > recorded) {
             tierIdx = 1
+            reentry = null
             note(NoteKind.LOAD, "${v.name}: your $loadName is heavier now (${formatKg(load)} kg, was ${formatKg(recorded)} kg), so you start again at level 1. Your earlier progress is kept.")
         } else if (load != null && recorded != null && load < recorded) {
             note(NoteKind.LOAD, "${v.name}: your $loadName is lighter than usual (${formatKg(load)} kg, you train with ${formatKg(recorded)} kg), so this workout will not count toward your next level.")
         }
-        draft.tierOverrides[slot.id]?.takeIf { draft.overrideVariations[slot.id].let { on -> on == null || on == v.id } }?.let { o ->
+        overrideTier?.let { o ->
             val t = o.coerceIn(pol.tiers.minOf { it.index }, pol.tiers.maxOf { it.index })
             tierIdx = t
         }
         return Chosen(slot.copy(progressionRouteId = route?.id), v, pol.tier(tierIdx!!), load,
-            inferredTier?.takeIf { it == tierIdx && !(slot.id in draft.tierOverrides && draft.overrideVariations[slot.id].let { on -> on == null || on == v.id }) },
+            inferredTier?.takeIf { it == tierIdx && overrideTier == null },
             swap = swapFrom?.takeIf { v.id == pref.id && v.id != it.id }?.let { PlanSwap(v.id, it.id, SwapKind.ROTATED) },
             moveOn = moveOnFrom?.takeIf { v.id == pref.id && swapFrom == null },   // a rotated-in alternate is not the exercise the person moved on to
             reentry = reentry,
-            reentryFromTier = reentry?.takeIf { it.first == tierIdx }?.second)   // 9.4 F4: no marker when a Preview override or a heavier load made the final level something else
+            reentryFromTier = reentry?.second)
     }
 
     /**

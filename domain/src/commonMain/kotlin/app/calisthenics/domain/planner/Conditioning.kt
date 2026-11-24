@@ -19,7 +19,7 @@ fun conditioningExercises(c: Catalog, progress: ProgressSnapshot, profile: Equip
         val path = c.routeById("burpee")?.mainPath.orEmpty().ifEmpty { listOf("squat-thrust", "burpee", "burpee-pushup") }
         val current = path.lastOrNull { it in progress.variations && 5 !in progress.variations.getValue(it).achievedTiers }
             ?: path.lastOrNull { it in progress.variations }?.let { path.getOrNull(path.indexOf(it) + 1) } ?: "burpee"
-        return listOf(current, "burpee", "squat-thrust")
+        return listOf(current, "burpee", "squat-thrust", "squat-thrust-step-back")
     }
     val groups = listOf(
         burpee(),

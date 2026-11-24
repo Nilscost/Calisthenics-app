@@ -1,4 +1,5 @@
 """T03: the R8 importer must be deterministic and preserve strict catalog contracts."""
+import copy
 import json
 import pathlib
 import subprocess
@@ -162,7 +163,16 @@ class R8CatalogGeneratorTest(unittest.TestCase):
         for alias in self.contract["aliases"]:
             self.assertIn(alias["alias"], variations[alias["existingId"]]["aliases"])
         self.assertEqual(self.contract["options"], self.catalog["optionSets"])
-        self.assertEqual(self.contract["routines"], self.catalog["fixedPrograms"])
+        routines = copy.deepcopy(self.contract["routines"])
+        # The Army source counts these exercises in total; the catalog counts them per side.
+        for routine in routines:
+            if routine["id"] in {"army-prt", "army-pd"}:
+                for item in routine["items"]:
+                    if item["exerciseId"] in {"walking-lunge", "windshield-wiper-bent-knee"}:
+                        item["perSide"] = True
+                        item["reps"] //= 2
+                        item["estSeconds"] //= 2
+        self.assertEqual(routines, self.catalog["fixedPrograms"])
         self.assertEqual("pushup-feet-elevated", self.catalog["exerciseGroups"][0]["mainVariationId"])
         self.assertEqual(["pushup-diamond"], self.catalog["exerciseGroups"][0]["alternativeVariationIds"])
         policies = {p["variationId"]: p for p in self.catalog["policies"]}
@@ -291,6 +301,36 @@ class R8CatalogGeneratorTest(unittest.TestCase):
         self.assertTrue({"crunch", "sit-up", "rower-situp", "curl-up-mcgill"} <= set(groups["floor-legraise-entry-level"]["alternativeVariationIds"]))
         self.assertEqual("side-plank", groups["side-plank-core-variety"]["mainVariationId"])
         self.assertTrue({"bicycle-crunch", "russian-twist", "pallof-hold", "pallof-press", "bird-dog"} <= set(groups["side-plank-core-variety"]["alternativeVariationIds"]))
+
+    def test_easier_variations_are_separate_main_steps_with_immediate_readiness_gates(self):
+        paths = {
+            "side-plank": ["side-plank-knee", "side-plank"],
+            "floor-legraise": ["leg-raise-lying", "v-up-tuck", "v-up"],
+            "burpee": ["squat-thrust-step-back", "squat-thrust"],
+            "dragon-flag": ["dragon-flag-tuck", "dragon-flag-adv-tuck", "dragon-flag-one-leg"],
+        }
+        routes = {route["id"]: route for route in self.catalog["progressionRoutes"]}
+        policies = {policy["variationId"]: policy for policy in self.catalog["policies"]}
+        for route_id, steps in paths.items():
+            route = routes[route_id]
+            start = route["mainPath"].index(steps[0])
+            self.assertEqual(steps, route["mainPath"][start:start + len(steps)])
+            for parent, child in zip(steps, steps[1:]):
+                self.assertEqual(
+                    [{"variationId": parent, "role": "MAIN"}],
+                    [member for member in route["members"] if member["variationId"] == parent],
+                )
+                self.assertEqual(child, policies[parent]["mainSuccessorId"])
+                self.assertEqual(
+                    [[{"variationTierMet": {"variationId": parent, "tier": 3}}]],
+                    policies[child]["prerequisiteRule"]["allOf"],
+                )
+        alternatives = {variation_id for group in self.catalog["exerciseGroups"]
+                        for variation_id in group["alternativeVariationIds"]}
+        self.assertTrue(alternatives.isdisjoint({
+            "side-plank-knee", "v-up-tuck", "squat-thrust-step-back", "dragon-flag-adv-tuck",
+        }))
+        self.assertIn("v-up-straddle", alternatives)
 
     def test_existing_alternate_entry_gate_is_preserved_with_route_readiness(self):
         policies = {p["variationId"]: p for p in self.catalog["policies"]}

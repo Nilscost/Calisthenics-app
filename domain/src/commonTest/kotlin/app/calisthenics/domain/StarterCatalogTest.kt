@@ -128,7 +128,7 @@ class StarterCatalogTest {
         assertRouteMember("row", "row-band", ProgressionRole.ALTERNATE, "inverted-row-bent-knees")
         assertRoutePath("one-arm-row", listOf("archer-row", "row-one-arm-straddle", "row-one-arm"))
         assertRoutePath("extension", listOf("superman-hold", "arch-hold-y", "arch-rocks"))
-        assertRoutePath("side-plank", listOf("side-plank", "copenhagen-side-plank-short", "copenhagen-side-plank"))
+        assertRoutePath("side-plank", listOf("side-plank-knee", "side-plank", "copenhagen-side-plank-short", "copenhagen-side-plank"))
         assertRouteMember("side-plank", "side-plank-hip-raise", ProgressionRole.ALTERNATE, "side-plank")
         assertContractExtensions("copenhagen-side-plank", emptyList())
         assertRoutePath("rdl-hinge", listOf("rdl-bodyweight", "single-leg-deadlift"))

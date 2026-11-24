@@ -5,6 +5,9 @@ import app.calisthenics.domain.equipment.SeedProfiles
 import app.calisthenics.domain.equipment.isAvailable
 import app.calisthenics.domain.model.*
 import app.calisthenics.domain.planner.*
+import app.calisthenics.domain.progression.ProgressSnapshot
+import app.calisthenics.domain.progression.ProgressionEngine
+import app.calisthenics.domain.progression.UserAction
 import app.calisthenics.domain.routine.SessionDraft
 import app.calisthenics.domain.routine.StarterRoutine
 import kotlin.test.Test
@@ -22,6 +25,25 @@ class StarterPlanTest {
             assertTrue(s.intent in v!!.patterns)
             assertTrue(s.area in v.areas)
         }
+    }
+
+    @Test fun sidePlankStartsAtTheKneesAndHonoursExistingFullPlankProgressAndRoutines() {
+        val starter = StarterRoutine.routine
+        val oldSlot = starter.slots.single { it.id == "core2" }.copy(preferredVariationId = "side-plank")
+        val saved = Routine("saved-side-plank", 1, "Side plank", listOf(oldSlot))
+        val engine = ProgressionEngine(catalog)
+        val established = engine.replay(emptyList(), listOf(UserAction.SelfAssessment(0, "side-plank", 4)))
+        val fresh = engine.replay(emptyList(), emptyList())
+        fun planned(routine: Routine, progress: ProgressSnapshot): Pair<String?, Int?> {
+            val draft = SessionDraft.from(Preferences(), routine).copy(rounds = 2)
+            val result = generate(PlanInput("preview", 0, 1, catalog, routine, draft, SeedProfiles.home, progress = progress)) as PlanResult.Ready
+            val work = result.plan.blocks.first { it.type == BlockType.WORK && it.slotId == "core2" }
+            return work.variationId to work.prescriptionTier
+        }
+        assertEquals("side-plank-knee" to 1, planned(starter, fresh))
+        assertEquals("side-plank" to 4, planned(starter, established))
+        assertEquals("side-plank" to 4, planned(saved, established))
+        assertEquals("side-plank" to 1, planned(saved, fresh))
     }
 
     @Test fun homeProfileGivesPlansOfEveryRequestedLength() {
