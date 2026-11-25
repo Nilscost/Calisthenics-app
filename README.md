@@ -4,9 +4,9 @@ A personal training app that turns bodyweight and equipment-assisted exercises i
 
 Built for Android and the web with Kotlin Multiplatform and Compose Multiplatform.
 
-**Version 9.5** · `0.12.5-r9` · November 2026
+**Latest version: 9.5** · `0.12.5-r9` · November 2026
 
-[Release source](https://github.com/Nilscost/Calisthenics-app/tree/codex/kmp-port) · [Release notes and status](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/STATUS.md)
+[Open the web app](https://nilscost.github.io/Calisthenics-app/) · [Version 9.5 source](https://github.com/Nilscost/Calisthenics-app/tree/codex/kmp-port) · [Release notes and status](https://github.com/Nilscost/Calisthenics-app/blob/codex/kmp-port/STATUS.md)
 
 <p align="center">
   <img src="docs/media/screenshots/train.png" width="250" alt="Plan a workout: goal, equipment, rounds and workout format">
@@ -26,16 +26,21 @@ The app brings workout planning, exercise guidance and progression tracking into
 - **Visible progress:** explore skill trees, review exercise history and correct workout logs without losing the original record.
 - **Local data:** keep your history, routines and settings on your device, with backup and restore. The Android app runs fully offline; the web app works offline after loading, with demonstrations cached as they are used.
 
-## What’s new in 9.3
+## What’s new
 
-Version 9.3 focuses on making workouts easier to follow and progress easier to understand:
+**9.5** refines progression:
 
-- **Clearer repetition counts:** alternating exercises show both the total and the count per side.
-- **A more useful preparation screen:** the next exercise, its target and the working side take priority.
-- **Simpler workout feedback:** one card per exercise brings together results, corrections and difficulty feedback, with clearer explanations of level changes and the next progression.
-- **Smaller steps between levels:** targets increase gradually after successful sessions.
-- **Routine import from a chatbot:** export the exercise library and routine format, then import a generated routine from a file or pasted text.
-- **Refined demonstrations:** nine exercise clips were rebuilt and reviewed against filmed coaching references.
+- **Gentler first steps:** the knee side plank now comes before the side plank, and the tuck V-up, step-back squat thrust and advanced tuck dragon flag are levels of their own.
+- **Fairer break detection:** training a similar exercise at the same level now counts as practice, so a short break from one variation no longer drops its level.
+
+**9.4** made progress easier to read and workouts more varied:
+
+- **Clearer stars and level cards:** each exercise shows its own stars, and every end-of-workout card says what comes next time.
+- **Fairer missed sets:** one missed set keeps the target; only two misses in a row lower it.
+- **Shorter workout preview:** at most three lines of notes at the top.
+- **Mix it up:** one tap swaps two exercises for a type missing from today’s workout, with Undo.
+
+Full release notes are in [STATUS.md](STATUS.md).
 
 ## My role
 
@@ -58,7 +63,7 @@ The code is organised into `domain` (training logic), `data` (storage), `shared`
 
 ## Build and explore
 
-The release branch is `codex/kmp-port`. Every update ships to Android and the web app, including the iPhone Home Screen version. See the [release policy](AGENTS.md).
+The current version is on the `codex/kmp-port` branch. Each release ships to Android and to the [web app](https://nilscost.github.io/Calisthenics-app/), which can also be added to the iPhone Home Screen from Safari.
 
 ```sh
 git clone --branch codex/kmp-port https://github.com/Nilscost/Calisthenics-app.git
@@ -85,7 +90,7 @@ For a closer look at the work, start with the [documentation index](docs/README.
 
 ## Project status
 
-This is a personal project in active development, used on a Samsung Galaxy S21. Version 9.3 has automated verification and screenshot-review evidence; its release-specific phone checks remain open. Exercise targets remain a draft and have not been professionally reviewed.
+This is a personal project in active development, used on a Samsung Galaxy S21. Each release passes automated verification on Android and the web before it ships; phone checks are tracked per release in [STATUS.md](STATUS.md). Exercise targets remain a draft and have not been professionally reviewed.
 
 ## License and acknowledgements
 
